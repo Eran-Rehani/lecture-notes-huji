@@ -1,0 +1,543 @@
+%% Lecture 06 — Covariant and Contravariant Tensors; Relativistic Mechanics
+\section{Lecture 06 — Covariant and Contravariant Tensors; Relativistic Mechanics}\label{sec:lec06}
+
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 21/04/2026   & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+
+\subsection*{Overview}
+This lecture has two parts.  In the first part we complete the tensor
+formalism begun in Lecture~05.  We introduce the distinction between
+\textbf{contravariant} (upper-index) and \textbf{covariant} (lower-index)
+objects, derive the transformation law for covariant four-vectors from first
+principles, discuss mixed-rank tensors and why the position of each index
+matters, and prove that the Minkowski metric is itself a Lorentz-invariant
+rank-2 tensor.  We also give a self-contained proof that any full contraction
+of tensor indices yields a Lorentz scalar.
+
+In the second part we build \textbf{relativistic mechanics} from the action
+principle.  Following the modern approach—identify the symmetries first,
+then write the most general action consistent with them—we show that the
+symmetries of special relativity essentially fix the free-particle action
+uniquely.  Matching the non-relativistic limit fixes the remaining constant,
+and the Euler--Lagrange equations then deliver the relativistic momentum,
+energy, and dispersion relation.  We close by adding the minimal
+electromagnetic coupling and recovering the covariant Lorentz force law.
+
+% ==============================================================================
+\subsection{Tensors in Special Relativity (Concluded)}
+% ==============================================================================
+
+\subsubsection*{Recap: Contravariant Four-Vectors}
+
+In the previous lecture we defined a \textbf{four-vector} as any set of four
+components $V^\mu$ ($\mu = 0,1,2,3$) that transforms under a Lorentz
+transformation in exactly the same way as the coordinate differential
+$dx^\mu$:
+\begin{equation}\label{eq:lec06:contravariant-transform}
+    V'^\mu = \Lambda^\mu_{\ \nu}\,V^\nu .
+\end{equation}
+An object satisfying this law is called a \textbf{contravariant four-vector};
+its single index is written \emph{upstairs}.  Not every collection of four
+numbers is a four-vector: the transformation law must be verified.
+
+Standard examples: the position four-vector $x^\mu = (ct,\bvec{x})$, the
+four-velocity $u^\mu = \gamma(c,\bvec{v})$, the four-momentum $p^\mu$, and
+the four-potential $A^\mu$.
+
+\subsubsection*{Covariant Four-Vectors: Lowering an Index}
+
+Given a contravariant four-vector $V^\mu$, we define a companion object with
+a \emph{lower} index by contracting with the Minkowski metric
+$\eta_{\mu\nu} = \mathrm{diag}(+1,-1,-1,-1)$:
+\begin{equation}\label{eq:lec06:covariant-def}
+    V_\mu \;\equiv\; \eta_{\mu\nu}\,V^\nu .
+\end{equation}
+Because $\eta_{\mu\nu}$ is diagonal with entries $(+1,-1,-1,-1)$, the
+explicit components are
+\begin{equation}\label{eq:lec06:covariant-components}
+    V_\mu = \bigl(V^0,\;-V^1,\;-V^2,\;-V^3\bigr).
+\end{equation}
+This object $V_\mu$ is called a \textbf{covariant four-vector} (or
+\textbf{covector}).  It is a genuinely new object: $V_\mu \neq V^\mu$ because
+the Minkowski metric is not the identity.  We keep the same letter but use a
+\emph{downstairs} index to distinguish the two.
+
+\subsubsection*{Transformation Law of the Covariant Four-Vector}
+
+We derive how $V_\mu$ transforms.  Starting from the definition in the primed
+frame:
+\begin{align}
+    V'_\mu
+    &= \eta_{\mu\nu}\,V'^\nu
+     = \eta_{\mu\nu}\,\Lambda^\nu_{\ \rho}\,V^\rho .
+     \label{eq:lec06:cov-step1}
+\end{align}
+We want the right-hand side expressed in terms of $V_\sigma$ (lower index),
+not $V^\rho$ (upper index).  Insert $V^\rho = \eta^{\rho\sigma}V_\sigma$
+(raising with the inverse metric $\eta^{\mu\nu}$, satisfying
+$\eta_{\mu\rho}\eta^{\rho\nu}=\delta^\nu_\mu$):
+\begin{equation}\label{eq:lec06:cov-step2}
+    V'_\mu
+    = \underbrace{\eta_{\mu\nu}\,\Lambda^\nu_{\ \rho}\,\eta^{\rho\sigma}}_{\displaystyle\equiv\;\tilde\Lambda_\mu^{\ \sigma}}\;
+      V_\sigma .
+\end{equation}
+We define the \textbf{covariant Lorentz matrix}
+\begin{equation}\label{eq:lec06:lambda-covariant}
+    \tilde\Lambda_\mu^{\ \sigma}
+    \;\equiv\;
+    \eta_{\mu\nu}\,\Lambda^\nu_{\ \rho}\,\eta^{\rho\sigma} .
+\end{equation}
+
+\textbf{Claim:} $\tilde\Lambda_\mu^{\ \sigma} = (\Lambda^{-1})^\sigma_{\ \mu}$.
+
+\textit{Proof.}  Lorentz transformations are defined by the condition that
+they preserve the Minkowski metric:
+\begin{equation}\label{eq:lec06:lorentz-condition}
+    \eta_{\alpha\beta}\,\Lambda^\alpha_{\ \mu}\,\Lambda^\beta_{\ \nu}
+    = \eta_{\mu\nu}
+    \qquad\Longleftrightarrow\qquad
+    \Lambda^T\eta\,\Lambda = \eta .
+\end{equation}
+Rearranging: $\Lambda^{-1} = \eta^{-1}\Lambda^T\eta = \eta\Lambda^T\eta$
+(since $\eta^{-1}=\eta$ numerically in flat space).  In components:
+\begin{equation}\label{eq:lec06:lambda-inverse-proof}
+    (\Lambda^{-1})^\sigma_{\ \mu}
+    = \eta^{\sigma\rho}\,\Lambda^\nu_{\ \rho}\,\eta_{\nu\mu}
+    = \eta_{\mu\nu}\,\Lambda^\nu_{\ \rho}\,\eta^{\rho\sigma}
+    = \tilde\Lambda_\mu^{\ \sigma} .
+    \qquad \square
+\end{equation}
+Therefore the transformation law of a covariant four-vector is
+\begin{equation}\label{eq:lec06:covariant-final}
+    \boxed{V'_\mu = (\Lambda^{-1})^\nu_{\ \mu}\,V_\nu .}
+\end{equation}
+A contravariant four-vector transforms with $\Lambda$; a covariant four-vector
+transforms with the inverse $\Lambda^{-1}$.  Both are legitimate
+``four-vectors'' — they are distinguished only by the position of the index
+and by their respective transformation matrices.
+
+\subsubsection*{The Inner Product is a Lorentz Scalar}
+
+Contracting one contravariant and one covariant four-vector:
+\begin{equation}\label{eq:lec06:inner-product}
+    V^\mu W_\mu
+    = V^0 W^0 - V^1 W^1 - V^2 W^2 - V^3 W^3 ,
+\end{equation}
+is automatically a Lorentz scalar.  Under a Lorentz transformation:
+\begin{equation}\label{eq:lec06:inner-product-proof}
+    V'^\mu W'_\mu
+    = \bigl(\Lambda^\mu_{\ \alpha}V^\alpha\bigr)
+      \bigl((\Lambda^{-1})^\beta_{\ \mu}W_\beta\bigr)
+    = (\Lambda^{-1})^\beta_{\ \mu}\,\Lambda^\mu_{\ \alpha}\;V^\alpha W_\beta
+    = \delta^\beta_{\ \alpha}\,V^\alpha W_\beta
+    = V^\alpha W_\alpha .
+\end{equation}
+The product of the two Lorentz matrices is the identity by definition.  This
+illustrates the core bookkeeping rule: \emph{any fully contracted expression
+— with every free index appearing once upstairs and once downstairs — is
+Lorentz invariant.}
+
+\subsubsection*{Classification of Tensor Objects}
+
+\begin{itemize}
+    \item \textbf{Scalar (rank 0):} no free indices; invariant under all
+      Lorentz transformations.  Examples: $ds^2$, $m$, $d\tau$,
+      $V^\mu W_\mu$.
+    \item \textbf{Contravariant four-vector (rank 1, upper):}
+      $V'^\mu = \Lambda^\mu_{\ \nu}V^\nu$.
+    \item \textbf{Covariant four-vector (rank 1, lower):}
+      $V'_\mu = (\Lambda^{-1})^\nu_{\ \mu}V_\nu$.
+    \item \textbf{Rank-2 contravariant tensor:}
+      $T'^{\mu\nu} = \Lambda^\mu_{\ \rho}\Lambda^\nu_{\ \sigma}T^{\rho\sigma}$.
+    \item \textbf{Rank-2 covariant tensor:}
+      $T'_{\mu\nu}
+      = (\Lambda^{-1})^\rho_{\ \mu}(\Lambda^{-1})^\sigma_{\ \nu}T_{\rho\sigma}$.
+    \item \textbf{Mixed rank-2 tensor:}
+      $T'^\mu_{\ \nu} = \Lambda^\mu_{\ \rho}(\Lambda^{-1})^\sigma_{\ \nu}T^\rho_{\ \sigma}$.
+    \item \textbf{Rank-$n$ tensor:} each upper index transforms with a factor
+      $\Lambda$; each lower index transforms with a factor $\Lambda^{-1}$.
+\end{itemize}
+
+\subsubsection*{Index Position Matters in Mixed Tensors}
+
+For a tensor with at least one upper and one lower index, the \emph{relative
+position} of the indices matters.  In general:
+\begin{equation}\label{eq:lec06:index-position}
+    T^\mu_{\ \nu} \;\neq\; T_{\ \nu}^\mu ,
+\end{equation}
+because these represent different index-lowering choices applied to a tensor
+that may not be symmetric.  When writing mixed tensors, always specify which
+index was raised or lowered and preserve its left-right order relative to the
+other indices.  For example, $T^\mu_{\ \nu}$ has the upper index to the left,
+while $T_{\ \nu}^\mu$ has the upper index to the right; unless $T$ is
+symmetric these are different components.
+
+\subsubsection*{Raising and Lowering Indices}
+
+For any tensor, any index can be raised or lowered independently using the
+metric or its inverse:
+\begin{align}
+    V_\mu &= \eta_{\mu\nu}\,V^\nu, &
+    V^\mu &= \eta^{\mu\nu}\,V_\nu, \label{eq:lec06:raise-lower-vector} \\[4pt]
+    T_{\mu\nu} &= \eta_{\mu\rho}\,T^\rho_{\ \nu}
+               = \eta_{\mu\rho}\,\eta_{\nu\sigma}\,T^{\rho\sigma},
+    \label{eq:lec06:lower-rank2}
+\end{align}
+and analogously for higher-rank tensors.  Applying $\eta$ followed by
+$\eta^{-1}$ (or vice versa) returns the original tensor.
+
+With the $(+,-,-,-)$ metric, lowering a time-component index leaves it
+unchanged while lowering a spatial-component index introduces a minus sign:
+\begin{equation}\label{eq:lec06:lowering-sign}
+    V_0 = V^0, \qquad V_i = -V^i \quad (i = 1,2,3).
+\end{equation}
+
+\subsubsection*{Contraction and the Trace}
+
+\textbf{Contraction} means setting one upper and one lower index equal and
+summing (Einstein convention).  Each contraction reduces the tensor rank
+by~2:
+
+\begin{itemize}
+    \item A rank-2 tensor $T^{\mu\nu}$ contracted to a scalar:
+\begin{equation}\label{eq:lec06:trace-rank2}
+    T \equiv T^\mu_{\ \mu} = \eta_{\mu\nu}\,T^{\mu\nu} .
+\end{equation}
+    \item A rank-3 tensor $T^{\mu\nu\rho}$ contracted on the first and third
+      indices to a four-vector:
+\begin{equation}\label{eq:lec06:contract-rank3}
+    S^\nu = T^\mu_{\ \nu\mu} = \eta_{\mu\rho}\,T^{\mu\nu\rho} .
+\end{equation}
+    \item More generally, contracting $k$ pairs of indices in a rank-$n$
+      tensor yields a rank-$(n-2k)$ tensor.
+\end{itemize}
+
+\subsubsection*{Why Every Full Contraction is a Lorentz Scalar}
+
+We verify directly for the trace of a rank-2 tensor.  In the primed frame:
+\begin{align}
+    T'
+    &= \eta_{\mu\nu}\,T'^{\mu\nu} \notag \\
+    &= \eta_{\mu\nu}\,\Lambda^\mu_{\ \rho}\,\Lambda^\nu_{\ \sigma}\,T^{\rho\sigma} \notag \\
+    &= T^{\rho\sigma}\bigl(\eta_{\mu\nu}\,\Lambda^\mu_{\ \rho}\,\Lambda^\nu_{\ \sigma}\bigr) \notag \\
+    &= T^{\rho\sigma}\,\eta_{\rho\sigma} = T .
+    \label{eq:lec06:scalar-proof}
+\end{align}
+In the third step we rearranged numerical factors (permitted since sums of
+products of numbers commute).  In the fourth step we used the defining
+property~\eqref{eq:lec06:lorentz-condition} of Lorentz transformations.
+The same argument extends to any rank: each pair of contracted indices
+produces a factor $(\Lambda^{-1})\Lambda = \mathbf{1}$.
+
+\subsubsection*{The Minkowski Metric is a Lorentz-Invariant Tensor}
+
+We now show that $\eta_{\mu\nu}$ is itself a rank-2 covariant tensor — and a
+\emph{constant} one: it is numerically the same in every inertial frame.
+
+Applying the covariant rank-2 transformation law to $\eta_{\mu\nu}$:
+\begin{align}
+    \eta'_{\mu\nu}
+    &= (\Lambda^{-1})^\rho_{\ \mu}\,(\Lambda^{-1})^\sigma_{\ \nu}\,\eta_{\rho\sigma} .
+    \label{eq:lec06:metric-transform}
+\end{align}
+Inserting $(\Lambda^{-1})^\rho_{\ \mu} = \eta_{\mu\alpha}\Lambda^\alpha_{\ \beta}\eta^{\beta\rho}$
+and collecting, the right-hand side reduces to $\eta_{\mu\nu}$ by the
+Lorentz condition~\eqref{eq:lec06:lorentz-condition}:
+\begin{equation}\label{eq:lec06:metric-invariant}
+    \boxed{\eta'_{\mu\nu} = \eta_{\mu\nu} .}
+\end{equation}
+Equation~\eqref{eq:lec06:metric-invariant} is not a coincidence: it is exactly the
+defining property of Lorentz transformations.  The Minkowski metric is therefore a
+\textbf{constant tensor}: it looks the same to every inertial observer.
+
+This completes the tensor vocabulary required for the rest of the course.
+
+% ==============================================================================
+\subsection{Relativistic Mechanics}
+% ==============================================================================
+
+\subsubsection*{The Modern Paradigm: Symmetries Determine the Action}
+
+The Lagrangian/action formulation of mechanics says that a physical system is
+specified by its action $S = \int L\,dt$.  Rather than guessing $L$, the
+modern approach proceeds in three steps:
+\begin{enumerate}
+    \item \textbf{Identify the symmetries.}  For a relativistic point particle
+      in flat spacetime these are: Lorentz boosts, spatial rotations,
+      spatial-translation invariance (homogeneity of space), and
+      time-translation invariance (homogeneity of time).
+    \item \textbf{Write the most general action consistent with those
+      symmetries.}  Any term that is not a Lorentz scalar violates Lorentz
+      symmetry and is forbidden.  Spatial/temporal homogeneity forbids
+      explicit dependence on $x^\mu$ itself.
+    \item \textbf{Fix any remaining undetermined constants} by demanding
+      agreement with the known non-relativistic limit.
+\end{enumerate}
+This symmetry-first approach is how all of modern field theory is built.  For
+a free particle the constraints are so tight that the action is essentially
+unique.
+
+\subsubsection*{The Only Available Lorentz Scalar for a Free Particle}
+
+For a free point particle the dynamical degrees of freedom are its worldline
+coordinates $x^\mu(\lambda)$ and the only dimensional constant is $c$.  We
+must construct a Lorentz scalar that:
+\begin{itemize}
+    \item depends only on $dx^\mu$ (translational invariance forbids $x^\mu$
+      itself),
+    \item is reparameterisation-invariant (independent of the labelling
+      parameter $\lambda$).
+\end{itemize}
+The unique (up to a constant factor) object satisfying all requirements is the
+spacetime line element:
+\begin{equation}\label{eq:lec06:line-element}
+    ds^2 \;\equiv\; \eta_{\mu\nu}\,dx^\mu\,dx^\nu
+         = c^2\,dt^2 - d\vec{x}^{\,2}
+         > 0
+    \qquad(\text{timelike worldline}),
+\end{equation}
+giving the invariant arc length $ds = c\,dt\sqrt{1-v^2/c^2} = c\,d\tau$.
+Any polynomial in $x^\mu$ would violate translational invariance; higher-order
+differential invariants reduce to powers of $ds^2$ and can be absorbed into
+the constant.  The action must therefore take the form
+\begin{equation}\label{eq:lec06:action-candidate}
+    S = -\alpha \int ds
+\end{equation}
+for some constant $\alpha$ to be determined.
+
+\subsubsection*{Why the Minus Sign?}
+
+In Minkowski space, a straight (inertial) worldline \emph{maximises} the
+proper time $\tau = \int d\tau = \int ds/c$ between two fixed events.  (This
+is the geometrical content of the twin paradox: any deviation from a straight
+worldline shortens the elapsed proper time.)  Therefore $\int ds$ is
+\emph{maximised} along the classical trajectory, not minimised.
+
+The principle of \textbf{least action} demands $\delta S = 0$ with $S$
+stationary at a \emph{minimum}.  Inserting the minus sign converts the
+maximum of $\int ds$ into a minimum of $S = -\alpha\int ds$ (for $\alpha > 0$),
+restoring compatibility with the variational principle.
+
+\subsubsection*{Fixing the Constant \texorpdfstring{$\alpha$}{$\alpha$}: the Non-Relativistic Limit}
+
+Substituting $ds = c\,dt\sqrt{1-\beta^2}$ (where $\beta = v/c$):
+\begin{equation}\label{eq:lec06:action-expanded}
+    S = -\alpha c \int \sqrt{1-\beta^2}\,dt .
+\end{equation}
+Expanding for $v \ll c$:
+\begin{equation}\label{eq:lec06:sqrt-expansion}
+    \sqrt{1-\beta^2} \approx 1 - \frac{v^2}{2c^2} + O(v^4/c^4),
+\end{equation}
+so
+\begin{equation}\label{eq:lec06:action-nr-expand}
+    S \approx -\alpha c \int dt + \frac{\alpha}{2c}\int v^2\,dt .
+\end{equation}
+The first term is a constant added to $L$ (it does not affect the equations
+of motion).  Matching the second term to the classical kinetic action
+$\frac{1}{2}m\int v^2\,dt$ requires
+\begin{equation}\label{eq:lec06:alpha-fixed}
+    \frac{\alpha}{2c} = \frac{m}{2}
+    \qquad\Longrightarrow\qquad
+    \alpha = mc .
+\end{equation}
+The free relativistic particle action and its Lagrangian are therefore:
+\begin{align}
+    S &= -mc\int ds = -mc^2\int\sqrt{1-\frac{v^2}{c^2}}\,dt, \label{eq:lec06:action-final}\\[4pt]
+    L &= -mc^2\sqrt{1-\frac{v^2}{c^2}} = -\frac{mc^2}{\gamma}. \label{eq:lec06:lagrangian-final}
+\end{align}
+
+\subsubsection*{Non-Relativistic Limit}
+
+Expanding~\eqref{eq:lec06:action-final}:
+\begin{equation}\label{eq:lec06:action-nr-check}
+    S \approx -mc^2\int dt + \frac{1}{2}m\int v^2\,dt .
+\end{equation}
+The constant $-mc^2\int dt$ shifts $L$ by a constant and is irrelevant for
+the dynamics.  The remaining term $\frac{1}{2}mv^2$ is exactly the classical
+free-particle Lagrangian, confirming internal consistency.
+
+\subsubsection*{Conservation Laws from Noether's Theorem}
+
+The Lagrangian~\eqref{eq:lec06:lagrangian-final} depends on $v = |\dot{\vec{x}}|$
+but neither on the coordinates $x^i$ nor on $t$ explicitly:
+\begin{equation}\label{eq:lec06:noether-symmetries}
+    \frac{\partial L}{\partial x^i} = 0, \qquad \frac{\partial L}{\partial t} = 0 .
+\end{equation}
+By Noether's theorem:
+\begin{itemize}
+    \item \textbf{Spatial homogeneity} ($\partial L/\partial x^i = 0$)
+      $\Rightarrow$ the canonical momentum $p_i = \partial L/\partial \dot x^i$
+      is a constant of the motion (conserved for all time).
+    \item \textbf{Temporal homogeneity} ($\partial L/\partial t = 0$)
+      $\Rightarrow$ the energy $E = \dot x^i\,(\partial L/\partial \dot x^i) - L$
+      is conserved.
+\end{itemize}
+We now compute both.
+
+\subsubsection*{Relativistic Momentum}
+
+\begin{equation}\label{eq:lec06:momentum-calc}
+    p_i = \frac{\partial L}{\partial v^i}
+        = \frac{\partial}{\partial v^i}\!\left(-mc^2\sqrt{1-\frac{v^2}{c^2}}\right)
+        = \frac{-mc^2 \cdot (-v^i/c^2)}{\sqrt{1-v^2/c^2}}
+        = \frac{m v^i}{\sqrt{1-v^2/c^2}} = \gamma m v^i .
+\end{equation}
+In vector form:
+\begin{equation}\label{eq:lec06:momentum}
+    \boxed{\vec{p} = \gamma m \vec{v}} .
+\end{equation}
+For $v \ll c$, $\gamma \to 1$ and $\vec{p} \to m\vec{v}$, recovering Newton.
+For $v \to c$, $\gamma \to \infty$ and no finite force can accelerate the
+particle to the speed of light.
+
+\subsubsection*{Relativistic Energy}
+
+\begin{align}
+    E &= \vec{v}\cdot\frac{\partial L}{\partial \vec{v}} - L
+       = \vec{v}\cdot\vec{p} - L \notag \\
+      &= \gamma m v^2 + mc^2\sqrt{1-\beta^2}
+       = \gamma m v^2 + \frac{mc^2}{\gamma} .
+       \label{eq:lec06:energy-step}
+\end{align}
+Using $v^2 = c^2(1 - \gamma^{-2})$:
+\begin{equation}\label{eq:lec06:energy-simplify}
+    E = \gamma m c^2\!\left(1 - \frac{1}{\gamma^2}\right) + \frac{mc^2}{\gamma}
+      = \gamma mc^2 - \frac{mc^2}{\gamma} + \frac{mc^2}{\gamma}
+      = \gamma mc^2 .
+\end{equation}
+Therefore:
+\begin{equation}\label{eq:lec06:energy}
+    \boxed{E = \gamma mc^2} .
+\end{equation}
+Expanding for $v \ll c$:
+\begin{equation}\label{eq:lec06:energy-nr}
+    E = mc^2\!\left(1 + \frac{v^2}{2c^2} + \cdots\right)
+      = mc^2 + \frac{1}{2}mv^2 + \cdots
+\end{equation}
+The energy contains the \textbf{rest energy} $mc^2$ plus the classical kinetic
+energy as the leading correction.  The rest energy is unobservable in purely
+mechanical processes but becomes physically relevant whenever mass is
+converted into radiation or kinetic energy.
+
+\subsubsection*{Energy-Momentum Dispersion Relation}
+
+From~\eqref{eq:lec06:momentum} and~\eqref{eq:lec06:energy} one can eliminate
+$\gamma$ and $v$ to obtain a frame-independent relation between $E$ and
+$|\vec{p}| \equiv p$:
+\begin{align}
+    E^2 - p^2c^2
+    &= (\gamma mc^2)^2 - (\gamma mv)^2c^2
+     = \gamma^2 m^2c^2(c^2 - v^2)
+     = \gamma^2 m^2c^4\!\left(1-\frac{v^2}{c^2}\right)
+     = m^2c^4 .
+     \label{eq:lec06:dispersion-derive}
+\end{align}
+\begin{equation}\label{eq:lec06:dispersion}
+    \boxed{E^2 = p^2c^2 + m^2c^4} .
+\end{equation}
+This relation is more fundamental than the individual formulas for $E$ and
+$\vec{p}$: the combination $E^2 - p^2c^2$ is a Lorentz scalar equal to
+$m^2c^4$.  The four-momentum $p^\mu = (E/c,\,\vec{p})$ is a contravariant
+four-vector, and~\eqref{eq:lec06:dispersion} is the statement
+$\eta_{\mu\nu}p^\mu p^\nu = p^\mu p_\mu = m^2c^2$ (in the $(+,-,-,-)$
+convention).
+
+\subsubsection*{Massless Particles Must Travel at the Speed of Light}
+
+Setting $m = 0$ in~\eqref{eq:lec06:dispersion}:
+\begin{equation}\label{eq:lec06:massless}
+    E = pc .
+\end{equation}
+From $\vec{p} = \gamma m \vec{v}$ and $E = \gamma mc^2$, the ratio gives
+$v = pc^2/E = c$ as long as $m\neq 0$.  Taking $m\to 0$ while keeping
+$E = pc$ finite yields $v = c$.  Therefore:
+\begin{equation}\label{eq:lec06:massless-speed}
+    \boxed{m = 0 \;\;\Longrightarrow\;\; v = c .}
+\end{equation}
+A massless particle has no rest frame; the only velocity consistent with
+Lorentz symmetry is the invariant speed $c$.  In Lecture~07 we will derive
+electromagnetic waves from the covariant Maxwell equations and confirm that
+they propagate at exactly $c$.
+
+\subsubsection*{Coupling to the Electromagnetic Field}
+
+To describe a particle of charge $e$ interacting with the electromagnetic
+field, we add to~\eqref{eq:lec06:action-final} the only Lorentz-scalar
+coupling linear in the \textbf{electromagnetic four-potential}
+$A_\mu = (\phi,\,-\bvec{A})$:
+\begin{equation}\label{eq:lec06:interaction}
+    S_{\mathrm{int}} = -\frac{e}{c}\int A_\mu\,dx^\mu .
+\end{equation}
+This is a Lorentz scalar because $A_\mu$ is a covariant four-vector and
+$dx^\mu$ is a contravariant four-vector; their inner product $A_\mu\,dx^\mu$
+is invariant.  The total action is
+\begin{equation}\label{eq:lec06:total-action}
+    S = -mc\int ds - \frac{e}{c}\int A_\mu\,dx^\mu .
+\end{equation}
+Writing explicitly in terms of coordinate time ($\dot{x}^\mu = (c,\bvec{v})$):
+\begin{equation}\label{eq:lec06:lagrangian-em}
+    L = -mc^2\sqrt{1-\beta^2}
+        \underbrace{-\frac{e}{c}A_\mu\,\dot{x}^\mu}_{= -e\phi + \frac{e}{c}\bvec{A}\cdot\bvec{v}}
+      = -mc^2\sqrt{1-\beta^2} - e\phi + \frac{e}{c}\,\bvec{A}\cdot\bvec{v} ,
+\end{equation}
+which is the standard \textbf{minimal-coupling Lagrangian} for a charged
+relativistic particle.
+
+\subsubsection*{Covariant Equation of Motion: the Relativistic Lorentz Force}
+
+Varying the total action~\eqref{eq:lec06:total-action} with respect to the
+worldline $x^\mu(\lambda)$, the free-particle part yields the inertial term
+$m\,du^\mu/d\tau$.  The variation of the interaction term generates the
+antisymmetric combination
+\begin{equation}\label{eq:lec06:field-tensor}
+    F_{\mu\nu} \equiv \partial_\mu A_\nu - \partial_\nu A_\mu ,
+\end{equation}
+the \textbf{electromagnetic field tensor}.  ($F_{0i}$ encodes $\bvec{E}$;
+$F_{ij}$ encodes $\bvec{B}$.)  Combining both contributions, the
+Euler--Lagrange equations take the manifestly covariant form:
+\begin{equation}\label{eq:lec06:lorentz-force}
+    \boxed{m\,\frac{du^\mu}{d\tau} = \frac{e}{c}\,F^{\mu}_{\ \nu}\,u^\nu}
+\end{equation}
+where $u^\mu = dx^\mu/d\tau$ is the four-velocity.  This is the
+\textbf{relativistic Lorentz force law}.  In the non-relativistic limit
+it reduces to the familiar $m\,d\bvec{v}/dt = e\bigl(\bvec{E}
++ \bvec{v}/c\times\bvec{B}\bigr)$.
+
+% ==============================================================================
+\subsection*{Summary and Looking Ahead}
+% ==============================================================================
+
+\begin{enumerate}
+    \item \textbf{Contravariant vs.\ covariant:} $V^\mu$ transforms with
+      $\Lambda$; $V_\mu = \eta_{\mu\nu}V^\nu$ transforms with $\Lambda^{-1}$.
+      Index position is the sole distinguishing notation.
+    \item \textbf{Covariant transformation matrix:}
+      $\tilde\Lambda_\mu^{\ \sigma} = \eta_{\mu\nu}\Lambda^\nu_{\ \rho}\eta^{\rho\sigma}
+      = (\Lambda^{-1})^\sigma_{\ \mu}$, a direct consequence of
+      $\Lambda^T\eta\Lambda = \eta$.
+    \item \textbf{Mixed tensors:} index position matters;
+      $T^\mu_{\ \nu} \neq T_{\ \nu}^\mu$ unless the tensor is symmetric.
+    \item \textbf{Minkowski metric:} $\eta'_{\mu\nu} = \eta_{\mu\nu}$ in
+      every inertial frame — a constant rank-2 covariant tensor.
+    \item \textbf{Contraction:} summing one upper and one lower index reduces
+      rank by 2 and yields a Lorentz-invariant object.
+    \item \textbf{Modern approach:} symmetries (Lorentz + translations) fix
+      the action of a free particle essentially uniquely as $S=-mc\int ds$.
+      The minus sign converts the maximum of $\int ds$ to a least-action minimum.
+    \item \textbf{Relativistic momentum and energy:}
+      $\vec{p} = \gamma m\vec{v}$,\quad $E = \gamma mc^2$,\quad
+      $E^2 = p^2c^2 + m^2c^4$.
+    \item \textbf{Massless limit:} $m = 0 \Rightarrow E = pc \Rightarrow v = c$.
+    \item \textbf{Electromagnetic coupling:}
+      $S_{\mathrm{int}} = -(e/c)\!\int\!A_\mu\,dx^\mu$; equation of motion is
+      $m\,du^\mu/d\tau = (e/c)F^{\mu}_{\ \nu}u^\nu$.
+\end{enumerate}
+
+In the next lecture we will write Maxwell's equations in manifestly covariant
+form using $F^{\mu\nu}$, introduce the \textbf{energy-momentum tensor}
+$T^{\mu\nu}$ of the electromagnetic field, and connect Noether's theorem to
+the conservation of energy and momentum in the field.

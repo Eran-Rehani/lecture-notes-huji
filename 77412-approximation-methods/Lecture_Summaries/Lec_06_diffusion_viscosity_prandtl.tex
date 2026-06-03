@@ -1,0 +1,564 @@
+%% ═══════════════════════════════════════════════════════════════════════════
+\section{Lecture 6: Diffusion, Heat Conduction, Viscosity, and the Reynolds Number}
+\label{sec:lec06}
+%% ═══════════════════════════════════════════════════════════════════════════
+\date{14/05/2026}
+
+This lecture unifies three apparently different physical phenomena — particle
+diffusion, heat conduction, and viscous flow — by showing that they all arise
+from the \emph{same microscopic mechanism}: particles random-walking and
+transporting whatever scalar or vector quantity they carry. Dimensional analysis
+then fixes the form of each transport coefficient, and dimensionless ratios of
+these coefficients encode deep physics about the dominant carrier.
+
+%%───────────────────────────────────────────────────────────────────────────
+\subsection{What Is Diffusion?}
+\label{sec:lec06:diffusion-intro}
+%%───────────────────────────────────────────────────────────────────────────
+
+\textbf{The Physical Picture:}
+Diffusion is the net transport of a quantity (particle number, heat, momentum)
+driven by a gradient, through the statistical bias of random walkers. If there
+are more ink molecules on one side of an imaginary surface than on the other,
+more will cross from the dense side per unit time than from the dilute side,
+producing a net flux even though individual particles move randomly. The same
+picture applies to heat (particles carry thermal energy) and to momentum
+(particles carry bulk velocity).
+
+Canonical examples:
+\begin{itemize}
+    \item Dye in a liquid: ink diffuses until concentration is uniform.
+    \item Heat: Fourier's law—heat flows from hot to cold.
+    \item Momentum: viscosity—fast fluid layers drag slow ones.
+    \item Social/biological systems: epidemic spreading, nutrient transport.
+\end{itemize}
+
+%%───────────────────────────────────────────────────────────────────────────
+\subsection{Fick's Law from Dimensional Analysis}
+\label{sec:lec06:fick-derivation}
+%%───────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+We want to find the particle flux $\mathbf{J}$ (number of particles crossing
+unit area per unit time) in terms of the fundamental microscopic quantities.
+The relevant parameters are:
+\begin{itemize}
+    \item $n$ — local particle number density, $[n] = \si{m^{-3}}$,
+    \item $\ell$ — mean free path (typical distance a particle travels
+          before a collision resets its direction), $[\ell] = \si{m}$,
+    \item $v$ — typical thermal speed, $[v] = \si{m\,s^{-1}}$.
+\end{itemize}
+The quantity to find has dimensions $[J] = \si{m^{-2}\,s^{-1}}$.
+
+\subsubsection*{Dimensional counting}
+Build $J$ from $n$, $\ell$, and $v$. There are three variables and three
+independent base dimensions (m, s, and the pure number count embedded in $n$),
+so Buckingham's theorem leaves one dimensionless combination,
+\begin{equation}
+    \Pi = n\,\ell^3 ,
+    \label{eq:lec06:pi-group-diffusion}
+\end{equation}
+and the most general dimensional relation is
+\begin{equation}
+    J = n\,v\,\ell\;\Phi\!\left(n\ell^3\right) ,
+    \label{eq:lec06:J-general}
+\end{equation}
+where $\Phi$ is an unknown function. The factor $nv\ell$ has units
+$\si{m^{-3}}\cdot\si{m\,s^{-1}}\cdot\si{m} = \si{m^{-2}s^{-1}}$ as required.
+
+\subsubsection*{Linearity selects the leading term}
+When the number density is small (dilute limit, $n\ell^3 \ll 1$), particles
+interact rarely and the flux must be linear in $n$: doubling the number of
+particles doubles the flux. This forces $\Phi = \text{const}$, giving
+\begin{equation}
+    J \sim n\,v\,\ell .
+    \label{eq:lec06:J-linear}
+\end{equation}
+More carefully, the flux is the imbalance between particles crossing a surface
+from left and right. The particles that reach the surface from the left started
+roughly one mean free path $\ell$ away:
+\begin{equation}
+    J_+ - J_- \approx n\!\left(x-\tfrac{\ell}{2}\right)\,\tfrac{v}{2}
+    - n\!\left(x+\tfrac{\ell}{2}\right)\,\tfrac{v}{2}
+    = -\frac{v\ell}{2}\,\frac{\partial n}{\partial x} .
+    \label{eq:lec06:flux-imbalance}
+\end{equation}
+Collecting factors of order unity gives Fick's first law:
+\begin{equation}
+    \boxed{
+    J = -D\,\nabla n,
+    \qquad D \sim \ell\,v .
+    }
+    \label{eq:lec06:ficks-first-law}
+\end{equation}
+\textit{Physical significance:} The diffusion coefficient $D$ has units
+$\si{m^2\,s^{-1}}$; it sets the rate at which a concentration pattern spreads
+in space. The minus sign reflects the physical fact that transport is down the
+gradient.
+
+%%───────────────────────────────────────────────────────────────────────────
+\subsection{Estimating the Diffusion Coefficient in Air}
+\label{sec:lec06:D-estimate}
+%%───────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+To make $D \sim \ell v$ concrete, we need the mean free path $\ell$ and
+thermal speed $v$ of air molecules at room temperature.
+
+\subsubsection*{Thermal speed}
+The Maxwell-Boltzmann distribution for one component of velocity gives
+\begin{equation}
+    v_{\rm th} \sim \sqrt{\frac{k_B T}{m}} .
+    \label{eq:lec06:thermal-speed}
+\end{equation}
+For air (average molecular mass $\bar m \approx 29\,\si{u} \approx
+4.8\times10^{-26}\,\si{kg}$) at $T = 300\,\si{K}$:
+\begin{equation}
+    v_{\rm th} \sim \sqrt{\frac{1.38\times10^{-23}\times300}{4.8\times10^{-26}}}
+    \simeq 300\text{--}500\,\si{m\,s^{-1}} .
+    \label{eq:lec06:vthermal-air}
+\end{equation}
+In practice one takes $v_{\rm th}\simeq 340\text{--}500\,\si{m\,s^{-1}}$
+(speed of sound is the lower bound for a related quantity; the true rms speed
+is somewhat higher).
+
+\subsubsection*{Mean free path}
+A particle sweeps out a cylinder of cross-sectional area $\sigma$ (the
+collision cross section). It collides when another particle lies inside this
+cylinder. The mean free path is therefore
+\begin{equation}
+    \ell = \frac{1}{\sqrt{2}\,n\,\sigma} ,
+    \label{eq:lec06:mean-free-path}
+\end{equation}
+where the $\sqrt{2}$ accounts for relative velocities in a moving gas.
+Estimating the cross section from the molecular size $d \sim 3\,\si{\AA} =
+3\times10^{-10}\,\si{m}$:
+\begin{equation}
+    \sigma \sim \pi\!\left(\frac{d}{2}\right)^{\!2}
+    \approx \pi\times(1.5\times10^{-10})^2
+    \approx 7\times10^{-20}\,\si{m^2} .
+    \label{eq:lec06:sigma-molecule}
+\end{equation}
+The number density of air at sea level follows from $n = P/(k_B T)$ or from
+the ratio to water:
+\begin{equation}
+    n_{\rm air}
+    = \frac{P_0}{k_B T}
+    \approx \frac{10^5\,\si{Pa}}{1.38\times10^{-23}\,\si{J\,K^{-1}}\times300\,\si{K}}
+    \approx 2.4\times10^{25}\,\si{m^{-3}} .
+    \label{eq:lec06:nair}
+\end{equation}
+Alternatively, water has $n_{\rm water} = \rho_w N_A / M_{\rm mol} \approx
+3.3\times10^{28}\,\si{m^{-3}}$, and since $\rho_{\rm air}/\rho_w \approx
+1.3\times10^{-3}$, we get $n_{\rm air} \approx 4\times10^{25}\,\si{m^{-3}}$
+— consistent to within a factor of two. Therefore
+\begin{equation}
+    \ell
+    \approx \frac{1}{\sqrt{2}\times2.4\times10^{25}\times7\times10^{-20}}
+    \approx \frac{1}{\sqrt{2}\times1.7\times10^6\,\si{m^{-1}}}
+    \approx 4\times10^{-7}\,\si{m} \approx 100\,\si{nm} .
+    \label{eq:lec06:mfp-air}
+\end{equation}
+(The real value is $\approx 70\,\si{nm}$ at $20^\circ\si{C}$, consistent with
+our estimate.) The diffusion coefficient is therefore
+\begin{equation}
+    \boxed{
+    D_{\rm air} \sim \ell\,v_{\rm th}
+    \approx 10^{-7}\,\si{m}\times5\times10^{2}\,\si{m\,s^{-1}}
+    \approx 5\times10^{-5}\,\si{m^2\,s^{-1}} .
+    }
+    \label{eq:lec06:Dair}
+\end{equation}
+\textit{Physical significance:} The real value for air is
+$D \approx 2\times10^{-5}\,\si{m^2\,s^{-1}}$, in good order-of-magnitude
+agreement. The estimate succeeded using only molecular size and temperature.
+
+%%───────────────────────────────────────────────────────────────────────────
+\subsection{The Diffusion Equation and Characteristic Timescales}
+\label{sec:lec06:diffusion-equation}
+%%───────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+If particles flow according to Fick's first law, the continuity equation
+$\partial n/\partial t + \nabla\cdot \mathbf{J} = 0$ immediately gives the
+diffusion equation (Fick's second law):
+\begin{equation}
+    \boxed{
+    \frac{\partial n}{\partial t} = D\,\nabla^2 n .
+    }
+    \label{eq:lec06:diffusion-equation}
+\end{equation}
+\textit{Physical significance:} The sign of $\nabla^2 n$ is negative at a
+concentration peak (divergence of flux is positive there — more leaves than
+arrives) so the equation says peaks erode and troughs fill, driving the system
+toward uniformity.
+
+\subsubsection*{Characteristic timescale by dimensional analysis}
+The diffusion equation contains only two scales: the diffusion coefficient $D$
+($[\si{m^2\,s^{-1}}]$) and the length scale $L$ of the initial pattern. The
+only combination with units of time is
+\begin{equation}
+    \boxed{
+    \tau_{\rm diff} \sim \frac{L^2}{D} .
+    }
+    \label{eq:lec06:diffusion-timescale}
+\end{equation}
+\textit{Physical significance:} The quadratic dependence on $L$ is
+characteristic of diffusion: doubling the length scale quadruples the spread
+time. This makes diffusion extremely slow over macroscopic distances.
+
+\subsubsection*{Example: Perfume in a room}
+How long does it take for perfume molecules to diffuse across a room of size
+$L \sim 1\,\si{m}$?
+\begin{equation}
+    \tau_{\rm diff}
+    \sim \frac{(1\,\si{m})^2}{2\times10^{-5}\,\si{m^2\,s^{-1}}}
+    \approx 5\times10^4\,\si{s}
+    \approx 14\,\si{hours} .
+    \label{eq:lec06:perfume-molecular}
+\end{equation}
+Yet in practice you smell perfume within a second or two. The discrepancy is
+large: a factor of $\sim 10^4$.
+
+\subsubsection*{Turbulent diffusion}
+The resolution is that everyday airflow is \emph{turbulent}. Macroscopic
+eddies — stirring motions with effective size $L_{\rm turb}$ and turnover
+speed $v_{\rm turb}$ — mix the gas on timescale $\tau_{\rm turb} \sim
+L_{\rm turb}/v_{\rm turb}$. Defining an effective turbulent diffusivity:
+\begin{equation}
+    D_{\rm turb} \sim v_{\rm turb}\,L_{\rm turb} .
+    \label{eq:lec06:Dturb}
+\end{equation}
+To smell perfume in $\tau \sim 1\,\si{s}$ across $L \sim 1\,\si{m}$, we need
+\begin{equation}
+    \boxed{
+    D_{\rm turb} \sim \frac{L^2}{\tau} \sim \frac{1\,\si{m^2}}{1\,\si{s}}
+    \approx 1\,\si{m^2\,s^{-1}} ,
+    }
+    \label{eq:lec06:Dturb-estimate}
+\end{equation}
+which is five orders of magnitude larger than the molecular $D_{\rm air}$.
+\textit{Physical significance:} Turbulent mixing completely dominates
+molecular diffusion at human scales in air. In the atmosphere, diffusion is
+also anisotropic: horizontal eddy diffusion is far more efficient than
+vertical diffusion because the vertical density gradient strongly resists
+upward displacement.
+
+%%───────────────────────────────────────────────────────────────────────────
+\subsection{Heat Conduction from the Same Mechanism}
+\label{sec:lec06:heat-conduction}
+%%───────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+Each gas molecule carries kinetic energy $\varepsilon \sim k_B T$ (per degree
+of freedom). When a molecule random-walks from a hot region into a cold one,
+it deposits energy. The heat flux is therefore the \emph{energy content per
+particle} times the particle flux.
+
+\subsubsection*{Derivation of Fourier's law}
+Let $\varepsilon(T)$ be the internal energy per particle. The heat flux is
+\begin{align}
+    \mathbf{J}_Q
+    &= \varepsilon(T)\,\mathbf{J}
+    = -D\,\varepsilon(T)\,\nabla n .
+    \label{eq:lec06:Jq-step1}
+\end{align}
+If the number density is uniform but the temperature varies,
+$\nabla n \approx 0$ but $\nabla(n\varepsilon) = n\,\nabla\varepsilon
+= n\,\frac{d\varepsilon}{dT}\,\nabla T$. Therefore
+\begin{equation}
+    \mathbf{J}_Q
+    = -D\,n\,\frac{d\varepsilon}{dT}\,\nabla T
+    = -D\,c_V\,\nabla T ,
+    \label{eq:lec06:Jq-step2}
+\end{equation}
+where $c_V = n\,d\varepsilon/dT$ is the heat capacity per unit volume. This
+is Fourier's law with thermal conductivity $\kappa = D\,c_V$:
+\begin{equation}
+    \boxed{
+    \mathbf{J}_Q = -\kappa\,\nabla T,
+    \qquad
+    \kappa = D\,c_V .
+    }
+    \label{eq:lec06:fourier}
+\end{equation}
+\textit{Physical significance:} The thermal conductivity is not an independent
+property — it is the diffusion coefficient times the heat capacity per volume.
+For ideal gases, this means $\kappa \sim \ell\,v\,n\,k_B$.
+
+\subsubsection*{The heat diffusion equation}
+Applying continuity to the energy density $u = c_V T$:
+\begin{equation}
+    \rho\,c_p\,\frac{\partial T}{\partial t}
+    = -\nabla\cdot\mathbf{J}_Q
+    = \kappa\,\nabla^2 T ,
+    \label{eq:lec06:heat-eq-derivation}
+\end{equation}
+which gives
+\begin{equation}
+    \boxed{
+    \frac{\partial T}{\partial t}
+    = D_{\rm thermal}\,\nabla^2 T,
+    \qquad
+    D_{\rm thermal} = \frac{\kappa}{\rho\,c_p} .
+    }
+    \label{eq:lec06:heat-equation}
+\end{equation}
+\textit{Physical significance:} The thermal diffusivity $D_{\rm thermal}$ has
+the same units and the same physical origin as the particle diffusion
+coefficient. For an ideal monatomic gas, $c_V \sim \frac{3}{2}nk_B$ and
+$\rho c_p \sim \frac{5}{2}nk_B$, so $D_{\rm thermal} = \frac{3}{5}D
+\sim D$. The small numeric factor confirms that heat spreads on the same
+timescale as particle density for ideal gases.
+
+Note that $c_p$ appeared instead of $c_V$ because work done on adjacent fluid
+elements must be included (constant-pressure process). The ratio $\gamma =
+c_p/c_V$ appears, but it is $O(1)$ and does not change the order-of-magnitude
+conclusion.
+
+%%───────────────────────────────────────────────────────────────────────────
+\subsection{Momentum Diffusion and Viscosity}
+\label{sec:lec06:viscosity}
+%%───────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+Gas molecules also carry bulk momentum. In a shear flow where the $x$-velocity
+$v_x$ depends on $y$, a molecule crossing from a fast layer at $y-\ell$ to a
+slow layer at $y$ carries extra $x$-momentum and deposits it, tending to
+accelerate the slow layer. This is viscosity — friction from momentum diffusion.
+
+\subsubsection*{Viscous stress and kinematic viscosity}
+The momentum flux (stress) in the $x$-direction through a surface of constant
+$y$ is, by the same mean-free-path argument:
+\begin{equation}
+    \sigma_{xy}
+    = -\nu\,\rho\,\frac{\partial v_x}{\partial y},
+    \qquad
+    \nu \sim \ell\,v_{\rm th},
+    \label{eq:lec06:viscous-stress}
+\end{equation}
+where $\nu = \eta/\rho$ is the kinematic viscosity ($[\nu] = \si{m^2\,s^{-1}}$).
+The dynamic viscosity is $\eta = \rho\,\nu$.
+\begin{equation}
+    \boxed{
+    \nu \sim \ell\,v_{\rm th} \sim D_{\rm particle} .
+    }
+    \label{eq:lec06:nu-estimate}
+\end{equation}
+\textit{Physical significance:} For an ideal gas, kinematic viscosity,
+particle diffusivity, and thermal diffusivity are all set by the \emph{same}
+product $\ell v_{\rm th}$. They differ only by numerical prefactors of
+order unity.
+
+\subsubsection*{The Navier-Stokes equation}
+Applying momentum conservation to a fluid element and adding the viscous
+diffusion term gives the Navier-Stokes equation:
+\begin{equation}
+    \boxed{
+    \rho\left(\frac{\partial \mathbf{v}}{\partial t}
+    + (\mathbf{v}\cdot\nabla)\mathbf{v}\right)
+    = -\nabla P + \eta\,\nabla^2\mathbf{v} + \rho\,\mathbf{g} .
+    }
+    \label{eq:lec06:navier-stokes}
+\end{equation}
+\begin{itemize}
+    \item The $(\mathbf{v}\cdot\nabla)\mathbf{v}$ term is the \emph{advective}
+    (convective) derivative — it is nonlinear in $\mathbf{v}$ and
+    responsible for turbulence.
+    \item The $\eta\nabla^2\mathbf{v}$ term is the viscous diffusion of
+    momentum.
+    \item The pressure gradient $-\nabla P$ drives flow from high to low
+    pressure.
+\end{itemize}
+\textit{Physical significance:} The richness of fluid dynamics comes entirely
+from the nonlinear advection term, which the viscous term opposes. Their ratio
+is the Reynolds number.
+
+%%───────────────────────────────────────────────────────────────────────────
+\subsection{The Prandtl Number}
+\label{sec:lec06:prandtl}
+%%───────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+We have three transport coefficients, all with the same units: $D$ (particle
+diffusivity), $D_{\rm thermal}$ (thermal diffusivity), and $\nu$ (kinematic
+viscosity). For an ideal gas they are all $\sim \ell v_{\rm th}$. But in a
+liquid metal or a polymer melt the dominant carriers of heat and momentum are
+completely different. The Prandtl number encodes this.
+
+\begin{equation}
+    \boxed{
+    \mathrm{Pr} = \frac{\nu}{D_{\rm thermal}}
+    = \frac{\text{kinematic viscosity}}{\text{thermal diffusivity}} .
+    }
+    \label{eq:lec06:prandtl}
+\end{equation}
+\textit{Physical significance:} $\mathrm{Pr}$ compares how efficiently
+momentum versus heat is diffused.
+
+\subsubsection*{Air ($\mathrm{Pr} \sim 1$)}
+Both momentum and heat are carried by the same air molecules via the same
+mean-free-path mechanism. Therefore $\nu \sim D_{\rm thermal}$ and
+$\mathrm{Pr}_{\rm air} \approx 0.71$ — of order unity, as expected.
+
+\subsubsection*{Mercury ($\mathrm{Pr} \ll 1$)}
+Mercury is a liquid metal. Its atoms carry momentum through inter-atomic
+collisions (same mechanism as gases, but in a dense liquid). However, heat is
+mainly carried by \emph{conduction electrons}, which are far lighter, faster,
+and more numerous than the atoms. Electrons diffuse heat much more efficiently
+than the heavy atoms diffuse momentum:
+\begin{equation}
+    D_{\rm thermal}^{\rm Hg} \gg \nu^{\rm Hg}
+    \qquad\Rightarrow\qquad
+    \mathrm{Pr}_{\rm Hg} \approx 0.025 \ll 1 .
+    \label{eq:lec06:pr-mercury}
+\end{equation}
+The general rule: \emph{anything that conducts electricity well (mobile
+electrons) will also conduct heat well}, because the electron mean free path
+is long and their speed is the Fermi velocity ($\sim 10^6\,\si{m\,s^{-1}}$),
+not the thermal velocity. This is the Wiedemann-Franz law.
+
+\subsubsection*{Long-chain polymers ($\mathrm{Pr} \gg 1$)}
+A tangle of polymer chains transmits momentum very efficiently: pulling one
+end of a chain exerts a force at the far end along the chain backbone, giving
+extremely high viscosity. Heat transport, by contrast, still requires molecular
+collisions and is slow. Consequently
+\begin{equation}
+    \nu^{\rm polymer} \gg D_{\rm thermal}^{\rm polymer}
+    \qquad\Rightarrow\qquad
+    \mathrm{Pr}_{\rm polymer} \gg 1 .
+    \label{eq:lec06:pr-polymer}
+\end{equation}
+
+\begin{center}
+\begin{tabular}{lcc}
+    \toprule
+    Material & $\mathrm{Pr}$ & Dominant heat carrier \\
+    \midrule
+    Air (ideal gas) & $\approx 0.7$ & Molecules \\
+    Water & $\approx 7$ & Molecules (H-bond network) \\
+    Mercury & $\approx 0.025$ & Conduction electrons \\
+    Polymer melt & $\gg 10^2$ & No efficient carrier \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+%%───────────────────────────────────────────────────────────────────────────
+\subsection{Drag on a Sphere and the Physical Meaning of Reynolds Number}
+\label{sec:lec06:reynolds}
+%%───────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+A sphere of radius $R$ moves at speed $V$ through a fluid of density $\rho$
+and kinematic viscosity $\nu$. We want the drag force $F$ using dimensional
+analysis, and then connect $\mathrm{Re}$ to the competition between two
+timescales.
+
+\subsubsection*{Dimensional analysis of drag}
+The variables are $F$ (force, $[MLT^{-2}]$), $\rho$ ($[ML^{-3}]$), $V$
+($[LT^{-1}]$), $R$ ($[L]$), and $\nu$ ($[L^2T^{-1}]$). That is $N=5$
+variables and $M=3$ independent base dimensions, so there are two
+dimensionless groups. Choose
+\begin{equation}
+    \Pi_1 = \frac{F}{\rho V^2 R^2},
+    \qquad
+    \Pi_2 = \mathrm{Re} = \frac{V R}{\nu} .
+    \label{eq:lec06:drag-pi-groups}
+\end{equation}
+Buckingham's theorem then gives
+\begin{equation}
+    \boxed{
+    F = \rho V^2 R^2\,f(\mathrm{Re}) ,
+    }
+    \label{eq:lec06:drag-general}
+\end{equation}
+where $f$ is an unknown function that experiment or theory must supply.
+\textit{Physical significance:} The drag coefficient $C_D \equiv F/(\rho V^2
+A)$ is a function of Re alone (for a given body shape). All drag data
+collapse onto a single curve when plotted as $C_D$ vs.\ Re.
+
+\subsubsection*{Stokes regime ($\mathrm{Re} \ll 1$)}
+At low Reynolds number, the fluid has time to adjust smoothly and viscosity
+dominates. The problem is linear in $V$, so the force must be linear in $V$.
+This is only consistent with Eq.~\eqref{eq:lec06:drag-general} if
+\begin{equation}
+    f(\mathrm{Re}) \propto \frac{1}{\mathrm{Re}}
+    \quad\Rightarrow\quad
+    F \propto \rho V^2 R^2 \cdot \frac{\nu}{VR}
+    = \rho\nu VR = \eta VR .
+    \label{eq:lec06:stokes-scaling}
+\end{equation}
+The exact solution (Stokes, 1851) gives the numerical prefactor:
+\begin{equation}
+    \boxed{
+    F_{\rm Stokes} = 6\pi\,\eta\,V\,R .
+    }
+    \label{eq:lec06:stokes-drag}
+\end{equation}
+\textit{Physical significance:} Stokes drag is linear in speed and viscosity,
+and linear in size — very different from turbulent drag ($F\propto V^2 R^2$).
+Small organisms (bacteria, pollen) and falling droplets live in the Stokes
+regime.
+
+\subsubsection*{Physical interpretation of the Reynolds number}
+Two natural timescales appear in the problem:
+\begin{align}
+    \tau_{\rm cross}
+    &= \frac{R}{V}
+    \quad\text{(time for fluid to flow past the object)},
+    \label{eq:lec06:tau-cross}\\
+    \tau_{\rm diff}
+    &= \frac{R^2}{\nu}
+    \quad\text{(time for momentum to diffuse a distance } R\text{)}.
+    \label{eq:lec06:tau-diff}
+\end{align}
+Their ratio is exactly the Reynolds number:
+\begin{equation}
+    \boxed{
+    \mathrm{Re}
+    = \frac{\tau_{\rm diff}}{\tau_{\rm cross}}
+    = \frac{R^2/\nu}{R/V}
+    = \frac{VR}{\nu} .
+    }
+    \label{eq:lec06:re-timescale}
+\end{equation}
+\textit{Physical significance:}
+\begin{itemize}
+    \item \textbf{Re $\ll 1$}: viscous diffusion of momentum acts quickly
+    compared with advection. The fluid ``knows'' the body is there before
+    the fluid element reaches it — smooth, reversible Stokes flow.
+    \item \textbf{Re $\gg 1$}: the fluid element sweeps past the body before
+    momentum diffusion can communicate the body's presence to nearby
+    fluid. Advection dominates; flow separates and turbulence develops.
+\end{itemize}
+
+%%───────────────────────────────────────────────────────────────────────────
+\subsection{Summary of the Unified Transport Picture}
+\label{sec:lec06:summary}
+%%───────────────────────────────────────────────────────────────────────────
+
+\textbf{The Physical Picture:}
+All three classical transport phenomena — diffusion, heat conduction, and
+viscosity — share a common mechanism: microscopic carriers (molecules,
+electrons, phonons) performing random walks and transporting conserved
+quantities across gradients. Dimensional analysis immediately gives the
+transport coefficients; the Prandtl number then reveals whether one mechanism
+dominates or whether different carriers are responsible for different
+quantities.
+
+\begin{itemize}
+    \item Particle diffusion: $J = -D\nabla n$, \quad $D \sim \ell\,v_{\rm th}$,
+    \quad $\partial_t n = D\nabla^2 n$.
+    \item Heat conduction: $J_Q = -\kappa\nabla T$, \quad
+    $\kappa = D\,c_V$, \quad $\partial_t T = D_{\rm th}\nabla^2 T$.
+    \item Viscous flow: $\sigma_{xy} = -\eta\,\partial_y v_x$, \quad
+    $\nu = \eta/\rho \sim \ell\,v_{\rm th}$, \quad full Navier-Stokes
+    equation (Eq.~\eqref{eq:lec06:navier-stokes}).
+    \item Diffusion timescale: $\tau \sim L^2/D$ (quadratic in $L$ — very slow
+    at large scales, replaced by turbulence in real systems).
+    \item Prandtl number: $\mathrm{Pr} = \nu/D_{\rm th}$; air $\approx 0.7$,
+    mercury $\approx 0.025$, polymers $\gg 1$.
+    \item Reynolds number: $\mathrm{Re} = VR/\nu = \tau_{\rm diff}/\tau_{\rm
+    cross}$; low Re gives Stokes flow $F = 6\pi\eta VR$, high Re gives
+    turbulent drag $F \sim \rho V^2 R^2$.
+\end{itemize}

@@ -1,0 +1,197 @@
+
+
+
+%% Lecture 04 — Derivation of Lorentz Transformations and Causality
+\section{Lecture 04 — Derivation of Lorentz Transformations and Causality}\label{sec:lec04:lorentz_and_causality}
+
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 14/04/2026   & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+
+\subsection*{Overview}
+In this lecture, we finalize the mathematical derivation of the Lorentz transformation matrix. By imposing the invariance of the spacetime interval under changes of inertial reference frames, we completely constrain the form of the coordinate transformation. We restrict our analysis to the \textit{proper, orthochronous Lorentz group} (transformations that preserve the direction of time and the parity of space, explicitly excluding reflections). Following the derivation, we classify spacetime intervals into three causally distinct categories—timelike, spacelike, and lightlike—and analyze the relativistic notions of simultaneity and time-ordering.
+
+\subsection*{Derivations: Constructing the Lorentz Transformation Matrix}
+We postulate that the transformation between inertial reference frames is linear and preserves the spacetime interval $\Delta s^2$. Let the coordinates be given by the four-vector $x^\mu = (ct, x, y, z)$. The transformation from frame $K$ to frame $K'$ is:
+\begin{equation}\label{eq:lec04:linear-transform}
+    x'^\mu = \Lambda^\mu_{\,\,\nu} x^\nu
+\end{equation}
+The invariance of the spacetime interval, $ds^2 = \eta_{\mu\nu} dx^\mu dx^\nu = ds'^2$, implies the fundamental constraint on the Lorentz transformation matrix $\Lambda$:
+\begin{equation}\label{eq:lec04:metric-constraint}
+    \eta_{\mu\nu} = \Lambda^\alpha_{\,\,\mu} \Lambda^\beta_{\,\,\nu} \eta_{\alpha\beta}
+\end{equation}
+where $\eta_{\mu\nu} = \text{diag}(1, -1, -1, -1)$ is the Minkowski metric. For simplicity, we restrict our analysis to 1+1 dimensions $(ct, x)$, so $\mu,\nu \in \{0, 1\}$. 
+
+\subsubsection*{Finding the Temporal Components}
+Let us evaluate the $\mu=0, \nu=0$ component of the metric identity. Expanding the summation over $\alpha, \beta$:
+\begin{align}
+    \eta_{00} &= \Lambda^\alpha_{\,\,0} \Lambda^\beta_{\,\,0} \eta_{\alpha\beta} \\
+    1 &= (\Lambda^0_{\,\,0})^2 \eta_{00} + (\Lambda^1_{\,\,0})^2 \eta_{11} \\
+    1 &= (\Lambda^0_{\,\,0})^2 - (\Lambda^1_{\,\,0})^2
+    \label{eq:lec04:00-component}
+\end{align}
+
+To relate these matrix elements to physical kinematics, consider a particle (or the origin of frame $K'$) at rest in frame $K'$. Thus, in $K'$, $dx'^1 = 0$. Using the inverse transformation $dx^i = (\Lambda^{-1})^i_{\,\,\mu} dx'^\mu$, we can determine the relative velocity $v$ between the frames. By carefully tracking the components, one identifies the physical meaning of the ratio of these matrix elements:
+\begin{equation}\label{eq:lec04:beta-ratio}
+    \frac{\Lambda^1_{\,\,0}}{\Lambda^0_{\,\,0}} = \frac{v}{c} \equiv \beta
+\end{equation}
+Substituting this back into our metric equation:
+\begin{align}
+    1 &= (\Lambda^0_{\,\,0})^2 - \left(\frac{v}{c} \Lambda^0_{\,\,0}\right)^2 \\
+    1 &= (\Lambda^0_{\,\,0})^2 \left[1 - \left(\frac{v}{c}\right)^2\right]
+    \label{eq:lec04:gamma-derivation}
+\end{align}
+Solving for $\Lambda^0_{\,\,0}$, and selecting the positive root to ensure time flows forward (orthochronous transformation, $\Lambda^0_{\,\,0} \geq 1$):
+\begin{equation}\label{eq:lec04:lambda00}
+    \Lambda^0_{\,\,0} = \frac{1}{\sqrt{1 - v^2/c^2}} \equiv \gamma
+\end{equation}
+Consequently, we also find:
+\begin{equation}\label{eq:lec04:lambda10}
+    \Lambda^1_{\,\,0} = \gamma \frac{v}{c} = \gamma \beta
+\end{equation}
+
+\subsubsection*{Solving the Full 2x2 Matrix}
+Our $2\times 2$ transformation matrix now takes the form:
+\begin{equation}\label{eq:lec04:boost-matrix-partial}
+    \Lambda = 
+    \begin{pmatrix}
+        \gamma & \Lambda^0_{\,\,1} \\
+        \gamma \beta & \Lambda^1_{\,\,1}
+    \end{pmatrix}
+\end{equation}
+To find the remaining components, we employ the matrix form of the interval invariance: $\Lambda^T \eta \Lambda = \eta$. 
+\begin{equation}\label{eq:lec04:matrix-product}
+    \setlength{\arraycolsep}{4pt}
+    \Lambda^T \eta \Lambda =
+    \begin{pmatrix}
+        \gamma & \gamma \beta \\
+        \Lambda^0_{\,\,1} & \Lambda^1_{\,\,1}
+    \end{pmatrix}
+    \begin{pmatrix}
+        1 & 0 \\
+        0 & -1
+    \end{pmatrix}
+    \begin{pmatrix}
+        \gamma & \Lambda^0_{\,\,1} \\
+        \gamma \beta & \Lambda^1_{\,\,1}
+    \end{pmatrix}
+    =
+    \eta
+\end{equation}
+
+Evaluating the off-diagonal terms yields:
+\begin{align}
+    \gamma \Lambda^0_{\,\,1} - \gamma \beta \Lambda^1_{\,\,1} &= 0 \quad \implies \quad \Lambda^0_{\,\,1} = \beta \Lambda^1_{\,\,1}
+    \label{eq:lec04:off-diagonal}
+\end{align}
+Evaluating the bottom-right $(1,1)$ component yields:
+\begin{align}
+    (\Lambda^0_{\,\,1})^2 - (\Lambda^1_{\,\,1})^2 &= -1
+    \label{eq:lec04:bottom-right}
+\end{align}
+Substitute $\Lambda^0_{\,\,1} = \beta \Lambda^1_{\,\,1}$ into the second equation:
+\begin{align}
+    \beta^2 (\Lambda^1_{\,\,1})^2 - (\Lambda^1_{\,\,1})^2 &= -1 \\
+    (\Lambda^1_{\,\,1})^2 (1 - \beta^2) &= 1 \\
+    (\Lambda^1_{\,\,1})^2 &= \gamma^2 \quad \implies \quad \Lambda^1_{\,\,1} = \pm \gamma
+    \label{eq:lec04:lambda11pm}
+\end{align}
+
+We must choose between $\pm \gamma$. The determinant of the transformation is $\det \Lambda = \gamma \Lambda^1_{\,\,1} - \gamma \beta \Lambda^0_{\,\,1}$. To avoid spatial reflections, we demand $\det \Lambda = +1$ (a Proper Lorentz transformation). 
+If we choose $\Lambda^1_{\,\,1} = +\gamma$, then $\Lambda^0_{\,\,1} = \gamma \beta$, and:
+\begin{equation}\label{eq:lec04:determinant-check}
+    \det \Lambda = \gamma(\gamma) - \gamma \beta (\gamma \beta) = \gamma^2(1 - \beta^2) = 1
+\end{equation}
+Thus, the correct choice is $+$, yielding the final matrix.
+
+\begin{equation}\label{eq:lec04:lorentz-matrix}\boxed{
+    \Lambda^\mu_{\,\,\nu} = 
+    \begin{pmatrix}
+        \gamma & \gamma \beta \\
+        \gamma \beta & \gamma
+    \end{pmatrix}
+}\end{equation}
+\textit{Note:} The symmetry (positive off-diagonal elements) obtained here naturally represents a boost where the unprimed frame moves with a relative velocity in the negative $x$-direction compared to the primed frame. The standard inverse (or forward boost) involves swapping the sign of $\beta$. Written explicitly as coordinates:
+\begin{equation}\label{eq:lec04:coordinate-boost}\boxed{
+    \begin{aligned}
+        ct' &= \gamma \left(ct + \frac{v}{c} x\right) \\
+        x' &= \gamma (x + v t)
+    \end{aligned}
+}\end{equation}
+
+\subsection*{Spacetime Intervals and The Light Cone}
+Consider an event at the origin $(0,0)$ and a second generic event at $(ct, x)$. We define the spacetime interval relative to the origin:
+\begin{equation}\label{eq:lec04:interval-1plus1}
+    \Delta s^2 = c^2 t^2 - x^2
+\end{equation}
+Depending on which term dominates, the relative spacetime separation takes one of three forms:
+
+\begin{enumerate}
+    \item \textbf{Lightlike (Null) Interval:} $\Delta s^2 = 0 \implies x = \pm c t$. 
+    These events lie exactly on the Light Cone. Only signals moving exactly at $c$ (like photons) can connect them. Under a Lorentz boost, a lightlike interval remains lightlike.
+    
+    \item \textbf{Spacelike Interval:} $\Delta s^2 < 0 \implies |x| > c|t|$.
+    The spatial separation dominates. The event lies outside the light cone. No physical signal can travel between the origin and this event without exceeding $c$.
+    
+    \item \textbf{Timelike Interval:} $\Delta s^2 > 0 \implies c|t| > |x|$.
+    The temporal separation dominates. The event lies inside the light cone. A physical particle with $v < c$ can travel between the origin and this event. 
+\end{enumerate}
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[scale=1.0, >=Latex]
+        \fill[blue!8] (0,0) -- (2.8,2.8) -- (-2.8,2.8) -- cycle;
+        \fill[blue!8] (0,0) -- (2.8,-2.8) -- (-2.8,-2.8) -- cycle;
+        \fill[green!8] (0,0) -- (2.8,2.8) -- (2.8,-2.8) -- cycle;
+        \fill[green!8] (0,0) -- (-2.8,2.8) -- (-2.8,-2.8) -- cycle;
+        \draw[->] (-3.2,0) -- (3.2,0) node[right] {$x$};
+        \draw[->] (0,-3.2) -- (0,3.2) node[above] {$ct$};
+        \draw[thick, red] (-2.8,-2.8) -- (2.8,2.8);
+        \draw[thick, red] (-2.8,2.8) -- (2.8,-2.8);
+        \node[blue!60!black] at (0,2.2) {timelike};
+        \node[blue!60!black] at (0,-2.2) {timelike};
+        \node[green!40!black] at (1.85,0) {spacelike};
+        \node[green!40!black] at (-1.85,0) {spacelike};
+        \node[red!70!black, rotate=45] at (2.2,2.0) {lightlike};
+        \node[red!70!black, rotate=-45] at (2.2,-2.0) {lightlike};
+    \end{tikzpicture}
+    \caption{The light cone in $1+1$ dimensions. Timelike events lie inside
+    the cone, spacelike events lie outside it, and null events lie on its boundary.}
+    \label{fig:lec04:light-cone}
+\end{figure}
+
+\subsection*{Connections: Causality and Simultaneity}
+
+\subsubsection*{Spacelike Intervals and Relative Simultaneity}
+If two events are spacelike separated ($\Delta s^2 < 0$), can we find an inertial frame $K'$ where they occur \textit{simultaneously}?
+We demand $t' = 0$:
+\begin{align}
+    c t' &= \gamma \left(c t + \beta x\right) = 0 \\
+    \implies \beta &= - \frac{ct}{x}
+    \label{eq:lec04:simultaneous-frame}
+\end{align}
+Because the interval is spacelike ($|x| > c|t|$), the required velocity magnitude is $|\beta| = \left| \frac{ct}{x} \right| < 1$. Thus, there exists a perfectly valid physical frame ($v < c$) where the two events occur at the exact same time. 
+Because the time ordering can be reversed depending on the observer's frame, \textbf{spacelike events cannot be causally connected}. Saying "Event A caused Event B" is meaningless if another observer sees Event B occurring before Event A.
+
+\subsubsection*{Timelike Intervals and Absolute Time-Ordering}
+If two events are timelike separated ($\Delta s^2 > 0$), can we find a frame $K'$ where they occur at the \textit{exact same spatial location}?
+We demand $x' = 0$:
+\begin{align}
+    x' &= \gamma (x + \beta c t) = 0 \\
+    \implies \beta &= - \frac{x}{ct}
+    \label{eq:lec04:colocated-frame}
+\end{align}
+Because the interval is timelike ($c|t| > |x|$), the required velocity magnitude is $|\beta| = \left| \frac{x}{ct} \right| < 1$. Thus, we can easily find a frame where both events occur at the same place (this is simply the rest frame of a particle traveling between the two events).
+
+However, we \textit{cannot} reverse the time ordering of timelike events. A Lorentz boost is continuous with respect to the velocity parameter $v$. To flip the sign of the time interval ($\Delta t' < 0$ when $\Delta t > 0$), $\Delta t'$ would have to pass continuously through $0$. But setting $\Delta t' = 0$ requires $|\beta| > 1$, which is physically impossible. Therefore, the distinction between past and future is absolute for events inside the light cone, preserving \textbf{causality}.
+
+\subsection*{Exam / HW Hints}
+\begin{itemize}
+    \item \textbf{Identifying Reference Frames:} If a problem asks you to find a frame where two events are simultaneous, first verify the interval $\Delta s^2 < 0$. Then use the condition $\Delta t' = 0 \implies \frac{v}{c} = -\frac{c\Delta t}{\Delta x}$. 
+    \item \textbf{Colocated Events:} If asked to find a frame where events happen at the same location, check that $\Delta s^2 > 0$ and use $\Delta x' = 0 \implies \frac{v}{c} = -\frac{\Delta x}{c\Delta t}$. Note that $v$ represents the relative velocity required to "catch up" to the event.
+    \item \textbf{Invariance is Key:} Never forget that $c^2 \Delta t^2 - \Delta x^2 = c^2 \Delta t'^2 - \Delta x'^2$. If $\Delta s^2$ is negative in one frame, it is negative in \textit{all} valid inertial frames.
+    \item \textbf{Length Measurement:} As briefly mentioned in the lecture, the relativistic definition of length requires measuring the endpoints of an object \textit{simultaneously} in a given frame ($\Delta t = 0$). This directly leads to the phenomena of Lorentz contraction.
+\end{itemize}

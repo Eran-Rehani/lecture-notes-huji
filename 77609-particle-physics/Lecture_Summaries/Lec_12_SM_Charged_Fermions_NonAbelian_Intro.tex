@@ -1,0 +1,422 @@
+%%===================================================================
+%% Lecture 12 -- SM Charged Fermions, Accidental Symmetries,
+%%               and Introduction to Non-Abelian Symmetries
+%% 77609 -- Introduction to Elementary Particles
+%% Date: 17/05/2026
+%% Lecturer: Prof. Yonit Hochberg
+%%===================================================================
+
+\documentclass[../main.tex]{subfiles}
+\usepackage{preamble}
+
+\begin{document}
+
+\section{Lecture 12 -- SM Charged Fermions, Accidental Symmetries, and Introduction to Non-Abelian Symmetries}\label{sec:lec12}
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 17/05/2026 & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+
+%%------------------------------------------------------------------
+\subsection*{Overview}
+
+This lecture completes the analysis of accidental symmetries in QED and then uses that analysis as a launching pad to describe the full charged-fermion spectrum of the Standard Model.  We then briefly discuss how particle exchange generates potentials in the non-relativistic limit, and close by introducing non-Abelian symmetries — the structure that underlies $SU(3)_c$ and $SU(2)_L$ in the SM.
+
+\begin{enumerate}
+  \item \textbf{Accidental symmetries in two-generation QED}: the full $U(1)_e\times U(1)_\mu$ structure, forbidden processes, and how non-renormalizable operators would break these symmetries.
+  \item \textbf{Generalisation to $N$ families}: the mass-basis argument for any number of same-charge Dirac fermions.
+  \item \textbf{SM charged fermion spectrum}: three charge families (charged leptons, up quarks, down quarks), three generations each, the resulting accidental $U(1)^9$.
+  \item \textbf{Potentials from particle exchange}: Coulomb and Yukawa potentials as the non-relativistic limit of field-theoretic amplitudes.
+  \item \textbf{Introduction to non-Abelian symmetries}: what ``non-Abelian'' means, and why $SU(3)$ and $SU(2)$ appear in the SM.
+\end{enumerate}
+
+%%------------------------------------------------------------------
+\subsection*{Accidental Symmetries in Two-Generation QED}\label{sec:lec12:accidental}
+
+\subsubsection*{Conceptual Background}
+
+In Lecture~11 we constructed the two-generation QED Lagrangian in the mass basis and found an accidental $U(1)_e\times U(1)_\mu$ symmetry.  Here we make the structure fully explicit, choose the most useful basis of generators, and draw the physical consequences.
+
+%%------------------------------------------------------------------
+\subsubsection*{The Two Independent Rotations}
+
+Recall the mass-basis Lagrangian (Lec.~11, Eq.~\eqref{eq:lec11:qed2-lagrangian}):
+\begin{equation}
+  \lagr_{\mathrm{QED},2}
+  =
+  -\frac{1}{4}F_{\mu\nu}F^{\mu\nu}
+  + i\bar{e}\,\Dirac{D}\,e
+  + i\bar{\mu}\,\Dirac{D}\,\mu
+  - m_e\,\bar{e}\,e
+  - m_\mu\,\bar{\mu}\,\mu.
+  \label{eq:lec12:qed2}
+\end{equation}
+Because $e$ and $\mu$ appear only in separate kinetic and mass terms, the Lagrangian is invariant under \emph{independent} phase rotations:
+\begin{equation}
+  e \to e^{i\alpha_e}\,e,
+  \qquad
+  \mu \to e^{i\alpha_\mu}\,\mu,
+  \label{eq:lec12:rotations}
+\end{equation}
+with $\alpha_e, \alpha_\mu \in \mathbb{R}$ completely independent.  This is the accidental $U(1)_e \times U(1)_\mu$ symmetry.
+
+Any pair of independent linear combinations of these two generators is equally valid.  Two particularly useful choices are:
+
+\begin{center}
+\begin{tabular}{lcc}
+  \toprule
+  Symmetry & Charge of $e$ & Charge of $\mu$ \\
+  \midrule
+  $U(1)_e$      & $+1$ & $0$ \\
+  $U(1)_\mu$    & $0$  & $+1$ \\
+  \midrule
+  $U(1)_{e+\mu}$ (diagonal, $= U(1)_{\rm em}^{\rm global}$) & $+1$ & $+1$ \\
+  $U(1)_{e-\mu}$ (off-diagonal) & $+1$ & $-1$ \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\medskip
+The first pair $(U(1)_e, U(1)_\mu)$ is natural in the mass basis.  The second pair emphasises that the \emph{diagonal} combination is just the global part of the imposed $U(1)_{\rm em}$, while the \emph{difference} is a genuinely accidental, ``extra'' symmetry.
+
+\begin{equation}
+  \boxed{
+  U(1)_{\rm em}^{\rm global} = \text{diagonal of } U(1)_e \times U(1)_\mu.}
+  \label{eq:lec12:diagonal}
+\end{equation}
+
+\textit{Significance:} The imposed local $U(1)_{\rm em}$ symmetry already guarantees charge conservation; the accidental $U(1)_e$ and $U(1)_\mu$ provide \emph{additional}, separately conserved quantum numbers — electron number and muon number.
+
+%%------------------------------------------------------------------
+\subsubsection*{Conservation Laws}
+
+By Noether's theorem, $U(1)_e$ and $U(1)_\mu$ respectively imply:
+\begin{equation}
+  \boxed{
+  L_e \equiv (\#e^-) - (\#e^+) = \text{const},
+  \qquad
+  L_\mu \equiv (\#\mu^-) - (\#\mu^+) = \text{const}.}
+  \label{eq:lec12:lnum}
+\end{equation}
+
+The imposed $U(1)_{\rm em}$ gives the \emph{sum} $Q\propto L_e + L_\mu$ (for unit charges); the accidental symmetry additionally conserves each \emph{separately}.
+
+%%------------------------------------------------------------------
+\subsubsection*{Forbidden Process: $\mu^-\to e^+e^-e^-$}
+
+\subsubsection*{Physical Motivation}
+
+A concrete payoff of identifying accidental symmetries is that one can immediately rule out processes without drawing a single Feynman diagram.
+
+\subsubsection*{Analysis}
+
+Consider the decay $\mu^- \to e^+e^-e^-$.  First check the imposed symmetry:
+\begin{align*}
+  Q_{\rm initial} &= -1, \\
+  Q_{\rm final}   &= (+1) + (-1) + (-1) = -1. \quad\checkmark
+\end{align*}
+Charge is conserved, so this process is not forbidden by $U(1)_{\rm em}$.  Now check the accidental symmetries:
+\begin{align*}
+  L_e^{\rm initial} &= 0, \qquad L_e^{\rm final} = (-1) + 1 + 1 = +1. \quad \text{VIOLATED.}\\
+  L_\mu^{\rm initial} &= 1, \qquad L_\mu^{\rm final} = 0. \quad \text{VIOLATED.}
+\end{align*}
+
+\begin{equation}
+  \boxed{
+  \mu^-\to e^+e^-e^- \text{ is forbidden in two-generation QED by the accidental }
+  U(1)_e\times U(1)_\mu.}
+  \label{eq:lec12:forbidden}
+\end{equation}
+
+\textit{Significance:} Without this argument, a student might attempt to draw the diagram — only to find no gauge-invariant topology exists.  The accidental symmetry gives the same answer instantly.  If we ever observe such a decay, it signals physics beyond this theory.
+
+%%------------------------------------------------------------------
+\subsubsection*{Non-Renormalizable Operators That Break the Accidental Symmetry}
+
+The accidental symmetry is a feature of the \emph{renormalizable} Lagrangian.  It can be broken by higher-dimensional operators suppressed by a high scale $\Lambda$.  The simplest such operator is
+
+\begin{equation}
+  \mathcal{O}_{\rm LFV}
+  = \frac{c}{\Lambda^2}\,\overline{\ell_{L,e}}\,e_R\,\overline{\mu}_R\,\ell_{L,\mu}
+  + \text{h.c.},
+  \label{eq:lec12:nonren}
+\end{equation}
+where $\ell_{L,e}$ and $\ell_{L,\mu}$ are the left-handed lepton doublets of the electron and muon families, and $e_R, \mu_R$ are their right-handed counterparts.
+
+\begin{itemize}
+  \item Lorentz structure: $(\bar{f}_L f_R)(\bar{f}'_R f'_L)$ — two independent Lorentz scalars contracted together.  Valid.
+  \item Electromagnetic charge: each bilinear has net charge zero.  Valid.
+  \item Mass dimension: $[\psi] = 3/2$, so $[\mathcal{O}_{\rm LFV}] = 4 \times \tfrac{3}{2} = 6$.  Requires $1/\Lambda^2$ suppression.
+\end{itemize}
+
+Since $[\mathcal{O}]>4$, this operator is \textbf{not included} in the renormalizable Lagrangian.  Including it would break $U(1)_e\times U(1)_\mu$ and allow $\mu^-\to e^+e^-e^-$ at rate $\sim c^2/\Lambda^4$.  Experimental limits on this process constrain $\Lambda/\sqrt{c}$.
+
+\begin{equation}
+  \boxed{
+  \mu^-\to e^+e^-e^-\text{ can only proceed via non-renormalizable (dim-6) operators}
+  \sim \frac{1}{\Lambda^2};
+  \text{ rate }\propto \frac{1}{\Lambda^4}.}
+  \label{eq:lec12:lfvrate}
+\end{equation}
+
+%%------------------------------------------------------------------
+\subsubsection*{Allowed Processes at Tree Level}
+
+The two interaction vertices in $\lagr_{\mathrm{QED},2}$ are $\bar{e}\,e\,\gamma$ and $\bar{\mu}\,\mu\,\gamma$. Crucially, there is \emph{no} flavour-changing vertex $\bar{e}\,\mu\,\gamma$ — this is directly linked to the accidental symmetry.
+
+\paragraph{$e^+e^-\to\mu^+\mu^-$ (s-channel):}
+\begin{align*}
+  Q_{\rm initial} = 0, \quad Q_{\rm final} = 0; \quad
+  L_e^{\rm initial} = 0, \quad L_e^{\rm final} = 0; \quad
+  L_\mu^{\rm initial} = 0, \quad L_\mu^{\rm final} = 0. \quad\checkmark
+\end{align*}
+The electron-positron pair annihilates into a virtual photon, which then produces a muon-antimuon pair.  The t-channel and u-channel are \emph{absent} because they would require a vertex $\bar{e}\,\mu\,\gamma$ (coupling an electron to a muon via a photon), which does not exist.
+
+\paragraph{$e^-\mu^-\to e^-\mu^-$ (t-channel, ``Rutherford scattering of muons''):}
+\begin{align*}
+  Q_{\rm initial} = -2, \quad Q_{\rm final} = -2; \quad
+  L_e,\,L_\mu\text{ both conserved}. \quad\checkmark
+\end{align*}
+The electron and muon exchange a virtual photon (t-channel).  The s-channel is absent (would need a neutral $e^-\mu^-$ state, but those carry different lepton numbers and no neutral s-channel intermediate state is available in two-generation QED).
+
+%%------------------------------------------------------------------
+\subsection*{Generalisation to $N$ Same-Charge Fermion Families}\label{sec:lec12:nfam}
+
+\subsubsection*{Physical Motivation}
+
+The two-generation argument was not special to two generations.  As long as we add pairs of left-handed and right-handed Weyl spinors all carrying the same $U(1)_{\rm em}$ charge, the structure is identical.
+
+\subsubsection*{The General Statement}
+
+Suppose we have $N$ pairs $(\ell_{L,j}, \ell_{R,j})$, $j=1,\ldots,N$, all with the same charge $Q$.  The most general mass Lagrangian contains an $N\times N$ complex mass matrix $M_{ij}$.  Since all fields share the same charge, the kinetic terms are invariant under arbitrary $U(N)_L\times U(N)_R$ rotations of the flavour index.  We use these rotations to bring $M$ to diagonal form (bi-unitary / singular-value decomposition):
+
+\begin{equation}
+  \boxed{
+  V_L\,M\,V_R^\dagger = \mathrm{diag}(m_1, m_2, \ldots, m_N),
+  \qquad m_j \geq 0.}
+  \label{eq:lec12:diagN}
+\end{equation}
+
+In the mass basis the Lagrangian is:
+\begin{equation}
+  \lagr_{\rm QED,N}
+  =
+  -\frac{1}{4}F_{\mu\nu}F^{\mu\nu}
+  + \sum_{j=1}^{N}
+    \left(i\,\overline{\ell_j}\,\Dirac{D}\,\ell_j - m_j\,\overline{\ell_j}\,\ell_j\right),
+  \label{eq:lec12:lagN}
+\end{equation}
+where $D_\mu = \partial_\mu + ieQA_\mu$ is the \emph{same} covariant derivative for all $\ell_j$ (same charge $Q$).
+
+\subsubsection*{Accidental Symmetry}
+
+Because every $\ell_j$ appears only in its own kinetic and mass term, each can be phase-rotated independently:
+
+\begin{equation}
+  \boxed{
+  \lagr_{\rm QED,N}\text{ has accidental }U(1)^N\text{ symmetry},
+  \text{ conserving }L_j \equiv (\#\ell_j) - (\#\bar\ell_j)\text{ for each }j.}
+  \label{eq:lec12:accN}
+\end{equation}
+
+The diagonal $U(1)_{\rm em}^{\rm global}\subset U(1)^N$ is the global part of the imposed gauge symmetry.
+
+%%------------------------------------------------------------------
+\subsection*{Charged Fermions in the Standard Model}\label{sec:lec12:smspectrum}
+
+\subsubsection*{Physical Motivation}
+
+In nature, the charged elementary fermions do not all carry the same electromagnetic charge.  There are three distinct charge sectors.  Within each sector, the general $N$-family argument applies; between sectors, the rotations are independent.
+
+\subsubsection*{The Three Charge Sectors}
+
+\begin{center}
+\begin{tabular}{llcc}
+  \toprule
+  Family & Particles & $Q_{\rm em}$ & Generations \\
+  \midrule
+  Charged leptons & $e,\,\mu,\,\tau$ & $-1$ & 3 \\
+  Up-type quarks  & $u,\,c,\,t$      & $+\tfrac{2}{3}$ & 3 \\
+  Down-type quarks & $d,\,s,\,b$     & $-\tfrac{1}{3}$ & 3 \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\medskip
+Within each row, the three particles are called \textbf{flavours} or \textbf{generations}.  Heavier generations are conventionally labelled 2nd and 3rd:
+\begin{align*}
+  &\text{1st generation (lightest):} \quad e,\,u,\,d; \\
+  &\text{2nd generation:} \quad \mu,\,c,\,s; \\
+  &\text{3rd generation (heaviest):} \quad \tau,\,t,\,b.
+\end{align*}
+
+The three sectors rotate \emph{independently} to their mass bases, since cross-sector mass terms would mix fields of different charge and are forbidden by $U(1)_{\rm em}$ invariance.
+
+\subsubsection*{QED Lagrangian for Nine Fields}
+
+Extending~\eqref{eq:lec12:lagN} to all three sectors:
+\begin{equation}
+  \lagr_{\rm QED,9}
+  =
+  -\frac{1}{4}F_{\mu\nu}F^{\mu\nu}
+  + \sum_{f}
+    \left(i\,\overline{f}\,\Dirac{D}_f\,f - m_f\,\overline{f}\,f\right),
+  \label{eq:lec12:lag9}
+\end{equation}
+where $f$ runs over all nine mass eigenstates and $D_\mu^f = \partial_\mu + ie Q_f A_\mu$ carries the appropriate charge $Q_f\in\{-1, +\tfrac{2}{3}, -\tfrac{1}{3}\}$.
+
+\subsubsection*{Accidental Symmetry}
+
+\begin{equation}
+  \boxed{
+  \lagr_{\rm QED,9}\text{ has accidental }U(1)^9\text{ symmetry}:
+  \text{ one }U(1)_f\text{ per flavour, conserving }L_f.}
+  \label{eq:lec12:u9}
+\end{equation}
+
+More explicitly: since the three charge sectors cannot mix (different $Q$), the accidental symmetry decomposes as
+\begin{equation}
+  U(1)^9 = \underbrace{U(1)_e\times U(1)_\mu\times U(1)_\tau}_{\text{charged leptons}}
+  \times
+  \underbrace{U(1)_u\times U(1)_c\times U(1)_t}_{\text{up quarks}}
+  \times
+  \underbrace{U(1)_d\times U(1)_s\times U(1)_b}_{\text{down quarks}}.
+  \label{eq:lec12:u9decomp}
+\end{equation}
+
+\textit{Significance:} This is a characteristic of pure QED.  In the full Standard Model, weak interactions ($SU(2)_L$ gauge bosons) and the Higgs mechanism generate \emph{flavour-changing} interactions that reduce this accidental symmetry, leaving only three accidental $U(1)$'s: baryon number $B$ and two linear combinations of lepton number.
+
+%%------------------------------------------------------------------
+\subsection*{Potentials from Particle Exchange}\label{sec:lec12:potentials}
+
+\subsubsection*{Physical Motivation}
+
+QFT predicts forces: in the non-relativistic limit where particle production and annihilation can be neglected, the amplitude for two-particle scattering reduces to a potential $V(r)$.  The form of $V$ is determined by which particle is exchanged.
+
+\subsubsection*{Setup}
+
+\begin{equation}
+  \boxed{
+  \text{In the limit where particle production and annihilation are negligible,}
+  \text{ the scattering amplitude defines a potential.}}
+  \label{eq:lec12:potlimit}
+\end{equation}
+
+The connection is:
+\begin{equation}
+  \tilde{V}(\bvec{q})
+  = -\frac{1}{(2m_1)(2m_2)}\,i\Mamp(\bvec{q}),
+  \label{eq:lec12:vtilde}
+\end{equation}
+where $\bvec{q}$ is the 3-momentum transfer, and $V(\bvec{r})$ is the Fourier transform of $\tilde{V}(\bvec{q})$.
+
+\paragraph{Photon exchange — the Coulomb potential.}
+
+The t-channel amplitude for exchanging a massless photon goes as
+\begin{equation}
+  i\Mamp \propto \frac{1}{q^2} = \frac{1}{|\bvec{q}|^2 - \omega^2}
+  \xrightarrow{\text{NR, }\omega\to 0} \frac{1}{|\bvec{q}|^2}.
+  \label{eq:lec12:photonamp}
+\end{equation}
+Fourier-transforming $1/|\bvec{q}|^2$ back to position space:
+\begin{equation}
+  \boxed{V_{\rm Coulomb}(r) \propto \frac{1}{r}.}
+  \label{eq:lec12:coulomb}
+\end{equation}
+
+\paragraph{Massive scalar exchange — the Yukawa potential.}
+
+If instead we exchange a scalar of mass $m_\phi$ with Yukawa coupling $y$:
+\begin{equation}
+  i\Mamp \propto \frac{y^2}{|\bvec{q}|^2 + m_\phi^2}.
+  \label{eq:lec12:scalaramp}
+\end{equation}
+Fourier-transforming:
+\begin{equation}
+  \boxed{V_{\rm Yukawa}(r) \propto \frac{e^{-m_\phi r}}{r}.}
+  \label{eq:lec12:yukawa}
+\end{equation}
+
+\textit{Significance:} The range of the force is $\sim 1/m_\phi$.  For a massless photon ($m_\phi=0$), the Yukawa potential reduces to the Coulomb potential — infinite-range.  A massive mediator (e.g.\ the $W^\pm$ or $Z^0$ boson with $m\sim 80$--$90\,\text{GeV}$) produces a short-range force, explaining why the weak interaction is confined to sub-nuclear scales.
+
+%%------------------------------------------------------------------
+\subsection*{Introduction to Non-Abelian Symmetries}\label{sec:lec12:nonabelian}
+
+\subsubsection*{Physical Motivation}
+
+So far all symmetries discussed have been $U(1)$ (Abelian) symmetries.  The Standard Model requires two more gauge symmetries, $SU(3)_c$ and $SU(2)_L$, which are \textbf{non-Abelian}.  Understanding the qualitative difference between Abelian and non-Abelian symmetries is the gateway to the rest of the course.
+
+\subsubsection*{Abelian vs.\ Non-Abelian: the Key Distinction}
+
+Recall $U(1)$ transformations: a field transforms as $\phi\to e^{i\theta}\phi$.  Two successive rotations by angles $\theta_1$ and $\theta_2$ commute:
+\begin{equation}
+  e^{i\theta_2}\!\left(e^{i\theta_1}\phi\right)
+  = e^{i(\theta_1+\theta_2)}\phi
+  = e^{i\theta_1}\!\left(e^{i\theta_2}\phi\right).
+  \label{eq:lec12:abelian}
+\end{equation}
+The result is independent of the order.  This is the \textbf{Abelian} (commutative) property.
+
+For a \textbf{non-Abelian} symmetry, the transformations are represented by matrices acting on a multi-component field, and in general:
+\begin{equation}
+  \boxed{
+  U(\theta_1)\,U(\theta_2)\,\phi
+  \;\neq\;
+  U(\theta_2)\,U(\theta_1)\,\phi.}
+  \label{eq:lec12:nonabelian}
+\end{equation}
+The result \emph{depends on the order} of the transformations.
+
+\begin{remark}
+  Rotation in 3D space is a familiar example of a non-Abelian operation: rotating first about $\hat{x}$ then about $\hat{z}$ gives a different final orientation than rotating first about $\hat{z}$ then about $\hat{x}$.
+\end{remark}
+
+\subsubsection*{Non-Abelian Symmetries in the Standard Model}
+
+The two non-Abelian gauge symmetries in the SM are:
+\begin{align}
+  &SU(3)_c: \quad\text{strong (colour) force; 8 gauge bosons (gluons).}
+  \label{eq:lec12:su3}\\
+  &SU(2)_L: \quad\text{weak isospin force; 3 gauge bosons ($W^+,W^-,W^0$).}
+  \label{eq:lec12:su2}
+\end{align}
+
+The full SM gauge group is:
+\begin{equation}
+  \boxed{G_{\rm SM} = SU(3)_c \times SU(2)_L \times U(1)_Y.}
+  \label{eq:lec12:smgroup}
+\end{equation}
+
+\textit{Significance:} The subscript $L$ in $SU(2)_L$ means the symmetry acts only on \emph{left-handed} fields — an explicit violation of parity.  This is why the SM is chiral and why left- and right-handed fields can (and do) carry different charges.
+
+The language of non-Abelian symmetries requires the formalism of \textbf{Lie groups} and \textbf{Lie algebras} (generators, structure constants, representations).  This will be developed in Lecture~13 onward.
+
+%%------------------------------------------------------------------
+\subsection*{To Remember}
+
+\begin{itemize}
+  \item The accidental $U(1)_e\times U(1)_\mu$ in two-generation QED conserves $L_e$ and $L_\mu$ separately.  The diagonal subgroup is the global $U(1)_{\rm em}$.
+  \item $\mu^-\to e^+e^-e^-$ conserves charge but violates $L_e$ and $L_\mu$ — forbidden in renormalizable QED; can only occur via dim-6 operators $\sim 1/\Lambda^2$.
+  \item For $N$ Dirac fermions of the same charge, the mass-basis Lagrangian has accidental $U(1)^N$.  Particles of different charge cannot mix (forbidden by gauge invariance), so each charge sector is diagonalised independently.
+  \item SM charged fermions: 9 Dirac fields in three charge sectors ($Q=-1,+\tfrac{2}{3},-\tfrac{1}{3}$) with 3 generations each.  QED with these 9 fields has accidental $U(1)^9$.
+  \item Coulomb potential ($\sim 1/r$) arises from massless photon exchange; Yukawa potential ($\sim e^{-mr}/r$) arises from massive scalar exchange.  Range of force $\sim 1/m_{\rm mediator}$.
+  \item Non-Abelian means order of group operations matters.  $SU(3)_c\times SU(2)_L$ are the two non-Abelian factors of the SM gauge group $SU(3)\times SU(2)\times U(1)$.
+\end{itemize}
+
+%%------------------------------------------------------------------
+\subsection*{Recommended Reading}
+
+\begin{itemize}
+  \item \textbf{Tong, \textit{Lectures on Particle Physics}, Chapter~4}:
+    Non-Abelian gauge theories; the language of Lie groups and algebras.
+  \item \textbf{Grossman \& Rakshit (course notes), Appendix~A}:
+    Group theory review — generators, representations, $SU(N)$ — essential for Lecture~13.
+  \item \textbf{Griffiths, \textit{Introduction to Elementary Particles}, Chapter~1 and Appendix~C}:
+    The particle zoo; the SM field content and charge assignments.
+  \item \textbf{Halzen \& Martin, Chapter~2}:
+    The Yukawa potential and the range of forces; photon exchange and the Coulomb potential.
+\end{itemize}
+
+\end{document}

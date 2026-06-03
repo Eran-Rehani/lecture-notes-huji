@@ -1,0 +1,477 @@
+%%═══════════════════════════════════════════════════════════════════
+%% Lecture 02 — The Prismatic Bar: A Leading Example in Elasticity
+%% Course  : Mechanics of Continua (77606)
+%% Lecturer: Prof. Barak Kol
+%% Date    : 25 March 2026
+%%═══════════════════════════════════════════════════════════════════
+
+\section{Lecture 02 — The Prismatic Bar in Uniaxial Stress}
+\label{sec:lec02}
+
+%%────────────────────────────────────────────────────────────────────
+\subsection*{Overview and Motivation}
+%%────────────────────────────────────────────────────────────────────
+
+This lecture revisits stress from the ground up by studying a single,
+concrete object: a \emph{prismatic bar} (a rod of constant cross-section)
+under \emph{uniaxial loading}.  The bar is our \textbf{leading example}
+for the entire theory of elasticity — simple enough to solve exactly, yet
+rich enough to introduce every key concept: stress, strain, Young's
+modulus, Poisson's ratio, the stress tensor, and the static equilibrium
+equations.
+
+We consider a bar of:
+\begin{itemize}
+    \item length $L$,
+    \item uniform cross-sectional area $A$ (square, circular, or any
+          shape — the analysis is identical),
+    \item isotropic, linearly elastic material (e.g.\ steel, concrete,
+          bone).
+\end{itemize}
+An \textbf{axial load} $F$ is applied inward at both ends (compression)
+or outward at both ends (tension).  Static equilibrium means the two
+forces are equal and opposite; the bar as a whole does not accelerate.
+
+%%────────────────────────────────────────────────────────────────────
+\subsection{Stress and Strain in 1D}
+\label{subsec:lec02:1d}
+%%────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Internal force and the concept of stress}
+
+Imagine cutting the bar at an arbitrary cross-section and isolating the
+right half.  That half is in equilibrium: the external pull $F$ to the
+right must be balanced by an equal and opposite \emph{internal contact
+force} $F$ to the left, exerted by the left half through the cut surface.
+Because the same argument applies at \emph{any} cross-section, the
+internal force is equal to $F$ everywhere along the bar.
+
+The key insight is to normalise by area.  We define the \textbf{stress}
+\begin{align}
+    \sigma \;=\; \frac{F}{A},
+    \label{eq:lec02:stress_def}
+\end{align}
+which is the force per unit area acting on the cross-section.  Stress
+has the same SI units as pressure — \emph{pascals} (Pa, named after
+Blaise Pascal, 1647):
+\[
+    [\sigma] = \frac{\text{N}}{\text{m}^2} = \text{Pa}.
+\]
+Typical engineering values are in the range of megapascals (MPa) to
+gigapascals (GPa).
+
+\textbf{Physical intuition:} Two bars made of the same material but with
+different cross-sections, loaded by the same force, deform by the same
+\emph{strain} only if acted on by the same \emph{stress}.  It is stress,
+not force, that drives deformation.
+
+\subsubsection*{Deformation of a volume element and strain}
+
+Consider an infinitesimal volume element of length $dz$ and area $dA$.
+It is pulled by forces $dF = \sigma\,dA$ on both faces.  By the same
+proportionality argument for any element,
+
+\begin{itemize}
+    \item Each element elongates by some amount $d(\Delta z)$ proportional
+          to its length $dz$.
+    \item Summing over all elements, the total elongation $\Delta L$ is
+          proportional to the original length $L$.
+\end{itemize}
+
+We define the \textbf{longitudinal strain} (also called \emph{elongation}) as the dimensionless relative deformation,
+\begin{align}
+    \varepsilon_{zz} \;\equiv\; \frac{\Delta L}{L}.
+    \label{eq:lec02:strain_def}
+\end{align}
+
+\textbf{Note on notation:} Landau \& Lifshitz use a different
+(older) convention; this course adopts the modern standard in which
+strain is denoted $\varepsilon_{ij}$.
+
+\subsubsection*{Hooke's Law and Young's modulus}
+
+Linear elastic response means stress is proportional to strain:
+\begin{align}
+    \boxed{\sigma \;=\; E\,\varepsilon_{zz}},
+    \label{eq:lec02:hooke1d}
+\end{align}
+where $E$ is \textbf{Young's modulus} (or the \emph{elastic modulus}),
+first proposed by Euler (1727) and systematised by Thomas Young (1807).
+Re-substituting the definitions of $\sigma$ and $\varepsilon_{zz}$ gives
+the fundamental displacement formula:
+\begin{align}
+    \boxed{\Delta L \;=\; \frac{F\,L}{E\,A}}.
+    \label{eq:lec02:elongation}
+\end{align}
+
+\textbf{The analogy with resistors:}  
+The electrical resistance of a wire is $R = \rho_e\,L/A$, where $\rho_e$
+is the resistivity.  Under a voltage $V$, the current is $I = V/R$.
+Equation~\eqref{eq:lec02:elongation} has the identical structure with
+$F \leftrightarrow V$, $E \leftrightarrow 1/\rho_e$, and
+$\Delta L \leftrightarrow I$.  This is not a coincidence — both
+phenomena are governed by linear constitutive relations in geometrically
+similar media.
+
+\textbf{Dimensions of $E$:}  Since $\varepsilon_{zz}$ is dimensionless,
+$E$ has the same dimensions as stress:
+\[
+    [E] = \text{Pa} = \frac{\text{N}}{\text{m}^2}
+        = \frac{\text{J}}{\text{m}^3}.
+\]
+The last equality shows that $E$ can also be read as energy stored per
+unit volume — a useful perspective in thermodynamics of solids.
+
+%%────────────────────────────────────────────────────────────────────
+\subsection{Lateral Contraction and Poisson's Ratio}
+\label{subsec:lec02:poisson}
+%%────────────────────────────────────────────────────────────────────
+
+When a bar is stretched longitudinally, it contracts in the lateral
+(transverse) directions — and vice versa.  By symmetry, both transverse
+directions $x$ and $y$ contract equally.  The \textbf{Poisson's ratio}
+(named after Siméon Denis Poisson, 1827) quantifies this coupling:
+\begin{align}
+    \nu \;\equiv\; -\,\frac{\varepsilon_{xx}}{\varepsilon_{zz}}
+         \;=\;      -\,\frac{\varepsilon_{yy}}{\varepsilon_{zz}},
+    \label{eq:lec02:poisson_def}
+\end{align}
+so that $\varepsilon_{xx} = \varepsilon_{yy} = -\nu\,\varepsilon_{zz}$.
+The negative sign ensures $\nu > 0$ for any ordinary material (which
+grows thinner when stretched).  As we shall show later from thermodynamic
+stability arguments, $\nu$ is constrained to the interval
+\[
+    -1 < \nu \leq \tfrac{1}{2}.
+\]
+For virtually all engineering materials $\nu > 0$, i.e.\ the cross-section
+shrinks under tension.
+
+\noindent\textbf{Compression:} Reversing $F \to -F$ flips the sign of
+all strains simultaneously; the formulas remain valid with the
+understanding that $\sigma < 0$ denotes compression.
+
+\subsubsection*{Typical values of elastic constants}
+
+\begin{center}
+\begin{tabular}{lccc}
+\hline
+\textbf{Material} & \textbf{$E$ (GPa)} & \textbf{$\nu$} & \textbf{Notes}\\
+\hline
+Steel (structural)  & 200     & 0.28 & Fe alloy, most common structural metal\\
+Diamond             & 1\,000  & 0.20 & Hardest known material\\
+Concrete            & 20--30  & 0.20 & Weak in tension; used in compression\\
+Aluminium           & 70      & 0.33 & Light structural metal\\
+Gold                & 78      & 0.44 & Dense, ductile\\
+Bone (cortical)     & 15--25  & 0.30 & Varies along grain direction\\
+Wood (along grain)  & 10--15  & 0.35 & Strongly anisotropic\\
+Rubber              & $\sim 0.01$ & $\approx 0.50$ & Nearly incompressible\\
+Cork                & $\sim 0.05$ & $\approx 0.00$ & Used as bottle stoppers\\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{Key observations:}
+\begin{itemize}
+    \item $E$ spans four orders of magnitude across common materials.
+    \item $\nu$ is restricted to a much narrower range; most materials
+          cluster between 0.25 and 0.45.
+    \item Cork's near-zero $\nu$ is precisely what makes it an ideal
+          bottle stopper: it does not expand laterally under axial
+          compression, so it can be pushed into a bottle without cracking
+          the glass.
+    \item Rubber's $\nu \approx \frac{1}{2}$ means it is nearly
+          \emph{incompressible}: volume is essentially conserved under
+          deformation.
+\end{itemize}
+
+%%────────────────────────────────────────────────────────────────────
+\subsection{Worked Example — Steel Column Under Compression}
+\label{subsec:lec02:example}
+%%────────────────────────────────────────────────────────────────────
+
+\ex{}{\textbf{Problem.}
+A structural steel column has length $L = 3\;\text{m}$, a square
+cross-section of side $10\;\text{cm}$, and is subjected to a compressive
+load $F = 200\;\text{kN}$.
+\begin{itemize}
+    \item For steel: $E = 200\;\text{GPa}$, $\nu = 0.28 \approx 0.3$.
+    \item Find: the axial shortening $|\Delta L|$ and the lateral
+          expansion $|\Delta x|$.
+\end{itemize}
+
+\medskip
+\textbf{Step 1 — Convert units carefully.}
+\[
+    A = (0.10\;\text{m})^2 = 0.01\;\text{m}^2, \quad
+    F = 200 \times 10^3\;\text{N}.
+\]
+
+\textbf{Step 2 — Compute the stress.}
+\[
+    \sigma = \frac{F}{A} = \frac{2 \times 10^5\;\text{N}}{10^{-2}\;\text{m}^2}
+           = 2 \times 10^7\;\text{Pa} = 20\;\text{MPa}.
+\]
+(Note: the load is compressive, so strictly $\sigma = -20\;\text{MPa}$.)
+
+\textbf{Step 3 — Compute the axial strain.}
+\[
+    \varepsilon_{zz} = \frac{\sigma}{E}
+        = \frac{2 \times 10^7\;\text{Pa}}{2 \times 10^{11}\;\text{Pa}}
+        = 10^{-4}.
+\]
+
+\textbf{Step 4 — Find $\Delta L$.}
+\[
+    |\Delta L| = |\varepsilon_{zz}|\,L = 10^{-4} \times 3\;\text{m}
+              = 3 \times 10^{-4}\;\text{m}
+              \;=\; \boxed{0.3\;\text{mm}}.
+\]
+
+\textbf{Step 5 — Find the lateral expansion.}
+\[
+    |\varepsilon_{xx}| = \nu\,|\varepsilon_{zz}|
+        = 0.3 \times 10^{-4} = 3\times 10^{-5}.
+\]
+\[
+    |\Delta x| = |\varepsilon_{xx}|\,x_0
+        = 3 \times 10^{-5} \times 0.10\;\text{m}
+        = 3 \times 10^{-6}\;\text{m}
+        \;=\; \boxed{3\;\mu\text{m}}.
+\]
+
+\textbf{Sanity check.}  The column shortens by 0.3 mm (1 part in
+$10^4$ of its length) and its cross-section widens by only 3 $\mu$m.
+These tiny deformations justify the linear elastic (small-strain)
+approximation: the geometry is essentially unchanged during loading.
+The model breaks down when $|\varepsilon| \gtrsim 10^{-3}$, where
+nonlinear or plastic effects become significant.
+
+\textbf{Common student error:} Confusing $1\;\text{GPa} = 10^9\;\text{Pa}$
+with $1\;\text{MPa} = 10^6\;\text{Pa}$ leads to an error of a factor of
+$10^3$ in strain — just as was discussed in class.}
+
+\begin{center}
+\begin{tikzpicture}
+  \def\L{5.0}
+  \def\Rx{0.25}
+  \def\Ry{0.5}
+  \def\F{1.0}
+  \def\x{0.14*\L}
+  \draw[dashed]
+    %(0,\Ry) arc(90:270:{\Rx} and {\Ry})
+    %(0,0) ellipse ({\Rx} and {\Ry})
+    (\x,\Ry) -- (0,\Ry) arc(90:270:{\Rx} and {\Ry})
+    (0,-\Ry) -- (\x,-\Ry);
+  \draw[<->] (0,-1.5*\Ry) --++ (\L,0) node[midway,above=-5,fill=white,inner sep=1] {$L$};
+  \draw[width] (0, 1.3*\Ry) --++ (\x,0) node[midway,above] {$\Delta L$};
+  \draw[force] (\L+\F,0) --++ (-\F,0) node[pos=0.4,above=-1] {$\vb{F}$};
+  \draw[metal]
+    (\x,-\Ry) |- (\L,\Ry) arc(90:-90:{\Rx} and {\Ry}) -- cycle;
+  \draw[metal] (\x,0) ellipse ({\Rx} and {\Ry});
+  \draw[force] (\x-\F,0) --++ (\F,0) node[pos=0,above=1,left=-2] {$\vb{F}$};
+  \draw[dashed] (0,\Ry) arc(90:-90:{\Rx} and {\Ry});
+\end{tikzpicture}
+\end{center}
+
+%%────────────────────────────────────────────────────────────────────
+\subsection{The Stress Tensor and Its Symmetry}
+\label{subsec:lec02:tensor}
+%%────────────────────────────────────────────────────────────────────
+
+\subsubsection*{From 1D to 3D: review of $\sigma_{ij}$}
+
+The 1D example generalises: the force $d\mathbf{F}$ on any oriented
+surface element $d\mathbf{S} = \hat{n}\,dA$ inside a solid is given by
+the \textbf{stress tensor} $\bm{\sigma}$,
+\begin{align}
+    dF_i = \sigma_{ij}\,dS_j,
+    \label{eq:lec02:cauchy_traction}
+\end{align}
+where summation over the repeated index $j$ is implied (Einstein
+convention).  The tensor $\bm{\sigma}$ has $3\times 3 = 9$ components.
+The diagonal components $\sigma_{11},\sigma_{22},\sigma_{33}$ are
+\emph{normal stresses}; the off-diagonal components $\sigma_{ij}$ ($i\ne j$)
+are \emph{shear stresses}.
+
+\textbf{Stress vs.\ pressure:} Pressure in a fluid is isotropic —
+$\sigma_{ij} = -P\delta_{ij}$ — and acts equally in all directions.
+In a solid, the stress tensor need not be isotropic: different faces of
+the same volume element may carry different forces.  Stress is the more
+general concept.
+
+\begin{center}
+\tdplotsetmaincoords{70}{110}
+\begin{tikzpicture}[tdplot_main_coords,line cap=round,line join=round,
+    thick,>=Stealth,pics/dreibein/.style={code={%
+      \foreach \XX [count=\YY from 0] in {#1}
+      {
+      \draw[->] (0,0,0) -- ($\XX1*(\dreibein\YY)$)
+        node[above,dreibein/label]{$\sigma_{\pgfkeysvalueof{/tikz/dreibein/d}
+        \the\numexpr\YY+1}$};}
+    }},dreibein/.cd,label/.style={},d/.initial={}]
+ \draw[->] (0,0,0) coordinate (O) -- (4,0,0) node[above]{$x_1$};
+ \draw[->]  (O) -- (0,6,0) node[above]{$x_2$};
+ \draw[->]  (O) -- (0,0,6) node[left]{$x_3$};
+ \def\dreibein#1{\ifcase#1
+ {1,0,0}\or{0,1,0}\or{0,0,1}\fi}
+ \def\lstcols{"red","yellow","orange"}
+ \begin{scope}[shift={(0,4,4)}]
+  \foreach \X [evaluate=\X as \Y using {int(Mod(\X+1,3))},
+    evaluate=\X as \Z using {int(Mod(\X+2,3))}]in {0,1,2}
+  {\path ($-2*(\dreibein\X)$) pic[dreibein/label/.style={opacity=0}]{dreibein={-,-,-}};
+   \pgfmathsetmacro{\mycolor}{{\lstcols}[\X]}
+   \draw[fill=\mycolor,fill opacity=0.2] ($-2*(\dreibein\X)+2*(\dreibein\Y)+2*(\dreibein\Z)$)
+    -- ($-2*(\dreibein\X)+2*(\dreibein\Y)-2*(\dreibein\Z)$)
+    -- ($-2*(\dreibein\X)-2*(\dreibein\Y)-2*(\dreibein\Z)$)
+    -- ($-2*(\dreibein\X)-2*(\dreibein\Y)+2*(\dreibein\Z)$) -- cycle;
+   }
+  \foreach \X [evaluate=\X as \Y using {int(Mod(\X+1,3))},
+    evaluate=\X as \Z using {int(Mod(\X+2,3))}]in {0,1,2}
+  {\pgfmathsetmacro{\mycolor}{{\lstcols}[\X]}
+    \draw[fill=\mycolor,fill opacity=0.4] ($2*(\dreibein\X)+2*(\dreibein\Y)+2*(\dreibein\Z)$)
+    -- ($2*(\dreibein\X)+2*(\dreibein\Y)-2*(\dreibein\Z)$)
+    -- ($2*(\dreibein\X)-2*(\dreibein\Y)-2*(\dreibein\Z)$)
+    -- ($2*(\dreibein\X)-2*(\dreibein\Y)+2*(\dreibein\Z)$) -- cycle;
+   \path ($2*(\dreibein\X)$) pic[dreibein/d=\the\numexpr\X+1]{dreibein={+,+,+}};
+   }
+ \end{scope}
+\end{tikzpicture}
+\end{center}
+
+
+\subsubsection*{Symmetry of $\sigma_{ij}$: torque argument}
+
+We now show that $\sigma_{ij} = \sigma_{ji}$ must hold for any volume
+element in static equilibrium.
+
+Consider a small rectangular element with sides $\Delta x$, $\Delta y$,
+$\Delta z$.  Focus on the torque about the $z$-axis.  The shear stress
+$\sigma_{12}$ (the $y$-component of the force on the $+x$-face) exerts
+a clockwise torque:
+\[
+    \tau_z^{(1)} = \sigma_{12}\,(\Delta y\,\Delta z)\cdot\frac{\Delta x}{2}
+                  + \sigma_{12}\,(\Delta y\,\Delta z)\cdot\frac{\Delta x}{2}
+                 = \sigma_{12}\,\Delta x\,\Delta y\,\Delta z.
+\]
+The corresponding shear $\sigma_{21}$ (the $x$-component of the force on
+the $+y$-face) exerts a counter-clockwise torque of equal magnitude
+$\sigma_{21}\,\Delta x\,\Delta y\,\Delta z$.  Rotational equilibrium
+($\tau_z = 0$) requires:
+\begin{align}
+    \sigma_{12} = \sigma_{21}.
+    \label{eq:lec02:sigma_sym_12}
+\end{align}
+Repeating for the other two planes gives $\sigma_{13}=\sigma_{31}$ and
+$\sigma_{23}=\sigma_{32}$.  Hence:
+\begin{align}
+    \boxed{\sigma_{ij} = \sigma_{ji}},
+    \label{eq:lec02:sigma_sym}
+\end{align}
+i.e.\ $\bm{\sigma}$ is a \textbf{symmetric} tensor with only
+\textbf{6 independent components}.
+
+\subsubsection*{Symmetry of $\sigma_{ij}$: Landau--Lifshitz argument}
+
+An equivalent, more algebraic proof uses the total torque $\mathbf{N}$
+on a volume element:
+\[
+    N_i \;=\; \oint_{\partial V} \varepsilon_{ijk}\,x_j\,\sigma_{kl}\,dS_l
+         \;=\; \int_V \varepsilon_{ijk}\,\partial_l(x_j\,\sigma_{kl})\,dV.
+\]
+Applying the product rule, $\partial_l(x_j\sigma_{kl})
+= \delta_{jl}\,\sigma_{kl} + x_j\,\partial_l\sigma_{kl}$.
+The second term is the moment of the body-force density $f_k = \partial_l\sigma_{kl}$,
+which represents the torque due to net forces on the element and is
+already accounted for in the force-balance equation.  The first term
+must vanish independently:
+\[
+    \varepsilon_{ijk}\,\delta_{jl}\,\sigma_{kl}
+    = \varepsilon_{ijk}\,\sigma_{kj} = 0.
+\]
+For $i=3$: $\varepsilon_{312}\sigma_{21} + \varepsilon_{321}\sigma_{12}
+    = \sigma_{21} - \sigma_{12} = 0$,
+i.e.\ $\sigma_{12}=\sigma_{21}$.  The same follows for all pairs,
+confirming~\eqref{eq:lec02:sigma_sym}.
+
+%%────────────────────────────────────────────────────────────────────
+\subsection{Static Equilibrium Equations}
+\label{subsec:lec02:equil}
+%%────────────────────────────────────────────────────────────────────
+
+The net force on a volume element $dV$ comes from two sources:
+\begin{enumerate}
+    \item \textbf{Contact (internal) forces} from surrounding material,
+          giving a force per unit volume $\partial_j\sigma_{ij}$
+          (cf.\ the divergence theorem applied to
+          Eq.~\eqref{eq:lec02:cauchy_traction}).
+    \item \textbf{Body forces} — for gravity this is
+          $\rho\,g_i$ per unit volume, where $\rho$ is mass density.
+\end{enumerate}
+
+Newton's second law for static equilibrium ($\mathbf{a}=0$) yields:
+\begin{align}
+    \boxed{\partial_j\,\sigma_{ij} + \rho\,g_i \;=\; 0}.
+    \label{eq:lec02:equilibrium}
+\end{align}
+
+This is the Cauchy equilibrium equation.  It is the continuum analogue of
+$\sum F = 0$ for a particle.  The gradient of stress (divergence of
+$\bm{\sigma}$) must balance the body-force density.
+
+\textbf{Boundary conditions:}  At a free surface with outward normal
+$\hat{n}$, the traction must equal the applied surface load $t_i$:
+\[
+    \sigma_{ij}\,n_j \Big|_{\text{surface}} = t_i.
+\]
+For a truly free surface (no applied load), $t_i = 0$.
+
+\textbf{Remark:}  The precise sign convention for Eq.~\eqref{eq:lec02:equilibrium}
+and the boundary conditions will be refined at the start of Lecture~03.
+
+%%────────────────────────────────────────────────────────────────────
+\subsection{Brief Note on Tensors}
+\label{subsec:lec02:tensors}
+%%────────────────────────────────────────────────────────────────────
+
+A \textbf{tensor of rank $n$} is a multilinear map that takes $n$ vectors
+and returns a scalar, represented in a given basis by an array of
+$3^n$ components.  Familiar examples:
+\begin{itemize}
+    \item Rank-0 (scalar): temperature $T$.
+    \item Rank-1 (vector): displacement $u_i$, body force $g_i$.
+    \item Rank-2: stress $\sigma_{ij}$, strain $\varepsilon_{ij}$.
+    \item Rank-4: the elastic stiffness tensor $C_{ijkl}$  
+          (to be introduced shortly) relates stress and strain in 3D.
+\end{itemize}
+
+%%────────────────────────────────────────────────────────────────────
+\subsection*{Key Takeaways}
+\label{subsec:lec02:takeaways}
+%%────────────────────────────────────────────────────────────────────
+
+\begin{itemize}
+    \item \textbf{Stress} $\sigma = F/A$ is force per unit area
+          (units: Pa).  It is the quantity that drives deformation, not
+          the bare force.
+    \item \textbf{Longitudinal strain} $\varepsilon_{zz} = \Delta L / L$
+          is the dimensionless relative elongation.
+    \item \textbf{Hooke's law} in 1D: $\sigma = E\,\varepsilon_{zz}$,
+          giving $\Delta L = FL / (EA)$.  Linear elastic response holds
+          for $|\varepsilon| \lesssim 10^{-3}$.
+    \item \textbf{Young's modulus} $E$ (units: Pa) characterises the
+          stiffness of a material.  It spans from $\sim 0.01\;\text{GPa}$
+          (rubber) to $\sim 1000\;\text{GPa}$ (diamond).
+    \item \textbf{Poisson's ratio} $\nu$ (dimensionless) relates lateral
+          contraction to longitudinal extension:
+          $\varepsilon_{xx} = -\nu\,\varepsilon_{zz}$.
+          Physically $0 < \nu \leq \tfrac{1}{2}$ for most materials;
+          thermodynamics requires $-1<\nu\leq\tfrac{1}{2}$.
+    \item The \textbf{stress tensor} $\sigma_{ij}$ generalises 1D stress
+          to 3D.  It is \textbf{symmetric} ($\sigma_{ij}=\sigma_{ji}$)
+          because rotational equilibrium must hold for every volume element,
+          leaving only \textbf{6 independent components}.
+    \item \textbf{Equilibrium equation}:
+          $\partial_j\sigma_{ij} + \rho g_i = 0$, the continuum version
+          of $\sum F_i = 0$.
+\end{itemize}
+

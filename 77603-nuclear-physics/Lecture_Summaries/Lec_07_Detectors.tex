@@ -1,0 +1,646 @@
+%%═══════════════════════════════════════════════════════════════════
+%% Lecture 07 — Nuclear Detectors: Resolution, Efficiency, Tracking
+%% 77603 — Nuclear Physics
+%% Date: 26 May 2026
+%% Lecturer: Dr. Moshe Friedman
+%%═══════════════════════════════════════════════════════════════════
+
+\section{Lecture 07 — Nuclear Detectors: Resolution, Efficiency, Tracking}
+\label{sec:lec07}
+\date{26 May 2026}
+
+%%───────────────────────────────────────────────────────────────────
+\subsection*{Overview}
+%%───────────────────────────────────────────────────────────────────
+This lecture begins with a correction to the Bethe-Bloch formula from Lecture~6,
+clarifies the mass-dependence of stopping power, and then develops the remaining
+detector topics: the statistical origin of energy resolution, detector efficiency,
+particle tracking, particle identification, time-of-flight for neutrons, and a
+look at real experimental spectra.
+
+%%───────────────────────────────────────────────────────────────────
+\subsection{Correction to Lecture 6: Mass Dependence in Bethe-Bloch}
+\label{subsec:lec07:bethe_correction}
+
+\subsubsection*{Physical Motivation}
+In Lecture~6 we quoted the Bethe-Bloch formula and stated that the projectile
+mass does \emph{not} appear.  A question from a student prompted a more careful
+discussion: where does the projectile mass enter, and why can the range of an
+electron be larger than that of a proton at the same kinetic energy?
+
+\paragraph{Why the projectile mass is absent from $-dE/dx$.}
+Recall how we derived the momentum transfer to a single electron at impact
+parameter $b$:
+\begin{equation}
+  \label{eq:lec07:delta_p}
+  \Delta p_\perp = \frac{ze^2}{2\pi\epsilon_0\,b\,v}.
+\end{equation}
+The energy transferred to that electron is
+\begin{equation}
+  \label{eq:lec07:delta_E}
+  \Delta E(b) = \frac{(\Delta p_\perp)^2}{2m_e} = \frac{z^2 e^4}{8\pi^2\epsilon_0^2 m_e v^2 b^2}.
+\end{equation}
+The \emph{electron} mass $m_e$ appears — not the projectile mass $M$.  This is
+because the entire derivation was formulated in terms of \emph{velocity}: the
+projectile's mass never entered the impulse integral.  The factor $1/(2m_e)$ is
+the electron's kinetic energy for a given momentum kick.
+
+\dfn[dfn:Wvalue]{W-Value (Energy per Ion Pair)}{%
+The $W$-value of a material is the average energy deposited per electron--ion
+pair created:
+\begin{equation}
+  \label{eq:lec07:Wvalue}
+  W = \frac{E_\text{deposited}}{N_\text{ion pairs}}.
+\end{equation}
+Typical values: $W_\text{gas} \approx 30\,\text{eV}$,
+$W_\text{silicon} \approx 3\,\text{eV}$.}
+
+\paragraph{Where the projectile mass does appear.}
+The formula $-dE/dx \propto z^2/v^2$ is a function of \emph{velocity}.  When
+we express it as a function of kinetic energy $E_k = \frac{1}{2}Mv^2$
+(non-relativistically), we get $v^2 = 2E_k/M$, so
+\begin{equation}
+  \label{eq:lec07:dEdx_energy}
+  -\frac{dE}{dx} \propto \frac{z^2 M}{E_k}.
+\end{equation}
+The projectile mass enters \emph{only through the velocity-energy conversion}.
+At the \emph{same velocity} the formula is independent of $M$;
+at the \emph{same kinetic energy} it scales as $z^2 M$.
+
+\paragraph{Comparing $\alpha$ and proton at the same kinetic energy.}
+Take $E_\alpha = E_p$.  Since $m_\alpha = 4m_p$,
+\begin{equation}
+  \label{eq:lec07:v_ratio}
+  \frac{1}{2}m_\alpha v_\alpha^2 = \frac{1}{2}m_p v_p^2
+  \;\Rightarrow\;
+  \frac{v_\alpha^2}{v_p^2} = \frac{m_p}{m_\alpha} = \frac{1}{4}.
+\end{equation}
+With $z_\alpha = 2$ and $z_p = 1$,
+\begin{equation}
+  \label{eq:lec07:stop_ratio}
+  \frac{(-dE/dx)_\alpha}{(-dE/dx)_p}
+  = \frac{z_\alpha^2}{z_p^2}\cdot\frac{v_p^2}{v_\alpha^2}
+  = 4 \times 4 = \boxed{16}.
+\end{equation}
+\textit{Significance:} An $\alpha$ particle loses energy \emph{sixteen times faster}
+than a proton of the same kinetic energy.  Heavier and more highly-charged
+projectiles have shorter ranges.
+
+\paragraph{Why electrons have larger ranges than protons at the same energy.}
+An electron at energy $E_k$ has $v^2 = 2E_k/m_e$, which is $\approx 1836\times$
+larger than a proton's $v^2$ at the same energy.  Since $-dE/dx \propto 1/v^2$,
+the stopping power on the electron is $\sim 1836\times$ smaller.  (At typical
+decay energies electrons are already ultra-relativistic, making the contrast
+even sharper.)
+
+%%───────────────────────────────────────────────────────────────────
+\subsection{Detector Types — Comparison}
+\label{subsec:lec07:detector_comparison}
+
+\subsubsection*{Conceptual Background}
+Three detector families were introduced at the end of Lecture~6.  Here we
+compare them systematically across the properties that matter experimentally:
+energy resolution, timing resolution, cost, and practical constraints.
+
+\begin{table}[h]
+\centering
+\small
+\begin{tabular}{lccc}
+\toprule
+Property & Scintillator & Gas detector & Solid-state \\
+\midrule
+Energy resolution & moderate ($\sim$few\,\%) & poor–moderate ($\sim$few\,\%) & excellent ($\sim 0.1\,\%$) \\
+Timing resolution & excellent ($\sim$ps–ns) & poor ($\sim\mu$s–ms) & good ($\sim$ns) \\
+Cost per area & low & moderate & very high \\
+Scalable to large size & yes (cheap plastic) & yes (gas) & no \\
+Works as reaction target & no & yes & no \\
+\bottomrule
+\end{tabular}
+\caption{Comparison of the three main detector families.}
+\label{tab:lec07:detectors}
+\end{table}
+
+\paragraph{Why gas detectors are slow.}
+Drift velocity of electrons in gas is $\sim 1\,\text{cm}/\mu\text{s}$,
+so a detector of size $\sim\text{cm}$ takes $\sim\mu\text{s}$ to collect
+the signal.  This limits the maximum counting rate to $\sim 10$–$100\,\text{kHz}$.
+
+\paragraph{Advantages of gas detectors despite low speed.}
+Gas can \emph{surround} a nuclear reaction, yielding $4\pi$ solid-angle
+coverage and near-unity geometric efficiency.  Reactions can occur
+\emph{inside} the detector volume.  This is the main reason gas detectors
+remain in use despite their slow response.
+
+%%───────────────────────────────────────────────────────────────────
+\subsection{Statistical Origin of Energy Resolution}
+\label{subsec:lec07:resolution}
+
+\subsubsection*{Mathematical Setup}
+All three detector types ultimately convert deposited energy into a number of
+charge carriers (electrons or photon-electron pairs).  The statistical
+fluctuation in this number sets a fundamental lower bound on energy resolution.
+
+\paragraph{Number of charge carriers.}
+A particle depositing energy $E$ produces, on average,
+\begin{equation}
+  \label{eq:lec07:N_carriers}
+  \boxed{\bar{N} = \frac{E}{W},}
+\end{equation}
+where $W$ is the $W$-value.  For Poisson statistics (independent events),
+\begin{equation}
+  \label{eq:lec07:sigma_N}
+  \sigma_N \approx \sqrt{\bar{N}}.
+\end{equation}
+
+\paragraph{Relative energy resolution.}
+Since $E \propto N$, the relative energy resolution is
+\begin{equation}
+  \label{eq:lec07:energy_res}
+  \boxed{\frac{\sigma_E}{E} = \frac{\sigma_N}{\bar{N}} = \frac{1}{\sqrt{\bar{N}}} = \sqrt{\frac{W}{E}}.}
+\end{equation}
+This is the \emph{ideal} (quantum-limited) resolution.
+
+\ex[ex:resolution_compare]{Resolution for a 13 MeV Alpha Particle}{%
+For $E_\alpha = 13\,\text{MeV}$:
+
+\textbf{Gas detector} ($W \approx 30\,\text{eV}$):
+\begin{equation*}
+  \bar{N}_\text{gas} \approx \frac{13\times10^6}{30} \approx 4\times10^5,
+  \qquad
+  \frac{\sigma_E}{E} \approx \frac{1}{\sqrt{4\times10^5}} \approx 0.5\,\%.
+\end{equation*}
+
+\textbf{Solid-state} ($W \approx 3\,\text{eV}$):
+\begin{equation*}
+  \bar{N}_\text{solid} \approx \frac{13\times10^6}{3} \approx 4\times10^6,
+  \qquad
+  \frac{\sigma_E}{E} \approx \frac{1}{\sqrt{4\times10^6}} \approx 0.1\,\%.
+\end{equation*}
+
+The factor $\sim 3$ improvement in resolution comes from the factor
+$\sim 10$ larger number of charge carriers, i.e., $\sqrt{10}\approx 3.16$.}
+
+\textit{Significance:} In practice, gas detectors achieve resolutions
+significantly worse than this ideal (electronic noise, recombination, gain
+non-uniformity), while solid-state detectors routinely approach the ideal
+$\sim 0.1\,\%$, making them the instrument of choice for precision spectroscopy.
+
+\nt{For scintillators the analogous quantity is the light yield: the number of
+optical photons produced per MeV.  The photon-to-electron conversion in the PMT
+introduces additional fluctuations; typical energy resolution is a few percent.}
+
+%%───────────────────────────────────────────────────────────────────
+\subsection{Detector Efficiency}
+\label{subsec:lec07:efficiency}
+
+\subsubsection*{Physical Motivation}
+A detector is only useful if it actually registers the particles we want to
+measure.  The \emph{efficiency} tells us what fraction of emitted particles
+ends up contributing to our data.  For rare processes — neutrinos, dark matter
+candidates, exotic nuclear reactions — maximising efficiency is as important as
+any other design consideration.
+
+\dfn[dfn:efficiency]{Detector Efficiency}{%
+\begin{equation}
+  \label{eq:lec07:efficiency}
+  \varepsilon \equiv \frac{N_\text{detected}}{N_\text{emitted}}.
+\end{equation}
+This quantity depends on the specific definition of ``emitted,'' which must
+always be stated clearly when quoting an efficiency.}
+
+\paragraph{Two components of efficiency.}
+
+\textbf{Geometric acceptance} ($\Omega/4\pi$): A point source emitting
+isotropically at distance $d$ from a detector of area $A$ subtends a solid
+angle $\Omega \approx A/d^2$ (for $d \gg \sqrt{A}$).  The fraction of particles
+that reach the detector is
+\begin{equation}
+  \label{eq:lec07:geo_eff}
+  \varepsilon_\text{geo} = \frac{\Omega}{4\pi} \approx \frac{A}{4\pi d^2}.
+\end{equation}
+This scales as $1/d^2$ — moving the detector twice as far away reduces geometric
+efficiency by a factor of 4.
+
+\textbf{Intrinsic efficiency}: Of the particles that enter the detector, what
+fraction actually produce a signal?
+\begin{itemize}
+  \item Charged particles traversing an active volume: $\varepsilon_\text{int} \approx 1$
+  (every ionising particle deposits energy).
+  \item Photons: binary interaction, exponential probability.  A photon of
+  attenuation coefficient $\mu$ in a detector of thickness $x$ has
+  \begin{equation}
+    \label{eq:lec07:photon_int_eff}
+    \varepsilon_\text{int} = 1 - e^{-\mu x} \approx \mu x \quad (\mu x \ll 1).
+  \end{equation}
+  To detect photons efficiently, one wants large $\mu$ (high-$Z$ material) and
+  large $x$, but larger $x$ costs spatial resolution and money.
+\end{itemize}
+
+\paragraph{Total efficiency and its importance.}
+\begin{equation}
+  \label{eq:lec07:total_eff}
+  \boxed{\varepsilon_\text{tot} = \varepsilon_\text{geo} \times \varepsilon_\text{int}.}
+\end{equation}
+The statistical uncertainty on a rate measurement is $\propto 1/\sqrt{N_\text{detected}}
+\propto 1/\sqrt{\varepsilon_\text{tot}}$.  Doubling efficiency is equivalent to quadrupling
+measurement time.
+
+\nt{DUNE (neutrino experiment): $6\,\text{m} \times 14\,\text{m} \times 62\,\text{m}$
+detector volume containing 17\,000 tonnes of liquid argon at cryogenic
+temperatures.  The extreme scale is necessary because the cross section for
+neutrino-nucleus interactions is $\sim 10^{-38}\,\text{cm}^2$, requiring
+enormous target mass to achieve measurable statistics.}
+
+\paragraph{Strategies for maximising efficiency.}
+\begin{enumerate}
+  \item Enlarge detector area or use an array of detectors.
+  \item Move detector closer to source (geometric efficiency $\propto 1/d^2$).
+  \item Surround the reaction (gas detectors can provide $4\pi$ coverage).
+  \item Improve data acquisition: fast electronics can reduce dead time and
+  allow a higher fraction of events to be recorded.
+  \item Improve event selection: using trigger criteria to reduce background
+  can effectively raise the signal fraction even if the raw geometric efficiency
+  stays the same.
+\end{enumerate}
+
+%%───────────────────────────────────────────────────────────────────
+\subsection{Particle Tracking}
+\label{subsec:lec07:tracking}
+
+\subsubsection*{Physical Motivation}
+Energy and timing alone often do not tell us everything.  Knowing the
+\emph{trajectory} of a particle provides:
+its direction of emission (→ reaction kinematics), whether it scattered or
+decayed in flight (→ topology), and its curvature in a magnetic field
+(→ momentum and charge sign).
+
+\paragraph{General principle.}
+A tracker measures the position of a particle at several known planes or
+volumes.  By fitting a curve to these space points, one reconstructs the
+3D trajectory.
+
+\subsubsection*{Multi-Wire Proportional Chamber (MWPC)}
+
+A MWPC is a gas detector in which the usual single anode wire is replaced by
+an array of many parallel wires with pitch $\sim 1$–$2\,\text{mm}$.  Each wire
+is read out independently.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[>=Stealth, thick, scale=0.9]
+  % cathode planes
+  \fill[gray!15] (-3,-1.3) rectangle (3,-1.0);
+  \fill[gray!15] (-3,+1.0) rectangle (3,+1.3);
+  \node[right] at (3.1,1.15) {\small cathode};
+  \node[right] at (3.1,-1.15) {\small cathode};
+  % anode wires
+  \foreach \x in {-2.5,-1.5,-0.5,0.5,1.5,2.5}
+    \draw[blue!70!black, line width=1.2pt] (\x,-0.9) -- (\x,+0.9);
+  \node[right] at (3.1,0) {\small anode wires};
+  % field lines (schematic)
+  \draw[orange!60, dashed, <-] (-2.9,0.7) .. controls (-2.9,0.1) .. (-2.5,0);
+  \draw[orange!60, dashed, <-] (0.1,0.7) .. controls (0.1,0.1) .. (0.5,0);
+  % particle track (arrow)
+  \draw[->, red!70!black, very thick] (-2.8,1.5) -- (1.2,-1.5)
+    node[right] {\small track};
+  % ionisation dots
+  \filldraw[red] (-1.8,0.9) circle (2pt);
+  \filldraw[red] (-0.9,0.3) circle (2pt);
+  \filldraw[red] (0.0,-0.3) circle (2pt);
+\end{tikzpicture}
+\caption{Schematic MWPC cross-section.  A charged particle crossing the active
+volume produces ion clusters (red dots).  Electrons drift to the nearest
+anode wire and trigger avalanche multiplication.  The wire that fires identifies
+the $x$-coordinate of the hit with $\sim$mm precision.  Two chambers oriented
+perpendicularly provide 2D (and, combining with drift time, 3D) information.}
+\label{fig:lec07:mwpc}
+\end{figure}
+
+\textbf{How the MWPC gives position.}
+Near each wire the electric field $\propto 1/r$ causes avalanche multiplication
+close to the wire surface.  The avalanche signal is confined to the wire that
+was closest to the ionisation cluster.  Reading out each wire separately maps
+the \emph{hit position} to a single wire channel — i.e., to a known $x$-coordinate.
+
+A second MWPC with wires rotated by $90^\circ$ provides $y$-coordinates.
+Combining both planes gives a 2D hit position; adding the drift time in the gas
+gives a third coordinate.
+
+\textbf{Limitations and successors.}
+MWPC wire pitch is limited to $\sim 1\,\text{mm}$; stringing thousands of wires
+is labour-intensive.  Modern replacements are \emph{Micro-Pattern Gas Detectors}
+(MPGD):
+\begin{itemize}
+  \item \textbf{Micromegas}: fine metallic mesh $\sim 100\,\mu\text{m}$ above a
+  patterned electrode; strong field below mesh produces avalanche.
+  \item \textbf{GEM (Gas Electron Multiplier)}: insulating foil with micro-holes;
+  each hole acts as an independent avalanche region.
+\end{itemize}
+Both achieve spatial resolution $\sim 50$–$100\,\mu\text{m}$ and can be
+fabricated by photolithographic techniques.
+
+\subsubsection*{Silicon Strip and Pixel Detectors}
+
+A thin ($\lesssim 1\,\text{mm}$) silicon diode is segmented into narrow
+strips (pitch $\sim 50$–$100\,\mu\text{m}$) or pixels.  Each strip/pixel
+is read out independently.  A charged particle crossing the detector creates
+electron-hole pairs; the strip closest to the track fires.
+
+By stacking several layers (each with orthogonal strip orientation) one
+reconstructs a full 3D track, as illustrated in Fig.~\ref{fig:lec07:si_tracker}.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[>=Stealth]
+  % Layer 1
+  \fill[blue!10] (-2.5,-0.05) rectangle (2.5,0.05);
+  \draw[blue!60, thin] (-2.5,0) -- (2.5,0);
+  \foreach \x in {-2,-1,0,1,2}
+    \draw[blue!30, very thin] (\x,-0.05) -- (\x,0.05);
+  % Layer 2
+  \fill[blue!10] (-2.5,0.75) rectangle (2.5,0.85);
+  \draw[blue!60, thin] (-2.5,0.8) -- (2.5,0.8);
+  \foreach \x in {-2,-1,0,1,2}
+    \draw[blue!30, very thin] (\x,0.75) -- (\x,0.85);
+  % Layer 3
+  \fill[blue!10] (-2.5,1.55) rectangle (2.5,1.65);
+  \draw[blue!60, thin] (-2.5,1.6) -- (2.5,1.6);
+  \foreach \x in {-2,-1,0,1,2}
+    \draw[blue!30, very thin] (\x,1.55) -- (\x,1.65);
+  % Layer 4
+  \fill[blue!10] (-2.5,2.35) rectangle (2.5,2.45);
+  \draw[blue!60, thin] (-2.5,2.4) -- (2.5,2.4);
+  \foreach \x in {-2,-1,0,1,2}
+    \draw[blue!30, very thin] (\x,2.35) -- (\x,2.45);
+  % particle track
+  \draw[->, red!80!black, thick]
+    (-2.2,-0.3) -- (1.8,2.7) node[right] {\small track};
+  % hit marks (explicit)
+  \draw[red, thick] (-1.85,0) +(-.1,-.1) -- +(.1,.1)
+                    (-1.85,0) +(-.1,.1)  -- +(.1,-.1);
+  \draw[red, thick] (-0.9,0.8) +(-.1,-.1) -- +(.1,.1)
+                    (-0.9,0.8) +(-.1,.1)  -- +(.1,-.1);
+  \draw[red, thick] (0.05,1.6) +(-.1,-.1) -- +(.1,.1)
+                    (0.05,1.6) +(-.1,.1)  -- +(.1,-.1);
+  \draw[red, thick] (1.0,2.4) +(-.1,-.1) -- +(.1,.1)
+                    (1.0,2.4) +(-.1,.1)  -- +(.1,-.1);
+  % labels
+  \node[right] at (2.6,0) {\small layer 1};
+  \node[right] at (2.6,0.8) {\small layer 2};
+  \node[right] at (2.6,1.6) {\small layer 3};
+  \node[right] at (2.6,2.4) {\small layer 4};
+\end{tikzpicture}
+\caption{Four silicon strip detector layers.  Each layer records a hit
+position (cross marks).  Connecting the hits reconstructs the 3D trajectory.
+Alternating strip orientations ($0^\circ$, $90^\circ$, $\ldots$) in successive
+layers provide both transverse coordinates.}
+\label{fig:lec07:si_tracker}
+\end{figure}
+
+\nt{This is the principle of the central tracking detectors in ATLAS and CMS at
+the LHC.  The ``giant wheel'' surrounding the beam axis is largely a silicon
+pixel tracker plus outer strip layers, whose primary purpose is to reconstruct
+particle trajectories and measure their momenta via curvature in the axial
+magnetic field.}
+
+%%───────────────────────────────────────────────────────────────────
+\subsection{Particle Identification}
+\label{subsec:lec07:pid}
+
+\subsubsection*{Physical Motivation}
+So far detectors measured only energy; they were agnostic to particle species.
+In nuclear physics experiments one often needs to know \emph{which particle}
+produced the signal (proton, deuteron, $\alpha$, heavier fragment?).
+Several techniques exploit the mass and charge dependence of energy loss.
+
+\subsubsection*{Method 1: $dE/dx$–Range}
+
+From the Bethe-Bloch formula, at the same energy $E_k$,
+$-dE/dx \propto z^2 M / E_k$ and the range $R \propto E_k/(z^2 M)$.
+A gas (or silicon) detector that is thick enough to stop the particle
+records both the total deposited energy \emph{and} the path length
+(from the track or the stopping position).  The combination
+$(dE/dx,\, \text{range})$ uniquely identifies $(z, M)$.
+
+\subsubsection*{Method 2: $\Delta E$–$E$ Telescope}
+
+\dfn[dfn:dEE_telescope]{$\Delta E$--$E$ Telescope}{%
+A $\Delta E$–$E$ telescope consists of two detectors in series:
+\begin{enumerate}
+  \item A \textbf{thin} ($\Delta E$) detector: the particle passes through,
+  depositing a small fraction of its energy.
+  \item A \textbf{thick} ($E$) detector: the particle stops here, depositing
+  its remaining energy.
+\end{enumerate}
+One records the pair $(\Delta E,\, E_\text{stop})$ for each event.}
+
+\textit{Why does this identify the particle?}
+For a non-relativistic particle of charge $z$, mass $M$, and kinetic energy $E_k$,
+\begin{equation}
+  \label{eq:lec07:dEdx_telescope}
+  -\frac{dE}{dx} \propto \frac{z^2 M}{E_k}.
+\end{equation}
+The energy lost in the $\Delta E$ layer is approximately
+$\Delta E \approx (dE/dx)\cdot\Delta x \propto z^2 M / E_k$.
+But $E_k = \Delta E + E_\text{stop}$, so
+\begin{equation}
+  \label{eq:lec07:dEE_relation}
+  \Delta E \cdot (\Delta E + E_\text{stop}) \propto z^2 M.
+\end{equation}
+Plotting $\Delta E$ vs.\ $E_\text{stop}$, each species $(z, M)$ traces out a
+\textbf{characteristic hyperbola-like curve}.  Different isotopes and elements
+separate cleanly on this plot.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[>=Stealth]
+  \draw[->] (0,0) -- (5.5,0) node[right] {$E_\text{stop}$};
+  \draw[->] (0,0) -- (0,3.5) node[above] {$\Delta E$};
+  % proton curve
+  \draw[blue!70!black, thick, smooth]
+    plot[tension=0.7] coordinates {(0.3,2.8)(0.8,1.8)(1.8,1.0)(3.5,0.5)(5.0,0.3)};
+  \node[blue!70!black] at (1.2,2.3) {\small $p$};
+  % deuteron curve
+  \draw[green!60!black, thick, smooth]
+    plot[tension=0.7] coordinates {(0.4,3.1)(1.0,2.2)(2.2,1.3)(4.0,0.7)};
+  \node[green!60!black] at (1.6,2.7) {\small $d$};
+  % alpha curve
+  \draw[red!70!black, thick, smooth]
+    plot[tension=0.7] coordinates {(0.2,3.3)(0.5,2.8)(1.0,2.2)(2.0,1.6)(3.5,1.1)};
+  \node[red!70!black] at (0.7,3.15) {\small $\alpha$};
+\end{tikzpicture}
+\caption{Schematic $\Delta E$–$E$ plot.  Each particle species traces a
+distinct locus.  Protons ($z{=}1$, $M{=}1$), deuterons ($z{=}1$, $M{=}2$),
+and $\alpha$ particles ($z{=}2$, $M{=}4$) separate cleanly, allowing
+unambiguous identification.}
+\label{fig:lec07:dEE}
+\end{figure}
+
+\textit{Significance:} The $\Delta E$–$E$ telescope is one of the most widely
+used particle identification methods in nuclear physics.  It requires only two
+detectors and is straightforward to implement with either scintillators or
+solid-state devices.
+
+\subsubsection*{Method 3: Gamma–Charged Coincidence}
+
+The $\gamma$-ray spectrum emitted by a nucleus is a unique fingerprint of that
+isotope (analogous to atomic emission lines).  If a nuclear reaction produces a
+specific isotope in an excited state, the characteristic de-excitation $\gamma$
+rays can be measured in coincidence with the charged particle.  Together,
+$(E_\text{charged},\, E_\gamma)$ identify both the isotope and its excitation energy.
+
+%%───────────────────────────────────────────────────────────────────
+\subsection{Time-of-Flight for Neutron Energy Measurement}
+\label{subsec:lec07:tof}
+
+\subsubsection*{Physical Motivation}
+Neutrons have no charge and cannot be detected directly.  The standard approach
+is \emph{conversion}: a nuclear reaction produces a charged particle that can
+be detected.  However, for $^6\text{Li}$-based converters (reaction
+$n + {}^6\text{Li} \to {}^4\text{He} + {}^3\text{H}$), the light output is
+dominated by the $Q$-value of the conversion reaction ($Q = 4.78\,\text{MeV}$),
+\emph{not} by the incoming neutron energy.  There is therefore no direct
+energy-to-light correlation, and one cannot measure $E_n$ from pulse height
+alone.
+
+\dfn[dfn:tof]{Time-of-Flight (ToF) Method}{%
+Produce neutrons in \textbf{pulses} at a known position.  Start a clock when
+the pulse is produced (e.g., using the beam pick-up signal from the accelerator);
+stop the clock when a neutron is detected at distance $d$.  The neutron energy
+is then:
+\begin{equation}
+  \label{eq:lec07:tof}
+  \boxed{E_n = \frac{1}{2}m_n\left(\frac{d}{t_\text{ToF}}\right)^2,}
+\end{equation}
+valid for $E_n \ll m_n c^2 = 939.6\,\text{MeV}$ (non-relativistic regime).}
+
+\textit{Significance:} ToF is the standard technique for measuring neutron
+energy spectra in nuclear physics.  The energy resolution improves with longer
+flight paths (better time-to-energy discrimination) but at the cost of reduced
+geometric efficiency.
+
+\paragraph{Experimental example.}
+In a recent experiment at a small accelerator in Braunschweig (Germany), protons
+impinged on an ${}^{18}\text{O}$ target:
+\begin{equation}
+  p + {}^{18}\text{O} \to {}^{18}\text{F} + n.
+\end{equation}
+The neutron energy spectrum was measured by ToF using a $^6\text{LiF}$ scintillator
+detector.  The proton beam was pulsed; the beam pick-up signal started the clock,
+and the scintillator signal stopped it.  From Eq.~\eqref{eq:lec07:tof}, each
+recorded time difference converts directly to a neutron energy.
+
+%%───────────────────────────────────────────────────────────────────
+\subsection{Experimental Spectra}
+\label{subsec:lec07:spectra}
+
+\subsubsection*{Alpha Spectrum of the $^{228}$Th Decay Chain}
+
+\subsubsection*{Physical Motivation}
+Thorium-228 undergoes a long series of successive $\alpha$ and $\beta$ decays.
+Each $\alpha$-decaying isotope in the chain emits $\alpha$ particles at a
+\emph{unique, discrete} energy — a direct consequence of energy-momentum
+conservation and the discrete nuclear energy levels.
+
+The chain ${}^{228}\text{Th} \to \cdots \to {}^{208}\text{Pb}$ includes:
+\begin{equation*}
+  {}^{228}\text{Th} \xrightarrow{\alpha}
+  {}^{224}\text{Ra} \xrightarrow{\alpha}
+  {}^{220}\text{Rn} \xrightarrow{\alpha}
+  {}^{216}\text{Po} \xrightarrow{\alpha}
+  {}^{212}\text{Pb} \xrightarrow{\beta}
+  {}^{212}\text{Bi} \xrightarrow{\beta+\alpha}
+  {}^{208}\text{Pb}.
+\end{equation*}
+A silicon detector placed near a $^{228}$Th source records all $\alpha$ peaks
+simultaneously, since the chain quickly reaches secular equilibrium.
+
+\textbf{Key features of the measured spectrum:}
+\begin{itemize}
+  \item \textbf{Sharp peaks}: each peak corresponds to one $\alpha$-emitting
+  isotope; peak width reflects the detector energy resolution ($\sim 0.1\,\%$
+  for silicon at room temperature).
+  \item \textbf{No background}: charged particles deposit \emph{all} their
+  energy in the detector; there is no Compton continuum analogue.
+  \item \textbf{Low-energy tail}: ``incomplete energy collection'' — some
+  $\alpha$-produced ions recombine near the surface or in the dead layer before
+  being swept out, leading to a slight tail below the main peak.
+  This is a detector artefact, not physics.
+  \item \textbf{Axis in channels}: the ADC converts the signal height (voltage)
+  to a channel number.  Calibration maps channel $\leftrightarrow$ energy using
+  the known $\alpha$ energies of the isotopes in the chain.
+\end{itemize}
+
+\subsubsection*{Gamma Spectrum of $^{60}$Co with HPGe Detector}
+
+$^{60}$Co decays via $\beta^-$ to an excited state of $^{60}$Ni, which
+de-excites by emitting two $\gamma$ rays in cascade:
+$E_{\gamma_1} \approx 1173\,\text{keV}$ and $E_{\gamma_2} \approx 1333\,\text{keV}$.
+
+An HPGe (high-purity germanium) detector provides energy resolution of
+$\sim 0.1\,\%$, resolving these two lines clearly.  The spectrum shows
+(on a log scale):
+
+\paragraph{Photo peaks.}
+Two narrow peaks at $1173$ and $1333\,\text{keV}$.  A photon is completely
+absorbed by the photoelectric effect (or a sequence of interactions whose net
+result is complete energy deposition); all its energy goes to one electron
+(minus the small binding energy).  The resulting sharp spike is the
+\emph{full-energy peak} (commonly called the \emph{photo peak}).
+
+\paragraph{Compton continuum.}
+The dominant feature across most of the spectrum.  A $\gamma$ scatters
+off a quasi-free electron (Compton scattering), depositing a \emph{continuous}
+range of electron energies from near zero up to the Compton edge:
+\begin{equation}
+  \label{eq:lec07:compton_edge_spectrum}
+  T_{e,\max} = E_\gamma - \frac{E_\gamma}{1 + 2E_\gamma/m_e c^2}.
+\end{equation}
+For $E_{\gamma_1} = 1173\,\text{keV}$, this gives $T_{e,\max} \approx 963\,\text{keV}$;
+for $E_{\gamma_2} = 1333\,\text{keV}$, $T_{e,\max} \approx 1118\,\text{keV}$.
+The spectrum shows \textbf{two Compton edges} — characteristic step-like drops
+at these energies — visible even on the log scale.
+
+\paragraph{Log scale is essential.}
+On a linear scale only the two photo peaks are visible; all other features are
+invisible.  The log scale reveals:
+\begin{enumerate}
+  \item Two Compton edges (as sharp drops in the continuum).
+  \item The region between the Compton edge and the photo peak
+  (``Compton valley'') contains contributions from multiple scatters.
+  \item A $511\,\text{keV}$ annihilation peak (weak, from pair production
+  followed by positron annihilation) is visible in principle but requires
+  a strong source.
+\end{enumerate}
+
+\nt{The photo peak is not \emph{exclusively} from the photoelectric effect.
+Compton scattering followed by complete absorption of the scattered photon also
+deposits the full photon energy.  Monte Carlo simulations show that pair
+production (above threshold) and multiple Compton scatters all contribute to
+the full-energy peak.}
+
+%%───────────────────────────────────────────────────────────────────
+\subsection*{Key Takeaways}
+%%───────────────────────────────────────────────────────────────────
+\begin{itemize}
+  \item \textbf{Bethe-Bloch correction:} the projectile mass $M$ does
+  not appear in $-dE/dx(v)$; it enters only when converting to
+  $-dE/dx(E_k)$ via $v^2 = 2E_k/M$.  At the same energy, stopping power
+  ratios go as $z^2 M$.  An $\alpha$ is stopped $16\times$ more efficiently
+  than a proton at the same $E_k$.
+  \item \textbf{Energy resolution:} limited by $\sigma_E/E = \sqrt{W/E}$.
+  Silicon ($W \approx 3\,\text{eV}$) gives $\sim 0.1\,\%$; gas ($W \approx
+  30\,\text{eV}$) gives ideal $\sim 0.5\,\%$ but worse in practice.
+  \item \textbf{Efficiency:} $\varepsilon_\text{tot} = \varepsilon_\text{geo}
+  \times \varepsilon_\text{int}$; geometric efficiency $\propto 1/d^2$.
+  For rare processes, maximising efficiency is a primary design driver.
+  \item \textbf{Tracking:} MWPC, MPGD (micromegas/GEM), silicon strip/pixel
+  detectors all reconstruct 3D particle trajectories; silicon gives
+  $\sim 50\,\mu\text{m}$ resolution.
+  \item \textbf{Particle ID:} $\Delta E$–$E$ telescope identifies species via
+  $\Delta E \cdot E_\text{tot} \propto z^2 M$; each species maps to a distinct
+  curve in the $(\Delta E, E_\text{stop})$ plane.
+  \item \textbf{Neutron energy:} measured by ToF since direct energy-to-light
+  conversion fails in conversion detectors.
+  $E_n = \tfrac{1}{2}m_n(d/t)^2$ (non-relativistic).
+\end{itemize}

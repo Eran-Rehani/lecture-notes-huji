@@ -1,0 +1,481 @@
+%% Lecture 07 — Rotating Cylinder and Elastic Waves in Solids
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\section{Lecture 07 — Rotating Cylinder and Elastic Waves in Solids}\label{sec:lec07}
+\date{April 29, 2026}
+
+\subsection*{Overview}
+This lecture has two main goals. First, we use the field equations of linear isotropic elasticity to solve a concrete two-dimensional problem from Landau--Lifshitz: the deformation of a uniformly rotating cylinder whose length is constrained. The centrifugal body force stretches the cylinder radially, while the free outer boundary fixes the integration constant through the condition of zero radial traction. Second, we add time dependence to the Lamé--Navier equation and show that an elastic solid supports two kinds of sound waves: \textbf{longitudinal waves}, in which the displacement is parallel to the direction of propagation, and \textbf{transverse waves}, in which the displacement is perpendicular to it. Their different speeds are controlled by different elastic moduli.
+
+\subsection*{How to Read This Lecture}
+The safest way to follow the calculation is to keep asking three questions.
+\begin{enumerate}
+    \item \textbf{What is the displacement field allowed to be?} Symmetry is the main simplifier. In the cylinder problem it reduces the vector field $\vec{u}$ to one scalar function $u(r)$. In the wave problem it reduces the discussion to the relation between $\vec{k}$ and the polarization $\vec{u}_0$.
+    \item \textbf{What force is being balanced?} In the rotating cylinder the elastic force balances the centrifugal body force. In the wave problem the elastic force produces acceleration.
+    \item \textbf{Which elastic modulus appears, and why?} Compression-like motion uses $M=\lambda+2\mu$; shear-like motion uses $\mu=G$. This is the conceptual thread connecting the static cylinder problem to sound waves in solids.
+\end{enumerate}
+The algebra below is written so that every integration constant is tied to a physical condition: regularity at the axis, zero traction on a free surface, or the polarization constraint of a plane wave.
+
+%%────────────────────────────────────────────────────────────
+\subsection*{Part I — Recap of the Elasticity Field Equations}
+%%────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+Before solving a new problem, it is useful to identify the three ingredients of the theory. The displacement field describes what the material points do, the strain tensor extracts the local deformation from the displacement, and the stress tensor gives the internal force response. Equilibrium, or later dynamics, then tells us how the stress field balances the applied body forces.
+
+The fundamental unknown is the displacement field
+\[
+    \vec{u}(\vec{x}) = u_i(\vec{x})\,\hat{e}_i,
+\]
+where $u_i$ is the displacement of the material point initially located at $\vec{x}$. For small deformations the strain tensor is the symmetric derivative:
+\begin{equation}
+    \varepsilon_{ij}
+    = \frac{1}{2}\left(\partial_i u_j+\partial_j u_i\right).
+    \label{eq:lec07_strain_def}
+\end{equation}
+For a homogeneous, isotropic, linear elastic material, Hooke's law can be written in Lamé form:
+\begin{equation}
+    \boxed{\sigma_{ij}
+    = \lambda\,\varepsilon_{kk}\,\delta_{ij}
+      +2\mu\,\varepsilon_{ij}.}
+    \label{eq:lec07_hooke_lame}
+\end{equation}
+\textit{Physical significance:} the coefficient $\lambda$ controls the part of the stress coupled to volume change, while $\mu=G$ is the shear modulus controlling shape change.
+
+For use as a problem-solving checklist, read~\eqref{eq:lec07_hooke_lame} as follows. First compute the strain from the displacement. Then split the response into a trace part, $\varepsilon_{kk}$, and a component-by-component part, $\varepsilon_{ij}$. The trace is the part that knows about local volume change; the remaining information is what distinguishes stretching in one direction from stretching in another.
+
+The static force-balance equation is
+\begin{equation}
+    \partial_j\sigma_{ij}+\rho f_i = 0,
+    \label{eq:lec07_static_equilibrium}
+\end{equation}
+where $\rho f_i$ is the body force per unit volume. Substituting~\eqref{eq:lec07_strain_def} and~\eqref{eq:lec07_hooke_lame} gives the Lamé--Navier equation:
+\begin{equation}
+    \boxed{
+    (\lambda+\mu)\vec{\nabla}(\vec{\nabla}\cdot\vec{u})
+    +\mu\nabla^2\vec{u}
+    +\rho\vec{f}=0.}
+    \label{eq:lec07_lame_navier_static}
+\end{equation}
+\textit{Physical significance:} the elastic restoring force density is the sum of a compressional response and a shear response, and in equilibrium it cancels the external body force density.
+
+The divergence of the displacement is especially important:
+\begin{equation}
+    \vec{\nabla}\cdot\vec{u}
+    = \partial_i u_i
+    = \varepsilon_{ii}
+    = \mathrm{Tr}\,\varepsilon
+    \simeq \frac{\Delta V}{V}.
+    \label{eq:lec07_div_volume_change}
+\end{equation}
+Thus $\vec{\nabla}\cdot\vec{u}$ is the relative volume change to first order in the displacement gradients.
+
+Using
+\begin{equation}
+    \vec{\nabla}(\vec{\nabla}\cdot\vec{u})
+    = \nabla^2\vec{u}
+      +\vec{\nabla}\times(\vec{\nabla}\times\vec{u}),
+    \label{eq:lec07_curl_identity}
+\end{equation}
+the Lamé--Navier equation can also be written as
+\begin{equation}
+    \boxed{
+    M\,\vec{\nabla}(\vec{\nabla}\cdot\vec{u})
+    -\mu\,\vec{\nabla}\times(\vec{\nabla}\times\vec{u})
+    +\rho\vec{f}=0,}
+    \qquad
+    M=\lambda+2\mu.
+    \label{eq:lec07_lame_navier_curl_static}
+\end{equation}
+\textit{Physical significance:} this form separates the irrotational, volume-changing part of the deformation from the rotational, shear-like part. The modulus $M$ is the constrained modulus introduced in Lecture 06.
+
+%%────────────────────────────────────────────────────────────
+\subsection*{Part II — Rotating Cylinder with Constrained Length}
+%%────────────────────────────────────────────────────────────
+
+\subsubsection*{Problem statement}
+
+Consider a homogeneous elastic cylinder of radius $R$, density $\rho$, Young's modulus $E$, and Poisson ratio $\nu$. The cylinder rotates uniformly around its symmetry axis with angular velocity $\omega$. Its length is constrained, so there is no axial deformation:
+\[
+    u_z=0,
+    \qquad
+    \varepsilon_{zz}=0.
+\]
+We seek the radial displacement $u(r)$ caused by the centrifugal force.
+
+\subsubsection*{Physical Motivation}
+In the rotating frame each material element feels an outward centrifugal body force proportional to its distance from the axis. The center cannot choose a preferred direction, so the radial displacement must vanish there. The outer cylindrical surface is free: it may move, but no external pressure or support applies a radial traction. Therefore the problem is determined by regularity at $r=0$ and zero radial stress at $r=R$.
+
+\subsubsection*{Symmetry reduction}
+
+By cylindrical symmetry the displacement field has the form
+\begin{equation}
+    \vec{u}(r)=u(r)\,\hat{r}.
+    \label{eq:lec07_cylinder_displacement_ansatz}
+\end{equation}
+It has no $\phi$ or $z$ dependence, and it has no azimuthal or axial component. This field is irrotational:
+\begin{equation}
+    \vec{\nabla}\times\vec{u}=0.
+    \label{eq:lec07_cylinder_curl_zero}
+\end{equation}
+The centrifugal body force per unit volume is
+\begin{equation}
+    \rho\vec{f}
+    =\rho\omega^2 r\,\hat{r}.
+    \label{eq:lec07_centrifugal_force}
+\end{equation}
+Using~\eqref{eq:lec07_lame_navier_curl_static}, the equilibrium equation becomes
+\begin{equation}
+    M\,\vec{\nabla}(\vec{\nabla}\cdot\vec{u})
+    +\rho\omega^2 r\,\hat{r}=0.
+    \label{eq:lec07_cylinder_equilibrium}
+\end{equation}
+
+\subsubsection*{Boundary conditions}
+
+The free outer boundary has no applied traction:
+\begin{equation}
+    \sigma_{ij}n_j=0
+    \quad\text{at }r=R.
+    \label{eq:lec07_cylinder_free_surface_vector}
+\end{equation}
+Since $n_j=\hat{r}_j$, and by symmetry the shear traction vanishes, the relevant scalar condition is
+\begin{equation}
+    \sigma_{rr}(R)=0.
+    \label{eq:lec07_cylinder_free_surface}
+\end{equation}
+At the axis the displacement must be regular:
+\begin{equation}
+    u(0)=0
+    \quad\text{and }u(r)\text{ finite as }r\to0.
+    \label{eq:lec07_cylinder_axis_regularity}
+\end{equation}
+
+These two boundary conditions play different roles. The condition at $r=0$ is not an applied constraint; it only rules out unphysical singular solutions. The condition at $r=R$ is a real mechanical statement: the surface is free, so the material cannot transmit a normal force to something outside it.
+
+\subsubsection*{Physical Motivation}
+The force equation is second order in $u(r)$, but the centrifugal force is the gradient of a scalar potential proportional to $r^2$. Because the displacement is radial and curl-free, the full vector equation collapses to the gradient of a scalar expression. This gives a first integral before we solve the remaining first-order equation.
+
+\subsubsection*{First integral}
+
+For the radial field~\eqref{eq:lec07_cylinder_displacement_ansatz},
+\begin{equation}
+    \vec{\nabla}\cdot\vec{u}
+    = \frac{1}{r}\frac{d}{dr}\bigl(r u(r)\bigr)
+    = u'(r)+\frac{u(r)}{r}.
+    \label{eq:lec07_cylinder_divergence}
+\end{equation}
+Also,
+\[
+    \rho\omega^2 r\,\hat{r}
+    = \vec{\nabla}\left(\frac{1}{2}\rho\omega^2 r^2\right).
+\]
+Therefore~\eqref{eq:lec07_cylinder_equilibrium} is
+\begin{equation}
+    \vec{\nabla}\left[
+        M\left(u'(r)+\frac{u(r)}{r}\right)
+        +\frac{1}{2}\rho\omega^2 r^2
+    \right]=0.
+    \label{eq:lec07_cylinder_gradient_zero}
+\end{equation}
+The bracket must be constant; call it $A$:
+\begin{equation}
+    M\left(u'(r)+\frac{u(r)}{r}\right)
+    +\frac{1}{2}\rho\omega^2 r^2
+    = A.
+    \label{eq:lec07_cylinder_first_integral}
+\end{equation}
+
+\subsubsection*{Solving for the displacement}
+
+Equation~\eqref{eq:lec07_cylinder_first_integral} gives
+\[
+    u'(r)+\frac{u(r)}{r}
+    = \frac{A}{M}-\frac{\rho\omega^2}{2M}r^2.
+\]
+Multiplying by $r$,
+\[
+    \frac{d}{dr}\bigl(r u(r)\bigr)
+    = \frac{A}{M}r-\frac{\rho\omega^2}{2M}r^3.
+\]
+Integrating,
+\begin{equation}
+    r u(r)
+    = \frac{A}{2M}r^2
+      -\frac{\rho\omega^2}{8M}r^4+B,
+    \label{eq:lec07_cylinder_integrated_ru}
+\end{equation}
+and therefore
+\begin{equation}
+    u(r)
+    = \frac{A}{2M}r
+      -\frac{\rho\omega^2}{8M}r^3
+      +\frac{B}{r}.
+    \label{eq:lec07_cylinder_general_u}
+\end{equation}
+Regularity at the axis requires $B=0$.
+
+It remains to determine $A$ from $\sigma_{rr}(R)=0$. With $\varepsilon_{zz}=0$,
+\[
+    \varepsilon_{rr}=u'(r),
+    \qquad
+    \varepsilon_{\phi\phi}=\frac{u(r)}{r},
+    \qquad
+    \varepsilon_{kk}=u'(r)+\frac{u(r)}{r}.
+\]
+Hooke's law gives
+\begin{equation}
+    \sigma_{rr}
+    = \lambda\left(u'(r)+\frac{u(r)}{r}\right)
+      +2\mu u'(r).
+    \label{eq:lec07_cylinder_sigma_rr}
+\end{equation}
+Using~\eqref{eq:lec07_cylinder_general_u} with $B=0$,
+\[
+    u'(r)=\frac{A}{2M}-\frac{3\rho\omega^2}{8M}r^2,
+    \qquad
+    u'(r)+\frac{u(r)}{r}
+    =\frac{A}{M}-\frac{\rho\omega^2}{2M}r^2.
+\]
+Thus
+\[
+    \sigma_{rr}(R)
+    =\frac{\lambda+\mu}{M}A
+      -\frac{\rho\omega^2R^2}{M}\left(\frac{\lambda}{2}+\frac{3\mu}{4}\right).
+\]
+The condition $\sigma_{rr}(R)=0$ fixes
+\begin{equation}
+    A=\frac{3-2\nu}{4}\,\rho\omega^2R^2.
+    \label{eq:lec07_cylinder_A_value}
+\end{equation}
+Substituting into~\eqref{eq:lec07_cylinder_general_u},
+\begin{equation}
+    \boxed{
+    u(r)=\frac{\rho\omega^2}{8M}
+    \left[(3-2\nu)R^2r-r^3\right].}
+    \label{eq:lec07_cylinder_displacement}
+\end{equation}
+\textit{Physical significance:} every circular material ring moves outward. The displacement is zero at the axis by symmetry and increases toward the free outer boundary.
+
+The radial displacement of the outer surface is
+\begin{equation}
+    \boxed{
+    u(R)=\frac{\rho\omega^2R^3}{4M}(1-\nu).}
+    \label{eq:lec07_cylinder_edge_displacement}
+\end{equation}
+\textit{Physical significance:} the total radial expansion grows with density, angular speed squared, and radius cubed, and is suppressed by the constrained modulus $M$.
+
+Notice the hierarchy of information in this answer. The dependence $u(R)\propto\omega^2$ comes from the centrifugal acceleration, the dependence $u(R)\propto R^3$ comes from integrating a body force that grows like $r$, and the factor $1/M$ says that a stiffer material deforms less under the same rotation.
+
+\subsubsection*{Checks on the result}
+
+\paragraph{Dimensions.}
+The factor $\rho\omega^2R^3/M$ has dimensions
+\[
+    \frac{(\mathrm{mass}/\mathrm{length}^3)(1/\mathrm{time}^2)\mathrm{length}^3}
+         {\mathrm{force}/\mathrm{length}^2}
+    =\mathrm{length},
+\]
+so both~\eqref{eq:lec07_cylinder_displacement} and~\eqref{eq:lec07_cylinder_edge_displacement} have the correct units.
+
+\paragraph{Sign.}
+For physical materials $-1<\nu<1/2$. Since $0\le r\le R$,
+\[
+    (3-2\nu)R^2r-r^3
+    =r\left[(3-2\nu)R^2-r^2\right]
+    \ge r\left[(2-2\nu)R^2\right]\ge0.
+\]
+Thus $u(r)\ge0$: the cylinder expands outward, as expected from the centrifugal force.
+
+\paragraph{Free boundary.}
+The constant $A$ was chosen so that $\sigma_{rr}(R)=0$. The outer surface is therefore not held fixed; it is free to move, but no external radial stress acts on it.
+
+%%────────────────────────────────────────────────────────────
+\subsection*{Part III — Elastic Waves and Sound in Solids}
+%%────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+Equilibrium problems answer what shape a solid takes after forces settle down. To describe sound, vibrations, and seismic waves, we must allow the displacement field to depend on time. Each material element now has acceleration, so the divergence of the stress is no longer zero: it supplies mass times acceleration per unit volume.
+
+Without external body force, Newton's law per unit volume is
+\begin{equation}
+    \partial_j\sigma_{ij}
+    = \rho\,\ddot{u}_i.
+    \label{eq:lec07_dynamic_balance_components}
+\end{equation}
+Using the same Hooke law and kinematics as before,
+\begin{equation}
+    \boxed{
+    \rho\,\ddot{\vec{u}}
+    =(\lambda+\mu)\vec{\nabla}(\vec{\nabla}\cdot\vec{u})
+     +\mu\nabla^2\vec{u}.}
+    \label{eq:lec07_elastic_wave_equation}
+\end{equation}
+\textit{Physical significance:} this is the wave equation of an elastic solid. Its vector nature is the new ingredient: the direction of displacement can be either parallel or perpendicular to the direction of propagation.
+
+Using~\eqref{eq:lec07_curl_identity}, the same equation can be written as
+\begin{equation}
+    \rho\,\ddot{\vec{u}}
+    =M\,\vec{\nabla}(\vec{\nabla}\cdot\vec{u})
+     -\mu\,\vec{\nabla}\times(\vec{\nabla}\times\vec{u}).
+    \label{eq:lec07_elastic_wave_equation_curl}
+\end{equation}
+
+\subsubsection*{Physical Motivation}
+The material is homogeneous, so the coefficients in the wave equation are constant. As in every linear constant-coefficient wave problem, plane waves diagonalize the equation. The new question is how the polarization vector $\vec{u}_0$ is oriented relative to the wave vector $\vec{k}$.
+
+Take a monochromatic plane wave
+\begin{equation}
+    \vec{u}(\vec{x},t)
+    =\vec{u}_0\,e^{i(\vec{k}\cdot\vec{x}-\omega t)},
+    \label{eq:lec07_plane_wave_ansatz}
+\end{equation}
+where $\vec{k}$ is the wave vector, $\omega$ is the angular frequency, and $\vec{u}_0$ is the constant polarization vector. For this ansatz,
+\[
+    \vec{\nabla}\to i\vec{k},
+    \qquad
+    \partial_t^2\to -\omega^2.
+\]
+
+\subsubsection*{Longitudinal waves}
+
+For a longitudinal wave,
+\begin{equation}
+    \vec{u}_0\parallel\vec{k}.
+    \label{eq:lec07_longitudinal_polarization}
+\end{equation}
+Then $\vec{k}\times\vec{u}_0=0$, so the curl term in~\eqref{eq:lec07_elastic_wave_equation_curl} vanishes. Substitution gives
+\[
+    -\rho\omega^2\vec{u}
+    = -M k^2\vec{u}.
+\]
+Therefore
+\begin{equation}
+    \boxed{
+    \omega^2=c_L^2k^2,
+    \qquad
+    c_L^2=\frac{M}{\rho}
+    =\frac{\lambda+2\mu}{\rho}.}
+    \label{eq:lec07_longitudinal_speed}
+\end{equation}
+\textit{Physical significance:} longitudinal waves compress and expand the material as they pass, so their speed is set by the constrained compressional stiffness $M$ divided by the density.
+
+\subsubsection*{Transverse waves}
+
+For a transverse wave,
+\begin{equation}
+    \vec{u}_0\perp\vec{k}.
+    \label{eq:lec07_transverse_polarization}
+\end{equation}
+Then $\vec{k}\cdot\vec{u}_0=0$, so $\vec{\nabla}\cdot\vec{u}=0$ and the compressional term in~\eqref{eq:lec07_elastic_wave_equation} vanishes. Substitution gives
+\[
+    -\rho\omega^2\vec{u}
+    =-\mu k^2\vec{u}.
+\]
+Thus
+\begin{equation}
+    \boxed{
+    \omega^2=c_T^2k^2,
+    \qquad
+    c_T^2=\frac{G}{\rho}=\frac{\mu}{\rho}.}
+    \label{eq:lec07_transverse_speed}
+\end{equation}
+\textit{Physical significance:} transverse waves shear the material without changing its volume to first order, so their speed is controlled only by the shear modulus.
+
+There are three independent polarizations for a given propagation direction in an isotropic solid: one longitudinal polarization and two transverse polarizations. A general small disturbance can be decomposed into a superposition of plane waves with these polarizations.
+
+\subsubsection*{Comparison with fluids and physical interpretation}
+
+Sound in air or water is a longitudinal pressure-density wave. Fluids have no static shear modulus, so they do not support bulk transverse sound waves. Solids do have a shear modulus, and therefore support both longitudinal and transverse elastic waves. This is the same distinction used in seismology: the faster compressional wave arrives first, followed by the slower shear wave.
+
+For ordinary materials with positive Poisson ratio, $M>G$, so
+\begin{equation}
+    c_L>c_T.
+    \label{eq:lec07_speed_ordering}
+\end{equation}
+The lecture emphasized the spring analogy:
+\[
+    \omega^2\sim \frac{\text{stiffness}}{\text{mass}},
+    \qquad
+    c^2\sim \frac{\text{elastic modulus}}{\text{mass density}}.
+\]
+The modulus in the numerator depends on the kind of deformation: $M$ for longitudinal compression, $G$ for transverse shear.
+
+%%────────────────────────────────────────────────────────────
+\subsection*{Part IV — Numerical Example: Sound Speeds in Steel}
+%%────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+The formulas for $c_L$ and $c_T$ are not only formal. They let us estimate real sound speeds from tabulated material data. Steel is much denser than air, but it is enormously stiffer, and the stiffness wins: sound travels much faster in steel than in air.
+
+Use representative steel values
+\begin{equation}
+    E\simeq 200\,\mathrm{GPa},
+    \qquad
+    \nu\simeq0.28,
+    \qquad
+    \rho\simeq7.8\times10^3\,\mathrm{kg/m^3}.
+    \label{eq:lec07_steel_data}
+\end{equation}
+The shear modulus is
+\begin{equation}
+    G=\mu=\frac{E}{2(1+\nu)}
+    \simeq
+    \frac{200\,\mathrm{GPa}}{2(1.28)}
+    \simeq 78\,\mathrm{GPa}.
+    \label{eq:lec07_steel_shear_modulus}
+\end{equation}
+The transverse speed is therefore
+\begin{equation}
+    \boxed{
+    c_T=\sqrt{\frac{G}{\rho}}
+    \simeq
+    \sqrt{\frac{78\times10^9}{7.8\times10^3}}
+    \simeq3.2\,\mathrm{km/s}.}
+    \label{eq:lec07_steel_transverse_speed}
+\end{equation}
+\textit{Physical significance:} shear waves in steel travel several kilometers per second because steel has a large shear stiffness compared with its mass density.
+
+The constrained modulus is
+\begin{equation}
+    M=\frac{E(1-\nu)}{(1+\nu)(1-2\nu)}
+    \simeq
+    \frac{200\,\mathrm{GPa}\cdot0.72}{1.28\cdot0.44}
+    \simeq256\,\mathrm{GPa}.
+    \label{eq:lec07_steel_constrained_modulus}
+\end{equation}
+Thus
+\begin{equation}
+    \boxed{
+    c_L=\sqrt{\frac{M}{\rho}}
+    \simeq
+    \sqrt{\frac{256\times10^9}{7.8\times10^3}}
+    \simeq5.7\,\mathrm{km/s}.}
+    \label{eq:lec07_steel_longitudinal_speed}
+\end{equation}
+\textit{Physical significance:} longitudinal waves travel faster than transverse waves because compression in a constrained solid is stiffer than shear.
+
+Measured sound speeds in steel depend on the exact alloy and elastic constants; values around $3.2\,\mathrm{km/s}$ for transverse waves and about $5.9\,\mathrm{km/s}$ for longitudinal waves are consistent with the order-of-magnitude estimate above. The small discrepancy is not a new physical correction in this model, but mostly a reminder that ``steel'' is not a single material with one exact pair of elastic constants.
+
+%%────────────────────────────────────────────────────────────
+\subsection*{Summary}
+%%────────────────────────────────────────────────────────────
+
+The rotating-cylinder problem illustrates the standard elasticity workflow: identify symmetry, reduce the displacement field, write the force-balance equation, impose a free-traction boundary condition, and check the result physically. The wave problem shows what changes when time dependence is added: the same elastic restoring force now produces acceleration, and because $\vec{u}$ is a vector, the solid supports both longitudinal and transverse sound waves with different speeds.
+
+%%────────────────────────────────────────────────────────────
+\subsection*{Further Reading}
+%%────────────────────────────────────────────────────────────
+
+The following references are useful for deepening the material in this lecture.
+
+\begin{itemize}
+    \item \textbf{L. D. Landau, E. M. Lifshitz, A. M. Kosevich, and L. P. Pitaevskii, \textit{Theory of Elasticity}, Course of Theoretical Physics, Vol. 7.} This is the closest textbook match to the lecture style and includes both the rotating-cylinder problem set and elastic waves. URL: \href{https://shop.elsevier.com/books/theory-of-elasticity/landau/978-0-08-057069-3}{Elsevier book page}.
+    \item \textbf{Martin H. Sadd, \textit{Elasticity: Theory, Applications, and Numerics}.} Good for a more engineering-oriented and pedagogical development of linear elasticity, curvilinear coordinates, and boundary-value problems. URL: \href{https://shop.elsevier.com/books/elasticity/sadd/978-0-443-13245-2}{Elsevier latest-edition page}.
+    \item \textbf{B. A. Auld, \textit{Acoustic Fields and Waves in Solids}.} A detailed reference once the elastic-wave part becomes the main topic, especially for polarization, wave modes, and acoustic propagation in solids. URL: \href{https://books.google.com/books/about/Acoustic_Fields_and_Waves_in_Solids.html?id=1JMpAQAAMAAJ}{Google Books entry}.
+    \item \textbf{MIT OpenCourseWare 12.005, \textit{Applications of Continuum Mechanics to Earth, Atmospheric, and Planetary Sciences}.} Useful free lecture notes for stress, strain, elasticity, tensors, and geophysical applications of continuum mechanics. URL: \href{https://ocw.mit.edu/courses/12-005-applications-of-continuum-mechanics-to-earth-atmospheric-and-planetary-sciences-spring-2006/resources/lec15/}{MIT OCW elasticity/moduli note}.
+    \item \textbf{MIT OpenCourseWare 6.641, Lecture 16: \textit{Elastic Waves on a Thin Rod}.} A focused free note on deriving and interpreting elastic waves in a simple one-dimensional setting before moving to full vector waves in solids. URL: \href{https://ocw.mit.edu/courses/6-641-electromagnetic-fields-forces-and-motion-spring-2009/resources/mit6_641s09_lec16/}{MIT OCW elastic-waves note}.
+\end{itemize}
+
+\end{document}

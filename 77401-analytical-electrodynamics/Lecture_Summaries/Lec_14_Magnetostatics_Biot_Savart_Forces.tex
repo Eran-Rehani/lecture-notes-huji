@@ -1,0 +1,483 @@
+%% Lecture 14 -- Magnetostatics, Biot-Savart law, and magnetic forces
+\section{Lecture 14 -- Magnetostatics, Biot-Savart Law, and Magnetic Forces}\label{sec:lec14}
+
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 24/05/2026 & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+
+\subsection*{Overview}
+
+This lecture starts a new static sector of Maxwell theory.  In electrostatics we
+isolated the time-reversal invariant sector: no currents, no magnetic field, and
+only the scalar potential $\phi$ remained.  Magnetostatics is different.  The fields
+are still time independent, but the sources are steady currents.  The main results are:
+\begin{itemize}
+  \item magnetostatics describes neutral systems with steady currents, not static
+        point charges sitting at rest;
+  \item the equations reduce to
+        $\divg\bB=0$ and $\nabla\times\bB = \frac{4\pi}{c}\Jvec$;
+  \item writing $\bB=\nabla\times\Avec$ and choosing the Coulomb gauge
+        $\divg\Avec=0$ turns the problem into three Poisson equations;
+  \item solving those Poisson equations gives the vector potential
+        $\Avec(\br)=\frac{1}{c}\int \Jvec(\br')/|\br-\br'|\,d^3r'$;
+  \item taking a curl gives the Biot-Savart law;
+  \item for thin wires the Biot-Savart law reduces to the familiar line integral;
+  \item the Lorentz force between two current loops can be written as a double line
+        integral, and in the static limit Newton's third law is recovered.
+\end{itemize}
+
+The guiding idea is the same as in electrostatics: choose variables and gauge so that
+Maxwell's equations become Poisson equations.  The difference is that the source is
+now a vector field $\Jvec$, so the natural potential is the vector potential $\Avec$.
+
+%------------------------------------------------------------
+\subsection{What Magnetostatics Means}\label{subsec:lec14-meaning}
+
+\subsubsection*{Physical Motivation}
+The word ``static'' can be misleading.  In magnetostatics charges are moving:
+otherwise there would be no current.  What is static is the \emph{macroscopic
+configuration}.  A wire carrying a steady current contains moving electrons, but
+the positive ionic lattice makes the wire approximately neutral, and the current
+distribution does not change with time.
+
+This is why magnetostatics is not obtained by demanding invariance under time
+reversal.  Under time reversal,
+\begin{equation}\label{eq:lec14-time-reversal}
+  t\mapsto -t,\qquad
+  \Jvec\mapsto -\Jvec,\qquad
+  \bB\mapsto -\bB,\qquad
+  \bE\mapsto \bE .
+\end{equation}
+A current-carrying solution is therefore generally \emph{not} time-reversal
+invariant.  It is invariant only under continuous time translations
+$t\mapsto t+a$.
+
+\dfn[dfn:lec14-magnetostatics]{Magnetostatic Configuration}{
+  A magnetostatic configuration is a time-independent current distribution
+  $\Jvec(\br)$ satisfying charge conservation, with no time-dependent charge
+  accumulation.  In the simplest neutral sector used in this lecture,
+  \begin{equation}\label{eq:lec14-magnetostatic-assumptions}
+    \frac{\partial}{\partial t}=0,\qquad \rho=0,\qquad \bE=0,\qquad \Jvec\neq 0 .
+  \end{equation}
+}
+
+\textit{Significance:} Magnetostatics is a sector of solutions, not a symmetry of
+the full theory.  A concrete current pattern usually breaks time reversal even though
+Maxwell's equations themselves have the appropriate symmetry structure.
+
+\begin{remark}
+  A physical wire is neutral overall: the moving electron charge is balanced by the
+  positive lattice.  The current is the charge flow through a cross-section per unit
+  time, but the total charge density can still vanish macroscopically.
+\end{remark}
+
+%------------------------------------------------------------
+\subsection{Maxwell Equations in the Magnetostatic Limit}\label{subsec:lec14-maxwell-limit}
+
+\subsubsection*{Mathematical Setup}
+In Gaussian units, Maxwell's equations are
+\begin{align}
+  \divg\bB &= 0, \label{eq:lec14-maxwell-divB}\\
+  \nabla\times\bE + \frac{1}{c}\frac{\partial\bB}{\partial t} &= 0, \label{eq:lec14-maxwell-faraday}\\
+  \divg\bE &= 4\pi\rho, \label{eq:lec14-maxwell-gaussE}\\
+  \nabla\times\bB &= \frac{4\pi}{c}\Jvec
+    + \frac{1}{c}\frac{\partial\bE}{\partial t}. \label{eq:lec14-maxwell-ampere}
+\end{align}
+With the assumptions \eqref{eq:lec14-magnetostatic-assumptions}, Faraday's law and
+Gauss's law for $\bE$ become trivial in the neutral sector, and Ampere-Maxwell loses
+the displacement-current term.  We are left with
+\begin{equation}\label{eq:lec14-magnetostatic-equations}
+  \boxed{
+    \divg\bB = 0,\qquad
+    \nabla\times\bB = \frac{4\pi}{c}\Jvec .
+  }
+\end{equation}
+\textit{Significance:} Magnetostatics is the magnetic analogue of Poisson theory:
+given a steady current $\Jvec$, solve for the magnetic field $\bB$.
+
+Charge conservation also simplifies.  The continuity equation is
+\begin{equation}\label{eq:lec14-continuity-full}
+  \frac{\partial\rho}{\partial t}+\divg\Jvec=0.
+\end{equation}
+For time-independent sources, $\partial_t\rho=0$, hence
+\begin{equation}\label{eq:lec14-current-conservation}
+  \boxed{\divg\Jvec=0.}
+\end{equation}
+\textit{Significance:} Steady currents cannot begin or end inside the domain; current
+lines either close on themselves or enter and leave through boundaries in a balanced way.
+
+%------------------------------------------------------------
+\subsection{Introducing the Vector Potential}\label{subsec:lec14-vector-potential}
+
+\subsubsection*{Physical Motivation}
+The equation $\divg\bB=0$ says that magnetic field lines have no sources or sinks.
+Mathematically, a divergence-free vector field can be represented locally as the curl
+of another vector field.  We therefore write
+\begin{equation}\label{eq:lec14-B-curl-A}
+  \boxed{\bB=\nabla\times\Avec.}
+\end{equation}
+\textit{Significance:} This automatically solves $\divg\bB=0$, because the divergence
+of a curl vanishes identically.
+
+Substituting \eqref{eq:lec14-B-curl-A} into Ampere's law gives
+\begin{equation}\label{eq:lec14-curlcurlA-equation}
+  \nabla\times(\nabla\times\Avec)=\frac{4\pi}{c}\Jvec .
+\end{equation}
+To simplify the left-hand side, use the standard vector identity
+\begin{equation}\label{eq:lec14-curlcurl-identity}
+  \boxed{
+    \nabla\times(\nabla\times\Avec)
+    = \nabla(\divg\Avec)-\lapl\Avec .
+  }
+\end{equation}
+\textit{Significance:} The only obstruction to a clean Poisson equation is the
+gradient term $\nabla(\divg\Avec)$.
+
+\subsubsection*{Index Derivation of the Identity}
+Let $\epsilon_{ijk}$ be the three-dimensional Levi-Civita symbol, and use repeated-index
+summation.  The $i$th component of $\nabla\times(\nabla\times\Avec)$ is
+\begin{align}
+  \bigl[\nabla\times(\nabla\times\Avec)\bigr]_i
+  &= \epsilon_{ijk}\partial_j(\epsilon_{k\ell m}\partial_\ell A_m) \notag\\
+  &= \epsilon_{ijk}\epsilon_{k\ell m}\partial_j\partial_\ell A_m. \label{eq:lec14-curlcurl-index-start}
+\end{align}
+Using
+\begin{equation}\label{eq:lec14-epsilon-contraction}
+  \epsilon_{ijk}\epsilon_{k\ell m}
+  = \delta_{i\ell}\delta_{jm}-\delta_{im}\delta_{j\ell},
+\end{equation}
+we get
+\begin{align}
+  \bigl[\nabla\times(\nabla\times\Avec)\bigr]_i
+  &= (\delta_{i\ell}\delta_{jm}-\delta_{im}\delta_{j\ell})
+     \partial_j\partial_\ell A_m \notag\\
+  &= \partial_i(\partial_j A_j)-\partial_j\partial_j A_i \notag\\
+  &= \partial_i(\partial_j A_j)-\lapl A_i. \label{eq:lec14-curlcurl-index-final}
+\end{align}
+This is exactly \eqref{eq:lec14-curlcurl-identity}.
+
+%------------------------------------------------------------
+\subsection{Coulomb Gauge and the Poisson Equation for \texorpdfstring{$\Avec$}{A}}\label{subsec:lec14-coulomb-gauge}
+
+\subsubsection*{Conceptual Background}
+The vector potential is not unique.  If $f(\br)$ is any smooth scalar function, then
+\begin{equation}\label{eq:lec14-gauge-transformation}
+  \Avec\mapsto \Avec'=\Avec+\nabla f
+\end{equation}
+does not change the magnetic field:
+\begin{equation}\label{eq:lec14-gauge-B-invariant}
+  \nabla\times\Avec'
+  =\nabla\times\Avec+\nabla\times(\nabla f)
+  =\nabla\times\Avec.
+\end{equation}
+This freedom is not a nuisance; it is a tool.  We use it to choose
+\begin{equation}\label{eq:lec14-coulomb-gauge}
+  \boxed{\divg\Avec=0.}
+\end{equation}
+\textit{Significance:} The Coulomb gauge removes the gradient term in
+\eqref{eq:lec14-curlcurl-identity}, reducing Ampere's law to a vector Poisson equation.
+
+Why is the gauge choice allowed?  Suppose a preliminary potential $\Avec$ does not obey
+\eqref{eq:lec14-coulomb-gauge}.  We want $\Avec'=\Avec+\nabla f$ to obey it:
+\begin{equation}\label{eq:lec14-gauge-condition-derivation}
+  0=\divg\Avec'=\divg\Avec+\lapl f.
+\end{equation}
+Therefore $f$ must solve
+\begin{equation}\label{eq:lec14-gauge-poisson}
+  \boxed{\lapl f=-\divg\Avec.}
+\end{equation}
+\textit{Significance:} Choosing the Coulomb gauge requires solving one scalar Poisson
+equation, which is exactly the type of problem already solved in electrostatics.
+
+In Coulomb gauge, \eqref{eq:lec14-curlcurlA-equation} becomes
+\begin{equation}\label{eq:lec14-vector-poisson}
+  \boxed{-\lapl\Avec=\frac{4\pi}{c}\Jvec.}
+\end{equation}
+\textit{Significance:} Magnetostatics has been reduced to three copies of Poisson's
+equation, one for each Cartesian component of $\Avec$.
+
+For localized currents in free space, the solution is
+\begin{equation}\label{eq:lec14-vector-potential-solution}
+  \boxed{
+    \Avec(\br)=\frac{1}{c}\int
+    \frac{\Jvec(\br')}{|\br-\br'|}\,d^3r' .
+  }
+\end{equation}
+\textit{Significance:} The vector potential of a steady current distribution is the
+current-density analogue of the electrostatic potential
+$\phi(\br)=\int \rho(\br')/|\br-\br'|\,d^3r'$.
+
+\subsubsection*{Consistency Check: \texorpdfstring{$\divg\Avec=0$}{div A = 0}}
+Although \eqref{eq:lec14-vector-potential-solution} was obtained in Coulomb gauge, it is
+worth checking explicitly that it satisfies the gauge condition.  Taking the divergence
+with respect to $\br$,
+\begin{align}
+  \divg\Avec(\br)
+  &= \frac{1}{c}\int
+     \Jvec(\br')\cdot\nabla_{\br}\frac{1}{|\br-\br'|}\,d^3r' . \label{eq:lec14-divA-start}
+\end{align}
+Since
+\begin{equation}\label{eq:lec14-grad-switch}
+  \nabla_{\br}\frac{1}{|\br-\br'|}
+  =-\nabla_{\br'}\frac{1}{|\br-\br'|},
+\end{equation}
+we can write
+\begin{align}
+  \divg\Avec(\br)
+  &= -\frac{1}{c}\int
+     \Jvec(\br')\cdot\nabla_{\br'}\frac{1}{|\br-\br'|}\,d^3r' \notag\\
+  &= -\frac{1}{c}\int
+     \nabla_{\br'}\cdot
+     \left(\frac{\Jvec(\br')}{|\br-\br'|}\right)d^3r'
+     +\frac{1}{c}\int
+     \frac{\nabla_{\br'}\cdot\Jvec(\br')}{|\br-\br'|}\,d^3r'. \label{eq:lec14-divA-product}
+\end{align}
+The second integral vanishes by $\divg\Jvec=0$.  The first integral becomes a surface
+flux at infinity.  For localized currents, $\Jvec=0$ on a sufficiently large surface,
+so the flux vanishes.  Hence
+\begin{equation}\label{eq:lec14-divA-zero}
+  \boxed{\divg\Avec=0.}
+\end{equation}
+\textit{Significance:} The current-conservation condition is exactly what makes the
+Coulomb-gauge solution self-consistent.
+
+%------------------------------------------------------------
+\subsection{The Biot-Savart Law}\label{subsec:lec14-biot-savart}
+
+\subsubsection*{Mathematical Setup}
+The magnetic field is the curl of \eqref{eq:lec14-vector-potential-solution}:
+\begin{align}
+  \bB(\br)
+  &= \nabla_{\br}\times\Avec(\br) \notag\\
+  &= \frac{1}{c}\int
+     \nabla_{\br}\times
+     \left(\frac{\Jvec(\br')}{|\br-\br'|}\right)d^3r'. \label{eq:lec14-B-curl-integral}
+\end{align}
+Inside the curl, $\Jvec(\br')$ is independent of $\br$, so
+\begin{equation}\label{eq:lec14-curl-fJ}
+  \nabla_{\br}\times\left(f(\br)\Jvec(\br')\right)
+  = \nabla_{\br}f(\br)\times\Jvec(\br').
+\end{equation}
+With
+\begin{equation}\label{eq:lec14-grad-green}
+  \nabla_{\br}\frac{1}{|\br-\br'|}
+  = -\frac{\br-\br'}{|\br-\br'|^3},
+\end{equation}
+we obtain
+\begin{equation}\label{eq:lec14-biot-savart-volume}
+  \boxed{
+    \bB(\br)=\frac{1}{c}\int
+    \frac{\Jvec(\br')\times(\br-\br')}{|\br-\br'|^3}\,d^3r' .
+  }
+\end{equation}
+\textit{Significance:} The magnetic field at $\br$ is built by summing the transverse
+contribution of every current element; only the part of the current perpendicular to
+the line of sight contributes.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[>=Stealth, thick, scale=1.05]
+  \draw[blue!60!black, thick]
+    plot[smooth cycle, tension=0.8]
+    coordinates {(-2,0.2)(-1.2,1.1)(0.3,0.9)(1.2,0.1)(0.7,-0.9)(-0.9,-1.0)};
+  \draw[->, blue!60!black] (-1.7,0.55) -- (-1.42,0.82);
+  \node[blue!60!black] at (-1.9,1.15) {$C$};
+  \fill[red!70!black] (-0.2,0.85) circle (2pt) node[above] {$\br'$};
+  \draw[->, red!70!black] (-0.2,0.85) -- (0.45,0.72)
+    node[midway, above] {$d\bvec{\ell}'$};
+  \fill[black] (2.7,1.4) circle (2pt) node[above] {$\br$};
+  \draw[->, gray!80!black] (-0.2,0.85) -- (2.7,1.4)
+    node[midway, above] {$\br-\br'$};
+  \draw[->, green!50!black] (2.7,1.4) -- (2.7,2.05)
+    node[right] {$d\bB$};
+  \node[align=center] at (-0.35,-1.55)
+    {\footnotesize thin wire: cross-section\\[-1pt]\footnotesize small compared with distances};
+\end{tikzpicture}
+\caption{Geometry of the thin-wire Biot-Savart law.  A current element
+$d\bvec{\ell}'$ at source point $\br'$ contributes a field at observation point $\br$
+in the direction $d\bvec{\ell}'\times(\br-\br')$.}
+\label{fig:lec14-biot-savart-geometry}
+\end{figure}
+
+\subsubsection*{Thin-Wire Limit}
+For a wire whose cross-section is small compared with all distances of interest, write
+the volume element as $d^3r'=dS'\,d\ell'$ and use
+\begin{equation}\label{eq:lec14-current-line-replacement}
+  \Jvec(\br')\,dS'\,d\ell' = I\,d\bvec{\ell}' .
+\end{equation}
+Then \eqref{eq:lec14-biot-savart-volume} becomes
+\begin{equation}\label{eq:lec14-biot-savart-line}
+  \boxed{
+    \bB(\br)=\frac{I}{c}\oint_C
+    \frac{d\bvec{\ell}'\times(\br-\br')}{|\br-\br'|^3}.
+  }
+\end{equation}
+\textit{Significance:} The familiar Biot-Savart line integral is a controlled
+approximation to the volume-current formula, valid when the wire is thin on the
+geometric scales being probed.
+
+\begin{remark}
+  A truly open steady wire is impossible in an isolated magnetostatic problem: if
+  current entered an endpoint and did not leave, charge would accumulate there.
+  That is why the ideal line current is naturally a closed loop, or part of a larger
+  closed circuit.
+\end{remark}
+
+%------------------------------------------------------------
+\subsection{Force Between Two Current Loops}\label{subsec:lec14-loop-force}
+
+\subsubsection*{Physical Motivation}
+Once $\bB$ is known, the force on moving charges is the magnetic part of the Lorentz
+force.  For two current loops, the field of loop $2$ exerts a force on the charges
+moving in loop $1$.  The self-field of loop $1$ gives internal forces and is not part
+of the external force between the loops.
+
+Let loop $1$ carry current $I_1$ and loop $2$ carry current $I_2$.  For source points
+$\br_1\in C_1$ and $\br_2\in C_2$, define
+\begin{equation}\label{eq:lec14-r12-definition}
+  \br_{12}=\br_1-\br_2,\qquad r_{12}=|\br_{12}|.
+\end{equation}
+The force on a small element $d\bvec{\ell}_1$ of loop $1$ due to the magnetic field
+created by loop $2$ is
+\begin{equation}\label{eq:lec14-element-force}
+  d\bvec{F}_{2\to1}
+  =\frac{I_1}{c}\,d\bvec{\ell}_1\times\bB_2(\br_1).
+\end{equation}
+Substituting Biot-Savart for $\bB_2$,
+\begin{equation}\label{eq:lec14-loop-force-unsimplified}
+  \bvec{F}_{2\to1}
+  =\frac{I_1I_2}{c^2}
+  \oint_{C_1}\oint_{C_2}
+  \frac{d\bvec{\ell}_1\times\left(d\bvec{\ell}_2\times\br_{12}\right)}
+       {r_{12}^3}.
+\end{equation}
+This is correct, but the action-reaction symmetry is not yet transparent.
+
+\subsubsection*{Simplifying the Double Integral}
+Use the vector triple-product identity
+\begin{equation}\label{eq:lec14-triple-product}
+  \bvec{a}\times(\bvec{b}\times\bvec{c})
+  = \bvec{b}(\bvec{a}\cdot\bvec{c})
+    - \bvec{c}(\bvec{a}\cdot\bvec{b}).
+\end{equation}
+With $\bvec{a}=d\bvec{\ell}_1$, $\bvec{b}=d\bvec{\ell}_2$, and
+$\bvec{c}=\br_{12}$,
+\begin{equation}\label{eq:lec14-loop-force-split}
+  \frac{d\bvec{\ell}_1\times(d\bvec{\ell}_2\times\br_{12})}{r_{12}^3}
+  =
+  d\bvec{\ell}_2\,
+  \frac{d\bvec{\ell}_1\cdot\br_{12}}{r_{12}^3}
+  -
+  \br_{12}\,
+  \frac{d\bvec{\ell}_1\cdot d\bvec{\ell}_2}{r_{12}^3}.
+\end{equation}
+The first term vanishes after integration around the closed loop $C_1$.  Indeed,
+for fixed $\br_2$,
+\begin{equation}\label{eq:lec14-gradient-line-integral}
+  \frac{\br_{12}}{r_{12}^3}
+  = -\nabla_{\br_1}\frac{1}{r_{12}},
+\end{equation}
+so
+\begin{equation}\label{eq:lec14-closed-gradient-zero}
+  \oint_{C_1} d\bvec{\ell}_1\cdot\frac{\br_{12}}{r_{12}^3}
+  =
+  -\oint_{C_1} d\bvec{\ell}_1\cdot\nabla_{\br_1}\frac{1}{r_{12}}
+  =0.
+\end{equation}
+The last equality says that the integral of a gradient around a closed path is zero.
+Therefore
+\begin{equation}\label{eq:lec14-loop-force-final}
+  \boxed{
+  \bvec{F}_{2\to1}
+  =-\frac{I_1I_2}{c^2}
+  \oint_{C_1}\oint_{C_2}
+  \frac{(d\bvec{\ell}_1\cdot d\bvec{\ell}_2)\,\br_{12}}{r_{12}^3}.
+  }
+\end{equation}
+\textit{Significance:} In the static limit the force law becomes explicitly compatible
+with Newton's third law, because interchanging $1$ and $2$ sends $\br_{12}\mapsto-\br_{12}$.
+
+Thus
+\begin{equation}\label{eq:lec14-newton-third-law}
+  \boxed{\bvec{F}_{2\to1}=-\bvec{F}_{1\to2}.}
+\end{equation}
+\textit{Significance:} Full electrodynamics does not generally obey a particle-only
+action-reaction law because fields carry momentum, but the magnetostatic closed-loop
+limit restores the expected equal-and-opposite mechanical forces.
+
+%------------------------------------------------------------
+\subsection{Parallel Wires as a Local Limit}\label{subsec:lec14-parallel-wires}
+
+\subsubsection*{Physical Motivation}
+The usual force between two long parallel wires is an idealization.  Infinite wires do
+not exist physically, but two large nearby loops look locally like parallel straight
+wires if their radius of curvature is much larger than their separation.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[>=Stealth, thick, scale=1.0]
+  \draw[->, gray] (-0.5,0) -- (5.2,0) node[right] {$x$};
+  \draw[->, gray] (0,-0.5) -- (0,3.0) node[above] {$y$};
+  \draw[blue!65!black, line width=1.2pt] (0.4,0.7) -- (4.8,0.7);
+  \draw[blue!65!black, line width=1.2pt] (0.4,2.1) -- (4.8,2.1);
+  \draw[->, red!70!black] (1.0,0.7) -- (1.7,0.7) node[midway, below] {$I_1$};
+  \draw[->, red!70!black] (1.0,2.1) -- (1.7,2.1) node[midway, above] {$I_2$};
+  \draw[<->] (4.4,0.7) -- (4.4,2.1) node[midway, right] {$d$};
+  \fill (2.1,0.7) circle (2pt) node[below] {$\br_1$};
+  \fill (3.5,2.1) circle (2pt) node[above] {$\br_2$};
+  \draw[->, gray!80!black] (3.5,2.1) -- (2.1,0.7)
+    node[midway, left] {$\br_{12}$};
+  \draw[->, green!50!black] (2.1,0.7) -- (2.1,1.25)
+    node[right] {$\bvec{F}_{2\to1}$};
+  \node at (2.6,0.25) {\footnotesize same-direction currents attract};
+\end{tikzpicture}
+\caption{Parallel-wire limit of the loop-force formula.  For currents in the same
+direction, $d\bvec{\ell}_1\cdot d\bvec{\ell}_2>0$, and the force on the lower wire points
+toward the upper wire.}
+\label{fig:lec14-parallel-wires}
+\end{figure}
+
+For two long parallel wires separated by distance $d$, the force is proportional to the
+length $L$ of the wire segment considered.  Therefore the meaningful quantity is the
+force per unit length:
+\begin{equation}\label{eq:lec14-parallel-wire-force}
+  \boxed{
+    \frac{F}{L}=\frac{2I_1I_2}{c^2 d}
+  }
+\end{equation}
+with attraction for currents in the same direction and repulsion for currents in
+opposite directions.
+
+\textit{Significance:} The sign is not mysterious: the factor
+$d\bvec{\ell}_1\cdot d\bvec{\ell}_2$ knows whether the currents are parallel or
+antiparallel, and the vector $\br_{12}$ points from the source element to the element
+being pushed.
+
+%------------------------------------------------------------
+\subsection{Summary}\label{subsec:lec14-summary}
+
+\begin{itemize}
+  \item Magnetostatics means time-independent fields with steady currents, not
+        time-reversal invariant solutions.
+  \item The equations reduce to $\divg\bB=0$ and
+        $\nabla\times\bB=\frac{4\pi}{c}\Jvec$, with $\divg\Jvec=0$.
+  \item Since $\divg\bB=0$, write $\bB=\nabla\times\Avec$.
+  \item Gauge freedom $\Avec\mapsto\Avec+\nabla f$ allows the Coulomb gauge
+        $\divg\Avec=0$.
+  \item In Coulomb gauge, $\Avec$ satisfies
+        $-\lapl\Avec=\frac{4\pi}{c}\Jvec$ and therefore
+        $\Avec(\br)=\frac{1}{c}\int \Jvec(\br')/|\br-\br'|\,d^3r'$.
+  \item Taking a curl gives the Biot-Savart law
+        $\bB(\br)=\frac{1}{c}\int
+        \Jvec(\br')\times(\br-\br')/|\br-\br'|^3\,d^3r'$.
+  \item For a thin closed wire,
+        $\bB(\br)=\frac{I}{c}\oint d\bvec{\ell}'\times(\br-\br')/|\br-\br'|^3$.
+  \item The force between two current loops is
+        $\bvec{F}_{2\to1}=-(I_1I_2/c^2)\oint\!\oint
+        (d\bvec{\ell}_1\cdot d\bvec{\ell}_2)\br_{12}/r_{12}^3$.
+  \item For long parallel wires,
+        $F/L=2I_1I_2/(c^2d)$, attractive for currents in the same direction.
+\end{itemize}

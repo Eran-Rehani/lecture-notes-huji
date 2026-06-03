@@ -1,0 +1,469 @@
+%% ═══════════════════════════════════════════════════════════════════════════
+\section{Lecture 4: Dimensional Analysis — From Quantum Atoms to Radiation and Flow}
+%% ═══════════════════════════════════════════════════════════════════════════
+\date{30/04/2026}
+
+This lecture deepens our practice of dimensional analysis. We move from simple
+mechanical examples through quantum mechanics (Bohr radius, positronium) to
+electromagnetism (dipole radiation, Larmor formula) and fluid dynamics (drag
+force, Reynolds number). A central theme is the power of \emph{identifying
+which physical parameters are relevant} before building a dimensionless
+combination.
+
+%%───────────────────────────────────────────────────────────────────────────
+\subsection{Review: Simple Dimensional Analysis Examples}
+%%───────────────────────────────────────────────────────────────────────────
+
+\textbf{The Physical Picture:}
+In the previous lecture we introduced dimensional analysis. Here we warm up by
+revisiting three examples that share the same structure: a single length scale,
+a single acceleration, no mass — so there is a unique dimensionless combination.
+
+\subsubsection*{The Simple Pendulum}
+The relevant parameters are length $L$ and gravitational acceleration $g$.
+Their dimensions are $[L] = \si{m}$ and $[g] = \si{m\,s^{-2}}$.  We want a
+time $T$.
+
+The only combination that yields seconds is:
+\[
+    T \propto \sqrt{\frac{L}{g}},
+\]
+so the period is $T = C\sqrt{L/g}$ for some dimensionless constant $C$ (which
+turns out to be $2\pi$ from solving the equation of motion).
+
+\subsubsection*{Free Fall from Height $H$}
+A body dropped from height $H$ in gravity $g$. The relevant parameters are
+exactly $H$ and $g$, so:
+\[
+    t_\text{fall} \sim \sqrt{\frac{H}{g}}.
+\]
+This is structurally identical to the pendulum — same dimensional reasoning, different physics.
+
+\subsubsection*{Gravitational Free-Fall Timescale of a Star}
+A star of mass $M$ and radius $r$ collapses under self-gravity.  Now we have
+three parameters: $M$, $r$, and Newton's constant $G$.
+
+\textbf{Dimensional check:}
+\begin{align*}
+    [G] &= \si{kg^{-1}\,m^3\,s^{-2}} \\
+    [M] &= \si{kg}, \qquad [r] = \si{m}.
+\end{align*}
+
+To build a time we note that $[GM] = \si{m^3\,s^{-2}}$, so $GM/r^3$ has
+dimensions $\si{s^{-2}}$, giving:
+\[
+    \boxed{t_\text{ff} \sim \sqrt{\frac{r^3}{GM}} = \frac{1}{\sqrt{G\bar{\rho}}}}
+\]
+where $\bar{\rho} = M/r^3$ is the mean density (up to a numerical factor of
+order unity).
+
+\noindent\textbf{Physical intuition:} The free-fall time depends only on the
+mean density, not on the actual size or mass separately. A star with the same
+density as water would fall on a timescale of hours; a white dwarf collapses in
+seconds.
+
+%%───────────────────────────────────────────────────────────────────────────
+\subsection{The Bohr Radius from Dimensional Analysis}
+%%───────────────────────────────────────────────────────────────────────────
+
+\textbf{The Physical Picture:}
+The hydrogen atom is a quantum-mechanical bound state of a proton and an
+electron. The relevant physics is electromagnetic and quantum — there is no
+classical length scale for the orbit. Dimensional analysis pinpoints the
+single combination that sets the atomic size.
+
+\textbf{Relevant parameters:}
+\begin{itemize}
+    \item Electron charge $e$ (in Gaussian units).  Instead of $e$ alone, it
+    is convenient to use $e^2$ whose dimensions are
+    $[e^2] = \si{erg\,cm} = \si{g\,cm^3\,s^{-2}}$.
+    \item Electron mass $m_e$: $[m_e] = \si{g}$.
+    \item Reduced Planck constant $\hbar$: $[\hbar] = \si{erg\,s} =
+    \si{g\,cm^2\,s^{-1}}$.
+\end{itemize}
+
+\textbf{Why not the speed of light?}  The hydrogen ground state is
+non-relativistic (the fine-structure constant $\alpha = e^2/\hbar c \approx
+1/137 \ll 1$), so $c$ does not set the scale and we exclude it.
+
+\textbf{Dimensional construction:}
+We want $[a_0] = \si{cm}$.  We must eliminate grams and seconds.
+
+\begin{enumerate}
+    \item \emph{Eliminate seconds.}  $\hbar^2$ has dimensions
+    $\si{g^2\,cm^4\,s^{-2}}$, and $e^2$ has dimensions
+    $\si{g\,cm^3\,s^{-2}}$.  The ratio $\hbar^2/e^2$ has dimensions
+    $\si{g\,cm}$ — one power of mass and one of length remain.
+
+    \item \emph{Eliminate grams.}  Dividing by $m_e$ removes the gram:
+    \[
+        \frac{\hbar^2}{m_e\, e^2} \quad \Rightarrow \quad
+        \left[\frac{\hbar^2}{m_e e^2}\right] = \si{cm}.
+    \]
+\end{enumerate}
+
+This is the only combination with units of length, so:
+\begin{equation}
+    \boxed{a_0 = \frac{\hbar^2}{m_e e^2} \approx \SI{0.529}{\AA}}
+    \label{eq:lec04:bohr_radius}
+\end{equation}
+
+\noindent\textbf{Physical intuition:} The Bohr radius is set by the competition between
+the kinetic energy $\sim \hbar^2/(m_e r^2)$ (from the uncertainty principle,
+$\Delta p \sim \hbar/r$) and the Coulomb potential energy $\sim e^2/r$.
+Minimising their sum gives exactly $r = a_0$.
+
+%%───────────────────────────────────────────────────────────────────────────
+\subsection{Hydrogen-Like Atoms: Scaling with Nuclear Charge $Z$}
+%%───────────────────────────────────────────────────────────────────────────
+
+For an atom with nuclear charge $Ze$ and a single electron (hydrogen-like
+ion), the only change to the dimensional analysis is $e^2 \to Ze^2$.  Therefore:
+\begin{equation}
+    a_0(Z) = \frac{\hbar^2}{m_e (Ze^2)/Z} = \frac{\hbar^2}{m_e e^2 Z}
+    = \frac{a_0}{Z}.
+    \label{eq:lec04:bohr_Z}
+\end{equation}
+
+The Bohr radius scales as $1/Z$.  The ground-state energy scales as:
+\[
+    E_Z = Z^2 E_H = Z^2 \times (\SI{-13.6}{eV}).
+\]
+
+\ex{Highly Ionised Iron: Fe$^{+25}$}{Iron has $Z = 26$; Fe$^{+25}$ is iron stripped of 25 electrons, leaving one
+(the innermost).  Treating it as hydrogen-like:
+\[
+    a_0(\text{Fe}^{+25}) = \frac{a_0}{26} \approx \frac{\SI{0.529}{\AA}}{26}
+    \approx \SI{0.020}{\AA}.
+\]
+The binding energy is:
+\[
+    E(\text{Fe}^{+25}) = 26^2 \times \SI{13.6}{eV} = 676 \times \SI{13.6}{eV}
+    \approx \SI{9.2}{keV}.
+\]
+This is an X-ray transition, as expected for inner-shell electrons of heavy
+elements.}
+
+%%───────────────────────────────────────────────────────────────────────────
+\subsection{Positronium: A Two-Body Bound State}
+%%───────────────────────────────────────────────────────────────────────────
+
+\textbf{The Physical Picture:}
+Positronium (Ps) is a bound state of an electron ($e^-$) and a positron
+($e^+$).  There is no heavy nucleus; both particles are equally light.  The
+two-body problem reduces to a one-body problem with the \emph{reduced mass}.
+
+\textbf{Reduced mass:}
+\[
+    \mu = \frac{m_e \cdot m_e}{m_e + m_e} = \frac{m_e}{2}.
+\]
+
+Replacing $m_e$ by $\mu$ in Eq.~\eqref{eq:lec04:bohr_radius}:
+\begin{equation}
+    a_0(\text{Ps}) = \frac{\hbar^2}{\mu\, e^2} = \frac{\hbar^2}{(m_e/2)\,e^2}
+    = 2a_0 \approx \SI{1.06}{\AA}.
+    \label{eq:lec04:bohr_Ps}
+\end{equation}
+
+Positronium is \emph{twice} as large as hydrogen.  The binding energy is
+correspondingly halved:
+\[
+    E(\text{Ps}) = \frac{\mu}{m_e}\,E_H = \frac{1}{2}\,(\SI{-13.6}{eV})
+    = \SI{-6.8}{eV}.
+\]
+
+\textbf{Decay of positronium:}
+Positronium is unstable — the electron and positron annihilate.  The number of
+photons in the final state is fixed by conservation laws.  Two cases arise:
+\begin{itemize}
+    \item \textbf{Para-positronium} (spins anti-parallel, $S=0$): decays to
+    \textbf{2 photons}.  Energy conservation requires each photon to carry
+    $m_e c^2 = \SI{511}{keV}$, giving two discrete lines in the spectrum.
+    \item \textbf{Ortho-positronium} (spins parallel, $S=1$): charge-conjugation
+    symmetry forbids 2-photon decay; decays to \textbf{3 photons} with a
+    continuous spectrum summing to $2m_e c^2$.
+\end{itemize}
+
+\noindent\textbf{Physical intuition:} Para-positronium decays with a lifetime of
+$\sim \SI{125}{ps}$; ortho-positronium lives $\sim \SI{142}{ns}$ — a factor
+$\sim 1000$ longer because it must radiate three photons instead of two.
+
+%%───────────────────────────────────────────────────────────────────────────
+\subsection{Dipole Radiation: Deriving the Larmor Formula}
+%%───────────────────────────────────────────────────────────────────────────
+
+\textbf{The Physical Picture:}
+An oscillating electric dipole radiates electromagnetic energy.  The
+electric dipole moment is $p = qd$, where $q$ is the charge and $d$ the
+separation.  When $p$ changes in time (e.g., an accelerating charge), energy
+is radiated to infinity.  We want the radiated power $P$ from dimensional
+analysis alone.
+
+\textbf{Relevant parameters:}
+We work in Gaussian units throughout.
+\begin{itemize}
+    \item Dipole moment $p$: $[p] = \si{esu\,cm} = \si{g^{1/2}\,cm^{3/2}\,s^{-1}}$.
+    Equivalently, $[p^2] = \si{erg\,cm^3}$.
+    \item The characteristic oscillation frequency $\omega$: $[\omega] = \si{s^{-1}}$.
+    \item The speed of light $c$: $[c] = \si{cm\,s^{-1}}$.
+\end{itemize}
+
+\noindent\textbf{What parameters to exclude:} The charge $q$ and distance $d$
+appear only in the combination $p = qd$. The medium is vacuum ($\epsilon_0 = 1$
+in Gaussian units). No gravitational constant enters.
+
+\textbf{Dimensional construction:}
+We want $[P] = \si{erg\,s^{-1}} = \si{g\,cm^2\,s^{-3}}$.
+
+\begin{enumerate}
+    \item Start with $p^2$: dimensions $\si{g\,cm^3\,s^{-2}}$
+    (energy $\times$ length).
+    \item Multiply by $\omega^4$ to introduce extra $\si{s^{-4}}$:
+    $[p^2 \omega^4] = \si{g\,cm^3\,s^{-6}}$.
+    \item Divide by $c^3$: $[c^3] = \si{cm^3\,s^{-3}}$, so
+    \[
+        \left[\frac{p^2 \omega^4}{c^3}\right]
+        = \frac{\si{g\,cm^3\,s^{-6}}}{\si{cm^3\,s^{-3}}} = \si{g\,s^{-3}}
+        = \si{erg\,cm^{-2}\,s^{-1}}.
+    \]
+    That's an intensity (power per area), not power — one factor of $\si{cm^2}$ is missing.
+    We need the total power, so we still need an area $\sim (c/\omega)^2 = \lambda^2/(4\pi^2)$
+    — but that is a dimensionless-factor issue.  Including it:
+    \[
+        P \sim \frac{p^2 \omega^4}{c^3}.
+    \]
+\end{enumerate}
+
+\noindent\textbf{Physical insight on the $\omega^4$ dependence:} Note that
+$p\omega^2 \equiv \ddot{p}$ (the second time derivative of the dipole moment).
+Therefore:
+\begin{equation}
+    \boxed{P \sim \frac{\ddot{p}^{\,2}}{c^3}}
+    \label{eq:lec04:larmor}
+\end{equation}
+This is the \textbf{Larmor radiation formula} (up to a factor $2/3$ in SI units
+or $2/(3c^3)$ in Gaussian).  Because $\ddot{p} = q\ddot{d} = q a$ for a
+single charge, the Larmor formula states:
+\[
+    P = \frac{2e^2 a^2}{3c^3} \quad \text{(Gaussian)}.
+\]
+
+\textbf{Why is $P \propto \omega^4$?}  Each factor of $\omega$ comes from a
+time derivative: one from $\dot{p}$, one from $\ddot{p}$.  Squaring gives
+$\omega^4$.  This is the reason blue light scatters more than red in Rayleigh
+scattering ($\lambda^{-4}$ dependence).
+
+\textbf{Why must $P$ be even in $\omega$ (and in $q$)?}
+By time-reversal symmetry (or charge-conjugation symmetry), the radiated power
+cannot change sign when we reverse the oscillation direction or flip all
+charges: hence $P \propto \ddot{p}^{\,2}$, not $\ddot{p}$.
+
+%%───────────────────────────────────────────────────────────────────────────
+\subsection{Monopole Radiation is Forbidden}
+%%───────────────────────────────────────────────────────────────────────────
+
+\textbf{The Physical Picture:}
+Could a time-varying monopole moment $Q(t)$ radiate?  If it could, the
+formula would be $P \sim \ddot{Q}^{\,2}/c$ (by dimensional analysis with one
+fewer power of length).  However, \textbf{charge conservation} forbids this.
+
+\textbf{Argument:}
+Gauss's law in vacuum: the total charge $Q = \oint \mathbf{E}\cdot\mathrm{d}\mathbf{A}$
+is fixed by the electric field on a distant surface.  If charge is conserved
+in the volume, $\dot{Q} = 0$, so $\ddot{Q} = 0$ identically.  There is no
+source for monopole radiation.
+
+\textbf{Alternative viewpoint (multipole expansion):} A single moving charge
+can always be decomposed, at large distances, as:
+\[
+    \text{field} = \underbrace{\text{monopole (static)}}_{\text{no radiation}} +
+    \underbrace{\text{dipole (time-varying)}}_{\text{radiates}},
+\]
+because any motion of the charge creates a time-varying dipole moment
+$p = q\,\mathbf{r}(t)$ while the monopole $q$ stays constant.  The leading
+radiated term is therefore \emph{always} dipole, giving Eq.~\eqref{eq:lec04:larmor}.
+
+%%───────────────────────────────────────────────────────────────────────────
+\subsection{Gravitational Wave Radiation: Why It Is So Weak}
+%%───────────────────────────────────────────────────────────────────────────
+
+\textbf{Analogy with electromagnetism:}
+In electromagnetism the hierarchy is:
+\[
+    \text{monopole (forbidden)} \to \text{dipole (leading)} \to \text{quadrupole (subleading)}.
+\]
+In gravity, by analogy, we might expect monopole and dipole radiation.  Both
+are forbidden:
+\begin{itemize}
+    \item \textbf{Monopole forbidden:} mass-energy conservation means
+    $\ddot{M} = 0$.
+    \item \textbf{Dipole forbidden:} conservation of momentum means the
+    dipole moment $\mathbf{D} = \sum m_i \mathbf{r}_i$ has $\ddot{\mathbf{D}}
+    = \sum m_i \ddot{\mathbf{r}}_i = 0$ (Newton's third law / center-of-mass
+    motion).
+\end{itemize}
+
+Therefore the \textbf{leading gravitational radiation is quadrupolar}:
+\begin{equation}
+    P_\text{GW} \sim \frac{G}{c^5} \left(\dddot{Q}_{ij}\right)^2
+    \label{eq:lec04:GW}
+\end{equation}
+where $Q_{ij} = \sum m_a r_i^{(a)} r_j^{(a)}$ is the mass quadrupole tensor.
+Two extra derivatives (relative to the dipole formula) mean two extra powers
+of $\omega$, suppressing the radiation further.
+
+\textbf{Why gravitational waves are so hard to detect:}
+Compared to electromagnetic radiation:
+\begin{enumerate}
+    \item Radiation is suppressed by two extra powers of $\omega$ (quadrupole
+    vs.\ dipole), so ordinary astrophysical sources radiate
+    gravitational waves at a tiny rate.
+    \item Gravitational wave detectors (LIGO/Virgo) couple to the wave via
+    $G_N$, which is intrinsically tiny, making the transducer inefficient.
+\end{enumerate}
+Only extremely compact, rapidly-orbiting systems (binary black holes or
+neutron stars) produce detectable waves.  The strain measured by LIGO is of
+order $h \sim 10^{-21}$, meaning the \SI{4}{km} arms change length by
+$\sim \SI{e-18}{m}$ — less than a proton radius.
+
+%%───────────────────────────────────────────────────────────────────────────
+\subsection{Drag Force and the Reynolds Number}
+%%───────────────────────────────────────────────────────────────────────────
+
+\textbf{The Physical Picture:}
+A solid object of cross-sectional area $A$ moves at velocity $v$ through a
+fluid of density $\rho$ and dynamic viscosity $\eta$.  The drag force $F_d$
+depends on the regime of flow — turbulent or laminar — which is characterised
+by a single dimensionless number.
+
+\subsubsection*{Turbulent (High Reynolds Number) Limit}
+
+In the turbulent limit, viscosity is irrelevant to the \emph{bulk} drag (even
+though it controls the small-scale dissipation).  The relevant parameters are
+$\rho$, $v$, and $A$:
+\[
+    [F_d] = \si{g\,cm\,s^{-2}},\quad [\rho] = \si{g\,cm^{-3}},\quad
+    [v] = \si{cm\,s^{-1}},\quad [A] = \si{cm^2}.
+\]
+The unique combination is:
+\begin{equation}
+    \boxed{F_d = C_D\,\rho v^2 A}
+    \label{eq:lec04:drag_turbulent}
+\end{equation}
+where $C_D$ is a dimensionless drag coefficient of order unity (depends on
+shape).
+
+\subsubsection*{The Reynolds Number}
+
+To determine whether the flow is turbulent or laminar, we form a dimensionless
+number from all the relevant parameters.  Including viscosity $\eta$ with
+$[\eta] = \si{g\,cm^{-1}\,s^{-1}}$, the combination
+\[
+    \nu = \frac{\eta}{\rho}, \quad [\nu] = \si{cm^2\,s^{-1}},
+\]
+is the kinematic viscosity.  The single dimensionless parameter is:
+\begin{equation}
+    \boxed{\text{Re} = \frac{\sqrt{A}\,v}{\nu} = \frac{\rho\,\sqrt{A}\,v}{\eta}}
+    \label{eq:lec04:reynolds}
+\end{equation}
+(using $\sqrt{A}$ as the characteristic length scale of the body).
+
+\begin{itemize}
+    \item $\text{Re} \gg 1$ \textbf{(turbulent)}: The inertia of the fluid
+    dominates; energy cascades from large eddies to progressively smaller ones
+    (Kolmogorov cascade) until it is dissipated at the viscous scale.  Drag is
+    given by Eq.~\eqref{eq:lec04:drag_turbulent}.
+    \item $\text{Re} \ll 1$ \textbf{(laminar / Stokes flow)}: Viscosity
+    dominates; streamlines are smooth and symmetric.
+\end{itemize}
+
+\subsubsection*{Laminar (Stokes) Drag}
+
+In the laminar limit, the drag force is linear in velocity (from the
+Navier–Stokes equation linearised in $v$):
+\[
+    F_d \propto \eta\,v\,\sqrt{A} \propto \eta\,v\,R.
+\]
+For a sphere of radius $R$ this gives the exact Stokes result:
+\begin{equation}
+    F_d = 6\pi\,\eta\,v\,R.
+    \label{eq:lec04:stokes}
+\end{equation}
+
+\textbf{How to see this from dimensional analysis:}
+The general result in the laminar limit must take the form
+\[
+    F_d = C_D(\text{Re})\,\rho v^2 A,\quad \text{with } C_D \propto \text{Re}^{-1}
+    \text{ as Re}\to 0.
+\]
+Substituting $C_D = K/\text{Re}$ and Re $= \rho v \sqrt{A}/\eta$:
+\[
+    F_d = \frac{K}{\rho v \sqrt{A}/\eta}\,\rho v^2 A = K\,\eta\,v\,\sqrt{A}.
+\]
+The factor $K$ is determined by the geometry; for a sphere $K = 6\pi$.
+
+\noindent\textbf{Physical intuition:} In laminar flow, the energy is dissipated
+by viscous shear in the boundary layer.  The momentum transferred per unit time
+(= drag force) is proportional to the velocity gradient, which is $\sim v/R$,
+times the area $R^2$ and the viscosity: $F \sim \eta (v/R) R^2 = \eta v R$.
+
+%%───────────────────────────────────────────────────────────────────────────
+\subsection*{Summary of Key Results}
+%%───────────────────────────────────────────────────────────────────────────
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{lll}
+\toprule
+\textbf{System} & \textbf{Result} & \textbf{Key parameters} \\
+\midrule
+Stellar free-fall time & $t_\text{ff} \sim 1/\sqrt{G\bar\rho}$ & $G,M,r$ \\
+Bohr radius & $a_0 = \hbar^2/(m_e e^2)$ & $\hbar, m_e, e$ \\
+Positronium radius & $a_0(\text{Ps}) = 2a_0$ & reduced mass $\mu = m_e/2$ \\
+Hydrogen-like radius & $a_0(Z) = a_0/Z$ & nuclear charge $Z$ \\
+Larmor radiation & $P \sim \ddot{p}^{\,2}/c^3$ & $p, \omega, c$ \\
+GW emission & $P_\text{GW} \sim G\dddot{Q}^2/c^5$ & quadrupole, suppressed \\
+Turbulent drag & $F_d \sim \rho v^2 A$ & $\rho, v, A$ \\
+Laminar drag (Stokes) & $F_d = 6\pi\eta v R$ & $\eta, v, R$ \\
+Reynolds number & Re $= \rho v \sqrt{A}/\eta$ & determines flow regime \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+%%───────────────────────────────────────────────────────────────────────────
+\subsection*{Recommended Reading}
+%%───────────────────────────────────────────────────────────────────────────
+
+\begin{itemize}
+    \item \textbf{Dimensional Analysis (general):} Barenblatt,
+    \textit{Scaling, Self-Similarity, and Intermediate Asymptotics}, Ch.~1–3 —
+    the definitive treatment; covers the Buckingham $\pi$ theorem rigorously
+    and applies it to fluid mechanics and beyond.
+
+    \item \textbf{Bohr radius and hydrogen atom:} Griffiths,
+    \textit{Introduction to Quantum Mechanics} (3rd ed.), §4.2 — derives the
+    energy levels and wavefunctions from first principles, making explicit the
+    role of $a_0$.
+
+    \item \textbf{Larmor formula and dipole radiation:} Griffiths,
+    \textit{Introduction to Electrodynamics} (4th ed.), §11.2 — clear
+    derivation of the Larmor formula and its generalisations.
+    Jackson, \textit{Classical Electrodynamics} (3rd ed.), Ch.~9 — the
+    authoritative reference for multipole radiation.
+
+    \item \textbf{Reynolds number and fluid flow:} Batchelor,
+    \textit{An Introduction to Fluid Dynamics}, §4.9 — derivation of the
+    Reynolds number from the Navier–Stokes equation and discussion of the
+    laminar-to-turbulent transition.
+
+    \item \textbf{Gravitational waves:} Maggiore,
+    \textit{Gravitational Waves: Theory and Experiments} (Oxford), Ch.~1 —
+    excellent introduction to the quadrupole formula and why monopole/dipole
+    radiation are absent.
+    \href{https://www.ligo.org/science/Publication-GW150914/}{LIGO Scientific
+    Collaboration, GW150914 (2016)} — the landmark detection paper.
+
+    \item \textbf{Positronium:}
+    \href{https://en.wikipedia.org/wiki/Positronium}{Wikipedia: Positronium}
+    — good overview of the two states, their lifetimes, and decay modes.
+\end{itemize}

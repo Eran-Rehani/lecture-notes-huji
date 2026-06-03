@@ -1,0 +1,532 @@
+%% Lecture 09 — Euler–Bernoulli Beam Equation
+
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\section{Lecture 09 — Euler–Bernoulli Beam Equation}\label{sec:lec09}
+\date{May 6, 2026}
+
+\subsection*{Overview}
+This lecture derives the \textbf{Euler--Bernoulli beam equation} — the capstone of the elasticity section. Starting from the bending results of Lecture~08, we first compare torsion and bending stiffness, then settle two bookkeeping issues: the location of the neutral axis and the motivation for I-beam cross-sections. We then derive a differential-geometric formula for the beam curvature $\kappa$ in terms of the deflection $x(z)$. Combining this with force and moment equilibrium of a beam element yields a fourth-order ODE for the deflection:
+\[
+  EI_y\,\frac{d^4x}{dz^4} = q(z),
+\]
+where $q(z)$ is the distributed load per unit length and $EI_y$ is the \emph{bending stiffness}. The lecture uses the same physical pattern as torsion: a moment is linearly related to a geometric rate of deformation, but torsion uses the shear modulus and twist rate, while bending uses Young's modulus and curvature. Each successive derivative of $x$ carries a distinct physical meaning (slope, curvature/moment, shear force, load density). We close with a complete worked example: a beam clamped at both ends deflecting under its own weight.
+
+%%────────────────────────────────────────────────────────────
+\subsection*{Opening Reminder — Torsion Versus Bending Stiffness}
+%%────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+Before deriving the beam equation, it is useful to recall why bending and torsion look mathematically similar but use different material constants. In both cases an internal moment balances an imposed deformation; the distinction is the kind of stress carried by the cross-section.
+
+For a circular rod in torsion, the moment acts along the rod axis and the deformation is the twist rate $d\phi/dz$. The stresses are shear stresses, so the relevant material constant is the shear modulus $G$. The torsional stiffness has the form
+\begin{equation}
+  C_{\mathrm{torsion}} = G I_c,
+  \qquad
+  I_c = \int_A r^2\,dA,
+  \label{eq:lec09_torsion_review}
+\end{equation}
+where $I_c$ is the polar second moment of area of the cross-section.
+
+For bending, the moment is perpendicular to the beam axis, here about the $y$-axis. The upper and lower fibers are stretched or compressed along $z$, so the stresses are normal stresses and the material constant is Young's modulus $E$. The bending stiffness is
+\begin{equation}
+  \boxed{C_{\mathrm{bend}} = E I_y,
+  \qquad
+  I_y = \int_A x^2\,dA.}
+  \label{eq:lec09_bending_stiffness}
+\end{equation}
+
+\textit{Physical significance:} Both stiffnesses are ``elastic modulus times area moment''. The modulus tells us which stress mode is active; the area moment tells us how effectively the cross-section places material away from the relevant axis.
+
+%%────────────────────────────────────────────────────────────
+\subsection*{Part I — Neutral Axis = Centroid of Cross-Section}
+%%────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+When a beam bends, fibers above the neutral axis stretch and fibers below compress. The neutral axis is the surface where $\varepsilon_{zz}=0$. Its location is not assumed — it follows from the condition that the net axial force across any cross-section is zero (the beam carries only transverse loads, not axial ones).
+
+\subsubsection*{Derivation}
+From Lecture~08, the axial strain in a bent beam at transverse distance $x$ from the neutral axis with radius of curvature $R_c$ is $\varepsilon_{zz}=x/R_c$, giving the axial stress
+\begin{equation}
+  \sigma_{zz} = \frac{E\,x}{R_c}.
+  \label{eq:lec09_axial_stress}
+\end{equation}
+Requiring zero net axial force on the cross-section:
+\begin{align}
+  F_z = \int_A \sigma_{zz}\,dA = \frac{E}{R_c}\int_A x\,dA = 0
+  \quad\Rightarrow\quad
+  \boxed{\int_A x\,dA = 0.}
+  \label{eq:lec09_centroid}
+\end{align}
+This is precisely the condition that $x=0$ passes through the \emph{centroid} of the cross-sectional area. The neutral axis coincides with the centroid. More generally, if an arbitrary origin is used, the centroid coordinate is
+\begin{equation}
+  \bar{x} = \frac{1}{A}\int_A x\,dA,
+  \label{eq:lec09_centroid_coordinate}
+\end{equation}
+and the neutral-axis coordinate system is the one for which $\bar{x}=0$.
+
+\textit{Physical significance:} The result is analogous to placing the origin at the center of mass, with area replacing mass. For cross-sections with a reflection symmetry about the bending axis (circles, rectangles, I-beams), the centroid lies on that symmetry axis by inspection. For fully asymmetric sections, bending about one axis can couple to bending about another; this course restricts the beam discussion to the common symmetric cases where the scalar formula $M_y=EI_y\kappa$ is enough.
+
+%%────────────────────────────────────────────────────────────
+\subsection*{Part II — I-Beam Cross-Section}
+%%────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+The bending stiffness is $EI_y$ with $I_y=\int_A x^2\,dA$. To maximize stiffness for a fixed amount of material (fixed cross-sectional area $A$), one must maximize $I_y/A$, which means pushing material as far as possible from the neutral axis.
+
+\subsubsection*{I-Beam Geometry}
+An \textbf{I-beam} concentrates material in two horizontal \emph{flanges} at the top and bottom, connected by a thin vertical \emph{web}. The flanges contribute large $x^2\,dA$ terms because $|x|$ is large; the web keeps the flanges separated and carries much of the shear. For a given cross-sectional area, the I-shape yields far greater bending stiffness than a solid rectangle.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[scale=1.1, >=Stealth]
+  %% ── left: solid rectangle ───────────────────────────────
+  \begin{scope}[xshift=0cm]
+    \fill[mydarkblue!10] (-0.5,-1.4) rectangle (0.5,1.4);
+    \draw[very thick, mydarkblue] (-0.5,-1.4) rectangle (0.5,1.4);
+    \draw[dashed, mydarkblue] (-0.5,0) -- (0.5,0) node[right, scale=0.8]{N.A.};
+    \draw[width] (0.65,-1.4) -- (0.65,1.4) node[midway,right,scale=0.8]{$a$};
+    \draw[width] (-0.5,-1.65) -- (0.5,-1.65) node[midway,below,scale=0.8]{$b$};
+    \node[below=10,align=center,scale=0.85] at (0,-1.8)
+      {Rectangle\\$I_y=\dfrac{ba^3}{12}$};
+  \end{scope}
+  %% ── right: I-beam ───────────────────────────────────────
+  \begin{scope}[xshift=4.0cm]
+    \def\tw{0.12}  % web half-width
+    \def\tf{0.22}  % flange thickness
+    \def\hw{1.10}  % web half-height
+    \def\fw{0.55}  % flange half-width
+    % top flange
+    \fill[mydarkblue!10] (-\fw,\hw) rectangle (\fw,\hw+\tf);
+    \draw[very thick, mydarkblue] (-\fw,\hw) rectangle (\fw,\hw+\tf);
+    % bottom flange
+    \fill[mydarkblue!10] (-\fw,-\hw-\tf) rectangle (\fw,-\hw);
+    \draw[very thick, mydarkblue] (-\fw,-\hw-\tf) rectangle (\fw,-\hw);
+    % web
+    \fill[mydarkblue!15] (-\tw,-\hw) rectangle (\tw,\hw);
+    \draw[very thick, mydarkblue] (-\tw,-\hw) rectangle (\tw,\hw);
+    % neutral axis
+    \draw[dashed,mydarkblue] (-\fw,0) -- (\fw,0) node[right,scale=0.8]{N.A.};
+    % labels
+    \node[right,scale=0.8,myorange!85!black] at (\fw+0.05, \hw+\tf/2) {flange};
+    \node[right,scale=0.8,myorange!85!black] at (\fw+0.05,-\hw-\tf/2) {flange};
+    \node[right,scale=0.8,myblue]            at (\tw+0.05, 0.35)       {web};
+    \node[below=10,align=center,scale=0.85] at (0,-\hw-\tf-0.45)
+      {I-beam\\$I_y \gg ba^3/12$ (same $A$)};
+  \end{scope}
+\end{tikzpicture}
+\caption{Comparison of cross-sections for equal material ($A$ fixed). The I-beam places flanges far from the neutral axis, giving a much larger $I_y=\int_A x^2\,dA$ and hence greater bending stiffness $EI_y$.}
+\label{fig:lec09_ibeam}
+\end{figure}
+
+%%────────────────────────────────────────────────────────────
+\subsection*{Part III — Curvature of a Deflected Beam}
+%%────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+The bending constitutive law from Lecture~08 is $M_y = EI_y\,\kappa$, where $\kappa=1/R_c$ is the curvature of the neutral axis. To write a differential equation for the deflection $x(z)$, we need $\kappa$ as a function of $x(z)$.
+
+\subsubsection*{Differential-Geometric Derivation}
+Let $\theta(z)$ be the angle the tangent to the neutral axis makes with the $z$-axis, and let $s$ be the arc length along the neutral axis. The exact curvature is
+\[
+  \kappa = \frac{d\theta}{ds}.
+\]
+In the \textbf{small-deflection approximation} ($|x'|\ll 1$):
+\begin{enumerate}
+  \item The slope is small: $\theta \approx \tan\theta = dx/dz \equiv x'$.
+  \item The arc element $ds = dz\sqrt{1+(x')^2} \approx dz$.
+\end{enumerate}
+Substituting both into the curvature formula:
+\begin{equation}
+  \boxed{\kappa \;\approx\; \frac{d\theta}{dz} \;\approx\; \frac{d^2x}{dz^2} \;=\; x''.}
+  \label{eq:lec09_curvature}
+\end{equation}
+
+\textit{Physical significance:} The exact expression is $\kappa=|x''|/(1+x'^2)^{3/2}$; the linearization discards the denominator. Equation~\eqref{eq:lec09_curvature} is the beam-theory specialisation of the general differential-geometric relation $\vec{\kappa}=d\hat{T}/ds$ (rate of change of unit tangent with arc length), which is studied in the full theory of curves.
+
+%%────────────────────────────────────────────────────────────
+\subsection*{Part IV — Equilibrium of a Beam Element}
+%%────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+We cut out a differential element of length $dz$ and balance forces and moments. Two internal resultants characterize the state at any cross-section:
+\begin{itemize}
+  \item \textbf{Shear force} $V(z)$: net transverse force ($+x$ direction) exerted by the right portion on the left portion.
+  \item \textbf{Bending moment} $M(z)$: net moment about the $y$-axis exerted by the right portion on the left portion.
+\end{itemize}
+The distributed load $q(z)$ (force per unit length in the $+x$ direction) is the external load density. Two useful examples are:
+\begin{align}
+  q(z) &= \rho A g,
+  &&\text{uniform self-weight for a beam of constant cross-section,}
+  \label{eq:lec09_uniform_load}\\
+  q(z) &= F_0\,\delta(z-z_0),
+  &&\text{a concentrated force $F_0$ applied at $z=z_0$.}
+  \label{eq:lec09_point_load}
+\end{align}
+The notation $q$ is chosen to avoid confusion with the curvature $\kappa$; the transcript notation sometimes calls the load density $K$, but the physical quantity is the same: force per unit length.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[scale=1.35, >=Stealth]
+  % dz=3.2, bh=0.50, fa=0.55, mr=0.38 (avoid \ht which is a TeX primitive)
+  \def\beldz{3.2}
+  \def\belbh{0.50}
+  \def\belfa{0.55}
+  \def\belmr{0.38}
+  % element
+  \fill[blue!8] (0,-\belbh) rectangle (\beldz,\belbh);
+  \draw[very thick] (0,-\belbh) rectangle (\beldz,\belbh);
+  % distributed load arrows (downward = +x direction)
+  \foreach \xi in {0.3,0.80,1.30,1.80,2.30,2.80}{
+    \draw[->,myred,thick] (\xi, 1.05) -- (\xi, 0.55);
+  }
+  \node[above,myred,scale=0.90] at (1.6, 1.12) {$q\,dz$};
+  % Left face: shear V upward
+  \draw[->,myblue,very thick,line cap=round] (0,0) --++(0,\belfa)
+    node[above left,scale=0.85]{$V$};
+  % Left face: moment M (clockwise arc)
+  \draw[myorange!85!black, very thick, ->]
+    (0, \belmr) arc(90:-180:\belmr);
+  \node[left=3,myorange!85!black,scale=0.85] at (-0.43, 0) {$M$};
+  % Right face: shear V+dV downward
+  \draw[->,myblue,very thick,line cap=round] (\beldz,0) --++(0,-\belfa)
+    node[below right,scale=0.85]{$V\!+\!dV$};
+  % Right face: moment M+dM (counterclockwise arc)
+  \draw[myorange!85!black, very thick, ->]
+    (3.58, 0) arc(0:270:\belmr);
+  \node[right=3,myorange!85!black,scale=0.85] at (3.66, 0) {$M\!+\!dM$};
+  % dz dimension
+  \draw[width] (0,-0.90) -- (\beldz,-0.90) node[midway,below,scale=0.85]{$dz$};
+  % coordinate axes
+  \draw[->,gray!70,thin] (0.4,-1.22)--++(0.55,0)
+    node[right,gray!70,scale=0.75]{$z$};
+  \draw[->,gray!70,thin] (0.4,-1.22)--++(0,0.55)
+    node[above,gray!70,scale=0.75]{$x$};
+\end{tikzpicture}
+\caption{Free-body diagram of a beam element of length $dz$. The distributed load $q\,dz$ acts in the $+x$ direction (downward). $V$ and $M$ are the internal shear force and bending moment; Newton's third law reverses their sense between the two faces.}
+\label{fig:lec09_fbd}
+\end{figure}
+
+\subsubsection*{Force Equilibrium}
+
+Summing forces in the $+x$ direction (down positive):
+\begin{align}
+  -V(z) + V(z+dz) + q\,dz &= 0 \nonumber \\
+  \Aboxed{\frac{dV}{dz} &= -q.}
+  \label{eq:lec09_force_eq}
+\end{align}
+
+\textit{Physical significance:} If a downward load is present, the shear force cannot be constant along the beam. Its spatial change is precisely what balances the load carried by the small element.
+
+\subsubsection*{Moment Equilibrium}
+
+Taking moments about the right face and neglecting the second-order term $q(dz)^2/2$:
+\begin{align}
+  M(z+dz) - M(z) + V(z)\,dz &\approx 0 \nonumber \\
+  \Aboxed{\frac{dM}{dz} &= -V.}
+  \label{eq:lec09_moment_eq}
+\end{align}
+
+\textit{Physical significance:} A varying bending moment is what produces the shear force. Force balance and moment balance therefore form a chain: load changes shear, and shear changes moment.
+
+Differentiating~\eqref{eq:lec09_moment_eq} and using~\eqref{eq:lec09_force_eq}:
+\begin{equation}
+  \boxed{\frac{d^2 M}{dz^2} = q.}
+  \label{eq:lec09_M2eq}
+\end{equation}
+
+\textit{Physical significance:} The load density is the second derivative of the bending moment. This is the equilibrium half of the Euler--Bernoulli equation; the material law will now convert $M$ into the deflection $x(z)$.
+
+%%────────────────────────────────────────────────────────────
+\subsection*{Part V — The Euler–Bernoulli Beam Equation}
+%%────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+The equilibrium equations know nothing about the material; they only say how $q$, $V$, and $M$ must vary for a static beam element. To predict the shape of the beam, we must add the elastic bending law from Lecture~08, which tells us how much curvature is produced by a given moment.
+
+\subsubsection*{Derivation}
+From Lecture~08 and equation~\eqref{eq:lec09_curvature}:
+\begin{equation}
+  \boxed{M = E I_y\,\kappa = E I_y\,x''.}
+  \label{eq:lec09_M_kappa}
+\end{equation}
+
+\textit{Physical significance:} The bending stiffness $EI_y$ is the proportionality factor between geometry and mechanics: for the same curvature, a stiffer material or a better-shaped cross-section carries a larger moment.
+
+Substituting into~\eqref{eq:lec09_M2eq}:
+\begin{equation}
+  \boxed{E I_y\,\frac{d^4 x}{dz^4} = q(z).}
+  \label{eq:lec09_EB}
+\end{equation}
+
+\textit{Physical significance:} This fourth-order linear ODE is the \textbf{Euler–Bernoulli beam equation}. Unlike Newton's second law (order 2) or the wave equation (order 2), it requires \emph{four} boundary conditions — two per end. It is a purely static equation (no time dependence). The strong $R^4$ or $a^3$ stiffness scaling from Lectures 07–08 is encoded entirely in $I_y$; changing $I_y$ rescales the right-hand side of the equation for $x$ without altering its structure.
+
+\subsubsection*{Physical Interpretation of the Derivatives}
+
+Each successive derivative of $x$ with respect to $z$ carries an independent physical meaning:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.65}
+\begin{tabular}{cll}
+  \toprule
+  Quantity & Expression & Physical meaning \\
+  \midrule
+  $x$                 & deflection                    & transverse displacement of neutral axis \\
+  $x'$                & slope                         & tangent angle (small-deflection) \\
+  $EI_y\,x''$         & $M(z)$                        & bending moment about $y$-axis \\
+  $-EI_y\,x'''$       & $V(z)$                        & shear force on cross-section \\
+  $EI_y\,x^{(4)}$     & $q(z)$                        & applied load per unit length \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+%%────────────────────────────────────────────────────────────
+\subsection*{Part VI — Boundary Conditions}
+%%────────────────────────────────────────────────────────────
+
+A beam has two ends; each end supplies two boundary conditions, giving the required four. The three standard end types are:
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[scale=1.05, >=Stealth]
+  %% ── (a) Clamped ──────────────────────────────────────
+  \begin{scope}[xshift=0cm]
+    \fill[gray!30] (-0.28,-0.75) rectangle (0, 0.75);
+    \foreach \yi in {-0.60,-0.35,-0.10,0.15,0.40,0.65}{
+      \draw[gray!55,thin] (0,\yi) -- (-0.25,\yi-0.25);
+    }
+    \draw[very thick] (0,-0.75) -- (0,0.75);
+    \fill[blue!12] (0,-0.26) rectangle (2.2,0.26);
+    \draw[very thick] (0,-0.26) rectangle (2.2,0.26);
+    \node[below=12,align=center,scale=0.82] at (1.1,-0.26)
+      {\textit{clamped (fixed)}\\$x=0,\quad x'=0$};
+  \end{scope}
+  %% ── (b) Simply supported ─────────────────────────────
+  \begin{scope}[xshift=3.8cm]
+    \fill[blue!12] (0,-0.26) rectangle (2.2,0.26);
+    \draw[very thick] (0,-0.26) rectangle (2.2,0.26);
+    \draw[very thick,fill=gray!25] (0,-0.26)--(-0.24,-0.65)--(0.24,-0.65)--cycle;
+    \draw[very thick,gray!45] (-0.38,-0.70) -- (0.38,-0.70);
+    \node[below=12,align=center,scale=0.82] at (1.1,-0.26)
+      {\textit{simply supported (pin)}\\$x=0,\quad x''=0$};
+  \end{scope}
+  %% ── (c) Free end ─────────────────────────────────────
+  \begin{scope}[xshift=7.6cm]
+    \fill[gray!30] (-0.28,-0.75) rectangle (0, 0.75);
+    \foreach \yi in {-0.60,-0.35,-0.10,0.15,0.40,0.65}{
+      \draw[gray!55,thin] (0,\yi) -- (-0.25,\yi-0.25);
+    }
+    \draw[very thick] (0,-0.75) -- (0,0.75);
+    \fill[blue!12] (0,-0.26) rectangle (2.2,0.26);
+    \draw[very thick] (0,-0.26) rectangle (2.2,0.26);
+    % open right end
+    \draw[myred,dashed,thick] (2.2,-0.40) -- (2.2,0.40);
+    \node[right=1,myred,scale=0.78] at (2.22,0) {free};
+    \node[below=12,align=center,scale=0.82] at (1.1,-0.26)
+      {\textit{free end}\\$x''=0,\quad x'''=0$};
+  \end{scope}
+\end{tikzpicture}
+\caption{The three standard beam boundary conditions. \textbf{Left:} clamped end — zero deflection and zero slope. \textbf{Centre:} simply-supported (pin) — zero deflection and zero moment ($x''=0$ because $M=EI_y x''$ and no external moment applied). \textbf{Right:} free end — zero moment and zero shear force ($x''=x'''=0$).}
+\label{fig:lec09_bcs}
+\end{figure}
+
+\subsubsection*{Boundary Conditions as External Actions}
+
+The same conditions can be read directly from the internal resultants. Since
+\[
+  M=EI_y x'',
+  \qquad
+  V=-EI_y x''',
+\]
+prescribing $x$ or $x'$ fixes the geometry at an end, while prescribing $x''$ or $x'''$ fixes the applied moment or transverse force at that end. With the sign convention used above, the right end and left end have opposite outward normals, so the external-action signs differ. Schematically,
+\begin{align}
+  \text{right end:}\qquad
+  M_{\mathrm{ext}} &= EI_y x'',
+  &
+  F_{\mathrm{ext}} &= -EI_y x''',
+  \label{eq:lec09_right_boundary_actions}\\
+  \text{left end:}\qquad
+  M_{\mathrm{ext}} &= -EI_y x'',
+  &
+  F_{\mathrm{ext}} &= EI_y x'''.
+  \label{eq:lec09_left_boundary_actions}
+\end{align}
+
+\textit{Physical significance:} A free end has no externally applied moment or force, so $M=V=0$ there. A support or clamp can exert reaction forces and moments, so the corresponding derivatives need not vanish; instead they encode the reactions.
+
+%%────────────────────────────────────────────────────────────
+\subsection*{Part VII — Worked Example: Clamped Beam Under Its Own Weight}
+%%────────────────────────────────────────────────────────────
+
+\subsubsection*{Problem Statement}
+A uniform beam of length $L$, cross-section $A$, and density $\rho$ is clamped at both ends. Find the deflection $x(z)$, the maximum sag, the bending moment, and the reaction forces.
+
+The distributed load (weight per unit length, $+x$ = downward) is
+\begin{equation}
+  q = \rho A g = \mathrm{const.}
+  \label{eq:lec09_q}
+\end{equation}
+Boundary conditions (both ends clamped, beam axis along $z$, $z\in[0,L]$):
+\begin{equation}
+  x(0)=0,\quad x'(0)=0,\qquad x(L)=0,\quad x'(L)=0.
+  \label{eq:lec09_bc}
+\end{equation}
+
+In a more careful support model one may allow a tiny longitudinal sliding of one end as the beam sags, to avoid adding an axial-stretching problem on top of the transverse bending problem. This does not change the transverse boundary conditions in~\eqref{eq:lec09_bc}: the vertical deflection and slope are still fixed at both ends.
+
+\subsubsection*{Solution of the ODE}
+
+The governing equation $EI_y\,x^{(4)}=q$ (constant $q$) has the general solution
+\[
+  x(z) = \frac{q}{24\,EI_y}\,z^4 + c_3 z^3 + c_2 z^2 + c_1 z + c_0.
+\]
+Applying the four conditions~\eqref{eq:lec09_bc}: $c_0=0$, $c_1=0$, and solving the two remaining equations yields $c_2=qL^2/(24EI_y)$, $c_3=-qL/(12EI_y)$. The deflection simplifies to
+\begin{equation}
+  \boxed{x(z) = \frac{q}{24\,EI_y}\,z^2(L-z)^2.}
+  \label{eq:lec09_sol}
+\end{equation}
+
+\textit{Verification:} $x^{(4)} = q/(24EI_y)\cdot 24 = q/EI_y$ \checkmark. At $z=0$: $x=0$, $x'= \frac{q}{12EI_y}\cdot z(L-z)(L-2z)\big|_{z=0}=0$ \checkmark. By symmetry the same holds at $z=L$. The solution is non-negative everywhere and symmetric about $z=L/2$, as expected physically.
+
+The derivatives that will be used below are
+\begin{align}
+  x'(z)
+    &= \frac{q}{12EI_y}\,z(L-z)(L-2z),
+    \label{eq:lec09_xprime}\\
+  x''(z)
+    &= \frac{q}{12EI_y}\left(L^2-6Lz+6z^2\right),
+    \label{eq:lec09_xdoubleprime}\\
+  x'''(z)
+    &= \frac{q}{2EI_y}\left(2z-L\right).
+    \label{eq:lec09_xtripleprime}
+\end{align}
+These formulas make the physics transparent: $x'$ vanishes at both clamps and at the midpoint, $x''$ gives curvature and moment, and $x'''$ gives shear and support reactions.
+
+\subsubsection*{Maximum Deflection}
+
+The maximum occurs at midspan ($z=L/2$, where $x'=0$ by symmetry):
+\begin{equation}
+  \boxed{x_{\max} = x\!\left(\frac{L}{2}\right) = \frac{q\,L^4}{384\,EI_y}.}
+  \label{eq:lec09_xmax}
+\end{equation}
+
+\subsubsection*{Bending Moment Distribution and Inflection Points}
+
+From $M=EI_y\,x''$:
+\begin{equation}
+  M(z) = \frac{q}{12}\!\left(L^2 - 6Lz + 6z^2\right).
+  \label{eq:lec09_moment}
+\end{equation}
+Key values:
+\begin{equation}
+  \boxed{
+  M(0)=M(L)=\frac{qL^2}{12},
+  \qquad
+  M\!\left(\frac{L}{2}\right)=-\frac{qL^2}{24}.}
+  \label{eq:lec09_moment_key_values}
+\end{equation}
+
+\textit{Physical significance:} The curvature is positive near the clamps and negative near the midpoint. Thus a fixed--fixed beam under uniform load does not have one curvature sign everywhere; the bending moment must change sign.
+
+The curvature changes sign at the \emph{inflection points} where $M=0$:
+\begin{equation}
+  \boxed{z_\pm = \frac{L}{2}\pm\frac{L}{2\sqrt{3}} = \frac{L(3\pm\sqrt{3})}{6} \approx \{0.211\,L,\;0.789\,L\}.}
+  \label{eq:lec09_inflection}
+\end{equation}
+
+\subsubsection*{Shear Force and Reaction Forces}
+
+From $V=-EI_y\,x'''$:
+\begin{equation}
+  V(z) = \frac{q}{2}(L-2z).
+  \label{eq:lec09_shear}
+\end{equation}
+At the two ends,
+\begin{equation}
+  \boxed{V(0)=\frac{qL}{2},
+  \qquad
+  V(L)=-\frac{qL}{2}.}
+  \label{eq:lec09_shear_ends}
+\end{equation}
+
+\textit{Physical significance:} The magnitudes are equal because the loading and supports are symmetric. Each support carries half the total weight $qL$; the sign flip is a convention effect caused by the two opposite end normals.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[scale=1.12, >=Stealth]
+  \def\Lbeam{5.6}
+  \def\peak{0.85}
+  % neutral axis reference
+  \draw[dashed, gray!45, thick] (0,0) -- (\Lbeam,0);
+  % deflection curve: normalized profile 16z^2(L-z)^2/L^4
+  \draw[very thick, myblue]
+    plot[domain=0:\Lbeam, samples=100]
+      (\x, {-\peak*16*\x*\x*(\Lbeam-\x)*(\Lbeam-\x)/(\Lbeam*\Lbeam*\Lbeam*\Lbeam)});
+  % inflection points
+  \pgfmathsetmacro{\za}{\Lbeam*(3-1.7320508)/6}
+  \pgfmathsetmacro{\zb}{\Lbeam*(3+1.7320508)/6}
+  \pgfmathsetmacro{\ya}{-\peak*16*\za*\za*(\Lbeam-\za)*(\Lbeam-\za)/(\Lbeam*\Lbeam*\Lbeam*\Lbeam)}
+  \pgfmathsetmacro{\yb}{-\peak*16*\zb*\zb*(\Lbeam-\zb)*(\Lbeam-\zb)/(\Lbeam*\Lbeam*\Lbeam*\Lbeam)}
+  \fill[myred] (\za,\ya) circle(2.8pt);
+  \fill[myred] (\zb,\yb) circle(2.8pt);
+  \node[above=2,myred,scale=0.78] at (\za,\ya) {$z_-$};
+  \node[above=2,myred,scale=0.78] at (\zb,\yb) {$z_+$};
+  % clamped wall left
+  \fill[gray!28] (-0.32,-0.65) rectangle (0,0.30);
+  \foreach \yi in {-0.52,-0.27,-0.02,0.18}{
+    \draw[gray!55,thin] (0,\yi) -- (-0.26,\yi-0.26);
+  }
+  \draw[very thick] (0,-0.65) -- (0,0.30);
+  % clamped wall right
+  \fill[gray!28] (\Lbeam,-0.65) rectangle (\Lbeam+0.32,0.30);
+  \foreach \yi in {-0.52,-0.27,-0.02,0.18}{
+    \draw[gray!55,thin] (\Lbeam,\yi) -- (\Lbeam+0.26,\yi-0.26);
+  }
+  \draw[very thick] (\Lbeam,-0.65) -- (\Lbeam,0.30);
+  % max-deflection annotation (Lbeam/2+0.15 = 2.95)
+  \draw[width] (2.95,0) -- (2.95,-0.85)
+    node[midway,right=2,scale=0.82]{$x_{\max}=\dfrac{qL^4}{384EI_y}$};
+  % curvature sign labels (za/2≈0.59, Lbeam/2=2.8, (zb+Lbeam)/2≈5.01)
+  \node[myorange!85!black,scale=0.78,align=center] at (0.59,-0.22)
+    {$M>0$\\$x''>0$};
+  \node[myblue,scale=0.78,align=center] at (2.8,-0.70)
+    {$M<0$\\$x''<0$};
+  \node[myorange!85!black,scale=0.78,align=center] at (5.01,-0.22)
+    {$M>0$\\$x''>0$};
+  % axes (Lbeam+0.5=6.1, -peak-0.25=-1.10)
+  \draw[->] (-0.1,0.42)--(6.1,0.42) node[right,scale=0.85]{$z$};
+  \draw[->] (-0.55,0.42)--(-0.55,-1.10) node[below,scale=0.85]{$x$};
+  \node[above,scale=0.80] at (0,0.42){$0$};
+  \node[above,scale=0.80] at (\Lbeam,0.42){$L$};
+\end{tikzpicture}
+\caption{Deflection curve $x(z)=qz^2(L-z)^2/(24EI_y)$ for a clamped-clamped beam under uniform load. Maximum sag $qL^4/(384EI_y)$ at midspan. Red dots mark the inflection points $z_\pm=L(3\pm\sqrt{3})/6$ where the bending moment changes sign.}
+\label{fig:lec09_deflection}
+\end{figure}
+
+%%────────────────────────────────────────────────────────────
+\subsection*{Summary}
+%%────────────────────────────────────────────────────────────
+
+The Euler–Bernoulli beam equation results from combining three steps:
+
+\begin{enumerate}
+  \item \textbf{Kinematics} (small deflection): $\kappa \approx x''$.
+  \item \textbf{Bending constitutive law} (Lec~08): $M = EI_y\,x''$.
+  \item \textbf{Equilibrium}: $d^2M/dz^2 = q$, derived from $dV/dz=-q$ and $dM/dz=-V$.
+\end{enumerate}
+
+\[
+  x \;\xrightarrow{d/dz}\; x' \;\xrightarrow{\cdot EI_y}\; M=EI_y x''
+  \;\xrightarrow{-d/dz}\; V \;\xrightarrow{-d/dz}\; q = EI_y x^{(4)}.
+\]
+
+Clamped-clamped beam under UDL $q$:
+\[
+  x(z)=\frac{q\,z^2(L-z)^2}{24\,EI_y}, \qquad
+  x_{\max}=\frac{qL^4}{384\,EI_y}, \qquad
+  M_{\rm ends}=\frac{qL^2}{12}, \qquad
+  V_{\rm supports}=\frac{qL}{2}.
+\]
+
+\end{document}

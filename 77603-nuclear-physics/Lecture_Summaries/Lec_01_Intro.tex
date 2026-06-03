@@ -1,0 +1,326 @@
+%%═══════════════════════════════════════════════════════════════════
+%% Lecture 01 — Introduction to Nuclear Physics
+%% 77603 — Nuclear Physics
+%% Date: [Not stated in transcript — Zoom session, first lecture of semester]
+%% Lecturer: Dr. Moshe Friedman
+%%═══════════════════════════════════════════════════════════════════
+
+\section{Lecture 01 — Introduction to Nuclear Physics}
+\label{sec:lec01}
+\date{24 March 2026}
+
+
+%%───────────────────────────────────────────────────────────────────
+\subsection*{Overview}
+%%───────────────────────────────────────────────────────────────────
+
+Nuclear physics is the branch of physics that studies the atomic nucleus.
+The nucleus is \emph{not} a point particle: it is a complex, quantum
+many-body system composed of protons and neutrons (collectively called
+\emph{nucleons}), bound together by three distinct interactions —
+the electromagnetic force, the weak interaction, and the nuclear force.
+Unlike classical many-body systems (e.g.\ gravitational $N$-body
+simulations), there is no scale separation in the nucleus, making exact
+solutions intractable even on the most powerful computers.
+Compounding this difficulty, the nuclear force itself is not a
+fundamental force of nature but rather a residual effect of the strong
+(QCD) interaction acting between quarks inside nucleons, and no
+closed-form expression for it exists.
+This lecture introduces the scope and goals of the course, standard
+nuclear notation, the Chart of Nuclides, and the characteristic units
+used in nuclear physics.
+
+
+%%───────────────────────────────────────────────────────────────────
+\subsection*{Definitions}
+%%───────────────────────────────────────────────────────────────────
+
+\dfn{Nucleon}{A collective name for the proton and the neutron.
+A free proton carries electric charge $+e$; a free neutron is
+electrically neutral.
+Both have nearly identical masses and are treated in the course as
+two quantum states of a single object (anticipating isospin symmetry).}
+
+\dfn{Atomic Nucleus}{A bound quantum many-body system consisting of $Z$ protons and $N$
+neutrons (nucleons), with total nucleon number $A = Z + N$ (the
+\emph{mass number}).
+Standard notation:
+\begin{equation}
+  {}^{A}_{Z}\mathrm{X}
+  \label{eq:lec01:notation}
+\end{equation}
+where $\mathrm{X}$ is the chemical symbol of the element.
+Because the chemical symbol uniquely determines $Z$, the subscript
+$Z$ is often omitted.
+$N$ is almost never written explicitly in the notation, but is given
+by $N = A - Z$.}
+
+\dfn{Isotopes}{Two nuclei are \emph{isotopes} of the same element if they share the
+same proton number $Z$ but have different neutron numbers $N$.
+They occupy the same column in the nuclear chart (same $Z$, different $N$).}
+
+\dfn{Isotones}{Two nuclei are \emph{isotones} if they share the same neutron number $N$
+but have different proton numbers $Z$.}
+
+\dfn{Isobars}{Two nuclei are \emph{isobars} if they share the same mass number
+$A = Z + N$ while both $Z$ and $N$ individually differ.
+Isobars lie on anti-diagonal lines in the Chart of Nuclides
+(constant $Z+N$).}
+
+\dfn{Nuclear Force / Nucleon--Nucleon Force}{The residual interaction acting between nucleons inside the nucleus.
+It is \emph{not} a fundamental interaction; it arises as a residue of
+the colour (QCD) force binding quarks inside each nucleon.
+Because no first-principles derivation from QCD at nuclear
+energy scales is currently tractable, the nuclear force is described
+by \emph{effective models} (Yukawa-type potentials, chiral EFT, etc.).
+Key empirical properties:
+\begin{itemize}
+  \item \textbf{Short range}: operates only within $r \lesssim 1$\,fm
+    (order of the nucleon radius); can be modelled to zeroth order as
+    a square well potential.
+  \item \textbf{Strong}: for $r \lesssim 1$\,fm it dominates the
+    Coulomb repulsion between protons.
+  \item \textbf{Vanishes outside range}: to good approximation, the
+    nuclear force is zero for $r \gg 1$\,fm.
+\end{itemize}}
+
+\dfn{Weak Interaction inside the Nucleus}{The weak interaction (preferably called the \emph{weak interaction}
+rather than ``weak force'') is responsible for interconverting protons
+and neutrons:
+\begin{align}
+  \beta^{-}\text{-decay:}&\quad n \to p + e^{-} + \bar{\nu}_{e}
+  \label{eq:lec01:betaminus}\\
+  \beta^{+}\text{-decay:}&\quad p \to n + e^{+} + \nu_{e}
+  \label{eq:lec01:betaplus}
+\end{align}
+The weak interaction acts at a range shorter than the nuclear force
+itself (it operates \emph{inside} the nucleon).}
+
+\dfn{Chart of Nuclides (Nuclear Chart)}{A two-dimensional map of all known nuclei, with
+\begin{itemize}
+  \item $x$-axis: neutron number $N$,
+  \item $y$-axis: proton number $Z$ (i.e.\ the element).
+\end{itemize}
+Each cell represents one nuclide ${}^{A}_{Z}\mathrm{X}$.
+Colour coding (one common convention):
+\begin{itemize}
+  \item \textbf{Black}: stable nuclides (found naturally on Earth).
+  \item \textbf{Pink/rose (right of black strip)}: $\beta^{-}$ emitters
+    — too many neutrons; a neutron converts to a proton, moving one step
+    diagonally toward stability.
+  \item \textbf{Blue (left of black strip)}: $\beta^{+}$ emitters
+    (or electron capture) — too many protons.
+  \item \textbf{Yellow}: $\alpha$ emitters — nucleus ejects a
+    ${}^{4}\mathrm{He}$ nucleus ($2p + 2n$); the daughter moves two
+    steps down and two steps left in the chart.
+  \item \textbf{Green}: fission — nucleus splits into two large fragments.
+  \item \textbf{White/empty}: nuclides that either do not exist as bound
+    systems or whose properties have not yet been measured.
+\end{itemize}
+The chart can be thought of as a topographic map where ``altitude''
+represents energy; all decay modes correspond to motion toward the
+black strip (the energy valley of stability).}
+
+\dfn{Atomic Mass Unit ($u$ or $\mathrm{amu}$)}{The \emph{atomic mass unit} is defined so that the mass of
+${}^{12}\mathrm{C}$ is exactly $12\,u$:
+\begin{equation}
+  1\,u \;\equiv\; \frac{1}{12}\,m({}^{12}\mathrm{C})
+  \;\approx\; 931.5\;\mathrm{MeV}/c^{2}
+  \;\approx\; 1\;\mathrm{GeV}/c^{2}.
+  \label{eq:lec01:amu}
+\end{equation}
+In these units the masses of the free proton and neutron are
+\begin{align}
+  m_{p} &= 1.00728\;u, \label{eq:lec01:mp}\\
+  m_{n} &= 1.00867\;u. \label{eq:lec01:mn}
+\end{align}
+The fractional mass difference $(m_{n}-m_{p})/m_{p} \approx 0.14\%$
+underscores that proton and neutron are nearly identical objects
+(two isospin states of the nucleon).
+The electron mass is $m_{e} \approx 5\times10^{-4}\,u$, roughly
+$1/2000$ of the nucleon mass, and is usually neglected in nuclear mass
+budgets.}
+
+
+%%───────────────────────────────────────────────────────────────────
+\subsection*{Key Results}
+%%───────────────────────────────────────────────────────────────────
+
+\textbf{Nuclear size hierarchy.}  The characteristic length scales are
+
+\begin{equation}
+  r_{\text{quark}} \sim 0 \text{ (point-like)}
+  \;\ll\;
+  r_{\text{nucleon}} \sim 1\;\mathrm{fm}
+  \;\ll\;
+  r_{\text{nucleus}} \sim \text{few fm}
+  \;\ll\;
+  r_{\text{atom}} \sim 1\;\text{\AA} = 10^{-10}\;\mathrm{m}.
+  \label{eq:lec01:scales}
+\end{equation}
+The nucleus is approximately $1/50{,}000$ the size of the atom.
+
+\textbf{Nuclear binding energy scale.}
+\begin{equation}\boxed{
+  E_{\text{bind}} \sim \text{few}\;\mathrm{MeV \; per \; nucleon}
+  \label{eq:lec01:bind_scale}
+}\end{equation}
+This is $10^{6}$ times larger than the energy scale of chemical bonds
+($\sim\mathrm{eV}$), which explains both the enormous energy density
+of nuclear reactions and the need for the dedicated units below.
+
+\textbf{Stability line.}
+For light nuclei the stable valley follows approximately
+$N \approx Z$ (the $N=Z$ line).
+For heavier nuclei the Coulomb repulsion between protons requires
+$N > Z$ to maintain stability; beyond $N \approx 50$ the $N=Z$ line
+lies entirely outside the stable region.
+
+
+%%───────────────────────────────────────────────────────────────────
+\subsection*{Derivations}
+%%───────────────────────────────────────────────────────────────────
+
+No quantitative derivations were performed in this introductory
+lecture.  The lecturer indicated that derivations will begin in
+Lecture 02 and beyond, after students have completed the assigned
+reading (Krane, Chapter 3).
+
+
+%%───────────────────────────────────────────────────────────────────
+\subsection*{Examples}
+%%───────────────────────────────────────────────────────────────────
+
+\ex{Reading nuclear notation}{The nuclide ${}^{56}_{26}\mathrm{Fe}$ (iron-56) has:
+\begin{itemize}
+  \item $Z = 26$ protons (the subscript, or equivalently the chemical
+    symbol Fe),
+  \item $A = 56$ nucleons (the superscript),
+  \item $N = A - Z = 30$ neutrons.
+\end{itemize}
+Its mass is approximately $56\,u$ (to within nuclear binding energy
+corrections of order $\sim 0.1\%$ per nucleon).}
+
+\ex{Identifying isotopes, isotones, and isobars}{Consider ${}^{12}\mathrm{C}$ and ${}^{13}\mathrm{C}$:
+both have $Z=6$, but $N=6$ and $N=7$ respectively — they are
+\emph{isotopes}.
+
+Consider ${}^{12}\mathrm{C}$ ($Z=6, N=6$) and ${}^{11}\mathrm{B}$
+($Z=5, N=6$): both have $N=6$ but different $Z$ — they are
+\emph{isotones}.
+
+Consider ${}^{14}\mathrm{C}$ ($Z=6, N=8$) and ${}^{14}\mathrm{N}$
+($Z=7, N=7$): both have $A=14$ but differ in both $Z$ and $N$ —
+they are \emph{isobars}.}
+
+\ex{The NNDC interactive chart}{The National Nuclear Data Center (NNDC) hosts the interactive
+Chart of Nuclides at \texttt{https://www.nndc.bnl.gov}.
+Clicking on any nuclide reveals its half-life, decay modes, excited
+energy levels, spin-parity $J^{\pi}$, binding energy, and much more.
+The lecturer emphasised this as the primary numerical reference for
+the entire course.}
+
+
+%%───────────────────────────────────────────────────────────────────
+\subsection*{Connections}
+%%───────────────────────────────────────────────────────────────────
+
+\begin{itemize}
+  \item \textbf{Quantum Mechanics II (prerequisite)}: The lecturer
+    explicitly stated that students should be familiar with the
+    hydrogen atom, orbital structure, the harmonic oscillator, and
+    finite square-well potentials from QM2.  These reappear in the
+    shell model (Lecture $\sim$8).
+  \item \textbf{Classical mechanics}: $N$-body gravitational systems
+    (solar system) were cited as an analogy: even three-body classical
+    systems cannot be solved analytically, let alone the quantum
+    many-body nucleus.
+  \item \textbf{Cosmological $N$-body simulations}: Mentioned as the
+    classical many-body benchmark — tractable because of scale
+    separation and a known force ($GMM/r^{2}$). The nucleus lacks both
+    advantages.
+  \item \textbf{QCD / Standard Model}: The nuclear force is a residue
+    of the QCD colour force.  At laboratory nuclear energies QCD
+    cannot be expanded perturbatively (the coupling is $O(1)$), so
+    the nuclear force remains phenomenological.  High-energy nuclear
+    experiments (e.g.\ heavy-ion collisions at the LHC) do probe
+    perturbative QCD.
+  \item \textbf{Ab-initio nuclear theory} (Nir Barnea group, HUJI):
+    Mentioned explicitly; performs first-principles calculations
+    starting from nucleon--nucleon potentials, currently limited to
+    light nuclei ($A \lesssim 20$--30).
+  \item \textbf{Nuclear astrophysics}: Stars are the natural environment
+    where nuclear reactions occur at scale; the lecturer identified
+    nuclear astrophysics as one of the major frontiers of contemporary
+    nuclear physics.
+  \item \textbf{Solid-state / condensed-matter physics}: The
+    \emph{form factor} concept (topic of Lecture 02 reading) also
+    appears in condensed-matter scattering; students should encounter
+    it there later.
+\end{itemize}
+
+
+%%───────────────────────────────────────────────────────────────────
+\subsection*{To Remember}
+%%───────────────────────────────────────────────────────────────────
+
+\begin{enumerate}
+  \item The nucleus is a \textbf{quantum many-body system} — exact
+    solutions are intractable; all nuclear models are effective models.
+  \item Three interactions act inside the nucleus: \textbf{electromagnetic}
+    (repulsive, Coulomb, long-range), \textbf{weak} (interconverts $p$
+    and $n$, very short-range), and the \textbf{nuclear force}
+    (attractive, short-range $\sim1\,\mathrm{fm}$, not derivable from
+    first principles at nuclear energies).
+  \item Standard notation: ${}^{A}_{Z}\mathrm{X}$, with
+    $A = Z + N$.  Chemical symbol $\Leftrightarrow$ $Z$.
+  \item The \textbf{unit of length} in nuclear physics is the
+    \emph{femtometre} (fm, also called the ``fermi''):
+    $1\,\mathrm{fm} = 10^{-15}\,\mathrm{m}$.
+  \item The \textbf{unit of mass} is the \emph{atomic mass unit}:
+    $1\,u \approx 931.5\,\mathrm{MeV}/c^{2}$, defined via
+    $m({}^{12}\mathrm{C}) \equiv 12\,u$.
+  \item Nuclear \textbf{binding energies} are of order
+    $\sim\mathrm{MeV}$ per nucleon — $10^{6}$ times chemical bond
+    energies.
+  \item Isotopes share $Z$; isotones share $N$; isobars share $A$.
+\end{enumerate}
+
+
+%%───────────────────────────────────────────────────────────────────
+\subsection*{Exam / HW Hints}
+%%───────────────────────────────────────────────────────────────────
+
+\begin{itemize}
+  \item The exam will be \textbf{100\% written}, with no homework
+    submission component.  However, Dr.\ Friedman stated that exam
+    problems will be \emph{based on, and may include verbatim,
+    problems from the homework sets} he distributes.  Solving all
+    homework problems is therefore the primary exam preparation.
+  \item Past exams from previous lecturers (e.g.\ Ami Leviatan) are of
+    \textbf{limited use} because the course structure is substantially
+    different under Dr.\ Friedman.
+  \item Some homework problems will involve analysing \textbf{real
+    nuclear data} (not only analytical calculations).  Familiarity
+    with the NNDC website (\texttt{nndc.bnl.gov}) is expected.
+  \item \textbf{Reading before Lecture 02 is mandatory}: Chapter 3 of
+    Krane, \textit{Introductory Nuclear Physics}, with emphasis on
+    \textbf{nuclear masses} and the \textbf{form factor} (first
+    encounter with the concept).
+\end{itemize}
+
+%%═══════════════════════════════════════════════════════════════════
+%% SUGGESTED MACROS (add to preamble.sty if not already present)
+%%
+%% \newcommand{\fm}{\,\mathrm{fm}}
+%%     % femtometre: $r \sim 1\fm$
+%%
+%% \newcommand{\MeV}{\,\mathrm{MeV}}
+%%     % megaelectronvolt: $E \sim 8\MeV$
+%%
+%% \newcommand{\amu}{u}
+%%     % atomic mass unit symbol: $m_p = 1.00728\,\amu$
+%%
+%% \newcommand{\nuclide}[3]{{}^{#1}_{#2}\mathrm{#3}}
+%%     % e.g. \nuclide{56}{26}{Fe} → ^{56}_{26}Fe
+%%═══════════════════════════════════════════════════════════════════

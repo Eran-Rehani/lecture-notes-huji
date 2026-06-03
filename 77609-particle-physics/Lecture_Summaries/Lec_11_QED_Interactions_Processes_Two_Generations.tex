@@ -1,0 +1,599 @@
+%%===================================================================
+%% Lecture 11 -- QED: Interactions, Processes, and Two Generations
+%% 77609 -- Introduction to Elementary Particles
+%% Date: 14/05/2026
+%% Lecturer: Prof. Yonit Hochberg
+%%===================================================================
+
+\documentclass[../main.tex]{subfiles}
+\usepackage{preamble}
+
+\begin{document}
+
+\section{Lecture 11 -- QED: Interactions, Processes, and Two Generations}\label{sec:lec11}
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 14/05/2026 & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+
+%%------------------------------------------------------------------
+\subsection*{Overview}
+
+This lecture completes the study of local $U(1)$ gauge invariance by explicitly expanding the covariant derivative to expose the interaction vertices it generates, making manifest the physical role of \textbf{charge as coupling strength}.  We then construct the simplest version of Quantum Electrodynamics (QED), enumerate its spectrum, derive the Feynman vertex rule, and survey the key QED processes.  Finally, we generalise to two fermion generations, rotate to the mass basis, and discover an accidental lepton-number symmetry.
+
+\begin{enumerate}
+  \item \textbf{Charge as coupling strength}: expanding $D_\mu$ for fermions and scalars reveals explicit interaction vertices.
+  \item \textbf{Model-building summary}: symmetry + field content + charge assignments $\to$ most general Lagrangian.
+  \item \textbf{QED with one generation}: definition, Lagrangian, spectrum, vertex rule, fine-structure constant.
+  \item \textbf{QED processes}: Bhabha, M\o{}ller, Compton, pair production/annihilation; loop corrections; parameter counting and predictions.
+  \item \textbf{QED with two generations}: mass matrix, diagonalisation, mass eigenstates (electron and muon), accidental $U(1)_e\times U(1)_\mu$.
+\end{enumerate}
+
+%%------------------------------------------------------------------
+\subsection*{Charge as the Coupling Strength}\label{sec:lec11:charge-coupling}
+
+\subsubsection*{Physical Motivation}
+
+We saw in Lecture~10 that a \emph{global} $U(1)$ symmetry implies conservation of a Noether charge $Q$.  A \emph{local} (gauge) $U(1)$ symmetry has an additional consequence: the charge $Q$ assigned to a field determines how \emph{strongly} that field interacts with the gauge boson.  This is the second face of charge.  It becomes explicit when we expand the covariant derivative inside the kinetic terms.
+
+\subsubsection*{Recap: the covariant derivative}
+
+Recall from Lecture~10 that for a field of charge $Q$ under a local $U(1)$ with coupling constant $g$ and gauge field $A_\mu$:
+\begin{equation}
+  \boxed{D_\mu \;=\; \partial_\mu + ig Q A_\mu.}
+  \label{eq:lec11:cov-deriv}
+\end{equation}
+The combination $gQ$ that appears here — not $g$ and $Q$ separately — controls the strength of every interaction.
+
+\textit{Physical significance:} $D_\mu$ is sensitive to the charge of the field it acts on.  If $Q=0$, the gauge-field term vanishes: the field is invisible to the gauge boson.  This is why neutral particles do not couple to the photon.
+
+%%------------------------------------------------------------------
+\subsubsection*{Fermion kinetic term: the three-point vertex}
+
+\subsubsection*{Physical Motivation}
+
+The covariant kinetic term for a Dirac fermion $\psi$ of charge $Q$ is $i\bar\psi\,\Dirac{D}\,\psi$.  Expanding $D_\mu$ splits this into a pure kinetic piece (the free theory) and an interaction piece that couples $\psi$ to the gauge boson $A_\mu$.
+
+\subsubsection*{Derivation}
+
+\begin{align}
+  i\bar\psi\,\Dirac{D}\,\psi
+  &= i\bar\psi\,\gamma^\mu D_\mu\,\psi
+   = i\bar\psi\,\gamma^\mu(\partial_\mu + igQA_\mu)\psi \nonumber\\
+  &= \underbrace{i\bar\psi\,\gamma^\mu\partial_\mu\psi}_{\text{kinetic term}}
+    \;+\; \underbrace{i^2\, gQ\,\bar\psi\,\gamma^\mu A_\mu\psi}_{\text{interaction term}}.
+  \label{eq:lec11:fermion-expand}
+\end{align}
+Since $i^2=-1$:
+\begin{equation}
+  \boxed{
+  \lagr_{\rm int}^{(f)} \;=\; -gQ\,\bar\psi\,\gamma^\mu\psi\, A_\mu.}
+  \label{eq:lec11:fermion-vertex}
+\end{equation}
+
+This is a \textbf{three-point interaction}: two fermion legs and one gauge-boson leg, meeting at a single vertex.  The corresponding Feynman rule for the vertex factor is $-igQ\gamma^\mu$.
+
+\textit{Physical significance:} The larger $|Q|$, the stronger the coupling.  A field with $Q=0$ has no interaction term — it decouples completely from the gauge boson at tree level.
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}
+    \begin{feynman}
+      \vertex (ibar) at (-1.3, 0.9) {\(\bar\psi\)};
+      \vertex (iin)  at (-1.3,-0.9) {\(\psi\)};
+      \vertex (v)    at ( 0.0, 0.0);
+      \vertex (out)  at ( 2.0, 0.0) {\(A_\mu\)};
+      \diagram* {
+        (ibar) -- [anti fermion] (v),
+        (iin)  -- [fermion]      (v),
+        (v)    -- [photon]       (out),
+      };
+    \end{feynman}
+    \node at (0.5, 1.0) {$-igQ\gamma^\mu$};
+  \end{tikzpicture}
+  \caption{Fermion--gauge-boson vertex arising from the covariant kinetic term.  The vertex factor is $-igQ\gamma^\mu$; the coupling scales linearly with the charge $Q$.}
+  \label{fig:lec11:fermion-vertex}
+\end{figure}
+
+%%------------------------------------------------------------------
+\subsubsection*{Scalar kinetic term: three-point and four-point vertices}
+
+\subsubsection*{Physical Motivation}
+
+For a complex scalar $\phi$ of charge $Q$, the covariant kinetic term is $(D_\mu\phi)^\dagger(D^\mu\phi)$.  Because $A_\mu$ enters $D_\mu$ linearly, squaring $(D_\mu\phi)$ produces terms with both one and two gauge-boson fields, yielding \emph{two distinct vertices}.
+
+\subsubsection*{Derivation}
+
+Write $D_\mu\phi = \partial_\mu\phi + igQA_\mu\phi$ and expand:
+\begin{align}
+  (D_\mu\phi)^\dagger(D^\mu\phi)
+  &=(\partial_\mu\phi^\dagger - igQA_\mu\phi^\dagger)(\partial^\mu\phi + igQA^\mu\phi) \nonumber\\
+  &= \underbrace{\partial_\mu\phi^\dagger\partial^\mu\phi}_{\text{kinetic}}
+    \;+\; \underbrace{igQ\,A^\mu\!\left(\phi^\dagger\partial_\mu\phi
+          - \phi\partial_\mu\phi^\dagger\right)}_{\text{3-pt vertex}}
+    \;+\; \underbrace{g^2Q^2\,A_\mu A^\mu\,\phi^\dagger\phi}_{\text{4-pt vertex}}.
+  \label{eq:lec11:scalar-expand}
+\end{align}
+
+\begin{equation}
+  \boxed{
+  \lagr_{\rm int,3}^{(s)} = igQ\,A^\mu\!\left(\phi^\dagger\partial_\mu\phi
+    - \phi\partial_\mu\phi^\dagger\right),
+  \qquad
+  \lagr_{\rm int,4}^{(s)} = g^2Q^2\,A_\mu A^\mu\,\phi^\dagger\phi.}
+  \label{eq:lec11:scalar-vertices}
+\end{equation}
+
+The \textbf{three-point vertex} (two scalars + one photon) has strength $\propto gQ$ with a momentum factor (from the derivative).  The \textbf{four-point vertex} (two scalars + two photons, the ``seagull'' diagram) has strength $\propto (gQ)^2$.
+
+\textit{Physical significance:} The four-point vertex is unique to scalars and has no fermion analogue.  In QED, where the charged matter is the electron (a Dirac fermion), this vertex does not appear.  In scalar QED (charged pions, for example), it is essential and restores unitarity in longitudinal-photon scattering.
+
+%%------------------------------------------------------------------
+\subsection*{Model-Building Summary}\label{sec:lec11:model-building}
+
+\subsubsection*{Physical Motivation}
+
+We now have all the ingredients to state the general model-building procedure.  This is the algorithm that will produce the Standard Model.
+
+\dfn{Model-building recipe}{Given:
+\begin{enumerate}
+  \item A \textbf{symmetry group} $G$ (e.g.\ $U(1)$, or $SU(3)\times SU(2)\times U(1)$).
+  \item A \textbf{field content}: a list of all Weyl spinors and complex scalars.
+  \item \textbf{Charge assignments}: how each field transforms under each factor of $G$.
+\end{enumerate}
+The output is the most general Lagrangian of mass dimension $\leq 4$ invariant under $G$.}
+
+\begin{equation}
+  \boxed{
+  \text{symmetry} + \text{fields} + \text{charges}
+  \;\xrightarrow{\dim\leq 4}\;
+  \lagr_{\rm most\;general}.}
+  \label{eq:lec11:model-building}
+\end{equation}
+
+If the symmetry is \emph{local} (gauge), one must additionally:
+\begin{itemize}
+  \item Add a massless gauge field $A_\mu^\alpha$ for each independent $U(1)$ factor $\alpha$.
+  \item Promote $\partial_\mu \to D_\mu = \partial_\mu + ig_\alpha Q_\alpha A_\mu^\alpha$ in all kinetic terms.
+  \item Include the kinetic term $-\frac{1}{4}F_{\mu\nu}^\alpha F^{\alpha\,\mu\nu}$ for each gauge field.
+\end{itemize}
+
+\textit{Physical significance:} In the Standard Model, \emph{all} imposed symmetries are local gauge symmetries.  Global symmetries such as baryon number $B$ and lepton number $L$ are not imposed—they appear accidentally.  The reason: gravitational effects at the Planck scale are expected to break any global symmetry, while local symmetries can be exact at all energies.
+
+%%------------------------------------------------------------------
+\subsection*{QED with One Generation}\label{sec:lec11:qed-one-gen}
+
+\subsubsection*{Physical Motivation}
+
+We now build the simplest version of Quantum Electrodynamics (QED): a local $U(1)$ theory with a single charged Dirac fermion — the electron.
+
+%%------------------------------------------------------------------
+\subsubsection*{Definition}
+
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Symmetry:} & Local $U(1)_{\rm em}$ \\[3pt]
+  \textbf{Fermions:} & $e_L$ (left-handed Weyl, charge $Q=-1$) \\
+                     & $e_R$ (right-handed Weyl, charge $Q=-1$) \\[3pt]
+  \textbf{Gauge field:} & $A_\mu$ (photon, charge $Q=0$) \\[3pt]
+  \textbf{Coupling:} & $e$ (electromagnetic coupling constant)
+\end{tabular}
+\end{center}
+
+\medskip
+The covariant derivative with coupling constant $e$ and charge $Q$ is:
+\begin{equation}
+  \boxed{D_\mu = \partial_\mu + ie\,Q\,A_\mu.}
+  \label{eq:lec11:qed-cov-deriv}
+\end{equation}
+For the electron ($Q=-1$): $D_\mu = \partial_\mu - ie A_\mu$.
+
+\textit{Physical significance:} The gauge symmetry forces the same coupling constant $e$ to appear in every interaction vertex in QED.  We have no freedom to assign different couplings to different vertices — gauge invariance is highly restrictive.
+
+%%------------------------------------------------------------------
+\subsubsection*{The QED Lagrangian}
+
+The most general renormalizable Lagrangian invariant under local $U(1)_{\rm em}$ for this field content is:
+\begin{equation}
+  \lagr_{\mathrm{QED}}
+  =
+  -\frac{1}{4}F_{\mu\nu}F^{\mu\nu}
+  + i\bar{e}_L\Dirac{D}e_L
+  + i\bar{e}_R\Dirac{D}e_R
+  - m_e\,\bar{e}_L e_R
+  - m_e\,\bar{e}_R e_L,
+  \label{eq:lec11:qed-lagrangian-weyl}
+\end{equation}
+where $F_{\mu\nu}=\partial_\mu A_\nu - \partial_\nu A_\mu$ and $\Dirac{D}=\gamma^\mu D_\mu$.
+
+\textit{Why is the Dirac mass term allowed?} The combination $\bar{e}_L e_R$ has total charge $(-(-1))+(-1) = 0$ under $U(1)_{\rm em}$, so it is gauge invariant.  Both $e_L$ and $e_R$ have the \emph{same} charge $Q=-1$, which is the necessary condition.  Had they carried different charges, the mass term would be forbidden.
+
+Assembling $e_L$ and $e_R$ into a four-component Dirac spinor $e=(e_L,e_R)^T$:
+\begin{equation}
+  \boxed{
+  \lagr_{\mathrm{QED}}
+  =
+  -\frac{1}{4}F_{\mu\nu}F^{\mu\nu}
+  + i\bar{e}\,\Dirac{D}\,e
+  - m_e\,\bar{e}\,e,
+  \qquad D_\mu = \partial_\mu - ie A_\mu.}
+  \label{eq:lec11:qed-lagrangian}
+\end{equation}
+
+%%------------------------------------------------------------------
+\subsubsection*{Spectrum of QED}
+
+Expanding the covariant kinetic term using \eqref{eq:lec11:qed-cov-deriv} and $Q=-1$:
+\begin{equation}
+  i\bar{e}\,\Dirac{D}\,e
+  = i\bar{e}\,\gamma^\mu\partial_\mu e
+  + e\,\bar{e}\,\gamma^\mu e\, A_\mu.
+  \label{eq:lec11:qed-expand}
+\end{equation}
+The first term is the free Dirac kinetic term; the second is the interaction.
+
+\begin{equation}
+  \boxed{
+  \text{Spectrum:}\;
+  \underbrace{\text{massive Dirac fermion}}_{\text{electron }e^-,\;\text{positron }e^+}\;(\text{mass }m_e)
+  \;+\;
+  \underbrace{\text{massless vector boson}}_{\text{photon }\gamma}.}
+  \label{eq:lec11:qed-spectrum}
+\end{equation}
+
+\textbf{On the massless photon:}  The absence of a photon mass is \emph{not} a free choice — it is a prediction.  A mass term $m^2 A_\mu A^\mu$ is forbidden by local $U(1)_{\rm em}$ gauge invariance (as shown in Lecture~10).  This prediction is independent of the values of $m_e$ and $e$.
+
+\textbf{On the electron/positron:}  The electron ($e^-$, charge $-1$) and positron ($e^+$, charge $+1$) are the particle and antiparticle excitations of the same Dirac field $e$.  They have equal mass $m_e$.
+
+\textbf{No accidental symmetry:}  The mass term $m_e\bar{e}e$ mixes $e_L$ and $e_R$, so there is no independent symmetry rotating them separately.  QED with one generation has no accidental symmetry beyond the imposed $U(1)_{\rm em}$.
+
+%%------------------------------------------------------------------
+\subsubsection*{The QED vertex rule and the fine-structure constant}
+
+From \eqref{eq:lec11:qed-expand}, the interaction Lagrangian is $+e\,\bar{e}\gamma^\mu e\,A_\mu$.  Applying the general rule \eqref{eq:lec11:fermion-vertex} with $g\to e$ and $Q=-1$:
+\begin{equation}
+  \boxed{
+  \text{QED vertex rule:}\quad
+  -ie\,Q\,\gamma^\mu = +ie\,\gamma^\mu
+  \quad(Q=-1\;\text{for electron}).}
+  \label{eq:lec11:qed-vertex}
+\end{equation}
+
+The \textbf{fine-structure constant} is:
+\begin{equation}
+  \boxed{
+  \alpha \;=\; \frac{e^2}{4\pi} \;\approx\; \frac{1}{137}.}
+  \label{eq:lec11:alpha}
+\end{equation}
+
+\textit{Physical significance:} $\alpha\approx 1/137\ll 1$ is the small parameter that makes the perturbative expansion in Feynman diagrams reliable.  Each additional vertex contributes a factor of $e^2\sim 4\pi/137\approx 0.09$, so corrections are genuinely small.  This is in contrast to the strong interaction at low energies, where the analogous $\alpha_s\sim 1$ and perturbation theory breaks down.
+
+%%------------------------------------------------------------------
+\subsection*{QED Processes}\label{sec:lec11:qed-processes}
+
+\subsubsection*{Physical Motivation}
+
+From the single vertex $\bar{e}\,e\,\gamma$, we can construct an infinite variety of processes by connecting vertices with propagators.  Every amplitude must conserve charge at each vertex: the sum of incoming charges equals the sum of outgoing charges.  (This is simply the Ward identity: $\sum Q = 0$ at every vertex.)  We survey the most important tree-level and selected loop processes.
+
+%%------------------------------------------------------------------
+\subsubsection*{Tree-level processes (two vertices, order $\alpha^2$ in cross-section)}
+
+All tree-level QED processes at lowest order involve two vertices; each vertex contributes one power of $e$, so the amplitude scales as $e^2$ and the cross-section as $\alpha^2$.
+
+\paragraph{Bhabha scattering: $e^+e^-\to e^+e^-$.}
+Two independent Feynman diagrams contribute:
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}
+    %% === s-channel ===
+    \begin{feynman}
+      \vertex (s_em)  at (-2.0,  0.8) {\(e^-\)};
+      \vertex (s_ep)  at (-2.0, -0.8) {\(e^+\)};
+      \vertex (s_v1)  at (-0.5,  0.0);
+      \vertex (s_v2)  at ( 0.5,  0.0);
+      \vertex (s_em2) at ( 2.0,  0.8) {\(e^-\)};
+      \vertex (s_ep2) at ( 2.0, -0.8) {\(e^+\)};
+      \diagram* {
+        (s_em)  -- [fermion]      (s_v1),
+        (s_ep)  -- [anti fermion] (s_v1),
+        (s_v1)  -- [photon, edge label=\(\gamma^*\)] (s_v2),
+        (s_v2)  -- [fermion]      (s_em2),
+        (s_v2)  -- [anti fermion] (s_ep2),
+      };
+    \end{feynman}
+    \node[below=1.5cm] at (0, 0) {\textit{s}-channel};
+    %% === t-channel ===
+    \begin{feynman}
+      \vertex (t_em)  at ( 4.0,  0.8) {\(e^-\)};
+      \vertex (t_em2) at ( 7.0,  0.8) {\(e^-\)};
+      \vertex (t_ep)  at ( 4.0, -0.8) {\(e^+\)};
+      \vertex (t_ep2) at ( 7.0, -0.8) {\(e^+\)};
+      \vertex (t_v1)  at ( 5.5,  0.8);
+      \vertex (t_v2)  at ( 5.5, -0.8);
+      \diagram* {
+        (t_em)  -- [fermion]      (t_v1) -- [fermion]      (t_em2),
+        (t_ep)  -- [anti fermion] (t_v2) -- [anti fermion] (t_ep2),
+        (t_v1)  -- [photon, edge label'=\(\gamma^*\)] (t_v2),
+      };
+    \end{feynman}
+    \node[below=1.5cm] at (5.5, 0) {\textit{t}-channel};
+  \end{tikzpicture}
+  \caption{Bhabha scattering $e^+e^-\to e^+e^-$.  The $s$-channel (left) corresponds to annihilation into a virtual photon followed by pair creation; the $t$-channel (right) corresponds to photon exchange between the electron and positron.  Both contribute at order $\alpha^2$.}
+  \label{fig:lec11:bhabha}
+\end{figure}
+
+\textit{Charge check ($s$-channel):}  At the left vertex, $(-1)+(+1)=0$; the virtual photon is neutral.  At the right vertex, $0\to(-1)+(+1)=0$.  Charge conserved at both vertices. \checkmark
+
+\paragraph{M\o{}ller scattering: $e^-e^-\to e^-e^-$.}
+Two electrons exchange a virtual photon.  The $s$-channel is forbidden: two incoming electrons would need to annihilate into an object of charge $-2$, but the photon is neutral — charge conservation fails.  Only the $t$-channel and $u$-channel (crossed $t$-channel) contribute.
+
+\paragraph{Compton scattering: $e^-\gamma\to e^-\gamma$.}
+An electron absorbs a photon and emits another.  Two diagrams: in the first, the photon is absorbed before being emitted (direct, with the intermediate virtual electron propagator in the $s$-channel); in the second, the photon is emitted first (with the virtual electron in the $u$-channel).
+
+\paragraph{Pair annihilation: $e^+e^-\to\gamma\gamma$.}
+Electron and positron annihilate into two photons.  A single final-state photon is forbidden by energy-momentum conservation.  Two diagrams contribute (the electron propagator is in either the $t$- or $u$-channel).
+
+\paragraph{Pair production: $\gamma\gamma\to e^+e^-$.}
+The time-reversed process of pair annihilation.  Two real photons collide and materialise as an electron-positron pair.
+
+All tree-level cross-sections scale as:
+\begin{equation}
+  \boxed{\sigma_{\rm tree} \;\propto\; |\Mamp|^2 \;\propto\; e^4 \;\propto\; \alpha^2.}
+  \label{eq:lec11:tree-xsec}
+\end{equation}
+
+%%------------------------------------------------------------------
+\subsubsection*{Higher-order (loop) diagrams}
+
+\subsubsection*{Physical Motivation}
+
+Beyond tree level, we add loops: each additional closed loop introduces at least two more vertices, contributing $e^2\propto\alpha$ to the amplitude squared.  An order-$\alpha^4$ contribution to the Bhabha cross-section (order $\alpha^2$ in $\Mamp$) requires four vertices total.  Representative diagrams include:
+
+\begin{itemize}
+  \item \textbf{Vertex correction}: an extra virtual photon emitted and reabsorbed on one of the external electron legs.
+  \item \textbf{Photon self-energy} (vacuum polarisation): a fermion loop is inserted inside the virtual photon propagator.  This diagram corrects the kinetic term of the photon — equivalently, it rescales the effective gauge coupling, giving rise to the \textbf{running of $\alpha$}.
+  \item \textbf{Box diagram}: the electron and positron exchange two virtual photons simultaneously, forming a four-vertex box.
+  \item \textbf{Crossed box}: as above, with the photon lines exchanged.
+\end{itemize}
+
+\paragraph{Anomalous magnetic moment.}
+
+A one-loop correction to the electron--photon vertex contains a virtual photon connecting two points on the electron line.  This diagram gives the leading quantum correction to the electron's magnetic moment:
+\begin{equation}
+  \boxed{
+  g_e = 2\!\left(1 + \frac{\alpha}{2\pi} + O(\alpha^2) + \cdots\right).}
+  \label{eq:lec11:g-minus-2}
+\end{equation}
+This is the \textbf{anomalous magnetic moment}.  QED predicts $g_e$ to twelve significant figures, in spectacular agreement with experiment — the most precisely tested prediction of any physical theory.
+
+\textit{Physical significance:} Loops are not corrections we can choose to ignore.  They are required by quantum mechanics (the path integral sums over all field configurations).  Their calculation demands renormalisation of $e$ and $m_e$, after which all predictions are finite and parameter-free.
+
+%%------------------------------------------------------------------
+\subsubsection*{Parameter counting and experimental tests}
+
+\subsubsection*{Physical Motivation}
+
+A theory with $n$ free parameters needs $n$ measurements to fix them; every subsequent measurement is a genuine prediction.  How many free parameters does QED have?
+
+The Lagrangian~\eqref{eq:lec11:qed-lagrangian} depends on exactly \textbf{two parameters}:
+\begin{equation}
+  \boxed{
+  \text{QED parameters: }\;
+  m_e \;(\text{electron mass}),\quad
+  e \;(\text{or equivalently }\alpha = e^2/4\pi).}
+  \label{eq:lec11:qed-params}
+\end{equation}
+
+\textit{What is not a free parameter?}
+\begin{itemize}
+  \item The electron charge $Q=-1$ is part of the theory's \emph{definition} (the input charge assignment), not a measurement.
+  \item The photon mass is zero by gauge invariance: $m_\gamma = 0$ is a prediction.
+\end{itemize}
+
+Both parameters have been measured with extraordinary accuracy:
+\begin{align}
+  m_e &= 0.51099895000 \pm 0.00000000015\;\text{MeV},
+  \label{eq:lec11:me-value}\\[3pt]
+  \alpha^{-1} &= 137.035999084 \pm 0.000000021.
+  \label{eq:lec11:alpha-value}
+\end{align}
+
+\begin{equation}
+  \boxed{
+  \text{Two measurements fix }m_e\text{ and }e
+  \;\Longrightarrow\;
+  \text{every other QED observable is a parameter-free prediction.}}
+  \label{eq:lec11:qed-prediction}
+\end{equation}
+
+\textit{Physical significance:} This is what it means to \emph{test} a theory.  After determining $m_e$ and $\alpha$ from, say, measuring the electron rest energy and the Bhabha cross-section, we can then independently predict the Lamb shift, Compton cross-section, anomalous magnetic moment, etc.  The agreement of these predictions with experiment to 10+ significant figures is the gold standard of theoretical physics.
+
+%%------------------------------------------------------------------
+\subsection*{QED with Two Fermion Generations}\label{sec:lec11:qed-two-gen}
+
+\subsubsection*{Physical Motivation}
+
+Nature provides three generations of charged leptons: electron, muon, and tau.  We now generalise QED to two generations (electron + muon) to understand how the particle masses arise from the most general Lagrangian and to identify any emergent symmetry.
+
+%%------------------------------------------------------------------
+\subsubsection*{Definition}
+
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Symmetry:} & Local $U(1)_{\rm em}$ \\[3pt]
+  \textbf{Fermions:} & $\ell_{L,i}$ (left-handed, $i=1,2$, charge $Q=-1$) \\
+                     & $\ell_{R,i}$ (right-handed, $i=1,2$, charge $Q=-1$) \\[3pt]
+  \textbf{Gauge field:} & $A_\mu$ (photon, $Q=0$)
+\end{tabular}
+\end{center}
+
+\medskip
+All four Weyl spinors carry the \emph{same} charge $Q=-1$, so all can form gauge-invariant mass terms with one another.
+
+%%------------------------------------------------------------------
+\subsubsection*{The most general mass matrix}
+
+\subsubsection*{Physical Motivation}
+
+A Dirac mass term pairs one left-handed and one right-handed field; the product $\overline{\ell_{L,i}}\,\ell_{R,j}$ is gauge invariant because the charges cancel: $(-Q)+Q=0$.  With two generations, there are $2\times2=4$ such pairings.
+
+The most general mass Lagrangian is:
+\begin{equation}
+  \lagr_{\rm mass}
+  \;=\;
+  -\,\overline{\ell_L}^{\,\rm T}\,M\,\ell_R \;+\; \text{h.c.}
+  \;=\;
+  -\!
+  \begin{pmatrix}\overline{\ell_{L,1}} & \overline{\ell_{L,2}}\end{pmatrix}
+  \underbrace{\begin{pmatrix}M_{11} & M_{12} \\ M_{21} & M_{22}\end{pmatrix}}_{M}
+  \begin{pmatrix}\ell_{R,1}\\\ell_{R,2}\end{pmatrix}
+  +\text{h.c.},
+  \label{eq:lec11:mass-matrix}
+\end{equation}
+where $M$ is a general complex $2\times2$ matrix.
+
+\textit{Physical significance:} The off-diagonal entries $M_{12}$ and $M_{21}$ mix the two flavours.  In the basis $(\ell_1,\ell_2)$, the physical particles do not have definite mass; we must rotate to a better basis.
+
+%%------------------------------------------------------------------
+\subsubsection*{Rotation to the mass basis}
+
+\subsubsection*{Physical Motivation}
+
+Any complex matrix $M$ can be diagonalised by a \textbf{bi-unitary transformation}: $M = V_L^\dagger\,M_{\rm diag}\,V_R$.  This amounts to independent unitary rotations of the left-handed and right-handed fields.  After the rotation, we obtain fields with definite mass — the \textbf{mass eigenstates}.
+
+\subsubsection*{Derivation}
+
+Choose unitary matrices $V_L$ and $V_R$ such that:
+\begin{equation}
+  \boxed{
+  V_L\,M\,V_R^\dagger
+  =
+  \begin{pmatrix}m_e & 0 \\ 0 & m_\mu\end{pmatrix},
+  \qquad m_e \leq m_\mu.}
+  \label{eq:lec11:diagonalisation}
+\end{equation}
+
+Define mass-eigenstate fields:
+\begin{equation}
+  \begin{pmatrix}\ell_{L,1}\\\ell_{L,2}\end{pmatrix}
+  = V_L^\dagger
+  \begin{pmatrix}e_L\\\mu_L\end{pmatrix},
+  \qquad
+  \begin{pmatrix}\ell_{R,1}\\\ell_{R,2}\end{pmatrix}
+  = V_R^\dagger
+  \begin{pmatrix}e_R\\\mu_R\end{pmatrix}.
+  \label{eq:lec11:mass-eigenstates}
+\end{equation}
+
+\textit{Key point — kinetic terms are invariant:}  The fermion kinetic terms are sums of diagonal terms:
+\[
+  \sum_i i\,\overline{\ell_{L,i}}\,\Dirac{D}\,\ell_{L,i}.
+\]
+A unitary rotation $V_L$ acting on the flavour index $i$ is like a change of orthonormal basis: $\sum_i |\ell_{L,i}\rangle\langle\ell_{L,i}|$ is invariant under $V_L$.  (More concretely: $V_L^\dagger V_L = \mathbf{1}$, so the sum is unchanged.)  The same holds for the covariant derivative $D_\mu$ since all fields carry the same charge $Q=-1$, so $D_\mu$ commutes with the flavour rotation.
+
+\begin{equation}
+  \boxed{
+  \text{The unitary rotations }V_L,\,V_R\text{ leave all kinetic terms invariant.}}
+  \label{eq:lec11:kinetic-invariant}
+\end{equation}
+
+%%------------------------------------------------------------------
+\subsubsection*{Lagrangian in the mass basis}
+
+In the new basis $(e,\mu)$ where the mass matrix is diagonal:
+\begin{equation}
+  \boxed{
+  \lagr_{\mathrm{QED},2}
+  =
+  -\frac{1}{4}F_{\mu\nu}F^{\mu\nu}
+  + i\bar{e}\,\Dirac{D}\,e
+  + i\bar{\mu}\,\Dirac{D}\,\mu
+  - m_e\,\bar{e}\,e
+  - m_\mu\,\bar{\mu}\,\mu,
+  \qquad D_\mu = \partial_\mu - ie A_\mu.}
+  \label{eq:lec11:qed2-lagrangian}
+\end{equation}
+
+The two mass eigenstates are:
+\begin{itemize}
+  \item The \textbf{electron} $e$: lighter, $m_e\approx0.511\;\text{MeV}$, charge $-1$.
+  \item The \textbf{muon} $\mu$: heavier, $m_\mu\approx105.7\;\text{MeV}$, charge $-1$.
+\end{itemize}
+
+Both couple to the photon with the same strength $e$, because both carry $Q=-1$.  This is \textbf{gauge universality}: the electromagnetic interaction is flavour-blind.
+
+%%------------------------------------------------------------------
+\subsubsection*{Accidental symmetry: $U(1)_e\times U(1)_\mu$}
+
+\subsubsection*{Physical Motivation}
+
+Inspecting $\lagr_{\mathrm{QED},2}$: there is no term mixing $e$ and $\mu$.  Each flavour appears only in its own kinetic term and mass term; the photon couples to each independently.  This means we can phase-rotate $e$ and $\mu$ with \emph{independent} constant parameters and leave the Lagrangian invariant.
+
+\subsubsection*{Derivation}
+
+Under independent global phase rotations:
+\begin{equation}
+  e \;\to\; e^{i\beta_e}\,e,
+  \qquad
+  \mu \;\to\; e^{i\beta_\mu}\,\mu,
+  \label{eq:lec11:independent-rotations}
+\end{equation}
+every term in $\lagr_{\mathrm{QED},2}$ is invariant (the phases cancel in $\bar{e}e$, $\bar{\mu}\mu$, and the kinetic terms).  This is an accidental $U(1)_e\times U(1)_\mu$ symmetry:
+\begin{equation}
+  \boxed{
+  G_{\rm accidental} = U(1)_e \times U(1)_\mu,}
+  \label{eq:lec11:accidental}
+\end{equation}
+even though only a single $U(1)_{\rm em}$ was imposed.
+
+\textit{Why is it accidental?}  The only renormalizable gauge-invariant operator that could mix $e$ and $\mu$ would be a cross-mass term $\bar{e}_L\mu_R$.  But we are already in the mass basis, where we have specifically rotated to eliminate such terms.  Any cross-mass term that were to appear would require $m_e\neq m_\mu$, and in fact in the mass basis, the mass matrix is diagonal — so no mixing term survives.
+
+\paragraph{Consequences.}
+By Noether's theorem, $U(1)_e$ implies conservation of \textbf{electron number} $L_e$ and $U(1)_\mu$ implies conservation of \textbf{muon number} $L_\mu$.  This forbids processes such as $\mu^-\to e^-e^+e^-$ (electron-positron pair in the final state) from happening in pure QED.
+
+\paragraph{Relation to $U(1)_{\rm em}$.}
+The special case $\beta_e=\beta_\mu\equiv\beta$ is a single common phase rotation — the global limit of the gauge $U(1)_{\rm em}$.  The diagonal subgroup of $U(1)_e\times U(1)_\mu$ is the global electromagnetic symmetry:
+\begin{equation}
+  \boxed{
+  U(1)_{\rm em,\,global} \;\subset\; U(1)_e\times U(1)_\mu.}
+  \label{eq:lec11:symmetry-chain}
+\end{equation}
+
+\textit{Physical significance:}  Accidental symmetries are always global, never gauged.  They are in general broken by higher-dimensional operators (suppressed by a high scale $\Lambda$).  In nature, $L_e$ and $L_\mu$ are broken by neutrino Yukawa couplings in the full Standard Model, allowing processes like $\mu^-\to e^-\bar\nu_e\nu_\mu$ (muon decay).  However, the total lepton number $L=L_e+L_\mu+L_\tau$ remains approximately conserved at accessible energies.
+
+%%------------------------------------------------------------------
+\subsection*{To Remember}
+
+\begin{itemize}
+  \item The covariant derivative $D_\mu = \partial_\mu + igQA_\mu$ generates interaction vertices when expanded: a three-point vertex ($\bar\psi\gamma^\mu\psi A_\mu$, strength $gQ$) for fermions; three-point (strength $gQ$ with momentum) and four-point (seagull, strength $(gQ)^2$) vertices for complex scalars.
+  \item \textbf{$D_\mu$ knows the charge of the field it acts on.}  A $Q=0$ field has no coupling to the gauge boson.
+  \item Model building: symmetry + fields + charges $\to$ most general $\dim\leq4$ Lagrangian; if local, add gauge fields, promote $\partial_\mu\to D_\mu$.
+  \item QED (one generation) has two parameters: $m_e$ and $e$.  The photon mass zero is a prediction of gauge invariance, not a parameter.
+  \item The QED vertex rule is $+ie\gamma^\mu$ for the electron ($Q=-1$).  Fine-structure constant: $\alpha=e^2/4\pi\approx1/137$.
+  \item Tree-level QED processes (Bhabha, M\o{}ller, Compton, pair production/annihilation) each have two vertices; $\sigma\propto\alpha^2$.  Once $m_e$ and $e$ are fixed, all others are predictions.
+  \item The massless photon is a prediction; detecting a nonzero $m_\gamma$ would falsify QED.
+  \item QED with two generations: the $2\times2$ complex mass matrix is diagonalised by bi-unitary transformations; kinetic terms are unchanged; mass eigenstates are the electron and muon.
+  \item The absence of $e$--$\mu$ mixing in the mass-basis Lagrangian produces an accidental $U(1)_e\times U(1)_\mu$, implying separate conservation of $L_e$ and $L_\mu$ in pure QED.
+  \item Accidental symmetries are always global; the global part of $U(1)_{\rm em}$ is the diagonal of $U(1)_e\times U(1)_\mu$.
+\end{itemize}
+
+%%------------------------------------------------------------------
+\subsection*{Recommended Reading}
+
+\begin{itemize}
+  \item \textbf{Tong, \textit{Lectures on Particle Physics}, Chapter~3}:
+    QED, covariant derivative, vertex rules, and one-loop corrections.
+  \item \textbf{Griffiths, \textit{Introduction to Elementary Particles}, Chapter~9}:
+    QED Lagrangian, the electromagnetic vertex, and scattering processes.
+  \item \textbf{Halzen \& Martin, Chapter~14}:
+    QED interactions, Bhabha and M\o{}ller scattering, parameter counting.
+  \item \textbf{Peskin \& Schroeder, Sections~5.1--5.5}:
+    Tree-level QED processes, spin sums, and leading radiative corrections.
+  \item \textbf{Grossman \& Rakshit (course notes), Chapter~3 and Chapter~5}:
+    Charge assignments, local symmetries, and QED spectrum.
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,512 @@
+%%===================================================================
+%% Lecture 14 -- QCD: Interactions, Parameters, Confinement,
+%%               and Accidental Symmetries
+%% 77609 -- Introduction to Elementary Particles
+%% Date: 31/05/2026
+%% Lecturer: Prof. Yonit Hochberg
+%%===================================================================
+
+\documentclass[../main.tex]{subfiles}
+\usepackage{preamble}
+
+\begin{document}
+
+\section{Lecture 14 -- QCD Interactions, Running Couplings, Confinement, and Accidental Symmetries}\label{sec:lec14}
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 31/05/2026 & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+
+%%------------------------------------------------------------------
+\subsection*{Overview}
+
+Lecture~13 built the machinery of non-Abelian gauge theory and used $SU(3)_c$ as the central example. This lecture applies that machinery to Quantum Chromodynamics ($\QCD$), the theory of strong interactions. We start from the $\QCD$ Lagrangian, expand it to identify the quark-gluon vertex and the gluon self-interactions, count the free parameters of the theory, and then connect the sign of the $\QCD$ beta function to confinement. The final part of the lecture asks a standard model-building question: after imposing the gauge symmetry, what extra global symmetries accidentally appear in the Lagrangian, and what do they imply?
+
+\begin{enumerate}
+  \item \textbf{Running couplings}: why a gauge coupling is a scale-dependent parameter.
+  \item \textbf{$\QCD$ interactions}: quark-gluon interaction, three-gluon vertex, and four-gluon vertex, all controlled by the same $g_s$.
+  \item \textbf{Seven $\QCD$ parameters}: six quark masses and the strong coupling $\alpha_s=g_s^2/(4\pi)$.
+  \item \textbf{Confinement}: color triplets are not observed as free asymptotic states; observed states are color singlets.
+  \item \textbf{Accidental symmetries}: $U(6)_L\times U(6)_R$ for the kinetic terms, broken by quark masses to $U(1)^6$, and then by weak interactions to baryon number.
+\end{enumerate}
+
+This lecture follows \textbf{Chapter~5} of the Grossman--Nir--Buchalla notes.
+
+%%==================================================================
+\subsection{Running Coupling Constants}\label{sec:lec14:running}
+
+\subsubsection*{Conceptual Background}
+
+In a classical Lagrangian the coupling constant looks like a fixed number. In quantum field theory this number is measured at a scale: the loop corrections depend on the energy or momentum scale of the process, and the coupling one extracts from an experiment therefore depends on that scale. The renormalization group packages this dependence into a beta function.
+
+\dfn[def:lec14:beta-function]{Beta Function}{
+For a dimensionless coupling $g(\mu)$ measured at renormalization scale $\mu$, the beta function is
+\begin{equation}
+  \boxed{\;\beta(g) \equiv \frac{\partial g}{\partial \ln\mu}\;}
+  \label{eq:lec14:beta_definition}
+\end{equation}
+where $\ln\mu$ is the natural logarithm of the energy scale.
+}
+
+\textit{Significance:} The sign of $\beta(g)$ tells us whether the interaction becomes stronger or weaker as we move to higher energies.
+
+The one-loop beta function only depends on fields that are charged under the gauge symmetry. A charged field can appear in loops and therefore screen or anti-screen the gauge interaction.
+
+\paragraph{Abelian comparison.}
+For a gauged $U(1)$ theory with $n_f$ Dirac fermions of charge magnitude $|q|=1$, the leading beta function is
+\begin{equation}
+  \boxed{\;\beta(g_1)=\frac{n_f g_1^3}{24\pi^2}\;}
+  \label{eq:lec14:u1_beta}
+\end{equation}
+which is positive.
+
+\textit{Significance:} In a simple Abelian theory the coupling grows toward higher energies and becomes weaker in the infrared.
+
+\paragraph{Non-Abelian comparison.}
+For an $SU(N)$ gauge theory with $n_f$ fermion fields, the leading beta function quoted in the lecture is
+\begin{equation}
+  \boxed{\;\beta(g_N)=\left(\frac{2n_f-11N}{3}\right)\frac{g_N^3}{16\pi^2}\;}
+  \label{eq:lec14:sun_beta}
+\end{equation}
+where the $-11N$ term comes from the non-Abelian gauge-boson self-interactions.
+
+\textit{Significance:} For sufficiently few fermions, the non-Abelian coupling becomes weaker at high energy and stronger at low energy; this is the seed of asymptotic freedom and confinement.
+
+\nt{Perturbation theory is an expansion in powers of the relevant coupling. When the coupling is small, a few diagrams give accurate predictions. When the coupling becomes large, the expansion loses predictive power even though the underlying theory can still be perfectly well defined.}
+
+%%==================================================================
+\subsection{Defining QCD}\label{sec:lec14:defining-qcd}
+
+\subsubsection*{Physical Motivation}
+
+$\QCD$ is the local $SU(3)_c$ gauge theory of the strong force. The subscript $c$ stands for color. The quarks are triplets of $SU(3)_c$, and the gluons are the gauge bosons required by local $SU(3)_c$ invariance.
+
+\dfn[def:lec14:qcd-field-content]{QCD Field Content}{
+The defining ingredients of $\QCD$ are
+\begin{equation}
+  \boxed{\;SU(3)_c\ \text{local gauge symmetry},\qquad
+  Q_{Li}(\mathbf{3}),\;Q_{Ri}(\mathbf{3}),\quad i=1,\ldots,6,\qquad
+  \text{no scalars.}\;}
+  \label{eq:lec14:qcd_field_content}
+\end{equation}
+The six flavors are later called $u,d,s,c,b,t$ after diagonalizing the mass matrix.
+}
+
+\textit{Significance:} $\QCD$ is vector-like because both left-handed and right-handed quarks transform in the same color representation.
+
+Since the symmetry is local, we must introduce a gauge field in the adjoint representation of $SU(3)_c$:
+\begin{equation}
+  G_\mu^a,\qquad a=1,\ldots,8 .
+  \label{eq:lec14:gluon_field}
+\end{equation}
+The eight fields $G_\mu^a$ are the gluons. The number eight is not arbitrary: it is the dimension of the adjoint representation of $SU(3)$, namely $3^2-1=8$.
+
+%%==================================================================
+\subsection{The QCD Lagrangian}\label{sec:lec14:qcd-lagrangian}
+
+\subsubsection*{Mathematical Setup}
+
+The non-Abelian field strength for the gluon is the $SU(3)$ specialization of the field strength derived in Lecture~13:
+\begin{equation}
+  \boxed{\;G_{\mu\nu}^a
+  = \partial_\mu G_\nu^a-\partial_\nu G_\mu^a
+  -g_s f^{abc}G_\mu^bG_\nu^c\;}
+  \label{eq:lec14:gluon_field_strength}
+\end{equation}
+where $g_s$ is the strong coupling constant and $f^{abc}$ are the $SU(3)$ structure constants, defined by
+\begin{equation}
+  [L^a,L^b]=i f^{abc}L^c .
+  \label{eq:lec14:su3_algebra}
+\end{equation}
+In the triplet representation,
+\begin{equation}
+  L^a=\frac{\lambda^a}{2},
+  \label{eq:lec14:gellmann_generators}
+\end{equation}
+where the $\lambda^a$ are the eight Gell-Mann matrices.
+
+The covariant derivative acting on a color-triplet quark is
+\begin{equation}
+  \boxed{\;D_\mu = \partial_\mu + i g_s G_\mu^a L^a
+  = \partial_\mu+\frac{i}{2}g_sG_\mu^a\lambda^a\;}
+  \label{eq:lec14:qcd_covariant_derivative}
+\end{equation}
+with the generator matrix acting on the color index of the quark.
+
+\textit{Significance:} The same $g_s$ appears in both the quark covariant derivative and the gluon field strength; gauge invariance fixes the relative strength of all strong interactions.
+
+Before choosing the mass basis, the kinetic and mass terms are
+\begin{align}
+  \Lag_{\mathrm{kin}}
+  &= i\bar Q_{Li}\slashed D Q_{Li}
+     + i\bar Q_{Ri}\slashed D Q_{Ri}
+     -\frac14 G_{\mu\nu}^aG^{a\mu\nu},
+  \label{eq:lec14:qcd_kinetic_chiral}\\
+  -\Lag_\psi
+  &= m^Q_{ij}\,\bar Q_{Li}Q_{Rj}+\mathrm{h.c.}
+  \label{eq:lec14:qcd_mass_matrix}
+\end{align}
+where $i,j=1,\ldots,6$ label flavor.
+
+The quark mass matrix can always be diagonalized by a bi-unitary transformation,
+\begin{equation}
+  Q_{Li}\to (V_L)_{ij}Q_{Lj},\qquad
+  Q_{Ri}\to (V_R)_{ij}Q_{Rj},
+  \label{eq:lec14:quark_basis_rotation}
+\end{equation}
+such that
+\begin{equation}
+  \boxed{\;V_L m^Q V_R^\dagger
+  = \mathrm{diag}(m_u,m_d,m_s,m_c,m_b,m_t)\;}
+  \label{eq:lec14:mass_diagonalization}
+\end{equation}
+with the convention $m_u<m_d<m_s<m_c<m_b<m_t$.
+
+\textit{Significance:} Because the strong interaction is flavor-universal, this rotation changes the mass terms but does not introduce flavor-changing gluon couplings.
+
+In the mass basis, we combine $Q_{Li}$ and $Q_{Ri}$ into Dirac quarks $q_i=(Q_{Li},Q_{Ri})^T$, and the full $\QCD$ Lagrangian is
+\begin{equation}
+  \boxed{\;\Lag_{\QCD}
+  = -\frac14 G_{\mu\nu}^aG^{a\mu\nu}
+    +\sum_{q_i=u,d,s,c,b,t}
+    \bar q_i\left(i\slashed D-m_{q_i}\right)q_i\;}
+  \label{eq:lec14:qcd_lagrangian}
+\end{equation}
+where $\slashed D=\gamma^\mu D_\mu$.
+
+\textit{Significance:} Once written in the mass basis, $\QCD$ is a theory of six massive Dirac quarks interacting with eight massless gluons.
+
+%%==================================================================
+\subsection{Interactions in QCD}\label{sec:lec14:qcd-interactions}
+
+\subsubsection*{Mathematical Setup}
+
+The Lagrangian in Eq.~\eqref{eq:lec14:qcd_lagrangian} looks compact, but it contains several interaction vertices. They come from two places: the quark covariant derivative and the non-Abelian part of the gluon field strength.
+
+\paragraph{Quark-gluon interaction.}
+Expanding the quark kinetic term,
+\begin{align}
+  \bar q_i i\gamma^\mu D_\mu q_i
+  &= \bar q_i i\gamma^\mu
+     \left(\partial_\mu+\frac{i}{2}g_sG_\mu^a\lambda^a\right)q_i
+     \notag\\
+  &= i\bar q_i\slashed\partial q_i
+     -\frac{g_s}{2}\bar q_i\gamma^\mu\lambda^aG_\mu^a q_i .
+  \label{eq:lec14:expand_quark_kinetic}
+\end{align}
+Therefore the interaction term is
+\begin{equation}
+  \boxed{\;\Lag_{q\bar q g}
+  =-\frac{g_s}{2}\sum_{i=u,\ldots,t}
+  \bar q_i\lambda^a\gamma^\mu G_\mu^a q_i\;}
+  \label{eq:lec14:quark_gluon_interaction}
+\end{equation}
+
+\textit{Significance:} This is the strong-interaction analogue of the QED vertex, but the photon charge $Q$ is replaced by the color generator $\lambda^a/2$.
+
+\clm[clm:lec14:qcd-vector-diagonal-universal]{Quark-Gluon Coupling Structure}{
+The quark-gluon interaction in Eq.~\eqref{eq:lec14:quark_gluon_interaction} is
+\begin{itemize}
+  \item \textbf{diagonal in flavor}: the gluon couples $\bar q_i q_i$, not $\bar q_i q_j$ for $i\neq j$;
+  \item \textbf{universal in flavor}: the same $g_s$ multiplies every quark flavor;
+  \item \textbf{vector-like}: $q_L$ and $q_R$ couple with the same strength because both are color triplets.
+\end{itemize}
+}
+
+\paragraph{Gluon self-interactions.}
+The gluon kinetic term contains the field strength of Eq.~\eqref{eq:lec14:gluon_field_strength}. To see the interaction structure, split
+\begin{equation}
+  G_{\mu\nu}^a =
+  \left(\partial_\mu G_\nu^a-\partial_\nu G_\mu^a\right)
+  -g_sf^{abc}G_\mu^bG_\nu^c .
+  \label{eq:lec14:field_strength_split}
+\end{equation}
+Squaring this object gives a free kinetic piece, a cross term with three gluon fields, and a term with four gluon fields:
+\begin{align}
+  \boxed{\;\Lag_{ggg}
+  = g_s f^{abc}(\partial^\mu G_a^\nu)G_{b\mu}G_{c\nu}\;}
+  \label{eq:lec14:three_gluon_interaction}\\
+  \boxed{\;\Lag_{gggg}
+  = -g_s^2\left(f^{abc}G_b^\mu G_c^\nu\right)
+       \left(f^{ade}G_{d\mu}G_{e\nu}\right)\;}
+  \label{eq:lec14:four_gluon_interaction}
+\end{align}
+up to the standard convention-dependent arrangement of identical-field symmetry factors.
+
+\textit{Significance:} Non-Abelian gauge bosons interact with themselves; this has no analogue in ordinary QED and is central to why $\QCD$ behaves so differently from electromagnetism.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+  \begin{feynman}
+    \vertex (c) at (0,0);
+    \vertex (q1) at (-1.4,0.8) {$q_i$};
+    \vertex (q2) at (-1.4,-0.8) {$q_i$};
+    \vertex (g) at (1.4,0) {$G^a_\mu$};
+    \diagram*{
+      (q1) -- [fermion] (c) -- [fermion] (q2),
+      (c) -- [gluon] (g),
+    };
+  \end{feynman}
+\end{tikzpicture}
+\hspace{1.3cm}
+\begin{tikzpicture}
+  \begin{feynman}
+    \vertex (c) at (0,0);
+    \vertex (a) at (-1.0,1.0) {$G^a$};
+    \vertex (b) at (1.0,1.0) {$G^b$};
+    \vertex (d) at (0,-1.2) {$G^c$};
+    \diagram*{
+      (a) -- [gluon] (c),
+      (b) -- [gluon] (c),
+      (d) -- [gluon] (c),
+    };
+  \end{feynman}
+\end{tikzpicture}
+\hspace{1.3cm}
+\begin{tikzpicture}
+  \begin{feynman}
+    \vertex (c) at (0,0);
+    \vertex (a) at (-0.9,0.9) {$G^b$};
+    \vertex (b) at (0.9,0.9) {$G^c$};
+    \vertex (d) at (-0.9,-0.9) {$G^d$};
+    \vertex (e) at (0.9,-0.9) {$G^e$};
+    \diagram*{
+      (a) -- [gluon] (c),
+      (b) -- [gluon] (c),
+      (d) -- [gluon] (c),
+      (e) -- [gluon] (c),
+    };
+  \end{feynman}
+\end{tikzpicture}
+\caption{The three basic strong-interaction vertices in $\QCD$: quark-gluon, three-gluon, and four-gluon. Their strengths are controlled by the same coupling $g_s$; the four-gluon vertex is proportional to $g_s^2$.}
+\label{fig:lec14:qcd_vertices}
+\end{figure}
+
+\nt{Gauge invariance does more than allow these vertices: it fixes them together. There is no independent ``three-gluon coupling'' or ``quark-gluon coupling'' to tune separately. They are all consequences of the single local $SU(3)_c$ symmetry.}
+
+%%==================================================================
+\subsection{The Parameters of QCD}\label{sec:lec14:qcd-parameters}
+
+\subsubsection*{Physical Motivation}
+
+After writing the most general renormalizable Lagrangian allowed by the imposed symmetry, the remaining numbers are parameters that must be measured. For $\QCD$, the answer is unusually economical.
+
+\thm[thm:lec14:qcd-seven-parameters]{Seven Parameters of QCD}{
+The $\QCD$ Lagrangian has seven free parameters:
+\begin{equation}
+  \boxed{\;m_u,m_d,m_s,m_c,m_b,m_t,\qquad
+  g_s\ \text{or equivalently}\ \alpha_s\equiv\frac{g_s^2}{4\pi}\;}
+  \label{eq:lec14:qcd_parameters}
+\end{equation}
+}
+
+\textit{Significance:} Once these seven quantities are measured at a chosen scale and in a chosen scheme, all high-energy $\QCD$ predictions are fixed.
+
+Representative quark masses quoted in the notes are
+\begin{align}
+  m_u&=2.2^{+0.5}_{-0.3}\ \mathrm{MeV},&
+  m_d&=4.7^{+0.5}_{-0.2}\ \mathrm{MeV},&
+  m_s&=93^{+11}_{-5}\ \mathrm{MeV},
+  \notag\\
+  m_c&=1.27\pm0.02\ \mathrm{GeV},&
+  m_b&=4.18^{+0.03}_{-0.02}\ \mathrm{GeV},&
+  m_t&=172.9\pm0.4\ \mathrm{GeV}.
+  \label{eq:lec14:quark_masses}
+\end{align}
+They span roughly five orders of magnitude.
+
+\opn[opn:lec14:flavor-hierarchy]{The Flavor Hierarchy Problem}{
+Why are the quark masses so hierarchical? The $\QCD$ Lagrangian accepts these masses as input parameters; it does not explain why $m_t$ is enormous compared with $m_u$. Understanding such patterns belongs to flavor physics.
+}
+
+The strong coupling is commonly quoted as
+\begin{equation}
+  \boxed{\;\alpha_s(m_Z^2)=0.1181\pm0.0011,\qquad m_Z\simeq91\ \mathrm{GeV}\;}
+  \label{eq:lec14:alpha_s_mz}
+\end{equation}
+where $m_Z$ is the $Z$-boson mass scale.
+
+\textit{Significance:} Quoting $\alpha_s$ without a scale is incomplete: the measured value depends on the energy scale at which the coupling is defined.
+
+%%==================================================================
+\subsection{Confinement and the Running of \texorpdfstring{$g_s$}{gs}}\label{sec:lec14:confinement}
+
+\subsubsection*{Physical Motivation}
+
+Experimentally, we do not observe free quarks. We observe hadrons: color-singlet bound states such as mesons and baryons. The confinement hypothesis is the statement that this is not an accident of detector technology but a property of the theory.
+
+\dfn[def:lec14:confinement]{Confinement Hypothesis}{
+All observable asymptotic states in $\QCD$ are singlets of $SU(3)_c$. Equivalently,
+\begin{equation}
+  \boxed{\begin{gathered}
+  \text{free color triplets are not asymptotic states;}\\
+  \text{quarks are confined inside color-singlet bound states.}
+  \end{gathered}}
+  \label{eq:lec14:confinement_statement}
+\end{equation}
+}
+
+\textit{Significance:} The physical particle spectrum at low energy is not the same as the Lagrangian field content: quark and gluon fields are useful UV degrees of freedom, while hadrons are the IR degrees of freedom.
+
+The confinement picture is consistent with the sign of the $\QCD$ beta function. Above the top mass threshold, all six quarks are relevant and Eq.~\eqref{eq:lec14:sun_beta} with $N=3$ and $n_f=6$ gives
+\begin{equation}
+  \boxed{\;\beta(g_s)(\mu>m_t)
+  =-\frac{7g_s^3}{16\pi^2}<0\;}
+  \label{eq:lec14:qcd_beta_above_top}
+\end{equation}
+
+\textit{Significance:} A negative beta function means that $g_s$ decreases toward high energies and increases toward low energies.
+
+At lower scales, not all quark flavors are active. Let $n_q^{\mathrm{light}}$ be the number of quarks with mass below the scale $\mu$. Then
+\begin{equation}
+  \boxed{\;\beta(g_s)
+  =-\frac{(33-2n_q^{\mathrm{light}})g_s^3}{48\pi^2}\;}
+  \label{eq:lec14:qcd_beta_light}
+\end{equation}
+which becomes even more negative as heavy quarks drop out.
+
+\subsubsection*{From Negative Beta Function to Confinement}
+
+The beta function is
+\begin{equation}
+  \frac{\partial g_s}{\partial\ln\mu}<0 .
+  \label{eq:lec14:negative_beta_inequality}
+\end{equation}
+Now lower the scale, so $\ln\mu$ decreases. Since the derivative is negative, the change in $g_s$ is positive:
+\begin{equation}
+  \Delta g_s \simeq
+  \frac{\partial g_s}{\partial\ln\mu}\Delta\ln\mu
+  >0
+  \qquad(\Delta\ln\mu<0).
+  \label{eq:lec14:ir_growth}
+\end{equation}
+Therefore $g_s$ grows in the infrared. At long distances, pulling a quark and antiquark apart does not lead to two isolated quarks. Instead, once enough energy is stored in the color field, it is energetically favorable to create a new $q\bar q$ pair from the vacuum, producing color-singlet hadrons.
+
+\dfn[def:lec14:lambda-qcd]{$\Lambda_{\QCD}$}{
+The scale where $\QCD$ crosses from the perturbative UV regime into the strongly coupled IR regime is called $\Lambda_{\QCD}$:
+\begin{equation}
+  \boxed{\;\Lambda_{\QCD}\sim300\ \mathrm{MeV},\qquad
+  \text{roughly where }g_s\text{ becomes strong.}\;}
+  \label{eq:lec14:lambda_qcd}
+\end{equation}
+Perturbative $\QCD$ is reliable for processes with
+\begin{equation}
+  \boxed{\;q^2\gg\Lambda_{\QCD}^2\;}
+  \label{eq:lec14:perturbative_qcd_condition}
+\end{equation}
+where $q^2$ is the characteristic momentum-transfer scale of the process.
+}
+
+\textit{Significance:} $\Lambda_{\QCD}$ is not an extra fundamental parameter; it is an emergent scale determined by the running of the coupling and the quark thresholds.
+
+\ex[ex:lec14:color_singlet_hadrons]{Color-Singlet Hadrons}{
+The confinement hypothesis says that observed hadrons must be color singlets. The most familiar possibilities are
+\begin{itemize}
+  \item \textbf{mesons}: $q\bar q$, since $\mathbf{3}\otimes\bar{\mathbf{3}}\supset\mathbf{1}$;
+  \item \textbf{baryons}: $qqq$, since $\mathbf{3}\otimes\mathbf{3}\otimes\mathbf{3}\supset\mathbf{1}$.
+\end{itemize}
+Examples include pions, kaons, the proton, and the neutron. These are not fundamental fields in Eq.~\eqref{eq:lec14:qcd_lagrangian}; they are bound states produced by strong dynamics.
+}
+
+%%==================================================================
+\subsection{Accidental Symmetries of QCD}\label{sec:lec14:accidental-symmetries}
+
+\subsubsection*{Conceptual Background}
+
+Once we impose a gauge symmetry and write the most general renormalizable Lagrangian, the Lagrangian may accidentally have additional global symmetries that we did not impose. These accidental symmetries are powerful because they imply selection rules and approximate conservation laws.
+
+\paragraph{The kinetic-term symmetry.}
+If we temporarily ignore the quark mass terms, the six left-handed quarks can be rotated among themselves by a unitary $6\times6$ matrix, and the six right-handed quarks can be rotated by an independent unitary matrix:
+\begin{equation}
+  \boxed{\;\Lag_{\mathrm{kin}}\ \text{has accidental global symmetry}\quad
+  U(6)_L\times U(6)_R\;}
+  \label{eq:lec14:kinetic_accidental_symmetry}
+\end{equation}
+because the kinetic term is flavor-universal and does not distinguish $u,d,s,c,b,t$.
+
+\textit{Significance:} Large accidental symmetries often appear before mass terms are included; mass terms usually break them.
+
+\paragraph{Including the mass terms.}
+In the mass basis, the quark mass terms are
+\begin{equation}
+  -\Lag_\psi =
+  m_u\bar uu+m_d\bar dd+m_s\bar ss
+  +m_c\bar cc+m_b\bar bb+m_t\bar tt .
+  \label{eq:lec14:qcd_masses_expanded}
+\end{equation}
+Because the six masses are different, arbitrary rotations among the six flavors no longer preserve the Lagrangian. What remains is one independent phase rotation for each Dirac quark:
+\begin{equation}
+  \boxed{\;U(6)_L\times U(6)_R
+  \xrightarrow{\ \text{quark masses}\ }
+  U(1)_u\times U(1)_d\times U(1)_s\times U(1)_c\times U(1)_b\times U(1)_t\;}
+  \label{eq:lec14:u1_six}
+\end{equation}
+or simply $U(1)^6$.
+
+\textit{Significance:} Pure $\QCD$ separately conserves each quark flavor number.
+
+\clm[clm:lec14:qcd-flavor-conservation]{Flavor Conservation in Pure QCD}{
+The $U(1)^6$ accidental symmetry implies that each quark flavor number is conserved by pure $\QCD$ interactions. For example,
+\begin{equation}
+  u\bar u\to c\bar c
+  \label{eq:lec14:allowed_pair_creation}
+\end{equation}
+is allowed because both sides carry zero net $U(1)_u$ and zero net $U(1)_c$ charge, while
+\begin{equation}
+  u\bar c\to c\bar u
+  \label{eq:lec14:forbidden_flavor_exchange}
+\end{equation}
+is forbidden in pure $\QCD$ because it changes the individual $U(1)_u$ and $U(1)_c$ charges.
+}
+
+\textit{Significance:} The symmetry does not say quark-antiquark pair production is impossible; it says the net flavor charges must be conserved.
+
+\paragraph{Why the pure-QCD prediction is not exact in nature.}
+In nature, $\QCD$ is not the full theory. The weak interaction breaks the $U(1)^6$ symmetry down to a single common quark-number symmetry: baryon number.
+
+\dfn[def:lec14:baryon-number]{Baryon Number}{
+Baryon number is the diagonal quark phase symmetry
+\begin{equation}
+  \boxed{\;q\to e^{i\theta}q\quad
+  \text{for every quark flavor }q=u,d,s,c,b,t\;}
+  \label{eq:lec14:baryon_number_phase}
+\end{equation}
+where all quarks rotate by the same phase. Equivalently, the weak interaction breaks
+\begin{equation}
+  \boxed{\;U(1)^6\longrightarrow U(1)_B\;}
+  \label{eq:lec14:weak_breaking_to_baryon}
+\end{equation}
+}
+
+\textit{Significance:} Flavor-changing processes forbidden by pure $\QCD$ can occur through weak interactions, but baryon number remains the relevant common conserved quark number in the renormalizable Standard Model.
+
+\nt{At the energy scales of present experiments, weak interactions are much weaker than strong interactions. Therefore the accidental symmetries of the pure $\QCD$ Lagrangian are often still useful approximate guides, even though they are not exact symmetries of the full Standard Model.}
+
+\paragraph{Even lower-energy approximate symmetries.}
+In the confined regime, the useful degrees of freedom are hadrons rather than free quarks and gluons. There, additional approximate symmetries become useful:
+\begin{itemize}
+  \item \textbf{isospin} for the nearly degenerate $u$ and $d$ sector;
+  \item \textbf{$SU(3)$ flavor} when treating $u,d,s$ as approximately light;
+  \item \textbf{heavy-quark symmetry} for sufficiently heavy quarks.
+\end{itemize}
+These are not needed for the UV definition of $\QCD$, but they become central tools for low-energy hadron physics.
+
+%%------------------------------------------------------------------
+\subsection*{To Remember}
+
+\begin{itemize}
+  \item Couplings run: $\beta(g)=\partial g/\partial\ln\mu$. For $U(1)$ with charged fermions the one-loop beta function is positive; for $SU(N)$ with sufficiently few fermions it is negative.
+  \item $\QCD$ is local $SU(3)_c$ with six left-handed and six right-handed color-triplet quarks and no scalars.
+  \item The gluon field $G_\mu^a$ lives in the adjoint of $SU(3)_c$, so $a=1,\ldots,8$.
+  \item The full mass-basis Lagrangian is $\Lag_{\QCD}= -\frac14G_{\mu\nu}^aG^{a\mu\nu}+\sum_q\bar q(i\slashed D-m_q)q$.
+  \item Expanding $D_\mu$ gives the quark-gluon vertex; expanding $G_{\mu\nu}^aG^{a\mu\nu}$ gives three-gluon and four-gluon self-interactions.
+  \item All strong-interaction vertices are controlled by the same coupling $g_s$; the quark-gluon coupling is diagonal, universal, and vector-like.
+  \item $\QCD$ has seven free parameters: six quark masses and $g_s$ (or $\alpha_s$).
+  \item The negative $\QCD$ beta function makes $g_s$ grow in the infrared, consistent with confinement. Perturbative $\QCD$ works when $q^2\gg\Lambda_{\QCD}^2$, with $\Lambda_{\QCD}\sim300\ \mathrm{MeV}$.
+  \item The kinetic terms have accidental $U(6)_L\times U(6)_R$; the mass terms reduce this to $U(1)^6$; weak interactions reduce it further to baryon number $U(1)_B$.
+\end{itemize}
+
+\end{document}

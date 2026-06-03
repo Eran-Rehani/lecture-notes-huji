@@ -1,0 +1,423 @@
+%% Lecture 17 -- Magnetization currents, the H field, and the magnetic scalar potential
+\section{Lecture 17 -- Magnetization Currents, the $\Hvec$ Field, and the Magnetic Scalar Potential}\label{sec:lec17}
+
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 02/06/2026 & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+
+\subsection*{Overview}
+
+Lecture 16 established that a piece of matter behaves, on macroscopic length scales,
+as a continuous distribution of magnetic dipoles, summarized by the magnetization
+$\bvec{M}(\br)=d\bmu_{\rm total}/dV$.  This lecture closes the magnetostatics of matter
+in three steps:
+\begin{itemize}
+  \item identify the microscopic origin of $\bvec{M}$ (orbital currents and spin) and
+        write the \emph{total} current as free plus magnetization currents;
+  \item start from the dipole vector potential, superpose it over the body, and prove
+        that magnetization is equivalent to a bound \emph{volume} current
+        $\Jvec_M=c\,\nabla\times\bvec{M}$ plus a bound \emph{surface} current
+        $\bvec{K}_M=c\,\bvec{M}\times\uvec{n}$;
+  \item insert these into Amp\`ere's law, which forces the definition of the magnetic
+        intensity $\Hvec=\bB-4\pi\bvec{M}$ sourced only by free currents, and -- when
+        free currents are absent -- a \emph{magnetic scalar potential} obeying a
+        Poisson equation identical in form to electrostatics.
+\end{itemize}
+The recurring theme is that everything magnetic matter does is captured by $\bvec{M}$:
+once $\bvec{M}$ (or equivalently $\Jvec_M$) is given, the field is fully determined.
+
+%------------------------------------------------------------
+\subsection{Total Current in Magnetic Matter}\label{subsec:lec17-total-current}
+
+\subsubsection*{Physical Motivation}
+A magnetic field is produced by moving charge.  In a laboratory there are two very
+different kinds of moving charge.  The first is the current we deliberately drive
+through wires -- the current in the solenoid we use to magnetize a sample.  The second
+appears only once matter is present: the perpetual microscopic currents bound inside
+atoms and molecules.  In equilibrium these microscopic currents are randomly oriented
+and average to zero, but an external field can order them and produce a net effect.
+The macroscopic field therefore responds to the \emph{sum} of these contributions.
+
+\dfn[dfn:lec17-current-split]{Free and Magnetization Currents}{
+  The total current density measured at macroscopic (classical) resolution splits as
+  \begin{equation}\label{eq:lec17-J-total}
+    \boxed{\Jvec_{\rm total}=\Jvec_{\rm f}+\Jvec_M.}
+  \end{equation}
+  $\Jvec_{\rm f}$ are \emph{free currents}: conduction electrons travelling long
+  distances through wires.  $\Jvec_M$ are \emph{magnetization} (or bound) currents:
+  the coarse-grained average of the microscopic currents bound to atoms.
+}
+\textit{Significance:} Only $\Jvec_{\rm f}$ is under direct experimental control; the
+whole physics of magnetic matter lives in how $\Jvec_M$ is generated and how it relates
+to $\bvec{M}$.
+
+\subsubsection*{Microscopic Origin of the Magnetization Current}
+The measured macroscopic current is an average of a microscopic current that itself has
+two pieces,
+\begin{equation}\label{eq:lec17-Jm-split}
+  \Jvec_m=\Jvec_o+\Jvec_s,
+\end{equation}
+where $\Jvec_o$ is the genuine \emph{orbital} current produced by the motion of bound
+charges, and $\Jvec_s$ is an \emph{effective} current standing in for electron spin.
+
+For the orbital part, a small volume $\Delta V$ contains a huge number of microscopic
+current loops; coarse-graining replaces them by their dipole moment per unit volume.
+Using the dipole-moment definition $\bmu=\tfrac{1}{2c}\int \br'\times\Jvec\,d^3x'$ from
+Lecture 15, the orbital magnetization is
+\begin{equation}\label{eq:lec17-Mo-def}
+  \boxed{\bvec{M}_o(\br)=\frac{1}{2c\,\Delta V}\int_{\Delta V}\br'\times\Jvec_o(\br')\,d^3x'
+  =\frac{d\bmu_o}{dV}.}
+\end{equation}
+\textit{Significance:} The complicated microscopic loop structure is compressed into a
+single field, the dipole-moment density; this is the only orbital information that
+survives at macroscopic distances.
+
+\subsubsection*{The Spin Contribution}
+Spin is an intrinsic angular momentum of the electron with no classical analogue: it is
+\emph{not} the circulation of any charge.  Nevertheless, because orbital angular
+momentum $\bvec{L}$ produces a magnetic moment $\bmu=(e/2m_ec)\bvec{L}$, and spin
+$\bvec{S}$ is also an angular momentum, consistency demands that spin produce a magnetic
+moment too.  We therefore model its effect by an effective current whose magnetic moment
+matches that of spin.  Its magnetization is a sum over the spins per unit volume,
+\begin{equation}\label{eq:lec17-Ms-def}
+  \bvec{M}_s(\br)=\sum_{k}\bvec{m}_k\,\delta^{(3)}(\br-\br_k),
+  \qquad
+  \bvec{m}_k\propto \bvec{S}_k\sim\frac{e}{2m_ec}\,\bvec{S}_k,
+\end{equation}
+the sum running over all spins inside a unit volume.  Although the underlying cause of
+$\bvec{M}_s$ is purely quantum, the resulting magnetic effect is measured by ordinary
+classical instruments.
+
+\nt{The magnitude of spin (the quantum number $\tfrac12$) is Lorentz invariant like a
+rest mass, but spin is a \emph{vector}: its direction can change, which is exactly what
+lets an external field reorient it. The total angular momentum -- and hence the total
+current -- does transform between frames, while the spin magnitude does not.}
+
+\subsubsection*{Total Magnetization}
+For our (classical, phenomenological) purposes we never separate the two sources: a
+classical experiment sees neither the orbital motion around an atom nor the spin
+directly.  We work only with the total magnetization
+\begin{equation}\label{eq:lec17-M-total}
+  \boxed{\bvec{M}=\bvec{M}_o+\bvec{M}_s.}
+\end{equation}
+\textit{Significance:} The macroscopic theory needs only $\bvec{M}$; the distinction
+between ``real'' orbital currents and ``effective'' spin currents is a microscopic
+detail invisible to classical measurement.
+
+%------------------------------------------------------------
+\subsection{Vector Potential of a Magnetized Body}\label{subsec:lec17-vector-potential}
+
+\subsubsection*{Physical Motivation}
+Suppose the magnetization $\bvec{M}(\br)$ is given throughout a body.  We want the
+field it produces.  Because the theory is linear, the total field is the superposition
+of the fields of all the microscopic dipoles, plus (separately) the field of any free
+currents, which we already know how to handle.  Each small volume $d^3r'$ carries a
+dipole moment $d\bmu=\bvec{M}(\br')\,d^3r'$, and a dipole at $\br'$ contributes the
+vector potential $\bmu\times(\br-\br')/|\br-\br'|^3$ from Lecture 15.
+
+\subsubsection*{Mathematical Setup}
+Summing (integrating) these contributions over the body gives the magnetization vector
+potential
+\begin{equation}\label{eq:lec17-Am}
+  \boxed{\Avec_M(\br)
+  =\int d^3r'\,
+  \frac{\bvec{M}(\br')\times(\br-\br')}{|\br-\br'|^3}.}
+\end{equation}
+\textit{Significance:} This is the exact analogue of replacing a charge distribution by
+its dipole density; it is the leading (dipole) approximation to the field of matter,
+valid because classical probes always sit at distances enormous compared with atomic
+scales.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[>=Stealth, thick, scale=1.0]
+  \draw[->, gray] (-0.5,0) -- (5.2,0) node[right] {$x$};
+  \draw[->, gray] (0,-0.5) -- (0,3.4) node[above] {$z$};
+  \fill[black] (0,0) circle (1.5pt);
+  \node[below left] at (0,0) {$O$};
+  % source element
+  \draw[rounded corners=2pt, fill=blue!8] (1.1,1.0) rectangle (1.7,1.55);
+  \draw[->, red!70!black, line width=1.0pt] (1.4,1.27) -- (1.95,1.85)
+    node[right] {$\bvec{M}(\br')\,d^3r'$};
+  % observation point
+  \fill[black] (4.2,2.7) circle (1.5pt);
+  \node[above right] at (4.2,2.7) {obs.\ pt};
+  % vectors
+  \draw[->, blue!60!black, line width=0.9pt] (0,0) -- (1.4,1.27)
+    node[midway, below right] {$\br'$};
+  \draw[->, green!55!black, line width=0.9pt] (0,0) -- (4.2,2.7)
+    node[midway, above left] {$\br$};
+  \draw[->, orange!85!black, line width=0.9pt] (1.4,1.27) -- (4.2,2.7)
+    node[midway, below right] {$\br-\br'$};
+\end{tikzpicture}
+\caption{Each volume element at $\br'$ carries a dipole $d\bmu=\bvec{M}(\br')\,d^3r'$
+and contributes to the vector potential at the observation point $\br$ through the
+separation vector $\br-\br'$.}
+\label{fig:lec17-superposition}
+\end{figure}
+
+%------------------------------------------------------------
+\subsection{Magnetization (Bound) Currents}\label{subsec:lec17-bound-currents}
+
+\subsubsection*{Mathematical Setup}
+We rewrite \eqref{eq:lec17-Am} so that it looks like the magnetostatic Poisson solution
+$\Avec=\tfrac1c\int \Jvec/|\br-\br'|\,d^3r'$, and read off the effective current.  The
+key observation is that the separation factor is a primed gradient:
+\begin{equation}\label{eq:lec17-grad-prime}
+  \nabla'\frac{1}{|\br-\br'|}=\frac{\br-\br'}{|\br-\br'|^3},
+\end{equation}
+where $\nabla'$ differentiates with respect to $\br'$.  Apply the product identity
+$\nabla'\times(f\bvec{V})=(\nabla' f)\times\bvec{V}+f\,(\nabla'\times\bvec{V})$ with
+$f=1/|\br-\br'|$ and $\bvec{V}=\bvec{M}(\br')$:
+\begin{equation}\label{eq:lec17-product-identity}
+  \nabla'\times\!\left(\frac{\bvec{M}}{|\br-\br'|}\right)
+  =\left(\nabla'\frac{1}{|\br-\br'|}\right)\times\bvec{M}
+  +\frac{\nabla'\times\bvec{M}}{|\br-\br'|}.
+\end{equation}
+Substituting \eqref{eq:lec17-grad-prime} and isolating the integrand of
+\eqref{eq:lec17-Am},
+\begin{align}
+  \frac{\bvec{M}\times(\br-\br')}{|\br-\br'|^3}
+  &=-\left(\frac{\br-\br'}{|\br-\br'|^3}\right)\times\bvec{M}
+  \notag\\
+  &=\frac{\nabla'\times\bvec{M}}{|\br-\br'|}
+  -\nabla'\times\!\left(\frac{\bvec{M}}{|\br-\br'|}\right).
+  \label{eq:lec17-integrand-rewrite}
+\end{align}
+
+\subsubsection*{Converting the Curl Term to a Surface Integral}
+For the last term we use the curl form of Gauss's theorem,
+\begin{equation}\label{eq:lec17-curl-gauss}
+  \int_V (\nabla\times\bvec{A})\,d^3r=\oint_S \uvec{n}\times\bvec{A}\,d\sigma
+  =\oint_S d\boldsymbol{\sigma}\times\bvec{A},
+\end{equation}
+with $\uvec{n}$ the outward normal of the body's surface.  Hence
+\begin{equation}\label{eq:lec17-curl-to-surface}
+  \int_V \nabla'\times\!\left(\frac{\bvec{M}}{|\br-\br'|}\right)d^3r'
+  =\oint_S \frac{\uvec{n}\times\bvec{M}}{|\br-\br'|}\,d\sigma
+  =-\oint_S \frac{\bvec{M}\times\uvec{n}}{|\br-\br'|}\,d\sigma.
+\end{equation}
+Inserting \eqref{eq:lec17-integrand-rewrite} and
+\eqref{eq:lec17-curl-to-surface} into \eqref{eq:lec17-Am},
+\begin{equation}\label{eq:lec17-Am-split}
+  \Avec_M(\br)
+  =\int_V \frac{\nabla'\times\bvec{M}}{|\br-\br'|}\,d^3r'
+  +\oint_S \frac{\bvec{M}\times\uvec{n}}{|\br-\br'|}\,d\sigma.
+\end{equation}
+
+\subsubsection*{Reading Off the Bound Currents}
+Equation \eqref{eq:lec17-Am-split} has exactly the structure of the magnetostatic
+potential generated by a volume current plus a surface current,
+\begin{equation}\label{eq:lec17-Am-target}
+  \Avec(\br)=\frac{1}{c}\int_V \frac{\Jvec}{|\br-\br'|}\,d^3r'
+  +\frac{1}{c}\oint_S \frac{\bvec{K}}{|\br-\br'|}\,d\sigma.
+\end{equation}
+Because the equality must hold for an arbitrary body of arbitrary shape and arbitrary
+$\bvec{M}$ (and because, with no boundary, the surface piece drops and the two volume
+integrals must match term by term), we identify
+\begin{equation}\label{eq:lec17-bound-currents}
+  \boxed{\Jvec_M=c\,\nabla\times\bvec{M},
+  \qquad
+  \bvec{K}_M=c\,\bvec{M}\times\uvec{n}.}
+\end{equation}
+\textit{Significance:} Magnetization is \emph{exactly} equivalent to a real-looking
+bound current -- a volume current wherever $\bvec{M}$ curls, and a sheet current
+$c\,\bvec{M}\times\uvec{n}$ wrapping the surface where $\bvec{M}$ stops abruptly.  This
+is the magnetic counterpart of bound charge $\rho_b=-\nabla\cdot\bvec{P}$ in dielectrics.
+
+\nt{The surface current is the limit of a thin volume layer: writing a surface current as
+a volume current times a $\delta$-function collapses one integration and leaves the
+surface integral, which is why both pieces appear together.}
+
+%------------------------------------------------------------
+\subsection{Amp\`ere's Law in Matter and the Magnetic Intensity $\Hvec$}\label{subsec:lec17-H-field}
+
+\subsubsection*{Conceptual Background}
+With the bound current known, we return to Maxwell's equations in the presence of
+matter.  In magnetostatics these are $\nabla\cdot\bB=0$ and Amp\`ere's law with the
+\emph{total} current.  Splitting the total current and substituting
+$\Jvec_M=c\,\nabla\times\bvec{M}$ lets us absorb the matter response into a redefined
+field.
+
+\subsubsection*{Derivation}
+Amp\`ere's law with the total current reads
+\begin{equation}\label{eq:lec17-ampere-total}
+  \nabla\times\bB=\frac{4\pi}{c}\,\Jvec_{\rm total}
+  =\frac{4\pi}{c}\,\Jvec_{\rm f}+\frac{4\pi}{c}\,\Jvec_M.
+\end{equation}
+Insert $\Jvec_M=c\,\nabla\times\bvec{M}$; the factors of $c$ cancel in the last term,
+\begin{equation}\label{eq:lec17-ampere-sub}
+  \nabla\times\bB=\frac{4\pi}{c}\,\Jvec_{\rm f}+4\pi\,\nabla\times\bvec{M}.
+\end{equation}
+Move the magnetization term to the left,
+\begin{equation}\label{eq:lec17-ampere-rearranged}
+  \nabla\times\bigl(\bB-4\pi\bvec{M}\bigr)=\frac{4\pi}{c}\,\Jvec_{\rm f}.
+\end{equation}
+The combination $\bB-4\pi\bvec{M}$ is sourced only by free currents, so it deserves its
+own name.
+
+\dfn[dfn:lec17-H]{Magnetic Intensity $\Hvec$}{
+  \begin{equation}\label{eq:lec17-H-def}
+    \boxed{\Hvec=\bB-4\pi\bvec{M}.}
+  \end{equation}
+  Outside matter $\bvec{M}=0$, so $\Hvec=\bB$ there; only inside a magnetized body do
+  $\Hvec$ and $\bB$ differ.
+}
+\textit{Significance:} $\Hvec$ is the magnetic field ``with the matter response divided
+out''; it plays the role $\bB$ plays in vacuum but is tied to the controllable free
+current.
+
+In terms of $\Hvec$, Amp\`ere's law inside matter becomes
+\begin{equation}\label{eq:lec17-curl-H}
+  \boxed{\nabla\times\Hvec=\frac{4\pi}{c}\,\Jvec_{\rm f}.}
+\end{equation}
+\textit{Significance:} The curl of $\Hvec$ knows nothing about the magnetization -- it
+responds to free currents alone, which is precisely why $\Hvec$ is the convenient field
+for solving boundary problems with given conduction currents.
+
+Taking the divergence of \eqref{eq:lec17-H-def} and using $\nabla\cdot\bB=0$
+(which is exact, since there are no magnetic monopoles),
+\begin{equation}\label{eq:lec17-div-H}
+  \boxed{\nabla\cdot\Hvec=-4\pi\,\nabla\cdot\bvec{M}.}
+\end{equation}
+\textit{Significance:} Unlike $\bB$, the field $\Hvec$ is generally \emph{not}
+divergence-free: wherever the magnetization has nonzero divergence, $\Hvec$ has an
+effective source.  This is the seed of the magnetic scalar potential.
+
+\begin{remark}
+  In general the magnetization is itself a function of the field, $\bvec{M}=\bvec{M}(\bB)$,
+  determined self-consistently by the material.  For linear media (paramagnets,
+  diamagnets) the relation is linear; for ferromagnets it is complicated and hysteretic.
+  Throughout this lecture we assume $\bvec{M}$ (equivalently $\Jvec_M$) is \emph{given} --
+  e.g.\ a permanent magnet whose moments are fixed and only weakly disturbed by the
+  applied field.
+\end{remark}
+
+%------------------------------------------------------------
+\subsection{Magnetic Scalar Potential and the Electrostatic Analogy}\label{subsec:lec17-scalar-potential}
+
+\subsubsection*{Physical Motivation}
+Consider a permanent magnet sitting in a region with \emph{no free currents},
+$\Jvec_{\rm f}=0$.  Then \eqref{eq:lec17-curl-H} gives $\nabla\times\Hvec=0$, exactly
+like the electrostatic condition $\nabla\times\bE=0$.  A curl-free field is the gradient
+of a potential, so we expect a \emph{magnetic scalar potential} and an entire
+electrostatics-style solution method.
+
+\subsubsection*{The Poisson Equation for $\psi_M$}
+Since $\nabla\times\Hvec=0$, write
+\begin{equation}\label{eq:lec17-H-grad}
+  \Hvec=-\nabla\psi_M.
+\end{equation}
+Substituting into \eqref{eq:lec17-div-H} gives a Poisson equation,
+\begin{equation}\label{eq:lec17-poisson-psi}
+  \boxed{\nabla^2\psi_M=4\pi\,\nabla\cdot\bvec{M}=-4\pi\,\rho_M,
+  \qquad
+  \rho_M\equiv-\nabla\cdot\bvec{M}.}
+\end{equation}
+\textit{Significance:} The magnetic problem becomes formally identical to electrostatics,
+with an \emph{effective magnetic charge density} $\rho_M=-\nabla\cdot\bvec{M}$.  There are
+no real magnetic charges; $\rho_M$ is a mathematical bookkeeping device that lets us
+import every electrostatic technique (images, separation of variables, multipoles).
+
+\subsubsection*{Explicit Potential from the Single-Dipole Field}
+To find $\psi_M$ concretely, rewrite the dipole field of Lecture 16 as a gradient.  For
+a moment $\bmu$ at the origin, the full field (including the contact term at the source)
+is
+\begin{equation}\label{eq:lec17-Bdip-full}
+  \bB_{\rm dip}(\br)
+  =\frac{3\,\hat{\br}(\bmu\cdot\hat{\br})-\bmu}{r^3}
+  +4\pi\,\bmu\,\delta^{(3)}(\br).
+\end{equation}
+We claim this equals $-\nabla\bigl(\bmu\cdot\br/r^3\bigr)+4\pi\bmu\,\delta^{(3)}(\br)$.
+Indeed, differentiating the scalar $\bmu\cdot\br/r^3=\mu_j r_j r^{-3}$,
+\begin{align}
+  \partial_i\!\left(\frac{\mu_j r_j}{r^3}\right)
+  &=\frac{\mu_i}{r^3}+\mu_j r_j\,\partial_i r^{-3} \notag\\
+  &=\frac{\mu_i}{r^3}-\frac{3\,r_i(\bmu\cdot\br)}{r^5},
+  \label{eq:lec17-grad-mur}
+\end{align}
+so that, away from the origin,
+\begin{equation}\label{eq:lec17-grad-equals-field}
+  -\nabla\!\left(\frac{\bmu\cdot\br}{r^3}\right)
+  =\frac{3\,\hat{\br}(\bmu\cdot\hat{\br})-\bmu}{r^3},
+\end{equation}
+which is exactly the $r\neq0$ part of \eqref{eq:lec17-Bdip-full}.  Hence
+\begin{equation}\label{eq:lec17-Bdip-gradient}
+  \boxed{\bB_{\rm dip}(\br)
+  =-\nabla\!\left(\frac{\bmu\cdot\br}{r^3}\right)+4\pi\,\bmu\,\delta^{(3)}(\br).}
+\end{equation}
+\textit{Significance:} The dipole field is (almost everywhere) a pure gradient; the
+$\delta$-function carries the difference between the curl-based and gradient-based
+representations and is exactly the term that reconstructs $4\pi\bvec{M}$ in the bulk.
+
+\subsubsection*{Superposition over the Body}
+Replace $\bmu\to\bvec{M}(\br')\,d^3r'$ and place each dipole at $\br'$ (so
+$\br\to\br-\br'$), then integrate.  The first term integrates into a gradient and the
+$\delta$-function collapses the second integral:
+\begin{equation}\label{eq:lec17-BM}
+  \bB_M(\br)
+  =-\nabla\,\psi_M(\br)+4\pi\,\bvec{M}(\br),
+  \qquad
+  \psi_M(\br)=\int d^3r'\,
+  \frac{\bvec{M}(\br')\cdot(\br-\br')}{|\br-\br'|^3}.
+\end{equation}
+Forming $\Hvec_M=\bB_M-4\pi\bvec{M}$ cancels the contact term and confirms
+\begin{equation}\label{eq:lec17-HM-grad}
+  \boxed{\Hvec_M=-\nabla\,\psi_M,
+  \qquad
+  \psi_M(\br)=\int d^3r'\,\frac{\bvec{M}(\br')\cdot(\br-\br')}{|\br-\br'|^3}.}
+\end{equation}
+\textit{Significance:} This is fully consistent with the abstract result
+$\Hvec=-\nabla\psi_M$: starting from the explicit dipole superposition we recover both
+the scalar potential and the relation $\bB=\Hvec+4\pi\bvec{M}$.  The magnetic problem
+with no free currents is solved exactly like an electrostatics problem.
+
+\subsubsection*{The Electrostatic Analogy}
+The magnetic scalar potential is the literal image of the electric dipole potential.
+Compare the two theories side by side:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{lll}
+  \toprule
+  & \textbf{Electrostatics} & \textbf{Magnetostatics ($\Jvec_{\rm f}=0$)} \\
+  \midrule
+  Field from potential & $\bE=-\nabla\phi$ & $\Hvec=-\nabla\psi_M$ \\
+  Dipole potential     & $\phi=\dfrac{\bvec{p}\cdot\br}{r^3}$
+                       & $\psi_M=\dfrac{\bmu\cdot\br}{r^3}$ \\
+  Source density       & $\rho$ & $\rho_M=-\nabla\cdot\bvec{M}$ \\
+  Poisson equation     & $\nabla^2\phi=-4\pi\rho$ & $\nabla^2\psi_M=-4\pi\rho_M$ \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\textit{Significance:} Polarization-like reasoning carries over completely:
+$\bvec{M}$ plays the role of polarization, $-\nabla\cdot\bvec{M}$ the role of bound
+charge, and $\psi_M$ the role of the electrostatic potential.  The next lecture exploits
+this to solve concrete magnet geometries with electrostatic methods.
+
+%------------------------------------------------------------
+\subsection{Summary}\label{subsec:lec17-summary}
+
+\begin{itemize}
+  \item The total current splits as $\Jvec_{\rm total}=\Jvec_{\rm f}+\Jvec_M$, with the
+        magnetization current arising microscopically from orbital motion plus an
+        effective spin current; classically only $\bvec{M}=\bvec{M}_o+\bvec{M}_s$ matters.
+  \item Superposing dipole vector potentials gives
+        $\Avec_M=\int \bvec{M}\times(\br-\br')/|\br-\br'|^3\,d^3r'$.
+  \item A vector identity converts this into bound currents
+        $\Jvec_M=c\,\nabla\times\bvec{M}$ (volume) and
+        $\bvec{K}_M=c\,\bvec{M}\times\uvec{n}$ (surface).
+  \item Amp\`ere's law then forces $\Hvec=\bB-4\pi\bvec{M}$ with
+        $\nabla\times\Hvec=(4\pi/c)\Jvec_{\rm f}$ and
+        $\nabla\cdot\Hvec=-4\pi\nabla\cdot\bvec{M}$.
+  \item With no free currents, $\Hvec=-\nabla\psi_M$ and
+        $\nabla^2\psi_M=-4\pi\rho_M$ with effective magnetic charge
+        $\rho_M=-\nabla\cdot\bvec{M}$.
+  \item Explicitly $\psi_M=\int \bvec{M}(\br')\cdot(\br-\br')/|\br-\br'|^3\,d^3r'$, the
+        exact analogue of the electric dipole potential -- magnetostatics in matter
+        reduces to an electrostatics problem.
+\end{itemize}

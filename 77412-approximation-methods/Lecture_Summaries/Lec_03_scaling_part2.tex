@@ -1,0 +1,138 @@
+%% ═══════════════════════════════════════════════════════════════════════════
+\section{Lecture 3: Advanced Scaling and Dimensional Analysis}
+%% ═══════════════════════════════════════════════════════════════════════════
+\date{23/04/2026}
+
+\subsection{Scaling of the Earth-Moon System: Lunar Retreat}
+
+In the previous lecture, we established that the Moon's density is lower than Earth's by examining tidal forces. We now turn to the \emph{dynamics} of the Earth-Moon system. 
+
+\textbf{The Physical Picture:}
+Earth rotates on its axis once every 24 hours, while the Moon orbits Earth roughly once every 30 days. Because Earth's rotation is faster than the Moon's orbit, the tidal bulges raised on Earth's oceans are dragged ahead of the Earth-Moon axis. The Moon exerts a gravitational pull on this misaligned bulge, which produces a torque. This torque:
+\begin{itemize}
+    \item Slows down Earth's rotation (lengthening the day).
+    \item Transfers angular momentum to the Moon, causing it to retreat.
+\end{itemize}
+Laser ranging measurements reveal that the Moon is currently receding at a velocity of $v_0 \approx \SI{3.8}{cm/yr}$. 
+
+\textbf{Mathematical Modeling via Scaling:}
+We wish to model the distance to the Moon, $r(t)$, without solving the full Navier-Stokes equations for the oceans. We rely on angular momentum and scaling.
+
+The orbital angular momentum of the Moon is $L = M_\text{moon} v_\text{orbit} r$. Using Kepler's laws, $v_\text{orbit} = \sqrt{GM_\oplus/r}$, so:
+\[
+    L \propto r^{1/2}
+\]
+The torque $\tau$ exerted by the tidal bulge is equal to the rate of change of angular momentum: $\tau = dL/dt$. How does this torque scale with $r$?
+The tidal force scales as $F_\text{tide} \propto 1/r^3$. The height of the tidal bulge also scales as $1/r^3$ (in a linear regime), meaning the mass of the water in the bulge scales as $1/r^3$. The torque is proportional to the product of the tidal force and the mass of the bulge, yielding an extreme sensitivity to distance:
+\[
+    \tau \propto \frac{1}{r^6} \implies \frac{dL}{dt} \propto r^{-6}
+\]
+Let us generalize this by writing $\frac{dL}{dt} \propto r^{-q}$, where $q$ is expected to be around $6$, but must be $q > 3$. 
+
+Substituting $L \propto r^{1/2}$:
+\[
+    \frac{d}{dt} \left( r^{1/2} \right) \propto r^{-q} \implies \frac{1}{2} r^{-1/2} \frac{dr}{dt} \propto r^{-q} \implies \frac{dr}{dt} \propto r^{-(q - 1/2)}
+\]
+We can separate variables and integrate:
+\[
+    r^{q - 1/2} dr \propto dt \implies \int_{r_\text{initial}}^{r_\text{today}} r^{q - 1/2} dr \propto \int_{0}^{T} dt
+\]
+Assuming the initial distance was negligible compared to today's distance ($r_\text{initial} \ll r_\text{today}$), we obtain:
+\[
+    r_\text{today}^{q + 1/2} \propto T \implies T \sim \frac{r_\text{today}}{(q + 1/2) \left(\frac{dr}{dt}\right)_\text{today}}
+\]
+where $\left(\frac{dr}{dt}\right)_\text{today} = v_0 = \SI{3.8}{cm/yr}$.
+
+\textbf{The Lunar Paradox:}
+A naive linear extrapolation ($v_0 = \text{const}$) gives an age of:
+\[
+    T_\text{linear} = \frac{r_\text{today}}{v_0} \approx \frac{\SI{3.8e10}{cm}}{\SI{3.8}{cm/yr}} \approx 10^{10} \text{ years.}
+\]
+However, using our non-linear scaling with $q = 6$, the actual time since the Moon was close to Earth is:
+\[
+    T = \frac{T_\text{linear}}{6 + 1/2} = \frac{10^{10}}{6.5} \approx 1.5 \times 10^9 \text{ years.}
+\]
+This presents a paradox! Earth is $4.5$ billion years old, yet this model suggests the Moon formed only $1.5$ billion years ago. The resolution lies in the fact that tidal friction is currently \emph{anomalously high}. Tidal dissipation primarily occurs in shallow continental shelves, and the present configuration of Earth's continents provides more shallow seas than the historical average. 
+
+\subsection{Scaling in Biology: Why All Animals Jump to the Same Height}
+
+A striking observation in biology is that animals of vastly different sizes---from a mouse to a human to a horse---can all jump to a roughly similar height of $h \sim \SI{1}{m}$. Why?
+
+\textbf{The Physics of Jumping:}
+Jumping is an anaerobic process powered by the rapid release of energy stored in muscles (ATP). Let us build a simple model:
+\begin{enumerate}
+    \item \textbf{Available Energy:} The stored energy $E_\text{stored}$ is proportional to the mass of the jumping muscles. If $M$ is the total mass of the animal, the muscle mass is $\epsilon_m M$, where $\epsilon_m$ is the fraction of body mass dedicated to jumping. Assuming the energy density $\rho_E$ (energy per unit mass) is roughly constant across mammalian biology, the total available energy is:
+    \[
+        E_\text{stored} = \rho_E \epsilon_m M \propto M
+    \]
+    \item \textbf{Required Energy:} To elevate its center of mass by a height $h$, the animal must expend potential energy:
+    \[
+        E_p = M g h
+    \]
+\end{enumerate}
+Equating the two yields:
+\[
+    M g h \approx \rho_E \epsilon_m M \implies h \approx \frac{\rho_E \epsilon_m}{g}
+\]
+The total mass $M$ \emph{cancels out}! Because all mammals share similar muscle biology ($\rho_E$ and $\epsilon_m$), the maximum jump height $h$ is independent of the animal's size.
+
+\textbf{When Does the Model Break Down?}
+A flea ($\sim \SI{1}{mm}$) cannot jump $\SI{1}{m}$. At very small scales, air resistance (drag) becomes a dominant factor. The work done against drag is $W_\text{drag} = F_\text{drag} \cdot h$.
+The drag force is $F_\text{drag} \sim \rho_\text{air} v^2 A$, where $A$ is the cross-sectional area and $v$ is the initial velocity. Since $v \sim \sqrt{gh}$, we have $F_\text{drag} \sim \rho_\text{air} g h A$.
+The cross-sectional area $A$ relates to the animal's dimension $R$ as $A \sim R^2$. Since $M \sim \rho_\text{water} R^3$, we can express the ratio of energy lost to drag vs.\ potential energy:
+\[
+    \frac{W_\text{drag}}{E_p} \sim \frac{\rho_\text{air} g h R^2 \cdot h}{\rho_\text{water} R^3 g h} \sim \frac{\rho_\text{air}}{\rho_\text{water}} \frac{h}{R}
+\]
+Drag dominates when this ratio approaches $1$. Given $\rho_\text{air} / \rho_\text{water} \sim 10^{-3}$ and $h \sim \SI{1}{m}$, the critical size is $R \sim \SI{1}{mm}$. Animals smaller than a millimeter lose most of their jumping energy to air friction.
+
+\subsection{Heat Conduction in a Compost Pile}
+
+Consider a pile of compost (or a biological organism) that generates heat internally due to decomposition. We wish to know how the central temperature scales with the radius of the pile, $R$.
+
+Let $\epsilon$ be the power generated per unit volume. The total heat generated inside the sphere is:
+\[
+    P_\text{gen} \sim \epsilon R^3
+\]
+To maintain a steady state, this heat must be conducted outwards. According to Fourier's law, the heat flux $q$ (power per unit area) is proportional to the temperature gradient:
+\[
+    q = -k \nabla T \sim k \frac{\Delta T}{R}
+\]
+where $k$ is the thermal conductivity and $\Delta T = T_\text{center} - T_\text{surface}$. 
+The total power lost through the surface area $A \sim R^2$ is:
+\[
+    P_\text{loss} \sim q R^2 \sim k \frac{\Delta T}{R} R^2 = k R \Delta T
+\]
+Equating generation and loss ($P_\text{gen} = P_\text{loss}$):
+\[
+    \epsilon R^3 \sim k R \Delta T \implies \Delta T \sim \frac{\epsilon}{k} R^2
+\]
+\textbf{Result:} The temperature difference scales as the \emph{square} of the radius. If you double the size of a compost pile, the temperature at the center increases by a factor of 4. This scaling law is crucial for understanding spontaneous combustion in large piles of biological or flammable material.
+
+\subsection{Introduction to Dimensional Analysis}
+
+We conclude by previewing a formal tool for scaling: Dimensional Analysis (the Buckingham $\pi$ theorem). By requiring equations to be dimensionally consistent, we can deduce the form of physical laws up to dimensionless constants.
+
+\ex{The Simple Pendulum}{Consider a pendulum of length $L$ and mass $m$, in a gravitational field $g$. We want to find the angle $\theta(t)$.
+The relevant variables and their dimensions are: $[L] = \text{m}$, $[g] = \text{m/s}^2$, $[m] = \text{kg}$, and $[\theta] = 1$ (dimensionless). Time is $[t] = \text{s}$.
+Because $m$ is the only parameter with a unit of mass, it cannot combine with anything else to form a dimensionless quantity. Therefore, the pendulum's motion is \emph{independent of its mass}. 
+To form a dimensionless time parameter, we must combine $t$, $g$, and $L$. The only combination yielding seconds is $\sqrt{L/g}$. Thus, the solution must take the form:
+\[
+    \theta(t) = f\left( t \sqrt{\frac{g}{L}} \right)
+\]
+implying the period is $T \propto \sqrt{L/g}$.}
+
+\ex{Aerodynamic Drag}{We want to find the drag force $F_d$ on an object of size $R$ moving at velocity $v$ in a fluid of density $\rho$. 
+Dimensions: $[F_d] = \text{kg}\cdot\text{m/s}^2$, $[\rho] = \text{kg/m}^3$, $[v] = \text{m/s}$, $[R] = \text{m}$.
+To get $\text{kg}$, we must multiply by $\rho$. This gives us $\text{kg/m}^3$. We need $\text{m/s}^2$, so we multiply by $v^2$ (giving $\text{m}^2/\text{s}^2$). Now we have $\text{kg}/(\text{m}\cdot\text{s}^2)$. Multiplying by $R^2$ gives the correct units for force:
+\[
+    F_d \propto \rho v^2 R^2
+\]}
+
+\ex{Deep Water Waves}{What is the dispersion relation (frequency $\omega$ as a function of wavenumber $k = 2\pi/\lambda$) for deep water waves?
+The only relevant physical parameters are gravity $g$ and the wavenumber $k$. (Density $\rho$ drops out as there is no other mass term).
+Dimensions: $[\omega] = \text{s}^{-1}$, $[g] = \text{m/s}^2$, $[k] = \text{m}^{-1}$.
+To match the $\text{s}^{-2}$ in $g$, we must use $\omega^2$. We have $\omega^2/g$ with units $\text{m}^{-1}$. Thus, $\omega^2/g \propto k$, yielding:
+\[
+    \omega \propto \sqrt{gk}
+\]
+If the water has a finite depth $H$, we can form a dimensionless parameter $kH$, and the relation generalizes to $\omega^2 = gk f(kH)$, which must be solved with fluid dynamics.}

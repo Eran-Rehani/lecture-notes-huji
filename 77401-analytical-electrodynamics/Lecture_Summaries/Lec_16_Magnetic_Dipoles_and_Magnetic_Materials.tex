@@ -1,0 +1,479 @@
+%% Lecture 16 -- Magnetic dipoles in external fields and the beginning of magnetic materials
+\section{Lecture 16 -- Magnetic Dipoles in External Fields and Magnetic Materials}\label{sec:lec16}
+
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 31/05/2026 & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+
+\subsection*{Overview}
+
+Lecture 15 introduced the magnetic dipole moment
+$\bmu$ as the leading far-field data of a localized current distribution.  This
+lecture explains why that concept is the right microscopic language for magnetic
+materials.  A piece of matter can be viewed, at sufficiently long wavelengths, as
+many tiny current loops: orbital electron currents and spin magnetic moments.  The
+external magnetic field does not see the detailed atomic motion directly; it sees
+the dipole moments those motions produce.
+
+The main results are:
+\begin{itemize}
+  \item the magnetic field of a point magnetic dipole is
+        $\bB_{\rm dip}(\br)=\bigl[3\hat{\br}(\bmu\cdot\hat{\br})-\bmu\bigr]/r^3$
+        away from the dipole;
+  \item the interaction term for a small current loop in a slowly varying external
+        field is $L_{\rm int}=\bmu\cdot\bB_{\rm ext}$;
+  \item therefore the potential energy is $U=-\bmu\cdot\bB_{\rm ext}$;
+  \item the force on a dipole is $\bvec{F}=\nabla(\bmu\cdot\bB)$, so a uniform
+        magnetic field exerts no net force on an ideal dipole;
+  \item the torque is $\boldsymbol{\tau}=\bmu\times\bB$, so a uniform field can
+        rotate the dipole even when it cannot translate it;
+  \item for orbital motion, combining $\bmu=(e/2m_ec)\bvec{L}$ with
+        $d\bvec{L}/dt=\boldsymbol{\tau}$ gives Larmor precession;
+  \item magnetic materials are classified by how their microscopic dipoles respond:
+        paramagnets align with the applied field, diamagnets oppose it,
+        ferromagnets retain magnetization, and superconductors expel magnetic field.
+\end{itemize}
+
+%------------------------------------------------------------
+\subsection{Magnetic Field of a Dipole}\label{subsec:lec16-dipole-field}
+
+\subsubsection*{Physical Motivation}
+Last lecture gave the far-zone vector potential of a localized current distribution,
+\begin{equation}\label{eq:lec16-Adip-start}
+  \Avec_{\rm dip}(\br)=\frac{\bmu\times\br}{r^3}.
+\end{equation}
+For matter, this is the microscopic building block: an atom or molecule is replaced
+by a pointlike magnetic dipole when we observe it on length scales much larger than
+atomic size.  To understand how many such dipoles produce magnetization, we first need
+the magnetic field of one dipole.
+
+\subsubsection*{Derivation}
+Use the vector identity
+\begin{equation}\label{eq:lec16-curl-cross-identity}
+  \nabla\times(\bvec{a}\times\bvec{c})
+  =
+  \bvec{a}(\nabla\cdot\bvec{c})
+  -\bvec{c}(\nabla\cdot\bvec{a})
+  +(\bvec{c}\cdot\nabla)\bvec{a}
+  -(\bvec{a}\cdot\nabla)\bvec{c}.
+\end{equation}
+Here $\bvec{a}=\bmu$ is constant and $\bvec{c}=\br/r^3$, so
+$\nabla\cdot\bmu=0$ and $(\br/r^3\cdot\nabla)\bmu=0$.  Thus
+\begin{equation}\label{eq:lec16-Bdip-identity}
+  \bB_{\rm dip}
+  =\nabla\times\left(\frac{\bmu\times\br}{r^3}\right)
+  =
+  \bmu\,\nabla\cdot\left(\frac{\br}{r^3}\right)
+  -(\bmu\cdot\nabla)\left(\frac{\br}{r^3}\right).
+\end{equation}
+Away from the origin,
+\begin{equation}\label{eq:lec16-div-r-over-r3}
+  \nabla\cdot\left(\frac{\br}{r^3}\right)=0
+  \qquad (r\neq 0),
+\end{equation}
+while componentwise
+\begin{align}
+  (\bmu\cdot\nabla)\left(\frac{r_i}{r^3}\right)
+  &= \mu_j\partial_j(r_i r^{-3}) \notag\\
+  &= \mu_j\left(\delta_{ij}r^{-3}+r_i\,\partial_j r^{-3}\right) \notag\\
+  &= \frac{\mu_i}{r^3}-3\,\frac{r_i(\bmu\cdot\br)}{r^5}. \label{eq:lec16-directional-derivative}
+\end{align}
+Substituting this into \eqref{eq:lec16-Bdip-identity} gives
+\begin{equation}\label{eq:lec16-Bdip}
+  \boxed{
+    \bB_{\rm dip}(\br)
+    =
+    \frac{3\br(\bmu\cdot\br)}{r^5}
+    -\frac{\bmu}{r^3}
+    =
+    \frac{3\hat{\br}(\bmu\cdot\hat{\br})-\bmu}{r^3},
+    \qquad r\neq 0.
+  }
+\end{equation}
+\textit{Significance:} The dipole field decays as $1/r^3$, exactly like the electric
+dipole field.  The formula is meaningful only outside the microscopic source; if one
+approaches the current loop itself, the point-dipole approximation must be replaced by
+the actual current distribution.
+
+\begin{remark}
+  Distributionally, there is also a contact term at the dipole position.  In this
+  lecture we use the far-field expression \eqref{eq:lec16-Bdip}, because magnetic
+  materials are modeled by replacing each small current loop by its field outside
+  atomic scales.
+\end{remark}
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[>=Stealth, thick, scale=1.05]
+  \draw[->, gray] (-3,0) -- (3,0) node[right] {$x$};
+  \draw[->, gray] (0,-2.5) -- (0,2.6) node[above] {$z$};
+  \draw[->, red!70!black, line width=1.1pt] (0,-0.65) -- (0,0.9)
+    node[right] {$\bmu$};
+  \fill[black] (0,0) circle (2pt);
+
+  \foreach \x in {-2.1,-1.4,-0.8,0.8,1.4,2.1} {
+    \draw[blue!60!black, ->]
+      (\x,-1.7) .. controls ({0.45*\x},-0.8) and ({0.45*\x},0.8) .. (\x,1.7);
+  }
+  \draw[blue!60!black, ->]
+    (-0.35,2.05) .. controls (-1.0,1.75) and (-1.1,1.1) .. (-0.65,0.65);
+  \draw[blue!60!black, ->]
+    (0.35,2.05) .. controls (1.0,1.75) and (1.1,1.1) .. (0.65,0.65);
+  \draw[blue!60!black, ->]
+    (-0.35,-2.05) .. controls (-1.0,-1.75) and (-1.1,-1.1) .. (-0.65,-0.65);
+  \draw[blue!60!black, ->]
+    (0.35,-2.05) .. controls (1.0,-1.75) and (1.1,-1.1) .. (0.65,-0.65);
+  \node[blue!60!black] at (2.25,2.1) {$\bB_{\rm dip}$};
+\end{tikzpicture}
+\caption{Schematic field pattern of a magnetic dipole.  Far from the microscopic
+current loop, the entire source is represented by the single vector $\bmu$.}
+\label{fig:lec16-dipole-field}
+\end{figure}
+
+%------------------------------------------------------------
+\subsection{Interaction of a Small Current Loop with an External Field}\label{subsec:lec16-interaction}
+
+\subsubsection*{Physical Motivation}
+To study a material in an applied magnetic field, we need the energy of one microscopic
+current loop in that field.  The applied field is assumed to vary slowly across the
+loop, because the loop is atomic in size while laboratory fields vary on macroscopic
+scales.  This is the same logic as a multipole expansion: keep the leading term first.
+
+The covariant interaction between matter current and electromagnetic field can be
+written as
+\begin{equation}\label{eq:lec16-Sint-covariant}
+  S_{\rm int}
+  =
+  -\frac{1}{c^2}\int J^\mu A_\mu\,d^4x.
+\end{equation}
+In the magnetostatic neutral sector, $J^0=0$ and $A^0=\phi=0$.  With the mostly-minus
+metric convention used in this course, this reduces to
+\begin{equation}\label{eq:lec16-Sint-current}
+  S_{\rm int}
+  =
+  \frac{1}{c}\int dt\int \Jvec(\br)\cdot\Avec(\br)\,d^3r.
+\end{equation}
+For a thin current loop carrying current $I$,
+\begin{equation}\label{eq:lec16-J-to-loop}
+  \Jvec(\br)\,d^3r \longrightarrow I\,d\bvec{\ell},
+\end{equation}
+so
+\begin{align}
+  S_{\rm int}
+  &= \frac{I}{c}\int dt\oint_C \Avec\cdot d\bvec{\ell} \notag\\
+  &= \frac{I}{c}\int dt\iint_\Sigma
+     (\nabla\times\Avec)\cdot d\bvec{S} \notag\\
+  &= \frac{I}{c}\int dt\iint_\Sigma \bB\cdot d\bvec{S}. \label{eq:lec16-Sint-stokes}
+\end{align}
+If $\bB$ is nearly constant over the loop,
+\begin{equation}\label{eq:lec16-uniform-field-loop}
+  \iint_\Sigma \bB\cdot d\bvec{S}
+  \simeq
+  \bB\cdot\boldsymbol{\Sigma},
+\end{equation}
+where $\boldsymbol{\Sigma}$ is the oriented area vector.  Since
+$\bmu=(I/c)\boldsymbol{\Sigma}$, we obtain
+\begin{equation}\label{eq:lec16-Lint}
+  \boxed{L_{\rm int}=\bmu\cdot\bB_{\rm ext}.}
+\end{equation}
+\textit{Significance:} The microscopic loop couples to the external field only through
+its dipole moment at leading order.  This is why $\bmu$ is the natural variable for
+magnetic matter.
+
+Since a mechanical Lagrangian has the structure $L=T-U$, the potential energy is
+\begin{equation}\label{eq:lec16-U-dipole}
+  \boxed{U=-\bmu\cdot\bB_{\rm ext}.}
+\end{equation}
+\textit{Significance:} The energy is minimized when $\bmu$ points along $\bB$.  A
+misaligned magnetic moment is therefore not in equilibrium: the field tries to rotate it.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[>=Stealth, thick, scale=1.0]
+  \draw[blue!60!black, thick] (0,0) ellipse (1.4 and 0.55);
+  \draw[->, blue!60!black] (-1.35,0.08) -- (-1.0,0.33) node[above left] {$I$};
+  \draw[->, red!70!black, line width=1.1pt] (0,0) -- (0.75,1.25)
+    node[right] {$\bmu$};
+  \foreach \x in {-2.2,-1.4,-0.6,0.2,1.0,1.8,2.6} {
+    \draw[->, green!50!black] (\x,-1.3) -- (\x,1.4);
+  }
+  \node[green!50!black] at (2.9,1.2) {$\bB_{\rm ext}$};
+  \draw[dashed] (0,0) -- (0,1.45);
+  \draw (0,0.75) arc (90:59:0.75);
+  \node at (0.28,0.93) {$\theta$};
+\end{tikzpicture}
+\caption{A microscopic current loop in a slowly varying external field.  The leading
+interaction energy is $U=-\bmu\cdot\bB=-\mu B\cos\theta$.}
+\label{fig:lec16-loop-field-energy}
+\end{figure}
+
+%------------------------------------------------------------
+\subsection{Force on a Magnetic Dipole}\label{subsec:lec16-force}
+
+\subsubsection*{Conceptual Background}
+Once the potential energy is known, the force follows from the spatial variation of
+that energy.  We keep $\bmu$ fixed while differentiating with respect to the loop's
+position; physically, the microscopic current loop is moved through an external field
+whose value changes from point to point.
+
+From \eqref{eq:lec16-U-dipole},
+\begin{equation}\label{eq:lec16-force-def}
+  \bvec{F}=-\nabla U
+  =\nabla(\bmu\cdot\bB).
+\end{equation}
+Thus
+\begin{equation}\label{eq:lec16-force}
+  \boxed{
+    F_i=\partial_i(\mu_j B_j),
+    \qquad
+    \bvec{F}=\nabla(\bmu\cdot\bB).
+  }
+\end{equation}
+\textit{Significance:} A magnetic dipole feels a translational force only if the
+external field is nonuniform.  A uniform field can choose an orientation, but it cannot
+choose a preferred position.
+
+For constant $\bmu$ one often writes
+\begin{equation}\label{eq:lec16-force-alt}
+  \bvec{F}=(\bmu\cdot\nabla)\bB
+\end{equation}
+when the region is current-free so that $\nabla\times\bB=0$.  The form
+\eqref{eq:lec16-force-def} is the direct energy-gradient statement.
+
+\begin{remark}
+  This does not contradict the magnetic Lorentz force being perpendicular to the
+  instantaneous velocity of a charge.  Holding a steady current loop together and
+  moving it as a composite object involves external constraints and induced electric
+  fields; the effective dipole energy describes the work needed to move the whole
+  object in an inhomogeneous field.
+\end{remark}
+
+%------------------------------------------------------------
+\subsection{Torque on a Magnetic Dipole}\label{subsec:lec16-torque}
+
+\subsubsection*{Physical Motivation}
+In a uniform field, \eqref{eq:lec16-force} gives zero net force.  But the energy
+$U=-\mu B\cos\theta$ still depends on orientation, so the dipole must feel a torque.
+This is exactly what happens to a compass needle: it does not translate in a uniform
+field, but it rotates.
+
+\subsubsection*{Loop Derivation}
+For a current element $d\bvec{\ell}$ in a magnetic field,
+\begin{equation}\label{eq:lec16-dF-loop}
+  d\bvec{F}=\frac{I}{c}\,d\bvec{\ell}\times\bB.
+\end{equation}
+The torque element about the loop origin is
+\begin{equation}\label{eq:lec16-dtau-loop}
+  d\boldsymbol{\tau}
+  =\br\times d\bvec{F}
+  =\frac{I}{c}\,\br\times(d\bvec{\ell}\times\bB).
+\end{equation}
+Using
+\begin{equation}\label{eq:lec16-triple-product}
+  \br\times(d\bvec{\ell}\times\bB)
+  =d\bvec{\ell}(\br\cdot\bB)-\bB(\br\cdot d\bvec{\ell}),
+\end{equation}
+and integrating around the loop, one finds that the total derivative terms around
+the closed path vanish.  Keeping the leading term for a uniform $\bB$ across the loop,
+the result is
+\begin{equation}\label{eq:lec16-torque}
+  \boxed{\boldsymbol{\tau}=\bmu\times\bB.}
+\end{equation}
+\textit{Significance:} The torque tries to rotate $\bmu$ toward $\bB$, precisely the
+orientation that minimizes $U=-\bmu\cdot\bB$.
+
+The same result follows immediately from the energy:
+\begin{equation}\label{eq:lec16-energy-angle}
+  U(\theta)=-\mu B\cos\theta,
+  \qquad
+  \tau_\perp=-\frac{\partial U}{\partial\theta}
+  =-\mu B\sin\theta,
+\end{equation}
+where the sign indicates rotation toward smaller $\theta$.
+
+%------------------------------------------------------------
+\subsection{Larmor Precession}\label{subsec:lec16-larmor}
+
+\subsubsection*{Physical Motivation}
+If a dipole is tied to an angular momentum, the torque does not simply make it fall
+straight into the field direction.  Instead, just like a spinning top in gravity, the
+angular momentum vector precesses around the applied field.
+
+For orbital electron motion, Lecture 15 gave
+\begin{equation}\label{eq:lec16-mu-L}
+  \bmu=\gamma\,\bvec{L},
+  \qquad
+  \gamma=\frac{e}{2m_ec}.
+\end{equation}
+The rotational equation of motion is
+\begin{equation}\label{eq:lec16-dLdt}
+  \frac{d\bvec{L}}{dt}=\boldsymbol{\tau}.
+\end{equation}
+Using \eqref{eq:lec16-torque},
+\begin{equation}\label{eq:lec16-Larmor-equation}
+  \frac{d\bvec{L}}{dt}
+  =\bmu\times\bB
+  =\gamma\,\bvec{L}\times\bB.
+\end{equation}
+Equivalently,
+\begin{equation}\label{eq:lec16-Larmor-box}
+  \boxed{
+    \frac{d\bvec{L}}{dt}
+    =\boldsymbol{\Omega}_L\times\bvec{L},
+    \qquad
+    \boldsymbol{\Omega}_L=-\gamma\,\bB
+    =-\frac{e}{2m_ec}\,\bB .
+  }
+\end{equation}
+\textit{Significance:} The angular momentum keeps its magnitude fixed and rotates
+around $\bB$.  The magnetic field creates a preferred axis, not a radial pull.
+
+Indeed,
+\begin{equation}\label{eq:lec16-L-magnitude}
+  \frac{d}{dt}L^2
+  =2\bvec{L}\cdot\frac{d\bvec{L}}{dt}
+  =2\gamma\,\bvec{L}\cdot(\bvec{L}\times\bB)=0,
+\end{equation}
+so $|\bvec{L}|$ is constant.  Also, for uniform constant $\bB$,
+\begin{equation}\label{eq:lec16-L-dot-B}
+  \frac{d}{dt}(\bvec{L}\cdot\bB)
+  =\frac{d\bvec{L}}{dt}\cdot\bB
+  =\gamma(\bvec{L}\times\bB)\cdot\bB=0,
+\end{equation}
+so the angle between $\bvec{L}$ and $\bB$ is constant.  A vector of fixed length and
+fixed angle relative to $\bB$ can only precess around $\bB$.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[>=Stealth, thick, scale=1.0]
+  \draw[->, green!50!black, line width=1.1pt] (0,0) -- (0,3.0)
+    node[above] {$\bB$};
+  \draw[dashed, gray] (0,1.55) ellipse (1.35 and 0.38);
+  \draw[->, red!70!black, line width=1.1pt] (0,0) -- (1.2,1.55)
+    node[right] {$\bvec{L},\,\bmu$};
+  \draw[->, blue!60!black] (1.35,1.55) arc (0:55:1.35 and 0.38);
+  \node[blue!60!black] at (1.65,2.0) {$\boldsymbol{\Omega}_L$};
+  \draw (0,0.8) arc (90:52:0.8);
+  \node at (0.33,0.95) {$\theta$};
+\end{tikzpicture}
+\caption{Larmor precession: the torque is perpendicular to $\bvec{L}$, so it changes
+the direction of $\bvec{L}$ while preserving its magnitude and its angle with $\bB$.}
+\label{fig:lec16-larmor}
+\end{figure}
+
+%------------------------------------------------------------
+\subsection{From One Dipole to Magnetic Materials}\label{subsec:lec16-materials}
+
+\subsubsection*{Conceptual Background}
+The microscopic picture of magnetic matter is a collection of dipoles.  The macroscopic
+question is how those dipoles arrange themselves in response to an external field.
+This is not fully explainable by classical mechanics: real magnetism, especially spin
+and ferromagnetism, requires quantum mechanics.  The classical dipole model still gives
+the correct organizing language.
+
+\dfn[dfn:lec16-magnetization]{Magnetization}{
+  The magnetization $\bvec{M}$ is magnetic dipole moment per unit volume:
+  \begin{equation}\label{eq:lec16-M-def}
+    \boxed{\bvec{M}(\br)=\frac{d\bmu_{\rm total}}{dV}.}
+  \end{equation}
+  It measures the coarse-grained alignment of microscopic magnetic moments.
+}
+
+\textit{Significance:} A material produces its own magnetic field once its microscopic
+dipoles acquire a nonzero average orientation.
+
+\subsubsection*{Paramagnetism}
+In a paramagnet, microscopic moments tend to align with the applied field:
+\begin{equation}\label{eq:lec16-paramag}
+  \boxed{\bvec{M}\parallel \bB_{\rm ext}.}
+\end{equation}
+\textit{Significance:} The material reinforces the applied field.  With the field off,
+thermal disorder usually randomizes the moments, so the net magnetization disappears.
+
+\subsubsection*{Diamagnetism}
+In a diamagnet, the induced magnetic response points opposite the applied field:
+\begin{equation}\label{eq:lec16-diamag}
+  \boxed{\bvec{M}\ \text{opposes}\ \bB_{\rm ext}.}
+\end{equation}
+\textit{Significance:} The material partially cancels the applied field.  Classically,
+this is connected to the small induced orbital currents created when the external field
+perturbs electron motion.
+
+\subsubsection*{Ferromagnetism}
+In a ferromagnet, the material can retain magnetization even after the external field
+is removed:
+\begin{equation}\label{eq:lec16-ferromag}
+  \boxed{\bvec{M}\neq 0\quad\text{can remain when}\quad \bB_{\rm ext}=0.}
+\end{equation}
+\textit{Significance:} A ferromagnet is a material with memory: microscopic moments
+remain ordered macroscopically.  Explaining why this order persists is a quantum
+many-body problem, not a purely classical magnetostatic calculation.
+
+\subsubsection*{Superconductors as Perfect Diamagnets}
+A superconductor responds even more strongly: in the Meissner state the magnetic field
+inside is expelled,
+\begin{equation}\label{eq:lec16-meissner}
+  \boxed{\bB_{\rm inside}=0.}
+\end{equation}
+\textit{Significance:} A superconductor is the magnetic analogue of an ideal conductor
+in electrostatics: it rearranges currents so that the interior field vanishes.  In
+magnetism this is the Meissner effect, not merely ordinary perfect conductivity.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[>=Stealth, thick, scale=0.95]
+  \begin{scope}[xshift=-4.6cm]
+    \draw[rounded corners=3pt, fill=blue!5] (-1.2,-0.8) rectangle (1.2,0.8);
+    \foreach \x in {-0.75,-0.25,0.25,0.75} {
+      \draw[->, red!70!black] (\x,-0.35) -- (\x,0.35);
+    }
+    \draw[->, green!50!black] (1.55,-0.8) -- (1.55,0.8) node[above] {$\bB_{\rm ext}$};
+    \node at (0,-1.25) {\footnotesize paramagnet: aligns};
+  \end{scope}
+  \begin{scope}
+    \draw[rounded corners=3pt, fill=blue!5] (-1.2,-0.8) rectangle (1.2,0.8);
+    \foreach \x in {-0.75,-0.25,0.25,0.75} {
+      \draw[->, red!70!black] (\x,0.35) -- (\x,-0.35);
+    }
+    \draw[->, green!50!black] (1.55,-0.8) -- (1.55,0.8) node[above] {$\bB_{\rm ext}$};
+    \node at (0,-1.25) {\footnotesize diamagnet: opposes};
+  \end{scope}
+  \begin{scope}[xshift=4.6cm]
+    \draw[rounded corners=3pt, fill=blue!5] (-1.2,-0.8) rectangle (1.2,0.8);
+    \foreach \x in {-0.75,-0.25,0.25,0.75} {
+      \draw[->, red!70!black] (\x,-0.35) -- (\x,0.35);
+    }
+    \draw[green!50!black, dashed] (1.55,-0.8) -- (1.55,0.8)
+      node[above] {$\bB_{\rm ext}=0$};
+    \node at (0,-1.25) {\footnotesize ferromagnet: remembers};
+  \end{scope}
+\end{tikzpicture}
+\caption{Three schematic magnetic responses.  Paramagnets align with the applied
+field, diamagnets oppose it, and ferromagnets can retain alignment after the applied
+field is removed.}
+\label{fig:lec16-material-types}
+\end{figure}
+
+%------------------------------------------------------------
+\subsection{Summary}\label{subsec:lec16-summary}
+
+\begin{itemize}
+  \item The dipole vector potential $\Avec_{\rm dip}=\bmu\times\br/r^3$ gives, for
+        $r\neq0$, the dipole field
+        $\bB_{\rm dip}=[3\hat{\br}(\bmu\cdot\hat{\br})-\bmu]/r^3$.
+  \item For a small current loop in a slowly varying external field,
+        $L_{\rm int}=\bmu\cdot\bB$ and $U=-\bmu\cdot\bB$.
+  \item The force on a magnetic dipole is $\bvec{F}=\nabla(\bmu\cdot\bB)$; it vanishes
+        in a uniform field.
+  \item The torque is $\boldsymbol{\tau}=\bmu\times\bB$; a uniform field can rotate
+        a dipole even when it cannot translate it.
+  \item For orbital electron motion, $\bmu=(e/2m_ec)\bvec{L}$, so
+        $d\bvec{L}/dt=(e/2m_ec)\bvec{L}\times\bB$: Larmor precession.
+  \item Magnetic materials are understood macroscopically through magnetization
+        $\bvec{M}=d\bmu_{\rm total}/dV$.
+  \item Paramagnets align with the applied field, diamagnets oppose it, ferromagnets
+        retain magnetization, and superconductors expel magnetic field.
+\end{itemize}

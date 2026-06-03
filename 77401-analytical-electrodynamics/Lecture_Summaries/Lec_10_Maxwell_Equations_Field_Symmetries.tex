@@ -1,0 +1,722 @@
+%% Lecture 10 -- Maxwell's equations completed; discrete symmetries; EM Lorentz invariants
+\section{Lecture 10 -- Maxwell's Equations, Discrete Symmetries, and Lorentz Invariants of the EM Field}\label{sec:lec10}
+
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 10/05/2026 & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+
+\subsection*{Overview}
+
+The previous lecture prepared all ingredients needed to derive Maxwell's equations from the action
+principle.  The total action
+\begin{equation}\label{eq:lec10:total-action}
+  S = -\sum_n m_n c\int ds_n
+  -\frac{1}{c}\sum_n e_n\int A_\mu\,dx_n^\mu
+  -\frac{1}{16\pi c}\int F_{\mu\nu}F^{\mu\nu}\,d^4x
+\end{equation}
+was varied with respect to the field $A_\mu$, giving $\delta S_{\rm field}=(4\pi c)^{-1}\int(\partial_\mu F^{\mu\nu})\delta A_\nu\,d^4x$.
+The four-current $J^\mu=(c\rho,\mathbf{J})$ was introduced and shown to be a four-vector obeying
+$\partial_\mu J^\mu=0$.
+
+This lecture:
+\begin{itemize}
+  \item completes the variational derivation of the inhomogeneous Maxwell equations;
+  \item shows how the covariant form implies the continuity equation automatically;
+  \item unpacks the covariant equation into the familiar 3-vector Maxwell equations;
+  \item studies the behaviour of $\bE$ and $\bB$ under time-reversal ($t\to-t$) and spatial
+        inversion ($\mathbf{r}\to-\mathbf{r}$), introducing polar and axial vectors;
+  \item constructs the two independent Lorentz scalars built from $F_{\mu\nu}$ and extracts
+        physical consequences about which configurations can be related by a boost.
+\end{itemize}
+
+%------------------------------------------------------------
+\subsection{Completing the Derivation of Maxwell's Equations}\label{subsec:lec10-maxwell}
+
+\subsubsection*{Physical Motivation}
+The action has two types of degrees of freedom: particle worldlines and the field $A_\mu$.  We already
+varied with respect to the particles and obtained the covariant Lorentz force.  Now we impose
+stationarity under variations of the field.  Because $S_{\rm particle}$ does not depend on $A_\mu$,
+only the last two terms contribute.
+
+\subsubsection*{Variation of the interaction term}
+
+Writing the interaction in terms of the four-current (derived in Lecture~09),
+\begin{equation}\label{eq:lec10:Sint-J}
+  S_{\rm int}
+  =
+  -\frac{1}{c^2}\int J^\mu A_\mu\,d^4x ,
+\end{equation}
+a shift $A_\mu\to A_\mu+\delta A_\mu$ (keeping particle trajectories fixed, so $J^\mu$ is unchanged)
+gives
+\begin{equation}\label{eq:lec10:dSint}
+  \delta S_{\rm int}
+  =
+  -\frac{1}{c^2}\int J^\nu\,\delta A_\nu\,d^4x .
+\end{equation}
+Note: $J^\mu$ does not vary because it depends only on the particle degrees of freedom, which are
+held fixed.
+
+\subsubsection*{Combining the two variations}
+
+Adding \eqref{eq:lec10:dSint} to the field variation derived in Lecture~09,
+\begin{equation}\label{eq:lec10:dSfield}
+  \delta S_{\rm field}
+  =
+  \frac{1}{4\pi c}\int(\partial_\mu F^{\mu\nu})\,\delta A_\nu\,d^4x ,
+\end{equation}
+the total variation is
+\begin{equation}\label{eq:lec10:dS-total}
+  \delta S
+  =
+  \int\!\left[
+    \frac{1}{4\pi c}\,\partial_\mu F^{\mu\nu}
+    -\frac{1}{c^2}\,J^\nu
+  \right]\delta A_\nu\,d^4x .
+\end{equation}
+By the principle of least action, $\delta S=0$ for every admissible $\delta A_\nu$.  Since $\delta A_\nu$
+is arbitrary, the bracket must vanish at every spacetime point:
+\begin{equation}\label{eq:lec10:maxwell-covariant}
+  \boxed{
+  \partial_\mu F^{\mu\nu}
+  =
+  \frac{4\pi}{c}\,J^\nu .
+  }
+\end{equation}
+\textit{Physical significance:} These are the \emph{inhomogeneous Maxwell equations} in compact covariant
+form.  The left-hand side is determined entirely by the geometry of $A_\mu$; the right-hand side is the
+four-current source.  The equation is manifestly Lorentz covariant: both sides are four-vectors.
+
+\subsubsection*{The full set of Maxwell equations}
+
+Together with the particle equation of motion (from varying the worldlines),
+\begin{equation}\label{eq:lec10:particle-eom}
+  \boxed{
+  m\,\frac{du^\mu}{d\tau}
+  =
+  \frac{e}{c}\,F^\mu{}_\nu\,u^\nu ,
+  }
+\end{equation}
+equations \eqref{eq:lec10:maxwell-covariant} and \eqref{eq:lec10:particle-eom} encode \emph{all of
+classical electrodynamics} in just two compact lines.  This economy is possible because we understood
+the system's symmetries well enough to write a natural action from first principles.
+
+%------------------------------------------------------------
+\subsection{Continuity Equation as an Automatic Consequence}\label{subsec:lec10-continuity}
+
+\subsubsection*{Physical Motivation}
+Charge conservation says that charge cannot be created or destroyed.  In a field theory derived from
+an action, conservation laws should emerge automatically, either from symmetries (Noether) or from
+algebraic identities.  Maxwell's equations contain charge conservation as an identity.
+
+Apply $\partial_\nu$ to both sides of \eqref{eq:lec10:maxwell-covariant}:
+\begin{equation}\label{eq:lec10:dnu-maxwell}
+  \partial_\nu\partial_\mu F^{\mu\nu}
+  =
+  \frac{4\pi}{c}\,\partial_\nu J^\nu .
+\end{equation}
+The left-hand side vanishes identically.  The operator $\partial_\nu\partial_\mu$ is symmetric in
+$\mu\leftrightarrow\nu$, while $F^{\mu\nu}$ is antisymmetric.  Contracting a symmetric operator with
+an antisymmetric tensor gives zero:
+\begin{equation}\label{eq:lec10:sym-anti}
+  \partial_\nu\partial_\mu F^{\mu\nu}
+  =
+  -\partial_\nu\partial_\mu F^{\nu\mu}
+  =
+  -\partial_\mu\partial_\nu F^{\mu\nu}
+  = 0 .
+\end{equation}
+(The second step uses $F^{\mu\nu}=-F^{\nu\mu}$; the third relabels dummy indices.)  Therefore
+\begin{equation}\label{eq:lec10:continuity}
+  \boxed{
+  \partial_\mu J^\mu = 0 .
+  }
+\end{equation}
+\textit{Physical significance:} Local charge conservation is not an \emph{additional} assumption; it
+follows from Maxwell's equations automatically, as a consequence of the antisymmetry of $F^{\mu\nu}$.
+This is an internal consistency check: the field equations can only be self-consistent if their source
+is conserved.
+
+\subsubsection*{Standard 3-vector derivation (cross-check)}
+
+The same result follows from the familiar vector equations, providing a useful consistency check.
+Take the divergence of the Ampère--Maxwell law \eqref{eq:lec10:ampere}:
+\begin{equation}\label{eq:lec10:div-ampere}
+  \nabla\cdot(\nabla\times\bB)
+  - \frac{1}{c}\frac{\partial}{\partial t}(\nabla\cdot\bE)
+  =
+  \frac{4\pi}{c}\,\nabla\cdot\\Jvec .
+\end{equation}
+The first term vanishes because the divergence of any curl is zero.  Substituting Gauss's law
+\eqref{eq:lec10:gauss}, $\nabla\cdot\bE=4\pi\rho$:
+\begin{equation}\label{eq:lec10:continuity-3vec}
+  0 - \frac{4\pi}{c}\frac{\partial\rho}{\partial t}
+  =
+  \frac{4\pi}{c}\,\nabla\cdot\\Jvec,
+\end{equation}
+which rearranges to
+\begin{equation}\label{eq:lec10:continuity-3vec-final}
+  \boxed{
+  \frac{\partial\rho}{\partial t} + \nabla\cdot\\Jvec = 0 .
+  }
+\end{equation}
+\textit{Physical significance:} Maxwell's equations are only mathematically self-consistent if charge
+is conserved.  The displacement current term $\partial_t\bE/c$ that Maxwell added to Ampère's law is
+precisely what ensures this consistency.
+
+%------------------------------------------------------------
+\subsection{Explicit Component Form of Maxwell's Equations}\label{subsec:lec10-components}
+
+\subsubsection*{Physical Motivation}
+The covariant equation \eqref{eq:lec10:maxwell-covariant} contains four equations (one for each value
+of $\nu$).  Let us unpack them.  Recall (from Lecture~08) the explicit matrix of $F^{\mu\nu}$ in
+Gaussian CGS:
+\begin{equation}\label{eq:lec10:F-matrix}
+  F^{\mu\nu} =
+  \begin{pmatrix}
+    0 & -E_x & -E_y & -E_z \\
+    E_x & 0 & -B_z & B_y \\
+    E_y & B_z & 0 & -B_x \\
+    E_z & -B_y & B_x & 0
+  \end{pmatrix},
+\end{equation}
+so $F^{0i}=-E_i$ (and $F^{i0}=E_i$), and $F^{ij}=-\epsilon^{ijk}B_k$.
+
+\subsubsection*{The $\nu=0$ component: Gauss's law}
+
+\begin{align}
+  \partial_\mu F^{\mu 0}
+  &=
+  \partial_i F^{i0}
+  =
+  \partial_i E_i
+  =
+  \nabla\cdot\bE ,
+  \label{eq:lec10:gauss-lhs}
+\end{align}
+where we used $F^{00}=0$.  The right-hand side is $(4\pi/c)\,J^0 = (4\pi/c)(c\rho)=4\pi\rho$.
+Therefore
+\begin{equation}\label{eq:lec10:gauss}
+  \boxed{
+  \nabla\cdot\bE = 4\pi\rho .
+  }
+\end{equation}
+\textit{Physical significance:} This is Gauss's law.  Electric field lines originate and terminate on
+charge.
+
+\subsubsection*{The $\nu=1$ component: Ampère--Maxwell law ($x$-direction)}
+
+\begin{align}
+  \partial_\mu F^{\mu 1}
+  &=
+  \partial_0 F^{01}
+  +\partial_2 F^{21}
+  +\partial_3 F^{31}
+  \notag\\
+  &=
+  -\frac{1}{c}\partial_t E_x
+  +\partial_y B_z
+  -\partial_z B_y
+  \notag\\
+  &=
+  (\nabla\times\bB)_x - \frac{1}{c}\frac{\partial E_x}{\partial t},
+  \label{eq:lec10:ampere-x-lhs}
+\end{align}
+where we computed:
+$F^{01}=-E_x$ so $\partial_0 F^{01} = -(1/c)\partial_t E_x$;
+$F^{21}=-F^{12}=B_z$ so $\partial_2 F^{21}=\partial_y B_z$;
+$F^{31}=-F^{13}=-B_y$ so $\partial_3 F^{31}=-\partial_z B_y$.
+The right-hand side is $(4\pi/c)J^1=(4\pi/c)J_x$.  Repeating for $\nu=2,3$ gives the full equation
+\begin{equation}\label{eq:lec10:ampere}
+  \boxed{
+  \nabla\times\bB - \frac{1}{c}\frac{\partial\bE}{\partial t}
+  =
+  \frac{4\pi}{c}\,\Jvec .
+  }
+\end{equation}
+\textit{Physical significance:} Currents and changing electric fields source the magnetic field.  The
+term $(1/c)\partial_t\bE$ is Maxwell's displacement current; without it, $\nabla\times\bB$ would not
+be divergence-free, violating $\partial_\mu J^\mu=0$.
+
+\subsubsection*{The homogeneous equations: direct derivation from definitions}
+
+\subsubsection*{Physical Motivation}
+The fundamental object in our theory is the four-potential $A^\mu=(\phi,\Avec)$.  All physical fields
+are built from it.  The two definitions
+\begin{align}
+  \bE &= -\nabla\phi - \frac{1}{c}\frac{\partial\Avec}{\partial t}, \label{eq:lec10:E-def}\\
+  \bB &= \nabla\times\Avec, \label{eq:lec10:B-def}
+\end{align}
+are \emph{not} dynamical equations; they are kinematic identities that encode the choice to describe
+electromagnetism via a potential.  The homogeneous Maxwell equations are then \emph{automatic
+consequences of these definitions}, requiring no additional input from the action.
+
+\paragraph{Faraday's law.}
+Take the curl of both sides of \eqref{eq:lec10:E-def}:
+\begin{equation}\label{eq:lec10:faraday-start}
+  \nabla\times\bE
+  =
+  -\nabla\times(\nabla\phi)
+  -\frac{1}{c}\frac{\partial}{\partial t}(\nabla\times\Avec).
+\end{equation}
+The first term vanishes identically: the curl of any gradient is zero ($\nabla\times\nabla\phi=0$).
+In the second term, partial derivatives with respect to space and time commute, and
+$\nabla\times\Avec=\bB$ by definition \eqref{eq:lec10:B-def}.  Therefore
+\begin{equation}\label{eq:lec10:faraday}
+  \boxed{
+  \nabla\times\bE = -\frac{1}{c}\frac{\partial\bB}{\partial t}.
+  }
+\end{equation}
+\textit{Physical significance:} This is Faraday--Lenz's law.  A time-varying magnetic field induces
+a curling electric field.  It is a pure consequence of the potential structure, not of any dynamics.
+
+\paragraph{No magnetic monopoles ($\nabla\cdot\bB=0$).}
+Take the divergence of \eqref{eq:lec10:B-def}:
+\begin{equation}\label{eq:lec10:divB-calc}
+  \nabla\cdot\bB
+  =
+  \nabla\cdot(\nabla\times\Avec) = 0,
+\end{equation}
+since the divergence of any curl vanishes identically.  Therefore
+\begin{equation}\label{eq:lec10:divB}
+  \boxed{
+  \nabla\cdot\bB = 0 .
+  }
+\end{equation}
+\textit{Physical significance:} There are no magnetic charges (monopoles) in this theory.  The result
+is not an experimental statement but a \emph{definition}: we chose $\bB=\nabla\times\Avec$, and for
+any vector field that is a curl, the divergence is zero.
+
+\paragraph{Covariant statement (Bianchi identity).}
+Both results are unified in the covariant identity
+\begin{equation}\label{eq:lec10:bianchi}
+  \partial_\lambda F_{\mu\nu}
+  +\partial_\mu F_{\nu\lambda}
+  +\partial_\nu F_{\lambda\mu}
+  = 0 ,
+\end{equation}
+which holds for any $F_{\mu\nu}=\partial_\mu A_\nu-\partial_\nu A_\mu$.  Taking $\lambda=0$ recovers
+Faraday's law; contracting over the spatial indices recovers $\nabla\cdot\bB=0$.
+
+\subsubsection*{The E–B asymmetry in the definitions}
+
+Before asking about monopoles, notice that the two definitions
+\eqref{eq:lec10:E-def}--\eqref{eq:lec10:B-def} are \emph{not symmetric} in $\bE$ and $\bB$:
+\begin{align*}
+  \bE &= -\nabla\phi - \frac{1}{c}\frac{\partial\Avec}{\partial t}
+        \quad (\text{gradient term} + \text{time derivative of }\Avec), \\
+  \bB &= \nabla\times\Avec
+        \quad (\text{curl of }\Avec\text{ only}).
+\end{align*}
+There is no symmetry between the electric and magnetic sectors at the level of the definitions,
+because the action contains only \emph{one} four-potential $A^\mu$ and only \emph{electric} charges.
+This asymmetry is a direct reflection of the experimental fact that isolated magnetic charges have
+never been observed.
+
+\subsubsection*{Why $\nabla\cdot\bB=0$ is not a fundamental law of nature}
+
+The statement $\nabla\cdot\bB=0$ is a consequence of our choice to describe the field by the
+potential $A^\mu$.  If magnetic monopoles existed, the force law
+$\mathbf{F}=e(\bE+\mathbf{v}/c\times\bB)$ would need an additional magnetic-charge term.  We have
+no such term in our action because we have never observed magnetic monopoles in the laboratory.
+
+If monopoles were discovered, one would introduce a \emph{second} four-potential
+$A^\mu_{\rm mag}=(\phi_M,\Avec_M)$, and the definitions would be extended to
+\begin{align}
+  \bE &= -\nabla\phi - \frac{1}{c}\dot{\Avec} + \nabla\times\Avec_M , \label{eq:lec10:E-monopole}\\
+  \bB &= \nabla\times\Avec - \nabla\phi_M - \frac{1}{c}\dot{\Avec}_M , \label{eq:lec10:B-monopole}
+\end{align}
+making the electric and magnetic sectors fully symmetric: $\bE$ acquires a curl of $\Avec_M$ and
+$\bB$ acquires the same gradient + time-derivative structure as $\bE$.  The equation
+$\nabla\cdot\bB=0$ would be replaced by
+\begin{equation}\label{eq:lec10:divB-monopole}
+  \nabla\cdot\bB = 4\pi\rho_M .
+\end{equation}
+
+\subsubsection*{Why we do not simply add monopoles speculatively}
+
+Introducing a monopole potential immediately predicts a new magnetic force.  If that force were
+comparable in strength to the electric force, it would have been detected long ago.  Any consistent
+monopole theory must therefore contain a new coupling constant that suppresses the monopole
+interaction to below current experimental sensitivity.
+
+An analogy: general relativity predicts gravitational waves, but they are extraordinarily weak
+because Newton's constant $G$ is very small.  If one had never detected gravity directly, one would
+still have to include $G$ as a free parameter that the theory cannot fix on symmetry grounds alone.
+Similarly, a monopole theory would require a new coupling constant to explain the absence of observed
+magnetic-charge effects.
+
+\textit{Physical significance:} The framework of action + symmetry + potential does not forbid
+monopoles on logical grounds.  Their absence is an experimental input, encoded in the choice of which
+four-potential we include in the action.
+
+%------------------------------------------------------------
+\subsection{The Methodology of Analytical Field Theory}\label{subsec:lec10-methodology}
+
+\subsubsection*{Physical Motivation}
+The derivation of Maxwell's equations from the action is not just a mathematical trick.  It reflects
+a deep methodological principle that underlies all of modern theoretical physics.  The professor
+describes it as \emph{analytical mechanics of field theory}: the same philosophy that Lagrange and
+Hamilton applied to mechanics, now applied to fields.
+
+\subsubsection*{Analytical mechanics as the prototype}
+
+In Newtonian mechanics one writes forces and integrates $F=ma$.  Analytical mechanics
+(Lagrangian/Hamiltonian) produces \emph{exactly the same equations} but arrives at them from two
+ingredients:
+\begin{enumerate}
+  \item \textbf{Symmetry principle:} the action must be invariant under the symmetries of the system
+        (Galilean invariance for non-relativistic mechanics).
+  \item \textbf{Principle of least action:} the physical trajectory extremises $S=\int L\,dt$.
+\end{enumerate}
+The Lagrangian itself is not derived from first principles; one must know from experiment what
+interactions are present (e.g.\ a $1/r$ potential for the Kepler problem).  The symmetry + action
+framework then generates the equations of motion unambiguously.
+
+\subsubsection*{The same logic applied to electrodynamics}
+
+This course performs exactly the same programme for the electromagnetic field:
+\begin{enumerate}
+  \item \textbf{Symmetry:} Lorentz invariance (special relativity), gauge invariance, and the
+        superposition principle.
+  \item \textbf{Experimental inputs:} The observed force on a charge is $\mathbf{F}=e(\bE+\mathbf{v}/c\times\bB)$
+        (Lorentz force), not a magnetic-monopole force.  The superposition principle is observed.
+  \item \textbf{Principle of least action:} the physical fields and trajectories extremise
+        \eqref{eq:lec10:total-action}.
+\end{enumerate}
+Together these three inputs \emph{uniquely} determine the action and hence all of Maxwell's
+equations.  As the professor put it in Lecture~01: ``this is analytical mechanics of field theory.''
+
+\subsubsection*{Why experiment is irreplaceable}
+
+Symmetry constraints are necessary but not sufficient to fix a theory.  There are in general many
+actions compatible with a given symmetry group.  Experimental observations select which terms appear
+and fix the coupling constants.
+
+\begin{itemize}
+  \item In the Kepler problem, symmetry allows any central force; only experiment (Kepler's laws)
+        selects $F\propto 1/r^2$.
+  \item In electrodynamics, Lorentz + gauge invariance allows both $F_{\mu\nu}F^{\mu\nu}$ and
+        $\epsilon^{\mu\nu\alpha\beta}F_{\mu\nu}F_{\alpha\beta}$ in the Lagrangian; the latter is a
+        total derivative and is discarded because it contributes nothing to the equations of motion.
+        The coupling $e/c$ in the interaction term is fixed by measuring the electron charge.
+\end{itemize}
+
+\subsubsection*{The Standard Model as the same programme applied further}
+
+The same methodology underlies the Standard Model of particle physics, built roughly 50--60 years
+ago:
+\begin{enumerate}
+  \item Identify the symmetry group (Lorentz invariance + gauge symmetries $SU(3)\times SU(2)\times
+        U(1)$).
+  \item Write all actions (Lagrangian terms) consistent with those symmetries.
+  \item Use experimental data (particle masses, decay rates, scattering cross-sections) to fix the
+        free parameters and eliminate terms not seen in nature.
+\end{enumerate}
+The result is a compact set of equations that encode all known non-gravitational physics.  The guiding
+principle throughout is: \emph{action + symmetry, then constrain with experiment}.
+
+\textit{Physical significance:} Electrodynamics, studied in this course, is both the simplest and
+the historical prototype of this programme.  Mastering it is the prerequisite for understanding how
+all fundamental interactions are formulated.
+
+%------------------------------------------------------------
+\subsection{Aside: Feynman's Path-Integral Formulation}\label{subsec:lec10-path-integral}
+
+\subsubsection*{Physical Motivation}
+The discussion of the action principle prompted a brief digression on Feynman's alternative
+formulation of quantum mechanics, which generalises the least-action idea from classical to quantum
+physics.
+
+In classical mechanics, a particle follows the single trajectory that \emph{extremises} the action
+$S$: of all conceivable paths from $(\mathbf{x}_1,t_1)$ to $(\mathbf{x}_2,t_2)$, only the one
+satisfying the Euler--Lagrange equations is realised.
+
+Feynman proposed that in quantum mechanics every path is realised \emph{simultaneously}.  The
+probability amplitude for propagation from point 1 to point 2 is the sum (integral) over all paths,
+each weighted by the phase factor
+\begin{equation}\label{eq:lec10:path-integral}
+  \boxed{
+  \mathcal{A}_{1\to 2}
+  \propto
+  \int_{\text{all paths}} \mathcal{D}[x(t)]\;
+  e^{iS[x(t)]/\hbar} ,
+  }
+\end{equation}
+where $S[x(t)]$ is the classical action evaluated along a given path and $\mathcal{D}[x(t)]$ denotes
+integration over the space of all trajectories.
+
+\textit{Physical significance:} In the classical limit $\hbar\to 0$, the phase $e^{iS/\hbar}$
+oscillates infinitely rapidly for paths far from the classical one, so they cancel by destructive
+interference.  Only the neighbourhood of the \emph{stationary-phase path} (i.e.\ the classical
+trajectory) contributes, recovering the principle of least action.  Quantum mechanics is therefore
+the deeper framework: classical mechanics is its stationary-phase approximation.
+
+%------------------------------------------------------------
+\subsection{Discrete Symmetries: Time Reversal and Spatial Inversion}\label{subsec:lec10-discrete}
+
+\subsubsection*{Physical Motivation}
+The proper orthochronous Lorentz group $SO^+(3,1)$ is continuously connected to the identity.  But
+there are also discrete transformations: time reversal $T:t\to-t$ and spatial parity $P:\mathbf{r}\to
+-\mathbf{r}$ (in three dimensions).  Electromagnetism \emph{is} symmetric under both, but in nature
+the weak force violates $T$ and $P$ (and even $CP$).  Here we determine how $\bE$ and $\bB$ transform
+under these discrete symmetries by using Maxwell's equations as constraints.
+
+\subsubsection*{Time reversal $t\to-t$}
+
+\textbf{Charge density:} $\rho(\mathbf{x},t)\to\rho(\mathbf{x},-t)$.  A static charge is unaffected;
+the value of $\rho$ does not change sign:
+\begin{equation}\label{eq:lec10:T-rho}
+  \rho \;\longrightarrow\; \rho .
+\end{equation}
+\textbf{Current density:} $\mathbf{J}=\rho\mathbf{v}$.  The velocity $\mathbf{v}=d\mathbf{x}/dt$
+changes sign under $t\to-t$, so
+\begin{equation}\label{eq:lec10:T-J}
+  \mathbf{J} \;\longrightarrow\; -\mathbf{J} .
+\end{equation}
+\textbf{Electric field:} Gauss's law $\nabla\cdot\bE=4\pi\rho$ relates $\bE$ to $\rho$.  The right-hand
+side does not change sign.  The spatial derivatives $\partial_i$ are unaffected by $t\to-t$.  Therefore
+\begin{equation}\label{eq:lec10:T-E}
+  \bE \;\longrightarrow\; \bE .
+\end{equation}
+\textbf{Magnetic field:} Consider Faraday's law $\nabla\times\bE=-(1/c)\partial_t\bB$.  The left-hand
+side transforms as $\bE\to\bE$ (purely spatial curl), so it is unchanged.  The right-hand side
+acquires a sign from $\partial_t\to-\partial_t$ and another from $\bB\to\;?$\,.  For the equation
+to remain satisfied, the two signs must cancel:
+\begin{equation}\label{eq:lec10:T-B}
+  \bB \;\longrightarrow\; -\bB .
+\end{equation}
+
+\begin{center}
+\begin{tikzpicture}[>=Latex, scale=1.0]
+  \node[align=center] at (-2.2,0) {$t\to -t$};
+  \draw[->] (-1.4,0.4) -- (-0.3,0.9) node[midway,above,font=\small] {$\bE$};
+  \draw[->] (-1.4,-0.4) -- (-0.3,-0.9) node[midway,below,font=\small] {$\bB$};
+  \node[right,font=\small] at (-0.2,0.9) {unchanged};
+  \node[right,font=\small] at (-0.2,-0.9) {flips sign};
+\end{tikzpicture}
+\end{center}
+
+\subsubsection*{Spatial inversion $\mathbf{r}\to-\mathbf{r}$}
+
+\textbf{Charge and current:} $\rho$ is a scalar density; it is unchanged.  $\mathbf{J}=\rho\mathbf{v}$
+changes sign because $\mathbf{v}=d\mathbf{x}/dt$ changes sign:
+\begin{equation}\label{eq:lec10:P-rho-J}
+  \rho \;\longrightarrow\; \rho, \qquad \mathbf{J} \;\longrightarrow\; -\mathbf{J} .
+\end{equation}
+\textbf{Electric field:} Under $\mathbf{r}\to-\mathbf{r}$, the spatial gradient $\nabla_i\to-\nabla_i$.
+Gauss's law $\nabla\cdot\bE=4\pi\rho$ then requires $\bE\to-\bE$ (to cancel the sign of
+$\nabla\to-\nabla$):
+\begin{equation}\label{eq:lec10:P-E}
+  \bE \;\longrightarrow\; -\bE .
+\end{equation}
+\textbf{Magnetic field:} In Faraday's law, the curl $\nabla\times\bE\to-(-\bE)=+(\nabla\times\bE)$
+(two sign flips cancel).  The time derivative $\partial_t$ is unaffected.  Therefore $\bB$ must be
+unchanged to keep the equation satisfied:
+\begin{equation}\label{eq:lec10:P-B}
+  \bB \;\longrightarrow\; +\bB .
+\end{equation}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{ccc}
+  \toprule
+  & Time reversal ($t\to-t$) & Spatial inversion ($\mathbf{r}\to-\mathbf{r}$) \\
+  \midrule
+  $\rho$ & $+\rho$ & $+\rho$ \\
+  $\mathbf{J}$ & $-\mathbf{J}$ & $-\mathbf{J}$ \\
+  $\bE$ & $+\bE$ & $-\bE$ \\
+  $\bB$ & $-\bB$ & $+\bB$ \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\subsubsection*{Polar and axial vectors}
+
+A \textbf{polar vector} (ordinary vector) changes sign under spatial inversion, just like $\mathbf{r}$
+itself.  Examples: $\mathbf{r}$, $\bE$, $\mathbf{J}$.
+
+An \textbf{axial vector} (pseudovector) does \emph{not} change sign under spatial inversion.  It
+behaves like a rotation axis.  Examples: $\bB$, angular momentum $\mathbf{L}=\mathbf{r}\times\mathbf{p}$.
+
+\textit{Physical significance:} $\bB$ is axial because it is built as a curl (a cross product), which
+inherits an extra sign flip that compensates the inversion.  This distinction matters when writing
+Lorentz-invariant combinations: only contractions that respect the parity of each vector produce true
+scalars.
+
+\subsubsection*{Caveat: parity in two dimensions}
+
+A common error: in two spatial dimensions, $\mathbf{r}\to-\mathbf{r}$ is a rotation by $180°$, not a
+parity transformation, because $\det(-\mathbf{1}_{2\times 2})=+1$.  True parity requires an odd number
+of sign flips, i.e.\ $\det(\text{transformation})=-1$.  In three dimensions, $\mathbf{r}\to-\mathbf{r}$
+has $\det=-1$ and is a genuine parity.
+
+%------------------------------------------------------------
+\subsection{Lorentz Invariants of the Electromagnetic Field}\label{subsec:lec10-invariants}
+
+\subsubsection*{Physical Motivation}
+The components $\bE$ and $\bB$ mix under Lorentz boosts (they are entries of the rank-2 tensor
+$F^{\mu\nu}$, not separate four-vectors).  Yet certain combinations must be frame-independent.  These
+Lorentz scalars encode absolute properties of the electromagnetic field: which configurations are
+related by a boost, and which are not.
+
+\subsubsection*{First invariant: $F_{\mu\nu}F^{\mu\nu}$}
+
+The free-field Lagrangian density $\mathcal{L}=-F_{\mu\nu}F^{\mu\nu}/(16\pi)$ is a Lorentz scalar
+(it enters the Lorentz-scalar action).  Computing $F_{\mu\nu}F^{\mu\nu}$ explicitly:
+
+The matrix $F_{\mu\nu}$ (indices both down) differs from $F^{\mu\nu}$ by raising both indices, i.e.\
+multiplying by $\eta^{\mu\alpha}\eta^{\nu\beta}$.  Raising a timelike index (0) costs no sign;
+raising a spacelike index costs a $-1$ factor per index.  Therefore $F^{i0}=-F_{i0}$ and
+$F^{ij}=F_{ij}$ (both indices spatial, two minus signs cancel).  The time-space components thus pick
+up a relative sign:
+\begin{align}
+  F_{\mu\nu}F^{\mu\nu}
+  &=
+  2\!\left[F_{01}F^{01}+F_{02}F^{02}+F_{03}F^{03}\right]
+  +
+  2\!\left[F_{12}F^{12}+F_{13}F^{13}+F_{23}F^{23}\right]
+  \notag\\
+  &=
+  2(-E_x^2-E_y^2-E_z^2)
+  +
+  2(B_z^2+B_y^2+B_x^2)
+  \notag\\
+  &=
+  2(B^2-E^2).
+  \label{eq:lec10:I1-calc}
+\end{align}
+(Each off-diagonal pair contributes twice because of the symmetry of the sum.)
+\begin{equation}\label{eq:lec10:I1}
+  \boxed{
+  F_{\mu\nu}F^{\mu\nu}
+  =
+  2\!\left(B^2 - E^2\right).
+  }
+\end{equation}
+\textit{Physical significance:} The sign of $B^2-E^2$ is a Lorentz-invariant property.  An
+electromagnetic configuration with $B^2>E^2$ remains so in every frame; a pure-electric configuration
+($B=0$, $E\neq 0$) has $B^2-E^2<0$ and stays that way.  In particular, it is impossible to boost to
+a frame where $B=0$ if $B^2-E^2>0$ in the original frame.
+
+\subsubsection*{Second invariant: the Levi-Civita pseudoscalar}
+
+There is a second quadratic combination,
+\begin{equation}\label{eq:lec10:I2-def}
+  \epsilon^{\alpha\beta\mu\nu}\,F_{\alpha\beta}\,F_{\mu\nu},
+\end{equation}
+where $\epsilon^{\alpha\beta\mu\nu}$ is the \textbf{four-dimensional Levi-Civita symbol}:
+\begin{equation}\label{eq:lec10:eps-def}
+  \epsilon^{0123}=+1, \qquad
+  \text{completely antisymmetric in all four indices.}
+\end{equation}
+This symbol is a \emph{pseudotensor} (it picks up a $\det\Lambda$ factor under Lorentz
+transformations), so \eqref{eq:lec10:I2-def} is a pseudoscalar.
+
+A direct calculation (summing over all index permutations) yields contributions of the form
+$F_{0i}F_{jk}$, which combine to give $E_x B_x + E_y B_y + E_z B_z$:
+\begin{equation}\label{eq:lec10:I2}
+  \boxed{
+  \epsilon^{\alpha\beta\mu\nu}\,F_{\alpha\beta}\,F_{\mu\nu}
+  =
+  -8\,\bE\cdot\bB .
+  }
+\end{equation}
+\textit{Physical significance:} The angle between $\bE$ and $\bB$ (or rather, the sign of
+$\bE\cdot\bB$) is a Lorentz-invariant property.  If $\bE\perp\bB$ in one frame, they are orthogonal
+in all frames.
+
+\paragraph{Why this term does not affect the field equations.}
+At first sight, one might add $\alpha\,\epsilon^{\alpha\beta\mu\nu}F_{\alpha\beta}F_{\mu\nu}$ to the
+Lagrangian as a second quadratic invariant.  However, one can show that it is a \emph{total
+spacetime derivative}:
+\begin{equation}\label{eq:lec10:I2-total-deriv}
+  \epsilon^{\alpha\beta\mu\nu}F_{\alpha\beta}F_{\mu\nu}
+  =
+  \partial_\mu\!\left(\epsilon^{\mu\nu\alpha\beta}A_\nu F_{\alpha\beta}\right).
+\end{equation}
+Adding a total derivative to the Lagrangian density changes the action by a boundary term, which does
+not affect the Euler--Lagrange equations.  This is why we discarded it when constructing the action
+in Lecture~08.
+
+%------------------------------------------------------------
+\subsection{Physical Consequences of the Two Invariants}\label{subsec:lec10-consequences}
+
+\subsubsection*{Physical Motivation}
+The two invariants $B^2-E^2$ and $\bE\cdot\bB$ are the complete set of independent Lorentz scalars
+quadratic in $F$.  They classify electromagnetic field configurations and determine what can be
+transformed into what by a Lorentz boost.
+
+\subsubsection*{Case 1: Radiation ($B=E$, $\bE\perp\bB$)}
+For a plane electromagnetic wave (radiation), $|\bE|=|\bB|$ and $\bE\perp\bB$.  Therefore both
+invariants vanish: $B^2-E^2=0$ and $\bE\cdot\bB=0$.  Since both invariants are zero, they remain
+zero in every frame.  \emph{It is impossible to eliminate electromagnetic radiation by switching to
+a different inertial frame.}  This is physically obvious: if you are ``burned'' by radiation in one
+frame, you are burned in all frames.
+
+\subsubsection*{Case 2: $B^2>E^2$}
+One can always boost to a frame where $\bE'=0$ (purely magnetic field).  The invariant
+$B^2-E^2>0$ is preserved and now reads $B'^2>0$, consistent.  But one \emph{cannot} boost to a frame
+with $\bB'=0$, because that would require $B'^2-E'^2=-E'^2\leq 0$, contradicting $B^2-E^2>0$.
+
+\subsubsection*{Case 3: $E^2>B^2$}
+One can always boost to a frame where $\bB'=0$ (purely electric field).  Conversely, one cannot
+boost to a frame with $\bE'=0$.
+
+\subsubsection*{Case 4: $F^{\mu\nu}=0$}
+If all components of $F^{\mu\nu}$ vanish in one frame, both invariants are zero and the tensor
+remains zero in every frame (it transforms tensorially; $\Lambda F\Lambda^T=0$).
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{ccc}
+  \toprule
+  Condition (any frame) & Can boost to & Cannot boost to \\
+  \midrule
+  $B^2-E^2>0$ & $\bE'=0$ & $\bB'=0$ \\
+  $B^2-E^2<0$ & $\bB'=0$ & $\bE'=0$ \\
+  $B^2-E^2=0$, $\bE\cdot\bB=0$ (radiation) & neither & neither \\
+  $\bE\cdot\bB=0$ & $\bE'\perp\bB'$ & $\bE'\parallel\bB'\neq 0$ \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\textit{Physical significance:} The two invariants are the complete set of information that survives
+a boost.  All other properties of $\bE$ and $\bB$ (individual magnitudes, directions relative to
+coordinate axes) can be changed by choosing a different frame.
+
+\subsection*{Summary}
+
+\begin{itemize}
+  \item Varying the total action with respect to $A_\mu$ gives the inhomogeneous Maxwell equations
+        $\partial_\mu F^{\mu\nu}=(4\pi/c)J^\nu$.
+  \item The covariant Lorentz force law $m\,du^\mu/d\tau = (e/c)F^\mu{}_\nu u^\nu$ and the field
+        equation together encode all of classical electrodynamics.
+  \item Applying $\partial_\nu$ to the field equation and using antisymmetry of $F^{\mu\nu}$
+        immediately yields charge conservation $\partial_\mu J^\mu=0$.  The same result follows from
+        the 3-vector equations by taking $\nabla\cdot$ of the Ampère--Maxwell law and substituting
+        Gauss's law; Maxwell's displacement current is essential for consistency.
+  \item The $\nu=0$ component gives Gauss's law; the spatial components give the Ampère--Maxwell law.
+  \item The homogeneous pair ($\nabla\times\bE=-(1/c)\dot{\bB}$ and $\nabla\cdot\bB=0$) follows
+        directly from the definitions $\bE=-\nabla\phi-(1/c)\dot{\Avec}$ and $\bB=\nabla\times\Avec$,
+        via $\nabla\times\nabla f=0$ and $\nabla\cdot(\nabla\times\mathbf{F})=0$.  These are kinematic
+        identities, not dynamical equations.  The absence of monopoles is an experimental input, not
+        a logical necessity.
+  \item The definitions of $\bE$ and $\bB$ in terms of $A^\mu$ are \emph{not} E--B symmetric; this
+        asymmetry reflects the absence of magnetic charges.  Adding a second four-potential
+        $A^\mu_{\rm mag}$ restores full symmetry and gives $\nabla\cdot\bB=4\pi\rho_M$.  Any
+        monopole theory requires a new suppression constant to explain non-observation.
+  \item The derivation exemplifies \emph{analytical field theory}: symmetry (Lorentz + gauge +
+        superposition) + principle of least action + experimental inputs (Lorentz force, no monopoles)
+        uniquely fix the action and hence all of Maxwell's equations.  This is the same programme
+        used to construct the Standard Model.
+  \item Under time reversal: $\bE\to+\bE$, $\bB\to-\bB$.  Under spatial inversion: $\bE\to-\bE$
+        (polar vector), $\bB\to+\bB$ (axial vector).
+  \item The first Lorentz invariant $F_{\mu\nu}F^{\mu\nu}=2(B^2-E^2)$ determines which of $\bE$,
+        $\bB$ can be boosted away.
+  \item The second Lorentz invariant $\epsilon^{\alpha\beta\mu\nu}F_{\alpha\beta}F_{\mu\nu}=-8\bE\cdot\bB$
+        determines whether $\bE$ and $\bB$ are orthogonal in all frames.
+  \item Radiation has both invariants zero; it cannot be eliminated by any boost.
+\end{itemize}

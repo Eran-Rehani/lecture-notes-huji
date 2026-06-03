@@ -1,0 +1,443 @@
+%% Lecture 13 -- Mean Value Theorem; Dirichlet & Neumann Green's Functions; Method of Images
+\section{Lecture 13 -- Green's Functions for Boundary-Value Problems}\label{sec:lec13}
+
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 19/05/2026 & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+
+\subsection*{Overview}
+
+This lecture completes the programme begun in Lecture 12.  We have a representation
+formula for $\phi$ in terms of boundary data, but it is \emph{not} a solution because it
+contains both $\phi|_\Sigma$ and $\partial_n\phi|_\Sigma$ simultaneously.  We:
+\begin{itemize}
+  \item prove the \textbf{mean value property} of harmonic functions from the representation
+        formula, and use it to establish Earnshaw's theorem rigorously;
+  \item generalize from the bare $1/|\br-\mathbf{y}|$ to an arbitrary Green's function $G$,
+        deriving the general representation formula;
+  \item define the \textbf{Dirichlet} and \textbf{Neumann} Green's functions and show
+        how each eliminates the unwanted boundary term;
+  \item expose the inconsistency of the naive Neumann condition $\partial_n G_N = 0$ and
+        derive the correct condition;
+  \item connect the whole framework to the \textbf{method of images} studied in earlier courses;
+  \item state the symmetry property $G_D(\br,\mathbf{y}) = G_D(\mathbf{y},\br)$
+        (proof deferred to next lecture).
+\end{itemize}
+
+%------------------------------------------------------------
+\subsection{Proof of the Mean Value Property}\label{subsec:lec13-mvp}
+
+\subsubsection*{Motivation}
+Last lecture we proved (but did not use) Earnshaw's theorem by appealing to the maximum
+principle.  Here we derive it rigorously from the representation formula.  The key tool is
+the \emph{mean value property}: for a harmonic function $u$ (one satisfying
+$\nabla^2 u = 0$), the value at any interior point equals the average over any sphere
+centred there.
+
+\subsubsection*{Setup}
+Let $u$ satisfy Laplace's equation in a domain $\Omega$:
+\begin{equation}\label{eq:lec13:laplace}
+  \nabla^2 u = 0 \quad \text{in } \Omega.
+\end{equation}
+Pick any interior point $\mathbf{y}\in\Omega$ and any sphere $B_R(\mathbf{y})$ of radius $R$
+that lies entirely inside $\Omega$.  Apply the representation formula (derived last lecture)
+\emph{to this smaller domain} $B_R(\mathbf{y})$, with $\psi(\br;\mathbf{y}) = 1/|\br-\mathbf{y}|$:
+
+\begin{equation}\label{eq:lec13:rep-harmonic}
+  u(\mathbf{y})
+  = -\frac{1}{4\pi}
+  \oint_{\partial B_R}
+  \!\!\left[
+    u(\br)\,\partial_n\!\left(\frac{1}{|\br-\mathbf{y}|}\right)
+    - \frac{1}{|\br-\mathbf{y}|}\,\partial_n u(\br)
+  \right] dA.
+\end{equation}
+
+On the sphere $|\br - \mathbf{y}| = R$, so $\psi = 1/R$ is constant.
+The normal $\hat{n}$ points radially outward, so
+\begin{equation}\label{eq:lec13:psi-deriv}
+  \partial_n\!\left(\frac{1}{|\br-\mathbf{y}|}\right)\bigg|_{|\br-\mathbf{y}|=R}
+  = -\frac{1}{R^2}.
+\end{equation}
+
+Substituting into \eqref{eq:lec13:rep-harmonic}:
+\begin{equation}\label{eq:lec13:two-terms}
+  u(\mathbf{y})
+  = -\frac{1}{4\pi}
+  \oint_{\partial B_R}
+  \!\!\left[
+    u(\br)\cdot\!\left(-\frac{1}{R^2}\right)
+    - \frac{1}{R}\,\partial_n u(\br)
+  \right] dA
+  = \frac{1}{4\pi R^2}\oint_{\partial B_R} u\,dA
+    + \frac{1}{4\pi R}\oint_{\partial B_R} \partial_n u\,dA.
+\end{equation}
+
+The second term is $\frac{1}{4\pi R}\oint \nabla u \cdot \hat{n}\, dA$.  By Gauss's theorem
+this equals $\frac{1}{4\pi R}\int_{B_R}\nabla^2 u\,d^3r = 0$ (since $u$ is harmonic).
+Hence:
+
+\begin{equation}\label{eq:lec13:mvp}
+  \boxed{
+    u(\mathbf{y}) = \frac{1}{4\pi R^2}\oint_{|\br-\mathbf{y}|=R} u(\br)\,dA
+    = \langle u \rangle_{\partial B_R(\mathbf{y})}.
+  }
+\end{equation}
+\textit{Significance:} The value of a harmonic function at any point equals its spherical
+average over any concentric sphere inside the domain.  This is a global constraint
+that a harmonic function must satisfy at \emph{every} interior point.
+
+\begin{remark}
+  The mean value \eqref{eq:lec13:mvp} holds for \emph{every} radius $R$ such that
+  $B_R(\mathbf{y})\subset\Omega$.  It is therefore a powerful intrinsic property of
+  harmonic functions, independent of the boundary geometry.
+\end{remark}
+
+%------------------------------------------------------------
+\subsection{Earnshaw's Theorem from the Mean Value Property}\label{subsec:lec13-earnshaw}
+
+\subsubsection*{Motivation}
+A local minimum of $u$ at $\mathbf{y}$ means $u(\mathbf{y}) < u(\br)$ for all $\br$ in some
+punctured neighbourhood.  But then the spherical average over a small enough sphere is
+\emph{strictly greater} than $u(\mathbf{y})$, contradicting \eqref{eq:lec13:mvp}.
+
+\thm[thm:earnshaw]{Earnshaw / Maximum Principle}{
+  A harmonic function on a bounded domain $\Omega$ (satisfying $\nabla^2 u=0$)
+  cannot attain a local interior minimum or maximum unless $u$ is constant.
+  Extrema occur only on the boundary $\partial\Omega$.
+}
+
+\textit{Physical consequence:} No static arrangement of point charges can be in stable
+equilibrium under purely electrostatic forces.  The potential $\Phi$ created by all
+other charges satisfies $\nabla^2\Phi=0$ near any charge-free point, so $\Phi$ has no
+interior minimum there — stable equilibrium is impossible.
+
+%------------------------------------------------------------
+\subsection{Generalising the Green's Function}\label{subsec:lec13-general-G}
+
+\subsubsection*{Conceptual Background}
+In the representation formula \eqref{eq:lec13:rep-harmonic} we used
+$\psi = 1/|\br-\mathbf{y}|$, which satisfies
+$\nabla^2_\br\psi = -4\pi\delta^{(3)}(\br-\mathbf{y})$.
+\emph{Only this property was used.}  Any function with the same singularity structure
+yields an equally valid formula.  This gives us a free function to play with — and we
+will use it to eliminate one of the two boundary terms.
+
+\dfn[dfn:green]{Green's Function of the Laplacian}{
+  A function $G(\br,\mathbf{y})$ is called a \emph{Green's function for the Laplacian}
+  if it satisfies
+  \begin{equation}\label{eq:lec13:G-def}
+    \nabla^2_\br\, G(\br,\mathbf{y}) = -4\pi\,\delta^{(3)}(\br - \mathbf{y}).
+  \end{equation}
+  The most general such function is
+  \begin{equation}\label{eq:lec13:G-general}
+    G(\br,\mathbf{y}) = \frac{1}{|\br-\mathbf{y}|} + F(\br,\mathbf{y}),
+  \end{equation}
+  where $F(\br,\mathbf{y})$ is \emph{harmonic in $\br$}: $\nabla^2_\br F = 0$ inside $\Omega$.
+}
+
+\subsubsection*{General Representation Formula}
+Substituting $G$ (instead of $\psi = 1/|\br-\mathbf{y}|$) into Green's second identity and
+using $\nabla^2\phi = -4\pi\rho$ (Poisson's equation) gives:
+
+\begin{equation}\label{eq:lec13:rep-general}
+  \boxed{
+    \phi(\mathbf{y})
+    = \int_\Omega \rho(\br)\, G(\br,\mathbf{y})\, d^3r
+    \;-\; \frac{1}{4\pi}\oint_\Sigma
+    \!\!\left[\phi(\br)\,\partial_n G(\br,\mathbf{y})
+      - G(\br,\mathbf{y})\,\partial_n\phi(\br)\right]dA.
+  }
+\end{equation}
+\textit{Significance:} This formula is valid for \emph{any} choice of $G$ satisfying
+\eqref{eq:lec13:G-def}. The freedom in $F$ lets us impose one additional boundary
+condition on $G$ so that one of the surface terms vanishes.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[>=Stealth, thick]
+  % Domain blob
+  \draw[blue!60!black, fill=blue!5, thick]
+    plot[smooth cycle, tension=0.7]
+    coordinates {(0,2.2)(1.6,2.8)(3.2,2.0)(3.6,0.8)(2.8,-0.4)(1.0,-0.6)(-0.4,0.4)};
+  % Label domain
+  \node at (1.7,1.0) {$\Omega$};
+  % Normal vector on boundary
+  \draw[->, red!70!black] (3.3,1.4) -- (4.0,1.8) node[right] {$\hat{n}$};
+  % Point y inside
+  \fill (1.6,1.6) circle (2.5pt) node[above right] {$\mathbf{y}$};
+  % Small sphere around y
+  \draw[dashed, gray] (1.6,1.6) circle (0.6);
+  \node[gray] at (1.6, 2.35) {$B_R(\mathbf{y})$};
+  % Boundary label
+  \node at (0.5,2.2) {$\Sigma = \partial\Omega$};
+  % phi=0 label for Dirichlet
+  \node[blue!60!black] at (3.6,2.3) {$G_D|_\Sigma = 0$};
+  % point charge symbol
+  \node[below left] at (1.6,1.6) {\small $q{=}1$};
+\end{tikzpicture}
+\caption{Domain $\Omega$ with outward normal $\hat{n}$ on boundary $\Sigma$.  The
+Dirichlet Green's function $G_D(\br,\mathbf{y})$ is the potential of a unit point charge
+at $\mathbf{y}$ with the boundary held at zero — the method-of-images setup.
+The dashed sphere $B_R(\mathbf{y})$ is used in the mean value proof.}
+\label{fig:lec13:domain}
+\end{figure}
+
+%------------------------------------------------------------
+\subsection{The Dirichlet Green's Function}\label{subsec:lec13-dirichlet}
+
+\subsubsection*{Motivation}
+In the Dirichlet problem we \emph{know} $\phi|_\Sigma = f(\br)$ but \emph{do not know}
+$\partial_n\phi|_\Sigma$.  We want the term $G\,\partial_n\phi$ in \eqref{eq:lec13:rep-general}
+to vanish.  The simplest way: require $G$ itself to vanish on $\Sigma$.
+
+\dfn[dfn:green-dirichlet]{Dirichlet Green's Function $G_D$}{
+  $G_D(\br,\mathbf{y})$ is the unique solution of
+  \begin{equation}\label{eq:lec13:GD-def}
+    \nabla^2_\br\, G_D(\br,\mathbf{y}) = -4\pi\,\delta^{(3)}(\br - \mathbf{y}),
+    \qquad
+    G_D(\br,\mathbf{y})\big|_{\br\in\Sigma} = 0.
+  \end{equation}
+}
+
+With $G = G_D$, the surface term $G_D\,\partial_n\phi$ vanishes identically, and
+\eqref{eq:lec13:rep-general} becomes the \textbf{Dirichlet solution formula}:
+
+\begin{equation}\label{eq:lec13:dirichlet-solution}
+  \boxed{
+    \phi(\mathbf{y})
+    = \int_\Omega \rho(\br)\, G_D(\br,\mathbf{y})\, d^3r
+    \;-\; \frac{1}{4\pi}\oint_\Sigma
+    f(\br)\,\partial_n G_D(\br,\mathbf{y})\, dA,
+  }
+\end{equation}
+where $f = \phi|_\Sigma$ is the prescribed Dirichlet data.  Both integrands are now
+\emph{known}, so \eqref{eq:lec13:dirichlet-solution} is a genuine solution.
+
+\textit{Significance:} The entire Dirichlet problem reduces to finding $G_D$.  Once $G_D$
+is known for a given geometry, the solution for \emph{any} source $\rho$ and boundary
+datum $f$ follows by a single integration.
+
+\subsubsection*{Physical Interpretation of the $G_D$ Problem}
+Equations \eqref{eq:lec13:GD-def} say: place a unit point charge at $\mathbf{y}$, remove
+all other sources $\rho$, and hold the boundary $\Sigma$ at zero potential (grounded
+conductor).  Solve for the resulting potential.  That potential is $G_D(\cdot,\mathbf{y})$.
+
+This is precisely the \textbf{method of images} problem studied in earlier courses:
+\begin{itemize}
+  \item \textbf{Half-space:} a charge $q$ at height $d$ above a grounded infinite plane.
+        Place an image charge $-q$ at $-d$; their combined potential vanishes on the plane
+        and has the correct source singularity.  The result is $G_D$ for the half-space.
+  \item \textbf{Sphere:} a charge $q$ at distance $r_0$ from the centre of a grounded
+        conducting sphere of radius $a$.  The image charge is $-q\,a/r_0$ at distance
+        $a^2/r_0$.  The resulting $G_D$ gives the solution for any source inside the sphere
+        with any potential on the boundary.
+\end{itemize}
+
+\begin{remark}
+  You used the method of images in year-1/2 courses without knowing you were computing
+  Green's functions.  The new insight is that \emph{one} image calculation gives an
+  \emph{infinite family} of solutions: plug different $\rho$ and $f$ into
+  \eqref{eq:lec13:dirichlet-solution} and read off the answer.
+\end{remark}
+
+%------------------------------------------------------------
+\subsection{The Neumann Green's Function}\label{subsec:lec13-neumann}
+
+\subsubsection*{Motivation}
+For the Neumann problem we know $\partial_n\phi|_\Sigma = g(\br)$ but not $\phi|_\Sigma$.
+We want to eliminate the term $\phi\,\partial_n G$ from \eqref{eq:lec13:rep-general}.
+The naive attempt is to demand $\partial_n G_N|_\Sigma = 0$.
+
+\subsubsection*{Why the Naive Neumann Condition Fails}
+Suppose $G_N$ satisfies \eqref{eq:lec13:G-def} and $\partial_n G_N|_\Sigma = 0$.
+Integrate \eqref{eq:lec13:G-def} over the domain $\Omega$ (with $\mathbf{y}$ inside):
+\begin{equation}\label{eq:lec13:naive-inconsistency}
+  \int_\Omega \nabla^2_\br G_N\, d^3r = -4\pi
+  \quad\xrightarrow{\text{Gauss}}\quad
+  \oint_\Sigma \partial_n G_N\, dA = -4\pi.
+\end{equation}
+But if $\partial_n G_N|_\Sigma = 0$ then the left side is $0$.  This is a contradiction:
+\begin{equation}\label{eq:lec13:contradiction}
+  0 = -4\pi. \qquad \textit{(inconsistent!)}
+\end{equation}
+The naive condition is therefore \textbf{incompatible} with the defining equation.
+
+\subsubsection*{The Correct Neumann Condition}
+The flux integral must equal $-4\pi$.  The simplest consistent condition is to distribute
+this equally over the boundary:
+\begin{equation}\label{eq:lec13:GN-condition}
+  \boxed{
+    \partial_n G_N(\br,\mathbf{y})\big|_{\br\in\Sigma} = -\frac{4\pi}{S},
+  }
+\end{equation}
+where $S = \oint_\Sigma dA$ is the total area of the boundary.
+
+\dfn[dfn:green-neumann]{Neumann Green's Function $G_N$}{
+  $G_N(\br,\mathbf{y})$ satisfies \eqref{eq:lec13:G-def} together with the boundary condition
+  \eqref{eq:lec13:GN-condition}.
+}
+
+\subsubsection*{The Neumann Solution Formula}
+Substituting $G_N$ into \eqref{eq:lec13:rep-general} and using \eqref{eq:lec13:GN-condition}:
+\begin{equation}\label{eq:lec13:neumann-solution}
+  \boxed{
+    \phi(\mathbf{y})
+    = \int_\Omega \rho(\br)\, G_N(\br,\mathbf{y})\, d^3r
+    + \frac{1}{4\pi}\oint_\Sigma G_N(\br,\mathbf{y})\, g(\br)\, dA
+    + \langle\phi\rangle_\Sigma,
+  }
+\end{equation}
+where $g = \partial_n\phi|_\Sigma$ is the prescribed Neumann data and
+$\langle\phi\rangle_\Sigma = \frac{1}{S}\oint_\Sigma\phi\,dA$ is the
+(unknown) average value of $\phi$ on the boundary.
+
+\textit{Significance:} The additive constant $\langle\phi\rangle_\Sigma$ is exactly the
+ambiguity expected from uniqueness theory: the Neumann problem determines $\phi$ only up
+to a global constant (physically, the potential reference level).  This constant can be
+fixed by any convenient convention (e.g.\ setting $\langle\phi\rangle_\Sigma=0$).
+
+%------------------------------------------------------------
+\subsection{Comparison: Dirichlet vs.\ Neumann Problems}\label{subsec:lec13-comparison}
+
+\begin{center}
+\begin{tabular}{lll}
+  \toprule
+  & \textbf{Dirichlet} & \textbf{Neumann} \\
+  \midrule
+  Known data & $\phi|_\Sigma = f$ & $\partial_n\phi|_\Sigma = g$ \\
+  Condition on $G$ & $G_D|_\Sigma = 0$ & $\partial_n G_N|_\Sigma = -4\pi/S$ \\
+  Eliminated term & $G\,\partial_n\phi$ & $\phi\,\partial_n G$ \\
+  Residual ambiguity & none & additive constant \\
+  Image problem & unit charge at $\mathbf{y}$, grounded $\Sigma$ & unit charge at $\mathbf{y}$,
+  $E_n = -4\pi/cS$ on $\Sigma$ \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+%------------------------------------------------------------
+\subsection{Method of Images as Green's Function Computation}\label{subsec:lec13-images}
+
+\subsubsection*{Conceptual Background}
+Finding $G_D$ for a specific geometry is itself a boundary-value problem
+(Poisson's equation with a point source, homogeneous Dirichlet condition), and it is in
+general hard.  For highly symmetric geometries the method of images provides an elegant
+exact answer.
+
+\paragraph{Half-space ($z > 0$, grounded plane at $z=0$).}
+Place a unit charge at $\mathbf{y} = (0,0,d)$.  The image is $-1$ at
+$(0,0,-d)$.  Then
+\begin{equation}\label{eq:lec13:GD-halfspace}
+  G_D(\br,\mathbf{y}) = \frac{1}{|\br - \mathbf{y}|} - \frac{1}{|\br - \mathbf{y}^*|},
+  \quad
+  \mathbf{y}^* = (0,0,-d).
+\end{equation}
+One verifies $G_D|_{z=0} = 0$ (equal and opposite contributions cancel on the plane).
+
+\paragraph{Sphere ($|\br| < a$, grounded at $|\br| = a$).}
+For $\mathbf{y}$ at distance $r_0 < a$ from the centre, the image charge $-a/r_0$
+is placed at $\mathbf{y}^* = (a^2/r_0)\hat{\mathbf{y}}$ (outside the sphere):
+\begin{equation}\label{eq:lec13:GD-sphere}
+  G_D(\br,\mathbf{y}) = \frac{1}{|\br - \mathbf{y}|} - \frac{a/r_0}{|\br - \mathbf{y}^*|}.
+\end{equation}
+One verifies $G_D|_{|\br|=a} = 0$.  This $G_D$ immediately gives the solution for
+\emph{any} charge distribution inside the sphere with any Dirichlet boundary condition on
+the sphere, via \eqref{eq:lec13:dirichlet-solution}.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[>=Stealth, thick, scale=1.1]
+  % --- Half-space panel ---
+  \begin{scope}[xshift=-4cm]
+    % Grounded plane
+    \draw[blue!60!black, thick] (-1.8,0) -- (1.8,0)
+      node[right, blue!60!black] {$\Sigma:\; z=0$};
+    \fill[blue!5] (-1.8,0) rectangle (1.8,-0.15);
+    % Domain label
+    \node at (0, 1.4) {$\Omega:\; z>0$};
+    % Real charge
+    \fill[red] (0, 1.0) circle (3pt) node[right] {$+1$ at $\mathbf{y}$};
+    \draw[dashed] (0,1.0) -- (0,0) node[below] {\footnotesize $d$};
+    % Image charge
+    \fill[blue!70] (0, -1.0) circle (3pt) node[right] {$-1$ at $\mathbf{y}^*$};
+    \draw[dashed] (0,-1.0) -- (0,0);
+    \node at (0,-1.8) {\footnotesize Half-space: image at $-d$};
+  \end{scope}
+  % --- Sphere panel ---
+  \begin{scope}[xshift=4cm]
+    % Sphere boundary
+    \draw[blue!60!black, thick] (0,0) circle (1.5);
+    \node[blue!60!black] at (0,1.75) {$\Sigma:\;|\br|=a$};
+    % Domain
+    \node at (0,0.3) {$\Omega$};
+    % Centre
+    \fill (0,0) circle (1.5pt);
+    % Real charge y inside
+    \fill[red] (0.8, 0) circle (3pt) node[above] {$+1$};
+    \node[red, below] at (0.8,0) {$\mathbf{y}$};
+    \draw[|<->|, gray] (0,0.05) -- (0.8,0.05) node[midway,above]{\footnotesize $r_0$};
+    % Image charge outside
+    \fill[blue!70] (2.8, 0) circle (3pt) node[right] {$-\frac{a}{r_0}$};
+    \node[below, blue!70] at (2.8,0) {$\mathbf{y}^*$};
+    \draw[|<->|, gray] (0,-0.1) -- (2.8,-0.1) node[midway,below]{\footnotesize $a^2/r_0$};
+    \node at (0,-2.0) {\footnotesize Sphere: image at $a^2/r_0$};
+  \end{scope}
+\end{tikzpicture}
+\caption{Method of images as computation of the Dirichlet Green's function.
+\textit{Left}: grounded half-space; image charge $-1$ at $\mathbf{y}^*=(0,0,-d)$.
+\textit{Right}: grounded sphere of radius $a$; image charge $-a/r_0$ at distance $a^2/r_0$.
+In both cases the image ensures $G_D=0$ on $\Sigma$.}
+\label{fig:lec13:images}
+\end{figure}
+
+%------------------------------------------------------------
+\subsection{Symmetry of the Dirichlet Green's Function}\label{subsec:lec13-symmetry}
+
+\subsubsection*{Mathematical Setup}
+It is not obvious from the definition \eqref{eq:lec13:GD-def} that
+$G_D(\br,\mathbf{y}) = G_D(\mathbf{y},\br)$.
+The free-space piece $1/|\br-\mathbf{y}|$ is manifestly symmetric.  The harmonic part
+$F$ that enforces the boundary condition is not obviously so.
+
+For the half-space and sphere examples above one can check symmetry by direct calculation.
+In general:
+
+\clm[clm:GD-symmetry]{Symmetry of $G_D$}{
+  The Dirichlet Green's function satisfies
+  \begin{equation}\label{eq:lec13:GD-sym}
+    \boxed{G_D(\br, \mathbf{y}) = G_D(\mathbf{y}, \br)}
+  \end{equation}
+  for any $\br, \mathbf{y} \in \Omega$.
+}
+
+\textit{Proof (sketch, to be completed next lecture):} Apply Green's second identity with
+$u = G_D(\cdot,\mathbf{y})$ and $v = G_D(\cdot,\mathbf{z})$.  The boundary terms vanish
+(since $G_D = 0$ on $\Sigma$); the volume integrals yield
+$G_D(\mathbf{z},\mathbf{y}) - G_D(\mathbf{y},\mathbf{z}) = 0$.
+
+\textit{Physical meaning:} The potential at $\mathbf{y}$ due to a unit charge at $\br$
+(with grounded boundary) equals the potential at $\br$ due to a unit charge at $\mathbf{y}$.
+This is a reciprocity theorem for electrostatics.
+
+%------------------------------------------------------------
+\subsection{Summary}\label{subsec:lec13-summary}
+
+\begin{itemize}
+  \item \textbf{Mean value property:} $u(\mathbf{y}) = \frac{1}{4\pi R^2}\oint_{|\br-\mathbf{y}|=R} u\, dA$
+        for any harmonic $u$ and any $R$ with $B_R(\mathbf{y})\subset\Omega$.
+  \item \textbf{Earnshaw:} harmonic functions have no interior extrema (follows immediately
+        from mean value property).
+  \item \textbf{General Green's function:} $G = 1/|\br-\mathbf{y}| + F$ where $F$ is
+        harmonic; $G$ satisfies $\nabla^2_\br G = -4\pi\delta(\br-\mathbf{y})$.
+  \item \textbf{Dirichlet:} $G_D|_\Sigma = 0$; gives
+        $\phi(\mathbf{y}) = \int_\Omega\rho G_D\,d^3r
+        - \frac{1}{4\pi}\oint_\Sigma f\,\partial_n G_D\,dA$.
+        Physical interpretation: $G_D$ is the potential of a unit charge at $\mathbf{y}$
+        in a grounded domain — precisely the method-of-images problem.
+  \item \textbf{Neumann:} $\partial_n G_N|_\Sigma = -4\pi/S$ (not zero — that is
+        inconsistent); gives $\phi$ up to an additive constant $\langle\phi\rangle_\Sigma$.
+  \item \textbf{Symmetry:} $G_D(\br,\mathbf{y}) = G_D(\mathbf{y},\br)$ (proof next lecture).
+\end{itemize}

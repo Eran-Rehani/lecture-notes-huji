@@ -1,0 +1,565 @@
+%%═══════════════════════════════════════════════════════════════════
+%% Lecture 03 — Nuclear Reactions and Scattering
+%% 77603 — Nuclear Physics
+%% Date: [28 April 2026]
+%% Lecturer: Dr. Moshe Friedman
+%%═══════════════════════════════════════════════════════════════════
+
+\section{Lecture 03 — Nuclear Reactions and Scattering}
+\label{sec:lec03}
+\date{28 April 2026}
+
+
+%%───────────────────────────────────────────────────────────────────
+\subsection*{Overview}
+%%─────────────────────
+This lecture completes the basic catalogue of static nuclear properties.  We begin by translating the familiar quantum-mechanical angular momentum algebra into nuclear notation: orbital angular momentum $l$, intrinsic spin $s$, single-particle total angular momentum $j$, and total nuclear spin $I$.  The central physical point is pairing.  In even-even nuclei the nucleons pair to $I=0$, while in odd-$A$ nuclei the spin and parity of the ground state are usually controlled by the unpaired nucleon.
+
+The lecture then introduces parity and isospin as classification quantum numbers.  Parity tells us how nuclear wavefunctions and electromagnetic operators behave under $\vec{r}\to-\vec{r}$, leading directly to selection rules for static multipole moments.  Isospin packages the approximate proton-neutron symmetry of the strong interaction into an angular-momentum-like algebra, while emphasizing that isospin lives in an internal space and cannot be added to ordinary spin or orbital angular momentum.
+
+The electromagnetic moments section connects symmetry to measurable nuclear structure.  Magnetic dipole moments probe orbital motion, spin, and the composite internal structure of nucleons through their anomalous $g$-factors.  Electric quadrupole moments probe nuclear shape: $Q=0$ for spherical charge distributions, $Q>0$ for prolate deformation, and $Q<0$ for oblate deformation.
+
+The final part of the lecture is problem-oriented.  We rederive the form factor of a uniformly charged sphere, then use high-precision molecular mass differences to determine the atomic mass of deuterium and the deuteron binding energy.  Independent capture and photodisintegration measurements confirm the same energy scale, preparing the next lecture's model of the deuteron as a bound state in a finite nuclear potential.
+
+
+%%───────────────────────────────────────────────────────────────────
+Recall from Lecture~02 that electron scattering and form factors give access to the nuclear charge distribution and radius.  The empirical fact that nuclear density is approximately constant leads to the radius law $R=r_0A^{1/3}$ and motivates the liquid-drop picture.  We also introduced nuclear masses, binding energies, and the semi-empirical mass formula as a way to organize the dominant contributions to nuclear stability.
+
+%%───────────────────────────────────────────────────────────────────
+In this lecture the focus shifts from bulk nuclear properties to the quantum numbers and moments used to label individual nuclear states:
+\begin{itemize}
+    \item angular momentum and nuclear spin,
+    \item parity,
+    \item isospin,
+    \item electromagnetic moments,
+    \item and the deuteron as the first two-nucleon bound state.
+\end{itemize}
+
+
+\section*{Angular Momentum}
+Classically, angular momentum is the cross product of position and linear momentum:
+\[\vec{L} = \vec{r} \times \vec{p} \]
+In quantum mechanics the corresponding orbital angular momentum operator is
+\[\hat{L} = -i\hbar \vec{r} \times \nabla \]
+Its simultaneous eigenstates of $L^2$ and $L_z$ satisfy
+\[L^2 |l, m\rangle = \hbar^2 l(l+1) |l, m\rangle \]
+\[L_z |l, m\rangle = \hbar m |l, m\rangle \]
+where \(l\) is the orbital angular momentum quantum number and \(m\) is the magnetic quantum number.  For a single nucleon, the total single-particle angular momentum is the vector sum of orbital angular momentum and intrinsic spin:
+\[\vec{J} = \vec{L} + \vec{S} \]
+Spin is an intrinsic property of particles.  Protons and neutrons are spin-$\tfrac{1}{2}$ fermions, so for a nucleon $j=l\pm\tfrac{1}{2}$.
+
+\subsubsection*{Spectroscopic Notation}
+States are labelled by a letter for $l$ followed by a subscript for $j = l \pm \tfrac{1}{2}$.
+The letter convention (inherited from atomic spectroscopy) is:
+
+\begin{center}
+\begin{tabular}{c c c}
+\toprule
+$l$ & Letter & Example states \\
+\midrule
+0 & $s$ & $s_{1/2}$ \\
+1 & $p$ & $p_{1/2},\; p_{3/2}$ \\
+2 & $d$ & $d_{3/2},\; d_{5/2}$ \\
+3 & $f$ & $f_{5/2},\; f_{7/2}$ \\
+4 & $g$ & $g_{7/2},\; g_{9/2}$ \\
+5 & $h$ & $h_{9/2},\; h_{11/2}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+In nuclear physics, ground-state configurations rarely require notation beyond $h$.  Pairing tends to cancel the angular momenta of nucleons in time-reversed states, so only an unpaired nucleon usually determines the spin of an odd-$A$ nucleus.
+
+The projection quantum number is defined only after choosing a quantization axis.  Experimentally, such an axis is often selected by an external magnetic field, leading to Zeeman splitting of the magnetic substates.
+
+The total angular momentum \(J\)  for a nucleon is given by the vector sum of the orbital angular momentum \(L\) and the spin angular momentum \(S\):
+\begin{equation}\label{eq:angular_tot}
+\vec{J} = \vec{L} + \vec{S}
+\end{equation}
+
+We define $\vec{I}$ as the total angular momentum of the nucleus, which is the vector sum of the total angular momenta of all the nucleons:
+\begin{equation}\label{eq:angular_nucleus}
+\vec{I} = \sum_{i} \vec{J}_i
+\end{equation}
+Thus
+\[I^2 = \hbar^2 I(I+1),\qquad I_z = \hbar m_I, \quad m_I = -I, -I+1, \ldots, I-1, I\]
+For even-even nuclei, all protons and neutrons are paired and the ground-state spin is empirically $I=0$.  For odd-$A$ nuclei, the spin is usually set by the unpaired nucleon:
+\begin{equation}\label{eq:angular_odd}\vec{I} = \vec{J}_{\text{unpaired}}
+\end{equation}
+where \(I\) is the total angular momentum quantum number of the nucleus.
+
+
+\subsubsection*{Physical Motivation}
+The nuclear ground state minimizes the energy.  The strong interaction is spin-dependent and favors pairing: two nucleons with equal $j$ but opposite $m_j$ can pair to give $J=0$.  This empirical rule has two immediate consequences:
+\begin{itemize}
+  \item \textbf{Even--even nuclei} ($Z$ even, $N$ even): all nucleons pair up.  \emph{Experimentally, the ground-state spin is always $I=0$.}
+  \item \textbf{Odd-A nuclei}: all nucleons except one pair up.  The single unpaired nucleon determines $I$.
+\end{itemize}
+The fact that we never observe ground-state spins of order $A/2$ (which would result if all nucleons added coherently) is direct evidence that pairing is the dominant coupling mode. This is why we do not see very high $I$ values in nuclear tables.
+
+\section*{Parity}
+\label{sec:lec03:parity}
+
+Parity is the transformation that inverts all spatial coordinates through the origin:
+\[\vec{r} \to -\vec{r}.\]
+The parity operator $\Pi$ acts on a wavefunction $\psi(\vec{r})$:
+\[\Pi \psi(\vec{r}) = \psi(-\vec{r}).\]
+Applying $\Pi$ twice returns the original wavefunction, so $\Pi^2 = 1$ and its eigenvalues are $\pi = \pm 1$:
+\begin{align}
+  \Pi^2 \psi(\vec{r}) &= \Pi\psi(-\vec{r}) = \psi(\vec{r}).
+\end{align}
+For a single-particle state with orbital angular momentum $l$, the spherical harmonic $Y_l^m(\theta,\phi)$ acquires a factor $(-1)^l$ under parity, giving:
+\begin{equation}
+  \label{eq:parity_orbital}
+  \pi = (-1)^l.
+\end{equation}
+States with even $l$ (s, d, g, \ldots) have \emph{positive} parity; states with odd $l$ (p, f, h, \ldots) have \emph{negative} parity.
+
+\subsubsection*{Combined Spin-Parity Notation}
+Nuclear states are labelled in tables by the combined quantum number $I^\pi$, where $I$ is the nuclear spin and $\pi = \pm$ denotes the parity eigenvalue:
+\[
+  I^\pi \quad \text{e.g.}\quad 0^+,\quad \tfrac{3}{2}^-,\quad 2^+,\quad \tfrac{7}{2}^-.
+\]
+The parity of a nuclear state is determined by the product of the parities of all nucleons. For an even-even nucleus in the $I=0$ ground state, $\pi = +1$, giving $0^+$.
+
+\section*{Isospin}
+Isospin is an internal quantum number that expresses the approximate symmetry between protons and neutrons under the strong interaction.  In this language, the proton and neutron are treated as two charge states of the same particle, the nucleon.  We use the convention
+\[
+  T_z(p)=+\frac{1}{2},\qquad T_z(n)=-\frac{1}{2}.
+\]
+The total isospin operator of a nucleus is the vector sum of the individual nucleon isospins:
+\begin{equation}\label{eq:isospin_total}
+  \vec{T}=\sum_i \vec{T}_i.
+\end{equation}
+The strong interaction is approximately invariant under rotations in this internal isospin space.  Therefore nuclei with the same total isospin \(T\), but different \(T_z\), can form isospin multiplets with similar strong-interaction properties.  For example, \(\nucleus{He}{3}\) and \(\nucleus{H}{3}\) form an approximate isospin doublet.  The symmetry is not exact: electromagnetic interactions and the proton-neutron mass difference split the members of a multiplet.
+
+Mathematically, isospin behaves like angular momentum.  The operators \(T_x\), \(T_y\), and \(T_z\) obey
+\begin{equation}\label{eq:isospin_commutation}[T_i, T_j] = i \epsilon_{ijk} T_k
+\end{equation}
+where \(\epsilon_{ijk}\) is the Levi-Civita symbol. The squared total isospin is
+\begin{equation}\label{eq:isospin_total_squared}T^2 = T_x^2 + T_y^2 + T_z^2
+\end{equation}
+and the eigenstates satisfy
+\begin{equation}\label{eq:isospin_eigenvalues}T^2 |T, T_z\rangle = \hbar^2 T(T+1) |T, T_z\rangle
+\end{equation}
+and
+\begin{equation}\label{eq:isospin_projection}T_z |T, T_z\rangle = \hbar T_z |T, T_z\rangle
+\end{equation}
+where \(T_z=-T,-T+1,\ldots,T\).  The key distinction is that isospin is not a spatial angular momentum.  It lives in an internal ``isospace'', so it cannot be added to ordinary angular momentum or parity.
+
+\section*{Electromagnetic moments}
+
+Electromagnetic moments provide experimental access to the distribution of charge and current inside the nucleus.  The leading non-trivial static moments are the magnetic dipole moment \(M1\), which probes angular momentum and current distributions, and the electric quadrupole moment \(E2\), which probes departures from spherical symmetry.
+
+\subsection*{Vectors and Pseudovectors}
+
+Under the parity transformation $\vec{r}\to-\vec{r}$, two kinds of vector exist:
+\begin{itemize}
+  \item \textbf{Polar vector (true vector):} flips sign, e.g.\ position $\vec{r}$, electric field $\vec{E}$, electric dipole moment $\vec{d}$.
+  \item \textbf{Axial vector (pseudovector):} \emph{does not} flip sign, e.g.\ angular momentum $\vec{L} = \vec{r}\times\vec{p}$ (both $\vec{r}$ and $\vec{p}$ flip, but the cross product brings two sign changes that cancel), magnetic field $\vec{B}$, magnetic moment $\vec{\mu}$.
+\end{itemize}
+The key consequence is that the magnetic field $\vec{B}$, being a pseudovector, is \emph{invariant} under parity, while $\vec{E}$ is odd under parity.
+
+\subsubsection*{Multipole Selection Rules from Parity}
+
+The expectation value of any operator $\hat{O}$ in a state of definite parity vanishes unless $\hat{O}$ has \emph{positive} parity:
+\begin{equation}
+  \label{eq:parity_selection}
+  \langle I,\pi \,|\, \hat{O} \,|\, I,\pi \rangle = 0
+  \quad \text{if } \hat{O} \text{ has odd parity}.
+\end{equation}
+
+For the multipole expansion, one can show that the parity of the order-$L$ operators is:
+\begin{align}
+  \pi\bigl[E(L)\bigr] &= (-1)^L, \label{eq:parity_EL}\\
+  \pi\bigl[M(L)\bigr] &= (-1)^{L+1}. \label{eq:parity_ML}
+\end{align}
+Only multipoles with \emph{positive} parity can have non-zero expectation values.  This gives the following table of \emph{observable} moments:
+
+\begin{center}
+\begin{tabular}{l l c c}
+\toprule
+Type & Name & Parity & Observable? \\
+\midrule
+$E0$ & Electric monopole & $+1$ & Yes (total charge $Ze$) \\
+$E1$ & Electric dipole   & $-1$ & No (vanishes by symmetry) \\
+$E2$ & Electric quadrupole & $+1$ & Yes \\
+$M0$ & Magnetic monopole & $-1$ & No (does not exist in nature) \\
+$M1$ & Magnetic dipole   & $+1$ & Yes \\
+$M2$ & Magnetic quadrupole & $-1$ & No \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Thus the leading non-trivial static moments in ordinary nuclei are \textbf{$M1$ (magnetic dipole)} and \textbf{$E2$ (electric quadrupole)}.
+
+\medskip
+\textit{Physical significance:} The electric dipole vanishes because, for a nucleus, the centre of charge is fixed at the centre of mass (there is no net internal dipole once we work in the centre-of-mass frame).
+
+\subsection*{Magnetic Dipole Moment}
+
+\subsubsection*{Physical Motivation}
+A classical charged particle orbiting in a circle constitutes a current loop, which generates a magnetic field.  Because nucleons carry charge and angular momentum, we expect them to generate magnetic dipole moments.  The quantum version of this classical picture gives us the nuclear magnetic moment, which encodes information about both the orbital motion and the intrinsic spin of the nucleons.
+
+\paragraph{Classical derivation.}
+Consider a proton of charge $e$, mass $m_p$, moving in a circle of radius $r$ with speed $v$.  The current $i$ and loop area $A$ are:
+\[
+  i = \frac{e}{T} = \frac{ev}{2\pi r}, \qquad A = \pi r^2.
+\]
+The magnetic dipole moment magnitude is:
+\[
+  \mu = iA = \frac{ev}{2\pi r}\cdot \pi r^2 = \frac{evr}{2} = \frac{e}{2m_p}\,\ell,
+\]
+where $\ell = m_p v r$ is the orbital angular momentum.  In vector form:
+\begin{equation}
+  \label{eq:classical_magnetic}
+  \vec{\mu}_\ell = \frac{e}{2m_p}\,\vec{L}.
+\end{equation}
+
+\paragraph{Quantum mechanical version.}
+Promoting $L$ to an operator and introducing a dimensionless $g$-factor to account for internal structure gives
+\begin{equation}
+  \label{eq:qm_magnetic}
+  \vec{\mu} = g_l \frac{e}{2m_p}\,\vec{L} = g_l \,\mu_N\, \vec{L}/\hbar,
+\end{equation}
+where $\mu_N \equiv e\hbar/(2m_p)$ is the \emph{nuclear magneton}.
+For a complete nucleus, the measured magnetic moment is conventionally written in terms of the nuclear spin \(I\) and a nuclear \(g\)-factor,
+\begin{equation}\label{eq:magnetic_dipole_moment}
+  \mu = g\,\mu_N I,
+\end{equation}
+where \(g\) depends on the proton and neutron configuration.  This moment receives contributions from both orbital motion and intrinsic spin.
+
+The \textbf{Bohr magneton} (unit for atomic/electron moments):
+\begin{equation}
+  \label{eq:bohr_magneton}
+  \mu_B = \frac{e\hbar}{2m_e} \approx 5.788 \times 10^{-5} \, \text{eV/T}.
+\end{equation}
+
+The \textbf{nuclear magneton} (unit for nuclear moments; smaller by $m_e/m_p \approx 1/1836$):
+\begin{equation}
+  \label{eq:nuclear_magneton}
+  \mu_N = \frac{e\hbar}{2m_p} \approx 3.152 \times 10^{-8} \, \text{eV/T}.
+\end{equation}
+
+\textit{Physical significance:} Because $\mu_N \ll \mu_B$, nuclear magnetic moments are about $1836$ times weaker than electron magnetic moments.  This is why spin-resonance experiments on nuclei require much smaller energy splittings than corresponding electron-spin experiments.
+
+\subsubsection*{Orbital $g$-factors}
+The orbital magnetic moment of a nucleon is:
+\begin{equation}
+  \label{eq:orbital_magnetic_moment}
+  \vec{\mu}_l = g_l \,\mu_N\,\frac{\vec{L}}{\hbar},
+\end{equation}
+with:
+\[
+  g_l(\text{proton}) = 1, \qquad g_l(\text{neutron}) = 0.
+\]
+The proton's $g_l = 1$ follows from its charge $+e$; the neutron has $g_l = 0$ because its total charge is zero.
+
+\subsubsection*{Spin $g$-factors}
+The spin magnetic moment is:
+\begin{equation}
+  \label{eq:spin_magnetic_moment}
+  \vec{\mu}_s = g_s\,\mu_N\,\frac{\vec{S}}{\hbar}.
+\end{equation}
+From the Dirac equation, a \emph{point-like} spin-$\tfrac{1}{2}$ particle satisfies $g_s = 2$.  The \emph{measured} values for nucleons, however, deviate strongly:
+\begin{equation}
+  \label{eq:gs_values}
+  \boxed{g_s(p) = 5.586, \qquad g_s(n) = -3.826.}
+\end{equation}
+\textit{Physical significance:} These values differ dramatically from $g_s = 2$, proving that protons and neutrons are \emph{not} point-like particles.  They are composite objects built from quarks and gluons.  In fact, $\sim 99\%$ of the proton mass comes from the gluon field binding energy (QCD confinement), not from the quark rest masses.  The anomalous $g$-factors are a direct measurement of this internal structure.
+
+The measured magnetic moments of the proton and neutron are:
+\[
+  \mu_p \approx +2.793\,\mu_N, \qquad \mu_n \approx -1.913\,\mu_N.
+\]
+
+\subsubsection*{The Muon $g-2$ Problem}
+The Dirac prediction $g_s \approx 2$ is corrected by quantum field theory (QED) to:
+\[
+  g = 2\left(1 + \frac{\alpha}{2\pi} + \cdots\right).
+\]
+For the \emph{electron}, this structure is confirmed to extraordinary precision.  For the \emph{muon}, dedicated $g-2$ experiments measure the precession of muons in a storage ring and compare the anomalous magnetic moment \(a_\mu=(g-2)/2\) with Standard Model calculations.  The muon case is an important example of how high-precision moment measurements can test physics beyond the simplest Dirac picture.
+
+
+\subsection*{Electric Quadrupole Moment}
+
+\subsubsection*{Physical Motivation}
+The monopole moment tells us the total charge, and the dipole moment vanishes for a nucleus in its centre-of-mass frame.  The next electric moment that can reveal nuclear shape is therefore the quadrupole moment.  It answers a simple geometric question: is the charge distribution spherical, stretched along one axis, or flattened perpendicular to that axis?
+
+The electric quadrupole moment is
+\begin{equation}\label{eq:lec03:quadrupole_moment_tail}
+  \boxed{
+  Q = \int \rho(\vec{r})\qty(3z^2-r^2)\,d^3r
+  }
+\end{equation}
+where $\rho(\vec{r})$ is the charge density, $z$ is measured along the chosen symmetry axis, and $r^2=x^2+y^2+z^2$.
+
+\textit{Physical significance:} A nonzero $Q$ is direct evidence that the nuclear charge distribution is not spherical.
+
+For a spherically symmetric distribution,
+\[
+  \expectval{x^2}=\expectval{y^2}=\expectval{z^2},
+  \qquad
+  \expectval{r^2}=3\expectval{z^2},
+\]
+so the integrand averages to zero and
+\[
+  Q_{\text{spherical}}=0.
+\]
+For a prolate nucleus elongated along the $z$ axis, $z^2$ is large compared with $x^2+y^2$, so $Q>0$.  For an oblate nucleus flattened along $z$, $z^2$ is comparatively small and $Q<0$.
+
+For a typical single-particle deformation one expects the scale
+\begin{equation}\label{eq:lec03:quadrupole_scale}
+  \boxed{
+  |Q| \sim eR^2 \sim e r_0^2 A^{2/3}.
+  }
+\end{equation}
+\textit{Physical significance:} Quadrupole moments of this order indicate modest surface deformation, while values much larger than this signal collective deformation of the entire nucleus.
+
+This closes the survey of basic nuclear properties: mass and charge distributions, radius, binding energy, the semi-empirical mass formula, angular momentum, parity, isospin, magnetic dipole moments, and electric quadrupole moments.
+
+\subsection*{Worked Problem: Uniform-Sphere Form Factor}
+
+\subsubsection*{Physical Motivation}
+In electron scattering, the form factor is the Fourier transform of the charge distribution.  It tells us which momentum transfers see the nucleus as point-like and which begin to resolve its finite size.  The simplest useful model is a sphere of uniform charge density.
+
+Let
+\[
+\rho(r)=
+\begin{cases}
+\rho_0, & r\le R,\\
+0, & r>R.
+\end{cases}
+\]
+The unnormalized Fourier transform is
+\[
+  \widetilde{F}(q)=\int \rho(\vec{r})e^{i\vec{q}\cdot\vec{r}}\,d^3r.
+\]
+Choose the $z$ axis along $\vec{q}$, so $\vec{q}\cdot\vec{r}=qr\cos\theta$.  Then
+\begin{align}
+\widetilde{F}(q)
+&= \int_0^R \int_0^\pi \int_0^{2\pi}
+   \rho_0 e^{iqr\cos\theta} r^2\sin\theta\,d\phi\,d\theta\,dr \nonumber\\
+&= 2\pi\rho_0\int_0^R r^2
+   \qty(\int_0^\pi e^{iqr\cos\theta}\sin\theta\,d\theta)dr.
+\label{eq:lec03:form_factor_setup}
+\end{align}
+With $u=\cos\theta$,
+\begin{align*}
+\int_0^\pi e^{iqr\cos\theta}\sin\theta\,d\theta
+&=\int_{-1}^{1} e^{iqru}\,du\\
+&=\frac{e^{iqr}-e^{-iqr}}{iqr}
+=\frac{2\sin(qr)}{qr}.
+\end{align*}
+Therefore
+\begin{align*}
+\widetilde{F}(q)
+&=\frac{4\pi\rho_0}{q}\int_0^R r\sin(qr)\,dr\\
+&=\frac{4\pi\rho_0}{q}
+\qty[
+-\frac{r\cos(qr)}{q}+\frac{\sin(qr)}{q^2}
+]_0^R\\
+&=\frac{4\pi\rho_0}{q^3}\qty[\sin(qR)-qR\cos(qR)].
+\end{align*}
+The normalized form factor divides by the total charge
+\[
+  \widetilde{F}(0)=\int\rho(\vec{r})\,d^3r
+  =\frac{4\pi}{3}\rho_0 R^3.
+\]
+Thus
+\begin{equation}\label{eq:lec03:uniform_sphere_form_factor}
+  \boxed{
+  F(q)=
+  3\,\frac{\sin(qR)-qR\cos(qR)}{(qR)^3}
+  }.
+\end{equation}
+\textit{Physical significance:} The limit $F(0)=1$ is the normalization condition; the first zero of $F(q)$ gives an experimental handle on the nuclear radius $R$.
+
+To check the $q\to0$ limit explicitly, write $x=qR$ and expand:
+\[
+\sin x - x\cos x
+=\qty(x-\frac{x^3}{6}+\cdots)
+-x\qty(1-\frac{x^2}{2}+\cdots)
+=\frac{x^3}{3}+\order{x^5}.
+\]
+Hence
+\[
+  F(q)\xrightarrow[q\to0]{}
+  3\frac{x^3/3}{x^3}=1,
+\]
+as required.
+
+\subsection*{Worked Problem: Measuring the Deuterium Atomic Mass}
+
+\subsubsection*{Physical Motivation}
+Absolute mass measurements are hard because the masses are large on the nuclear-energy scale.  Nuclear binding energies are only MeV, while atomic masses are of order GeV.  The practical strategy is therefore to measure small mass differences between very similar molecular ions; many systematic errors then cancel.
+
+For a simple mass spectrometer with crossed electric and magnetic fields, the measured quantity is essentially
+\begin{equation}\label{eq:lec03:mass_spectrometer_ratio}
+  \boxed{
+  \frac{m}{q}=\frac{B B' R}{\mathcal{E}},
+  }
+\end{equation}
+where $\mathcal{E}$ is the electric field in the velocity selector, $B'$ is the magnetic field in the analyzer, and $R$ is the orbit radius.
+
+\textit{Physical significance:} Measuring nearby mass peaks on the same instrument makes the difference much more precise than either absolute mass alone.
+
+The lecture used molecular mass differences to infer the atomic mass of deuterium, $m_D$.  In the first measurement,
+\[
+  M(\mathrm{C}_6\mathrm{H}_{12})-M(\mathrm{C}_6\mathrm{D}_6)
+  = 9.289710(24)\times10^{-3}\,\mathrm{u}.
+\]
+Neglecting molecular electronic binding energies, which are eV-scale rather than MeV-scale,
+\begin{align*}
+M(\mathrm{C}_6\mathrm{H}_{12})-M(\mathrm{C}_6\mathrm{D}_6)
+&= \qty(6m_C+12m_H)-\qty(6m_C+6m_D)\\
+&=12m_H-6m_D.
+\end{align*}
+Solving for $m_D$ gives
+\begin{align*}
+m_D
+&=2m_H-\frac{1}{6}
+\qty[M(\mathrm{C}_6\mathrm{H}_{12})-M(\mathrm{C}_6\mathrm{D}_6)]\\
+&=2(1.00782503237\,\mathrm{u})
+-\frac{9.289710\times10^{-3}\,\mathrm{u}}{6}\\
+&=2.01410178\,\mathrm{u}.
+\end{align*}
+The uncertainty is divided by the exact factor $6$:
+\[
+  \sigma_1=\frac{2.4\times10^{-8}\,\mathrm{u}}{6}
+  =4.0\times10^{-9}\,\mathrm{u}.
+\]
+Thus
+\begin{equation}\label{eq:lec03:deuterium_mass_measurement_1}
+  \boxed{
+  m_D^{(1)}=2.014101780(4)\,\mathrm{u}.
+  }
+\end{equation}
+\textit{Physical significance:} The relevant uncertainty is in the ninth decimal place of an atomic mass unit, which is why the binding energy can be extracted on the keV scale.
+
+A second molecular comparison in the lecture gave
+\begin{equation}\label{eq:lec03:deuterium_mass_measurement_2}
+  \boxed{
+  m_D^{(2)}=2.014101771(15)\,\mathrm{u}.
+  }
+\end{equation}
+\textit{Physical significance:} The two values differ by about $10^{-8}\,\mathrm{u}$, comparable to their combined uncertainty, so the measurements are statistically consistent.
+
+Combining the two values by inverse-variance weighting gives approximately
+\begin{equation}\label{eq:lec03:deuterium_mass_weighted}
+  \boxed{
+  m_D = 2.014101779(4)\,\mathrm{u}.
+  }
+\end{equation}
+\textit{Physical significance:} Independent measurements agreeing within uncertainty are what make the subsequent binding-energy extraction credible.
+
+\subsection*{Binding Energy of the Deuteron}
+
+\subsubsection*{Physical Motivation}
+The deuteron is the lightest bound nucleus: one proton plus one neutron.  Its binding energy is therefore the cleanest first test of whether the nuclear force can actually bind nucleons.  If the deuteron were not bound, ordinary nuclear matter would be radically different.
+
+Using atomic masses is convenient because the electron in atomic hydrogen cancels the electron in atomic deuterium.  Therefore
+\begin{equation}\label{eq:lec03:deuteron_binding_energy}
+  \boxed{
+  B_d=\qty(m_H+m_n-m_D)c^2.
+  }
+\end{equation}
+\textit{Physical significance:} A positive $B_d$ means that the deuteron lies below the free proton-neutron threshold and is a stable bound state.
+
+Substitute
+\[
+  m_H=1.00782503237\,\mathrm{u},\qquad
+  m_n=1.00866491588\,\mathrm{u},\qquad
+  m_D=2.014101779\,\mathrm{u},
+\]
+and $1\,\mathrm{u}=931.494\,\mathrm{MeV}/c^2$:
+\begin{align*}
+B_d
+&=\qty(1.00782503237+1.00866491588-2.014101779)
+  (931.494\,\mathrm{MeV})\\
+&=0.00238816925\times 931.494\,\mathrm{MeV}\\
+&=2.22456\,\mathrm{MeV}.
+\end{align*}
+Thus
+\begin{equation}\label{eq:lec03:deuteron_binding_energy_value}
+  \boxed{
+  B_d \simeq 2.2246\,\mathrm{MeV}.
+  }
+\end{equation}
+\textit{Physical significance:} The deuteron is bound, but weakly compared with typical nuclear binding energies of about $8\,\mathrm{MeV}$ per nucleon.
+
+\subsubsection*{Independent Experimental Checks}
+The same binding energy can be checked without relying only on mass differences.
+
+In radiative capture,
+\[
+  p+n\rightarrow d+\gamma,
+\]
+the photon carries away almost all the released binding energy, with a small correction from recoil:
+\begin{equation}\label{eq:lec03:radiative_capture_energy}
+  \boxed{
+  E_\gamma \approx B_d.
+  }
+\end{equation}
+\textit{Physical significance:} The emitted photon is a direct calorimeter for the energy gained when the proton and neutron fall into the bound deuteron state.
+
+The lecture quoted
+\[
+  B_d = 2.224589(2)\,\mathrm{MeV}
+\]
+from such a capture measurement.
+
+Conversely, in photodisintegration,
+\[
+  \gamma+d\rightarrow p+n,
+\]
+the threshold photon energy is approximately the binding energy:
+\begin{equation}\label{eq:lec03:photodisintegration_threshold}
+  \boxed{
+  E_{\gamma,\mathrm{thr}}\approx B_d.
+  }
+\end{equation}
+\textit{Physical significance:} The threshold is the minimum energy needed to lift the deuteron out of the bound-state potential well.
+
+The lecture quoted the less precise but consistent value
+\[
+  B_d \approx 2.224\pm0.020\,\mathrm{MeV}.
+\]
+The agreement among mass spectroscopy, radiative capture, and photodisintegration confirms that the deuteron binding energy is a real physical scale, not an artifact of one measurement method.
+
+\subsection*{Looking Ahead: Modeling the Deuteron}
+
+\subsubsection*{Physical Motivation}
+Once the binding energy is known, the next question is whether a simple potential model can reproduce it.  The deuteron is the simplest arena for testing a quantum-mechanical model of the nuclear force.
+
+The next step is to approximate the proton-neutron interaction by a finite, central potential $V(r)$ and solve the three-dimensional Schrödinger equation.  Separating variables into radial and angular parts produces a radial equation with a centrifugal term:
+\begin{equation}\label{eq:lec03:radial_schrodinger_preview}
+  \boxed{
+  -\frac{\hbar^2}{2\mu}\dv[2]{u_l}{r}
+  +\qty[
+  V(r)+\frac{\hbar^2 l(l+1)}{2\mu r^2}
+  ]u_l(r)
+  =Eu_l(r),
+  }
+\end{equation}
+where $\mu=m_pm_n/(m_p+m_n)$ is the reduced mass, $l$ is the orbital angular momentum, and $u_l(r)$ is the reduced radial wavefunction.
+
+\textit{Physical significance:} Bound-state solutions of this equation are the mathematical statement that the nuclear force can hold a proton and neutron together; Lecture 04 will use this structure to constrain the depth and range of the nuclear potential.
+
+\subsection*{Further Reading}
+
+\subsubsection*{Recommended Textbooks}
+\begin{itemize}
+  \item Kenneth S. Krane, \emph{Introductory Nuclear Physics}.  Most relevant sections: Chapter 2.5--2.6 for angular momentum and parity; Chapter 3.3--3.5 for binding energy, nuclear spin/parity, and electromagnetic moments; Chapter 4.1 for the deuteron; Chapter 12.3 for isospin in reactions.
+  \item Carlos A. Bertulani, \emph{Nuclear Physics in a Nutshell}.  Most relevant sections: Chapter 1.5--1.8 for parity, isospin, and nucleon magnetic moments; Chapter 2.2--2.6 for multipoles and the deuteron; Chapter 4.4--4.7 for nuclear angular momentum, multipole moments, magnetic dipole moments, and electric quadrupole moments; Appendices A--C for angular momentum and symmetries.
+  \item Samuel S. M. Wong, \emph{Introductory Nuclear Physics}.  Read the chapters on nucleon structure, nuclear force and two-nucleon systems, and the nuclear shell model for a more formal treatment of isospin, the deuteron, and spin-parity assignments.
+  \item K. Heyde, \emph{Basic Ideas and Concepts in Nuclear Physics}.  Useful as a conceptual companion for nuclear properties, electromagnetic moments, and the structure of light nuclei.
+\end{itemize}
+
+\subsubsection*{Web Resources}
+\begin{itemize}
+  \item \href{https://www.iaea.org/resources/databases/livechart-of-nuclides-advanced-version}{IAEA LiveChart of Nuclides}: interactive evaluated nuclear data, including spins, parities, decay data, radii, and nuclear moments.
+  \item \href{https://www.nndc.bnl.gov/nudat3/guide/}{NNDC NuDat 3}: searchable nuclear levels, half-lives, spin-parity assignments, gamma transitions, and reaction data.
+  \item \href{https://www.nist.gov/pml/atomic-weights-and-isotopic-compositions-relative-atomic-masses}{NIST Atomic Weights and Isotopic Compositions}: reference values for isotope masses used in binding-energy and $Q$-value calculations.
+  \item \href{https://www.physics.nist.gov/PhysRefData/Handbook/Tables/hydrogentable1.htm}{NIST Atomic Data for Hydrogen}: quick reference for hydrogen and deuterium isotope masses, spin, and magnetic moment.
+  \item \href{https://www.nndc.bnl.gov/nndc/stone_moments/moments.html}{NNDC table of nuclear magnetic dipole and electric quadrupole moments}: useful for comparing measured moments with the qualitative shape arguments in this lecture.
+\end{itemize}

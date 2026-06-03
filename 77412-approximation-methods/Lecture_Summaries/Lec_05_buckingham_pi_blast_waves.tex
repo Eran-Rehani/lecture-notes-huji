@@ -1,0 +1,503 @@
+%% ═══════════════════════════════════════════════════════════════════════════
+\section{Lecture 5: Buckingham's Pi Theorem, Blast Waves, and Rocket-Movie Geometry}
+\label{sec:lec05}
+%% ═══════════════════════════════════════════════════════════════════════════
+\date{07/05/2026}
+
+This lecture turns dimensional analysis from a collection of examples into a
+general theorem. Buckingham's Pi theorem tells us how many independent
+dimensionless variables are needed to describe a physical problem. We then use
+that theorem in two observational problems: estimating the energy of a port
+explosion from video frames, and testing whether a visible expanding feature in
+a missile-interception movie can really be interpreted as a blast wave.
+
+The central lesson is methodological. Dimensional analysis does not only give
+quick formulas. It also tells us how many parameters an experiment must vary,
+which variables can be irrelevant, and which interpretation of an observation
+is internally consistent.
+
+%%───────────────────────────────────────────────────────────────────────────
+\subsection{Buckingham's Pi Theorem}
+\label{sec:lec05:buckingham}
+%%───────────────────────────────────────────────────────────────────────────
+
+\textbf{The Physical Picture:}
+Physical laws cannot depend on our arbitrary choice of units. A relation
+between measured quantities must therefore look the same if we switch from
+meters to centimeters, seconds to hours, or kilograms to grams. Buckingham's
+Pi theorem is the systematic way to convert this unit-invariance into a count
+of the truly independent, dimensionless variables.
+
+\subsubsection*{General relation}
+Suppose a physical problem contains $N$ dimensional variables
+$x_1,\ldots,x_N$. A completely general relation among them can be written as
+\begin{equation}
+    f(x_1,x_2,\ldots,x_N)=0 .
+    \label{eq:lec05:general-relation}
+\end{equation}
+Assume that the variables use $M$ independent base units
+$u_1,\ldots,u_M$. Each variable can be decomposed into a numerical value $v_i$
+times powers of the units:
+\begin{equation}
+    x_i = v_i \prod_{j=1}^{M} u_j^{\alpha_{ij}},
+    \label{eq:lec05:unit-decomposition}
+\end{equation}
+where $\alpha_{ij}$ is the power of unit $u_j$ in $x_i$. For example, if $x_i$
+is a velocity and the base units are length and time, then $\alpha_{iL}=1$ and
+$\alpha_{iT}=-1$.
+
+\subsubsection*{Unit transformations}
+Now rescale the base units by
+\begin{equation}
+    u_j \longrightarrow u_j^{\mathrm{new}}=\lambda_j u_j .
+    \label{eq:lec05:unit-rescaling}
+\end{equation}
+The physical relation must remain true:
+\begin{equation}
+    f(x_1^{\mathrm{new}},x_2^{\mathrm{new}},\ldots,x_N^{\mathrm{new}})=0 .
+    \label{eq:lec05:invariant-relation}
+\end{equation}
+To extract the consequence of this invariance, differentiate with respect to
+one scale factor $\lambda_k$ and then evaluate at $\lambda_j=1$ for all $j$.
+By the chain rule,
+\begin{align}
+    0
+    &=
+    \left.\pdv{}{\lambda_k}
+    f(x_1^{\mathrm{new}},\ldots,x_N^{\mathrm{new}})
+    \right|_{\lambda_j=1}
+    \nonumber\\
+    &=
+    \sum_{i=1}^{N}
+    \pdv{f}{x_i}
+    \left.
+    \pdv{x_i^{\mathrm{new}}}{\lambda_k}
+    \right|_{\lambda_j=1}.
+    \label{eq:lec05:chain-rule}
+\end{align}
+Since
+\begin{equation*}
+    x_i^{\mathrm{new}}
+    =
+    v_i \prod_{j=1}^{M}(\lambda_j u_j)^{\alpha_{ij}},
+\end{equation*}
+differentiating with respect to $\lambda_k$ gives
+\begin{equation*}
+    \left.
+    \pdv{x_i^{\mathrm{new}}}{\lambda_k}
+    \right|_{\lambda_j=1}
+    =
+    \alpha_{ik} x_i .
+\end{equation*}
+Therefore each independent unit gives one differential constraint:
+\begin{equation}
+    \boxed{
+    \sum_{i=1}^{N}
+    \alpha_{ik} x_i \pdv{f}{x_i}=0,
+    \qquad k=1,\ldots,M .
+    }
+    \label{eq:lec05:unit-invariance-constraint}
+\end{equation}
+\textit{Physical significance:} Each independent unit-rescaling removes one
+independent dimensional direction from the problem.
+
+\subsubsection*{The theorem}
+We began with one relation among $N$ variables. Unit invariance adds $M$
+independent constraints, provided the $M$ units are genuinely independent in
+the variables of the problem. Thus the physical content can be described using
+$N-M$ independent dimensionless combinations:
+\begin{equation}
+    \boxed{
+    F(\Pi_1,\Pi_2,\ldots,\Pi_{N-M})=0 .
+    }
+    \label{eq:lec05:buckingham-theorem}
+\end{equation}
+\textit{Physical significance:} Instead of exploring an $N$-dimensional
+parameter space, the experiment or theory only needs the $N-M$
+dimensionless directions.
+
+The $\Pi_i$ are not unique. If $\Pi_1$ and $\Pi_2$ are valid dimensionless
+groups, then $\Pi_1\Pi_2$, $\Pi_1/\Pi_2$, or any non-singular redefinition can
+also be used. A useful choice puts the quantity we want to solve for in only
+one dimensionless group, so that it can be isolated after the dimensionless
+relation is written.
+
+%%───────────────────────────────────────────────────────────────────────────
+\subsection{Example: Deflection in a Falling Body}
+\label{sec:lec05:coriolis-example}
+%%───────────────────────────────────────────────────────────────────────────
+
+\textbf{The Physical Picture:}
+If a body is dropped from a high tower, Earth's rotation produces a small
+Coriolis deflection. We may not know the exact coefficient without solving the
+equations of motion, but dimensional analysis already tells us the possible
+parameter dependence.
+
+Let $\Delta x$ be the horizontal deflection, $H$ the height, $g$ the
+gravitational acceleration, $\Omega$ Earth's angular velocity, $R_\oplus$
+Earth's radius, and $m$ the body's mass. The variables use the dimensions
+$M,L,T$, so $N=6$ and $M=3$. We expect three independent dimensionless groups.
+A convenient choice is
+\begin{equation}
+    \Pi_1=\frac{\Delta x}{H},\qquad
+    \Pi_2=\frac{H}{R_\oplus},\qquad
+    \Pi_3=\frac{g}{\Omega^2 R_\oplus}.
+    \label{eq:lec05:coriolis-pi-groups}
+\end{equation}
+The mass cannot enter any nontrivial dimensionless group because no other
+variable carries units of mass. Thus the most general dimensionless relation
+can be written as
+\begin{equation}
+    F\qty(\frac{\Delta x}{H},\frac{H}{R_\oplus},
+    \frac{g}{\Omega^2R_\oplus})=0 .
+    \label{eq:lec05:coriolis-general-relation}
+\end{equation}
+Equivalently, after isolating $\Delta x$,
+\begin{equation}
+    \boxed{
+    \Delta x =
+    H\,\Phi\qty(\frac{H}{R_\oplus},
+    \frac{g}{\Omega^2R_\oplus}) .
+    }
+    \label{eq:lec05:coriolis-dimensional-result}
+\end{equation}
+\textit{Physical significance:} Dimensional analysis proves immediately that
+the dropped body's mass is irrelevant and that only two dimensionless control
+parameters remain.
+
+Physics gives one more piece of information. The Coriolis acceleration is
+linear in $\Omega$ and in the falling velocity. In the regime $H\ll R_\oplus$,
+the dependence must therefore reduce to
+\begin{equation}
+    \boxed{
+    \Delta x \sim C\,\Omega\,\frac{H^{3/2}}{g^{1/2}},
+    }
+    \label{eq:lec05:coriolis-scaling}
+\end{equation}
+where $C$ is a dimensionless coefficient, including the latitude dependence.
+\textit{Physical significance:} The theorem gives the allowed dimensionless
+form; the equation of motion supplies the leading power of the small rotational
+effect.
+
+%%───────────────────────────────────────────────────────────────────────────
+\subsection{Strong Blast Waves}
+\label{sec:lec05:blast-waves}
+%%───────────────────────────────────────────────────────────────────────────
+
+\textbf{The Physical Picture:}
+A strong explosion releases energy into a small region. At early times the
+pressure and energy density inside the blast are much larger than the ambient
+air pressure, so the unperturbed pressure can be neglected. The blast front
+then expands supersonically, and the question is how its radius $r(t)$ depends
+on time, explosion energy, and air density.
+
+\subsubsection*{Relevant variables}
+For a strong spherical blast in a uniform medium, take
+\begin{itemize}
+    \item $r$: radius of the shock front,
+    \item $t$: time since the explosion,
+    \item $\rho$: ambient density,
+    \item $E$: total released energy that drives the blast.
+\end{itemize}
+Their dimensions are
+\begin{equation*}
+    [r]=L,\qquad [t]=T,\qquad [\rho]=ML^{-3},\qquad [E]=ML^2T^{-2}.
+\end{equation*}
+There are $N=4$ variables and $M=3$ independent units, so Buckingham's theorem
+says there is one dimensionless group.
+
+Let
+\begin{equation*}
+    \Pi=r^w t^x E^y \rho^z .
+\end{equation*}
+Demanding zero net powers of $L,T,M$ gives
+\begin{align}
+    L:\quad & w+2y-3z=0, \nonumber\\
+    T:\quad & x-2y=0, \nonumber\\
+    M:\quad & y+z=0 .
+    \label{eq:lec05:blast-exponent-equations}
+\end{align}
+Keeping $w$ free, the solution is
+\begin{equation}
+    x=-\frac{2w}{5},\qquad y=-\frac{w}{5},\qquad z=\frac{w}{5}.
+    \label{eq:lec05:blast-exponent-solution}
+\end{equation}
+Choosing $w=1$ gives
+\begin{equation}
+    \Pi = r\,t^{-2/5}E^{-1/5}\rho^{1/5}.
+    \label{eq:lec05:blast-pi}
+\end{equation}
+Therefore the radius must have the Sedov-Taylor scaling
+\begin{equation}
+    \boxed{
+    r(t)=\Pi'\qty(\frac{E}{\rho})^{1/5}t^{2/5}.
+    }
+    \label{eq:lec05:sedov-radius}
+\end{equation}
+\textit{Physical significance:} A stronger explosion expands farther, but only
+as $E^{1/5}$; the fifth root makes blast-radius estimates relatively
+insensitive to the exact energy.
+
+Solving the same relation for the energy gives
+\begin{equation}
+    \boxed{
+    E=\Pi''\,\rho\,\frac{r^5}{t^2}.
+    }
+    \label{eq:lec05:sedov-energy}
+\end{equation}
+\textit{Physical significance:} Video measurements of $r$ and $t$ can estimate
+the explosion energy, provided the observed front is still a strong shock.
+
+\subsubsection*{Calibration from a known explosion}
+Dimensional analysis does not determine the dimensionless coefficient
+$\Pi''$. One way to estimate it is to compare with a known explosion. Using
+Trinity as an order-of-magnitude calibration, with $E\sim10^{14}\,\si{J}$,
+$r\sim130\,\si{m}$, $t\sim0.025\,\si{s}$, and
+$\rho\sim1.2\,\si{kg\,m^{-3}}$,
+\begin{equation}
+    \boxed{
+    \Pi'' \simeq E\,r^{-5}t^2\rho^{-1}\sim 1.4 .
+    }
+    \label{eq:lec05:blast-calibration}
+\end{equation}
+\textit{Physical significance:} The calibrated coefficient lets us turn the
+scaling law into a practical estimator, while still keeping only order-unity
+precision.
+
+%%───────────────────────────────────────────────────────────────────────────
+\subsection{Bandar Abbas Port Explosion}
+\label{sec:lec05:bandar-abbas}
+%%───────────────────────────────────────────────────────────────────────────
+
+\textbf{The Physical Picture:}
+On April 26, 2025, a large explosion occurred at the Shahid Rajaee port near
+Bandar Abbas, Iran. Public videos show a visible blast front. The question is
+whether the frames are close enough to the explosion for the strong-shock
+formula to estimate the released energy.
+
+\subsubsection*{Camera far from the explosion}
+In one video, the visible front travels about $425\,\si{m}$ in $45$ frames at
+$30$ frames per second. The average speed is therefore
+\begin{equation}
+    v_{\mathrm{avg}}
+    \simeq
+    425\,\si{m}\,
+    \frac{30\,\si{s^{-1}}}{45}
+    \simeq 300\,\si{m\,s^{-1}} .
+    \label{eq:lec05:camera-one-speed}
+\end{equation}
+This is already comparable to the speed of sound, so the shock is weak. In
+that regime its speed is controlled mainly by the acoustic speed rather than
+by the original explosion energy. This video therefore gives a poor energy
+estimate.
+
+\subsubsection*{Camera closer to the explosion}
+A closer camera gives a displacement of about $69\,\si{m}$ in $4$ frames at
+$30$ frames per second:
+\begin{equation}
+    v_{\mathrm{avg}}
+    \simeq
+    69\,\si{m}\,
+    \frac{30\,\si{s^{-1}}}{4}
+    \simeq 5.2\times10^2\,\si{m\,s^{-1}} .
+    \label{eq:lec05:camera-two-speed}
+\end{equation}
+This is significantly above the speed of sound, so the strong-shock
+approximation is more plausible. Using Eq.~\eqref{eq:lec05:sedov-energy} with
+$r\simeq69\,\si{m}$, $t=4/30\,\si{s}$, $\rho\simeq1.2\,\si{kg\,m^{-3}}$, and
+$\Pi''\simeq1.4$,
+\begin{equation}
+    E
+    \simeq
+    1.4\,(1.2\,\si{kg\,m^{-3}})
+    \frac{(69\,\si{m})^5}{(4/30\,\si{s})^2}
+    \simeq
+    1.5\times10^{11}\,\si{J}.
+    \label{eq:lec05:bandar-energy-joule}
+\end{equation}
+Since $1\,\si{ton}$ of TNT corresponds to roughly $4.2\times10^9\,\si{J}$,
+\begin{equation}
+    \boxed{
+    E \sim 35\,\si{ton\ TNT},
+    \qquad
+    \text{with a plausible range } \sim 20\text{--}55\,\si{ton\ TNT}.
+    }
+    \label{eq:lec05:bandar-energy-tnt}
+\end{equation}
+\textit{Physical significance:} The result is not a precise forensic
+measurement; it is an order-of-magnitude energy estimate controlled mainly by
+frame timing and distance calibration.
+
+The sensitivity to measurement errors is easy to understand from
+$E\propto r^5t^{-2}$. A moderate fractional error in radius is amplified by a
+factor of five in the energy, while a one-frame error in time also matters
+strongly when only four frames are used.
+
+%%───────────────────────────────────────────────────────────────────────────
+\subsection{Rocket-Movie Geometry and a Consistency Check}
+\label{sec:lec05:rocket-movie}
+%%───────────────────────────────────────────────────────────────────────────
+
+\textbf{The Physical Picture:}
+The lecture then considered a movie of a missile interception seen from
+Mevasseret Zion shortly after sunset. The visible expanding feature is bright
+against the dark sky because it appears to be sunlit. Its angular radius can
+be measured frame by frame. The first tempting interpretation is a blast wave,
+but dimensional analysis and geometry allow us to test that interpretation.
+
+\subsubsection*{Weak-blast interpretation}
+The measured angular radius is approximately linear:
+\begin{equation}
+    \theta(t)\simeq \theta_0+\dot{\theta}t,
+    \qquad
+    \dot{\theta}\simeq1.0046\times10^{-2}\,\si{rad\,s^{-1}} .
+    \label{eq:lec05:rocket-angular-fit}
+\end{equation}
+If the feature is already a weak blast wave, its physical expansion speed is
+approximately the local sound speed. Taking $c_s\simeq310\,\si{m\,s^{-1}}$,
+\begin{equation}
+    \boxed{
+    D\simeq\frac{c_s}{\dot{\theta}}
+    \simeq
+    \frac{310}{1.0046\times10^{-2}}\,\si{m}
+    \simeq31\,\si{km}.
+    }
+    \label{eq:lec05:rocket-weak-distance}
+\end{equation}
+\textit{Physical significance:} If the observed edge moves at the sound speed,
+the angular expansion directly gives the distance to the event.
+
+For an altitude angle $\alpha\simeq35^\circ$, this would imply
+\begin{equation}
+    h\simeq D\sin\alpha \sim 18\,\si{km}
+    \qquad
+    \text{or, using horizontal geometry, } h\sim 22\,\si{km}.
+    \label{eq:lec05:rocket-weak-height}
+\end{equation}
+This is a low-altitude answer for a ballistic-missile interception, but not
+yet a contradiction by itself.
+
+\subsubsection*{Energy upper bound from early linearity}
+If the blast wave is already weak in the first measured frame, then the
+Sedov-Taylor strong-shock velocity must have fallen to the sound speed before
+or around that radius. From Eq.~\eqref{eq:lec05:sedov-radius},
+\begin{equation}
+    v=\dv{r}{t}=\frac{2r}{5t}.
+    \label{eq:lec05:sedov-velocity}
+\end{equation}
+Setting $v\sim c_s$ gives $t\sim2r/(5c_s)$. Substituting this into
+Eq.~\eqref{eq:lec05:sedov-energy} gives
+\begin{equation}
+    E \lesssim
+    \frac{25}{4}\Pi''\rho c_s^2 r_1^3 .
+    \label{eq:lec05:rocket-energy-bound}
+\end{equation}
+For $\theta_1\simeq1\,\si{mrad}$ and $D\simeq31\,\si{km}$,
+$r_1\simeq D\theta_1\simeq31\,\si{m}$. With
+$\Pi''\simeq1.4$, $\rho\simeq0.05\,\si{kg\,m^{-3}}$, and
+$c_s\simeq310\,\si{m\,s^{-1}}$,
+\begin{equation}
+    \boxed{
+    E \lesssim 1.3\times10^9\,\si{J}
+    \simeq0.3\,\si{ton\ TNT}.
+    }
+    \label{eq:lec05:rocket-energy-upper-limit}
+\end{equation}
+\textit{Physical significance:} Under the weak-blast interpretation, the
+observed early linearity gives only an upper bound on the explosive energy.
+
+\subsubsection*{The sunlight test}
+The key extra observation is that the feature is still illuminated by the Sun
+after local sunset. If the Sun is $\delta$ below the horizon, a point must be
+high enough above Earth's shadow to receive direct sunlight. The geometric
+condition is
+\begin{equation}
+    \boxed{
+    h \gtrsim R_\oplus\qty(\sec\delta-1).
+    }
+    \label{eq:lec05:sunlit-height}
+\end{equation}
+\textit{Physical significance:} Illumination provides a distance and height
+constraint that is independent of the blast-wave dynamics.
+
+For the movie, $\delta\simeq7.6^\circ$, so
+\begin{equation}
+    h\gtrsim
+    6371\,\si{km}\qty(\sec 7.6^\circ-1)
+    \simeq57\,\si{km}.
+    \label{eq:lec05:sunlit-height-number}
+\end{equation}
+At an altitude angle $\alpha\simeq35^\circ$, the slant distance is therefore
+\begin{equation}
+    \boxed{
+    D\gtrsim\frac{h}{\sin\alpha}
+    \simeq
+    \frac{57\,\si{km}}{\sin35^\circ}
+    \sim100\,\si{km}.
+    }
+    \label{eq:lec05:sunlit-distance}
+\end{equation}
+\textit{Physical significance:} The sunlit geometry pushes the event much
+farther away than the weak-blast distance estimate.
+
+If the measured angular radius reaches $\theta\simeq3\,\si{mrad}$, then the
+physical radius is at least
+\begin{equation}
+    r\gtrsim D\theta
+    \sim
+    (100\,\si{km})(3\times10^{-3})
+    \sim300\,\si{m}.
+    \label{eq:lec05:rocket-physical-radius}
+\end{equation}
+
+\subsubsection*{Swept-up mass argument}
+At $h\sim57\,\si{km}$, a representative atmospheric density is
+$\rho_{\mathrm{air}}\sim3\times10^{-4}\,\si{kg\,m^{-3}}$. The mass of air
+inside a sphere of radius $r\sim300\,\si{m}$ is
+\begin{equation}
+    M_{\mathrm{air}}
+    \sim
+    \frac{4\pi}{3}\rho_{\mathrm{air}}r^3
+    \sim
+    \frac{4\pi}{3}(3\times10^{-4})(300)^3\,\si{kg}
+    \sim3\times10^4\,\si{kg}.
+    \label{eq:lec05:swept-air-mass}
+\end{equation}
+This is tens of tons of air. A compact vapor cloud or gas shell from the
+interception could not expand through that much air at almost constant speed
+unless its own mass and energy were enormous.
+
+\begin{equation}
+    \boxed{
+    \text{The visible feature is probably not a classical blast wave.}
+    }
+    \label{eq:lec05:not-classical-blast}
+\end{equation}
+\textit{Physical significance:} The best interpretation is a sparse cloud of
+sunlit fragments, dust, smoke, or trail material, whose apparent boundary grows
+in projection rather than a dense shell sweeping up all the surrounding air.
+
+%%───────────────────────────────────────────────────────────────────────────
+\subsection{Summary of the Method}
+\label{sec:lec05:method-summary}
+%%───────────────────────────────────────────────────────────────────────────
+
+\textbf{The Physical Picture:}
+Dimensional analysis is strongest when it is paired with observational checks.
+It can produce a scaling law, but it also tells us when that scaling law is no
+longer the right model.
+
+\begin{itemize}
+    \item Buckingham's theorem reduces $N$ dimensional variables with $M$
+    independent units to $N-M$ dimensionless variables.
+    \item For a strong blast wave, the only possible scaling is
+    $r\propto(E/\rho)^{1/5}t^{2/5}$.
+    \item A video can estimate an explosion energy only if the observed front
+    is still a strong shock.
+    \item In the Bandar Abbas example, a close camera gave a plausible estimate
+    of order tens of tons of TNT.
+    \item In the rocket movie, sunlight geometry contradicted the naive
+    weak-blast distance estimate, pushing the interpretation toward sparse
+    sunlit debris rather than a classical blast wave.
+\end{itemize}
+

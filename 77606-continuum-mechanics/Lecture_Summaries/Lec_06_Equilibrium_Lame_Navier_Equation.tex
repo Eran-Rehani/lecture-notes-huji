@@ -1,0 +1,329 @@
+%% Lecture 06 — Equations of Equilibrium and the Lamé–Navier Equation
+
+\section{Lecture 06 — Equations of Equilibrium and the Lamé–Navier Equation}\label{sec:lec06}
+\date{April 27, 2025}
+
+\subsection*{Overview}
+This lecture has two parts. First, we consolidate the full set of field equations governing a linear isotropic elastic solid: the constitutive relation (Hooke's law), its inverse, and the catalogue of elastic moduli including the \textbf{constrained modulus} $M$ and the \textbf{Lamé parameters} $\lambda$ and $\mu$. Second, we derive the \textbf{Lamé–Navier equation} — the equation of motion (or equilibrium) for the displacement field $\vec{u}$ — by substituting the constitutive relation and the strain–displacement relation into Newton's law, expressed through the stress divergence. The result is a second-order vector PDE that is the elastic analogue of Laplace's equation in electrostatics. To build physical intuition we solve in full detail the problem of a \textbf{heavy rod hanging under its own weight}: finding the stress profile $\sigma_{zz}(z)$, the strain $\varepsilon_{zz}(z)$, and the displacement field $u_z(z)$, including a qualitative discussion of the lateral (Poisson) contraction.
+
+%%────────────────────────────────────────────────────────────
+\subsection*{Part I — Complete Summary of Linear Isotropic Elasticity}
+%%────────────────────────────────────────────────────────────
+
+\subsubsection*{The constitutive relation and its inverse}
+
+The central result of the previous lecture was Hooke's law in two equivalent forms. In terms of the bulk modulus $K$ and shear modulus $G$:
+\begin{equation}
+    \sigma_{ij} = K\,\varepsilon_{kk}\,\delta_{ij}
+                  + 2G\!\left(\varepsilon_{ij} - \tfrac{1}{3}\varepsilon_{kk}\,\delta_{ij}\right),
+    \label{eq:hooke_KG_recap}
+\end{equation}
+and its inverse:
+\begin{equation}
+    \varepsilon_{ij} = \frac{1}{9K}\,\sigma_{kk}\,\delta_{ij}
+                       + \frac{1}{2G}\!\left(\sigma_{ij} - \tfrac{1}{3}\sigma_{kk}\,\delta_{ij}\right).
+    \label{eq:hooke_inv_recap}
+\end{equation}
+In terms of Young's modulus $E$ and Poisson's ratio $\nu$ — the two moduli most commonly tabulated — the inverse relation reads:
+\begin{equation}
+    \varepsilon_{ij} = \frac{1}{E}\!\left[(1+\nu)\,\sigma_{ij} - \nu\,\sigma_{kk}\,\delta_{ij}\right].
+    \label{eq:hooke_Enu}
+\end{equation}
+These equations are called \textbf{local (microscopic) Hooke's law} to distinguish them from the integral relation $F = k\Delta\ell$ for a spring (macroscopic Hooke's law). The analogy mirrors that of Ohm's law: the local form $\vec{J} = \sigma_{\mathrm{el}}\vec{E}$ (with resistivity as the material property) versus the integral form $V = IR$ for a whole resistor. The local relation holds at every point inside the material; integrating it over the geometry of the body recovers the macroscopic relation.
+
+\subsubsection*{Catalogue of elastic moduli}
+
+Any two independent moduli suffice to characterise an isotropic linear elastic material. Several choices are in common use, each convenient for different classes of problems.
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Symbol & Name & Key relation \\
+\midrule
+$E$ & Young's modulus & $\sigma_{zz} = E\,\varepsilon_{zz}$ (uniaxial tension) \\
+$\nu$ & Poisson's ratio & $\varepsilon_{xx} = -\nu\,\varepsilon_{zz}$ (uniaxial tension) \\
+$G = \dfrac{E}{2(1+\nu)}$ & Shear modulus & $\sigma_{12} = G\,\gamma_{12}$ \\
+$K = \dfrac{E}{3(1-2\nu)}$ & Bulk modulus & $K = -p\,V_0/\Delta V$ \\
+$M = \dfrac{E(1-\nu)}{(1+\nu)(1-2\nu)}$ & Constrained (oedometric) modulus & $\sigma_{zz}=M\,\varepsilon_{zz}$, $\varepsilon_{xx}=\varepsilon_{yy}=0$ \\
+$\lambda = \dfrac{E\nu}{(1+\nu)(1-2\nu)}$ & First Lamé parameter & see below \\
+$\mu = G$ & Second Lamé parameter (= $G$) & see below \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Constrained modulus $M$.}
+When a body is compressed along $z$ but is prevented from deforming laterally ($\varepsilon_{xx}=\varepsilon_{yy}=0$), the constraint requires non-zero lateral stresses $\sigma_{xx}=\sigma_{yy}\neq 0$. The effective stiffness is therefore larger than $E$:
+\begin{equation}
+    M = \frac{E(1-\nu)}{(1+\nu)(1-2\nu)} = K + \frac{4G}{3}.
+    \label{eq:constrained_modulus}
+\end{equation}
+Note that $M > E$ for all physically admissible $\nu \in (-1,\tfrac{1}{2})$. At $\nu=0$, $M=E$, and $M\to\infty$ as $\nu\to\tfrac{1}{2}$ (incompressible limit).
+
+\paragraph{Lamé parameters $\lambda$ and $\mu$.}
+A second useful pair of independent constants is $(\lambda,\mu)$, introduced by Gabriel Lamé in the 19th century. They are defined by:
+\begin{align}
+    \lambda &= K - \tfrac{2}{3}G = \frac{E\nu}{(1+\nu)(1-2\nu)}, \label{eq:lambda_def}\\[4pt]
+    \mu &= G = \frac{E}{2(1+\nu)}. \label{eq:mu_def}
+\end{align}
+In terms of $\lambda$ and $\mu$, Hooke's law~\eqref{eq:hooke_KG_recap} takes the compact form:
+\begin{equation}
+    \boxed{\sigma_{ij} = \lambda\,\varepsilon_{kk}\,\delta_{ij} + 2\mu\,\varepsilon_{ij}.}
+    \label{eq:hooke_lame}
+\end{equation}
+This form is elegant because it separates cleanly into a term proportional to $\varepsilon_{ij}$ (with coefficient $2\mu$) and a term proportional to the identity (with coefficient $\lambda\,\mathrm{Tr}(\varepsilon)$). The parameter $\lambda$ is sometimes called the \textbf{first Lamé coefficient}; $\mu$ is the \textbf{second Lamé coefficient} (identical to the shear modulus $G$). Each parameterisation $\{E,\nu\}$, $\{K,G\}$, $\{\lambda,\mu\}$, $\{M,G\}$ contains exactly two independent constants; the choice depends on which makes a given problem most tractable.
+
+\begin{remark}[Poisson's ratio and incompressibility]
+    At $\nu = \tfrac{1}{2}$, the bulk modulus $K\to\infty$ (the material resists volume change infinitely strongly) and $\lambda\to\infty$, while $G$ remains finite. This is the \textbf{incompressible limit} (e.g.\ rubber). At $\nu=0$ there is no lateral strain in uniaxial tension and $\lambda=0$. The physical stability conditions $K>0$, $G>0$ confine $\nu$ to the interval $(-1,\tfrac{1}{2})$.
+\end{remark}
+
+%%────────────────────────────────────────────────────────────
+\subsection*{Part II — The Lamé–Navier Equation of Equilibrium}
+%%────────────────────────────────────────────────────────────
+
+\subsubsection*{The missing equation: equilibrium of forces}
+
+So far we have the constitutive relation~\eqref{eq:hooke_lame} and the strain–displacement relation:
+\begin{equation}
+    \varepsilon_{ij} = \tfrac{1}{2}\!\left(\partial_j u_i + \partial_i u_j\right).
+    \label{eq:strain_disp_recap}
+\end{equation}
+The unknown field is the \textbf{displacement field} $u_i(\vec{x})$. Newton's law (equilibrium condition) for an elastic body with body force $g_i$ per unit mass and mass density $\rho$ reads:
+\begin{equation}
+    \partial_j \sigma_{ij} + \rho\, g_i = 0,
+    \label{eq:equilibrium}
+\end{equation}
+where $\rho g_i$ is the body force per unit volume. In most applications, $g_i$ is simply gravitational acceleration: $\rho g_i = \rho\,g\,\hat{z}$.
+
+\subsubsection*{Substituting the constitutive and kinematic relations}
+
+The goal is to express~\eqref{eq:equilibrium} entirely in terms of $u_i$. Starting from~\eqref{eq:hooke_lame}:
+\[
+    \partial_j \sigma_{ij}
+    = \lambda\,\partial_i(\partial_k u_k)
+      + \mu\,\partial_j(\partial_j u_i + \partial_i u_j),
+\]
+where the material parameters $\lambda$ and $\mu$ are taken to be spatially uniform (homogeneous material), so they factor out of the derivatives. Using the symmetry $\partial_j \partial_i u_j = \partial_i(\partial_j u_j)$:
+\[
+    \partial_j \sigma_{ij}
+    = (\lambda + \mu)\,\partial_i(\partial_k u_k)
+      + \mu\,\partial_j\partial_j u_i.
+\]
+In vector notation, $\partial_j\partial_j u_i = \nabla^2 u_i$ is the $i$-th component of the vector Laplacian $\nabla^2\vec{u}$, and $\partial_i(\partial_k u_k) = \nabla_i(\nabla\cdot\vec{u})$ is the $i$-th component of $\vec{\nabla}(\vec{\nabla}\cdot\vec{u})$. Substituting into~\eqref{eq:equilibrium}:
+
+\begin{equation}
+    \boxed{(\lambda + \mu)\,\vec{\nabla}(\vec{\nabla}\cdot\vec{u})
+           + \mu\,\nabla^2\vec{u}
+           + \rho\,\vec{g} = 0.}
+    \label{eq:lame_navier}
+\end{equation}
+This is the \textbf{Lamé–Navier equation}. It is a second-order linear PDE for the vector field $\vec{u}(\vec{x})$ — the elastic analogue of Laplace's equation $\nabla^2\phi = -\rho_{\mathrm{el}}/\varepsilon_0$ in electrostatics.
+
+\paragraph{Alternative form via the curl–of–curl identity.}
+Using the vector identity
+\begin{equation}
+    \vec{\nabla}(\vec{\nabla}\cdot\vec{u}) = \nabla^2\vec{u} + \vec{\nabla}\times(\vec{\nabla}\times\vec{u}),
+    \label{eq:curl_curl_identity}
+\end{equation}
+one can rewrite~\eqref{eq:lame_navier} as:
+\begin{equation}
+    (\lambda + 2\mu)\,\vec{\nabla}(\vec{\nabla}\cdot\vec{u})
+    - \mu\,\vec{\nabla}\times(\vec{\nabla}\times\vec{u})
+    + \rho\,\vec{g} = 0.
+    \label{eq:lame_navier_curl}
+\end{equation}
+This form is sometimes more convenient: when the divergence term $\vec{\nabla}\cdot\vec{u}$ vanishes (incompressible deformation), only the curl term survives; when the curl term vanishes (irrotational deformation), only the divergence term survives. Both forms are equivalent; the choice depends on the symmetry of the problem.
+
+\begin{remark}[Physical content]
+    The Lamé–Navier equation says that the net elastic restoring force at each point — a combination of resistance to volume change (coefficient $\lambda+2\mu = M$) and resistance to shape change (coefficient $\mu = G$) — exactly balances the applied body force. The two types of elastic response correspond physically to the two independent wave speeds in a solid (compressional and shear), which will be revisited when we study elastic waves.
+\end{remark}
+
+\subsubsection*{Summary of the complete set of field equations}
+
+The full system governing a linear isotropic elastic body in static equilibrium is:
+\begin{align}
+    \varepsilon_{ij} &= \tfrac{1}{2}(\partial_j u_i + \partial_i u_j) \qquad &\text{(kinematics)},\label{eq:system_kin}\\
+    \sigma_{ij} &= \lambda\,\varepsilon_{kk}\,\delta_{ij} + 2\mu\,\varepsilon_{ij} \qquad &\text{(constitutive)},\label{eq:system_const}\\
+    \partial_j\sigma_{ij} + \rho\, g_i &= 0 \qquad &\text{(equilibrium)},\label{eq:system_equil}
+\end{align}
+with unknown $u_i$ and the Lamé–Navier equation~\eqref{eq:lame_navier} as their combination. Boundary conditions prescribe either displacements (Dirichlet) or surface tractions $\sigma_{ij}n_j$ (Neumann) on the boundary of the body.
+
+%%────────────────────────────────────────────────────────────
+\subsection*{Worked Problem: Rod Hanging Under Its Own Weight}
+%%────────────────────────────────────────────────────────────
+
+\subsubsection*{Problem statement}
+
+A uniform elastic rod of length $L$, cross-sectional area $A$ (circular, radius $R$, so $A = \pi R^2$), mass density $\rho$, Young's modulus $E$, and Poisson's ratio $\nu$ hangs vertically from the ceiling. Its upper end is fixed to the ceiling at $z=0$; the free lower end is at $z=L$. The $z$-axis points \emph{downward}. Atmospheric pressure is neglected. Find:
+\begin{enumerate}[label=\textbf{(\alph*)}]
+    \item The stress profile $\sigma_{zz}(z)$ and applicable boundary conditions.
+    \item The axial strain $\varepsilon_{zz}(z)$.
+    \item The displacement field $u_z(z)$ and the total elongation $\Delta L$.
+    \item A qualitative description of the lateral (radial) deformation.
+\end{enumerate}
+
+\subsubsection*{Physical picture and symmetry argument}
+
+Before computing, we identify the key physics:
+
+\begin{itemize}
+    \item The rod is in \textbf{tension} throughout: gravity pulls every cross-section downward, and the material above must pull upward to maintain equilibrium. Using the sign convention that tension is positive, $\sigma_{zz} > 0$ everywhere.
+    \item The tension is \textbf{largest at the top}: the topmost cross-section must support the weight of the entire rod below it; the bottom free surface supports nothing.
+    \item The axial strain $\varepsilon_{zz}$ is proportional to $\sigma_{zz}$ (via $E$), so it also \textbf{varies linearly} with $z$, from a maximum at $z=0$ to zero at $z=L$.
+    \item The displacement $u_z(z)$ is the accumulated stretch from the fixed point $z=0$ downward; it starts at zero (the ceiling attachment) and increases toward the bottom, with a \textbf{parabolic} profile because the strain (its derivative) is linear.
+\end{itemize}
+
+\subsubsection*{Step (a): Stress profile $\sigma_{zz}(z)$}
+
+\paragraph{Symmetry reduction.}
+By the rotational and translational symmetry of the problem (homogeneous rod, gravity in $z$), all fields depend only on $z$. The only non-trivial displacement is $u_z(z)$; the lateral displacements are $u_x = u_y = 0$ to leading order (see Step~(d)). The only non-trivial stress component needed for equilibrium is $\sigma_{zz}(z)$.
+
+\paragraph{Equilibrium equation.}
+The $z$-component of~\eqref{eq:system_equil} reduces to an ordinary differential equation:
+\begin{equation}
+    \frac{\mathrm{d}\sigma_{zz}}{\mathrm{d}z} + \rho\, g = 0,
+    \label{eq:rod_equil}
+\end{equation}
+where $g>0$ is the magnitude of gravitational acceleration (the $z$-axis points downward, so the body force per unit volume is $+\rho g$ in the $z$-direction).
+
+\paragraph{Boundary condition.}
+The lower face at $z=L$ is a \textbf{free surface}: no external traction acts on it, so the normal stress must vanish:
+\begin{equation}
+    \sigma_{zz}(L) = 0.
+    \label{eq:rod_BC}
+\end{equation}
+
+\paragraph{Solution.}
+Integrating~\eqref{eq:rod_equil} with condition~\eqref{eq:rod_BC}:
+\begin{equation}
+    \sigma_{zz}(z) = \rho\, g\,(L - z).
+    \label{eq:rod_stress}
+\end{equation}
+The stress is linear in $z$: it vanishes at the free bottom ($z=L$) and reaches its maximum $\sigma_{zz}^{\max}=\rho\, g\, L$ at the fixed top ($z=0$), confirming the physical picture.
+
+\begin{center}
+\begin{tikzpicture}[scale=1.4, >=Stealth]
+  % Axes
+  \draw[->] (0,0) -- (0,-3.2) node[below]{$z$};
+  \draw[->] (0,0) -- (2.8,0)  node[right]{$\sigma_{zz}$};
+  % Stress profile (linear, max at z=0, zero at z=L)
+  \draw[myblue, very thick] (0,0) -- (0,-2.8) node[left,black,scale=0.85]{$z=L$};
+  \draw[myblue, very thick] (2.4,0) -- (0,-2.8);
+  % Labels
+  \node[above right, myblue, scale=0.85] at (2.4,0) {$\rho g L$};
+  \node[left, scale=0.85] at (0,0) {$z=0$};
+  \fill[myblue] (2.4,0) circle(0.04);
+  \fill[myblue] (0,-2.8) circle(0.04);
+  % Annotation
+  \node[right, scale=0.82, align=left] at (1.0,-1.4)
+    {$\sigma_{zz}(z)=\rho g(L-z)$};
+\end{tikzpicture}
+\end{center}
+
+\subsubsection*{Step (b): Axial strain $\varepsilon_{zz}(z)$}
+
+From Hooke's law (uniaxial tension, lateral faces free so $\sigma_{xx}=\sigma_{yy}=0$):
+\begin{equation}
+    \varepsilon_{zz}(z) = \frac{\sigma_{zz}(z)}{E} = \frac{\rho\, g}{E}(L - z).
+    \label{eq:rod_strain}
+\end{equation}
+The strain is also linear in $z$, vanishing at the free end and maximal at the fixed end.
+
+\subsubsection*{Step (c): Displacement field $u_z(z)$ and total elongation}
+
+\paragraph{Kinematic relation.}
+The displacement $u_z(z)$ is related to the strain by:
+\begin{equation}
+    \varepsilon_{zz}(z) = \frac{\mathrm{d}u_z}{\mathrm{d}z}.
+    \label{eq:rod_kinem}
+\end{equation}
+This is a first-order ODE in $u_z$.
+
+\paragraph{Boundary condition.}
+The rod is attached to the ceiling at $z=0$, so:
+\begin{equation}
+    u_z(0) = 0.
+    \label{eq:rod_uBC}
+\end{equation}
+
+\paragraph{Solution.}
+Integrating~\eqref{eq:rod_kinem} with $\varepsilon_{zz}$ from~\eqref{eq:rod_strain} and applying~\eqref{eq:rod_uBC}:
+\begin{equation}
+    u_z(z) = \int_0^z \varepsilon_{zz}(z')\,\mathrm{d}z'
+            = \frac{\rho\, g}{E}\int_0^z (L-z')\,\mathrm{d}z'
+            = \frac{\rho\, g}{E}\!\left(Lz - \frac{z^2}{2}\right).
+    \label{eq:rod_disp}
+\end{equation}
+Equivalently:
+\begin{equation}
+    u_z(z) = \frac{\rho\, g}{2E}\,z\,(2L - z).
+    \label{eq:rod_disp2}
+\end{equation}
+The displacement is a \textbf{downward-opening parabola} in $z$ (the coefficient of $z^2$ is negative): it starts at $u_z(0)=0$ (fixed ceiling), increases monotonically, and reaches its maximum at the free end $z=L$.
+
+\paragraph{Total elongation.}
+The total elongation is the displacement of the free bottom end:
+\begin{equation}
+    \boxed{\Delta L = u_z(L) = \frac{\rho\, g\, L^2}{2E}.}
+    \label{eq:rod_elongation}
+\end{equation}
+
+\begin{remark}[Comparison with uniform tension]
+    If the same rod were pulled by a uniform external force $F = \rho\, g\, L\cdot A$ (equal to its own weight) applied at \emph{both} ends, the stress would be uniform $\sigma_{zz}=\rho g L$ throughout, giving elongation $\Delta L_{\mathrm{uniform}} = \rho g L^2/E$. The hanging rod gives exactly \emph{half} this value. Physically, the stress in the hanging rod varies from $\rho g L$ at the top to $0$ at the bottom — its average is $\tfrac{1}{2}\rho g L$ — so the total elongation is half that of the uniformly stressed rod. This factor of $\tfrac{1}{2}$ is the area under the triangular stress profile, and is confirmed by the exact integral.
+\end{remark}
+
+\begin{center}
+\begin{tikzpicture}[scale=1.45, >=Stealth]
+  % Axes
+  \draw[->] (0,0) -- (0,-3.3) node[below]{$z$};
+  \draw[->] (-0.1,0) -- (2.5,0) node[right]{$u_z$};
+  % Parabola: u(z) = (rho g / 2E) z(2L - z), max at z=L
+  % parametrise: let L=2.8 in plot units, max = rho g L^2 / 2E = 2.0 plot units
+  \draw[myblue, very thick, domain=0:2.8, samples=60]
+    plot ( {2.0*(2*2.8*\x - \x*\x)/(2.8*2.8)}, {-\x} );
+  % Labels
+  \node[left, scale=0.85] at (0,0) {$z=0,\; u_z=0$};
+  \node[left, scale=0.85] at (0,-2.8) {$z=L$};
+  \fill[myblue] (0,0) circle(0.045);
+  \fill[myblue] (2.0,-2.8) circle(0.045);
+  \node[right, myblue, scale=0.85] at (2.0,-2.8) {$\Delta L = \dfrac{\rho g L^2}{2E}$};
+  \node[above right, scale=0.82, align=left] at (0.8,-1.4)
+    {$u_z(z)=\dfrac{\rho g}{2E}\,z(2L-z)$};
+\end{tikzpicture}
+\end{center}
+
+\subsubsection*{Step (d): Lateral deformation (qualitative)}
+
+By Poisson's effect, the axial tension $\varepsilon_{zz}>0$ induces lateral contraction:
+\begin{equation}
+    \varepsilon_{xx}(z) = \varepsilon_{yy}(z) = -\nu\,\varepsilon_{zz}(z) = -\frac{\nu\,\rho\, g}{E}(L-z).
+    \label{eq:rod_lateral_strain}
+\end{equation}
+Since $\varepsilon_{zz}$ varies with $z$, so does the lateral strain. The rod contracts most strongly near the top (where tension is greatest) and not at all at the free bottom end. Consequently:
+
+\begin{itemize}
+    \item Near the \textbf{free bottom} ($z=L$): $\varepsilon_{xx}=0$, no lateral contraction.
+    \item Near the \textbf{fixed top} ($z=0$): maximum lateral contraction $\varepsilon_{xx}=-\nu\rho g L/E$.
+    \item The rod is therefore \textbf{slightly barrel-shaped} (narrower at the top, wider at the bottom) — but the attachment constraint at the ceiling complicates this near $z=0$.
+\end{itemize}
+
+A full treatment of the lateral displacement $u_x(x,y,z)$ would require solving the complete three-dimensional Lamé–Navier equation~\eqref{eq:lame_navier}, which introduces coupling between radial and axial fields. In the present one-dimensional approximation (rod slender, $R\ll L$), the leading lateral displacement is:
+\[
+    u_r(r,z) \approx -\nu\,\frac{\rho g}{E}(L-z)\,r,
+\]
+which describes a uniform radial contraction of the cross-section at each height $z$, proportional to the local axial strain.
+
+%%────────────────────────────────────────────────────────────
+\subsection*{Summary: Strategy for Solving Elasticity Problems}
+%%────────────────────────────────────────────────────────────
+
+The worked example illustrates a general procedure for problems where all fields depend on a single coordinate:
+
+\begin{enumerate}
+    \item \textbf{Identify the symmetry and the relevant field.} Determine which components of $\sigma_{ij}$, $\varepsilon_{ij}$, and $u_i$ are non-zero and on which coordinates they depend.
+    \item \textbf{Write and solve the equilibrium equation for $\sigma$.} The divergence condition $\partial_j\sigma_{ij}+\rho g_i=0$ becomes an ODE; apply traction boundary conditions (zero stress on free surfaces).
+    \item \textbf{Find $\varepsilon$ from $\sigma$ via the inverse Hooke's law.} Use~\eqref{eq:hooke_inv_recap} or~\eqref{eq:hooke_Enu} component by component.
+    \item \textbf{Integrate $\varepsilon = \partial u$ to find $u$.} Apply displacement boundary conditions (zero displacement at fixed supports).
+    \item \textbf{Compute derived quantities.} Total elongation, stress concentrations, lateral strains, etc.
+\end{enumerate}
+
+When the problem has full three-dimensional variation, steps 2–4 merge into solving the Lamé–Navier equation~\eqref{eq:lame_navier} directly for $\vec{u}$, subject to mixed boundary conditions. The one-dimensional problems serve as the essential training ground for developing physical intuition before tackling the full PDE.

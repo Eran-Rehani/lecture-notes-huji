@@ -1,0 +1,458 @@
+%%═══════════════════════════════════════════════════════════════════
+%% Lecture 06 — Connected Diagrams, Loop Divergences,
+%%              1PI Diagrams, and Decay Rates
+%% 77609 — Introduction to Elementary Particles
+%% Date: 26/04/2026
+%% Lecturer: Prof. Yonit Hochberg
+%%═══════════════════════════════════════════════════════════════════
+
+\documentclass[../main.tex]{subfiles}
+\usepackage{preamble}
+
+\begin{document}
+
+\section{Lecture 06 — Connected Diagrams, Loop Divergences, 1PI, and Decay Rates}\label{sec:lec06:connected-1pi-decays}
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 26/04/2026   & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Overview}
+
+This lecture completes the foundations of diagrammatic perturbation theory with four important remarks about Feynman diagrams, then transitions to the kinematic side of the problem — Fermi's Golden Rule for decay rates.
+
+The four diagrammatic notes are:
+\begin{enumerate}
+  \item Only \textbf{fully connected diagrams} contribute to physical amplitudes; disconnected pieces are absorbed into the normalization.
+  \item \textbf{Vertex corrections}: the effective coupling between particles receives loop corrections, systematically handled by renormalization.
+  \item \textbf{Loop integrals diverge} in the ultraviolet (large loop momentum); two explicit examples demonstrate quadratic and logarithmic divergences.  The prescription for dealing with these infinities is \textbf{renormalization}.
+  \item \textbf{One-Particle Irreducible (1PI) diagrams} provide a natural organizational tool: they can be resummed into a geometric series that dresses the bare propagator and generates \textbf{mass corrections}.
+\end{enumerate}
+
+The second half introduces the \textbf{general decay rate formula} — the phase-space integral that, combined with the matrix element $|\Mamp|^2$, gives a physical decay rate $\DecayRate$.
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Note 1 — Only Fully Connected Diagrams Contribute}
+
+\dfn{Fully connected diagram}{A Feynman diagram is \textbf{fully connected} if every external leg and every internal line belongs to a single connected piece.  Equivalently, there is a path of lines and vertices connecting any two elements of the diagram.}
+
+When drawing diagrams for a process, one might imagine configurations where part of the diagram is completely disconnected from the external states — for instance, a free-floating loop that has no legs connecting to the initial or final particles.  Such \textbf{disconnected} contributions are \emph{never drawn or computed}.
+
+\begin{remark}[Why disconnected diagrams can be ignored]
+In the full path-integral formulation of QFT, the transition amplitude is computed as a ratio of path integrals.  The disconnected ``vacuum bubble'' pieces factorise and appear identically in numerator and denominator, so they cancel exactly in any physical amplitude.  The net result is that we only ever need to sum over \emph{fully connected} diagrams.  This is not an approximation; it is an exact statement about how the theory is defined.
+\end{remark}
+
+\ex{A disconnected diagram for $\phi\phi \to \phi\phi$}{Consider $\phi\phi \to \phi\phi$ in $\phi^4$ theory.  One could imagine drawing a diagram where the two incoming $\phi$ lines reconnect to the two outgoing $\phi$ lines without any interaction, alongside a separate closed loop that floats in isolation.  This is \emph{not} a fully connected diagram — the loop piece is disconnected from the external legs.  We do not include it.  Only diagrams in which all four external legs are part of one connected network are included.}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Note 2 — Vertex Corrections}
+
+The interaction vertices introduced by $\lagr_{\rm int}$ are the \emph{bare} building blocks of perturbation theory.  However, once we go beyond leading order, we can draw loop diagrams that effectively insert additional structure into a vertex.
+
+\ex{Effective $\phi^4$ vertex at order $\lambda^2$}{In $\phi^4$ theory, the bare vertex connects four legs with a factor $i\lambda$.  At order $\lambda^2$, one can draw a diagram connecting two $\phi^4$ vertices by two internal lines forming a loop — an ``ice-cream cone'' or ``lollipop'' shape — where all four external legs are still attached.  This diagram contributes to the same four-point function as the original vertex, effectively \emph{correcting} the coupling strength.  In this sense, the physical (observed) coupling differs from the bare parameter $\lambda$ in the Lagrangian.  The systematic framework for handling this is \textbf{renormalization}.}
+
+This observation generalises: in any quantum field theory, the parameters appearing in $\lagr$ (masses and coupling constants) receive perturbative corrections from loop diagrams. The renormalization group encodes how these effective parameters run with the energy scale of the process.
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Note 3 — Loop Divergences and Renormalization}
+
+\subsubsection*{Why loops diverge}
+
+Every undetermined loop momentum in a Feynman diagram must be integrated over all values from $0$ to $\infty$ (or, in Euclidean space, from $0$ to some ultraviolet cut-off $\Lambda$).  Because the integrand falls off as a power of the loop momentum, large-$Q$ behaviour determines whether the integral converges.
+
+A useful power-counting rule: in $d = 4$ spacetime dimensions, a loop integral with $P$ propagators and $V$ vertices contributing $L$ loops behaves schematically as
+\begin{equation}
+  \int \frac{d^4Q}{(2\pi)^4}\, \frac{(\text{numerator factors})}{(Q^2)^P}.
+  \label{eq:lec06:loop-counting}
+\end{equation}
+Converting to spherical coordinates in 4D, $d^4Q = Q^3\,dQ\,d\Omega_4$, so the radial integrand goes as $Q^3/(Q^2)^P = Q^{3-2P}$.  The integral diverges if $3 - 2P \geq -1$, i.e.\ $P \leq 2$.
+
+\subsubsection*{Example 1 — The tadpole diagram ($\phi^4$ theory, one propagator)}
+
+In $\phi^4$ theory, a particle propagating from $p$ to $p$ can emit and reabsorb a virtual pair via the four-point vertex, forming a loop with \emph{one} internal propagator:
+
+\begin{center}
+  \begin{tikzpicture}
+    \begin{feynman}
+      \vertex (v);
+      \vertex [left=2.2cm of v]  (in)  {\(p\)};
+      \vertex [right=2.2cm of v] (out) {\(p\)};
+      \diagram*{
+        (in) -- [scalar] (v),
+        (v)  -- [scalar, out=60,  in=120, looseness=2.8, edge label=\(Q\)] (v),
+        (v)  -- [scalar] (out),
+      };
+    \end{feynman}
+  \end{tikzpicture}
+\end{center}
+
+There is one undetermined loop momentum $Q$, one propagator, and one vertex.  Dropping numerical prefactors and focussing on the UV behaviour:
+\begin{equation}
+  \mathcal{A}_{\rm tadpole}
+  \;\sim\;
+  (i\lambda)\int \frac{d^4Q}{(2\pi)^4}\,\frac{i}{Q^2 - m^2}
+  \;\xrightarrow{Q\gg m}\;
+  \int_0^\Lambda dQ\, \frac{Q^3}{Q^2}
+  = \int_0^\Lambda dQ\, Q
+  \;\sim\; \Lambda^2.
+  \label{eq:lec06:tadpole}
+\end{equation}
+This integral diverges \textbf{quadratically} as $\Lambda\to\infty$.
+
+\subsubsection*{Example 2 — The ``candy'' diagram ($\phi^4$ theory, two propagators)}
+
+A second loop diagram connects two $\phi^4$ vertices by \emph{two} internal lines forming a bubble (the professor describes it as shaped like a piece of candy):
+
+\begin{center}
+  \begin{tikzpicture}
+    \begin{feynman}
+      \vertex (v1);
+      \vertex [right=2.4cm of v1] (v2);
+      \vertex [left=1.8cm  of v1] (in)  {\(p_1, p_2\)};
+      \vertex [right=1.8cm of v2] (out) {\(p_3, p_4\)};
+      \diagram*{
+        (in)  -- [scalar] (v1),
+        (v1)  -- [scalar, half left,  looseness=1.4, edge label=\(Q\)]   (v2),
+        (v1)  -- [scalar, half right, looseness=1.4, edge label'=\(p_{12}{-}Q\)] (v2),
+        (v2)  -- [scalar] (out),
+      };
+    \end{feynman}
+  \end{tikzpicture}
+\end{center}
+
+Let $p_{12} = p_1 + p_2$.  By momentum conservation at $v_1$, the two internal momenta are $Q$ and $p_{12} - Q$.  There is one undetermined loop momentum $Q$ and two propagators.  The UV behaviour:
+\begin{equation}
+  \mathcal{A}_{\rm candy}
+  \;\sim\;
+  (i\lambda)^2 \int \frac{d^4Q}{(2\pi)^4}\,
+  \frac{i}{Q^2 - m^2}\,\frac{i}{(p_{12}-Q)^2 - m^2}
+  \;\xrightarrow{Q\gg p_{12},m}\;
+  \int_0^\Lambda dQ\, \frac{Q^3}{Q^4}
+  = \int_0^\Lambda \frac{dQ}{Q}
+  \;\sim\; \ln\Lambda.
+  \label{eq:lec06:candy}
+\end{equation}
+This integral diverges \textbf{logarithmically}.
+
+\begin{remark}[Summary of UV divergence types]
+In four spacetime dimensions, the two generic types of ultraviolet divergence encountered in loop integrals are:
+\begin{itemize}
+  \item \textbf{Quadratic divergence}: $\int dQ\,Q \sim \Lambda^2$ — one propagator loop.
+  \item \textbf{Logarithmic divergence}: $\int dQ/Q \sim \ln\Lambda$ — two-propagator loop.
+\end{itemize}
+Higher numbers of propagators make the integral more convergent; with $P \geq 3$ the integral is UV-finite in 4D.
+\end{remark}
+
+\subsubsection*{Renormalization (brief)}
+
+The infinities in \eqref{eq:lec06:tadpole} and \eqref{eq:lec06:candy} are not a sign that the theory is wrong — they are an artefact of treating the bare parameters of $\lagr$ as the physical ones.  The \textbf{renormalization} procedure (or \textbf{renormalization group evolution, RGE}) provides a self-consistent prescription for absorbing these divergences into redefined physical parameters.  The result is that all measurable quantities are finite.  A full treatment is beyond this course, but the key message is: \emph{loops are not ignorable, but their infinities are controllable}.
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Note 4 — One-Particle Irreducible Diagrams}
+
+\subsubsection*{Definition and notation}
+
+\dfn{One-Particle Irreducible (1PI) diagram}{A connected Feynman diagram is \textbf{one-particle irreducible (1PI)} if it \emph{cannot} be split into two disconnected pieces by cutting any single internal line.  Such diagrams are also called \textbf{proper} or \textbf{irreducible}.  If a diagram \emph{can} be split by cutting one line, it is \textbf{one-particle reducible}.}
+
+We denote the sum of all 1PI contributions to the two-point function (one particle in, same particle out) by the blob
+\begin{equation}
+  \underbrace{\bigcirc}_{\displaystyle -i\Sigma},
+  \label{eq:lec06:1pi-blob}
+\end{equation}
+where $-i\Sigma$ is called the \textbf{self-energy}.  (The factor of $-i$ is a conventional choice that makes the final dressed propagator particularly clean.)
+
+\subsubsection*{Examples}
+
+Consider a single scalar field.  The simplest two-point diagrams are:
+
+\begin{enumerate}
+  \item \textbf{The tadpole} (drawn in Example~1 above): one vertex with one loop.  This \emph{is} 1PI — there is no single internal line whose removal disconnects the diagram into two separate two-point pieces.  It contributes to $\Sigma$.
+
+  \item \textbf{Two tadpoles in series}: take two tadpole diagrams and connect them by a single internal propagator.  This diagram \emph{can} be split by cutting the internal propagator between them, yielding two individual tadpoles.  Hence it is \textbf{not} 1PI — it is one-particle reducible.  It should \emph{not} be included independently in $\Sigma$; rather, it is automatically generated when we sum 1PI blobs into a series (see below).
+\end{enumerate}
+
+The key organisational principle: \textbf{we only keep track of 1PI contributions to $\Sigma$}.  All reducible contributions are reconstructed by the resummation below.
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Dressing the Propagator — The Geometric Series}
+
+\subsubsection*{Setting up the sum}
+
+Consider the exact two-point function: a particle entering with momentum $q$ and emerging with the same momentum $q$.  In perturbation theory, between the external states we can insert:
+\begin{itemize}
+  \item Nothing: just the bare propagator $P \equiv \dfrac{i}{q^2 - m^2}$.
+  \item One 1PI blob $(-i\Sigma)$: a factor $P \cdot (-i\Sigma) \cdot P$.
+  \item Two 1PI blobs: $P \cdot (-i\Sigma) \cdot P \cdot (-i\Sigma) \cdot P$.
+  \item $\ldots$ and so on to all orders.
+\end{itemize}
+
+Summing all these contributions:
+\begin{align}
+  \Delta(q^2)
+  &= P + P(-i\Sigma)P + P(-i\Sigma)P(-i\Sigma)P + \cdots \notag\\
+  &= P\sum_{n=0}^{\infty}\bigl[(-i\Sigma)\,P\bigr]^n.
+  \label{eq:lec06:geometric-series}
+\end{align}
+
+\subsubsection*{Evaluating the geometric series}
+
+The sum $\sum_{n=0}^\infty x^n = \frac{1}{1-x}$ (valid for $|x|<1$, analytically continued) gives
+\begin{equation}
+  \Delta(q^2)
+  = \frac{P}{1 - (-i\Sigma)P}
+  = \frac{P}{1 + i\Sigma P}.
+  \label{eq:lec06:geo-result}
+\end{equation}
+Now substitute the explicit propagator $P = i/(q^2-m^2)$:
+\begin{align}
+  \Delta(q^2)
+  &= \frac{\dfrac{i}{q^2 - m^2}}{1 + i\Sigma \cdot \dfrac{i}{q^2-m^2}}
+  = \frac{\dfrac{i}{q^2-m^2}}{1 - \dfrac{\Sigma}{q^2-m^2}}
+  = \frac{\dfrac{i}{q^2-m^2}}{\dfrac{q^2-m^2-\Sigma}{q^2-m^2}} \notag\\[6pt]
+  &= \boxed{\frac{i}{q^2 - m^2 - \Sigma}.}
+  \label{eq:lec06:dressed-propagator}
+\end{align}
+
+\dfn{Dressed (full) propagator}{The \textbf{dressed} or \textbf{full propagator}, obtained by resumming all 1PI insertions to all orders, is
+\begin{equation}
+  \Delta(q^2) = \frac{i}{q^2 - m^2 - \Sigma(q^2)},
+  \label{eq:lec06:dressed-prop-def}
+\end{equation}
+where $\Sigma(q^2)$ is the (momentum-dependent) self-energy — the sum of all 1PI two-point diagrams.}
+
+\subsubsection*{Physical interpretation: mass corrections}
+
+Comparing \eqref{eq:lec06:dressed-prop-def} with the bare propagator $i/(q^2-m^2)$, we see that the effect of all 1PI insertions is to \emph{shift the pole} of the propagator:
+\begin{equation}
+  m_{\rm bare}^2 \;\longrightarrow\; m_{\rm phys}^2 = m_{\rm bare}^2 + \Sigma.
+  \label{eq:lec06:mass-shift}
+\end{equation}
+The self-energy $\Sigma$ is a \textbf{mass correction} generated by loop diagrams.  The physical particle mass is not $m$ from $\lagr$, but $m$ shifted by quantum corrections.  This is another facet of renormalization.
+
+\begin{remark}[Why 1PI is the right building block]
+If we tried to use reducible diagrams as our building blocks, we would be double-counting: a two-tadpole diagram, for example, is already included in the series \eqref{eq:lec06:geometric-series} as the $n=2$ term, built from two 1PI blobs.  The 1PI decomposition avoids any double-counting and is the unique, minimal set of diagrams needed to reconstruct the full two-point function.
+\end{remark}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Symmetry Protection of Mass Corrections}
+
+The 1PI framework has a profound consequence when \emph{symmetries} are present.
+
+\thm{Symmetry protection}{Suppose a theory possesses a symmetry that \textbf{forbids} a mass term for a given field.  Then the self-energy $\Sigma = 0$ to all orders in perturbation theory.}
+
+\ex{Shift symmetry}{Consider a theory invariant under $\phi \to \phi + a$ (a constant shift).  A mass term $m^2\phi^2/2$ is \emph{not} invariant under this shift ($\phi^2 \to \phi^2 + 2a\phi + a^2 \neq \phi^2$), so symmetry forbids it in $\lagr$.  If loop corrections generated a nonzero $\Sigma \neq 0$, the dressed propagator \eqref{eq:lec06:dressed-prop-def} would exhibit a pole at $q^2 = \Sigma \neq 0$, which is equivalent to the particle acquiring a mass — thereby breaking the shift symmetry.  Since the symmetry is exact, this is impossible: every diagram contributing to $\Sigma$ must be individually included in a sum that vanishes:
+\begin{equation}
+  \Sigma = 0 \quad \text{to all orders,}
+  \label{eq:lec06:sigma-zero}
+\end{equation}
+even without explicit computation of each diagram.}
+
+\begin{remark}[Power of symmetry]
+This is one of the deepest uses of symmetry in particle physics.  Instead of computing each loop diagram (which may be extremely involved), knowing that a symmetry forbids the mass immediately tells you that the entire class of 1PI self-energy diagrams sums to zero.  Conversely, if you \emph{do} compute them and obtain a vanishing sum, it is a strong hint that there is an underlying symmetry at work — even one you have not yet identified.
+\end{remark}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Fermi's Golden Rule — The General Decay Rate Formula}
+
+We now turn from the computation of amplitudes to the connection between amplitudes and \emph{observable rates}.  The goal is to derive $\DecayRate$, the decay rate of a particle at rest.
+
+\subsubsection*{Setup}
+
+We consider a particle of mass $m_1$ at rest decaying into $n-1$ final-state particles:
+\begin{equation}
+  1 \;\to\; 2 + 3 + \cdots + n,
+  \label{eq:lec06:decay-setup}
+\end{equation}
+where particle $i$ has four-momentum $p_i$ and mass $m_i$.  The particle is at rest, so $p_1 = (m_1, \bvec{0})$.
+
+\subsubsection*{The general decay rate formula — pedagogical form}
+
+The decay rate in the rest frame of particle~1 is:
+\begin{equation}
+  \DecayRate
+  = \frac{1}{2m_1}
+    \int \bigl|\Mamp\bigr|^2\,
+    (2\pi)^4\,\delta^{(4)}\!\Bigl(p_1 - \sum_{i=2}^{n} p_i\Bigr)
+    \prod_{j=2}^{n}
+    \left[
+      2\pi\,\delta\!\bigl(p_j^2 - m_j^2\bigr)\,
+      \theta(p_j^0)\,
+      \frac{d^4p_j}{(2\pi)^4}
+    \right].
+  \label{eq:lec06:decay-rate-raw}
+\end{equation}
+
+Let us identify every factor:
+\begin{itemize}
+  \item $|\Mamp|^2$: the squared matrix element for the process $1 \to 2\cdots n$, computed using Feynman rules.  This is where all the dynamics lives.
+  \item $(2\pi)^4\,\delta^{(4)}(p_1 - \sum_{i=2}^n p_i)$: enforces \textbf{four-momentum conservation} — the total outgoing four-momentum must equal the initial four-momentum.
+  \item $\delta(p_j^2 - m_j^2)$: enforces that each final-state particle $j$ is \textbf{on its mass shell}, $p_j^2 = m_j^2$.  These are physical particles, not virtual ones.
+  \item $\theta(p_j^0)$: enforces \textbf{positive energy} for each outgoing particle, $E_j = p_j^0 > 0$.
+  \item $\int d^4p_j/(2\pi)^4$: integrates over all four-momentum components of each outgoing particle.
+  \item $1/(2m_1)$: normalization from the initial state; see below.
+\end{itemize}
+
+\subsubsection*{Three kinematic constraints}
+
+\begin{enumerate}
+  \item \textbf{On-shell condition}: $\delta(p_j^2 - m_j^2)$ — final-state particles are real, with $p_j^2 = m_j^2$.
+  \item \textbf{Positive energy}: $\theta(p_j^0)$ — energy is positive; there are no negative-energy outgoing particles.
+  \item \textbf{Four-momentum conservation}: $(2\pi)^4\delta^{(4)}(p_1 - \sum p_i)$ — total four-momentum is conserved.
+\end{enumerate}
+
+The integral in \eqref{eq:lec06:decay-rate-raw} is over \emph{all} kinematically allowed final-state configurations, weighted by the dynamics $|\Mamp|^2$.
+
+\subsubsection*{Normalization factor $1/(2m_1)$}
+
+Recall from the discussion of external states that a one-particle state with momentum $k$ is defined as
+\begin{equation}
+  |k\rangle = \sqrt{2\omega_k}\, a_{\bvec{k}}^\dagger\, |0\rangle,
+  \label{eq:lec06:state-norm}
+\end{equation}
+with the Lorentz-invariant normalisation $\langle k'|k\rangle = 2\omega_k\,(2\pi)^3\delta^{(3)}(\bvec{k}-\bvec{k}')$.  For the initial particle at rest, $\omega_{k=0} = m_1$, so the initial-state normalisation contributes a factor $1/(2m_1)$.
+
+\subsubsection*{Derivation of the standard form}
+
+We now perform the integrals over the zeroth (energy) component $p_j^0$ of each final-state particle, using the on-shell delta functions.
+
+\textbf{Key identity.}  For any momentum $p$ with mass $m$:
+\begin{equation}
+  \delta(p^2 - m^2)
+  = \delta\!\bigl((p^0)^2 - |\bvec{p}|^2 - m^2\bigr)
+  = \delta\!\bigl((p^0)^2 - E_p^2\bigr),
+  \quad E_p \equiv \sqrt{|\bvec{p}|^2 + m^2}.
+  \label{eq:lec06:delta-id1}
+\end{equation}
+Using the identity $\delta(x^2 - a^2) = \frac{1}{2|a|}[\delta(x-a) + \delta(x+a)]$ with $a = E_p > 0$:
+\begin{equation}
+  \delta(p^2 - m^2)
+  = \frac{1}{2E_p}\bigl[\delta(p^0 - E_p) + \delta(p^0 + E_p)\bigr].
+  \label{eq:lec06:delta-split}
+\end{equation}
+The $\theta(p^0)$ factor kills the second spike (since $-E_p < 0$), leaving
+\begin{equation}
+  \delta(p^2 - m^2)\,\theta(p^0)
+  = \frac{1}{2E_p}\,\delta(p^0 - E_p).
+  \label{eq:lec06:delta-theta}
+\end{equation}
+Substituting into \eqref{eq:lec06:decay-rate-raw} and integrating $dp_j^0$ using the delta function sets $p_j^0 = E_j \equiv \sqrt{|\bvec{p}_j|^2 + m_j^2}$ everywhere it appears:
+\begin{equation}
+  \int \frac{dp_j^0}{2\pi}\, 2\pi\,\delta(p^2_j - m_j^2)\,\theta(p_j^0)
+  = \int \frac{dp_j^0}{2\pi}\,\frac{2\pi}{2E_j}\,\delta(p_j^0 - E_j)
+  = \frac{1}{2E_j}.
+  \label{eq:lec06:p0-integral}
+\end{equation}
+
+\subsubsection*{Standard form of the decay rate}
+
+After performing all $dp_j^0$ integrations, the general decay rate takes the \textbf{standard form}:
+\begin{equation}
+  \boxed{
+  \DecayRate
+  = \frac{1}{2m_1}
+    \int \bigl|\Mamp\bigr|^2\,
+    (2\pi)^4\,\delta^{(4)}\!\Bigl(p_1 - \sum_{i=2}^{n} p_i\Bigr)
+    \prod_{j=2}^{n}
+    \frac{d^3p_j}{(2\pi)^3\,2E_j}.
+  }
+  \label{eq:lec06:decay-rate-standard}
+\end{equation}
+
+Here $p_j^0$ has been set equal to $E_j = \sqrt{|\bvec{p}_j|^2 + m_j^2}$ in all remaining factors (including $|\Mamp|^2$, which generally depends on the four-momenta).  The integration is now only over the three-momenta $\bvec{p}_j$ of the final-state particles.
+
+\begin{remark}[Lorentz-invariant phase space]
+The combination $d^3p_j/(2E_j)$ is the \textbf{Lorentz-invariant phase-space measure} for a single on-shell particle with mass $m_j$.  It appears universally in all decay rate and cross-section formulas.  Its Lorentz invariance follows directly from \eqref{eq:lec06:delta-theta}: $\delta(p^2-m^2)\theta(p^0)\,d^4p$ is manifestly Lorentz invariant (the $\delta$ and $\theta$ are scalars and $d^4p$ is invariant), and integrating over $p^0$ produces $d^3p/(2E_p)$.
+\end{remark}
+
+\begin{remark}[Structure of the formula]
+Formula \eqref{eq:lec06:decay-rate-standard} factorises cleanly into two pieces:
+\begin{itemize}
+  \item \textbf{Dynamics}: $|\Mamp|^2$ — computed from Feynman diagrams using the rules developed in Lecture~05.
+  \item \textbf{Kinematics}: the phase-space integral $\int (2\pi)^4\delta^{(4)}(\cdots)\prod_j d^3p_j/[(2\pi)^3 2E_j]$ — a purely kinematic measure over all allowed final states, independent of the theory's coupling constants.
+\end{itemize}
+This factorisation is the practical power of the formula: one can evaluate the kinematic phase space independently of the dynamics, and vice versa.
+\end{remark}
+
+\subsubsection*{Preview: two-body decays}
+
+The simplest and most common case is $n = 2$: particle~1 decays to two particles, $1 \to 2 + 3$.  In this case, four-momentum conservation (in 3D) leaves only the direction of the decay as a free variable — the magnitudes $|\bvec{p}_2|$ and $|\bvec{p}_3|$ are fully fixed by kinematics.  The phase-space integral reduces to a single angular integral, and the decay rate becomes particularly tractable.  This will be worked out explicitly in Lecture~07.
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{To Remember}
+
+\begin{itemize}
+  \item \textbf{Fully connected diagrams only}: disconnected pieces cancel in the normalization and never contribute to physical amplitudes.
+
+  \item \textbf{Vertex corrections}: bare couplings receive loop corrections; this is handled by renormalization.  Physical couplings differ from bare ones.
+
+  \item \textbf{UV divergences}: loop integrals in $d=4$ can diverge.  Two types: quadratic ($\sim\Lambda^2$, from one-propagator loops) and logarithmic ($\sim\ln\Lambda$, from two-propagator loops).  Renormalization provides a finite, self-consistent prescription.
+
+  \item \textbf{1PI diagrams}: a diagram is 1PI if no single internal line cut disconnects it.  All 1PI two-point contributions are collected into the self-energy $-i\Sigma$.
+
+  \item \textbf{Dressed propagator}: resumming all 1PI insertions as a geometric series gives
+  \[
+    \Delta(q^2) = \frac{i}{q^2 - m^2 - \Sigma},
+  \]
+  showing that $\Sigma$ shifts the physical mass: $m_{\rm phys}^2 = m_{\rm bare}^2 + \Sigma$.
+
+  \item \textbf{Symmetry protection}: if a symmetry forbids a mass term, then $\Sigma = 0$ to all orders. This is a powerful tool: entire classes of loop diagrams must vanish without explicit computation.
+
+  \item \textbf{General decay rate} (standard form):
+  \[
+    \DecayRate = \frac{1}{2m_1}\int |\Mamp|^2 \,(2\pi)^4\delta^{(4)}\!\Bigl(p_1 - \textstyle\sum p_i\Bigr)
+    \prod_{j=2}^n \frac{d^3p_j}{(2\pi)^3\,2E_j},
+  \]
+  with $E_j = \sqrt{|\bvec{p}_j|^2 + m_j^2}$.  The three kinematic constraints (on-shell, positive energy, four-momentum conservation) are built into the phase-space measure.
+
+  \item The normalization $1/(2m_1)$ comes from the Lorentz-invariant initial-state normalization $\sqrt{2\omega_k}$ evaluated at rest, $\omega = m_1$.
+
+  \item \textbf{Next}: two-body decay $1 \to 2 + 3$ as an explicit worked example; then scattering cross-sections; then fermions.
+\end{itemize}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Further Reading}
+
+The lecturer explicitly recommended the following:
+
+\begin{itemize}
+  \item \textbf{Griffiths, Chapter~6.2} — ``The Feynman Rules for a Toy Theory'':
+    the decay rate formula and Fermi's Golden Rule in the simplest scalar setting.
+    Cited directly for the phase-space discussion in the second half of this lecture.
+
+  \item \textbf{Peskin \& Schroeder, Chapter~4} — Full derivation of the $S$-matrix,
+    LSZ reduction formula, decay rates and cross-sections, the role of
+    disconnected/vacuum-bubble diagrams, and 1PI structures.  Recommended by the
+    lecturer for the entire content of this lecture.
+
+  \item \textbf{PDG Review of Kinematics}
+    (\href{https://pdg.lbl.gov/2023/reviews/rpp2023-rev-kinematics.pdf}{\texttt{pdg.lbl.gov/2023/reviews/rpp2023-rev-kinematics.pdf}}):
+    concise review of relativistic kinematics, phase space, decay rates, and
+    cross-section formulas.  The lecturer described this as ``very good for bottom
+    lines''.
+\end{itemize}
+
+Additional recommended reading:
+
+\begin{itemize}
+  \item \textbf{Tong, \textit{QFT Notes}, Chapter~3, \S3.5--3.6}
+    (\href{https://www.damtp.cam.ac.uk/user/tong/qft.html}{\texttt{damtp.cam.ac.uk/user/tong/qft.html}}):
+    ``Decay Rates and Cross Sections'' and ``Connected Diagrams and the Vacuum
+    Bubble'' — covers both main topics of this lecture with full derivations.
+
+  \item \textbf{Peskin \& Schroeder, \S7.1} — The full two-point function and 1PI
+    self-energy (Källén--Lehmann representation).  More advanced, but directly
+    extends the 1PI resummation derived in this lecture to the full non-perturbative
+    propagator.
+
+  \item \textbf{Coleman, \textit{Aspects of Symmetry}, Chapter~3}
+    (\href{https://www.cambridge.org/core/books/aspects-of-symmetry/}{\texttt{Cambridge UP}}):
+    an elegant treatment of how symmetries constrain loop corrections and protect
+    masses, directly relevant to the symmetry-protection argument in \S\ref{sec:lec06:connected-1pi-decays}.
+
+  \item \textbf{Halzen \& Martin, \S4.1} — General decay rate and two-body
+    phase space in the scalar theory, before fermions are introduced.
+\end{itemize}
+
+\end{document}

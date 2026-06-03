@@ -1,0 +1,456 @@
+%% ============================================================================
+\section{Lecture 7: Convection, Atmospheric Stability, and Dimensionless Control}
+\label{sec:lec07}
+%% ============================================================================
+\date{28/05/2026}
+
+\begin{center}
+    \textit{Lecture date: 28/05/2026}
+\end{center}
+
+The previous lecture built a unified picture of transport by microscopic
+random walks: diffusion of particles, diffusion of heat, and diffusion of
+momentum. This lecture turns to a different kind of heat transport:
+\emph{convection}. Instead of heat being carried by microscopic steps, a whole
+fluid element moves, expands or contracts, and mixes with its surroundings.
+Gravity is the essential new ingredient, because it lets density differences
+turn into buoyant acceleration.
+
+%%----------------------------------------------------------------------------
+\subsection{Three Ways to Transport Heat}
+\label{sec:lec07:heat-transport-modes}
+%%----------------------------------------------------------------------------
+
+\subsubsection*{Physical Motivation}
+Before asking when convection starts, it is useful to separate it from the
+other two heat-transfer mechanisms. A warm object in a room can exchange heat
+with its surroundings by:
+\begin{itemize}
+    \item \textbf{conduction}: molecular collisions transfer energy through
+    matter, described by Fourier's law;
+    \item \textbf{radiation}: photons carry energy, even through vacuum;
+    \item \textbf{convection}: the material itself moves, so hot and cold
+    parcels are physically exchanged.
+\end{itemize}
+Convection is therefore not just ``better conduction''. It changes the
+configuration of the fluid.
+
+In the Earth's atmosphere, sunlight mostly reaches the surface directly because
+the atmosphere is relatively transparent at visible wavelengths. The warmed
+surface then emits infrared radiation, to which the atmosphere is much more
+opaque. The lower atmosphere is heated from below, and the question becomes:
+will the heat escape by slow conduction/radiation, or will the air itself begin
+to rise and overturn?
+
+\dfn[def:lec07:convection]{Convection}{
+Convection is heat transport by the bulk motion of a fluid. In a gravitational
+field it is driven by buoyancy: a parcel whose density is lower than the
+density of its surroundings accelerates upward, while a denser parcel
+accelerates downward.
+}
+
+%%----------------------------------------------------------------------------
+\subsection{Hydrostatic Balance and an Isothermal Atmosphere}
+\label{sec:lec07:hydrostatic-isothermal}
+%%----------------------------------------------------------------------------
+
+\subsubsection*{Mathematical Setup}
+Let $z$ denote height, $P(z)$ pressure, $\rho(z)$ mass density, $T(z)$
+temperature, $g$ the gravitational acceleration, and $\mu$ the mass per gas
+particle. A static atmosphere must balance gravity against the pressure
+gradient. Per unit mass,
+\begin{equation}
+    \boxed{
+    \frac{1}{\rho}\frac{dP}{dz} = -g .
+    }
+    \label{eq:lec07:hydrostatic-balance}
+\end{equation}
+\textit{Significance:} Pressure must decrease upward because lower layers
+support the weight of all the gas above them.
+
+For an ideal gas,
+\begin{equation}
+    P = n k_B T = \frac{\rho}{\mu}k_B T ,
+    \label{eq:lec07:ideal-gas}
+\end{equation}
+where $n=\rho/\mu$ is the particle number density. Equations
+\eqref{eq:lec07:hydrostatic-balance} and \eqref{eq:lec07:ideal-gas} are not
+yet enough to determine the atmosphere, because both $\rho(z)$ and $T(z)$ are
+unknown. One possible closure is an isothermal atmosphere, $T(z)=T_0$.
+
+Substituting $P=\rho k_B T_0/\mu$ into hydrostatic balance gives
+\begin{align}
+    \frac{1}{\rho}\frac{d}{dz}
+    \left(\frac{\rho k_B T_0}{\mu}\right)
+    &= -g ,
+    \label{eq:lec07:isothermal-step1}\\
+    \frac{k_B T_0}{\mu}\frac{1}{\rho}\frac{d\rho}{dz}
+    &= -g ,
+    \label{eq:lec07:isothermal-step2}\\
+    \frac{d\ln\rho}{dz}
+    &= -\frac{\mu g}{k_B T_0}.
+    \label{eq:lec07:isothermal-step3}
+\end{align}
+Integrating from $z=0$ to $z$,
+\begin{equation}
+    \boxed{
+    \rho(z)=\rho_0 e^{-z/H},
+    \qquad
+    H=\frac{k_B T_0}{\mu g}.
+    }
+    \label{eq:lec07:isothermal-atmosphere}
+\end{equation}
+\textit{Significance:} $H$ is the atmospheric scale height: it is the height
+over which the density falls by a factor of $e$.
+
+For Earth, taking $T_0\simeq300\,\si{K}$, $\mu\simeq 29m_p$, and
+$g\simeq10\,\si{m\,s^{-2}}$ gives
+\begin{equation}
+    H \sim 8\,\si{km}.
+    \label{eq:lec07:earth-scale-height}
+\end{equation}
+This does not mean that the atmosphere ends after $8\,\si{km}$; it means that
+the density has dropped by one $e$-fold.
+
+%%----------------------------------------------------------------------------
+\subsection{Adiabatic Atmospheres and the Lapse Rate}
+\label{sec:lec07:adiabatic-atmosphere}
+%%----------------------------------------------------------------------------
+
+\subsubsection*{Conceptual Background}
+Convection is tested by displacing a fluid element. Pressure equilibrates
+quickly, on roughly a sound-crossing time, while heat exchange by conduction or
+radiation can be much slower. Therefore a rapidly displaced parcel is often
+approximately \emph{adiabatic}: it changes pressure, density, and temperature
+without exchanging heat with its surroundings.
+
+For an ideal gas undergoing adiabatic changes,
+\begin{equation}
+    P = K\rho^\gamma ,
+    \label{eq:lec07:adiabatic-relation}
+\end{equation}
+where $K$ is constant along the parcel trajectory and
+$\gamma=c_p/c_V$ is the adiabatic index. Combining this with
+$P=\rho k_B T/\mu$ gives
+\begin{equation}
+    T \propto \rho^{\gamma-1},
+    \qquad
+    P \propto T^{\gamma/(\gamma-1)} .
+    \label{eq:lec07:T-rho-adiabatic}
+\end{equation}
+
+Differentiate the ideal-gas pressure relation along an adiabatic profile:
+\begin{align}
+    dP &= \gamma\frac{P}{\rho}\,d\rho ,
+    \label{eq:lec07:adiabatic-dP}\\
+    dT &= \frac{\mu}{k_B}\left(\frac{dP}{\rho}
+    - \frac{P}{\rho^2}\,d\rho\right).
+    \label{eq:lec07:dT-general}
+\end{align}
+Using $d\rho = (\rho/\gamma P)dP$ in Eq.~\eqref{eq:lec07:dT-general},
+\begin{align}
+    dT
+    &= \frac{\mu}{k_B}\left(\frac{1}{\rho}
+    - \frac{1}{\gamma\rho}\right)dP
+    = \frac{\mu}{k_B}\frac{\gamma-1}{\gamma}\frac{dP}{\rho}.
+    \label{eq:lec07:dT-adiabatic}
+\end{align}
+Hydrostatic balance gives $dP/dz=-\rho g$, hence
+\begin{equation}
+    \boxed{
+    \left(\frac{dT}{dz}\right)_{\rm ad}
+    = -\,\frac{\gamma-1}{\gamma}\,\frac{\mu g}{k_B}
+    = -\,\frac{g}{c_p}.
+    }
+    \label{eq:lec07:dry-adiabatic-lapse}
+\end{equation}
+\textit{Significance:} A dry parcel cools as it rises because it expands and
+does work on its surroundings. The atmospheric temperature gradient cannot be
+arbitrarily steep without triggering convection.
+
+For dry air, this gives roughly
+\begin{equation}
+    \left|\frac{dT}{dz}\right|_{\rm ad}
+    \sim 10\,\si{K\,km^{-1}}
+    \simeq 1\,^\circ\mathrm{C}/100\,\si{m}.
+    \label{eq:lec07:dry-lapse-number}
+\end{equation}
+
+\nt{Moist air has a smaller effective adiabatic lapse rate. As a rising parcel
+expands and cools, water vapor can condense and release latent heat. That heat
+partly offsets the cooling, so saturated air can become convectively unstable
+for a weaker temperature gradient than dry air.}
+
+%%----------------------------------------------------------------------------
+\subsection{Convective Stability as an Entropy Criterion}
+\label{sec:lec07:convective-stability}
+%%----------------------------------------------------------------------------
+
+\subsubsection*{Physical Motivation}
+It is tempting to say that an atmosphere is stable because dense air is below
+light air. That is not sufficient. A displaced parcel does not keep its
+original density: it expands or contracts to match the ambient pressure. The
+right comparison is made after the parcel has adjusted its pressure but before
+it has exchanged heat. In other words, the parcel keeps its entropy.
+
+For an ideal gas, the entropy per unit mass can be written, up to an additive
+constant, as
+\begin{equation}
+    s = c_V\ln\!\left(\frac{P}{\rho^\gamma}\right)
+    = c_p\ln T - \frac{k_B}{\mu}\ln P + \text{const}.
+    \label{eq:lec07:entropy-ideal-gas}
+\end{equation}
+An adiabatic displacement keeps $s$ fixed. Suppose a parcel from height $z$ is
+lifted slightly to $z+dz$. It rapidly adjusts to the new pressure
+$P(z+dz)$, but retains $s(z)$. Then:
+\begin{itemize}
+    \item if the environmental entropy increases upward, $ds/dz>0$, the
+    lifted parcel has lower entropy than its new surroundings; at the same
+    pressure it is denser, so it sinks back;
+    \item if the environmental entropy decreases upward, $ds/dz<0$, the
+    lifted parcel has higher entropy than its new surroundings; at the same
+    pressure it is lighter, so it keeps rising.
+\end{itemize}
+Thus
+\begin{equation}
+    \boxed{
+    \frac{ds}{dz}>0 \quad \Longrightarrow \quad \text{stable},
+    \qquad
+    \frac{ds}{dz}<0 \quad \Longrightarrow \quad \text{convectively unstable}.
+    }
+    \label{eq:lec07:entropy-stability}
+\end{equation}
+\textit{Significance:} Convection begins when the one-dimensional stratified
+solution is unstable to vertical displacements; the system then develops
+overturning motions instead of staying purely radial or vertical.
+
+Using Eq.~\eqref{eq:lec07:dry-adiabatic-lapse}, the same criterion can be
+phrased as a temperature-gradient condition. Define the environmental lapse
+rate
+\begin{equation}
+    \Gamma \equiv -\frac{dT}{dz},
+    \qquad
+    \Gamma_{\rm ad} \equiv \frac{g}{c_p}.
+    \label{eq:lec07:lapse-definitions}
+\end{equation}
+Then
+\begin{equation}
+    \boxed{
+    \Gamma < \Gamma_{\rm ad} \quad \Longrightarrow \quad \text{stable},
+    \qquad
+    \Gamma > \Gamma_{\rm ad} \quad \Longrightarrow \quad \text{convectively unstable}.
+    }
+    \label{eq:lec07:lapse-stability}
+\end{equation}
+\textit{Significance:} A temperature that falls with height faster than the
+adiabatic rate makes rising parcels remain warmer and lighter than their
+surroundings.
+
+In ordinary dry air, the condition says that height alone should not produce a
+temperature difference much larger than about $1^\circ\mathrm{C}$ per
+$100\,\si{m}$. If the gradient becomes steeper, convection mixes the air and
+drives the profile back toward marginal stability.
+
+%%----------------------------------------------------------------------------
+\subsection{Why Efficient Convection Drives Marginal Stability}
+\label{sec:lec07:marginal-stability}
+%%----------------------------------------------------------------------------
+
+\subsubsection*{Physical Motivation}
+Convection often looks like a violent instability, but in many systems it
+self-regulates. If the entropy gradient is strongly unstable, buoyant motions
+become fast and carry heat very efficiently. That heat transport reduces the
+entropy contrast that caused the motion. The final state is usually close to
+the boundary between stable and unstable.
+
+This explains why convective regions in stars, atmospheres, and planetary
+interiors are often nearly adiabatic. They are not exactly adiabatic, because
+a small superadiabatic excess is needed to carry the heat flux, but the excess
+can be tiny when convection is efficient.
+
+Examples discussed in the lecture:
+\begin{itemize}
+    \item \textbf{Earth's atmosphere:} surface heating can make the lower
+    atmosphere unstable; overturning then limits the lapse rate.
+    \item \textbf{Earth's mantle:} the mantle can convect and carry heat from
+    the hot interior, while the rigid crust conducts heat across the final
+    boundary layer.
+    \item \textbf{the Sun:} convection in the outer envelope transports heat
+    by bulk motion; if the whole Sun were strongly superadiabatic, it would
+    mix on a sound-crossing timescale of only hours, so the actual convective
+    stratification is close to marginal.
+\end{itemize}
+
+%%----------------------------------------------------------------------------
+\subsection{Buoyancy and a Convective Velocity Scale}
+\label{sec:lec07:buoyancy-velocity}
+%%----------------------------------------------------------------------------
+
+\subsubsection*{Mathematical Setup}
+Let $\alpha$ be the thermal expansion coefficient,
+\begin{equation}
+    \alpha \equiv -\frac{1}{\rho}
+    \left(\frac{\partial \rho}{\partial T}\right)_P .
+    \label{eq:lec07:thermal-expansion}
+\end{equation}
+For a small temperature excess $\Delta T$ at fixed pressure,
+\begin{equation}
+    \frac{\Delta\rho}{\rho}\simeq -\alpha\,\Delta T .
+    \label{eq:lec07:density-temperature}
+\end{equation}
+For an ideal gas, $\alpha=1/T$.
+
+Consider a parcel with density $\rho_1$ embedded in surroundings of density
+$\rho_2$. The gravitational force on a volume $V$ is $\rho_1 Vg$ downward,
+while the buoyant force is $\rho_2 Vg$ upward. The net acceleration is
+\begin{equation}
+    a
+    = g\,\frac{\rho_2-\rho_1}{\rho_1}
+    \sim g\,\frac{\Delta\rho}{\rho}.
+    \label{eq:lec07:buoyant-acceleration-density}
+\end{equation}
+Using Eq.~\eqref{eq:lec07:density-temperature},
+\begin{equation}
+    \boxed{
+    a_{\rm buoy} \sim g\,\alpha\,\Delta T_{\rm ex}.
+    }
+    \label{eq:lec07:buoyant-acceleration}
+\end{equation}
+\textit{Significance:} Only the temperature excess beyond the adiabatic
+background contributes to buoyant acceleration; the ordinary adiabatic cooling
+of a lifted parcel is already part of the neutral reference state.
+
+If the unstable layer has height $H$, the buoyancy time and the corresponding
+free convective velocity scale are
+\begin{align}
+    \boxed{
+    \tau_{\rm buoy}
+    \sim \sqrt{\frac{H}{g\alpha\Delta T_{\rm ex}}},
+    }
+    \label{eq:lec07:buoyancy-time}\\
+    \boxed{
+    U_{\rm conv}
+    \sim \frac{H}{\tau_{\rm buoy}}
+    \sim \sqrt{g\alpha\Delta T_{\rm ex}H}.
+    }
+    \label{eq:lec07:convective-velocity}
+\end{align}
+\textit{Significance:} Larger gravity, stronger thermal expansion, larger
+superadiabatic temperature contrast, and taller layers all make convection
+faster.
+
+%%----------------------------------------------------------------------------
+\subsection{Dimensionless Numbers for Convection}
+\label{sec:lec07:dimensionless-convection}
+%%----------------------------------------------------------------------------
+
+\subsubsection*{Motivation}
+The final part of the lecture returns to dimensional analysis. A convective
+layer is controlled by the layer height $H$, the superadiabatic temperature
+contrast $\Delta T_{\rm ex}$, gravity $g$, thermal expansion $\alpha$,
+kinematic viscosity $\nu$, and thermal diffusivity $\chi$. Both $\nu$ and
+$\chi$ have units of $\si{m^2\,s^{-1}}$, but they diffuse different quantities:
+momentum and heat.
+
+\dfn[def:lec07:thermal-diffusivity]{Thermal Diffusivity}{
+The thermal diffusivity $\chi$ is the diffusion coefficient for temperature:
+\[
+    \frac{\partial T}{\partial t}=\chi\nabla^2T .
+\]
+It should be distinguished from particle diffusion and from kinematic
+viscosity, even though all three have dimensions of length squared over time.
+}
+
+The first dimensionless number is the Prandtl number:
+\begin{equation}
+    \boxed{
+    \mathrm{Pr}=\frac{\nu}{\chi}.
+    }
+    \label{eq:lec07:prandtl}
+\end{equation}
+\textit{Significance:} $\mathrm{Pr}$ compares how fast momentum diffuses to
+how fast heat diffuses.
+
+The second important comparison is between buoyant driving and diffusive
+damping. The heat-diffusion time across the layer is
+\begin{equation}
+    \tau_\chi \sim \frac{H^2}{\chi},
+    \label{eq:lec07:thermal-diffusion-time}
+\end{equation}
+and the viscous momentum-diffusion time is
+\begin{equation}
+    \tau_\nu \sim \frac{H^2}{\nu}.
+    \label{eq:lec07:viscous-diffusion-time}
+\end{equation}
+Combining these with the buoyancy time
+\eqref{eq:lec07:buoyancy-time} gives the Rayleigh number:
+\begin{equation}
+    \boxed{
+    \mathrm{Ra}
+    = \frac{g\alpha\Delta T_{\rm ex}H^3}{\nu\chi}.
+    }
+    \label{eq:lec07:rayleigh}
+\end{equation}
+\textit{Significance:} $\mathrm{Ra}$ measures buoyant driving against the two
+diffusive processes that suppress convection: viscosity damps velocity, and
+thermal diffusion erases the temperature anomaly that produces buoyancy.
+
+Equivalently,
+\begin{equation}
+    \mathrm{Ra}
+    = \frac{\tau_\nu\,\tau_\chi}{\tau_{\rm buoy}^2}.
+    \label{eq:lec07:rayleigh-timescales}
+\end{equation}
+Large $\mathrm{Ra}$ means buoyancy acts before diffusion can smooth the
+temperature and momentum perturbations. Small $\mathrm{Ra}$ means diffusion
+wins, and the layer remains conductive. In the standard Rayleigh-Benard
+problem with fixed-temperature plates, convection starts at
+$\mathrm{Ra}\simeq1708$; for order-of-magnitude modeling the important point is
+the scaling $\mathrm{Ra}\gtrsim 1$ versus $\mathrm{Ra}\ll1$.
+
+\subsubsection*{Relation to Reynolds number}
+Using the convective velocity estimate
+\eqref{eq:lec07:convective-velocity}, the Reynolds number of the convective
+motion is
+\begin{equation}
+    \mathrm{Re}_{\rm conv}
+    = \frac{U_{\rm conv}H}{\nu}
+    \sim \frac{H}{\nu}\sqrt{g\alpha\Delta T_{\rm ex}H}.
+    \label{eq:lec07:convective-reynolds}
+\end{equation}
+Squaring and using Eq.~\eqref{eq:lec07:rayleigh},
+\begin{equation}
+    \boxed{
+    \mathrm{Re}_{\rm conv}^2
+    \sim \frac{\mathrm{Ra}}{\mathrm{Pr}}.
+    }
+    \label{eq:lec07:re-ra-pr}
+\end{equation}
+\textit{Significance:} The speed of convective stirring is not an externally
+given input like the speed of a stirred cup; it is part of the solution, set by
+buoyancy and limited by diffusion.
+
+%%----------------------------------------------------------------------------
+\subsection{Summary of the Lecture}
+\label{sec:lec07:summary}
+%%----------------------------------------------------------------------------
+
+\begin{itemize}
+    \item Hydrostatic balance fixes $dP/dz=-\rho g$, but does not by itself
+    determine $T(z)$ and $\rho(z)$.
+    \item An isothermal ideal-gas atmosphere has
+    $\rho=\rho_0e^{-z/H}$ with $H=k_BT/(\mu g)$.
+    \item A rapidly displaced parcel evolves adiabatically, so the neutral
+    temperature gradient is $dT/dz=-g/c_p$.
+    \item The stability criterion is entropy stratification:
+    $ds/dz>0$ is stable, while $ds/dz<0$ is convectively unstable.
+    \item The practical atmospheric form is
+    $\Gamma<\Gamma_{\rm ad}$ stable and $\Gamma>\Gamma_{\rm ad}$ unstable,
+    with $\Gamma_{\rm ad}\simeq10\,\si{K\,km^{-1}}$ for dry air.
+    \item Buoyant acceleration is
+    $a_{\rm buoy}\sim g\alpha\Delta T_{\rm ex}$, where
+    $\Delta T_{\rm ex}$ is the superadiabatic temperature excess.
+    \item The main dimensionless control parameters are
+    $\mathrm{Pr}=\nu/\chi$ and
+    $\mathrm{Ra}=g\alpha\Delta T_{\rm ex}H^3/(\nu\chi)$.
+\end{itemize}

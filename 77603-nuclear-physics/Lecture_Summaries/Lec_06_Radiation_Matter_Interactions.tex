@@ -1,0 +1,554 @@
+%%═══════════════════════════════════════════════════════════════════
+%% Lecture 06 — Radiation–Matter Interactions & the Bethe-Bloch Formula
+%% 77603 — Nuclear Physics
+%% Date: 19 May 2026
+%% Lecturer: Dr. Moshe Friedman
+%%═══════════════════════════════════════════════════════════════════
+
+\section{Lecture 06 — Radiation–Matter Interactions}
+\label{sec:lec06}
+\date{19 May 2026}
+
+%%───────────────────────────────────────────────────────────────────
+\subsection*{Overview}
+%%───────────────────────────────────────────────────────────────────
+To \emph{detect} radiation we must first understand how it \emph{interacts} with matter.
+Detection requires an interaction: this is why dark matter, which couples
+only gravitationally, cannot be seen by any conventional detector.
+
+This lecture covers the three major classes of radiation:
+\textbf{heavy charged particles} (prototype: $\alpha$), \textbf{light charged particles}
+($\beta^\pm$), and \textbf{photons} ($\gamma$, X-rays).  We also briefly discuss
+\textbf{neutrons}, which interact only via the nuclear force and present unique
+detection challenges.  For each class we derive or motivate the key energy-loss
+mechanism and discuss the practical implications for shielding and detection.
+
+%%───────────────────────────────────────────────────────────────────
+\subsection{Energy Scales and the Ionisation Picture}
+\label{subsec:lec06:energy_scales}
+
+\subsubsection*{Physical Motivation}
+Before deriving any formula it is useful to set the stage with order-of-magnitude
+estimates.  Nuclear radiation carries energies of order
+$10^2\,\text{keV}$–$10\,\text{MeV}$, while chemical (atomic) bond energies are
+of order $1$–$30\,\text{eV}$.  A single $5\,\text{MeV}$ $\alpha$ particle therefore
+carries enough energy to ionise millions of atoms.
+
+\paragraph{Why electrons dominate the energy loss.}
+Consider an $\alpha$ particle of charge $ze=2e$ passing through a material.
+The $\alpha$ feels both the nuclei and the orbital electrons.  There are two key
+observations:
+\begin{enumerate}
+  \item The $\alpha$ carries only a tiny fraction of the total particle number
+  in the target: its effect on the \emph{average} electric field in the material is
+  negligible.
+  \item The nuclei are very heavy ($m_\text{nuc}\gg m_\alpha$) compared to electrons
+  ($m_e \approx m_\alpha/8000$), but the \emph{volume filling} of nuclei is
+  negligible.  Electrons, bound to atoms, fill essentially all of the volume.
+\end{enumerate}
+The picture that emerges: the $\alpha$ traverses an extended \emph{electron cloud},
+losing energy in a large number of individually weak collisions.  A single
+head-on collision with an electron transfers at most $\Delta E_\text{max} \approx
+2.7\,\text{keV}$ (for a $5\,\text{MeV}$ $\alpha$), a fraction $\lesssim 0.1\%$
+of the initial energy.  The particle therefore travels \emph{almost straight}
+through the medium — deflection is negligible.
+
+%%───────────────────────────────────────────────────────────────────
+\subsection{Bethe-Bloch Formula for Heavy Charged Particles}
+\label{subsec:lec06:bethe_bloch}
+
+\subsubsection*{Mathematical Setup}
+We derive the stopping power $S = -dE/dx$ (energy loss per unit path length)
+from first principles using the impulse approximation.
+
+\paragraph{Single-collision momentum transfer.}
+Consider an $\alpha$ of charge $ze$, mass $M$, and velocity $v$ moving along the
+$x$-axis.  An atomic electron sits at a perpendicular distance $b$ (the
+\emph{impact parameter}) from the trajectory.  The $\alpha$ passes by the electron in
+a time $\Delta t \sim 2b/v$.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[>=Stealth, thick]
+  % alpha trajectory
+  \draw[->, blue!70!black, line width=1.5pt] (-3,0) -- (3.2,0)
+        node[right] {$\alpha$, velocity $v$};
+  % electron
+  \filldraw[red] (0,1.4) circle (3pt) node[right=4pt] {$e^-$};
+  % impact parameter arrow
+  \draw[<->, dashed, gray] (0,0) -- (0,1.4)
+        node[midway, right=2pt] {$b$};
+  % force arrow (perpendicular component dominates)
+  \draw[->, orange, line width=1.2pt] (0,1.4) -- (-0.55,0.55)
+        node[midway, left=2pt] {$\Delta\vec{p}_\perp$};
+  % x label
+  \node at (-2.8,-0.3) {$x$};
+  \draw[->] (0,-0.5) -- (1,-0.5) node[right] {$+x$};
+\end{tikzpicture}
+\caption{Geometry of a single $\alpha$–electron collision.  The $\alpha$ travels
+along the $x$-axis; the electron is at perpendicular distance $b$.  By symmetry
+the parallel component of $\Delta\vec{p}$ averages to zero, leaving only a
+transverse kick.}
+\label{fig:lec06:impact}
+\end{figure}
+
+By symmetry, the parallel component of the momentum transfer vanishes (the
+$\alpha$ is first attracted and then repelled symmetrically as it passes).  Only
+the transverse component $\Delta p_\perp$ survives.  Using the impulse
+approximation,
+\begin{equation}
+  \label{eq:lec06:impulse}
+  \Delta p_\perp = \int_{-\infty}^{\infty} F_\perp\,dt
+    = \int_{-\infty}^{\infty} eE_\perp\,dt.
+\end{equation}
+We change variables $dt = dx/v$ and recognise that the integral of the
+perpendicular electric field component over all $x$ at fixed $b$ can be evaluated
+with Gauss's law.  Consider a cylindrical Gaussian surface of radius $b$ and
+length $L$ centred on the trajectory.  For $L\to\infty$ the flux through the
+flat ends vanishes, and
+\begin{equation}
+  \label{eq:lec06:gauss}
+  \oint E_\perp\,dA = 2\pi b \int_{-\infty}^{\infty} E_\perp\,dx
+    = \frac{ze}{\epsilon_0}.
+\end{equation}
+Therefore
+\begin{equation}
+  \label{eq:lec06:Ep_integral}
+  \int_{-\infty}^{\infty} E_\perp\,dx = \frac{ze}{2\pi\epsilon_0 b}.
+\end{equation}
+Substituting into Eq.~\eqref{eq:lec06:impulse},
+\begin{equation}
+  \label{eq:lec06:delta_p}
+  \boxed{\Delta p_\perp = \frac{ze \cdot e}{2\pi\epsilon_0 b v}
+    = \frac{ze^2}{2\pi\epsilon_0 b v}.}
+\end{equation}
+\textit{Significance:} The transverse kick scales as $1/b$ and $1/v$ — a faster
+particle spends less time near each electron and receives a smaller kick.
+
+\paragraph{Energy transfer to one electron.}
+The electron recoil energy from a single collision at impact parameter $b$ is
+\begin{equation}
+  \label{eq:lec06:delta_E_b}
+  \boxed{\Delta E(b) = \frac{(\Delta p_\perp)^2}{2m_e}
+    = \frac{z^2 e^4}{8\pi^2 \epsilon_0^2 m_e v^2 b^2}.}
+\end{equation}
+\textit{Significance:} $\Delta E \propto z^2/v^2$ — heavier, slower, or more
+highly charged projectiles lose energy more rapidly.
+
+\subsubsection*{Integration over all impact parameters}
+In an annular shell of radii $[b,b+db]$ and unit length along $x$, the number
+of electrons is $dn = n_e \cdot 2\pi b\,db$, where $n_e = N_0 \rho Z / A$ is
+the electron number density.  Summing contributions from all impact parameters,
+\begin{equation}
+  \label{eq:lec06:dEdx_integral}
+  -\frac{dE}{dx} = \int_{b_\text{min}}^{b_\text{max}}
+    \Delta E(b)\,n_e\,2\pi b\,db
+    = \frac{z^2 e^4 n_e}{4\pi\epsilon_0^2 m_e v^2}
+      \int_{b_\text{min}}^{b_\text{max}} \frac{db}{b}
+    = \frac{z^2 e^4 n_e}{4\pi\epsilon_0^2 m_e v^2}
+      \ln\!\left(\frac{b_\text{max}}{b_\text{min}}\right).
+\end{equation}
+The logarithm contains the physics of the cut-offs, which we now estimate.
+
+\paragraph{Estimating $b_\text{min}$.}
+In a head-on collision the maximum energy transferred to an electron is
+$\Delta E_\text{max} = 2m_e v^2$ (from non-relativistic elastic kinematics).
+Setting $\Delta E(b_\text{min}) = \Delta E_\text{max}$ gives
+\begin{equation}
+  \label{eq:lec06:bmin}
+  b_\text{min} = \frac{ze^2}{4\pi\epsilon_0 m_e v^2}.
+\end{equation}
+
+\paragraph{Estimating $b_\text{max}$.}
+The electron is bound to an atom with characteristic orbital frequency
+$\omega \sim I/\hbar$, where $I$ is the mean ionisation energy of the target
+material.  The interaction is effective only while the $\alpha$ is in the
+"vicinity" of the electron; more precisely, the interaction time $\Delta t \sim
+b/v$ must be shorter than the orbital period $2\pi/\omega$.  This gives
+\begin{equation}
+  \label{eq:lec06:bmax}
+  b_\text{max} \sim \frac{v}{\omega} \sim \frac{\hbar v}{I}.
+\end{equation}
+
+\paragraph{Classical Bethe formula.}
+Collecting terms,
+\begin{equation}
+  \label{eq:lec06:bethe_classical}
+  \frac{b_\text{max}}{b_\text{min}}
+    \propto \frac{2m_e v^2}{I},
+\end{equation}
+so
+\begin{equation}
+  \label{eq:lec06:dEdx_classical}
+  \boxed{-\frac{dE}{dx}
+    \propto \frac{z^2 e^4 n_e}{m_e v^2}
+    \ln\!\left(\frac{2m_e v^2}{I}\right).}
+\end{equation}
+\textit{Significance:} $dE/dx \propto 1/v^2 \propto 1/E_k$ for non-relativistic
+projectiles — the particle loses energy \emph{faster} as it slows down.
+
+\subsubsection*{The Full Bethe-Bloch Formula}
+
+The complete quantum-relativistic treatment (Bethe 1930, Bloch 1933) gives:
+
+\thm[thm:bethe_bloch]{Bethe-Bloch Formula}{%
+\begin{equation}
+  \label{eq:lec06:bethe_bloch}
+  -\frac{dE}{dx}
+    = \frac{z^2 e^4}{(4\pi\epsilon_0)^2}\,
+      \frac{4\pi\, n_e}{m_e c^2\,\beta^2}
+      \left[\ln\!\left(\frac{2m_e c^2\beta^2}{I(1-\beta^2)}\right)
+            - \beta^2\right],
+\end{equation}
+where $\beta = v/c$, $n_e = N_0\rho Z/A$ is the electron number density,
+$z$ is the projectile charge number, and $I$ is the mean ionisation energy
+of the target material.}
+
+\textit{Significance:} The two new terms relative to our derivation are (1) the
+$-\beta^2$ inside the logarithm (relativistic correction — becomes important
+only near $v\approx c$) and (2) the replacement of $\epsilon_0\to1$ in Gaussian
+units.  For $\alpha$ particles at $\sim5\,\text{MeV}$, rest energy $\approx
+3.7\,\text{GeV}$, the kinetic energy is $\ll$ rest energy, so $\beta \ll 1$ and
+the formula reduces well to the classical limit.
+
+\paragraph{Key dependences.}
+\begin{itemize}
+  \item $-dE/dx \propto z^2$: alpha particles ($z=2$) lose energy $4\times$ faster
+  than equally fast protons ($z=1$).
+  \item $-dE/dx \propto Z/A$ of the target material: higher atomic number means
+  more electrons per unit mass, more stopping power.
+  \item $-dE/dx \propto 1/v^2$: slower particles lose energy faster.
+  \item $-dE/dx$ depends on the target only through $n_e$ and $I$ (not on nuclear
+  structure): the formula is universal for all heavy charged particles.
+\end{itemize}
+
+%%───────────────────────────────────────────────────────────────────
+\subsection{Stopping Power, Bragg Peak, and Range}
+\label{subsec:lec06:bragg}
+
+\subsubsection*{Physical Motivation}
+Because the stopping power increases as the particle slows ($-dE/dx \propto
+1/E_k$), an $\alpha$ particle deposits very little energy near the entrance of a
+material and releases most of its energy just before stopping.  This gives rise
+to the \emph{Bragg peak}: a sharp maximum of energy deposition near the end of
+the range.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[>=Stealth]
+  \begin{scope}
+    \draw[->] (0,0) -- (5.5,0) node[right] {depth $x$};
+    \draw[->] (0,0) -- (0,2.8) node[above] {$-dE/dx$};
+    % Bragg curve sketch
+    \draw[blue!70!black, thick, smooth]
+      plot[tension=0.6] coordinates
+      {(0,0.5)(1,0.6)(2,0.8)(3,1.0)(3.8,1.6)(4.2,2.4)(4.5,2.7)(4.6,0.1)(5,0.0)};
+    % Bragg peak label
+    \draw[dashed, gray] (4.5,0) node[below] {$R$} -- (4.5,2.7);
+    \node at (4.5,2.95) {\small Bragg peak};
+  \end{scope}
+\end{tikzpicture}
+\caption{Schematic Bragg curve for a heavy charged particle.  Energy deposition
+is low at the entrance and rises sharply near the end of range $R$ (Bragg peak).
+A typical $5.5\,\text{MeV}$ $\alpha$ in air has $R \approx 4\,\text{cm}$; in
+solid tissue, $R < 1\,\text{mm}$.}
+\label{fig:lec06:bragg}
+\end{figure}
+
+\dfn[dfn:range]{Range of a Heavy Charged Particle}{%
+The range $R$ is the total path length from the entrance to the point of rest:
+\begin{equation}
+  \label{eq:lec06:range}
+  \boxed{R = \int_0^{E_0} \frac{dE}{(-dE/dx)},}
+\end{equation}
+where the integral runs from zero kinetic energy back to the initial energy $E_0$.}
+
+\textit{Significance:} Unlike electrons (Section~\ref{subsec:lec06:beta}), heavy charged
+particles have a well-defined range with only small straggling.  This
+property underpins proton/ion therapy in cancer treatment (Bragg peak can
+be placed at the tumour depth).
+
+\nt{A practical rule: $\alpha$ particles from radioactive decay ($\sim5\,\text{MeV}$)
+travel $\sim4\,\text{cm}$ in air but $<0.1\,\text{mm}$ in tissue or aluminium
+foil.  A single sheet of paper stops them.}
+
+\paragraph{Shielding implications.}
+From Eq.~\eqref{eq:lec06:dEdx_classical}, $-dE/dx \propto Z^2/A$ of the target.
+To stop $\alpha$ particles efficiently one wants a high-$Z$, high-density
+material (many electrons per unit volume), but in practice even low-$Z$
+materials work because the range is intrinsically short.
+
+%%───────────────────────────────────────────────────────────────────
+\subsection{Beta Particles in Matter}
+\label{subsec:lec06:beta}
+
+\subsubsection*{Physical Motivation}
+An electron or positron ($\beta^\pm$) has mass $m_e \approx m_\alpha/8000$.
+In a head-on collision with an atomic electron, the projectile can transfer
+virtually all of its kinetic energy to the target (identical particles).  The
+basic assumption of the Bethe-Bloch treatment — that the projectile travels
+straight, losing negligible fractional energy per collision — breaks down
+completely.
+
+\paragraph{Chaotic motion.}
+Each collision can deflect the $\beta$ particle significantly.  The trajectory
+is a random walk, and there is \emph{no well-defined range}: different electrons
+with the same initial energy stop at different depths.  One cannot speak of a
+``range'' as one does for $\alpha$ particles.
+
+\paragraph{Bremsstrahlung.}
+A second loss channel, absent for heavy projectiles, is important for
+electrons: whenever a fast electron is decelerated by the nuclear Coulomb field,
+it emits a photon (\emph{Bremsstrahlung}, German: ``braking radiation'').  The
+total stopping power for electrons is:
+\begin{equation}
+  \label{eq:lec06:beta_stop}
+  \boxed{-\frac{dE}{dx} = \left(-\frac{dE}{dx}\right)_\text{coll}
+    + \left(-\frac{dE}{dx}\right)_\text{rad}.}
+\end{equation}
+The radiative component scales as $Z^2 E_k$ and becomes dominant at high
+energies or in high-$Z$ materials.
+
+\cor[cor:beta_shielding]{Beta Shielding Paradox}{%
+Shielding $\beta$ radiation with a high-$Z$ material is
+\emph{counterproductive}: the electrons stop quickly by the Bethe-Bloch
+mechanism, but the Bremsstrahlung photons produced escape the shield and may
+be more penetrating and biologically damaging than the original electrons.
+The correct choice is a low-$Z$ absorber (e.g., plastic, water) followed, if
+needed, by a high-$Z$ layer to absorb the resulting X-rays.}
+
+%%───────────────────────────────────────────────────────────────────
+\subsection{Photon Interactions with Matter}
+\label{subsec:lec06:photons}
+
+\subsubsection*{Conceptual Background}
+Photons carry no electric charge, so they do \emph{not} experience the
+continuous Coulomb energy loss that characterises charged particles.  Instead,
+a photon either traverses the material without interaction or is removed from
+the beam in a single event.  This binary behaviour leads to exponential
+attenuation rather than a definite range.
+
+There are three dominant processes, depending on photon energy:
+
+\begin{enumerate}
+  \item \textbf{Photoelectric effect} — dominant at low $E_\gamma$
+  \item \textbf{Compton scattering} — dominant at intermediate $E_\gamma$
+  \item \textbf{Pair production} — dominant at high $E_\gamma$
+\end{enumerate}
+
+\subsubsection{Photoelectric Effect}
+\label{subsubsec:lec06:photo}
+
+\subsubsection*{Mathematical Setup}
+The photon is completely absorbed by an atomic electron, which is ejected with
+kinetic energy
+\begin{equation}
+  \label{eq:lec06:photoelectric}
+  \boxed{T_e = E_\gamma - E_b,}
+\end{equation}
+where $E_b$ is the binding energy of the ejected electron (typically $\ll
+E_\gamma$ for nuclear radiation).  The electron carries a \emph{sharp, discrete}
+energy equal to $E_\gamma - E_b$.
+
+\textit{Significance:} A photopeak at energy $E_\gamma - E_b \approx E_\gamma$
+in a detector spectrum is the signature of photoelectric absorption.  It is the
+most useful feature for $\gamma$-ray spectroscopy.
+
+\subsubsection{Compton Scattering}
+\label{subsubsec:lec06:compton}
+
+\subsubsection*{Mathematical Setup}
+The photon scatters off a (quasi-free) electron, transferring part of its energy.
+Conservation of 4-momentum gives the Compton formula for the scattered photon
+energy:
+\begin{equation}
+  \label{eq:lec06:compton}
+  \boxed{E_{\gamma'} = \frac{E_\gamma}{1 + \dfrac{E_\gamma}{m_e c^2}(1-\cos\theta)},}
+\end{equation}
+where $\theta$ is the photon scattering angle.  The \emph{recoil electron} receives
+$T_e = E_\gamma - E_{\gamma'}$.
+
+\paragraph{Compton edge.}
+The maximum electron recoil energy occurs at $\theta = \pi$ (backscatter):
+\begin{equation}
+  \label{eq:lec06:compton_edge}
+  \boxed{T_{e,\max} = E_\gamma - \frac{E_\gamma}{1 + 2E_\gamma/m_e c^2}.}
+\end{equation}
+This creates the characteristic \emph{Compton edge} in the detector spectrum: a
+sharp drop at $T_{e,\max}$, with a continuum of electron energies below it.
+
+\textit{Significance:} Unlike photoelectric absorption, a single Compton scatter
+does not remove the photon — a degraded photon exits the interaction and may
+scatter again or escape.  The electron recoil forms a \emph{continuous spectrum}
+(not a sharp line), making Compton events harder to use for spectroscopy.
+
+\subsubsection{Pair Production}
+\label{subsubsec:lec06:pair}
+
+\subsubsection*{Physical Motivation}
+Above the threshold $E_\gamma = 2m_e c^2$, the photon can materialise into an
+electron–positron pair in the Coulomb field of a nucleus:
+\begin{equation}
+  \label{eq:lec06:pair_production}
+  \boxed{\gamma + \text{nucleus} \to e^- + e^+ + \text{nucleus}, \qquad
+  E_{\gamma,\text{thr}} = 2m_e c^2 = 1.022\,\text{MeV}.}
+\end{equation}
+The $511\,\text{keV}$ annihilation photons from $e^+ + e^- \to 2\gamma$ are a
+distinctive signature.
+
+\paragraph{Escape peaks.}
+If one or both annihilation photons escape the detector,
+\begin{align}
+  \label{eq:lec06:escape_peaks}
+  \text{single escape peak:}&\quad E_\text{dep} = E_\gamma - 511\,\text{keV}, \\
+  \label{eq:lec06:double_escape}
+  \text{double escape peak:}&\quad E_\text{dep} = E_\gamma - 1022\,\text{keV}.
+\end{align}
+
+\textit{Significance:} The appearance of two lines at $E_\gamma - 511\,\text{keV}$
+and $E_\gamma - 1022\,\text{keV}$ is an unambiguous signature of pair production
+and allows identification of $E_\gamma > 1.022\,\text{MeV}$ sources.
+
+\subsubsection{Attenuation Coefficient and Dominance Regions}
+\label{subsubsec:lec06:attenuation}
+
+\subsubsection*{Mathematical Setup}
+Since a photon is either removed or not, the beam obeys exponential attenuation:
+\begin{equation}
+  \label{eq:lec06:attenuation}
+  \boxed{I(x) = I_0\,e^{-\mu x},}
+\end{equation}
+where the total linear attenuation coefficient $\mu$ is the sum of partial
+coefficients:
+\begin{equation}
+  \label{eq:lec06:mu_total}
+  \boxed{\mu = \mu_\text{photo} + \mu_\text{Compton} + \mu_\text{pair}.}
+\end{equation}
+This is measured by placing absorbers of varying thickness $x$ in the beam and
+fitting the exponential decay.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[>=Stealth, scale=0.85]
+  % axes
+  \draw[->] (0,0) -- (6.5,0) node[right] {$E_\gamma$\;(MeV)};
+  \draw[->] (0,0) -- (0,3.3) node[above] {$\mu$};
+  % labels on energy axis
+  \foreach \x/\lbl in {0.5/0.1, 1.5/0.5, 2.5/1, 3.5/2, 5.0/10}
+    \node[below] at (\x,0) {\tiny\lbl};
+  % photoelectric: steep drop
+  \draw[blue!70!black, thick, smooth]
+    plot[tension=0.5] coordinates {(0.2,3.1)(0.7,2.3)(1.2,1.4)(2.0,0.5)(3.0,0.15)(5.5,0.05)};
+  \node[blue!70!black] at (0.9,2.6) {\small photo};
+  % Compton: hump
+  \draw[orange!80!black, thick, smooth]
+    plot[tension=0.5] coordinates {(0.2,0.4)(1.0,0.9)(2.0,1.3)(3.0,1.0)(5.5,0.5)};
+  \node[orange!80!black] at (2.2,1.55) {\small Compton};
+  % pair: rises
+  \draw[red!70!black, thick, smooth]
+    plot[tension=0.5] coordinates {(2.5,0.0)(3.0,0.2)(3.8,0.6)(4.8,1.2)(5.5,1.7)};
+  \node[red!70!black] at (5.0,1.45) {\small pair};
+\end{tikzpicture}
+\caption{Schematic energy dependence of the three photon attenuation coefficients
+in a medium-$Z$ material.  Photoelectric dominates at low energy, Compton at
+intermediate energies, and pair production above $\sim 1\,\text{MeV}$.}
+\label{fig:lec06:photon_processes}
+\end{figure}
+
+%%───────────────────────────────────────────────────────────────────
+\subsection{Neutrons in Matter}
+\label{subsec:lec06:neutrons}
+
+\subsubsection*{Physical Motivation}
+Neutrons carry no electric charge and do not interact electromagnetically.
+They interact only via the strong nuclear force — directly with nuclei, not
+with the electron cloud.  Since nuclei fill a tiny fraction of the volume of
+matter, neutrons pass through most materials almost unimpeded.  This makes them
+both very difficult to detect and very difficult to shield against.
+
+\paragraph{Elastic scattering.}
+The dominant energy-loss mechanism for neutrons is elastic nuclear scattering:
+\begin{equation}
+  \label{eq:lec06:neutron_elastic}
+  n + A \to n + A\quad\text{(recoil nucleus carries kinetic energy)}.
+\end{equation}
+By the kinematics of elastic scattering, the maximum energy transfer is
+\begin{equation}
+  \label{eq:lec06:neutron_transfer}
+  \Delta E_\text{max} = \frac{4 m_n M_A}{(m_n + M_A)^2}\,E_n.
+\end{equation}
+This is maximised when $M_A = m_n$: scattering off \emph{hydrogen nuclei
+(protons)} is the most efficient moderator.
+
+\clm[clm:neutron_moderate]{Water as Neutron Moderator}{%
+Hydrogen ($M_A = m_n$) allows $\Delta E_\text{max} = E_n$ per collision — all
+the energy can be transferred.  This is why water, polyethylene, and concrete
+(hydrogen-rich materials) are excellent neutron moderators and shields.
+High-$Z$ materials (lead, iron) are nearly useless for neutron slowing because
+$m_n \ll M_A$.}
+
+\paragraph{Attenuation law for neutrons.}
+Like photons (binary interaction), neutrons obey
+\begin{equation}
+  \label{eq:lec06:neutron_attenuation}
+  I(x) = I_0\,e^{-n\sigma x},
+\end{equation}
+where $\sigma$ is the total nuclear scattering cross section and $n$ is the
+number density of target nuclei.
+
+\paragraph{Detection strategy: conversion.}
+Because neutrons cannot be detected directly (they deposit no ionisation energy
+in most detectors), the standard strategy is \emph{conversion}: induce a nuclear
+reaction that produces a charged particle, then detect the charged particle:
+\begin{equation}
+  \label{eq:lec06:neutron_convert}
+  n + {}^{10}\!\text{B} \to {}^7\!\text{Li} + \alpha\quad(Q=2.79\,\text{MeV}).
+\end{equation}
+The resulting $\alpha$ particle is easily detected.  Other converter reactions
+use ${}^{3}\text{He}$, ${}^{6}\text{Li}$, and ${}^{235}\text{U}$ (fission chambers).
+
+\textit{Significance:} Neutron detection is fundamentally harder than photon or
+charged-particle detection: there is no material in which a neutron simply stops
+and deposits energy.  Converter-based detection is inherently indirect and
+introduces a factor of uncertainty.
+
+%%───────────────────────────────────────────────────────────────────
+\subsection{Cloud Chamber — A Direct Window into Radiation}
+\label{subsec:lec06:cloud}
+
+\subsubsection*{Physical Motivation}
+The cloud chamber (Wilson, 1911) is the simplest radiation detector: it makes
+individual particle tracks directly visible.  Alcohol vapour is maintained in a
+supersaturated state by cooling (using dry ice).  An ionising particle passing
+through triggers droplet nucleation along its track — the track becomes visible
+as a line of droplets.
+
+\begin{itemize}
+  \item $\alpha$ tracks: short, thick, straight (high $dE/dx$, small range,
+  negligible deflection).
+  \item $\beta$ tracks: long, thin, tortuous (lower $dE/dx$, significant
+  scattering at each collision).
+  \item Applying a magnetic field: $\vec{F} = q\vec{v}\times\vec{B}$ curves the
+  tracks, allowing charge-sign and momentum determination.
+  \item Limitations: slow reset time ($\gg 1\,\text{ms}$), unsuitable for high-rate
+  measurements; replaced by wire chambers, silicon detectors, etc.\ in modern
+  experiments.
+\end{itemize}
+
+%%───────────────────────────────────────────────────────────────────
+\subsection*{Key Takeaways}
+%%───────────────────────────────────────────────────────────────────
+\begin{itemize}
+  \item \textbf{Heavy charged particles ($\alpha$, $p$, ions):} energy loss described by
+  Bethe-Bloch, $-dE/dx \propto z^2 Z/v^2$; well-defined range; Bragg peak at
+  end of range; easily shielded.
+  \item \textbf{Beta particles ($e^\pm$):} no well-defined range (large deflections);
+  Bremsstrahlung adds a radiative loss channel; shield with low-$Z$ material.
+  \item \textbf{Photons:} three discrete interaction mechanisms; exponential
+  attenuation $I = I_0 e^{-\mu x}$; photoelectric dominant at low $E_\gamma$,
+  Compton intermediate, pair production above $1.022\,\text{MeV}$.
+  \item \textbf{Neutrons:} no EM interaction; attenuate exponentially like photons;
+  hydrogen most effective moderator; detected via conversion reactions.
+  \item The \emph{Bragg peak} and the \emph{Compton continuum} are experimentally
+  central signatures that recur throughout detector physics and spectroscopy.
+\end{itemize}

@@ -1,0 +1,416 @@
+#LyX 2.5 created this file. For more info see https://www.lyx.org/
+\lyxformat 643
+\begin_document
+\begin_header
+\save_transient_properties true
+\origin unavailable
+\textclass article
+\begin_preamble
+\usepackage{semesterb-homework}
+
+% Edit these per assignment.
+\sethwcourse{Introduction To Elementric Particles}
+\sethwcoursenumber{77609}
+\sethwassignment{Lecture 14}
+\sethwstudent{Eran Rehani}
+\sethwstudentid{207823063}
+\sethwsemester{Year 3, Semester B}
+\end_preamble
+\use_default_options true
+\maintain_unincluded_children no
+\language english
+\language_package default
+\inputencoding utf8
+\fontencoding default
+\font_roman "default" "default"
+\font_sans "default" "default"
+\font_typewriter "default" "default"
+\font_math "auto" "auto"
+\font_default_family default
+\use_non_tex_fonts false
+\font_sc false
+\font_roman_osf false
+\font_sans_osf false
+\font_typewriter_osf false
+\font_sf_scale 100 100
+\font_tt_scale 100 100
+\use_microtype false
+\use_dash_ligatures false
+\graphics default
+\default_output_format pdf2
+\output_sync 0
+\bibtex_command default
+\index_command default
+\float_placement class
+\float_alignment class
+\paperfontsize 11
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_package amsmath 2
+\use_package amssymb 2
+\use_package cancel 2
+\use_package esint 1
+\use_package mathdots 1
+\use_package mathtools 2
+\use_package mhchem 1
+\use_package stackrel 1
+\use_package stmaryrd 1
+\use_package undertilde 1
+\cite_engine basic
+\cite_engine_type default
+\biblio_style plain
+\use_bibtopic false
+\use_indices false
+\paperorientation portrait
+\suppress_date false
+\justification default
+\crossref_package refstyle
+\use_formatted_ref 0
+\use_minted 0
+\use_lineno 0
+\backgroundcolor none
+\fontcolor none
+\notefontcolor lightgray
+\boxbgcolor red
+\table_border_color default
+\table_odd_row_color default
+\table_even_row_color default
+\table_alt_row_colors_start 1
+\index Index
+\shortcut idx
+\color #008000
+\end_index
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation skip
+\defskip medskip
+\is_math_indent 0
+\math_numbering_side default
+\quotes_style english
+\dynamic_quotes 0
+\papercolumns 1
+\papersides 1
+\paperpagestyle fancy
+\tablestyle default
+\tracking_changes false
+\output_changes false
+\change_bars false
+\postpone_fragile_content false
+\html_math_output 0
+\html_css_as_file 0
+\html_be_strict false
+\docbook_table_output 0
+\docbook_mathml_prefix 1
+\docbook_mathml_version 0
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+\begin_inset ERT
+status collapsed
+
+\begin_layout Plain Layout
+
+\backslash
+makehwtitle
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Section
+Running Coupling Constants
+\end_layout
+
+\begin_layout Standard
+In QFT,
+ the coupling constants depand on the energy scale.
+ (In QFT Course a more detailed info).
+\end_layout
+
+\begin_layout Standard
+The beta function is defined as 
+\begin_inset Formula $\beta\left(g\right)=\frac{\partial g }{\partial\ln\mu}$
+\end_inset
+
+ where 
+\begin_inset Formula $\mu$
+\end_inset
+
+is the relevant energy scale.
+\end_layout
+
+\begin_layout Standard
+To leading orders we care only on fields that are charged under the symmetry.
+\end_layout
+
+\begin_layout Standard
+For a gauged 
+\begin_inset Formula $U\left(1\right)$
+\end_inset
+
+ with 
+\begin_inset Formula $\left|q\right|=1$
+\end_inset
+
+ The beta funcion is given,
+ to leading order,
+ by
+\begin_inset Formula 
+\[
+\beta\left(g_{1}\right)=\frac{n_{f}g^{3}_{1}}{24\pi^{2}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+(This result is often quoted for the case of 
+\begin_inset Formula $n_{f}$
+\end_inset
+
+Dirac fermion)
+\end_layout
+
+\begin_layout Standard
+For 
+\begin_inset Formula $SU\left(N\right)$
+\end_inset
+
+ theory ,
+ with 
+\begin_inset Formula $n_{f}$
+\end_inset
+
+ fermion fields the beta function is given by
+\begin_inset Formula 
+\[
+\beta\left(g_{n}\right)=\left(\frac{2n_{f}-11N}{3}\right)\frac{g^{3}_{n}}{16\pi^{2}}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+The sign of the beta function is important because it tells us the relation bewtween the scale of the energy and the coupling constant .
+\end_layout
+
+\begin_layout Standard
+If coupling goes larger than we lose the ability to make accurate predictions.
+\end_layout
+
+\begin_layout Standard
+For the case of 
+\begin_inset Formula $U\left(1\right)$
+\end_inset
+
+ we can use pertubative theroy to make predictions.
+\end_layout
+
+\begin_layout Standard
+For the 
+\begin_inset Formula $SU\left(N\right)$
+\end_inset
+
+ if we have low number of fermions we can use pertubative theory to predict observables only at high energy and at low energies pertubativity is lost.
+\end_layout
+
+\begin_layout Standard
+We gonna discuss the implications of this in QCD next.
+\end_layout
+
+\begin_layout Standard
+The coupling constant is determining if we could use pertubation theory.
+ It's determining the strength of the interaction.
+\end_layout
+
+\begin_layout Section
+QCD -Quantum Chromodynamics 
+\end_layout
+
+\begin_layout Quote
+Chapther 5 in Grossman
+\end_layout
+
+\begin_layout Standard
+Quantum ChromoDynamics (QCD),
+ the theory of strong interactions,
+ is our first example of a
+\end_layout
+
+\begin_layout Standard
+non-Abelian theory.
+ 
+\end_layout
+
+\begin_layout Standard
+QCD is a local 
+\begin_inset Formula $SU\left(3\right)_{c}$
+\end_inset
+
+(c for color) 
+\end_layout
+
+\begin_layout Standard
+This theory has 6 left handed and six right-handed fermions fields,
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula 
+\begin{equation}
+Q_{Li}\left(3\right),\qquad Q_{Ri}\left(3\right),\qquad i=1,\ldots,6.
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+there are no scalars.
+\end_layout
+
+\begin_layout Subsection
+The Lagrangian
+\end_layout
+
+\begin_layout Standard
+We impose 
+\begin_inset Formula $SU\left(3\right)_{c}$
+\end_inset
+
+ so we need to include a gaude field in the adjoint representation of 
+\begin_inset Formula $SU\left(3\right)_{c},G^{\mu}_{a}$
+\end_inset
+
+ .
+ that we call the gluon field.
+\end_layout
+
+\begin_layout Standard
+The gluon field strength is given by
+\begin_inset Formula 
+\[
+G^{\mu\nu}_{a}=\partial^{\mu}G^{\nu}_{a}-\partial^{\nu}G^{\mu}_{a}-g_{s}f_{abc}G^{\mu}_{b}G^{\nu}_{c}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Where 
+\begin_inset Formula $L_{a}a=1,\ldots8$
+\end_inset
+
+ are the generators of 
+\begin_inset Formula $SU\left(3\right)$
+\end_inset
+
+ and 
+\begin_inset Formula $\left[L_{a},L_{b}\right]=if_{abc}L_{c}$
+\end_inset
+
+.
+\end_layout
+
+\begin_layout Standard
+In the triplet representation,
+\begin_inset Formula $L_{a}=\frac{1}{2}\lambda_{a}$
+\end_inset
+
+are the eight 
+\begin_inset Formula $3\times3$
+\end_inset
+
+ Gell-Mann matrices.
+\end_layout
+
+\begin_layout Standard
+The covarient derivative is depandent on the field is acted on 
+\begin_inset Formula 
+\[
+D^{\mu}=\partial^{\mu}+\frac{i}{2}g_{s}G^{\mu}_{a}\lambda_{a}
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\mathcal{L}_{\text{kin}}$
+\end_inset
+
+ includes the kinetic terms of all the fields:
+\begin_inset Formula 
+\[
+\mathcal{L}_{\text{kin }}=i\bar{Q_{\text{Li}}}DQ_{Li}+\ldots
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+\begin_inset Formula $\mathcal{L}_{\psi}$
+\end_inset
+
+ Includes Dirac mass terms for the quarks
+\begin_inset Formula 
+\[
+-\mathcal{L}_{\psi}=m^{Q}_{ij}\bar{Q}_{Li}Q_{Rj}+h.c
+\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+We can always,
+ however,
+ make a unitary transformation of the quark fields,
+\begin_inset Formula 
+\[
+Q_{Li}\rightarrow\left(V_{L}\right)_{ij}Q_{Lj},\qquad Q_{Ri}\rightarrow\left(V_{R}\right)_{ij}Q_{Rj}
+\]
+
+\end_inset
+
+ such that in the new basis the mass matrix is diagonal (this basis is called the mass basis):
+\begin_inset Formula 
+\[
+V_{L}m^{Q}V^{\dagger}_{R}=\opertorname{diag}\left(m_{u},m_{d},m_{s},m_{c},m_{b},m_{t}\right)
+\]
+
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Standard
+The full QCD Lagranginan reads
+\begin_inset Formula 
+\begin{equation}
+\mathcal{L}_{\text{QCD}}=-\frac{1}{4}G^{\mu\nu}_{a}G_{a\mu\nu}+\sum_{q_{i}}\left(i\slash q_{i}-m_{q_{i}}\bar{q_{i}}q_{i}\right)
+\end{equation}
+
+\end_inset
+
+
+\end_layout
+
+\end_body
+\end_document

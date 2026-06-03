@@ -1,0 +1,508 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\section{Lecture 17 -- Planar Potential Flow and the Complex Potential}\label{sec:lec17}
+\begin{center}
+  \textbf{Date:} June 3, 2026
+\end{center}
+
+\subsection*{Overview}
+The previous lectures built the theory of ideal, incompressible, irrotational flow and reduced it to a single linear field equation $\lapl\phi=0$ (\cref{sec:lec16:recap}). Lecture~16 then exhibited its flagship three-dimensional solution -- flow past a sphere -- and discovered D'Alembert's paradox. This lecture restricts attention to \emph{planar} (two-dimensional) flow, and the payoff is spectacular: in two dimensions the equations of ideal potential flow are \emph{exactly} the Cauchy--Riemann equations, so the entire machinery of complex analysis becomes available. We will find that every analytic function of a complex variable $z=x+iy$ \emph{is} a planar potential flow, and that the real and imaginary parts of that function are two physically meaningful potentials: the velocity potential $\phi$ and a brand-new object, the \emph{stream function} $\psi$. We develop two small pieces of planar vector algebra (the Hodge star and the wedge product), use them to introduce $\psi$, prove the equations of motion collapse to analyticity, give $\psi$ its physical interpretation (streamlines and flux), and then harvest a sequence of exact solutions almost for free: uniform flow, source/sink, vortex, flow around a corner, and flow around a disk.
+
+\medskip\noindent\textbf{Topics:}
+\begin{enumerate}
+  \item Definition and motivation of planar flow (rivers, islands, airfoils)
+  \item Two planar vector operations: the Hodge star $\ast$ (90$^\circ$ rotation) and the wedge product $\wedge$ (signed area)
+  \item The stream function $\psi$ from incompressibility; the velocity potential $\phi$ from irrotationality
+  \item Equations of motion $=$ Cauchy--Riemann equations; both potentials harmonic
+  \item Boundary conditions: Neumann on $\phi$ becomes Dirichlet ($\psi=$const) on the wall
+  \item The complex velocity potential $w=\phi+i\psi$ and analyticity
+  \item Recovering velocity ($dw/dz=\bar v$) and pressure (Bernoulli)
+  \item Physical meaning of $\psi$: streamlines and the flux identity $\Delta\psi=Q$
+  \item Worked solutions: uniform flow, source/sink, vortex, corner flow, flow past a disk
+\end{enumerate}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{What is Planar Flow, and Why Study It Separately?}\label{sec:lec17:def}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+We remain inside the fluid-mechanics half of the course, in the ideal-flow chapter (no viscosity yet). A flow is called \emph{planar} (two-dimensional) when the velocity field has no component out of a fixed plane and depends only on the two in-plane coordinates.
+
+\dfn[planar-flow]{Planar (Two-Dimensional) Flow}{%
+  A flow is \emph{planar} if, choosing the flow plane to be the $xy$-plane,
+  \begin{equation}
+    \vel = \big(v_x(x,y),\,v_y(x,y),\,0\big),
+    \label{eq:lec17_planar_def}
+  \end{equation}
+  i.e.\ the velocity points only along $x$ and $y$ and is independent of $z$.
+}
+\textit{Significance:} A genuinely three-dimensional vector field is reduced to a two-component field on a two-dimensional domain. This is not merely a convenience: in exactly two dimensions a special analytic structure appears (the link to complex functions) that has no analogue in three dimensions.
+
+\paragraph{Physical examples.} Many engineering flows are planar to excellent approximation because one direction is long and uniform:
+\begin{itemize}
+  \item \textbf{A bend in a river:} at different heights the flow pattern is essentially identical, so we may study only the in-plane dependence.
+  \item \textbf{An island in a river:} the obstacle (which may be elliptical, circular, \dots) is uniform in depth -- the planar analogue of last lecture's flow around a sphere.
+  \item \textbf{An aircraft wing / aerofoil:} along most of the span the cross-sectional profile and the flow around it are constant, so the flow about each section is planar. (Adding a small \emph{angle of attack} makes the model more realistic.)
+\end{itemize}
+We already \emph{know} what an ideal fluid is, and we may again assume the flow is irrotational (a potential flow). The reason this planar case deserves its own dedicated lecture is the hidden \emph{analytic structure} tied to complex functions, which will let us solve several flows exactly.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Mathematical Interlude: Two Operations on Planar Vectors}\label{sec:lec17:ops}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Mathematical Setup}
+Beyond the familiar operations on vectors (addition, scalar multiplication, the dot product), the plane admits two further operations that exist \emph{only} because in two dimensions every vector defines a \emph{unique} perpendicular line. In three dimensions a vector's perpendicular is a whole plane, so these operations have no clean two-dimensional flavour there. We build the theory on these two.
+
+\dfn[hodge-star]{The Hodge Star $\ast$ (Rotation by $90^\circ$)}{%
+  For a planar vector $\bvec u$, define $\ast\bvec u \equiv \uvec z\times\bvec u$. In components, with $\bvec u=(u_x,u_y)$,
+  \begin{equation}
+    \ast\bvec u = (-u_y,\,u_x).
+    \label{eq:lec17_star_comp}
+  \end{equation}
+  Geometrically, $\ast\bvec u$ is $\bvec u$ rotated by $90^\circ$ in the positive (counterclockwise) sense.
+}
+\textit{Significance:} The star turns a vector into the vector perpendicular to it (same length, rotated $+90^\circ$). It is the single tool that lets us trade "tangent to a curve" for "normal to a curve," which is exactly the trade needed to relate streamlines to flux. The definition via $\uvec z\times\bvec u$ momentarily leaves the plane (a blemish); an equivalent purely-planar definition is the component rule \eqref{eq:lec17_star_comp}.
+
+\dfn[wedge]{The Wedge (Exterior) Product $\wedge$}{%
+  For two planar vectors $\bvec u,\bvec v$, define the \emph{scalar}
+  \begin{equation}
+    \bvec u\wedge\bvec v \equiv \uvec z\cdot(\bvec u\times\bvec v) = u_x v_y - u_y v_x.
+    \label{eq:lec17_wedge_comp}
+  \end{equation}
+}
+\textit{Significance:} The wedge of two planar vectors returns the \emph{signed area} of the parallelogram they span. The sign records orientation: $\bvec u\wedge\bvec v>0$ when $\bvec v$ lies counterclockwise from $\bvec u$. This is the two-dimensional shadow of the three-dimensional cross product, collapsed to its single out-of-plane component.
+
+\paragraph{Algebraic properties.} Both operations are linear in each argument (they distribute over linear combinations). Beyond linearity we record three identities used repeatedly below.
+\begin{equation}
+  \ast(\ast\bvec u) = -\bvec u,
+  \label{eq:lec17_star_star}
+\end{equation}
+because rotating twice by $90^\circ$ reverses the vector; the wedge is antisymmetric,
+\begin{equation}
+  \bvec v\wedge\bvec u = -\,\bvec u\wedge\bvec v,
+  \label{eq:lec17_wedge_antisym}
+\end{equation}
+visible immediately from \eqref{eq:lec17_wedge_comp}; and the two operations are linked by
+\begin{equation}
+  \boxed{\bvec u\wedge(\ast\bvec v) = \bvec u\cdot\bvec v.}
+  \label{eq:lec17_wedge_star}
+\end{equation}
+\textit{Significance:} Identity \eqref{eq:lec17_wedge_star} says: wedging with the rotated vector is the same as dotting with the original. It is the algebraic engine that turns the wedge-form equations of motion into the familiar dot-product form, and it is what underlies the flux interpretation of $\psi$.
+
+\begin{proof}[Proof of \eqref{eq:lec17_wedge_star}]
+With $\ast\bvec v=(-v_y,v_x)$, apply \eqref{eq:lec17_wedge_comp} using $\bvec w=\ast\bvec v$, so $w_x=-v_y,\ w_y=v_x$:
+\[
+  \bvec u\wedge(\ast\bvec v) = u_x w_y - u_y w_x = u_x v_x - u_y(-v_y) = u_x v_x + u_y v_y = \bvec u\cdot\bvec v. \qedhere
+\]
+\end{proof}
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=1.3]
+  % Panel A: star operation
+  \begin{scope}
+    \node[font=\bfseries] at (0.6,2.4) {$\ast$ : rotate by $+90^\circ$};
+    \draw[->,gray] (-1.3,0)--(2.1,0) node[right,black]{$x$};
+    \draw[->,gray] (0,-0.4)--(0,2.1) node[above,black]{$y$};
+    \draw[vvec] (0,0)--(1.7,0.85) node[right,font=\small]{$\bvec u$};
+    \draw[force] (0,0)--(-0.85,1.7) node[above left,font=\small]{$\ast\bvec u$};
+    \draw[->] (0.85,0.42) arc (27:117:0.95);
+    \node[font=\small] at (0.35,1.05) {$90^\circ$};
+  \end{scope}
+  % Panel B: wedge = signed area
+  \begin{scope}[shift={(5.2,0)}]
+    \node[font=\bfseries] at (1.0,2.4) {$\bvec u\wedge\bvec v$ : signed area};
+    \draw[->,gray] (-0.4,0)--(2.7,0) node[right,black]{$x$};
+    \draw[->,gray] (0,-0.4)--(0,2.1) node[above,black]{$y$};
+    \fill[myblue!18] (0,0)--(1.8,0.45)--(2.4,1.65)--(0.6,1.2)--cycle;
+    \draw[vvec] (0,0)--(1.8,0.45) node[right,font=\small]{$\bvec u$};
+    \draw[vvec] (0,0)--(0.6,1.2) node[above left,font=\small]{$\bvec v$};
+    \node[font=\small] at (1.25,0.95) {area};
+  \end{scope}
+\end{tikzpicture}
+\caption{The two planar operations. \textbf{Left:} the Hodge star rotates $\bvec u$ counterclockwise by $90^\circ$, $\ast\bvec u=(-u_y,u_x)$. \textbf{Right:} the wedge $\bvec u\wedge\bvec v=u_xv_y-u_yv_x$ is the signed area of the parallelogram spanned by $\bvec u$ and $\bvec v$, positive when $\bvec v$ is counterclockwise from $\bvec u$.}
+\label{fig:lec17_ops}
+\end{figure}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{The Two Potentials: $\phi$ and the Stream Function $\psi$}\label{sec:lec17:potentials}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Conceptual Background}
+Planar potential flow obeys two scalar constraints, and each will buy us one scalar potential. The flow is \emph{irrotational} (a potential flow) and \emph{incompressible}.
+
+\paragraph{Irrotationality $\Rightarrow$ velocity potential $\phi$.}
+The assumption $\bvec\omega=\curl\vel=\bvec 0$ is, in the plane, a single scalar equation, since the curl of a planar field has only a $z$-component:
+\begin{equation}
+  \omega_z=\partial_x v_y-\partial_y v_x = \grad\wedge\vel = 0.
+  \label{eq:lec17_irrot}
+\end{equation}
+As in three dimensions, a curl-free field is a gradient, so there exists a \emph{velocity potential} $\phi$ with
+\begin{equation}
+  \vel=\grad\phi,\qquad v_x=\partial_x\phi,\quad v_y=\partial_y\phi.
+  \label{eq:lec17_velpot}
+\end{equation}
+
+\paragraph{Incompressibility $\Rightarrow$ stream function $\psi$.}
+The assumption $\divg\vel=0$ is the other scalar equation,
+\begin{equation}
+  \divg\vel = \partial_x v_x+\partial_y v_y = 0.
+  \label{eq:lec17_incomp}
+\end{equation}
+In three dimensions this single relation is comparatively weak, but in two dimensions it has a powerful consequence. It states that $\partial_x v_x=-\partial_y v_y$, which is exactly the integrability condition guaranteeing the existence of a function $\psi$ whose derivatives are $(-v_y,v_x)$. We therefore \emph{define} the \emph{stream function} $\psi$ by
+
+\dfn[stream-fn]{Stream Function $\psi$}{%
+  For an incompressible planar flow there exists a scalar $\psi(x,y)$ with
+  \begin{equation}
+    \partial_y\psi = v_x,\qquad \partial_x\psi = -v_y .
+    \label{eq:lec17_psi_def}
+  \end{equation}
+}
+\textit{Significance:} Where $\phi$ exists because the flow is \emph{irrotational}, $\psi$ exists because the flow is \emph{incompressible}. They are different functions built from different physical assumptions. $\psi$ is defined precisely so that $\divg\vel=0$ becomes the trivial equality of mixed partials, $\partial_x\partial_y\psi-\partial_y\partial_x\psi=0$, which holds automatically.
+
+\paragraph{Vector form.} Comparing $\grad\psi=(\partial_x\psi,\partial_y\psi)=(-v_y,v_x)$ with the star \eqref{eq:lec17_star_comp}, the definition of $\psi$ is just
+\begin{equation}
+  \boxed{\grad\psi = \ast\vel.}
+  \label{eq:lec17_gradpsi_starv}
+\end{equation}
+\textit{Significance:} $\grad\psi$ is \emph{not} the velocity (that is $\grad\phi$); it is the velocity rotated by $90^\circ$. Hence $\grad\psi\perp\vel$, which already foreshadows that the level curves of $\psi$ run \emph{along} the flow.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Equations of Motion Are the Cauchy--Riemann Equations}\label{sec:lec17:cr}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Mathematical Setup}
+We now have two unknown fields, $\phi$ and $\psi$. They are not independent: both are built from the same velocity. Eliminating $\vel$ between \eqref{eq:lec17_velpot} and \eqref{eq:lec17_gradpsi_starv},
+\begin{equation}
+  \grad\psi = \ast\vel = \ast\grad\phi.
+  \label{eq:lec17_gradpsi_stargradphi}
+\end{equation}
+Writing this out component by component, with $\ast\grad\phi=(-\partial_y\phi,\partial_x\phi)$:
+\begin{equation}
+  \boxed{\partial_x\phi = \partial_y\psi,\qquad \partial_y\phi = -\partial_x\psi.}
+  \label{eq:lec17_CR}
+\end{equation}
+\textit{Significance:} These are precisely the \textbf{Cauchy--Riemann equations} of complex analysis -- the conditions for a complex function with real part $\phi$ and imaginary part $\psi$ to be \emph{analytic} (holomorphic). The full nonlinear fluid problem has, in two dimensions, collapsed into the statement "a certain complex function is analytic." This is the central result of the lecture.
+
+\paragraph{Both potentials are harmonic.} The system \eqref{eq:lec17_CR} already \emph{contains} the equation of motion. Take the curl-form: in vector language, applying the star to \eqref{eq:lec17_gradpsi_stargradphi} and using $\ast\ast=-1$ gives $\ast\grad\psi=-\grad\phi$, and the consistency of these two gradients (equality of mixed partials) forces
+\begin{equation}
+  \lapl\phi = 0,\qquad \lapl\psi = 0.
+  \label{eq:lec17_harmonic}
+\end{equation}
+Concretely, differentiate the first of \eqref{eq:lec17_CR} by $x$ and the second by $y$ and add: $\partial_x^2\phi+\partial_y^2\phi=\partial_x\partial_y\psi-\partial_y\partial_x\psi=0$, and symmetrically for $\psi$.
+\textit{Significance:} We recover the Laplace equation $\lapl\phi=0$ from Lecture~15 -- but now it comes packaged with a \emph{second} harmonic field $\psi$. In complex analysis this is the familiar statement that the real and imaginary parts of an analytic function are automatically harmonic (\emph{conjugate harmonics}). Solving the flow has become: find an analytic function meeting the boundary conditions.
+
+\nt{Historical note: these equations were first written down by d'Alembert (1752) in the context of planar fluid flow, and by Euler in the context of complex functions; Cauchy and Riemann later gave the modern formulation that turned complex analysis into a complete theory. The deep link between planar ideal flow and complex functions is thus original to fluid mechanics, not a later borrowing.}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Boundary Conditions}\label{sec:lec17:bc}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+At a solid, impermeable wall the fluid cannot penetrate, so the \emph{normal} velocity vanishes: $v_n=\partial_n\phi=0$. This is a Neumann condition on $\phi$ -- awkward to impose. The stream function converts it into something far simpler.
+
+If the normal derivative of $\phi$ vanishes along the wall, then by the $90^\circ$ relation \eqref{eq:lec17_gradpsi_starv} the \emph{tangential} derivative of $\psi$ along the wall vanishes: $\psi$ does not change as we move along the boundary. Hence
+\begin{equation}
+  \boxed{\psi = \text{const on a solid boundary.}}
+  \label{eq:lec17_bc_psi}
+\end{equation}
+\textit{Significance:} The clumsy Neumann condition on $\phi$ becomes a clean \emph{Dirichlet} condition on $\psi$: the wall is a streamline ($\psi=$ const), which makes perfect sense because no fluid crosses it. For a single, simply-connected boundary we are free to choose the constant to be $\psi=0$; only differences of $\psi$ carry physical meaning.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{The Complex Velocity Potential}\label{sec:lec17:complex}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Mathematical Setup}
+The Cauchy--Riemann equations \eqref{eq:lec17_CR} invite us to package $\phi$ and $\psi$ into a single complex function. We identify the physical plane with the complex plane,
+\begin{equation}
+  z = x + iy,
+  \label{eq:lec17_z}
+\end{equation}
+($x$ the real axis, $y$ the imaginary axis -- a \emph{complexification} of the geometric plane), and define
+
+\dfn[complex-pot]{Complex Velocity Potential}{%
+  \begin{equation}
+    w(z) \equiv \phi(x,y) + i\,\psi(x,y).
+    \label{eq:lec17_w_def}
+  \end{equation}
+  By the Cauchy--Riemann equations \eqref{eq:lec17_CR}, $w$ is an \emph{analytic} function of $z$.
+}
+\textit{Significance:} The entire flow is encoded in one analytic function. Conversely \emph{any} analytic $w(z)$ furnishes a legitimate planar potential flow: take $\phi=\Re w$, $\psi=\Im w$. The boundary condition \eqref{eq:lec17_bc_psi} becomes $\Im w=\text{const}$ on solid walls -- in the cases below, simply $\Im w=0$, i.e.\ $w$ is \emph{real} on the boundary. The recipe for solving a flow is now: \emph{find an analytic function that is real on the given boundary}.
+
+\subsubsection{Recovering the Velocity Field}\label{sec:lec17:velocity}
+
+\subsubsection*{Mathematical Setup}
+Given $w(z)$, the velocity is obtained elegantly through the complex derivative. Because $w$ is analytic, $dw/dz$ may be computed by differentiating in any direction; choosing the $x$-direction,
+\begin{equation}
+  \dv{w}{z} = \partial_x w = \partial_x\phi + i\,\partial_x\psi = v_x + i(-v_y) = v_x - i v_y .
+  \label{eq:lec17_dwdz}
+\end{equation}
+Defining the \emph{complex velocity} $\mathcal v \equiv v_x + i v_y$, this is its complex conjugate:
+\begin{equation}
+  \boxed{\dv{w}{z} = v_x - i v_y = \bar{\mathcal v}.}
+  \label{eq:lec17_velocity_complex}
+\end{equation}
+\textit{Significance:} One complex differentiation delivers \emph{both} velocity components at once (as the conjugate $\bar{\mathcal v}$). The appearance of the conjugate is the small price paid for the convention $w=\phi+i\psi$; one simply remembers that the velocity is read off as the conjugate of $dw/dz$. The pressure then follows, exactly as before, by substituting the velocity into the (Bernoulli-like) pressure relation \eqref{eq:lec16_pressure}.
+
+\paragraph{The solution recipe.} The complete procedure is now:
+\begin{enumerate}
+  \item Find an analytic $w(z)$ that is real (or constant imaginary part) on the solid boundary.
+  \item Differentiate: $dw/dz=\bar{\mathcal v}$ gives the velocity field.
+  \item Insert $\mathcal v$ into the Bernoulli-like equation to obtain the pressure.
+\end{enumerate}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Example: Uniform Flow}\label{sec:lec17:uniform}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Worked Example}
+The simplest flow: uniform velocity $\mathcal v_0=v_{0x}+iv_{0y}$ everywhere, no boundary. We seek $w$ with $dw/dz=\bar{\mathcal v}_0$, a constant. Integrating,
+\begin{equation}
+  \boxed{w(z) = \bar{\mathcal v}_0\,z}
+  \label{eq:lec17_uniform_w}
+\end{equation}
+(plus an irrelevant additive constant, since $w$ is defined only up to a constant -- it does not affect the flow). \textit{Significance:} The most elementary analytic function, a linear one, is uniform flow. For real $v_0$ directed along $x$ (so $\bar{\mathcal v}_0=v_0$), $w=v_0 z=v_0 x+iv_0 y$, giving
+\begin{equation}
+  \phi = v_0 x,\qquad \psi = v_0 y.
+  \label{eq:lec17_uniform_phipsi}
+\end{equation}
+The equipotentials $\phi=$ const are vertical lines; the streamlines $\psi=$ const are horizontal lines parallel to the flow. The two families are orthogonal, as they must be since $\grad\psi=\ast\grad\phi$.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=1.0]
+  % streamlines (psi = const): horizontal, with arrows
+  \foreach \y in {-1.5,-0.75,0,0.75,1.5}{
+    \draw[vvec] (-2.6,\y)--(2.6,\y);
+  }
+  % equipotentials (phi = const): vertical dashed
+  \foreach \x in {-2,-1,0,1,2}{
+    \draw[myblue,dashed,thick] (\x,-1.9)--(\x,1.9);
+  }
+  \node[vcol,font=\small] at (2.9,1.5) {$\psi$};
+  \node[myblue,font=\small] at (2.1,2.15) {$\phi$};
+\end{tikzpicture}
+\caption{Uniform flow $w=v_0 z$ (with $v_0$ real). Solid green: streamlines $\psi=v_0 y=$ const (the flow direction). Dashed blue: equipotentials $\phi=v_0 x=$ const, orthogonal to the streamlines.}
+\label{fig:lec17_uniform}
+\end{figure}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Example: Source and Sink}\label{sec:lec17:source}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+A point from which fluid emerges and spreads radially (a \emph{source}); the planar analogue of last lecture's three-dimensional source. Let $Q$ be the \emph{area flux} (volume per unit time, per unit depth) issuing from the origin: $Q>0$ a source, $Q<0$ a sink.
+
+\subsubsection*{Mathematical Setup}
+By symmetry the velocity is purely radial, $\vel=v_r(r)\,\uvec r$. A Gaussian "pillbox" -- here a circle of radius $r$ -- carries the entire flux, so $v_r\cdot(2\pi r)=Q$, giving
+\begin{equation}
+  v_r = \frac{Q}{2\pi r}.
+  \label{eq:lec17_source_vr}
+\end{equation}
+Note the planar $1/r$ falloff (contrast the $1/r^2$ of a 3D point source): this is exactly the field of a charged \emph{wire} in electrostatics, not a point charge. The velocity potential satisfies $\partial_r\phi=v_r=Q/2\pi r$, so $\phi=\tfrac{Q}{2\pi}\ln r$. Recognising $\ln r=\Re\ln z$, the analytic completion is
+\begin{equation}
+  \boxed{w(z) = \frac{Q}{2\pi}\ln z.}
+  \label{eq:lec17_source_w}
+\end{equation}
+\textit{Significance:} The 2D source is the complex logarithm. Splitting into real and imaginary parts with $z=re^{i\theta}$ (so $\ln z=\ln r+i\theta$):
+\begin{equation}
+  \phi = \frac{Q}{2\pi}\ln r,\qquad \psi = \frac{Q}{2\pi}\,\theta.
+  \label{eq:lec17_source_phipsi}
+\end{equation}
+The stream function $\psi\propto\theta$ is \emph{multivalued} -- defined only modulo $Q$ (it jumps by $Q$ on circling the origin once), the hallmark of a source enclosed by the contour. The equipotentials $\phi=$ const are circles $r=$ const; the streamlines $\psi=$ const are radial rays $\theta=$ const, along which fluid flows outward. The velocity follows from $dw/dz=Q/2\pi z$, a simple pole at the origin whose residue $Q/2\pi$ encodes the source strength.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Example: The Point Vortex}\label{sec:lec17:vortex}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Conceptual Background}
+A new flow is obtained \emph{for free} by multiplying the source potential by $i$ (equivalently $1/i$): multiplying an analytic function by a constant keeps it analytic, hence it is still a legitimate flow. Multiplication by $i$ swaps the roles of $\phi$ and $\psi$ -- so circles become streamlines and rays become equipotentials. Take
+\begin{equation}
+  \boxed{w(z) = \frac{\Gamma}{2\pi i}\ln z = -\,\frac{i\Gamma}{2\pi}\ln z.}
+  \label{eq:lec17_vortex_w}
+\end{equation}
+\textit{Significance:} Splitting with $\ln z=\ln r+i\theta$,
+\begin{equation}
+  \phi = \frac{\Gamma}{2\pi}\,\theta,\qquad \psi = -\frac{\Gamma}{2\pi}\ln r .
+  \label{eq:lec17_vortex_phipsi}
+\end{equation}
+Now the \emph{streamlines} $\psi=$ const are circles $r=$ const -- fluid circulates around the origin -- and the equipotentials are radial rays. This is a \textbf{point vortex}. The velocity is purely azimuthal, $v_\theta=\tfrac{1}{r}\partial_\theta\phi=\Gamma/2\pi r$.
+
+\paragraph{Identifying $\Gamma$ as the circulation.} Compute the line integral of $\vel$ around any closed loop encircling the origin once:
+\begin{equation}
+  \oint \vel\cdot d\bvec l = \int_0^{2\pi} v_\theta\,(r\,d\theta) = \int_0^{2\pi}\frac{\Gamma}{2\pi r}\,r\,d\theta = \Gamma.
+  \label{eq:lec17_vortex_circ}
+\end{equation}
+\textit{Significance:} The constant $\Gamma$ is exactly the \emph{circulation} of Lecture~14 (Kelvin's theorem). Although the flow is irrotational everywhere away from the origin ($\bvec\omega=\bvec 0$ for $r>0$), the circulation around any loop enclosing the singular point is the nonzero $\Gamma$ -- all the vorticity is concentrated at the origin. The vortex is thus the flow-field counterpart of a magnetic field around a current-carrying wire.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=1.0]
+  % Panel A: source
+  \begin{scope}
+    \node[font=\bfseries] at (0,2.5) {Source ($Q>0$)};
+    % equipotential circles
+    \foreach \r in {0.5,1.0,1.5}{ \draw[myblue,dashed,thick] (0,0) circle (\r); }
+    % radial streamlines with outward arrows
+    \foreach \a in {0,45,...,315}{ \draw[vvec] (0,0)--(\a:1.9); }
+    \fill[myred] (0,0) circle (1.6pt);
+  \end{scope}
+  % Panel B: vortex
+  \begin{scope}[shift={(5.4,0)}]
+    \node[font=\bfseries] at (0,2.5) {Vortex (circulation $\Gamma$)};
+    % circular streamlines with arrows
+    \foreach \r in {0.6,1.1,1.6}{
+      \draw[vvec] (0,0) circle (\r);
+      \draw[vvec] (\r,0.02)--(\r,-0.02);
+    }
+    % radial equipotentials dashed
+    \foreach \a in {0,45,...,315}{ \draw[myblue,dashed,thick] (0,0)--(\a:1.9); }
+    \fill[myred] (0,0) circle (1.6pt);
+  \end{scope}
+\end{tikzpicture}
+\caption{Source vs.\ vortex -- related by multiplication of $w$ by $i$. \textbf{Left:} source $w=\tfrac{Q}{2\pi}\ln z$: radial streamlines (green), circular equipotentials (dashed). \textbf{Right:} vortex $w=\tfrac{\Gamma}{2\pi i}\ln z$: circular streamlines (green), radial equipotentials (dashed). The roles of $\phi$ and $\psi$ are exchanged.}
+\label{fig:lec17_source_vortex}
+\end{figure}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Physical Meaning of the Stream Function}\label{sec:lec17:psi_meaning}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Conceptual Background}
+The examples reveal a universal pattern: the level curves $\psi=$ const are the \emph{streamlines} of the flow, and differences of $\psi$ measure flux. We now prove both statements in general.
+
+\paragraph{Streamlines.} On a curve $\psi=$ const, $\grad\psi$ is normal to the curve. But $\grad\psi=\ast\vel$ is $\vel$ rotated by $90^\circ$, so $\vel$ is \emph{tangent} to the curve. Hence the fluid flows along level curves of $\psi$ -- they are streamlines. This is the origin of the name \emph{stream function}.
+
+\paragraph{Flux identity.} Consider any path from $A$ to $B$ and ask how much fluid crosses it per unit time (per unit depth). For a line element $d\bvec l$ the (rightward) normal element is $d\bvec S=-\ast d\bvec l$, and the area flux is
+\begin{equation}
+  Q_{A\to B} = \int_A^B \vel\cdot d\bvec S .
+  \label{eq:lec17_flux_def}
+\end{equation}
+Using $\grad\psi=\ast\vel$ together with the link \eqref{eq:lec17_wedge_star}, the integrand becomes a perfect differential:
+\begin{equation}
+  \vel\cdot d\bvec S = \vel\cdot(-\ast d\bvec l) = -\,\vel\wedge(\ast\ast d\bvec l) = \vel\wedge d\bvec l = \grad\psi\cdot d\bvec l = d\psi,
+  \label{eq:lec17_flux_dpsi}
+\end{equation}
+where we used $\ast\ast=-1$ and $\vel\wedge d\bvec l=(\ast\vel)\cdot d\bvec l=\grad\psi\cdot d\bvec l$. Integrating,
+\begin{equation}
+  \boxed{Q_{A\to B} = \psi_B - \psi_A = \Delta\psi.}
+  \label{eq:lec17_flux_identity}
+\end{equation}
+\textit{Significance:} The difference in $\psi$ between two points equals the volume flux (per unit depth) of fluid flowing between the two streamlines through them. Two immediate corollaries: (i) on a streamline $\Delta\psi=0$, so no fluid crosses it -- consistent with it being a wall; (ii) the flux between two streamlines is independent of \emph{where} we measure it (by continuity / incompressibility), so naming the two bounding streamlines already fixes the flux. This is the quantitative meaning of the level \emph{value} of $\psi$, complementing the qualitative fact that its level \emph{curves} are streamlines.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Example: Flow Around a Corner}\label{sec:lec17:corner}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+Consider flow inside (or around) a rigid corner of opening angle $\alpha$ -- the angle may be acute, obtuse, or reflex ($>\pi$). The walls are solid and impermeable, and we want the flow that turns the corner. We need an analytic function that is real on the bent boundary.
+
+\subsubsection*{Mathematical Setup}
+The trick is conformal mapping: find a map that straightens the corner into a straight wall (the real axis) in the $w$-plane. Powers of $z$ multiply angles, so a power map does the job. The boundary of a wedge of opening $\alpha$ is sent to the real line by
+\begin{equation}
+  \boxed{w(z) = A\,z^{\pi/\alpha}}\qquad (A\ \text{real constant}),
+  \label{eq:lec17_corner_w}
+\end{equation}
+because raising to the power $\pi/\alpha$ stretches the wedge angle $\alpha$ up to $\pi$ (a straight wall). \textit{Significance:} A single elementary analytic function solves the entire family of corner flows -- one formula for every opening angle.
+
+\paragraph{Right-angle corner.} Take $\alpha=\pi/2$, so $\pi/\alpha=2$ and (absorbing $A$)
+\begin{equation}
+  w = A z^2 = A\big[(x^2-y^2) + i\,2xy\big].
+  \label{eq:lec17_corner_square}
+\end{equation}
+Then $\phi=A(x^2-y^2)$ and the streamlines are
+\begin{equation}
+  \psi = 2A\,xy = \text{const}\;\Longrightarrow\; xy=\text{const},
+  \label{eq:lec17_corner_streamlines}
+\end{equation}
+a family of rectangular \emph{hyperbolae}. The boundary streamline $\psi=0$ is $xy=0$, i.e.\ the two half-axes -- exactly the right-angle walls. The velocity is $\bar{\mathcal v}=dw/dz=2Az$, so near the corner the flow speeds up linearly in distance from the vertex. \textit{Significance:} The simplest nonlinear analytic function, $z^2$, already describes flow turning a square corner; the hyperbolic streamlines hug the walls and the corner itself is a stagnation point ($\mathcal v=0$ at $z=0$).
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=1.05]
+  % walls (right angle corner along positive axes)
+  \draw[very thick] (2.4,0)--(0,0)--(0,2.4);
+  % hyperbolic streamlines xy=const in first quadrant
+  \foreach \c in {0.25,0.6,1.1,1.8}{
+    \draw[vvec,domain=0.18:2.3,samples=60,variable=\x]
+      plot (\x,{\c/\x});
+  }
+  \fill[myred] (0,0) circle (1.6pt);
+  \node[font=\small,below right] at (0.05,-0.05) {stagnation};
+  \node[font=\small] at (2.2,2.2) {$xy=$const};
+  \node[font=\small] at (2.5,0) {$x$};
+  \node[font=\small] at (0,2.6) {$y$};
+\end{tikzpicture}
+\caption{Flow around a right-angle corner, $w=Az^2$. The solid walls lie along the positive $x$- and $y$-axes (the streamline $\psi=0$, i.e.\ $xy=0$). Other streamlines are the hyperbolae $xy=$ const (green), which the fluid follows as it turns the corner. The vertex is a stagnation point.}
+\label{fig:lec17_corner}
+\end{figure}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Example: Flow Around a Disk}\label{sec:lec17:disk}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+Finally, the planar analogue of last lecture's flow around a sphere: a uniform stream $v_0$ (real, along $x$) past a solid impermeable disk of radius $R$. We need an analytic $w(z)$ that (i) tends to uniform flow at infinity and (ii) is real on the circle $|z|=R$ (so the circle is the streamline $\psi=0$).
+
+\subsubsection*{Mathematical Setup}
+Start from uniform flow $v_0 z$ and add a correction that vanishes at infinity yet makes $w$ real on the circle. On the unit circle $|z|=1$, the conjugate is $\bar z=1/z$, so $z+1/z=z+\bar z=2\Re z$ is real there. Scaling from the unit circle to radius $R$ ($z\to z/R$, and choosing the overall factor to recover $v_0 z$ at infinity) gives
+\begin{equation}
+  \boxed{w(z) = v_0\left(z + \frac{R^2}{z}\right).}
+  \label{eq:lec17_disk_w}
+\end{equation}
+\textit{Significance:} On $|z|=R$, writing $z=Re^{i\theta}$ gives $w=v_0(Re^{i\theta}+Re^{-i\theta})=2v_0R\cos\theta$, which is real, so $\psi=0$ there -- the disk is a streamline, as required. At large $|z|$ the $R^2/z$ term dies and $w\to v_0 z$, recovering the uniform stream. The correction term $v_0 R^2/z$ is precisely a \textbf{2D dipole}: in the plane the logarithm $\ln z$ is the monopole (source) and $1/z$ is the dipole, just as the sphere problem produced a $1/r^2$ dipole in three dimensions. The velocity is
+\begin{equation}
+  \bar{\mathcal v} = \dv{w}{z} = v_0\left(1-\frac{R^2}{z^2}\right),
+  \label{eq:lec17_disk_vel}
+\end{equation}
+which vanishes at $z=\pm R$: the two \emph{stagnation points} on the disk, fore and aft of the stream -- the exact two-dimensional echo of the sphere's stagnation points.
+
+\nt{The professor left the full streamline analysis of the disk as a guided exercise. The picture: a dividing streamline arrives along the axis, splits at the front stagnation point $z=-R$, runs along the upper and lower surfaces, and rejoins at the rear stagnation point $z=+R$; neighbouring streamlines bulge around the disk. Because the flow is fore--aft symmetric and inviscid, D'Alembert's paradox again applies -- zero drag -- with the same resolution (viscosity) to come.}
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=1.0]
+  % the disk
+  \shade[ball color=myblue!40] (0,0) circle (0.6);
+  \node[font=\small] at (0,0) {$R$};
+  % oncoming/diverting streamlines
+  \foreach \y in {-1.5,-0.95,0.95,1.5}{
+    \draw[vvec] (-2.8,\y)
+      .. controls (-1.1,\y) and (-0.9,{\y*0.5}) .. (0,{\y*0.45})
+      .. controls (0.9,{\y*0.5}) and (1.1,\y) .. (2.8,\y);
+  }
+  % central dividing streamline + stagnation points
+  \draw[vvec] (-2.8,0)--(-0.62,0);
+  \draw[vvec] (0.62,0)--(2.8,0);
+  \fill[myred] (-0.6,0) circle (2.2pt);
+  \fill[myred] (0.6,0) circle (2.2pt);
+  \node[myred,font=\scriptsize,below left] at (-0.6,-0.05){front stag.};
+  \node[myred,font=\scriptsize,below right] at (0.6,-0.05){rear stag.};
+  \node[vcol,font=\small] at (-2.6,1.8){$v_0$};
+\end{tikzpicture}
+\caption{Uniform flow past a solid disk, $w=v_0(z+R^2/z)$. The circle $|z|=R$ is the streamline $\psi=0$; the stream divides at the front stagnation point $z=-R$ and rejoins at the rear $z=+R$ (where $dw/dz=0$). The $R^2/z$ term is the 2D dipole, the planar analogue of the sphere's dipole.}
+\label{fig:lec17_disk}
+\end{figure}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection*{Summary}
+%%─────────────────────────────────────────────────────────────────────────────
+\begin{itemize}
+  \item \textbf{Planar flow:} $\vel=(v_x(x,y),v_y(x,y),0)$. Examples: river bends, islands, aerofoil sections.
+  \item \textbf{Two planar operations:} Hodge star $\ast\bvec u=(-u_y,u_x)$ (rotate $90^\circ$); wedge $\bvec u\wedge\bvec v=u_xv_y-u_yv_x$ (signed area); linked by $\bvec u\wedge\ast\bvec v=\bvec u\cdot\bvec v$.
+  \item \textbf{Two potentials:} irrotational $\Rightarrow\vel=\grad\phi$; incompressible $\Rightarrow$ stream function $\psi$ with $\partial_y\psi=v_x,\ \partial_x\psi=-v_y$, i.e.\ $\grad\psi=\ast\vel$.
+  \item \textbf{Equations of motion $=$ Cauchy--Riemann:} $\partial_x\phi=\partial_y\psi,\ \partial_y\phi=-\partial_x\psi$, forcing $\lapl\phi=\lapl\psi=0$.
+  \item \textbf{Complex potential:} $w=\phi+i\psi$ is analytic in $z=x+iy$; velocity $dw/dz=v_x-iv_y=\bar{\mathcal v}$. Solid wall $\Rightarrow\psi=$const ($\Im w=$const).
+  \item \textbf{Meaning of $\psi$:} level curves are streamlines; $\Delta\psi=$ volume flux (per depth) between them.
+  \item \textbf{Catalogue:} uniform $w=\bar{\mathcal v}_0 z$; source $w=\tfrac{Q}{2\pi}\ln z$; vortex $w=\tfrac{\Gamma}{2\pi i}\ln z$ (circulation $\Gamma$); corner $w=Az^{\pi/\alpha}$ (right angle $\to z^2$, hyperbolic streamlines); disk $w=v_0(z+R^2/z)$ (2D dipole, two stagnation points).
+\end{itemize}
+
+\subsection*{Further Reading}
+\begin{itemize}
+  \item L.\,D. Landau and E.\,M. Lifshitz, \textit{Fluid Mechanics} (Vol.\ 6): \S10 (two-dimensional flow, the complex potential, sources and vortices).
+  \item D.\,J. Acheson, \textit{Elementary Fluid Dynamics}: Ch.\ 4--5 (stream function, complex potential, flow past a cylinder).
+  \item G.\,K. Batchelor, \textit{An Introduction to Fluid Dynamics}: \S6.5--6.6 (two-dimensional irrotational flow and conformal mapping).
+\end{itemize}
+
+\end{document}

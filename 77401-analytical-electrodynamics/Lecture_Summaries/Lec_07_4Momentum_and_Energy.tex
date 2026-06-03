@@ -1,0 +1,534 @@
+%% Lecture 07 — Electromagnetic Lagrangian, Lorentz Force, and Gauge Invariance
+\section{Lecture 07 — Electromagnetic Lagrangian, Lorentz Force, and Gauge Invariance}\label{sec:lec07}
+
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 28/04/2026 & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+
+\subsection*{Overview}
+This lecture has three conceptual parts.  In the first part we pick up directly
+from the covariant electromagnetic action of Lecture~06, choose coordinate time
+as the worldline parameter, and extract the explicit three-dimensional Lagrangian.
+We identify the \textbf{scalar potential} $\phi$ and the \textbf{vector potential}
+$\Avec$ as the temporal and spatial parts of the covariant four-potential $A_\mu$,
+and carefully distinguish the \textbf{canonical momentum} from the \textbf{mechanical
+momentum}.
+
+In the second part we apply the Euler--Lagrange equations to that Lagrangian.
+The key technical step is evaluating the total time derivative of the potential
+along the particle's worldline via the chain rule; a careful bookkeeping of the
+Levi-Civita identity then causes two gradient terms to cancel and the familiar
+\textbf{Lorentz force law} drops out.
+
+In the third part we identify a profound symmetry of the entire formulation:
+\textbf{gauge invariance}.  Shifting $A_\mu$ by the four-gradient of any smooth
+scalar function $f$ changes the action by a pure boundary term, leaving the
+equations of motion and the physical fields $\bE$ and $\bB$ unchanged.  We
+close with a manifestly covariant re-derivation of the equations of motion that
+uses the \textbf{proper time} $\tau$ as the parameter; the calculation keeps
+Lorentz invariance explicit at every step and delivers the electromagnetic
+\textbf{field tensor} $F^{\mu\nu}$.
+
+% ==============================================================================
+\subsection{From the Covariant Action to the Explicit Lagrangian}\label{sec:lec07:lagrangian}
+% ==============================================================================
+
+\subsubsection*{Physical Motivation}
+
+In Lecture~06 we derived the total action for a relativistic charged particle
+in an external electromagnetic field:
+\begin{equation}\label{eq:lec07:total-action}
+    S = -mc\int ds - \frac{e}{c}\int A_\mu\,dx^\mu .
+\end{equation}
+This expression is manifestly Lorentz invariant, but it is written without
+committing to any particular parameter along the worldline.  To derive explicit
+equations of motion we must \emph{choose a parameter}.  The natural choice is
+coordinate time $t$: this breaks 4-covariance at the level of the Lagrangian
+but is perfectly consistent and reproduces Newton's equation in the
+non-relativistic limit.  The translation into $L(t)$ is a straightforward
+but instructive exercise in decomposing four-vectors.
+
+\subsubsection*{Decomposing the Four-Potential}
+
+The electromagnetic four-potential with a raised (contravariant) index is
+defined as
+\begin{equation}\label{eq:lec07:fourpot-upper}
+    A^\mu = (\phi,\,\Avec),
+\end{equation}
+where $\phi$ is the \textbf{scalar potential} and $\Avec$ the
+\textbf{three-vector potential}.  Lowering with the Minkowski metric
+$\eta_{\mu\nu} = \mathrm{diag}(+1,-1,-1,-1)$:
+\begin{equation}\label{eq:lec07:fourpot-lower}
+    A_\mu = \eta_{\mu\nu}A^\nu
+    = (\phi,\,-\Avec).
+\end{equation}
+The time component is preserved ($A_0 = A^0 = \phi$), while the spatial
+components pick up a minus sign: $A_i = -A^i$.  This sign is a direct
+consequence of the $(+,-,-,-)$ signature; it appears in every contraction
+involving spatial indices.
+
+\subsubsection*{Expanding the Interaction Term}
+
+With $x^\mu(t) = (ct, \bvec{x}(t))$ as the parameterisation, the coordinate
+differentials are $dx^\mu = (c\,dt,\,d\bvec{x})$.  Contracting with $A_\mu$:
+\begin{align}
+    A_\mu\,dx^\mu
+    &= A_0\,dx^0 + A_i\,dx^i
+     = \phi\cdot c\,dt + (-A^i)\,dx^i
+     = \phi\,c\,dt - \Avec\cdot d\bvec{x} \notag \\
+    &= \left(c\phi - \Avec\cdot\bv\right)dt ,
+    \label{eq:lec07:Amu-dxmu}
+\end{align}
+where $\bv = d\bvec{x}/dt$ is the three-velocity.  The interaction term in
+the action becomes:
+\begin{equation}\label{eq:lec07:Sint}
+    -\frac{e}{c}\int A_\mu\,dx^\mu
+    = -\frac{e}{c}\int\!\left(c\phi - \Avec\cdot\bv\right)dt
+    = \int\!\left(-e\phi + \frac{e}{c}\,\Avec\cdot\bv\right)dt .
+\end{equation}
+Adding the free-particle Lagrangian derived in Lecture~06
+($L_{\text{free}} = -mc^2\!\sqrt{1-v^2/c^2}$), the complete Lagrangian is:
+\begin{equation}\label{eq:lec07:lagrangian}
+    \boxed{L = -mc^2\!\sqrt{1-\frac{v^2}{c^2}} - e\phi + \frac{e}{c}\,\Avec\cdot\bv .}
+\end{equation}
+
+\textit{Physical significance:} The three terms encode, in order: the
+relativistic inertia (whose non-relativistic expansion yields $\tfrac{1}{2}mv^2$
+plus the irrelevant constant $-mc^2$); the electrostatic potential energy $e\phi$;
+and a \emph{velocity-dependent} magnetic coupling $\tfrac{e}{c}\Avec\cdot\bv$.
+The magnetic coupling is the origin of the $\bvec{v}\times\bB$ term in the
+Lorentz force: it is the price paid for the field carrying four-momentum.
+
+% ==============================================================================
+\subsection{Equations of Motion: Deriving the Lorentz Force}\label{sec:lec07:EOM}
+% ==============================================================================
+
+\subsubsection*{Physical Motivation}
+
+Because $\phi$ and $\Avec$ depend on position, the action is not invariant
+under spatial translations, and the canonical momentum is not conserved.  The
+task is to apply the Euler--Lagrange equations
+\begin{equation}\label{eq:lec07:EL}
+    \frac{d}{dt}\!\left(\frac{\partial L}{\partial v^i}\right) - \frac{\partial L}{\partial x^i} = 0
+\end{equation}
+and work out both sides explicitly.  The key subtlety is the total time
+derivative of the potential along the moving worldline, which requires the
+chain rule.  A vector identity (proved via Levi-Civita symbols) then causes
+two gradient terms to cancel, leaving a clean result.
+
+\subsubsection*{The Canonical Momentum}
+
+Differentiating $L$ with respect to $v^i$:
+\begin{equation}\label{eq:lec07:canonical-momentum}
+    p_i^{\text{can}} \;\equiv\; \frac{\partial L}{\partial v^i}
+    = \underbrace{\frac{mv^i}{\sqrt{1-v^2/c^2}}}_{\displaystyle p_i^{\text{mech}}}
+      + \frac{e}{c}\,A^i .
+\end{equation}
+Two contributions appear.  The \textbf{mechanical momentum}
+$p_i^{\text{mech}} = \gamma mv^i$ is the same quantity derived from the free
+Lagrangian in Lecture~06.  The field-dependent correction $\tfrac{e}{c}A^i$
+is new — it arises from the velocity-dependent coupling and makes the canonical
+momentum \textbf{gauge dependent} (since $A^i$ changes under a gauge
+transformation, as we will see).
+
+\begin{remark}
+In quantum mechanics (and quantum field theory), canonical commutation
+relations are imposed between position $x^i$ and the \emph{canonical} momentum
+$p_j^{\text{can}}$.  The minimal-coupling substitution
+$\bvec{p}^{\text{can}}\to -i\hbar\nabla$ therefore replaces the
+\emph{mechanical} momentum by $-i\hbar\nabla - \tfrac{e}{c}\Avec$.  This is
+the origin of the covariant derivative in quantum electrodynamics and is
+a non-trivial physical consequence of the distinction between the two momenta.
+\end{remark}
+
+\subsubsection*{The Generalised Force: A Vector Identity via Levi-Civita Symbols}
+
+The right-hand side of the Euler--Lagrange equation requires $\partial L/\partial x^i$
+with $\bv$ held fixed:
+\begin{equation}\label{eq:lec07:dLdx-raw}
+    \frac{\partial L}{\partial x^i}
+    = -e\,\partial_i\phi + \frac{e}{c}\,\frac{\partial(\Avec\cdot\bv)}{\partial x^i}
+    = -e\,\partial_i\phi + \frac{e}{c}\,v^j\,\partial_i A^j .
+\end{equation}
+(Since $\bv$ does not depend on $\bvec{x}$, only the spatial components of
+$\Avec$ are differentiated.)
+
+We now rewrite $v^j\,\partial_i A^j$ using the Levi-Civita symbol.  Recall
+the identity
+\begin{equation}\label{eq:lec07:levi-civita-id}
+    \epsilon_{ijk}\,\epsilon_{klm} = \delta_{il}\,\delta_{jm} - \delta_{im}\,\delta_{jl} .
+\end{equation}
+The $i$-th component of $\bvec{v}\times(\nabla\times\Avec)$ is
+\begin{align}
+    \left[\bvec{v}\times(\nabla\times\Avec)\right]^i
+    &= \epsilon^{ijk}\,v^j\,\left(\nabla\times\Avec\right)^k
+     = \epsilon^{ijk}\,v^j\,\epsilon_{klm}\,\partial^l A^m \notag \\
+    &= \left(\delta^i_l\,\delta^j_m - \delta^i_m\,\delta^j_l\right)v^j\,\partial^l A^m
+     = v^j\,\partial^i A^j - v^j\,\partial^j A^i .
+    \label{eq:lec07:cross-expand}
+\end{align}
+With $\bv$ treated as spatially constant:
+$v^j\,\partial^i A^j = \partial^i(v^j A^j) = \partial_i(\bv\cdot\Avec)$ (using
+$\partial^i = -\partial_i$ for spatial indices with our metric, but $\partial_i(\bv\cdot\Avec)$
+suffices here since $\bv$ is constant).  Therefore:
+\begin{equation}\label{eq:lec07:cross-identity}
+    v^j\,\partial_i A^j
+    = \left[\bvec{v}\times(\nabla\times\Avec)\right]^i + v^j\,\partial_j A^i
+    = \left[\bvec{v}\times\bB\right]^i + (\bv\cdot\nabla)A^i ,
+\end{equation}
+where $\bB \equiv \nabla\times\Avec$.  Substituting back:
+\begin{equation}\label{eq:lec07:dLdx-final}
+    \frac{\partial L}{\partial x^i}
+    = -e\,\partial_i\phi + \frac{e}{c}\,(\bv\cdot\nabla)A^i + \frac{e}{c}\,[\bvec{v}\times\bB]^i .
+\end{equation}
+
+\subsubsection*{Total Time Derivative Along the Worldline}
+
+The left-hand side of the Euler--Lagrange equation involves
+$\frac{d}{dt}(\gamma mv^i + \tfrac{e}{c}A^i)$.  The potential
+$\bvec{A} = \Avec(\bvec{x}(t),t)$ depends on both position and time; as the
+particle moves, both change.  Applying the chain rule:
+\begin{equation}\label{eq:lec07:chain-rule}
+    \frac{dA^i}{dt}
+    = \underbrace{\frac{\partial A^i}{\partial t}}_{\text{field changes at fixed point}}
+      +\; \underbrace{v^j\,\frac{\partial A^i}{\partial x^j}}_{\text{particle moves to new point}}
+    = \frac{\partial A^i}{\partial t} + (\bv\cdot\nabla)A^i .
+\end{equation}
+The first term is the explicit time dependence of the field; the second arises
+because the particle drifts to a location where the field has a different value.
+
+\subsubsection*{Assembling the Euler--Lagrange Equation}
+
+Inserting~\eqref{eq:lec07:chain-rule} and~\eqref{eq:lec07:dLdx-final} into the
+Euler--Lagrange equation:
+\begin{equation}\label{eq:lec07:EL-assembled}
+    \frac{d(\gamma mv^i)}{dt}
+    + \frac{e}{c}\!\left(\frac{\partial A^i}{\partial t}
+      + \cancel{(\bv\cdot\nabla)A^i}\right)
+    = -e\,\partial_i\phi + \frac{e}{c}\,\cancel{(\bv\cdot\nabla)A^i}
+      + \frac{e}{c}\,[\bvec{v}\times\bB]^i .
+\end{equation}
+The two $(\bv\cdot\nabla)A^i$ terms cancel identically.  Rearranging:
+\begin{equation}\label{eq:lec07:EL-simplified}
+    \frac{d(\gamma mv^i)}{dt}
+    = -e\,\partial_i\phi - \frac{e}{c}\,\frac{\partial A^i}{\partial t}
+      + \frac{e}{c}\,[\bvec{v}\times\bB]^i .
+\end{equation}
+
+\subsubsection*{Definitions of the Physical Fields and the Lorentz Force}
+
+Recognising the two combinations that appear, we define:
+\begin{align}
+    \bE &\;\equiv\; -\nabla\phi - \frac{1}{c}\frac{\partial\Avec}{\partial t} ,
+    \label{eq:lec07:E-def}\\
+    \bB &\;\equiv\; \nabla\times\Avec .
+    \label{eq:lec07:B-def}
+\end{align}
+Substituting into~\eqref{eq:lec07:EL-simplified}:
+\begin{equation}\label{eq:lec07:lorentz-force}
+    \boxed{\frac{d\bvec{p}^{\,\text{mech}}}{dt}
+    = e\!\left(\bE + \frac{\bv}{c}\times\bB\right).}
+\end{equation}
+This is the \textbf{Lorentz force law}.
+
+\textit{Physical significance:}  We have derived—purely from symmetry (Lorentz
+invariance) and the single coupling $-\tfrac{e}{c}\int A_\mu\,dx^\mu$—the
+complete electromagnetic force on a charged relativistic particle.  The form was
+not assumed; it followed from the Euler--Lagrange equations applied to the
+action.  The cancellation of the two $(\bv\cdot\nabla)A^i$ terms is not
+accidental: it is mandated by gauge invariance, as will become clear in
+Section~\ref{sec:lec07:gauge}.
+
+\subsubsection*{Why the Equation of Motion Is Lorentz Invariant}
+
+The equation~\eqref{eq:lec07:lorentz-force} looks correct but its Lorentz
+invariance is not manifest: $\bvec{v}$ is not a four-vector, $\bE$ and $\bB$
+transform into each other under boosts, and it is laborious to verify explicitly
+that both sides transform the same way.
+
+The key insight is: because we \emph{derived} the equation from the
+Lorentz-invariant action~\eqref{eq:lec07:total-action}, it \emph{must} be
+Lorentz invariant.  Any Lorentz transformation merely relabels which inertial
+frame we call ``home''; since the action is the same in all frames, so are its
+Euler--Lagrange equations, up to a change of variables.  This is a powerful
+application of the symmetry-first approach: we enforce invariance at the level
+of the action (one scalar object) and the equations of motion inherit it
+automatically, even if their form looks frame-dependent.
+
+% ==============================================================================
+\subsection{Gauge Invariance}\label{sec:lec07:gauge}
+% ==============================================================================
+
+\subsubsection*{Physical Motivation}
+
+The Lagrangian~\eqref{eq:lec07:lagrangian} is written in terms of $\phi$ and
+$\Avec$ rather than the directly measurable fields $\bE$ and $\bB$.  This
+raises a natural question: how much freedom do we have in choosing $A_\mu$
+while describing the \emph{same} physical situation?  Answering this question
+reveals a deep structure: the electromagnetic field is not uniquely described
+by a single $A_\mu$, but by an entire \emph{equivalence class} of potentials.
+The freedom to choose among them is called \textbf{gauge freedom}, and it is
+one of the defining features of every fundamental force in nature.
+
+\subsubsection*{The Gauge Transformation}
+
+A \textbf{gauge transformation} replaces the four-potential by
+\begin{equation}\label{eq:lec07:gauge-transform}
+    \boxed{A_\mu \;\longrightarrow\; A_\mu' = A_\mu + \partial_\mu f ,}
+\end{equation}
+where $f = f(x^\alpha)$ is any smooth scalar function of spacetime.  In
+components, using $\partial_\mu f = (\tfrac{1}{c}\partial_t f,\,\nabla f)$:
+\begin{align}
+    \phi  &\;\longrightarrow\; \phi + \frac{1}{c}\frac{\partial f}{\partial t} ,
+    \label{eq:lec07:gauge-phi}\\
+    \Avec &\;\longrightarrow\; \Avec + \nabla f .
+    \label{eq:lec07:gauge-A}
+\end{align}
+The function $f$ is completely arbitrary: there are infinitely many gauge-related
+descriptions of any given electromagnetic field.
+
+\subsubsection*{The Action Changes by a Boundary Term Only}
+
+Under~\eqref{eq:lec07:gauge-transform}, the action changes by
+\begin{align}
+    \delta S
+    &= -\frac{e}{c}\int(\partial_\mu f)\,dx^\mu
+     = -\frac{e}{c}\int \frac{\partial f}{\partial x^\mu}\,dx^\mu
+     = -\frac{e}{c}\int df
+     = -\frac{e}{c}\bigl[f(x_{\text{final}}) - f(x_{\text{initial}})\bigr].
+    \label{eq:lec07:delta-S}
+\end{align}
+The integral of an exact differential $df$ telescopes to the endpoints.  Since
+the variational principle holds the endpoints fixed ($\delta x^\mu = 0$ there),
+$\delta S$ is a constant that depends only on the fixed boundary values of $f$
+and is therefore \textbf{irrelevant for the equations of motion}.
+
+\textit{Physical significance:}  The gauge freedom means that $A_\mu$ is not a
+physical observable.  Any two potentials related by
+$A_\mu' = A_\mu + \partial_\mu f$ represent the \emph{same} physical state.
+The actual physical content is encoded in the equivalence class of all such
+potentials.  Singling out one representative — a \textbf{gauge choice} — is
+analogous to choosing a coordinate system: it simplifies calculations but
+carries no physical meaning.  Different gauges that are useful in different
+contexts include the \emph{Lorenz gauge} ($\partial^\mu A_\mu = 0$, useful for
+manifestly covariant calculations) and the \emph{Coulomb gauge} ($\nabla\cdot\Avec = 0$,
+useful for non-relativistic problems).
+
+\subsubsection*{Uniqueness of the Action up to Boundary Terms}
+
+This observation also answers a deeper question: \emph{how unique is the action?}
+Two actions that yield identical equations of motion must have identical
+functional derivatives (``functional gradients'').  By the same argument that
+shows two ordinary functions with equal gradients differ by at most a constant,
+two actions with identical Euler--Lagrange equations differ by at most a
+functional of the boundary values — i.e.\ a total time derivative.  Adding a
+total derivative to $L$ (equivalently, a boundary term to $S$) never changes
+the equations of motion.  The gauge transformation is precisely an instance of
+this: it adds $-\tfrac{e}{c}df$ to the Lagrangian, which is a total derivative.
+
+\subsubsection*{The Physical Fields Are Gauge Invariant}
+
+We verify directly that $\bE$ and $\bB$ are unchanged under~\eqref{eq:lec07:gauge-phi}--\eqref{eq:lec07:gauge-A}:
+\begin{align}
+    \bE' &= -\nabla\!\left(\phi + \frac{\partial_t f}{c}\right)
+             - \frac{1}{c}\frac{\partial}{\partial t}\!\left(\Avec + \nabla f\right)
+           = \bE
+             - \frac{1}{c}\nabla\partial_t f
+             + \frac{1}{c}\partial_t\nabla f = \bE ,
+    \label{eq:lec07:E-invariant}\\
+    \bB' &= \nabla\times(\Avec + \nabla f)
+           = \bB + \underbrace{\nabla\times\nabla f}_{= 0} = \bB .
+    \label{eq:lec07:B-invariant}
+\end{align}
+In~\eqref{eq:lec07:E-invariant} the two extra terms cancel because partial
+derivatives commute; in~\eqref{eq:lec07:B-invariant} the curl of a gradient is
+identically zero.
+
+Both physical fields are gauge invariant: $\bE' = \bE$ and $\bB' = \bB$.  This
+is consistent with the Lorentz force law~\eqref{eq:lec07:lorentz-force}, which
+is written entirely in terms of $\bE$ and $\bB$, not $\phi$ or $\Avec$.
+
+% ==============================================================================
+\subsection{Manifestly Covariant Derivation of the Equations of Motion}\label{sec:lec07:covariant}
+% ==============================================================================
+
+\subsubsection*{Physical Motivation}
+
+In Section~\ref{sec:lec07:EOM} we derived the Lorentz force using coordinate
+time $t$, which breaks the democratic treatment of space and time.  The result
+is correct, but its Lorentz invariance is hidden.  There is a conceptually
+cleaner approach: work with the \textbf{proper time} $\tau$ as the parameter,
+never commit to a specific frame, and vary the covariant
+action~\eqref{eq:lec07:total-action} directly.  The payoff is a single,
+manifestly covariant equation of motion in which the Lorentz symmetry is
+self-evident, and it naturally introduces the \textbf{electromagnetic field
+tensor} $F^{\mu\nu}$ — a single, gauge-invariant, Lorentz-covariant object that
+encodes both $\bE$ and $\bB$.
+
+\subsubsection*{Setup: Proper Time as Parameter}
+
+Since $ds = c\,d\tau$, the action becomes
+\begin{equation}\label{eq:lec07:action-proper}
+    S = -mc^2\int d\tau - \frac{e}{c}\int A_\mu\,u^\mu\,d\tau ,
+\end{equation}
+where the \textbf{four-velocity} $u^\mu = dx^\mu/d\tau = \gamma(c,\bv)$
+satisfies $u^\mu u_\mu = c^2$.
+
+\subsubsection*{Variation of the Worldline}
+
+We shift the worldline: $x^\mu(\tau) \to x^\mu(\tau) + \delta x^\mu(\tau)$,
+with $\delta x^\mu = 0$ at both endpoints.  The resulting changes are:
+\begin{align}
+    \delta u^\mu &= \frac{d(\delta x^\mu)}{d\tau} ,
+    \label{eq:lec07:delta-u}\\
+    \delta A_\mu &= (\partial_\nu A_\mu)\,\delta x^\nu
+    \quad\text{(Taylor expansion to first order).}
+    \label{eq:lec07:delta-A}
+\end{align}
+
+\subsubsection*{First Variation of the Free-Particle Term}
+
+From $c^2 d\tau^2 = \eta_{\mu\nu}dx^\mu dx^\nu$ one finds
+$c^2\,\delta(d\tau) = u_\nu\,d(\delta x^\nu)$, so:
+\begin{equation}\label{eq:lec07:delta-ds}
+    -mc^2\,\delta\!\int d\tau
+    = -m\!\int u_\nu\,\frac{d(\delta x^\nu)}{d\tau}\,d\tau
+    \overset{\text{IBP}}{=}
+    +m\!\int \frac{du_\nu}{d\tau}\,\delta x^\nu\,d\tau ,
+\end{equation}
+where integration by parts was used and the boundary terms vanish because
+$\delta x^\nu = 0$ at the endpoints.
+
+\subsubsection*{First Variation of the Interaction Term}
+
+\begin{align}
+    -\frac{e}{c}\,\delta\!\int A_\mu\,u^\mu\,d\tau
+    &= -\frac{e}{c}\!\int\!
+       \Bigl[(\partial_\nu A_\mu)\,\delta x^\nu\,u^\mu
+       + A_\mu\,\frac{d(\delta x^\mu)}{d\tau}\Bigr]\,d\tau .
+    \label{eq:lec07:delta-interaction}
+\end{align}
+Integrating the second piece by parts (boundary terms vanish):
+\begin{equation}\label{eq:lec07:IBP-interaction}
+    -\frac{e}{c}\!\int A_\mu\,\frac{d(\delta x^\mu)}{d\tau}\,d\tau
+    = +\frac{e}{c}\!\int \frac{dA_\mu}{d\tau}\,\delta x^\mu\,d\tau
+    = +\frac{e}{c}\!\int (\partial_\nu A_\mu)\,u^\nu\,\delta x^\mu\,d\tau .
+\end{equation}
+Combining~\eqref{eq:lec07:delta-interaction} and~\eqref{eq:lec07:IBP-interaction},
+and renaming the dummy index in the first term ($\mu \leftrightarrow \nu$) so
+that $\delta x^\mu$ factors out:
+\begin{equation}\label{eq:lec07:interaction-combined}
+    -\frac{e}{c}\,\delta\!\int A_\mu\,u^\mu\,d\tau
+    = \frac{e}{c}\!\int
+      \bigl[(\partial_\mu A_\nu - \partial_\nu A_\mu)\,u^\nu\bigr]\,\delta x^\mu\,d\tau .
+\end{equation}
+
+\subsubsection*{The Field Tensor and the Covariant Equation of Motion}
+
+Adding~\eqref{eq:lec07:delta-ds} and~\eqref{eq:lec07:interaction-combined} and
+setting $\delta S = 0$ for arbitrary $\delta x^\mu$:
+\begin{equation}\label{eq:lec07:variation-zero}
+    \int\!\left[
+        m\,\frac{du_\mu}{d\tau}
+        - \frac{e}{c}\,(\partial_\mu A_\nu - \partial_\nu A_\mu)\,u^\nu
+    \right]\delta x^\mu\,d\tau = 0 .
+\end{equation}
+Since $\delta x^\mu$ is an arbitrary function, the integrand must vanish at
+every point.  We define the \textbf{electromagnetic field tensor}:
+\begin{equation}\label{eq:lec07:Fmunu-def}
+    \boxed{F_{\mu\nu} \;\equiv\; \partial_\mu A_\nu - \partial_\nu A_\mu ,}
+\end{equation}
+an antisymmetric rank-2 covariant tensor.  Raising both indices (or,
+equivalently, using $F^{\mu\nu} = \partial^\mu A^\nu - \partial^\nu A^\mu$),
+the equation of motion takes the manifestly covariant form:
+\begin{equation}\label{eq:lec07:covariant-EOM}
+    \boxed{m\,\frac{du^\mu}{d\tau}
+    = \frac{e}{c}\,F^{\mu}_{\ \nu}\,u^\nu .}
+\end{equation}
+
+\textit{Physical significance:}  This is the \textbf{relativistic Lorentz force
+law} in fully covariant form.  It is a single 4-component equation: the spatial
+components reproduce~\eqref{eq:lec07:lorentz-force}, while the time component
+gives the power equation $dE/dt = e\bE\cdot\bv$ (the rate at which the field does
+work on the particle).  Lorentz invariance is manifest: $F^{\mu}_{\ \nu}$ is a
+tensor and $u^\nu$ is a four-vector, so both sides transform identically under
+any Lorentz transformation.  There is no need to verify invariance term by term.
+
+\subsubsection*{Structure of the Field Tensor: Encoding $\bE$ and $\bB$}
+
+The tensor $F^{\mu\nu} = -F^{\nu\mu}$ has $\binom{4}{2} = 6$ independent
+components.  Comparing the definition~\eqref{eq:lec07:Fmunu-def} with the
+definitions~\eqref{eq:lec07:E-def}--\eqref{eq:lec07:B-def}:
+\begin{itemize}
+    \item \textbf{Time-space components:} $F^{0i}$ encodes the electric field.
+    \item \textbf{Space-space components:} $F^{ij}$ encodes the magnetic field
+      via $F^{ij} = -\epsilon^{ijk}B_k$.
+\end{itemize}
+All six physical field components ($\bE$ and $\bB$) are packaged into a single
+Lorentz tensor.  Under a Lorentz boost, $F^{\mu\nu}$ transforms as a tensor
+and mixes the electric and magnetic components — which is precisely the
+well-known fact that a purely electric field in one frame contains a magnetic
+component in a boosted frame.
+
+\subsubsection*{Gauge Invariance of the Field Tensor}
+
+Under $A_\mu \to A_\mu + \partial_\mu f$:
+\begin{equation}\label{eq:lec07:F-gauge-inv}
+    F_{\mu\nu} \;\to\; F_{\mu\nu}
+    + \underbrace{(\partial_\mu\partial_\nu f - \partial_\nu\partial_\mu f)}_{= 0}
+    = F_{\mu\nu} .
+\end{equation}
+Partial derivatives commute, so $F_{\mu\nu}$ is \textbf{identically gauge
+invariant}.  This is the deeper reason why $\bE$ and $\bB$ — which are the
+components of $F^{\mu\nu}$ — are gauge invariant, as we verified directly in
+Section~\ref{sec:lec07:gauge}.
+
+% ==============================================================================
+\subsection*{Summary and Looking Ahead}
+% ==============================================================================
+
+\begin{enumerate}
+    \item \textbf{Explicit Lagrangian:}
+      $L = -mc^2\sqrt{1-v^2/c^2} - e\phi + \tfrac{e}{c}\Avec\cdot\bv$.
+      The three terms are inertia, electrostatic coupling, and magnetic coupling.
+
+    \item \textbf{Canonical vs.\ mechanical momentum:}
+      $\bvec{p}^{\text{can}} = \gamma m\bv + \tfrac{e}{c}\Avec$.
+      The canonical momentum enters Poisson brackets and canonical quantisation;
+      the mechanical momentum appears in the force law.
+
+    \item \textbf{Lorentz force derived from symmetry:}
+      The Euler--Lagrange equations, combined with the chain rule for
+      $dA^i/dt$ along the worldline and a Levi-Civita identity, yield
+      $d\bvec{p}^{\text{mech}}/dt = e(\bE + \bvec{v}/c\times\bB)$.
+      The two $(\bv\cdot\nabla)A^i$ terms cancel.
+
+    \item \textbf{Gauge invariance:} $A_\mu \to A_\mu + \partial_\mu f$ changes
+      the action by a boundary term only.  Physical states correspond to
+      equivalence classes of potentials.  The fields $\bE$ and $\bB$ are gauge
+      invariant.  Different gauge choices simplify different calculations.
+
+    \item \textbf{Uniqueness of the action:} Two Lagrangians with identical
+      equations of motion differ by at most a total time derivative.  The gauge
+      transformation generates precisely such a difference.
+
+    \item \textbf{Covariant equation of motion:}
+      $m\,du^\mu/d\tau = \tfrac{e}{c}F^{\mu}_{\ \nu}u^\nu$,
+      derived by varying the covariant action with proper time as parameter
+      and integrating by parts.
+
+    \item \textbf{The field tensor:} $F_{\mu\nu} = \partial_\mu A_\nu - \partial_\nu A_\mu$
+      is antisymmetric, gauge invariant, and packs all six electromagnetic
+      field components ($\bE$ and $\bB$) into a single Lorentz tensor.
+
+\end{enumerate}
+
+In Lecture~08 we will give the field tensor $F^{\mu\nu}$ a life of its own:
+we will write the \textbf{action for the electromagnetic field itself} (not
+just for a particle in the field) and show that its Euler--Lagrange equations
+reproduce \textbf{Maxwell's equations} in covariant form.  We will also meet
+the \textbf{energy-momentum tensor} $\emtensor$ of the electromagnetic field
+and connect it to conservation laws via Noether's theorem.

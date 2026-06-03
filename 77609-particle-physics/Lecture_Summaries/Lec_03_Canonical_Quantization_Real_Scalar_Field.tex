@@ -1,0 +1,462 @@
+%%═══════════════════════════════════════════════════════════════════
+%% Lecture 03 — Canonical Quantisation of the Real Scalar Field:
+%%              Conjugate Momentum, Equal-Time Commutators,
+%%              Fourier Decomposition, and Creation/Annihilation Operators
+%% 77609 — Introduction to Elementary Particles
+%% Date: 12/04/2026
+%% Lecturer: Prof. Yonit Hochberg
+%%═══════════════════════════════════════════════════════════════════
+
+\section{Lecture 03 — Canonical Quantisation of the Real Scalar Field}\label{sec:lec03:quantisation}
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 12/04/2026   & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Overview}
+
+Having established classical field theory in Lecture~02, we now
+perform the pivotal step of \textbf{canonical quantisation}: promoting
+the classical real scalar field $\phi(x,t)$ and its conjugate momentum
+density $\pi(x,t)$ to \emph{operators} satisfying the
+\textbf{equal-time canonical commutation relations} (ET-CCR).
+
+%% Key boxed result: equal-time CCR
+\begin{equation}
+  \boxed{%
+    \bigl[\phi(\mathbf{x},t),\,\pi(\mathbf{y},t)\bigr]
+    = i\,\delta^{(3)}(\mathbf{x}-\mathbf{y}),
+    \qquad
+    \bigl[\phi(\mathbf{x},t),\,\phi(\mathbf{y},t)\bigr]
+    = \bigl[\pi(\mathbf{x},t),\,\pi(\mathbf{y},t)\bigr]=0.
+  }
+  \label{eq:lec03:ETCCR}
+\end{equation}
+
+The Klein-Gordon equation, linear in $\phi$, calls for a
+Fourier decomposition in momentum space.  For each Fourier mode
+$\mathbf{p}$, the field satisfies a simple harmonic oscillator equation
+with frequency $\omega_{\mathbf{p}}=\sqrt{|\mathbf{p}|^2+m^2}$
+(the relativistic dispersion relation).  The reality condition on the
+classical field, and the hermiticity condition on the quantum field,
+constrain the Fourier coefficients: they become the familiar creation
+and annihilation operators $a_{\mathbf{p}}^\dagger$ and
+$a_{\mathbf{p}}$.  This lecture thereby establishes the bridge between
+the classical field and the Fock-space picture of free particles.
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Step 1: Conjugate momentum density from the Lagrangian}
+
+We work in natural units ($\hbar=c=1$) and in $3+1$ spacetime
+dimensions.  The free real scalar field Lagrangian density is
+\begin{equation}
+  \lagr
+  = \tfrac{1}{2}\,\partial_\mu\phi\,\partial^\mu\phi - \tfrac{1}{2}m^2\phi^2
+  = \tfrac{1}{2}\bigl(\dphi^2 - |\nabla\phi|^2\bigr) - \tfrac{1}{2}m^2\phi^2.
+  \label{eq:lec03:L}
+\end{equation}
+
+\dfn{Conjugate momentum density}{By analogy with analytical mechanics—where the conjugate momentum to
+$q$ is $p=\partial L/\partial\dot{q}$—the conjugate momentum density
+associated with the field $\phi$ is
+\begin{equation}
+  \pi(x,t)
+  \equiv \frac{\partial\lagr}{\partial(\partial_t\phi)}
+  = \dot\phi(x,t).
+  \label{eq:lec03:pi}
+\end{equation}}
+
+\begin{remark}[Density vs.\ total momentum]
+The quantity $\pi$ defined above is a \emph{density} (it derives from
+the Lagrangian density $\lagr$, not the integrated Lagrangian $L$).
+This is the standard convention in QFT.  The momentum $p$ in the
+Fourier decomposition below is the \emph{ordinary} (kinematic) 3-momentum
+label; it should not be confused with $\pi$.
+\end{remark}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Step 2: Hamiltonian density}
+
+The Hamiltonian density (via the Legendre transform of $\lagr$) is
+
+%% Derivation: Hamiltonian density from Legendre transform
+\begin{align}
+  \hamilt
+  &= \pi\,\dphi - \lagr \notag \\
+  &= \dot\phi^2
+     - \Bigl[\tfrac{1}{2}\dot\phi^2
+             - \tfrac{1}{2}|\nabla\phi|^2
+             - \tfrac{1}{2}m^2\phi^2\Bigr] \notag \\
+  &= \tfrac{1}{2}\dot\phi^2
+     + \tfrac{1}{2}|\nabla\phi|^2
+     + \tfrac{1}{2}m^2\phi^2.
+  \label{eq:lec03:H}
+\end{align}
+
+Using $\pi=\dphi$ we write this in the canonical form
+\begin{equation}
+  \hamilt
+  = \tfrac{1}{2}\pi^2
+    + \tfrac{1}{2}|\nabla\phi|^2
+    + \tfrac{1}{2}m^2\phi^2,
+\end{equation}
+and the total Hamiltonian is
+$H = \int d^3x\;\hamilt(\mathbf{x},t)$.
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Step 3: The quantisation prescription}
+
+\dfn{Canonical quantisation of fields}{We \emph{promote} $\phi$ and $\pi$ from classical functions to
+Hermitian operators on a Hilbert space and impose the
+\textbf{equal-time canonical commutation relations}:
+\begin{align}
+  \bigl[\phi(\mathbf{x},t),\;\pi(\mathbf{y},t)\bigr]
+    &= i\,\delta^{(3)}(\mathbf{x}-\mathbf{y}),
+    \label{eq:lec03:CCR-phi-pi}\\
+  \bigl[\phi(\mathbf{x},t),\;\phi(\mathbf{y},t)\bigr]
+    &= 0,
+    \label{eq:lec03:CCR-phi-phi}\\
+  \bigl[\pi(\mathbf{x},t),\;\pi(\mathbf{y},t)\bigr]
+    &= 0.
+    \label{eq:lec03:CCR-pi-pi}
+\end{align}
+These are the direct field-theory analogues of $[q_i,p_j]=i\delta_{ij}$.}
+
+\begin{remark}[Why equal-time?]
+The commutators are imposed at the \emph{same time} $t$.  This singles
+out a time slice (a Cauchy surface) and is the natural generalization of
+the single-time quantum mechanics condition $[q(t),p(t)]=i\hbar$.
+Although equal-time quantisation breaks manifest Lorentz covariance, the
+resulting QFT is nonetheless fully Lorentz invariant once interactions
+are included properly.  A Lorentz-covariant quantisation
+exists but is more involved.
+\end{remark}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Step 4: Fourier decomposition and the Klein-Gordon spectrum}
+
+%% Derivation: Fourier decomposition of the scalar field
+The Klein-Gordon equation arising from \eqref{eq:lec03:L} via
+the Euler-Lagrange prescription is
+\begin{equation}
+  (\Box + m^2)\phi = 0,
+  \qquad
+  \Box \equiv \partial^\mu\partial_\mu
+             = \partial_t^2 - \nabla^2.
+  \label{eq:lec03:KG}
+\end{equation}
+
+\subsubsection*{Fourier decomposition in momentum space}
+
+Write the field as a Fourier integral over 3-momentum:
+\begin{equation}
+  \phi(\mathbf{x},t)
+  = \int \frac{d^3p}{(2\pi)^3}\;
+       \tilde\phi(\mathbf{p},t)\,e^{i\mathbf{p}\cdot\mathbf{x}}.
+  \label{eq:lec03:Fourier-def}
+\end{equation}
+Substituting into \eqref{eq:lec03:KG}:
+\begin{align}
+  0
+  &= (\partial_t^2 - \nabla^2 + m^2)\phi \notag\\
+  &= \int \frac{d^3p}{(2\pi)^3}
+       \bigl[\,\ddot{\tilde\phi}(\mathbf{p},t)
+             + |\mathbf{p}|^2\,\tilde\phi(\mathbf{p},t)
+             + m^2\,\tilde\phi(\mathbf{p},t)\bigr]
+       e^{i\mathbf{p}\cdot\mathbf{x}}.
+  \label{eq:lec03:KG-decomp}
+\end{align}
+Since this must hold for every mode independently,
+\begin{equation}
+  \ddot{\tilde\phi}(\mathbf{p},t)
+  + \underbrace{\bigl(|\mathbf{p}|^2 + m^2\bigr)}_{\omega_{\mathbf{p}}^2}
+    \tilde\phi(\mathbf{p},t) = 0.
+  \label{eq:lec03:SHO}
+\end{equation}
+
+\dfn{Relativistic dispersion relation}{Define the \emph{on-shell frequency} for each mode:
+\begin{equation}
+  \omega_{\mathbf{p}}
+  \equiv \sqrt{|\mathbf{p}|^2 + m^2}.
+  \label{eq:lec03:omega}
+\end{equation}
+This is precisely the relativistic energy-momentum relation $E^2=p^2+m^2$
+(in natural units) for a particle of mass $m$ and 3-momentum $\mathbf{p}$.}
+
+Equation~\eqref{eq:lec03:SHO} is the equation of a
+\textbf{simple harmonic oscillator} with frequency $\omega_{\mathbf{p}}$
+for each Fourier mode.  The general solution is
+\begin{equation}
+  \tilde\phi(\mathbf{p},t)
+  = A(\mathbf{p})\,e^{-i\omega_{\mathbf{p}}t}
+    + B(\mathbf{p})\,e^{+i\omega_{\mathbf{p}}t}.
+  \label{eq:lec03:SHO-sol}
+\end{equation}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Step 5: Reality (hermiticity) condition on the field}
+
+%% Derivation: Reality condition constrains Fourier coefficients
+The \emph{classical} field $\phi(\mathbf{x},t)$ is real:
+$\phi^*(\mathbf{x},t)=\phi(\mathbf{x},t)$.  Taking the complex
+conjugate of the Fourier representation and requiring equality gives
+\begin{align}
+  \phi^*(\mathbf{x},t)
+  &= \int \frac{d^3p}{(2\pi)^3}
+        \tilde\phi^*(\mathbf{p},t)\,e^{-i\mathbf{p}\cdot\mathbf{x}}
+  \notag\\
+  &= \int \frac{d^3p}{(2\pi)^3}
+        \tilde\phi^*(-\mathbf{p},t)\,e^{+i\mathbf{p}\cdot\mathbf{x}}
+        \quad [\text{re-label }\mathbf{p}\to -\mathbf{p}],
+  \label{eq:lec03:reality-step}
+\end{align}
+where in the last line we used the substitution $\mathbf{p}\to-\mathbf{p}$
+to match the $e^{i\mathbf{p}\cdot\mathbf{x}}$ Fourier basis.
+Comparing with \eqref{eq:lec03:Fourier-def} we need
+\begin{equation}
+  \tilde\phi(\mathbf{p},t) = \tilde\phi^*(-\mathbf{p},t).
+  \label{eq:lec03:reality-cond}
+\end{equation}
+Applying this to \eqref{eq:lec03:SHO-sol}:
+\begin{align}
+  A(\mathbf{p})e^{-i\omega_{\mathbf{p}} t}
+  + B(\mathbf{p})e^{+i\omega_{\mathbf{p}} t}
+  &= A^*(-\mathbf{p})e^{+i\omega_{\mathbf{p}} t}
+   + B^*(-\mathbf{p})e^{-i\omega_{\mathbf{p}} t}.
+  \label{eq:lec03:reality-match}
+\end{align}
+Matching the $e^{-i\omega t}$ and $e^{+i\omega t}$ coefficients
+separately:
+\begin{equation}
+  B(\mathbf{p}) = A^*(-\mathbf{p}).
+  \label{eq:lec03:B-from-A}
+\end{equation}
+Hence the general real solution contains only one independent
+complex amplitude per mode, which we rename $a(\mathbf{p})\equiv A(\mathbf{p})$:
+\begin{equation}
+  \tilde\phi(\mathbf{p},t)
+  = a(\mathbf{p})\,e^{-i\omega_{\mathbf{p}} t}
+    + a^*(-\mathbf{p})\,e^{+i\omega_{\mathbf{p}} t}.
+  \label{eq:lec03:phi-tilde}
+\end{equation}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Step 6: Full mode expansion of the quantum field}
+
+Substituting \eqref{eq:lec03:phi-tilde} back into the Fourier integral
+\eqref{eq:lec03:Fourier-def} and relabelling $\mathbf{p}\to -\mathbf{p}$
+in the second term:
+\begin{align}
+  \phi(\mathbf{x},t)
+  &= \int \frac{d^3p}{(2\pi)^3}
+     \Bigl[
+       a(\mathbf{p})\,e^{-i\omega_{\mathbf{p}} t + i\mathbf{p}\cdot\mathbf{x}}
+       + a^*(-\mathbf{p})\,e^{+i\omega_{\mathbf{p}} t + i\mathbf{p}\cdot\mathbf{x}}
+     \Bigr]
+  \notag \\
+  &= \int \frac{d^3p}{(2\pi)^3}
+     \Bigl[
+       a(\mathbf{p})\,e^{-i\omega_{\mathbf{p}} t + i\mathbf{p}\cdot\mathbf{x}}
+       + a^*(\mathbf{p})\,e^{+i\omega_{\mathbf{p}} t - i\mathbf{p}\cdot\mathbf{x}}
+     \Bigr].
+  \label{eq:lec03:phi-expand-pre}
+\end{align}
+It is conventional to include a Lorentz-invariant normalisation factor
+$1/(2\omega_{\mathbf{p}})^{1/2}$, giving the standard mode expansion:
+\begin{equation}
+  \boxed{
+  \phi(\mathbf{x},t)
+  = \int \frac{d^3p}{(2\pi)^3}
+    \frac{1}{\sqrt{2\omega_{\mathbf{p}}}}
+    \Bigl[
+      a_{\mathbf{p}}\,e^{-i(\omega_{\mathbf{p}} t - \mathbf{p}\cdot\mathbf{x})}
+      + a_{\mathbf{p}}^\dagger\,
+        e^{+i(\omega_{\mathbf{p}} t - \mathbf{p}\cdot\mathbf{x})}
+    \Bigr].
+  }
+  \label{eq:lec03:phi-mode}
+\end{equation}
+In the quantum theory $a(\mathbf{p})\to a_{\mathbf{p}}$ and
+$a^*(\mathbf{p})\to a_{\mathbf{p}}^\dagger$ become
+\textbf{operators} on the Fock space;
+the reality condition $\phi=\phi^*$ becomes the hermiticity condition
+$\phi=\phi^\dagger$.
+
+Similarly, the conjugate momentum $\pi=\dphi$ has the expansion
+\begin{equation}
+  \pi(\mathbf{x},t)
+  = \int \frac{d^3p}{(2\pi)^3}
+    \frac{(-i)\sqrt{\omega_{\mathbf{p}}}}{\sqrt{2}}
+    \Bigl[
+      a_{\mathbf{p}}\,e^{-i(\omega_{\mathbf{p}} t - \mathbf{p}\cdot\mathbf{x})}
+      - a_{\mathbf{p}}^\dagger\,
+        e^{+i(\omega_{\mathbf{p}} t - \mathbf{p}\cdot\mathbf{x})}
+    \Bigr],
+  \label{eq:lec03:pi-mode}
+\end{equation}
+obtained by differentiating \eqref{eq:lec03:phi-mode} with respect to $t$.
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Step 7: Commutation relations for $a_{\mathbf{p}}$ and $a_{\mathbf{p}}^\dagger$}
+
+%% Derivation: [a,a†] from ET-CCR
+Imposing the ET-CCR \eqref{eq:lec03:ETCCR} on the mode expansions
+\eqref{eq:lec03:phi-mode}--\eqref{eq:lec03:pi-mode}, one finds (by
+inverting the Fourier transform and using the completeness of plane waves)
+that the creation and annihilation operators satisfy
+\begin{equation}
+  \bigl[a_{\mathbf{p}},\,a_{\mathbf{q}}^\dagger\bigr]
+  = (2\pi)^3\,\delta^{(3)}(\mathbf{p}-\mathbf{q}),
+  \label{eq:lec03:a-comm}
+\end{equation}
+\begin{equation}
+  \bigl[a_{\mathbf{p}},\,a_{\mathbf{q}}\bigr]
+  = \bigl[a_{\mathbf{p}}^\dagger,\,a_{\mathbf{q}}^\dagger\bigr]
+  = 0.
+  \label{eq:lec03:a-zero-comm}
+\end{equation}
+These are precisely the commutation relations of an
+\textbf{infinite collection of decoupled quantum harmonic oscillators},
+one for each momentum mode $\mathbf{p}$.
+
+\begin{remark}[Physical interpretation of $a_{\mathbf{p}}$]
+Before quantisation, $a(\mathbf{p})$ is merely a complex Fourier
+coefficient—a \emph{c-number}.  After quantisation it becomes an
+\emph{operator}: $a_{\mathbf{p}}$ \textbf{annihilates} a particle of
+momentum $\mathbf{p}$, while $a_{\mathbf{p}}^\dagger$
+\textbf{creates} one.  The Fock vacuum $|0\rangle$ is defined by
+$a_{\mathbf{p}}|0\rangle=0$ for all $\mathbf{p}$.
+\end{remark}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Examples}
+
+\ex{Explicit derivation of $\pi$ from $\phi$}{Starting from the mode expansion of $\phi$ in~\eqref{eq:lec03:phi-mode},
+differentiate with respect to $t$:
+\begin{align}
+  \pi(\mathbf{x},t) = \dphi
+  &= \int \frac{d^3p}{(2\pi)^3}
+     \frac{1}{\sqrt{2\omega_{\mathbf{p}}}}
+     \frac{\partial}{\partial t}
+     \Bigl[
+       a_{\mathbf{p}}\,e^{-i(\omega_{\mathbf{p}} t - \mathbf{p}\cdot\mathbf{x})}
+       + a_{\mathbf{p}}^\dagger\,e^{+i(\omega_{\mathbf{p}} t - \mathbf{p}\cdot\mathbf{x})}
+     \Bigr] \notag\\
+  &= \int \frac{d^3p}{(2\pi)^3}
+     \frac{1}{\sqrt{2\omega_{\mathbf{p}}}}
+     \Bigl[
+       (-i\omega_{\mathbf{p}})\,a_{\mathbf{p}}\,e^{-i(\omega_{\mathbf{p}} t - \mathbf{p}\cdot\mathbf{x})}
+       + (i\omega_{\mathbf{p}})\,a_{\mathbf{p}}^\dagger\,e^{+i(\omega_{\mathbf{p}} t - \mathbf{p}\cdot\mathbf{x})}
+     \Bigr] \notag\\
+  &= -i\int \frac{d^3p}{(2\pi)^3}
+     \sqrt{\frac{\omega_{\mathbf{p}}}{2}}
+     \Bigl[
+       a_{\mathbf{p}}\,e^{-i(\omega_{\mathbf{p}} t - \mathbf{p}\cdot\mathbf{x})}
+       - a_{\mathbf{p}}^\dagger\,e^{+i(\omega_{\mathbf{p}} t - \mathbf{p}\cdot\mathbf{x})}
+     \Bigr].
+\end{align}
+This confirms the expression in~\eqref{eq:lec03:pi-mode}.}
+
+\ex{Each mode as a harmonic oscillator}{Fix a mode $\mathbf{p}$ and define the ``position'' and ``momentum'' of
+that mode:
+\begin{equation}
+  Q_{\mathbf{p}} \propto a_{\mathbf{p}} + a_{\mathbf{p}}^\dagger,
+  \qquad
+  P_{\mathbf{p}} \propto -i(a_{\mathbf{p}} - a_{\mathbf{p}}^\dagger).
+  \label{eq:lec03:mode-QP}
+\end{equation}
+From \eqref{eq:lec03:a-comm} one recovers $[Q_{\mathbf{p}},P_{\mathbf{p}}]=i$,
+and the Hamiltonian contribution of this mode is
+
+\begin{equation}
+  H_{\mathbf{p}}
+  = \omega_{\mathbf{p}}
+    \Bigl(a_{\mathbf{p}}^\dagger a_{\mathbf{p}} + \tfrac{1}{2}\Bigr).
+  \label{eq:lec03:mode-H}
+\end{equation}
+
+This is identical to a quantum harmonic oscillator of frequency
+$\omega_{\mathbf{p}}=\sqrt{|\mathbf{p}|^2+m^2}$.  The total Hamiltonian is
+therefore
+\begin{equation}
+  H = \int \frac{d^3p}{(2\pi)^3}\;
+      \omega_{\mathbf{p}}
+      \Bigl(a_{\mathbf{p}}^\dagger a_{\mathbf{p}} + \tfrac{1}{2}\Bigr),
+  \label{eq:lec03:H-normal}
+\end{equation}
+where the $\tfrac{1}{2}$ term gives the (formally infinite) zero-point
+energy of the vacuum, which is later handled by normal ordering.}
+
+\ex{Dispersion relation as the relativistic energy-momentum relation}{The on-shell frequency defined in \eqref{eq:lec03:omega},
+$\omega_{\mathbf{p}} = \sqrt{|\mathbf{p}|^2 + m^2}$,
+is equivalent to $E^2 = p^2 + m^2$ (natural units).
+For a massless field ($m=0$) this reduces to $\omega_{\mathbf{p}}=|\mathbf{p}|$
+(linear dispersion, i.e.\ photons or massless scalar).
+For a non-zero mass it implies a \textbf{minimum energy} $E_{\min}=m$
+at $\mathbf{p}=0$, corresponding to a particle at rest.}
+
+%%──────────────────────────────────────────────────────────────────
+%% [BOARD CONTENT NOT CAPTURED — Lec03 timestamp 00:04:13–00:08:49]
+%% (Classroom logistics, seating, and transition to physics content)
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{To Remember}
+
+\begin{itemize}
+  \item The conjugate momentum density of the real scalar field is
+    $\pi = \partial\lagr/\partial\dphi = \dphi$.
+  \item Canonical quantisation promotes $\phi$ and $\pi$ to Hermitian
+    operators satisfying the ET-CCR:
+    $[\phi(\mathbf{x},t),\pi(\mathbf{y},t)]=i\delta^{(3)}(\mathbf{x}-\mathbf{y})$.
+  \item The Klein-Gordon equation in each Fourier mode reduces to a
+    simple harmonic oscillator equation with frequency
+    $\omega_{\mathbf{p}}=\sqrt{|\mathbf{p}|^2+m^2}$ (relativistic dispersion).
+  \item The reality (hermiticity) condition on $\phi$ constrains the two
+    Fourier coefficients to be complex conjugates:
+    $B(\mathbf{p})=A^*(-\mathbf{p})$, leaving one independent operator
+    per mode.
+  \item The mode expansion is
+    $\phi = \int \frac{d^3p}{(2\pi)^3}\frac{1}{\sqrt{2\omega_{\mathbf{p}}}}
+    \bigl(a_{\mathbf{p}}\,e^{-ipx}+a_{\mathbf{p}}^\dagger e^{+ipx}\bigr)$,
+    where $px\equiv\omega_{\mathbf{p}}t - \mathbf{p}\cdot\mathbf{x}$.
+  \item Imposing the ET-CCR on the mode expansion yields the
+    harmonic-oscillator algebra:
+    $[a_{\mathbf{p}}, a_{\mathbf{q}}^\dagger]=(2\pi)^3\delta^{(3)}(\mathbf{p}-\mathbf{q})$.
+  \item The full Hamiltonian is a sum (integral) of harmonic oscillators:
+    $H=\int\frac{d^3p}{(2\pi)^3}\,\omega_{\mathbf{p}}
+    \bigl(a_{\mathbf{p}}^\dagger a_{\mathbf{p}}+\tfrac{1}{2}\bigr)$;
+    the infinite zero-point energy is removed by normal ordering.
+\end{itemize}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Further Reading}
+
+No specific textbook was cited in this lecture.  The following cover the same
+material at varying depths:
+
+\begin{itemize}
+  \item \textbf{Peskin \& Schroeder, \S2.1--2.3} — The canonical quantization
+    of the real Klein--Gordon field from first principles: mode expansion,
+    creation/annihilation operators, Fock space, normal ordering, and the Feynman
+    propagator.  This is the primary QFT reference for the material in this
+    lecture.
+
+  \item \textbf{Tong, \textit{QFT Notes}, Chapter~2}
+    (\href{https://www.damtp.cam.ac.uk/user/tong/qft.html}{\texttt{damtp.cam.ac.uk/user/tong/qft.html}}):
+    ``Free Fields'' — covers the same quantization procedure in a more pedagogical
+    style, with explicit derivations of the commutation relations and the Hamiltonian
+    as a sum of harmonic oscillators.
+
+  \item \textbf{Griffiths, \textit{Introduction to Elementary Particles}, Appendix}
+    — Brief summary of creation and annihilation operators and their algebra, useful
+    for a quick reference on the operator formalism.
+
+  \item \textbf{Lancaster \& Blundell, \textit{Quantum Field Theory for the Gifted
+    Amateur}, Chapters~11--12}
+    (\href{https://global.oup.com/academic/product/quantum-field-theory-for-the-gifted-amateur-9780199699322}{\texttt{OUP}}):
+    a very readable step-by-step quantization of the scalar field,
+    explicitly connecting each step to the quantum harmonic oscillator the student
+    already knows.
+\end{itemize}

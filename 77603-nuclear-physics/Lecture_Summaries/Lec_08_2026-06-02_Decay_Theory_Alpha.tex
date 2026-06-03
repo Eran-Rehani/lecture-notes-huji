@@ -1,0 +1,808 @@
+%%═══════════════════════════════════════════════════════════════════
+%% Lecture 08 — Theory of Radioactive Decay & Alpha Decay
+%% 77603 — Nuclear Physics
+%% Date: 2 June 2026
+%% Lecturer: Dr. Moshe Friedman
+%%═══════════════════════════════════════════════════════════════════
+
+\section{Lecture 08 — Theory of Radioactive Decay \& Alpha Decay}
+\label{sec:lec08}
+\date{2 June 2026}
+
+\noindent\textbf{\textcolor{doc}{Lecture date: 2 June 2026}}\quad\textemdash\quad
+\textit{Lecturer: Dr.\ Moshe Friedman.}
+
+%%───────────────────────────────────────────────────────────────────
+\subsection*{Overview}
+%%───────────────────────────────────────────────────────────────────
+This lecture opens the chapter on \emph{radioactive decay} (Krane Ch.~7).  It
+splits cleanly into two halves.  The first half is a \emph{general, model-independent}
+theory of decay: why a decaying state cannot be a static quantum superposition,
+why we must split the Hamiltonian into a stable part plus a small perturbation,
+how Fermi's golden rule then produces the decay constant, and how the finite
+lifetime of any decaying state forces it to acquire a \emph{Lorentzian energy
+width} $\Gamma = \hbar/\tau$.  The second half specialises to \emph{alpha decay}:
+the $Q$-value and decay kinematics, the empirical Geiger--Nuttall law, the Gamow
+tunnelling theory that explains it, the role of angular momentum, and the
+selection rules.
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{A Decaying State Is Not a Static Superposition}
+\label{subsec:lec08:not_superposition}
+%%═══════════════════════════════════════════════════════════════════
+
+\subsubsection*{Conceptual Background}
+Every decay we will study --- $\beta^-$ ($n\to p+e^-+\bar\nu_e$),
+$\beta^+$ ($p\to n+e^++\nu_e$), $\alpha$ emission, and $\gamma$ de-excitation ---
+is fundamentally a transition from one quantum state to another: an initial
+nuclear state $\psi_i$ evolves into a final state $\psi_f$, possibly with extra
+particles created in the process.  The natural first guess, drawing on ordinary
+quantum mechanics, is to write the system as a fixed superposition
+\begin{equation}
+  \label{eq:lec08:bad_superposition}
+  \ket{\psi} = A\ket{\psi_a} + B\ket{\psi_b}.
+\end{equation}
+
+\paragraph{Why this fails.}
+A \emph{stationary} superposition like \eqref{eq:lec08:bad_superposition} does
+\emph{not} decay.  Recall the deuteron (Lecture~4): it is a fixed admixture of
+$S$- and $D$-waves, $\psi_d = A\psi_S + B\psi_D$.  It is \emph{always}
+simultaneously $S$ and $D$; measuring it now or in a year gives the \emph{same}
+probabilities $|A|^2,\,|B|^2$.  The mixing coefficients are time-independent.  A
+photon prepared as a superposition of two polarisations stays in that
+superposition no matter how far it travels --- it does not spontaneously
+``decay'' into one component.  In short, \eqref{eq:lec08:bad_superposition}
+describes a static object, whereas radioactive decay is intrinsically a
+\emph{time-dependent} process.  We therefore need a different description.
+
+\subsubsection*{Mathematical Setup --- Split the Hamiltonian}
+The resolution is to write the full Hamiltonian as an unperturbed piece plus a
+small perturbation:
+\begin{equation}
+  \label{eq:lec08:H_split}
+  \boxed{H = \underbrace{H_0}_{\text{stable configuration}}
+            + \underbrace{V'}_{\text{decay interaction}}, \qquad V' \ll H_0.}
+\end{equation}
+\textit{Significance:} $H_0$ describes the relatively stable nucleus whose
+eigenstates are the levels we actually measure (energies, spins, parities); the
+small term $V'$ is the interaction physically responsible for the decay ---
+electromagnetic for $\gamma$, the weak interaction for $\beta$, the strong (plus
+Coulomb) for $\alpha$.
+
+\paragraph{Why $V'$ is genuinely small.}
+The justification is a separation of time scales.  A nucleus exists in a
+well-defined state for a characteristic time set by its lifetime --- which can be
+seconds, or for $^{235}$U hundreds of millions of years.  During essentially all
+of that time the state is well described by $H_0$ alone: we can assign it
+energy levels, parities, magnetic moments, and so on.  The \emph{act} of decaying,
+once it happens, is comparatively instantaneous ($\sim 10^{-20}\,\text{s}$).  With
+up to $\sim 20$ orders of magnitude separating the lifetime from the
+decay-transition time, $V'$ acts only very rarely and may be treated as a small
+perturbation.
+
+\nt{There is an important exception, treated at the end of the lecture
+(Sec.~\ref{subsec:lec08:near_degeneracy}): when an excited daughter level lies
+\emph{accidentally close} in energy to the parent, the perturbative denominator
+blows up, $V'$ is no longer negligible, and the true state really is a strong
+mixture of the two configurations.}
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{Fermi's Golden Rule and the Density of States}
+\label{subsec:lec08:fgr}
+%%═══════════════════════════════════════════════════════════════════
+
+\subsubsection*{Mathematical Setup}
+With $H = H_0 + V'$, time-dependent perturbation theory (Quantum Mechanics~2)
+gives the transition rate from a fixed initial state $\ket{i}$ to final states
+$\ket{f}$ as \emph{Fermi's golden rule}:
+
+\thm[th:lec08:fgr]{Fermi's Golden Rule}{%
+The decay constant (transition rate) is
+\begin{equation}
+  \label{eq:lec08:fgr}
+  \boxed{\lambda = \frac{2\pi}{\hbar}\,\bigl|V_{fi}\bigr|^2\,\rho(E_f),}
+\end{equation}
+where $V_{fi} = \mel{f}{V'}{i}$ is the transition matrix element of the
+perturbation and $\rho(E_f)$ is the \emph{density of final states} per unit
+energy.}
+\textit{Significance:} the rate factorises into a \emph{dynamical} part
+$|V_{fi}|^2$ (how strongly the interaction connects initial and final states)
+and a \emph{kinematical / counting} part $\rho(E_f)$ (how many final states are
+available).  Both must be large for a fast decay.
+
+\dfn[dfn:lec08:dos]{Density of (Final) States}{%
+\begin{equation}
+  \label{eq:lec08:dos}
+  \rho(E_f) = \frac{dn_f}{dE_f},
+\end{equation}
+the number of accessible final states per unit energy at the energy $E_f$ of the
+final configuration.}
+
+\subsubsection*{Physical Motivation --- Why Count States?}
+Consider $\beta$-type decay $n\to p$ inside a nucleus.  The emitted proton (or,
+more relevantly for $\beta$ decay, the electron and neutrino) can come out with
+its momentum pointing in many different directions, each a distinct final state
+with the same energy.  If several final states share the same energy, the rate
+is the sum over all of them --- hence we multiply by the \emph{number of states
+per unit energy}.  Colloquially this available volume of final momenta is the
+\emph{phase space} into which the system can decay.
+
+\cor[cor:lec08:phasespace]{Phase Space Controls the Rate}{%
+The larger the phase space (the more final states available at the decay energy),
+the larger the decay probability, and the dependence is \emph{linear}:
+$\lambda \propto \rho(E_f)$.}
+\textit{Significance:} this is why $\beta$ decay --- with a three-body final
+state ($p,e,\bar\nu$) and therefore a large, continuously distributed phase space
+--- requires careful phase-space bookkeeping, which we will do in detail when we
+reach it.  Note that it is the \emph{final}-state count that enters: the system
+starts in one definite initial state, so there is nothing to count on the
+initial side.
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{Finite Lifetime $\Rightarrow$ Lorentzian Energy Width}
+\label{subsec:lec08:width}
+%%═══════════════════════════════════════════════════════════════════
+
+\subsubsection*{Physical Motivation}
+A truly stationary eigenstate of $H_0$ has a perfectly sharp energy.  But a state
+that decays is \emph{not} stationary --- its probability leaks away in time.  We
+now show that this time-dependence forces the state to have a \emph{spread} of
+energies, with a characteristic Lorentzian line shape and width
+$\Gamma = \hbar/\tau$.
+
+\paragraph{Step 1 --- Build in the exponential decay.}
+For a pure eigenstate of $H_0$ the wavefunction is
+$\Psi(\vec r,t) = \psi(\vec r)\,e^{-iEt/\hbar}$, whose modulus squared
+$|\Psi|^2 = |\psi(\vec r)|^2$ is constant in time.  That cannot describe decay.
+The empirical fact we must reproduce is the exponential decay law
+\begin{equation}
+  \label{eq:lec08:decay_prob}
+  |\Psi_a(\vec r,t)|^2 = |\Psi_a(\vec r,0)|^2\,e^{-t/\tau_a},
+\end{equation}
+where $\tau_a$ is the mean lifetime of state $a$.  This is an \emph{assumption},
+imposed because it is what we observe.  To produce \eqref{eq:lec08:decay_prob},
+attach a real decaying envelope to the usual phase:
+\begin{equation}
+  \label{eq:lec08:decay_wf}
+  \boxed{\Psi_a(\vec r,t) = \psi_a(\vec r)\,e^{-iE_a t/\hbar}\,e^{-t/2\tau_a},
+         \qquad t \geq 0.}
+\end{equation}
+\textit{Significance:} the factor $e^{-t/2\tau_a}$ (note the $2$) is precisely
+what is needed so that squaring gives $e^{-t/\tau_a}$; it encodes the decay
+directly in the amplitude.
+
+\paragraph{Step 2 --- Transform to the energy domain.}
+A state with definite energy oscillates as $e^{-iEt/\hbar}$.  A state that is
+\emph{not} a single energy eigenstate can be written as a continuous
+superposition --- a Fourier transform --- over energy:
+\begin{equation}
+  \label{eq:lec08:fourier}
+  \Psi_a(t) = \int_{-\infty}^{\infty} A(E)\,e^{-iEt/\hbar}\,dE .
+\end{equation}
+($t$ and $E$ are the conjugate Fourier pair, exactly like position and momentum.)
+Inverting and using the decay form \eqref{eq:lec08:decay_wf}, with decay starting
+at $t=0$ (we may insert a step function $\theta(t)$; integrating from $-\infty$
+would diverge):
+\begin{equation}
+  \label{eq:lec08:AE_integral}
+  A(E) \;\propto\; \int_{0}^{\infty}
+     e^{+iEt/\hbar}\,e^{-iE_a t/\hbar}\,e^{-t/2\tau_a}\,dt
+   = \int_{0}^{\infty}
+     \exp\!\left[\left(\frac{i(E-E_a)}{\hbar} - \frac{1}{2\tau_a}\right)t\right]dt .
+\end{equation}
+
+\paragraph{Step 3 --- Do the elementary integral.}
+The integrand is a single decaying exponential, so
+\begin{equation}
+  \label{eq:lec08:AE_result}
+  A(E) \;\propto\;
+  \left[\frac{\exp\!\left[\left(\tfrac{i(E-E_a)}{\hbar}-\tfrac{1}{2\tau_a}\right)t\right]}
+             {\tfrac{i(E-E_a)}{\hbar}-\tfrac{1}{2\tau_a}}\right]_{0}^{\infty}
+   = \frac{1}{\dfrac{1}{2\tau_a} - \dfrac{i(E-E_a)}{\hbar}},
+\end{equation}
+where the upper limit vanishes because the real part of the exponent is negative.
+
+\paragraph{Step 4 --- Square it.}
+The probability of finding the system at energy $E$ is $\propto |A(E)|^2$:
+\begin{equation}
+  \label{eq:lec08:AE_squared}
+  |A(E)|^2 \;\propto\;
+  \frac{1}{\left(\tfrac{1}{2\tau_a}\right)^2 + \left(\tfrac{E-E_a}{\hbar}\right)^2}
+  = \frac{\hbar^2}{(E-E_a)^2 + \left(\dfrac{\hbar}{2\tau_a}\right)^2}.
+\end{equation}
+Defining the \emph{energy width} $\Gamma_a \equiv \hbar/\tau_a$ and absorbing
+constants, the (unnormalised) probability density in energy is
+
+\dfn[dfn:lec08:lorentzian]{Lorentzian Line Shape of a Decaying Level}{%
+\begin{equation}
+  \label{eq:lec08:lorentzian}
+  \boxed{P(E)\,dE \;=\; \frac{dE}{(E-E_a)^2 + \dfrac{\Gamma_a^2}{4}},
+         \qquad \Gamma_a \equiv \frac{\hbar}{\tau_a}.}
+\end{equation}
+This is a \emph{Lorentzian} centred at the level energy $E_a$ with
+full width at half maximum (FWHM) equal to $\Gamma_a$.}
+\textit{Significance:} a decaying state does \emph{not} have a sharp energy ---
+its energy is smeared into a Lorentzian whose width is inversely proportional to
+the lifetime.  An infinitely long-lived state ($\tau\to\infty$) has
+$\Gamma\to0$, recovering a perfectly sharp $\delta$-function level.
+
+\paragraph{Check: $\Gamma$ is the FWHM.}
+The maximum of \eqref{eq:lec08:lorentzian} is at $E=E_a$, value $4/\Gamma_a^2$.
+Setting $E - E_a = \Gamma_a/2$ gives
+$1/\!\left(\tfrac{\Gamma_a^2}{4}+\tfrac{\Gamma_a^2}{4}\right) = 2/\Gamma_a^2$,
+exactly half the maximum --- so the full width between the half-maximum points is
+$\Gamma_a$.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[>=Stealth, scale=1.0]
+  % axes
+  \draw[->] (-4.2,0) -- (4.4,0) node[right] {$E$};
+  \draw[->] (0,-0.2) -- (0,3.4) node[above] {$P(E)$};
+  % Lorentzian curve (gamma/2 = 1 here so FWHM = 2 units)
+  \draw[blue!70!black, very thick, domain=-4:4, samples=120, smooth]
+    plot (\x, {3/((\x)*(\x)+1)});
+  % peak and half-max markers
+  \draw[dashed, gray] (0,3) -- (-0.15,3);
+  \draw[dashed, gray] (-3,1.5) -- (3,1.5);
+  \draw[dashed, gray] (-1,0) -- (-1,1.5);
+  \draw[dashed, gray] ( 1,0) -- ( 1,1.5);
+  % FWHM brace
+  \draw[<->, red!70!black, thick] (-1,1.5) -- (1,1.5)
+     node[midway, above] {\small $\Gamma_a$ (FWHM)};
+  % center label
+  \node[below] at (0,0) {\small $E_a$};
+  \node[red!70!black, right] at (2.0,2.3) {\small $\dfrac{1}{(E-E_a)^2+\Gamma_a^2/4}$};
+\end{tikzpicture}
+\caption{Lorentzian energy distribution of a decaying level.  The peak sits at
+the level energy $E_a$; the full width at half maximum equals the energy width
+$\Gamma_a = \hbar/\tau_a$.  A longer-lived state is narrower; a stable state
+($\tau\to\infty$) is a $\delta$-spike.}
+\label{fig:lec08:lorentzian}
+\end{figure}
+
+\subsubsection*{Physical Intuition --- The Energy--Time Uncertainty Relation}
+This result is the energy--time uncertainty relation in disguise.  A pure tone
+(single frequency) is perfectly defined in frequency but has no localisation in
+time; to build a pulse that is localised in time you must superpose a
+\emph{range} of frequencies.  Translating frequency $\to$ energy
+($E=\hbar\omega$) and pulse duration $\to$ lifetime, broadening the energy
+distribution shortens the lifetime:
+\begin{equation}
+  \label{eq:lec08:uncertainty}
+  \boxed{\Delta E \cdot \Delta t \;\sim\; \hbar
+         \quad\Longleftrightarrow\quad \Gamma\,\tau = \hbar.}
+\end{equation}
+\textit{Significance:} \emph{any} level that can decay in a finite time is
+necessarily energy-broadened; a quoted level energy is only as sharp as the
+level's lifetime allows.
+
+\ex[ex:lec08:width_numbers]{How Big Is the Width? (Why We Ignore It in the DOS)}{%
+Using $\hbar = 6.58\times10^{-16}\,\text{eV·s}$:
+\begin{itemize}
+  \item Lifetime $\tau = 1\,\text{s}$:
+        $\Gamma = \hbar/\tau \approx 6.6\times10^{-16}\,\text{eV}$.
+  \item Lifetime $\tau = 1\,\text{fs} = 10^{-15}\,\text{s}$ (typical of a fast
+        nuclear excited state):
+        $\Gamma \approx 0.66\,\text{eV}$.
+\end{itemize}
+Even for very short-lived nuclear states the energy width is $\lesssim$\,eV ---
+utterly negligible compared with the MeV-scale spacing of nuclear levels.}
+\textit{Significance:} because the \emph{energy} width of the final state is so
+tiny relative to nuclear level spacings, we do \emph{not} need to fold it into
+$\rho(E_f)$.  The density of states that matters in
+Eq.~\eqref{eq:lec08:fgr} is the \emph{momentum / position} phase space of the
+final particles, not the intrinsic energy width of the final level.
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{Partial Widths and Branching Ratios}
+\label{subsec:lec08:branching}
+%%═══════════════════════════════════════════════════════════════════
+
+\subsubsection*{Physical Motivation}
+A single state often has more than one way to decay --- e.g.\ state $A$ may go to
+$B$ $80\%$ of the time and to $C$ $20\%$ of the time.  Each channel proceeds at
+its own rate, and the total decay rate is their sum.  Since rate, width and
+inverse-lifetime are all proportional ($\Gamma = \hbar/\tau$,
+$\lambda = 1/\tau$), the widths add.
+
+\thm[th:lec08:widths]{Additivity of Partial Widths}{%
+If a state decays through several channels $i$, the total width is the sum of the
+partial widths,
+\begin{equation}
+  \label{eq:lec08:total_width}
+  \boxed{\Gamma = \sum_i \Gamma_i,}
+\end{equation}
+and the fraction going through channel $i$ --- the \emph{branching ratio} --- is
+\begin{equation}
+  \label{eq:lec08:branching}
+  \boxed{\mathrm{BR}_i = \frac{\Gamma_i}{\Gamma} = \frac{\lambda_i}{\lambda}.}
+\end{equation}}
+\textit{Significance:} the total width (hence total lifetime) and the branching
+ratios are independently measurable, so the \emph{partial} widths
+$\Gamma_i = \mathrm{BR}_i\,\Gamma$ can be extracted.  This is how one separately
+measures, say, the partial width for $\gamma$ decay versus $\alpha$ decay of the
+same level --- two experiments (lifetime + branching fractions) combine to reveal
+the level's decay structure.
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{Accidental Near-Degeneracy Enhancement}
+\label{subsec:lec08:near_degeneracy}
+%%═══════════════════════════════════════════════════════════════════
+
+\subsubsection*{Mathematical Setup}
+First-order perturbation theory corrects the parent state $\psi_a$ by admixing
+the daughter state $\psi_b$:
+\begin{equation}
+  \label{eq:lec08:perturbed_state}
+  \psi \;=\; \psi_a \;+\; \frac{V'_{ba}}{E_a - E_b}\,\psi_b ,
+\end{equation}
+where $V'_{ba} = \mel{b}{V'}{a}$ and $E_a,E_b$ are the unperturbed energies of
+parent and daughter.
+
+\paragraph{When the perturbation stops being small.}
+Normally $V'_{ba}$ is tiny, so the admixture is negligible.  But if --- by
+accident --- an \emph{excited} daughter level lies almost exactly at the parent
+energy, $E_a \approx E_b$, the denominator $E_a-E_b\to0$ and the coefficient is
+strongly enhanced.  The supposedly small $V'$ then no longer dominates over
+nothing; the true state becomes a near-equal mixture of $\psi_a$ and $\psi_b$
+that can oscillate between the two configurations.
+\nt{In this regime the clean ``$H_0$ plus tiny $V'$'' picture
+(Sec.~\ref{subsec:lec08:not_superposition}) breaks down, and the decay
+probability is correspondingly much larger.  Such accidental degeneracies are
+responsible for anomalously fast transitions.}
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{Alpha Decay: Definition, Discovery, and $Q$-value}
+\label{subsec:lec08:alpha_def}
+%%═══════════════════════════════════════════════════════════════════
+
+\subsubsection*{Physical Motivation}
+Historically, $\alpha$ radiation was identified as the least-penetrating of the
+three classical radiations (shortest range --- as we saw in Lecture~6 when
+discussing radiation--matter interaction), and its nature as $^4$He nuclei was
+confirmed by letting a radioactive source decay into a sealed vessel and later
+detecting the accumulated helium gas spectroscopically.
+
+\dfn[dfn:lec08:alpha]{Alpha Decay}{%
+A heavy nucleus emits a $^4$He nucleus (the $\alpha$ particle):
+\begin{equation}
+  \label{eq:lec08:alpha_reaction}
+  \boxed{{}^{A}_{Z}\mathrm{X} \;\longrightarrow\;
+         {}^{A-4}_{Z-2}\mathrm{Y} \;+\; {}^{4}_{2}\mathrm{He}.}
+\end{equation}
+The daughter $\mathrm{Y}$ has $2$ fewer protons and $2$ fewer neutrons.}
+\textit{Significance:} $\alpha$ decay moves a nucleus by $(\Delta Z,\Delta N)=(-2,-2)$
+on the chart of nuclides --- the ``yellow'' step encountered in
+Lecture~5 --- and is the dominant decay mode for the heaviest nuclei
+($A \gtrsim 200$).
+
+\dfn[dfn:lec08:Qalpha]{$Q$-value of Alpha Decay}{%
+\begin{equation}
+  \label{eq:lec08:Qalpha}
+  \boxed{Q_\alpha = \bigl[M({}^{A}_{Z}\mathrm{X})
+                        - M({}^{A-4}_{Z-2}\mathrm{Y})
+                        - M({}^{4}_{2}\mathrm{He})\bigr]c^2 .}
+\end{equation}
+Spontaneous decay requires $Q_\alpha > 0$.}
+\textit{Significance:} $Q_\alpha$ is the energy released, sourced entirely by the
+change in total binding energy; it is the energy budget shared (almost entirely)
+by the $\alpha$ particle as kinetic energy.
+
+\subsubsection*{Why $\alpha$ and Not Other Light Fragments?}
+A natural question: why is $^4$He emitted rather than a proton, neutron,
+deuteron, triton, $^3$He, or $^{12}$C?  The naive answer ``because helium is a
+noble gas'' is \emph{wrong} --- noble-gas chemistry concerns atomic electrons
+($\sim$\,eV binding), which are completely irrelevant to a nuclear process at the
+MeV scale.  The real reason is the \emph{exceptional binding} of $^4$He:
+\begin{itemize}
+  \item $^4$He is doubly magic ($Z=N=2$, both closed shells), making it
+        unusually tightly bound --- a local peak on the $B/A$ curve at $A=4$.
+  \item Computing the $Q$-value for emitting $p$, $n$, $d$, $t$, $^3$He, $^6$Li,
+        $\ldots$ from a heavy nucleus (e.g.\ $^{232}$U) gives $Q<0$ for all of
+        them: those emissions are \emph{endothermic} and cannot happen
+        spontaneously.  Only $\alpha$ emission (and, far more rarely, heavier
+        clusters such as $^{12}$C) gives $Q>0$.
+  \item Bonus from pairing: removing an even--even $\alpha$ leaves the
+        even--even structure of the parent favourable.
+\end{itemize}
+\nt{Heavier-cluster decays (e.g.\ $^{12}$C emission) can be energetically allowed
+but are observed with branching ratios many orders of magnitude smaller than
+$\alpha$; the tunnelling theory below explains why heavier, more highly-charged
+fragments are so strongly suppressed.}
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{Alpha Decay Kinematics}
+\label{subsec:lec08:kinematics}
+%%═══════════════════════════════════════════════════════════════════
+
+\subsubsection*{Mathematical Setup --- Conservation Laws}
+Is $Q_\alpha$ entirely the $\alpha$'s kinetic energy?  Almost --- but the
+daughter must recoil to conserve momentum, so it carries a small share.  Work in
+the rest frame of the parent (total momentum zero).
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[>=Stealth, scale=1.0]
+  \filldraw[gray!25] (0,0) circle (0.45);
+  \node at (0,0) {\small parent};
+  \draw[->, red!70!black, very thick] (0.5,0) -- (2.6,0)
+     node[right] {$\vec p_\alpha$};
+  \node[red!70!black, above] at (1.6,0) {\small $\alpha$};
+  \draw[->, blue!70!black, very thick] (-0.5,0) -- (-2.0,0)
+     node[left] {$\vec p_Y$};
+  \node[blue!70!black, above] at (-1.2,0) {\small $Y$ (recoil)};
+  \node[below] at (0,-0.5) {\small $\vec p_\alpha + \vec p_Y = 0$};
+\end{tikzpicture}
+\caption{Two-body decay in the parent rest frame: the $\alpha$ and the recoiling
+daughter fly back-to-back with equal and opposite momenta,
+$|\vec p_\alpha| = |\vec p_Y| \equiv p$.}
+\label{fig:lec08:recoil}
+\end{figure}
+
+Momentum conservation gives $|\vec p_\alpha| = |\vec p_Y| \equiv p$ (back to
+back).  Energy conservation (non-relativistic, since $T \ll mc^2$ here):
+\begin{equation}
+  \label{eq:lec08:energy_cons}
+  Q_\alpha = T_\alpha + T_Y
+           = \frac{p^2}{2m_\alpha} + \frac{p^2}{2m_Y}
+           = T_\alpha\left(1 + \frac{m_\alpha}{m_Y}\right).
+\end{equation}
+Solving for each kinetic energy:
+\begin{equation}
+  \label{eq:lec08:Talpha}
+  \boxed{T_\alpha = Q_\alpha\,\frac{m_Y}{m_\alpha + m_Y},
+         \qquad
+         T_Y = Q_\alpha\,\frac{m_\alpha}{m_\alpha + m_Y}.}
+\end{equation}
+\textit{Significance:} the $\alpha$ carries the lion's share; the heavy daughter
+takes only a small recoil energy.  Using $m_\alpha \approx 4\,u$ and
+$m_Y \approx (A-4)\,u$,
+\begin{equation}
+  \label{eq:lec08:Talpha_approx}
+  \boxed{T_\alpha \approx Q_\alpha\left(1 - \frac{4}{A}\right),
+         \qquad
+         T_Y \approx Q_\alpha\,\frac{4}{A}.}
+\end{equation}
+\textit{Significance:} for $A \gtrsim 200$ the daughter recoil is only a couple
+of percent of $Q_\alpha$, so the measured $\alpha$ energy is very nearly
+$Q_\alpha$ --- giving discrete, characteristic $\alpha$ energies for each emitter.
+
+\nt{Although the nucleon \emph{count} balances exactly
+($A = (A-4) + 4$), the $Q$-value is non-zero because it lives in the
+\emph{binding-energy} differences: the rearranged configuration has lower total
+mass (higher total binding) when $Q_\alpha>0$.}
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{The Geiger--Nuttall Law (Empirical)}
+\label{subsec:lec08:geiger_nuttall}
+%%═══════════════════════════════════════════════════════════════════
+
+\subsubsection*{Physical Motivation}
+Two striking empirical regularities of $\alpha$ decay, noticed early, must be
+reproduced by any successful theory.  The first is the \emph{Geiger--Nuttall
+law}: within an isotopic (single-$Z$) chain, the half-life depends extraordinarily
+strongly on the $\alpha$ energy.
+
+\thm[th:lec08:gn]{Geiger--Nuttall Law}{%
+For a fixed daughter charge, the logarithm of the half-life is linear in
+$1/\sqrt{Q_\alpha}$:
+\begin{equation}
+  \label{eq:lec08:gn}
+  \boxed{\log_{10}\halflife = \frac{a(Z)}{\sqrt{Q_\alpha}} + b(Z),}
+\end{equation}
+with element-dependent constants $a(Z),\,b(Z)$.}
+\textit{Significance:} a modest change in $Q_\alpha$ produces an
+\emph{exponential} change in lifetime --- half-lives across the $\alpha$-emitters
+span from microseconds to billions of years.  As $Q_\alpha$ increases, the
+half-life plummets; as $Q_\alpha$ decreases, it soars.
+
+\paragraph{Second regularity: the $A$-dependence.}
+Along an isotopic chain, plotting $Q_\alpha$ (equivalently $E_\alpha$) versus
+mass number $A$ shows a smooth trend.  Combining the two regularities: moving to
+the right on the chart of nuclides within $\alpha$-emitters, $Q_\alpha$ decreases
+and hence the half-life increases (until $\beta$ decay takes over and ends the
+trend).  Both must emerge from one underlying theory.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[>=Stealth, scale=1.0]
+  \draw[->] (0,0) -- (5.6,0) node[right] {$1/\sqrt{Q_\alpha}$};
+  \draw[->] (0,-0.2) -- (0,4.0) node[above] {$\log_{10}\halflife$};
+  % straight Geiger-Nuttall line
+  \draw[blue!70!black, very thick] (0.4,0.5) -- (5.0,3.6);
+  % data-like points
+  \foreach \p in {(0.7,0.7),(1.5,1.25),(2.4,1.85),(3.3,2.45),(4.2,3.05)}
+    \filldraw[red!70!black] \p circle (1.6pt);
+  \node[blue!70!black, rotate=33] at (3.3,2.6) {\small slope $=a(Z)$};
+\end{tikzpicture}
+\caption{Geiger--Nuttall law for a single isotopic chain: $\log_{10}\halflife$ is
+linear in $1/\sqrt{Q_\alpha}$.  Smaller $Q_\alpha$ (right) $\Rightarrow$ longer
+half-life.  The huge dynamic range ($\sim$\,$\mu$s to Gyr) reflects the
+exponential sensitivity derived below.}
+\label{fig:lec08:gn}
+\end{figure}
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{Gamow Theory: Tunnelling Through the Coulomb Barrier}
+\label{subsec:lec08:gamow}
+%%═══════════════════════════════════════════════════════════════════
+
+\subsubsection*{Physical Motivation}
+The model (Gamow): inside a large nucleus, two protons and two neutrons may
+transiently cluster into a pre-formed $\alpha$ particle.  This $\alpha$ is bound
+inside the short-range nuclear potential well, but outside the nuclear radius it
+feels only the long-range Coulomb repulsion of the daughter.  Classically it is
+trapped; quantum-mechanically it can \emph{tunnel} through the Coulomb barrier
+and escape.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[>=Stealth, scale=1.0]
+  % axes
+  \draw[->] (-0.3,0) -- (8.2,0) node[right] {$r$};
+  \draw[->] (0,-2.6) -- (0,4.0) node[above] {$V(r)$};
+  % nuclear well floor (r < a) at -V0
+  \draw[myb, very thick] (0.05,-2.2) -- (2,-2.2);
+  % vertical wall at r = a up to barrier top B
+  \draw[myb, very thick] (2,-2.2) -- (2,3.0);
+  % Coulomb tail V = C/r, with C=6 so V(2)=3 ; plot from a=2 to 7.5
+  \draw[myb, very thick, domain=2:7.5, samples=120, smooth]
+    plot (\x, {6/\x});
+  % Q level (alpha energy) dashed line, crosses Coulomb at b where 6/b=1 => b=6
+  \draw[red!70!black, dashed, thick] (0,1) -- (6,1)
+     node[pos=0.12, above] {\small $Q_\alpha$};
+  % tunnelling arrow from a to b at the Q level
+  \draw[->, red!70!black, very thick] (2,1) -- (6,1);
+  \node[red!70!black, above] at (4.0,1.05) {\small tunnelling};
+  % markers a, b
+  \draw[dashed, gray] (2,0) -- (2,-2.2);
+  \node[below] at (2,0) {\small $a$ (nuclear radius)};
+  \draw[dashed, gray] (6,0) -- (6,1);
+  \node[below] at (6,0) {\small $b$};
+  % barrier height B label
+  \draw[dashed, gray] (0,3) -- (2,3);
+  \node[left] at (0,3) {\small $B$};
+  % well depth label
+  \node[left] at (0,-2.2) {\small $-V_0$};
+  % zero line label
+  \node[left] at (0,0.05) {\small $0$};
+\end{tikzpicture}
+\caption{Potential energy seen by the $\alpha$ particle.  Inside the nuclear
+radius $a$ it sits in a deep well of depth $V_0$; outside, the Coulomb repulsion
+falls as $1/r$.  The barrier reaches height $B$ at $r=a$ and drops to the
+$\alpha$ energy $Q_\alpha$ at the outer turning point $r=b$.  Classically the
+$\alpha$ (energy $Q_\alpha$) is trapped between $a$ and $b$; quantum mechanically
+it tunnels through this region and escapes.}
+\label{fig:lec08:barrier}
+\end{figure}
+
+\subsubsection*{Mathematical Setup --- Barrier Geometry}
+Define two key radii and the barrier height.  The Coulomb potential between the
+$\alpha$ (charge $2e$) and daughter (charge $Z_d e$, where $Z_d = Z-2$) is
+\begin{equation}
+  \label{eq:lec08:coulomb}
+  V(r) = \frac{1}{4\pi\epsilon_0}\,\frac{2 Z_d e^2}{r}.
+\end{equation}
+\begin{itemize}
+  \item \textbf{Barrier height} at the nuclear surface $r=a$:
+  \begin{equation}
+    \label{eq:lec08:Bheight}
+    B = \frac{1}{4\pi\epsilon_0}\,\frac{2 Z_d e^2}{a}.
+  \end{equation}
+  \item \textbf{Outer turning point} $b$, where the Coulomb potential equals the
+  $\alpha$ energy, $V(b) = Q_\alpha$:
+  \begin{equation}
+    \label{eq:lec08:bturn}
+    b = \frac{1}{4\pi\epsilon_0}\,\frac{2 Z_d e^2}{Q_\alpha}.
+  \end{equation}
+\end{itemize}
+The height the $\alpha$ must overcome to reach the outside world is exactly
+$B - Q_\alpha$, and dividing \eqref{eq:lec08:Bheight} by \eqref{eq:lec08:bturn}
+gives the convenient ratio
+\begin{equation}
+  \label{eq:lec08:ratio}
+  \frac{a}{b} = \frac{Q_\alpha}{B}.
+\end{equation}
+
+\subsubsection*{Mathematical Setup --- WKB Tunnelling Through a Varying Barrier}
+For a \emph{square} barrier the transmission probability decays exponentially with
+the imaginary wavenumber $k_2 = \sqrt{2m(V-E)}/\hbar$.  For our \emph{smoothly
+varying} Coulomb barrier, slice it into many thin square barriers of width $dr$.
+The infinitesimal transmission through one slice is
+\begin{equation}
+  \label{eq:lec08:slice}
+  dP = \exp\!\left[-2\,dr\,\sqrt{\frac{2m_\alpha}{\hbar^2}\bigl(V(r) - Q_\alpha\bigr)}\right],
+\end{equation}
+and the total transmission is the product over slices, i.e.\ the exponential of
+the integral:
+\begin{equation}
+  \label{eq:lec08:tunnel}
+  \boxed{P = e^{-2G},
+   \qquad
+   G = \sqrt{\frac{2m_\alpha}{\hbar^2}}
+       \int_{a}^{b}\sqrt{V(r) - Q_\alpha}\;dr.}
+\end{equation}
+\textit{Significance:} $G$ --- the \emph{Gamow factor} --- is the accumulated
+exponential suppression of tunnelling; it controls the entire enormous range of
+$\alpha$ half-lives.
+
+\subsubsection*{Evaluating the Gamow Integral}
+Carrying out the integral \eqref{eq:lec08:tunnel} with the Coulomb form
+\eqref{eq:lec08:coulomb} gives the closed-form result
+\begin{equation}
+  \label{eq:lec08:G_full}
+  \boxed{G = \frac{2 Z_d e^2}{4\pi\epsilon_0\,\hbar}
+            \sqrt{\frac{2 m_\alpha}{Q_\alpha}}\,
+            \left[\cos^{-1}\!\sqrt{\tfrac{a}{b}}
+                  - \sqrt{\tfrac{a}{b}}\,\sqrt{1 - \tfrac{a}{b}}\right].}
+\end{equation}
+\textit{Significance:} this single expression contains both empirical laws.  The
+bracket depends only on the ratio $a/b = Q_\alpha/B$, while the prefactor carries
+the explicit $1/\sqrt{Q_\alpha}$ dependence.
+
+\paragraph{Thick-barrier (Geiger--Nuttall) limit.}
+When $Q_\alpha \ll B$ (a tall, thick barrier, as for real heavy emitters),
+$a/b \to 0$, so $\cos^{-1}\sqrt{a/b} \to \pi/2$ and the second term vanishes.
+Then
+\begin{equation}
+  \label{eq:lec08:G_limit}
+  G \;\approx\; \frac{\pi\,Z_\alpha Z_d\, e^2}{4\pi\epsilon_0\,\hbar\, v_\alpha},
+  \qquad v_\alpha = \sqrt{\frac{2Q_\alpha}{m_\alpha}},\quad Z_\alpha = 2,
+\end{equation}
+so that $G \propto Z_d/\sqrt{Q_\alpha}$.  Since the decay rate carries the factor
+$e^{-2G}$, we have $\ln\lambda \propto -2G \propto -Z_d/\sqrt{Q_\alpha}$ ---
+\emph{precisely} the Geiger--Nuttall form \eqref{eq:lec08:gn}.
+\textit{Significance:} the Coulomb-barrier tunnelling integral reproduces the
+exponential $1/\sqrt{Q_\alpha}$ law that was discovered empirically decades
+earlier.
+
+\subsubsection*{From Tunnelling Probability to Decay Rate}
+The transmission $P$ is the chance of escaping in a \emph{single} attempt.  The
+$\alpha$ rattles back and forth inside the well, hitting the barrier with an
+\emph{assault frequency}
+\begin{equation}
+  \label{eq:lec08:freq}
+  f \approx \frac{v_\alpha}{2a},
+\end{equation}
+where $v_\alpha$ is the internal $\alpha$ velocity and $2a$ the nuclear diameter.
+Numerically $f \sim 10^{22}\,\text{s}^{-1}$.  The decay constant is the product
+\begin{equation}
+  \label{eq:lec08:lambda_alpha}
+  \boxed{\lambda = f\,P = \frac{v_\alpha}{2a}\,e^{-2G}.}
+\end{equation}
+\textit{Significance:} this simple ``frequency $\times$ tunnelling probability''
+estimate predicts $\alpha$ half-lives that, while sensitive to the poorly-known
+nuclear radius $a$, come out remarkably close to experiment over $\sim 20$ orders
+of magnitude --- a triumph of the quantum tunnelling picture.
+
+\nt{Two simplifications were made: (i) the orbital angular momentum was taken to
+be $\ell=0$, and (ii) the nucleus was assumed spherical.  Both corrections matter
+quantitatively; deformed nuclei have direction-dependent radii (easier escape
+along the long axis), and $\ell\neq0$ adds a centrifugal barrier, treated next.}
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{Angular-Momentum (Centrifugal) Barrier}
+\label{subsec:lec08:centrifugal}
+%%═══════════════════════════════════════════════════════════════════
+
+\subsubsection*{Conceptual Background}
+So far the barrier was purely the Coulomb potential.  But if the $\alpha$ is
+emitted with orbital angular momentum $\ell \neq 0$, the radial Schrödinger
+equation acquires an extra repulsive term.  Recall that separating the 3D
+Schrödinger equation into radial and angular parts produces, in the radial
+equation, the \emph{centrifugal} term
+\begin{equation}
+  \label{eq:lec08:centrifugal}
+  \boxed{V_\ell(r) = \frac{\hbar^2\,\ell(\ell+1)}{2\mu r^2},}
+\end{equation}
+where $\mu$ is the reduced mass.  Adding it to the Coulomb potential defines an
+\emph{effective potential} $V_\text{eff}(r) = V(r) + V_\ell(r)$.
+\textit{Significance:} angular momentum raises the barrier the $\alpha$ must
+tunnel through, so higher $\ell$ \emph{suppresses} the decay.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[>=Stealth, scale=1.0]
+  \draw[->] (-0.3,0) -- (7.0,0) node[right] {$r$};
+  \draw[->] (0,-0.3) -- (0,4.0) node[above] {$V_\text{eff}(r)$};
+  % l = 0 Coulomb barrier (C=6)
+  \draw[myb, very thick, domain=1.7:6.8, samples=120, smooth]
+    plot (\x, {6/\x});
+  \node[myb] at (5.6,1.4) {\small $\ell=0$};
+  % l > 0 : Coulomb + centrifugal 6/x + 2.2/x^2
+  \draw[myr, very thick, domain=1.7:6.8, samples=120, smooth]
+    plot (\x, {6/\x + 2.2/(\x*\x)});
+  \node[myr] at (3.0,3.3) {\small $\ell>0$};
+  % nuclear radius marker
+  \draw[dashed,gray] (1.7,0) -- (1.7,3.5);
+  \node[below] at (1.7,0) {\small $a$};
+\end{tikzpicture}
+\caption{Effective potential for $\ell=0$ (Coulomb only, blue) and $\ell>0$
+(Coulomb $+$ centrifugal, red).  The centrifugal term
+$\hbar^2\ell(\ell+1)/2\mu r^2$ pushes the barrier higher and outward, increasing
+the tunnelling integral $G$ and thus lowering the decay probability.}
+\label{fig:lec08:centrifugal}
+\end{figure}
+
+\paragraph{Physical intuition (off-centre emission).}
+Emitting the $\alpha$ from the \emph{side} of the nucleus rather than radially
+requires applying a torque $\vec\tau = \vec r\times\vec F$ to give it angular
+momentum --- it is ``harder'' to throw the $\alpha$ sideways than straight out.
+Equivalently, a larger $\ell$ means a higher effective barrier, a larger $G$, and
+an exponentially smaller escape probability.
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{Selection Rules for Alpha Decay}
+\label{subsec:lec08:selection}
+%%═══════════════════════════════════════════════════════════════════
+
+\subsubsection*{Conceptual Background}
+A transition between two nuclear states must conserve total angular momentum and
+parity.  For $\alpha$ decay these conservation laws translate into selection
+rules on the orbital angular momentum $\ell$ carried by the emitted $\alpha$.
+
+\paragraph{Only orbital angular momentum is carried.}
+The $\alpha$ particle ($^4$He) has spin--parity $J^\pi = 0^+$: its two protons
+and two neutrons couple to zero spin, and its intrinsic parity is $+$.  Hence the
+$\alpha$ cannot carry away any \emph{intrinsic} (spin) angular momentum --- only
+\emph{orbital} angular momentum $\ell$.  Therefore the entire change in nuclear
+spin must be supplied by $\ell$.
+
+\thm[th:lec08:selection]{Alpha-Decay Selection Rules}{%
+For a transition from parent spin--parity $I_i^{\pi_i}$ to daughter
+$I_f^{\pi_f}$, the emitted $\alpha$ carries orbital angular momentum $\ell$ with
+\begin{equation}
+  \label{eq:lec08:L_rule}
+  \boxed{|I_i - I_f| \;\leq\; \ell \;\leq\; I_i + I_f}
+\end{equation}
+(vector addition of angular momenta), and the parities must satisfy
+\begin{equation}
+  \label{eq:lec08:parity_rule}
+  \boxed{\pi_i = \pi_f\,(-1)^\ell.}
+\end{equation}}
+\textit{Significance:} the parity rule ties the allowed $\ell$ values to the
+relative parity of parent and daughter; if $\pi_i = \pi_f$ then $\ell$ must be
+even, and if $\pi_i = -\pi_f$ then $\ell$ must be odd.  Combined with the
+centrifugal barrier (Sec.~\ref{subsec:lec08:centrifugal}), \emph{larger required
+$\ell$ means a more strongly hindered (slower) decay}.
+
+\ex[ex:lec08:Th232]{$^{232}$Th $\to$ $^{228}$Ra Ground-State Transition}{%
+$^{232}_{\,90}\mathrm{Th} \to {}^{228}_{\,88}\mathrm{Ra} + \alpha$.
+Both nuclei are even--even, so their ground states are $I^\pi = 0^+$.
+
+\emph{Angular momentum:} $|0-0|\leq \ell \leq 0+0 \Rightarrow \ell = 0$.
+
+\emph{Parity:} $\pi_i = \pi_f(-1)^\ell \Rightarrow (+) = (+)(-1)^0 = (+)$. \checkmark
+
+The ground-state-to-ground-state transition is \emph{allowed} with $\ell=0$ ---
+no centrifugal hindrance.  (Transitions to excited $0^+,2^+,\ldots$ daughter
+levels and their decay modes are taken up at the start of the next lecture.)}
+
+%%───────────────────────────────────────────────────────────────────
+\subsection*{Key Takeaways}
+%%───────────────────────────────────────────────────────────────────
+\begin{itemize}
+  \item \textbf{Decay is dynamical, not static:} split $H = H_0 + V'$ with
+  $V'\ll H_0$ (separation of time scales) rather than writing a static
+  superposition.
+  \item \textbf{Fermi's golden rule:} $\lambda = \frac{2\pi}{\hbar}|V_{fi}|^2\rho(E_f)$;
+  the rate scales \emph{linearly} with the available final-state phase space
+  $\rho(E_f) = dn_f/dE_f$.
+  \item \textbf{Energy width:} a finite lifetime $\tau$ gives a Lorentzian level
+  of FWHM $\Gamma = \hbar/\tau$ --- the energy--time uncertainty relation.  The
+  width is tiny ($\lesssim$\,eV), so only \emph{momentum} phase space matters in
+  the DOS.
+  \item \textbf{Partial widths add:} $\Gamma = \sum_i\Gamma_i$,
+  $\mathrm{BR}_i = \Gamma_i/\Gamma$ --- lets one extract channel-by-channel rates.
+  \item \textbf{Alpha decay:} ${}^{A}_{Z}\mathrm{X}\to{}^{A-4}_{Z-2}\mathrm{Y}+\alpha$;
+  emitted because $^4$He is doubly magic (large $Q_\alpha>0$), not because it is a
+  noble gas.  $T_\alpha \approx Q_\alpha(1-4/A)$.
+  \item \textbf{Geiger--Nuttall} $\log_{10}\halflife \propto 1/\sqrt{Q_\alpha}$
+  follows from \textbf{Gamow tunnelling}: $P=e^{-2G}$,
+  $G\propto Z_d/\sqrt{Q_\alpha}$ in the thick-barrier limit;
+  $\lambda = (v_\alpha/2a)e^{-2G}$.
+  \item \textbf{Angular momentum} adds a centrifugal barrier
+  $\hbar^2\ell(\ell+1)/2\mu r^2$; higher $\ell$ hinders decay.  Selection rules:
+  $|I_i-I_f|\le\ell\le I_i+I_f$ and $\pi_i = \pi_f(-1)^\ell$.
+\end{itemize}

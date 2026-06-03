@@ -1,0 +1,404 @@
+%%═══════════════════════════════════════════════════════════════════
+%% Lecture 01 — Introduction: Special Relativity as the Foundation
+%%              of Electrodynamics; Galilean Transformations and
+%%              Their Failure for Maxwell's Equations
+%% 77401 — Analytical Electrodynamics
+%% Date:
+%% Lecturer: Prof. Michael Smolkin
+%%═══════════════════════════════════════════════════════════════════
+
+\section{Lecture 01 — Introduction: Galilean Transformations and the
+  Failure of Non-Relativistic Symmetry}\label{sec:lec01}
+
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 22/03/2026   & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Overview}
+
+This lecture opens the course by motivating Analytical Electrodynamics
+as the field-theoretic analogue of Analytical Mechanics: where the
+latter reformulates finite-degree-of-freedom Newtonian dynamics via
+the action principle (Lagrange, Hamilton), this course does the same
+for fields — systems with \emph{infinitely many} degrees of freedom.
+The central goal is to derive Maxwell's equations from an action
+principle, identify the symmetries of the theory via Noether's theorem,
+and ultimately understand why special relativity is not merely
+compatible with electrodynamics but is, in a precise sense, demanded
+by it.  The lecture then begins the technical programme by reviewing
+the structure of Galilean spacetime, proving that the Galilean group is
+indeed a group, and demonstrating that Maxwell's equations are
+\emph{not} invariant under Galilean transformations — a contradiction
+that forces us to abandon the Galilean picture in favour of Lorentzian
+spacetime and the Lorentz group.
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Definitions}
+
+\dfn{Inertial reference frame}{A reference frame in which a body subject to no external forces moves
+with constant velocity (including zero).  Equivalently, Newton's
+second law holds in its standard form in such a frame.  The existence
+of at least one inertial frame is taken as an axiom; all frames moving
+with constant velocity relative to a known inertial frame are also
+inertial.}
+
+\dfn{Homogeneity of spacetime}{The laws of physics are invariant under arbitrary translations in both
+space and time: no spatial location and no instant of time is
+privileged.}
+
+\dfn{Isotropy of space}{The laws of physics are invariant under arbitrary rotations of the
+spatial axes.  There is no preferred direction in space.  (Isotropy
+applies to space; homogeneity applies to spacetime.)}
+
+\dfn{Principle of Relativity}{The \emph{equations of motion} — i.e., the laws of physics — take
+identical form in every inertial reference frame.  All inertial frames
+are equivalent; no preferred inertial frame exists.}
+
+\dfn{Galilean transformation}{Given two inertial frames $S$ and $S'$ with $S'$ moving at constant
+velocity $\mathbf{u}$ relative to $S$, with origins coinciding at
+$t = 0$, the Galilean transformation relating an event
+$(\mathbf{r}, t)$ in $S$ to its coordinates $(\mathbf{r}', t')$ in
+$S'$ is
+\begin{align}
+  \mathbf{r}' &= \mathbf{r} - \mathbf{u}\,t, \label{eq:lec01:GT_r}\\
+  t'           &= t.                           \label{eq:lec01:GT_t}
+\end{align}
+Time is absolute (frame-independent) in the Galilean picture.}
+
+\dfn{Group}{A set $G$ together with a binary operation $\circ$ is a
+\emph{group} if it satisfies:
+\begin{enumerate}
+  \item \textbf{Closure.} For all $g_1, g_2 \in G$,\;
+        $g_1 \circ g_2 \in G$.
+  \item \textbf{Identity.} There exists $e \in G$ such that
+        $e \circ g = g \circ e = g$ for all $g \in G$.
+  \item \textbf{Inverse.} For every $g \in G$ there exists
+        $g^{-1} \in G$ such that $g \circ g^{-1} = g^{-1} \circ g = e$.
+  \item \textbf{Associativity.} For all $g_1, g_2, g_3 \in G$,\;
+        $(g_1 \circ g_2) \circ g_3 = g_1 \circ (g_2 \circ g_3)$.
+\end{enumerate}}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Key Results}
+
+\thm{Galilean transformations form a group}{The set of all Galilean boosts
+$\{G_{\mathbf{u}} : \mathbf{u} \in \mathbb{R}^3\}$, under the
+operation of composition, forms a group — the \emph{Galilean group}
+(boost subgroup).  The composition law is
+\begin{equation}
+  G_{\mathbf{u}''} = G_{\mathbf{u}'} \circ G_{\mathbf{u}},
+  \qquad \mathbf{u}'' = \mathbf{u} + \mathbf{u}'.
+  \label{eq:lec01:galilean_group_law}
+\end{equation}}
+
+\thm{Newton's second law is Galilean-invariant}{Under a Galilean transformation \eqref{eq:lec01:GT_r}–\eqref{eq:lec01:GT_t},
+the equation $m\,\ddot{\mathbf{r}} = -\nabla V(\mathbf{r})$ retains
+identical form:
+\begin{equation}
+  m\,\frac{d^2\mathbf{r}'}{dt'^2} = -\nabla' V(\mathbf{r}').
+  \label{eq:lec01:newton_invariant}
+\end{equation}}
+
+\thm{Galilean field-transformation rules (from Lorentz force invariance)}{Demanding that the Lorentz force law
+$m\ddot{\mathbf{r}} = q\mathbf{E} + \frac{q}{c}\mathbf{v}\times\mathbf{B}$
+be invariant under Galilean transformations (working in Gaussian/CGS
+units) forces the electromagnetic fields to transform as
+\begin{align}
+  \mathbf{B}' &= \mathbf{B},                                   \label{eq:lec01:Btransform}\\
+  \mathbf{E}' &= \mathbf{E} + \frac{1}{c}\,\mathbf{u}\times\mathbf{B}. \label{eq:lec01:Etransform}
+\end{align}}
+
+\thm{Maxwell's equations are \emph{not} Galilean-invariant}{The field-transformation rules
+\eqref{eq:lec01:Btransform}–\eqref{eq:lec01:Etransform}, which follow
+from demanding Galilean invariance of the Lorentz force, are
+inconsistent with Gauss's law $\nabla'\cdot\mathbf{E}' = 0$ (in a
+source-free region).  Specifically, computing
+$\nabla'\cdot\mathbf{E}'$ yields a term proportional to
+$\mathbf{u}\cdot\partial_t\mathbf{E}$, which is generically
+non-zero.  Therefore the Galilean transformation law for
+spacetime is physically incorrect, and must be replaced by the
+Lorentz transformation.}
+
+The single most important equation of the lecture is the
+incompatibility result:
+\begin{equation}
+  \boxed{
+    \nabla' \cdot \mathbf{E}' \;=\;
+    \frac{1}{c}\,\mathbf{u}\cdot\frac{\partial\mathbf{E}}{\partial t}
+    \;\neq\; 0 \quad \text{in general},
+  }
+  \label{eq:lec01:inconsistency}
+\end{equation}
+which signals that Galilean spacetime is incompatible with Maxwell's
+theory.
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Derivations}
+
+%% DERIVATION 1: Galilean group closure
+\subsubsection*{Galilean boosts form a group: closure}
+
+Let $G_{\mathbf{u}}$ denote the boost by velocity $\mathbf{u}$:
+\begin{align}
+  \mathbf{r}' &= \mathbf{r} - \mathbf{u}\,t, &
+  t'           &= t.
+  \label{eq:lec01:boost-closure-start}
+\end{align}
+Let $G_{\mathbf{u}'}$ act next on $(\mathbf{r}', t')$:
+\begin{align}
+  \mathbf{r}'' &= \mathbf{r}' - \mathbf{u}'\,t'
+               = \bigl(\mathbf{r} - \mathbf{u}\,t\bigr)
+                 - \mathbf{u}'\,t
+               = \mathbf{r} - (\mathbf{u}+\mathbf{u}')\,t,\\
+  t''          &= t' = t.
+\end{align}
+The result has the same form as a single Galilean boost with velocity
+$\mathbf{u}'' = \mathbf{u} + \mathbf{u}'$, proving closure.
+The identity element is $G_{\mathbf{0}}$ ($\mathbf{r}' = \mathbf{r}$,
+$t' = t$); the inverse of $G_{\mathbf{u}}$ is $G_{-\mathbf{u}}$;
+associativity follows from function composition.
+
+%% DERIVATION 2: Galilean invariance of Newton's second law
+\subsubsection*{Newton's second law is Galilean-invariant}
+
+Consider a particle of mass $m$ moving in a scalar potential $V$:
+\begin{equation}
+  m\,\frac{d^2\mathbf{r}}{dt^2} = -\nabla_{\mathbf{r}} V(\mathbf{r}).
+  \label{eq:lec01:newt}
+\end{equation}
+
+\noindent\textbf{Left-hand side.}
+Since $t' = t$, time derivatives are unchanged.  From
+$\mathbf{r}' = \mathbf{r} - \mathbf{u} t$,
+\begin{equation}
+  \frac{d\mathbf{r}'}{dt'} = \frac{d\mathbf{r}}{dt} - \mathbf{u},
+  \label{eq:lec01:velocity-transform}
+\end{equation}
+the velocity shifts by $-\mathbf{u}$ (Galilean velocity addition).
+Taking a second derivative (and recalling $\mathbf{u}$ is constant):
+\begin{equation}
+  \frac{d^2\mathbf{r}'}{dt'^2} = \frac{d^2\mathbf{r}}{dt^2}.
+  \label{eq:lec01:accel_invariant}
+\end{equation}
+Acceleration is the same in both frames.
+
+\noindent\textbf{Right-hand side.}
+The chain rule gives
+\begin{equation}
+  \frac{\partial}{\partial x} V(\mathbf{r})
+  = \frac{\partial x'}{\partial x}\frac{\partial V}{\partial x'}
+  + \frac{\partial y'}{\partial x}\frac{\partial V}{\partial y'}
+  + \frac{\partial z'}{\partial x}\frac{\partial V}{\partial z'}.
+  \label{eq:lec01:chain-rule-potential}
+\end{equation}
+From $x' = x - u_x t$, $y' = y - u_y t$, $z' = z - u_z t$, one
+finds $\partial x'/\partial x = 1$, $\partial y'/\partial x = 0$,
+$\partial z'/\partial x = 0$.  Hence
+$\partial V/\partial x = \partial V/\partial x'$, and likewise
+for $y$ and $z$, so
+\begin{equation}
+  \nabla_{\mathbf{r}} V(\mathbf{r}) = \nabla_{\mathbf{r}'} V(\mathbf{r}').
+  \label{eq:lec01:gradient-invariant}
+\end{equation}
+Equations \eqref{eq:lec01:accel_invariant} and the above together show
+that \eqref{eq:lec01:newt} becomes \eqref{eq:lec01:newton_invariant}
+in $S'$, with no change of form.
+
+%% DERIVATION 3: Field transformation laws from Lorentz force invariance
+\subsubsection*{Galilean field transformation from Lorentz force invariance}
+
+The Lorentz force in $S$ (CGS units) is
+\begin{equation}
+  m\,\ddot{\mathbf{r}} = q\mathbf{E} + \frac{q}{c}\,\mathbf{v}\times\mathbf{B},
+  \label{eq:lec01:lorentz_S}
+\end{equation}
+where $\mathbf{E}$ and $\mathbf{B}$ are external fields.
+By the principle of relativity under Galilean transformations the same
+equation must hold in $S'$:
+\begin{equation}
+  m\,\ddot{\mathbf{r}}' = q\mathbf{E}' + \frac{q}{c}\,\mathbf{v}'\times\mathbf{B}'.
+  \label{eq:lec01:lorentz_Sp}
+\end{equation}
+Since $\ddot{\mathbf{r}}' = \ddot{\mathbf{r}}$ (shown above), the
+right-hand sides of \eqref{eq:lec01:lorentz_S} and
+\eqref{eq:lec01:lorentz_Sp} must be equal.
+The Galilean velocity transformation gives
+$\mathbf{v}' = \mathbf{v} - \mathbf{u}$.  Substituting:
+\begin{equation}
+  q\mathbf{E}' + \frac{q}{c}(\mathbf{v}-\mathbf{u})\times\mathbf{B}'
+  = q\mathbf{E} + \frac{q}{c}\,\mathbf{v}\times\mathbf{B}.
+  \label{eq:lec01:lorentz-force-match}
+\end{equation}
+Rearranging, collecting terms with and without $\mathbf{v}$:
+\begin{equation}
+  q\mathbf{E}' - \frac{q}{c}\,\mathbf{u}\times\mathbf{B}'
+  + \frac{q}{c}\,\mathbf{v}\times(\mathbf{B}'-\mathbf{B})
+  = q\mathbf{E}.
+  \label{eq:lec01:rearranged}
+\end{equation}
+The fields $\mathbf{E}$, $\mathbf{B}$, $\mathbf{E}'$, $\mathbf{B}'$
+are generated by \emph{external} sources and are independent of
+$\mathbf{v}$ (the velocity of the test particle).  Because $\mathbf{v}$
+is freely controllable, the coefficient of $\mathbf{v}$ in
+\eqref{eq:lec01:rearranged} must vanish identically:
+\begin{equation}
+  \mathbf{B}' - \mathbf{B} = \mathbf{0}
+  \implies
+  \mathbf{B}' = \mathbf{B}.
+  \label{eq:lec01:Btransform-derived}
+\end{equation}
+Substituting this back into \eqref{eq:lec01:rearranged}:
+\begin{equation}
+  \mathbf{E}' = \mathbf{E} + \frac{1}{c}\,\mathbf{u}\times\mathbf{B}.
+  \label{eq:lec01:Etransform-derived}
+\end{equation}
+These are equations \eqref{eq:lec01:Btransform}–\eqref{eq:lec01:Etransform}.
+
+%% DERIVATION 4: Inconsistency with Gauss's law
+\subsubsection*{Galilean field transforms are inconsistent with Maxwell's equations}
+
+Work in a source-free region: $\nabla\cdot\mathbf{E} = 0$ in $S$, and
+by the principle of relativity $\nabla'\cdot\mathbf{E}' = 0$ must also
+hold in $S'$.  Compute $\nabla'\cdot\mathbf{E}'$ using the derived
+transformation:
+\begin{equation}
+  \nabla'\cdot\mathbf{E}' = \nabla'\cdot\mathbf{E}
+                           + \frac{1}{c}\,\nabla'\cdot(\mathbf{u}\times\mathbf{B}).
+  \label{eq:lec01:gauss-primed-expand}
+\end{equation}
+Under a Galilean transformation $\partial/\partial x'^{\,i} =
+\partial/\partial x^i$ (the Jacobian is the identity), so
+$\nabla'\cdot\mathbf{E} = \nabla\cdot\mathbf{E} = 0$.
+For the second term, using the vector identity
+$\nabla\cdot(\mathbf{A}\times\mathbf{C})
+ = \mathbf{C}\cdot(\nabla\times\mathbf{A}) - \mathbf{A}\cdot(\nabla\times\mathbf{C})$
+with $\mathbf{u}$ constant:
+\begin{equation}
+  \nabla\cdot(\mathbf{u}\times\mathbf{B})
+  = -\mathbf{u}\cdot(\nabla\times\mathbf{B}).
+  \label{eq:lec01:div-cross-identity}
+\end{equation}
+The Ampère–Maxwell law (in CGS, source-free) gives
+$\nabla\times\mathbf{B} \propto \partial\mathbf{E}/\partial t$,
+so:
+\begin{equation}
+  \nabla'\cdot\mathbf{E}'
+  = -\frac{1}{c}\,\mathbf{u}\cdot\frac{\partial\mathbf{E}}{\partial t}.
+  \label{eq:lec01:gauss-contradiction}
+\end{equation}
+Because $\partial\mathbf{E}/\partial t \neq \mathbf{0}$ in general (e.g.\
+in an electromagnetic wave), and $\mathbf{u}$ can be chosen with any
+direction, this is generically non-zero — in contradiction with the
+requirement $\nabla'\cdot\mathbf{E}' = 0$.  The Galilean law of
+transformation of inertial frames is therefore physically untenable:
+it must be replaced by the Lorentz transformation.
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Examples}
+
+\ex{Closure of Galilean boosts: explicit computation}{Let $G_{\mathbf{u}}$ boost from $S$ to $S'$ and $G_{\mathbf{u}'}$
+boost from $S'$ to $S''$.  With $S'$ moving at $\mathbf{u}$ and
+$S''$ moving at $\mathbf{u}'$ relative to $S'$:
+\begin{align}
+  \mathbf{r}'' &= \mathbf{r}' - \mathbf{u}' t'
+               = \mathbf{r} - \mathbf{u} t - \mathbf{u}' t
+               = \mathbf{r} - (\mathbf{u}+\mathbf{u}')\,t,
+               \quad t'' = t.
+\end{align}
+The composition equals a single boost $G_{\mathbf{u}+\mathbf{u}'}$,
+confirming the group law $\mathbf{u}'' = \mathbf{u} + \mathbf{u}'$
+and group closure.}
+
+\ex{Integers under addition as a group}{Smolkin used $(\mathbb{Z}, +)$ as a concrete illustration of the group
+axioms: the identity is $0$, and the inverse of any integer $n$ is
+$-n$.  Closure ($\mathbb{Z}$ is closed under $+$) and associativity
+are immediate.  This parallels the Galilean boosts, where $0$
+corresponds to the trivial boost and $-\mathbf{u}$ to its inverse.}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Connections}
+
+\begin{itemize}
+  \item \textbf{Analytical Mechanics.}  Smolkin explicitly frames this
+    course as the field-theory analogue of Analytical Mechanics: the
+    action principle and Noether's theorem for fields generalize what
+    Lagrange and Hamilton did for finite-degree-of-freedom systems.
+    Prior exposure to the Lagrangian formulation (including the
+    Euler–Lagrange equations) is assumed.
+  \item \textbf{Quantum Field Theory.}  Smolkin noted that the
+    formalism developed here — classical field theory with an action
+    principle — is the direct precursor to QFT, which combines
+    special relativity with quantum mechanics and underpins all of
+    modern elementary-particle physics.
+  \item \textbf{Special Relativity (from Mechanics course).}
+    Students are expected to know the Lorentz transformation from
+    their mechanics course.  The next lectures will review and extend
+    this knowledge; Lorentz transformations will replace Galilean ones
+    as the correct symmetry of spacetime.
+  \item \textbf{Landau \& Lifshitz, Vol.\ 2 (\emph{Classical Theory of
+    Fields}).}  Smolkin stated that the majority of the course follows
+    this text closely.  The title ``Classical Theory of Fields'' reflects
+    that, when the book was written, there were exactly two classical
+    field theories: electrodynamics and gravity.  The course covers only
+    the electrodynamics part.
+  \item \textbf{Jackson, \emph{Classical Electrodynamics}.}
+    Recommended as an equally authoritative alternative reference,
+    covering most topics in this course.
+\end{itemize}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{To Remember}
+
+\begin{itemize}
+  \item The Galilean transformation asserts absolute time ($t' = t$)
+    and the position rule $\mathbf{r}' = \mathbf{r} - \mathbf{u}t$;
+    it implies Galilean velocity addition
+    $\mathbf{v}' = \mathbf{v} - \mathbf{u}$.
+  \item Acceleration is an \emph{absolute} quantity under Galilean
+    transformations: $\ddot{\mathbf{r}}' = \ddot{\mathbf{r}}$.
+    This makes Newton's second law (with velocity-independent forces)
+    Galilean-invariant.
+  \item The Galilean boosts $\{G_{\mathbf{u}}\}$ form a group under
+    composition, with composition law
+    $G_{\mathbf{u}'}\circ G_{\mathbf{u}} = G_{\mathbf{u}+\mathbf{u}'}$.
+  \item Every symmetry of physics has the mathematical structure of a
+    group; the symmetry group of non-relativistic mechanics is the
+    Galilean group.
+  \item Demanding Galilean invariance of the Lorentz force law forces
+    $\mathbf{B}' = \mathbf{B}$ and
+    $\mathbf{E}' = \mathbf{E} + \mathbf{u}\times\mathbf{B}/c$.
+  \item These field-transformation rules are inconsistent with
+    $\nabla\cdot\mathbf{E}=0$ in $S'$ (source-free Gauss's law) because
+    $\nabla'\cdot(\mathbf{u}\times\mathbf{B}) = -\mathbf{u}\cdot
+    (\nabla\times\mathbf{B}) \propto \mathbf{u}\cdot\partial_t\mathbf{E}
+    \neq 0$ in general.
+  \item \textbf{Conclusion:} Maxwell's equations are not
+    Galilean-invariant; the correct transformation is the Lorentz
+    transformation, to be studied in the next lectures.
+  \item The course works exclusively in \textbf{Gaussian (CGS) units}
+    because relativistic factors of $c$ appear symmetrically; in SI
+    units they are obscured.
+\end{itemize}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Exam / HW Hints}
+
+\begin{itemize}
+  \item Smolkin strongly recommended treating homework seriously and
+    working through it independently (or with understanding), as it
+    directly prepares for the exam.
+  \item He noted that AI tools and solutions from peers are
+    permissible but warned explicitly: you must read and understand
+    whatever you submit; copying without understanding is both
+    ineffective for the exam and a poor learning strategy.
+  \item Office hours are by appointment via email
+    (\texttt{michael.smolkin@mail.huji.ac.il}); demand peaks in the
+    week before the exam, so he advised scheduling early.
+  \item Assessment: final exam 90\%; HW bonus up to 15\% (maximum
+    grade 100\%); submitting $\geq 70\%$ of assignments is required
+    for the full bonus.
+\end{itemize}

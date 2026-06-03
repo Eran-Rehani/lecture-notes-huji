@@ -1,0 +1,510 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\section{Lecture 14 -- Circulation, Vorticity, and Two Descriptions of Fluid Motion}\label{sec:lec14}
+\begin{center}
+  \textbf{Date:} May 25, 2026
+\end{center}
+
+\subsection*{Overview}
+This lecture opens a new chapter in the fluid-dynamics portion of the course. Two intertwined threads run through the session. The first is \emph{Kelvin's circulation theorem} — a conservation law that constrains when and where vortical motion can appear in ideal flow. The second is the shift from the Eulerian (field) description to the Lagrangian (particle-tracking) description, which is the natural language for an action principle. Both threads converge in the action functional for an ideal fluid, presented at the end of the lecture.
+
+\medskip\noindent\textbf{Topics:}
+\begin{enumerate}
+  \item Brief review: Venturi clarification and second explanation of airfoil lift
+  \item Kelvin's circulation theorem (1869)
+  \item Helmholtz decomposition: longitudinal (irrotational) vs.\ transverse (solenoidal) parts
+  \item Vorticity and differential forms of Kelvin's theorem
+  \item Eulerian vs.\ Lagrangian descriptions of fluid motion
+  \item Streamlines and pathlines
+  \item Conservation of energy and momentum in ideal flow
+  \item Action principle for ideal fluids (preview)
+\end{enumerate}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Brief Review: Venturi and Airfoil Lift}\label{sec:lec14:review}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Venturi: Height Reference}
+A question left from Lecture 13: \emph{relative to which point} do we measure height in the Venturi manometer columns? Answer: follow the \emph{central streamline}. Apply Bernoulli between a point in the wide section (pressure $p_0$, speed $v_0$) and a point in the narrow section (pressure $p_1$, speed $v_1$). For a horizontal pipe the height terms cancel and the manometer-column height difference $h_0-h_1$ directly encodes $\frac{1}{2}(v_1^2-v_0^2)/g$.
+
+\subsubsection*{Airfoil Lift: Angle of Attack}
+Last lecture gave the Bernoulli explanation for lift (upper surface more curved $\Rightarrow$ streamlines compressed $\Rightarrow$ $v\uparrow$, $p\downarrow$). A complementary explanation uses the \emph{angle of attack} $\alpha$:
+
+\begin{center}
+\begin{tikzpicture}[scale=1.05]
+  \begin{scope}[rotate=9]
+    \fill[gray!25]
+      (-2.2,0) .. controls (-1,0.55) and (0.6,0.65) .. (2.2,0.1)
+               .. controls (0.6,-0.12) and (-1,-0.08) .. (-2.2,0);
+    \draw[thick]
+      (-2.2,0) .. controls (-1,0.55) and (0.6,0.65) .. (2.2,0.1);
+    \draw[thick]
+      (-2.2,0) .. controls (-1,-0.08) and (0.6,-0.12) .. (2.2,0.1);
+  \end{scope}
+  \draw[dashed,gray] (-2.8,0) -- (3.0,0);
+  \draw[myorange,->] (1.6,0) arc(0:9:1.6) node[right, font=\small, yshift=1pt] {$\alpha$};
+  \foreach \y in {0.7,0.0,-0.7}{
+    \draw[vvec] (-3.0,\y) -- (-2.4,\y);
+  }
+  \draw[vvec,myblue] (2.5,-0.15) -- (3.2,-0.55) node[right,font=\small] {deflected $\downarrow$};
+  \draw[force,ultra thick] (0,0.25) -- (0,1.1) node[right,font=\small,black] {$F_{\rm lift}$};
+\end{tikzpicture}
+\end{center}
+
+The tilted wing deflects air downward. By Newton's third law the air pushes the wing upward. This mechanism works even for a flat plate, and even when the wing flies inverted — as long as $\alpha$ is large enough. Both mechanisms (Bernoulli curvature + angle-of-attack deflection) contribute to real lift; the complete story requires solving the Navier-Stokes equations.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Kelvin's Circulation Theorem}\label{sec:lec14:kelvin}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+Bernoulli's equation is a conservation law \emph{along a streamline}. Can we find a global conservation law capturing the \emph{rotational} character of flow? Kelvin's theorem answers yes: the circulation around any closed material curve is conserved in ideal barotropic flow.
+
+\subsubsection{Definition: Circulation}
+
+\dfn[circulation]{Circulation}{%
+  Given a closed oriented curve $C$, the \emph{circulation} is
+  \begin{equation}
+    \Gamma(C) = \oint_C \vel \cdot d\bvec{l},
+    \label{eq:lec14_circ_def}
+  \end{equation}
+  where $d\bvec{l}$ is the line element along $C$.
+}
+\textit{Significance:} Circulation is the fluid analogue of the line integral of the magnetic field. By Stokes' theorem, $\Gamma = \iint_S\bvec{\omega}\cdot d\bvec{S}$ where $\bvec{\omega}=\curl\vel$ is the vorticity (\S\ref{sec:lec14:vorticity}). A nonzero $\Gamma$ signals enclosed vortical motion.
+
+\subsubsection{Material Curves}
+
+The crucial ingredient is that $C$ is a \emph{material curve}: a closed curve made of specific fluid particles that are carried along with the flow.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.95]
+  % Left: C(t1)
+  \begin{scope}[xshift=-3.2cm]
+    \draw[myblue,thick,->] (0,0) .. controls (0.4,0.9) and (1.3,0.8) .. (1.6,0)
+         .. controls (1.3,-0.8) and (0.3,-0.7) .. (0,0);
+    \foreach \pt in {(0,0),(0.75,0.82),(1.6,0),(0.7,-0.72)}{
+      \fill[myblue] \pt circle(2.3pt);
+    }
+    \node[myblue] at (0.8,0.15) {$C(t_1)$};
+  \end{scope}
+  \draw[->,thick,myorange] (-0.6,0.1) -- (0.6,0.1) node[midway,above,font=\small] {flow};
+  % Right: C(t2)
+  \begin{scope}[xshift=3.2cm]
+    \draw[myred,thick,->] (-0.1,-0.15) .. controls (0.2,1.0) and (1.5,1.1) .. (1.9,0.2)
+         .. controls (1.7,-0.9) and (0.5,-0.8) .. (-0.1,-0.15);
+    \foreach \pt in {(-0.1,-0.15),(0.9,1.05),(1.9,0.2),(0.9,-0.78)}{
+      \fill[myred] \pt circle(2.3pt);
+    }
+    \node[myred] at (0.9,0.1) {$C(t_2)$};
+  \end{scope}
+  \node[font=\small] at (-3.2,-1.3) {same particles at $t_1$};
+  \node[font=\small] at (3.2,-1.3) {same particles at $t_2$};
+\end{tikzpicture}
+\end{center}
+
+\subsubsection{Key Kinematic Lemma}
+
+\lem[material-dl]{Rate of Change of a Material Line Element}{%
+  If $d\bvec{l}$ connects two adjacent fluid particles on a material curve, then
+  \begin{equation}
+    \frac{D(d\bvec{l})}{Dt} = d\vel,
+    \label{eq:lec14_Ddl}
+  \end{equation}
+  where $d\vel$ is the velocity difference between the two particles.
+}
+\begin{proof}
+At time $t$, the two adjacent particles sit at $\bvec{x}$ and $\bvec{x}+d\bvec{l}$ with velocities $\vel(\bvec{x})$ and $\vel(\bvec{x}+d\bvec{l})$. After time $dt$ they are at $\bvec{x}+\vel\,dt$ and $(\bvec{x}+d\bvec{l})+\vel(\bvec{x}+d\bvec{l})\,dt$. The new separation is
+\[
+  d\bvec{l}(t+dt) = d\bvec{l}(t) + \bigl[\vel(\bvec{x}+d\bvec{l})-\vel(\bvec{x})\bigr]dt = d\bvec{l}(t)+d\vel\,dt.
+\]
+Dividing by $dt$ gives \eqref{eq:lec14_Ddl}.
+\end{proof}
+
+\subsubsection{Proof of Kelvin's Theorem}
+
+Differentiate $\Gamma = \oint_C\vel\cdot d\bvec{l}$ along the material curve:
+\begin{equation}
+  \frac{d\Gamma}{dt}
+  = \oint_C \frac{D\vel}{Dt}\cdot d\bvec{l}
+  + \oint_C \vel\cdot\frac{D(d\bvec{l})}{Dt}.
+  \label{eq:lec14_dGdt}
+\end{equation}
+
+\paragraph{Term II.} Using Lemma~\ref{lem:material-dl}:
+\begin{equation}
+  \oint_C \vel\cdot d\vel = \oint_C d\!\left(\tfrac{1}{2}v^2\right) = 0
+  \qquad \text{(exact differential, closed loop).}
+  \label{eq:lec14_term2}
+\end{equation}
+
+\paragraph{Term I.} For an ideal barotropic fluid ($p=p(\rho)$) in a conservative field $\bvec{g}=-\grad\Phi$, Euler's equation gives
+\begin{equation}
+  \frac{D\vel}{Dt} = -\frac{1}{\rho}\grad p - \grad\Phi = -\grad h_{\rm th} - \grad\Phi,
+  \label{eq:lec14_euler_baro}
+\end{equation}
+using $\grad h_{\rm th} = \frac{1}{\rho}\grad p$. Therefore:
+\begin{equation}
+  \oint_C \frac{D\vel}{Dt}\cdot d\bvec{l}
+  = -\oint_C \grad(h_{\rm th}+\Phi)\cdot d\bvec{l}
+  = -\oint_C d(h_{\rm th}+\Phi) = 0.
+  \label{eq:lec14_term1}
+\end{equation}
+
+Both terms vanish:
+
+\thm[kelvin]{Kelvin's Circulation Theorem (1869)}{%
+  For an ideal, barotropic fluid in a conservative external field,
+  \begin{equation}
+    \boxed{\frac{d\Gamma}{dt} = 0 \quad\Longleftrightarrow\quad \Gamma(C(t)) = \mathrm{const},}
+    \label{eq:lec14_kelvin}
+  \end{equation}
+  where $C(t)$ is any closed material curve. The proof uses two ingredients: (1) the kinematic identity $D(d\bvec{l})/Dt=d\vel$, and (2) Euler's equation for ideal barotropic flow.
+}
+\textit{Significance:} Ideal flow can neither create nor destroy circulation. If vortices are absent initially, they remain absent; vortices present at $t=0$ cannot dissipate without viscosity. This is a topological conservation law: it holds for every material loop simultaneously.
+
+\subsubsection{Physical Discussion}
+
+\paragraph{No spontaneous vortex generation.}
+Ideal flow starting irrotationally ($\bvec{\omega}=\bvec{0}$ everywhere) stays irrotational forever. Real flows (waterfalls, pipe flow) generate vortices because viscosity creates vorticity at solid walls, violating the ideal-fluid assumption.
+
+\paragraph{Historical note.}
+William Thomson (1824–1907), later Lord Kelvin, proved the theorem in 1869. He is also known for the Kelvin temperature scale, the Second Law of Thermodynamics, and the first transatlantic telegraph cable. He is \emph{not} J.J.\ Thomson (discoverer of the electron).
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Helmholtz Decomposition}\label{sec:lec14:helmholtz}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+Kelvin's theorem conserves circulation, which is sensitive only to the \emph{rotational} part of $\vel$. The Helmholtz decomposition separates any vector field into a rotational part and an irrotational part, making this precise.
+
+\dfn[helmholtz]{Helmholtz Decomposition (Longitudinal-Transverse)}{%
+  Any smooth vector field $\bvec{V}$ (decaying at infinity) decomposes uniquely as
+  \begin{equation}
+    \bvec{V} = \bvec{V}_\parallel + \bvec{V}_\perp,
+    \label{eq:lec14_helmholtz}
+  \end{equation}
+  where
+  \begin{align}
+    \bvec{V}_\parallel\ (\text{longitudinal}): &\quad \curl\bvec{V}_\parallel = \bvec{0}
+      \;\Rightarrow\; \exists\,\phi:\bvec{V}_\parallel = \grad\phi, \\
+    \bvec{V}_\perp\quad (\text{transverse}): &\quad \divg\bvec{V}_\perp = 0.
+  \end{align}
+}
+
+\subsubsection{Fourier-Space Picture}
+
+In Fourier space, decomposition by direction relative to $\bvec{k}$ is immediate:
+
+\begin{center}
+\begin{tikzpicture}[scale=1.1]
+  \draw[vvec] (0,0) -- (3.2,0) node[right] {$\bvec{k}$};
+  \draw[force,thick] (0,0) -- (2.2,0) node[above,yshift=3pt,font=\small,black]
+    {$\hat{\bvec{V}}_\parallel\parallel\bvec{k}$ (longitudinal)};
+  \draw[myblue,->,very thick,line cap=round] (0,0) -- (0,1.6)
+    node[left,font=\small] {$\hat{\bvec{V}}_\perp\perp\bvec{k}$ (transverse)};
+  \draw[black,->,thick,dashed] (0,0) -- (2.2,1.6)
+    node[above right,font=\small] {$\hat{\bvec{V}}$};
+  \draw[dashed,gray] (2.2,0) -- (2.2,1.6) (0,1.6) -- (2.2,1.6);
+\end{tikzpicture}
+\end{center}
+
+\begin{itemize}
+  \item $\hat{\bvec{V}}_\parallel\parallel\bvec{k}$: oscillation parallel to propagation — \emph{compressional} (longitudinal) wave (e.g.\ sound, P-wave).
+  \item $\hat{\bvec{V}}_\perp\perp\bvec{k}$: oscillation perpendicular to propagation — \emph{shear} (transverse) wave (e.g.\ S-wave).
+\end{itemize}
+
+\nt{The Helmholtz decomposition appears in electromagnetism (Coulomb gauge, transverse photons), elasticity (Lec 7: P- and S-waves), and fluid mechanics. Students typically encounter it first in electromagnetism; the inventors of classical electrodynamics (Faraday, Helmholtz, Maxwell) knew it from fluid mechanics.}
+
+\subsubsection{Connection to Circulation}
+
+Circulation probes only the transverse part of $\vel$:
+\begin{equation}
+  \Gamma = \oint_C\vel\cdot d\bvec{l}
+  = \underbrace{\oint_C\vel_\parallel\cdot d\bvec{l}}_{=\,\oint_C d\phi\,=\,0}
+  + \oint_C\vel_\perp\cdot d\bvec{l}.
+  \label{eq:lec14_circ_transverse}
+\end{equation}
+\textbf{Kelvin's theorem is a conservation law for the transverse (rotational) component of $\vel$ only.}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Vorticity}\label{sec:lec14:vorticity}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\dfn[vorticity]{Vorticity}{%
+  The \emph{vorticity} is the curl of the velocity field:
+  \begin{equation}
+    \boxed{\bvec{\omega} = \curl\vel.}
+    \label{eq:lec14_vorticity}
+  \end{equation}
+  A fluid element spinning at angular velocity $\bvec{\Omega}$ has $\bvec{\omega}=2\bvec{\Omega}$.
+}
+Since $\curl\vel_\parallel=\bvec{0}$, vorticity sees only the transverse part: $\bvec{\omega}=\curl\vel_\perp$.
+
+\subsubsection{Stokes' Theorem: Connecting Integral and Differential}
+
+\thm[stokes-circ]{Stokes' Theorem for Circulation}{%
+  \begin{equation}
+    \boxed{\Gamma(C) = \oint_C\vel\cdot d\bvec{l} = \iint_S\bvec{\omega}\cdot d\bvec{S},}
+    \label{eq:lec14_stokes}
+  \end{equation}
+  where $S$ is any surface bounded by $C$.
+}
+\textit{Significance:} This converts Kelvin's integral conservation law into a local statement. Kelvin: $d\Gamma/dt=0$ $\Longleftrightarrow$ the vorticity flux through any material surface is conserved.
+
+\subsubsection{Differential Forms of Kelvin's Theorem (stated without proof)}
+
+Two equivalent local formulations (see L\&L §2):
+
+\paragraph{Spatial (Eulerian) form:}
+\begin{equation}
+  \pdv{\bvec{\omega}}{t} + \curl(\bvec{\omega}\times\vel) = \bvec{0}.
+  \label{eq:lec14_kelvin_spatial}
+\end{equation}
+
+\paragraph{Material (Lagrangian) form — vorticity equation:}
+\begin{equation}
+  \boxed{\DDt\bvec{\omega} = (\bvec{\omega}\cdot\grad)\vel.}
+  \label{eq:lec14_kelvin_material}
+\end{equation}
+The right side is the \emph{vortex-stretching term}: as a vortex tube stretches, its cross-section shrinks (incompressibility) and its vorticity intensifies.
+
+\nt{For 2D incompressible flow ($\bvec{\omega}=\omega\uvec{z}$, all quantities independent of $z$): the stretching term $(\bvec{\omega}\cdot\grad)\vel=\omega\,\partial_z\vel=0$ vanishes. Therefore $D\omega/Dt=0$ — vorticity is merely advected, never amplified, in 2D ideal flow.}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Two Descriptions of Fluid Motion}\label{sec:lec14:descriptions}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+All equations of motion so far have used fields $\rho(\bvec{x},t)$, $p(\bvec{x},t)$, $\vel(\bvec{x},t)$ evaluated at a fixed point in space. This is the \emph{Eulerian} description. An alternative: track each fluid particle individually. This is the \emph{Lagrangian} description. Both are complete and equivalent, with complementary advantages.
+
+\subsubsection{Eulerian (Spatial) Description}
+
+\dfn[eulerian]{Eulerian Description}{%
+  The fundamental variable is $\vel(\bvec{x},t)$ — the velocity of whichever fluid particle happens to occupy position $\bvec{x}$ at time $t$. The label $\bvec{x}$ is a fixed location in space, \emph{not} a specific particle.
+}
+
+\subsubsection{Lagrangian (Material) Description}
+
+\dfn[lagrangian]{Lagrangian Description}{%
+  Each fluid particle is labeled by its initial position $\refcoord$ (the Lagrangian label). The fundamental variable is the \emph{trajectory map}
+  \begin{equation}
+    \curcoord = \curcoord(\refcoord,t),
+    \label{eq:lec14_traj_map}
+  \end{equation}
+  giving the position at time $t$ of the particle that started at $\refcoord$. The Eulerian velocity is recovered via
+  \begin{equation}
+    \vel(\bvec{x},t) = \left.\pdv{\curcoord(\refcoord,t)}{t}\right|_{\refcoord=\refcoord(\bvec{x},t)}.
+    \label{eq:lec14_lagr_vel}
+  \end{equation}
+}
+\textit{Significance:} The Lagrangian picture treats fluid mechanics as ``mechanics of infinitely many particles,'' one per label $\refcoord$. It is the natural language for Noether's theorem and the action principle (\S\ref{sec:lec14:action}).
+
+\subsubsection{Equivalence and Conversion}
+
+\paragraph{Lagrangian $\to$ Eulerian.}
+Given $\curcoord(\refcoord,t)$:
+\begin{enumerate}
+  \item Compute $\vel(\curcoord,t) = \partial_t\curcoord(\refcoord,t)\big|_\refcoord$.
+  \item Algebraically invert $\curcoord(\refcoord,t)$ to express $\refcoord$ as a function of $(\bvec{x},t)$.
+\end{enumerate}
+This is relatively easy (algebraic inversion).
+
+\paragraph{Eulerian $\to$ Lagrangian.}
+Given $\vel(\bvec{x},t)$, find each particle's trajectory by solving the initial-value problem
+\begin{equation}
+  \dv{\curcoord}{t} = \vel(\curcoord(t),t), \qquad \curcoord(0) = \refcoord.
+  \label{eq:lec14_pathline_ode}
+\end{equation}
+This is a nonlinear ODE (the unknown $\curcoord$ appears on both sides) — generally hard, especially in turbulent flows.
+
+\subsubsection{Advantages}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{lll}
+\toprule
+ & \textbf{Eulerian} & \textbf{Lagrangian} \\
+\midrule
+Fundamental variable & $\vel(\bvec{x},t)$ & $\curcoord(\refcoord,t)$ \\
+Named after & Euler & Lagrange \\
+Main advantage & Directly measurable & Enables action principle \\
+Main difficulty & Nonlinear advection $(\vel\cdot\grad)\vel$ & ODE to convert to Eulerian \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\nt{The material derivative $D/Dt = \partial_t + (\vel\cdot\grad)$ is exactly the time derivative \emph{at fixed $\refcoord$} (i.e., following a particle). The definition of circulation on a material curve already uses the material derivative, so Kelvin's theorem lives naturally in the Lagrangian description.}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Streamlines and Pathlines}\label{sec:lec14:streamlines}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\dfn[streamline]{Streamline}{%
+  A \emph{streamline} is a curve that is everywhere tangent to $\vel(\bvec{x},t_0)$ at a \emph{fixed} instant $t_0$. It satisfies
+  \begin{equation}
+    \frac{dx_1}{v_1} = \frac{dx_2}{v_2} = \frac{dx_3}{v_3} \equiv d\lambda,
+    \label{eq:lec14_streamline}
+  \end{equation}
+  i.e., $d\curcoord/d\lambda = \vel(\curcoord,t_0)$ with time \emph{frozen}.
+}
+
+\dfn[pathline]{Pathline (Trajectory)}{%
+  A \emph{pathline} is the actual trajectory of a fluid particle, i.e., the solution of \eqref{eq:lec14_pathline_ode}. It follows the same particle through a time-varying velocity field.
+}
+
+\begin{center}
+\begin{tikzpicture}[scale=0.9]
+  % Steady
+  \begin{scope}[xshift=-3.5cm]
+    \node[font=\bfseries\small] at (1.1,2.1) {Steady ($\partial_t\vel=0$)};
+    \foreach \y in {0.3,0.9,1.5}{
+      \draw[myblue,thick,->] (-0.2,\y) -- (2.4,\y);
+    }
+    \draw[myred,very thick,->] (-0.2,0.9) -- (2.4,0.9);
+    \fill[myred] (-0.2,0.9) circle(2.5pt);
+    \node[font=\small] at (1.1,-0.2) {streamline $=$ pathline};
+  \end{scope}
+  % Unsteady
+  \begin{scope}[xshift=2.0cm]
+    \node[font=\bfseries\small] at (1.3,2.1) {Unsteady ($\partial_t\vel\neq 0$)};
+    \foreach \y in {0.3,0.9,1.5}{
+      \draw[myblue,thick,->]
+        (-0.2,\y) .. controls (0.8,\y+0.2) and (1.8,\y-0.1) .. (2.8,\y);
+    }
+    \draw[myred,very thick,->]
+      (-0.2,0.9) .. controls (0.6,0.6) and (1.7,1.4) .. (2.8,0.8);
+    \fill[myred] (-0.2,0.9) circle(2.5pt);
+    \node[myblue,font=\small] at (3.2,0.9) {stream.};
+    \node[myred,font=\small] at (3.2,0.7) {path.};
+    \node[font=\small] at (1.3,-0.2) {streamline $\neq$ pathline};
+  \end{scope}
+\end{tikzpicture}
+\end{center}
+
+\thm[stream-path]{Streamlines Equal Pathlines for Steady Flow}{%
+  If $\partial_t\vel=0$, streamlines and pathlines coincide.
+}
+\begin{proof}
+For steady flow $\vel(\bvec{x},t)=\vel(\bvec{x})$. The pathline ODE $\dot{\curcoord}=\vel(\curcoord)$ has the same form as the streamline equation \eqref{eq:lec14_streamline} (with $\lambda\to t$), so their solution curves are identical.
+\end{proof}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Conservation Laws: Energy and Momentum}\label{sec:lec14:conservation}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+We now have Bernoulli (Lec 13) and Kelvin (this lecture) as two conservation laws. Two more — energy and momentum — exist for ideal flow. They are stated here; derivations combine the continuity equation and Euler's equation (see L\&L §6–7).
+
+\subsubsection{Energy Conservation}
+
+Define the \emph{energy density per unit volume}:
+\begin{equation}
+  \mathcal{E} = \rho\!\left(\tfrac{1}{2}v^2+\epsilon\right)+\rho\Phi,
+  \label{eq:lec14_energy_dens}
+\end{equation}
+where $\epsilon$ is the internal (thermodynamic) energy per unit mass.
+
+The \emph{energy flux}:
+\begin{equation}
+  \bvec{j}_E = \bigl[\rho\!\left(\tfrac{1}{2}v^2+\epsilon\right)+p+\rho\Phi\bigr]\vel
+             = (\mathcal{E}+p)\vel.
+  \label{eq:lec14_energy_flux}
+\end{equation}
+
+\nt{The extra $p\vel$ term (not present in $\mathcal{E}\vel$) arises because pressure performs work as fluid moves: $p\vel$ is the power per unit area transmitted to adjacent fluid. It converts internal energy $\epsilon$ into specific enthalpy $h_{\rm th}=\epsilon+p/\rho$ in the flux.}
+
+\thm[energy-cons]{Local Energy Conservation — Ideal Fluid}{%
+  \begin{equation}
+    \boxed{\pdv{\mathcal{E}}{t} + \divg\bvec{j}_E = 0.}
+    \label{eq:lec14_energy_cons}
+  \end{equation}
+}
+
+\subsubsection{Momentum Conservation}
+
+The \emph{momentum flux tensor} (stress tensor for an ideal fluid) is
+\begin{equation}
+  \Pi_{ij} = \rho v_i v_j + p\delta_{ij}.
+  \label{eq:lec14_Pi}
+\end{equation}
+The two terms are: (1) $\rho v_i v_j$ — convective transport of the $i$-component of momentum in the $j$-direction; (2) $p\delta_{ij}$ — isotropic pressure contribution.
+
+\thm[momentum-cons]{Local Momentum Conservation — Ideal Fluid}{%
+  Without body forces,
+  \begin{equation}
+    \boxed{\pdv{(\rho v_i)}{t} + \pdv{\Pi_{ij}}{x_j} = 0,
+    \qquad \Pi_{ij} = \rho v_i v_j + p\delta_{ij}.}
+    \label{eq:lec14_momentum_cons}
+  \end{equation}
+}
+\nt{With a conservative body force $f_i=-\rho\partial_i\Phi$ (gravity), a source term $-\rho\partial_i\Phi$ appears on the right. This is Euler's equation in conservation form.}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Action Principle for Ideal Fluids (Preview)}\label{sec:lec14:action}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+By Noether's theorem, every continuous symmetry of an action implies a conservation law. Can we derive the fluid conservation laws this way? Yes — but only for ideal (inviscid) fluids, since viscosity is dissipative and has no action. The action must be written in the Lagrangian description.
+
+\subsubsection{Compressible Ideal Fluid}
+
+The action for a compressible ideal fluid in Lagrangian variables is
+\begin{equation}
+  S = \int dt \int d^3\refcoord\;\rho_0(\refcoord)
+      \left[\frac{1}{2}\left|\pdv{\curcoord}{t}\right|^2 - \epsilon(\rho) - \Phi(\curcoord)\right],
+  \label{eq:lec14_action_comp}
+\end{equation}
+where:
+\begin{itemize}
+  \item $\refcoord$ labels particles (Lagrangian variable); the integral is over all particles.
+  \item $\rho_0(\refcoord)$ is the initial density (constant in time for each particle).
+  \item $\tfrac{1}{2}|\partial_t\curcoord|^2 = \tfrac{1}{2}v^2$ is kinetic energy per unit mass.
+  \item $\epsilon(\rho)$ is internal energy per unit mass, where $\rho$ is determined by mass conservation:
+\end{itemize}
+\begin{equation}
+  \rho(\curcoord,t) = \frac{\rho_0(\refcoord)}{J}, \qquad J = \det\!\left(\pdv{x_i}{X_j}\right),
+  \label{eq:lec14_jacobian}
+\end{equation}
+with $J$ the Jacobian of the map $\refcoord\to\curcoord$. Mass conservation requires $\rho\,d^3\curcoord = \rho_0\,d^3\refcoord$.
+
+Varying \eqref{eq:lec14_action_comp} with respect to $\curcoord(\refcoord,t)$ (with generalized Euler-Lagrange equations for fields) yields Euler's equation. Energy and momentum conservation follow from time and space translation symmetry via Noether's theorem.
+
+\subsubsection{Incompressible Ideal Fluid}
+
+For incompressible flow, $\divg\vel=0$ is equivalent to $J=1$ at all times. This constraint is imposed by a Lagrange multiplier $p(\curcoord,t)$:
+\begin{equation}
+  S_{\rm inc} = \int dt \int d^3\refcoord
+    \left[\frac{1}{2}\!\left|\pdv{\curcoord}{t}\right|^2 - \Phi(\curcoord)\right]
+    -\int dt \int d^3\curcoord\; p(\curcoord,t)\,(J-1).
+  \label{eq:lec14_action_inc}
+\end{equation}
+
+\thm[pressure-lagrange]{Pressure as Lagrange Multiplier}{%
+  In \eqref{eq:lec14_action_inc}, the pressure $p(\curcoord,t)$ is precisely the Lagrange multiplier enforcing $J=1$ (incompressibility $\divg\vel=0$). Varying with respect to $p$ gives $J=1$; varying with respect to $\curcoord$ gives Euler's equation.
+}
+\textit{Significance:} In an incompressible ideal fluid, \emph{pressure is not a thermodynamic variable} — it is a constraint force (like the normal force in constrained particle mechanics) that enforces $\divg\vel=0$. Its value adjusts whatever is needed to keep the fluid incompressible.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection*{Summary}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\begin{itemize}
+  \item \textbf{Kelvin}: $d\Gamma/dt=0$ for ideal barotropic flow on any material curve.
+  \item \textbf{Vorticity}: $\bvec{\omega}=\curl\vel$; satisfies $D\bvec{\omega}/Dt=(\bvec{\omega}\cdot\grad)\vel$ (3D), $D\omega/Dt=0$ (2D).
+  \item \textbf{Helmholtz}: $\vel=\vel_\parallel+\vel_\perp$; Kelvin involves only $\vel_\perp$.
+  \item \textbf{Eulerian}: $\vel(\bvec{x},t)$ — measurable. \textbf{Lagrangian}: $\curcoord(\refcoord,t)$ — enables action principle.
+  \item \textbf{Streamlines = pathlines} for steady flow.
+  \item \textbf{Energy}: $\partial_t\mathcal{E}+\divg[(\mathcal{E}+p)\vel]=0$.
+  \item \textbf{Momentum}: $\partial_t(\rho v_i)+\partial_j(\rho v_i v_j+p\delta_{ij})=0$.
+  \item \textbf{Pressure in incompressible flow} is the Lagrange multiplier for $\divg\vel=0$.
+\end{itemize}
+
+\subsection*{Further Reading}
+\begin{itemize}
+  \item L.\,D. Landau and E.\,M. Lifshitz, \textit{Fluid Mechanics} (Vol.\ 6):
+    \S2 (Kelvin's theorem, vorticity dynamics), \S6--7 (energy and momentum conservation).
+  \item V.\,I. Arnold, \textit{Mathematical Methods of Classical Mechanics}: action principle and Noether's theorem for fluids.
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,352 @@
+
+
+%% Lecture 05 — Length Contraction, Time Dilation, the Twin Paradox, Proper Time, and Four-Vectors
+\section{Lecture 05 — Length Contraction, Time Dilation, the Twin Paradox, and Four-Vectors}\label{sec:lec05}
+
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 19/04/2026   & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+
+\subsection*{Overview}
+This lecture begins by revisiting two foundational kinematic consequences of the Lorentz transformation—length contraction and time dilation—deriving each directly from the invariant interval and the definition of measurement. The discussion of time dilation naturally leads to a careful analysis of the \textit{Twin Paradox}, resolving the apparent contradiction by identifying the asymmetry between an inertial and a non-inertial (accelerating) observer. The second half of the lecture introduces the covariant language required for the rest of the course: \textbf{scalars}, \textbf{four-vectors}, \textbf{proper time}, the \textbf{Minkowski metric} and its \textbf{inverse metric}, the notions of \textbf{covariant and contravariant} indices, and the \textbf{four-velocity}.
+
+% ==============================================================================
+\subsection{Length Contraction (Lorentz Contraction)}
+% ==============================================================================
+
+\subsubsection*{Setup and Definition of Length Measurement}
+
+Consider a ruler at rest in frame $K'$. Let the two endpoints of the ruler occupy positions $x'_1$ and $x'_2$ in $K'$, so the \textbf{rest length} (proper length) is:
+\begin{equation}\label{eq:lec05:proper-length}
+    L_0 = x'_2 - x'_1
+\end{equation}
+
+Frame $K$ moves at velocity $-v$ relative to $K'$ (equivalently, $K'$ moves at velocity $v$ relative to $K$). To measure the length of the ruler in frame $K$, we must locate \emph{both endpoints at the same instant of time} $t$ in $K$. This is the operational definition of measuring the length of a moving object.
+
+\subsubsection*{Applying the Lorentz Transformation}
+
+The Lorentz transformation (boost in $x$-direction, $K'$ moving at $+v$ relative to $K$) gives:
+\begin{equation}\label{eq:lorentz_boost_x}
+    x' = \gamma(x - vt), \qquad ct' = \gamma\!\left(ct - \frac{v}{c}x\right)
+\end{equation}
+
+We consider two \textbf{events}: Event~1 is the observation of endpoint 1 at $(t, x_1)$ in $K$, and Event~2 is the observation of endpoint 2 at $(t, x_2)$ in $K$, both at \emph{the same time} $t$ in $K$.
+
+Applying the Lorentz transformation to each event:
+\begin{align*}
+    x'_1 &= \gamma(x_1 - vt) \\
+    x'_2 &= \gamma(x_2 - vt)
+\end{align*}
+
+Taking the difference:
+\begin{equation}\label{eq:lec05:length-transform-difference}
+    x'_2 - x'_1 = \gamma(x_2 - x_1)
+\end{equation}
+
+Therefore:
+\begin{equation}\label{eq:lec05:length-contraction}
+    L_0 = \gamma \, L
+    \qquad \implies \qquad
+    \boxed{L = \frac{L_0}{\gamma} = L_0\sqrt{1 - \frac{v^2}{c^2}}}
+\end{equation}
+
+Since $\gamma \geq 1$, we have $L \leq L_0$: \textbf{a moving ruler appears shorter} than its proper (rest-frame) length. This is Lorentz contraction.
+
+\subsubsection*{Key Remark: Simultaneity in the Rest Frame}
+
+A subtle but important point: in the rest frame $K'$, the two events (measuring the endpoints) occur at \emph{different times} $t'_1 \neq t'_2$. However, because the ruler is stationary in $K'$, it does not matter at which times we observe the endpoints there — the ruler's length in $K'$ is the same regardless. The distinction between simultaneous and non-simultaneous only matters in the frame where the ruler is \emph{moving}.
+
+\subsubsection*{Physical Consequence: No Rigid Bodies}
+
+Length contraction implies that there are no truly \textbf{rigid bodies} in special relativity. A cube at rest is a cube; a moving cube is contracted along the direction of motion. Elementary particles must be treated as \textbf{point-like}, or else they would change shape between reference frames, violating the principle that the laws of physics (and elementary constituents) are the same in all inertial frames.
+
+% ==============================================================================
+\subsection{Time Dilation}
+% ==============================================================================
+
+\subsubsection*{Setup}
+
+Consider a particle at rest in frame $K'$. The particle undergoes some process (e.g., radioactive decay) that takes a time $\Delta\tau$ as measured by a clock co-moving with the particle (i.e., at rest in $K'$). This is the \textbf{proper time} interval. Since the particle is at rest in $K'$, both the creation and decay events occur at the same spatial location in $K'$: $\Delta x' = 0$.
+
+We observe this process from frame $K$ (in which the particle moves at velocity $v$) and ask: how much time $\Delta t$ passes in $K$?
+
+\subsubsection*{Derivation via the Invariant Interval}
+
+The spacetime interval is the same in both frames:
+\begin{equation}\label{eq:lec05:interval-process}
+    \Delta s^2 = c^2 \Delta t'^2 - \Delta x'^2 = c^2 \Delta t^2 - \Delta x^2
+\end{equation}
+
+In the rest frame $K'$: $\Delta x' = 0$, so $\Delta s^2 = c^2 \Delta\tau^2$.
+
+In frame $K$: the particle travels a distance $\Delta x = v\,\Delta t$ during time $\Delta t$, so:
+\begin{align}
+    c^2 \Delta\tau^2 &= c^2 \Delta t^2 - v^2 \Delta t^2 = \Delta t^2 \left(c^2 - v^2\right)
+    \label{eq:lec05:time-dilation-derivation}
+\end{align}
+
+Dividing both sides by $c^2$:
+\begin{equation}\label{eq:lec05:proper-time-relation}
+    \Delta\tau^2 = \Delta t^2 \left(1 - \frac{v^2}{c^2}\right) = \frac{\Delta t^2}{\gamma^2}
+\end{equation}
+
+Therefore:
+\begin{equation}\label{eq:lec05:time-dilation}
+    \boxed{\Delta t = \gamma \, \Delta\tau}
+\end{equation}
+
+Since $\gamma \geq 1$, we have $\Delta t \geq \Delta\tau$: \textbf{the time measured in the frame where the particle is moving is longer} than the proper time measured in the particle's rest frame. A moving clock runs slow.
+
+\subsubsection*{Physical Example}
+
+A radioactive element placed at rest on a table decays with a mean lifetime $\tau_0$. If the same element is accelerated to a relativistic velocity $v$, an external observer measures a longer lifetime $\tau = \gamma \tau_0$. This is experimentally confirmed, for instance, in the observed lifetimes of cosmic-ray muons reaching the Earth's surface.
+
+% ==============================================================================
+\subsection{The Twin Paradox}
+% ==============================================================================
+
+\subsubsection*{The Setup}
+
+Two identical twins are born together at the same event (the origin). Twin~A remains stationary in an inertial frame $K$ throughout. Twin~B leaves, travels through the universe at some trajectory (necessarily involving acceleration), and eventually returns to meet Twin~A.
+
+The paradox appears to arise because each twin can claim to be "at rest" and the other twin to be "moving." It seems symmetric: each should observe the other's clock as running slow. Yet upon reunion, both observers can look at each other and compare ages, a manifestly frame-independent (Lorentz-scalar) outcome.
+
+\subsubsection*{Resolution: The Asymmetry of Acceleration}
+
+The key insight is that the two twins are \textbf{not} in equivalent situations:
+\begin{itemize}
+    \item Twin~A remains in a single inertial frame the entire time.
+    \item Twin~B \emph{must} accelerate at some point to leave, turn around, and return. A frame that is accelerating is physically distinguishable from an inertial frame — there are fictitious (inertial) forces present, which can be measured locally (e.g., by a spring, or a freely released object that accelerates within that frame).
+\end{itemize}
+
+Therefore, the two reference frames are not symmetrically related. The Lorentz transformation laws we derived apply only between \emph{inertial} frames.
+
+\subsubsection*{Quantitative Argument via Proper Time}
+
+We can calculate the elapsed proper time for each twin.
+
+\textbf{Twin~A} (inertial): travels along a straight worldline from event~$P_0$ to event~$P_f$. The elapsed time is simply $t_A = T$ (the coordinate time in $K$).
+
+\textbf{Twin~B} (non-inertial): follows some curved worldline. We can partition the worldline into infinitesimal segments, on each of which B has an instantaneous velocity $v(t)$. At each instant, B is momentarily at rest in some instantaneous inertial frame $K'_\text{inst}$. The proper time elapsed in one infinitesimal segment is:
+\begin{equation}\label{eq:lec05:proper-time-element}
+    d\tau_B = \frac{dt}{\gamma(v(t))}= dt\sqrt{1 - \frac{v(t)^2}{c^2}}
+\end{equation}
+
+The total elapsed proper time for Twin~B is:
+\begin{equation}\label{eq:lec05:twin-proper-time}
+    \tau_B = \int_0^T \frac{dt}{\gamma(v(t))} = \int_0^T \sqrt{1 - \frac{v(t)^2}{c^2}} \, dt
+\end{equation}
+
+Since $\gamma(v) \geq 1$ for all $v$, we have $\frac{1}{\gamma} \leq 1$, and thus:
+\begin{equation}\label{eq:lec05:twin-inequality}
+    \boxed{\tau_B \leq T = \tau_A}
+\end{equation}
+
+\textbf{Twin~A is always older upon reunion.} The traveling twin B ages less, regardless of the specific trajectory taken. The more extreme the velocities reached, the greater the discrepancy.
+
+\subsubsection*{Spacetime Diagram Interpretation}
+
+On a spacetime diagram (axes $ct$ and $x$):
+\begin{itemize}
+    \item Twin~A's worldline is a straight vertical line.
+    \item Twin~B's worldline is a curved path that departs from and returns to the $ct$-axis.
+\end{itemize}
+This is the \textbf{geometrical content}: the straight worldline maximizes the proper time (the Minkowski "length" along the worldline). Any deviation from the straight (inertial) worldline reduces the accumulated proper time. This is the opposite of the Euclidean intuition (where the straight line gives the \emph{minimum} distance), and reflects the indefinite signature of the Minkowski metric.
+
+\begin{figure}[h]
+    \centering
+    \begin{tikzpicture}[scale=0.9, >=Latex]
+        \draw[->] (-0.2,0) -- (5.2,0) node[right] {$x$};
+        \draw[->] (0,-0.2) -- (0,5.2) node[above] {$ct$};
+        \coordinate (P0) at (0,0);
+        \coordinate (Pf) at (0,4.5);
+        \draw[thick, blue] (P0) -- (Pf) node[midway, left] {Twin A};
+        \draw[thick, red] (P0) -- (2.0,2.2) -- (Pf);
+        \fill (P0) circle (1.5pt) node[below left] {$P_0$};
+        \fill (Pf) circle (1.5pt) node[above left] {$P_f$};
+        \node[red] at (2.2,2.0) {Twin B};
+    \end{tikzpicture}
+    \caption{Twin A follows the inertial straight worldline, while Twin B
+    departs and returns. Between the same endpoints $P_0$ and $P_f$, the
+    straight timelike path accumulates the maximal proper time.}
+    \label{fig:lec05:twin-paradox}
+\end{figure}
+
+% ==============================================================================
+\subsection{Proper Time}
+% ==============================================================================
+
+\subsubsection*{Definition}
+
+The \textbf{proper time} $\tau$ is a Lorentz scalar: it is the time measured on a clock that is co-moving with the object of interest (i.e., at rest in the object's instantaneous rest frame).
+
+For two infinitesimally separated events on the worldline of a particle:
+\begin{equation}\label{eq:lec05:proper-time-interval}
+    ds^2 = c^2 d\tau^2 = c^2 dt^2 - dx^2 - dy^2 - dz^2
+\end{equation}
+
+In the rest frame of the particle ($d\vec{x} = 0$), this reduces to $ds^2 = c^2 dt_{\text{rest}}^2$, confirming that $d\tau$ is the time interval in the rest frame.
+
+More explicitly, in any frame where the particle has velocity $v$:
+\begin{equation}\label{eq:lec05:dtaudt}
+    d\tau = \frac{ds}{c} = dt \sqrt{1 - \frac{v^2}{c^2}} = \frac{dt}{\gamma}
+\end{equation}
+
+For a finite path:
+\begin{equation}\label{eq:lec05:proper-time-integral}
+    \tau = \int_{\text{path}} d\tau = \int \frac{dt}{\gamma(t)}
+\end{equation}
+
+\subsubsection*{Geometric Meaning: Extremal Paths in Minkowski Space}
+
+Consider all timelike worldlines connecting two fixed events $P_1$ and $P_2$. The integral $\int d\tau$ along each worldline is a Lorentz-scalar "length." The key result (analogous to but opposite from Euclidean geometry) is:
+
+\begin{center}
+\textit{The straight (inertial) worldline connecting two timelike-separated events has the \textbf{maximum} proper time.}
+\end{center}
+
+In Euclidean space, the straight line minimizes path length. In Minkowski space, the straight worldline \emph{maximizes} proper time. This is a direct consequence of the indefinite metric signature $(+,-,-,-)$.
+
+% ==============================================================================
+\subsection{Four-Vectors and Scalars in Minkowski Space}
+% ==============================================================================
+
+\subsubsection*{Lorentz Scalars}
+
+A \textbf{Lorentz scalar} is a quantity whose numerical value is the same in all inertial reference frames (i.e., it is invariant under Lorentz transformations). Examples include:
+\begin{itemize}
+    \item The spacetime interval: $ds^2 = \eta_{\mu\nu}\,dx^\mu\,dx^\nu$
+    \item The proper time: $d\tau$
+    \item The rest mass (invariant mass): $m$ (also called the \textbf{rest mass} or \textbf{invariant mass}; the old concept of "relativistic mass" $\gamma m$ is deprecated in modern physics)
+    \item The electric charge: $q$
+\end{itemize}
+
+\subsubsection*{Four-Vectors: Definition}
+
+A \textbf{four-vector} (or contravariant 4-vector) is a set of four components $A^\mu = (A^0, A^1, A^2, A^3)$ that transforms under a Lorentz transformation exactly as the coordinate differential $dx^\mu$ does:
+\begin{equation}\label{eq:lec05:four-vector-transform}
+    A'^\mu = \Lambda^\mu_{\ \nu} A^\nu
+\end{equation}
+where $\Lambda^\mu_{\ \nu}$ is the Lorentz transformation matrix. The superscript index ($\mu$) is called a \textbf{contravariant index}.
+
+\textit{Analogy:} In 3D, a vector $\vec{V} = (V_x, V_y, V_z)$ is defined by how it transforms under rotations ($\vec{V}\,' = R\,\vec{V}$). A four-vector is defined by how it transforms under Lorentz boosts (and spatial rotations). Not every set of four numbers forms a four-vector; the transformation law must be satisfied.
+
+The prototype four-vector is the spacetime \textbf{position four-vector}:
+\begin{equation}\label{eq:lec05:position-four-vector}
+    x^\mu = (ct,\, x,\, y,\, z)
+\end{equation}
+Since we know $dx^\mu$ transforms as $dx'^\mu = \Lambda^\mu_{\ \nu} dx^\nu$ (this is the definition of the Lorentz transformation), $dx^\mu$ is indeed a four-vector. Any quantity built from $dx^\mu$ by multiplying by a scalar also transforms correctly.
+
+\subsubsection*{The Minkowski Metric}
+
+The \textbf{Minkowski metric} $\eta_{\mu\nu}$ (with lower indices, the \textbf{covariant} metric) is:
+\begin{equation}\label{eq:lec05:minkowski-metric}
+    \eta_{\mu\nu} = \text{diag}(+1, -1, -1, -1) =
+    \begin{pmatrix} 1 & 0 & 0 & 0 \\ 0 & -1 & 0 & 0 \\ 0 & 0 & -1 & 0 \\ 0 & 0 & 0 & -1 \end{pmatrix}
+\end{equation}
+It is used to compute the invariant interval: $ds^2 = \eta_{\mu\nu}\,dx^\mu\,dx^\nu$.
+
+\subsubsection*{The Inverse Metric (Contravariant Metric)}
+
+The \textbf{inverse metric} $\eta^{\mu\nu}$ (with upper indices) is defined so that:
+\begin{equation}\label{eq:lec05:inverse-metric-definition}
+    \eta^{\mu\rho}\eta_{\rho\nu} = \delta^\mu_{\ \nu}
+\end{equation}
+where $\delta^\mu_{\ \nu}$ is the Kronecker delta (the identity matrix). For the Minkowski metric, one finds:
+\begin{equation}\label{eq:lec05:inverse-metric}
+    \eta^{\mu\nu} = \text{diag}(+1, -1, -1, -1) = \eta_{\mu\nu}
+\end{equation}
+The inverse metric is numerically identical to the metric itself in flat Minkowski space. (In curved spacetime, this is generally not the case.) The notation with upper indices is kept to distinguish the role of the matrix in index-raising operations.
+
+\subsubsection*{Covariant and Contravariant Indices: Raising and Lowering}
+
+Given a contravariant four-vector $A^\mu$, we define its associated \textbf{covariant four-vector} (or \textbf{covector}, or \textbf{1-form}) $A_\mu$ by lowering the index with the metric:
+\begin{equation}\label{eq:lec05:lower-index}
+    A_\mu \equiv \eta_{\mu\nu} A^\nu
+\end{equation}
+Explicitly:
+\begin{equation}\label{eq:lec05:lowered-components}
+    A_\mu = (A^0,\, -A^1,\, -A^2,\, -A^3)
+\end{equation}
+Similarly, we raise an index with the inverse metric:
+\begin{equation}\label{eq:lec05:raise-index}
+    A^\mu = \eta^{\mu\nu} A_\nu
+\end{equation}
+
+The \textbf{Lorentz-invariant inner product} (a scalar) of two four-vectors $A^\mu$ and $B^\mu$ is:
+\begin{equation}\label{eq:lec05:inner-product}
+    A \cdot B \equiv \eta_{\mu\nu} A^\mu B^\nu = A^\mu B_\mu = A_\mu B^\mu = A^0 B^0 - A^1 B^1 - A^2 B^2 - A^3 B^3
+\end{equation}
+
+\subsubsection*{Consistency of the Inverse Metric: Derivation}
+
+Starting from the Lorentz transformation constraint $\eta_{\mu\nu} = \Lambda^\alpha_{\ \mu} \Lambda^\beta_{\ \nu} \eta_{\alpha\beta}$ (in matrix form: $\Lambda^T \eta \Lambda = \eta$), one can show that the inverse metric $\eta^{\mu\nu}$ satisfies the analogous relation:
+\begin{equation}\label{eq:lec05:inverse-metric-transform}
+    \eta^{\mu\nu} = \Lambda^\mu_{\ \alpha} \Lambda^\nu_{\ \beta}\, \eta^{\alpha\beta}
+\end{equation}
+This is derived by multiplying the original constraint by $\eta^{\mu\rho}$ and $\eta^{\nu\sigma}$, using the invertibility of both $\eta$ and $\Lambda$, and simplifying via the identity $\eta^{\mu\rho}\eta_{\rho\nu} = \delta^\mu_{\ \nu}$. The result confirms that the inverse metric transforms correctly and is consistently defined.
+
+% ==============================================================================
+\subsection{Four-Velocity}
+% ==============================================================================
+
+\subsubsection*{Definition}
+
+The \textbf{four-velocity} $u^\mu$ of a particle is defined as the derivative of the particle's spacetime position with respect to its own proper time $\tau$:
+\begin{equation}\label{eq:lec05:four-velocity-definition}
+    u^\mu \equiv \frac{dx^\mu}{d\tau}
+\end{equation}
+
+Since $dx^\mu$ is a four-vector and $d\tau$ is a Lorentz scalar (proper time is invariant), the ratio $u^\mu = dx^\mu / d\tau$ is automatically a four-vector.
+
+\subsubsection*{Explicit Components}
+
+Using $d\tau = dt/\gamma$ (so $dt/d\tau = \gamma$), we can express the components in terms of the ordinary 3-velocity $\vec{v} = d\vec{x}/dt$:
+\begin{align}
+    u^0 &= \frac{d(ct)}{d\tau} = c\frac{dt}{d\tau} = \gamma c, \label{eq:lec05:u0}\\[6pt]
+    u^i &= \frac{dx^i}{d\tau} = \frac{dx^i}{dt}\frac{dt}{d\tau} = \gamma v^i, \quad i = 1,2,3
+    \label{eq:lec05:ui}
+\end{align}
+Therefore:
+\begin{equation}\label{eq:lec05:four-velocity-components}
+    \boxed{u^\mu = \gamma(c,\, v_x,\, v_y,\, v_z) = (\gamma c,\, \gamma\vec{v})}
+\end{equation}
+
+\subsubsection*{The Magnitude of the Four-Velocity is Constant}
+
+A fundamental property: the Lorentz-invariant "magnitude squared" of the four-velocity is a constant:
+\begin{align}
+    u^\mu u_\mu &= \eta_{\mu\nu} u^\mu u^\nu = (u^0)^2 - (u^1)^2 - (u^2)^2 - (u^3)^2 \notag \\
+    &= \gamma^2 c^2 - \gamma^2 v^2 = \gamma^2(c^2 - v^2) = \gamma^2 c^2\!\left(1-\frac{v^2}{c^2}\right) = c^2
+    \label{eq:lec05:four-velocity-norm-derivation}
+\end{align}
+\begin{equation}\label{eq:lec05:four-velocity-norm}
+    \boxed{u^\mu u_\mu = c^2}
+\end{equation}
+
+This is consistent with the definition: $u^\mu u_\mu = \frac{dx^\mu}{d\tau}\frac{dx_\mu}{d\tau} = \frac{ds^2}{d\tau^2} = \frac{c^2\,d\tau^2}{d\tau^2} = c^2$.
+
+In the particle's rest frame ($\vec{v} = 0$, $\gamma = 1$): $u^\mu = (c, 0, 0, 0)$, and trivially $u^\mu u_\mu = c^2$. Since this is a scalar (Lorentz-invariant), it holds in all frames. This is a powerful consistency check.
+
+\subsubsection*{Remark: Particles vs.\ Fields (Photons)}
+
+The four-velocity $u^\mu$ is defined only for massive particles ($v < c$). For massless particles (photons), $d\tau = 0$ along the worldline (lightlike interval), so $u^\mu$ diverges. In the classical (non-quantum) field theory framework of this course, light is described as an \emph{electromagnetic field}, not as a stream of photons. Four-velocity therefore applies exclusively to massive particles.
+
+% ==============================================================================
+\subsection*{Summary and Looking Ahead}
+% ==============================================================================
+
+\begin{enumerate}
+    \item \textbf{Length Contraction:} $L = L_0/\gamma$. Measuring the length of a moving object requires recording both endpoints at the \emph{same coordinate time}.
+    \item \textbf{Time Dilation:} $\Delta t = \gamma\,\Delta\tau$. A moving clock runs slow; the proper time is the shortest elapsed time.
+    \item \textbf{Twin Paradox:} Resolved by the asymmetry between an inertial frame (Twin~A) and an accelerated frame (Twin~B). The traveling twin always ages less: $\tau_B \leq \tau_A$.
+    \item \textbf{Proper Time:} A Lorentz scalar, $d\tau = ds/c$. Geometrically, it is the Minkowski "length" of a worldline segment; a straight (inertial) worldline \emph{maximizes} $\int d\tau$.
+    \item \textbf{Scalars and Four-Vectors:} A Lorentz scalar is invariant under $\Lambda$; a four-vector transforms as $A'^\mu = \Lambda^\mu_{\ \nu}A^\nu$.
+    \item \textbf{Minkowski Metric and Inverse:} $\eta_{\mu\nu} = \eta^{\mu\nu} = \text{diag}(+1,-1,-1,-1)$; used to raise/lower indices and compute invariant inner products.
+    \item \textbf{Four-Velocity:} $u^\mu = dx^\mu/d\tau = \gamma(c,\vec{v})$; its norm is always $u^\mu u_\mu = c^2$.
+\end{enumerate}
+
+In the next lecture we will combine this covariant language with the physics of electromagnetism, showing how the electric and magnetic fields unify into the \textbf{electromagnetic field tensor} $F^{\mu\nu}$.

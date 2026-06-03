@@ -1,0 +1,593 @@
+%%===================================================================
+%% Lecture 09 -- Model Building, Global Symmetries, and Charges
+%% 77609 -- Introduction to Elementary Particles
+%% Date: 07/05/2026
+%% Lecturer: Prof. Yonit Hochberg
+%%===================================================================
+
+\documentclass[../main.tex]{subfiles}
+\usepackage{preamble}
+
+\begin{document}
+
+\section{Lecture 09 -- Model Building, Global Symmetries, and Charges}\label{sec:lec09}
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 07/05/2026 & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+
+%%------------------------------------------------------------------
+\subsection*{Overview}
+
+This lecture starts the systematic model-building part of the course.  The main point is that a Lagrangian is not guessed term by term.  Instead, one specifies the degrees of freedom, the symmetries, and how the fields transform under those symmetries, and then writes the most general local, renormalizable Lagrangian consistent with those inputs.
+
+\begin{enumerate}
+  \item \textbf{Review of simple renormalizable Lagrangians}: real scalar fields, Dirac fermions, and Yukawa couplings.
+  \item \textbf{Model building}: the Lagrangian is the endpoint of theory construction and the starting point for phenomenology.
+  \item \textbf{Symmetries}: spacetime symmetries versus internal symmetries; the role of invariance of the Lagrangian.
+  \item \textbf{Discrete symmetry example}: a $\mathbb{Z}_2$ symmetry $\phi\to-\phi$ removes the cubic scalar interaction and gives conservation of $\phi$-parity.
+  \item \textbf{Global continuous symmetries}: fields transform in an internal mathematical space; allowed terms are singlets.
+  \item \textbf{Complex scalar and $U(1)$}: phase rotations $\phi\to e^{i\theta}\phi$; equivalence to $SO(2)$ rotations of the real and imaginary parts.
+  \item \textbf{Charges}: the coefficient $q$ in $\phi\to e^{iq\theta}\phi$ is the charge; only relative charges matter when several fields transform.
+  \item \textbf{Two complex scalars}: with charges $q_1=1$ and $q_2=3$, the symmetry fixes which interactions are allowed.
+  \item \textbf{Noether perspective}: symmetry implies conserved current and conserved charge; invariant interaction terms have total charge zero.
+\end{enumerate}
+
+%%------------------------------------------------------------------
+\subsection*{Why Lagrangians Are the Language of Model Building}
+
+\subsubsection*{Physical Motivation}
+
+In particle physics, a Lagrangian is both an answer and a starting point.  It is the answer to the model-building question: ``which theory is compatible with the symmetries and field content we want?''  Once written, it becomes the starting point for phenomenology: we quantize it, extract propagators and vertices, compute amplitudes, and compare those amplitudes with experiments.
+
+The general model-building strategy is:
+\begin{equation}
+  \boxed{
+  \begin{array}{c}
+    \text{symmetries} \\
+    \text{field content} \\
+    \text{transformation rules}
+  \end{array}
+  \quad\Longrightarrow\quad
+  \text{most general allowed }\lagr
+  \quad\Longrightarrow\quad
+  \text{parameters to measure.}}
+  \label{eq:lec09:model-building-flow}
+\end{equation}
+
+\textit{Physical significance:} The word ``general'' is crucial.  If a term is allowed by all imposed symmetries and by renormalizability, it should be included with an independent coefficient unless there is a further symmetry reason to remove it.
+
+The output Lagrangian contains parameters such as masses and coupling constants.  The theory does not usually predict their numerical values by itself; those parameters must be measured.  The theory is tested by checking whether one set of measured parameters consistently predicts many other observables.
+
+%%------------------------------------------------------------------
+\subsection*{Renormalizable Building Blocks Already Seen}
+
+\subsubsection*{Physical Motivation}
+
+Before imposing new symmetries, we need to know the menu of terms that Lorentz invariance and renormalizability already allow.  The lecture reviewed the simplest scalar and fermion terms because these are the raw ingredients from which later Standard Model interactions will be built.
+
+\subsubsection*{Real scalar field}
+
+For a real scalar field $\phi$, with mass dimension $[\phi]=1$, the most general renormalizable self-interaction polynomial is:
+\begin{equation}
+  \boxed{
+  \lagr_{\phi}
+  =
+  \frac{1}{2}\partial_\mu\phi\,\partial^\mu\phi
+  -\frac{1}{2}m^2\phi^2
+  -\frac{\mu}{2\sqrt{2}}\,\phi^3
+  -\frac{\lambda}{4}\,\phi^4.}
+  \label{eq:lec09:real-scalar-lagrangian}
+\end{equation}
+
+Here $m$ is the scalar mass parameter, $\mu$ has mass dimension $1$, and $\lambda$ is dimensionless.  The numerical factors are conventional and chosen to match the reference notes; they do not change the physics.
+
+\textit{Physical significance:} Renormalizability stops the polynomial at $\phi^4$.  A term $\phi^n$ with $n\geq5$ has operator dimension $n>4$, so its coefficient would carry negative mass dimension and the term would be non-renormalizable.
+
+Two possible terms were deliberately not written:
+\begin{itemize}
+  \item A \textbf{constant term} in $\lagr$ does not affect the classical equation of motion for $\phi$, because differentiating $\lagr$ with respect to $\phi$ or $\partial_\mu\phi$ kills it.
+  \item A \textbf{linear term} can be removed by a field redefinition.  Concretely, one shifts the integration variable, for example $\phi(x)=\phi'(x)+a$, and chooses the constant $a$ so that the term proportional to one power of the new field $\phi'$ disappears.  This is what the lecture meant by ``rotating away'' the term: it is just a change of variables, not a spacetime rotation.
+\end{itemize}
+
+\subsubsection*{Dirac fermion}
+
+For a Dirac fermion, with $[\psi]=3/2$, the free Lagrangian is:
+\begin{equation}
+  \boxed{
+  \lagr_{\rm Dirac}
+  =
+  \bar\psi\,i\slashed{\partial}\,\psi
+  -m\bar\psi\psi
+  =
+  \bar\psi\,(i\slashed{\partial}-m)\,\psi.}
+  \label{eq:lec09:dirac-lagrangian-review}
+\end{equation}
+
+The slash notation means $\slashed{\partial}=\gamma^\mu\partial_\mu$, so the Lorentz index $\mu$ is contracted between the gamma matrix and the derivative.
+
+\textit{Physical significance:} Fermions cannot appear singly in Lorentz-invariant Lagrangian terms.  They enter through bilinears such as $\bar\psi\psi$ or $\bar\psi\gamma^\mu\psi$.  Four-fermion terms have dimension $6$ and are therefore outside the renormalizable Lagrangian.
+
+\subsubsection*{Yukawa coupling}
+
+If the theory contains both a scalar $\phi$ and a Dirac fermion $\psi$, the simplest renormalizable interaction between them is the Yukawa coupling:
+\begin{equation}
+  \boxed{
+  \lagr_{\rm Yukawa}
+  =
+  -y\,\bar\psi\psi\,\phi.}
+  \label{eq:lec09:yukawa}
+\end{equation}
+
+The operator $\bar\psi\psi\phi$ has dimension $3+1=4$, so the Yukawa coupling $y$ is dimensionless.
+
+\textit{Physical significance:} Yukawa terms are the prototype for how scalars couple to fermions.  In the Standard Model, fermion masses arise from Yukawa couplings to the Higgs field after electroweak symmetry breaking.
+
+Combining the pieces gives the general schematic form
+\begin{equation}
+  \boxed{
+  \lagr
+  =
+  \lagr_{\phi}
+  +
+  \lagr_{\rm Dirac}
+  +
+  \lagr_{\rm Yukawa}
+  }
+  \label{eq:lec09:scalar-fermion-general}
+\end{equation}
+before additional internal symmetries are imposed.
+
+\textit{Physical significance:} This is the first example of the model-building rule: write every term that is allowed by Lorentz invariance, mass dimension, and later by the chosen internal symmetries.
+
+%%------------------------------------------------------------------
+\subsection*{What Is a Symmetry?}
+
+\subsubsection*{Physical Motivation}
+
+A symmetry is an invariance of the equations describing a physical system.  In Lagrangian language, the practical criterion is that the action, or at least the Lagrangian density up to harmless total derivatives, is unchanged under a specified transformation of the fields.  Symmetries are not decorative; they are the rules that decide which terms may appear.
+
+Modern particle physics treats symmetries as input principles.  The observed conservation laws, selection rules, and interaction patterns are then consequences of those inputs.
+
+\begin{equation}
+  \boxed{
+  \text{symmetry of }\lagr
+  \quad\Longrightarrow\quad
+  \text{restricted interactions and conserved quantities.}}
+  \label{eq:lec09:symmetry-consequence}
+\end{equation}
+
+\textit{Physical significance:} Translational invariance gives energy-momentum conservation.  Internal symmetries similarly give conserved charges, and later local internal symmetries will determine gauge interactions.
+
+\subsubsection*{Inputs and outputs}
+
+To construct a Lagrangian one specifies:
+\begin{enumerate}
+  \item the symmetries to impose;
+  \item the degrees of freedom, or field content;
+  \item how each field transforms under each symmetry.
+\end{enumerate}
+
+Then one writes the most general local, analytic, renormalizable Lagrangian invariant under those symmetries.  Usually ``renormalizable'' means keeping all operators of dimension $\leq4$:
+\begin{equation}
+  \boxed{
+  \text{renormalizable model building in }3+1\text{ dimensions:}
+  \qquad
+  [\mathcal{O}]\leq 4.}
+  \label{eq:lec09:dimension-four-rule}
+\end{equation}
+
+\textit{Physical significance:} Truncating at dimension four can accidentally create extra symmetries.  These are called accidental symmetries: they were not imposed, but they appear because all lower-dimensional symmetry-breaking operators happen to be absent.
+
+%%------------------------------------------------------------------
+\subsection*{Spacetime Symmetries and Internal Symmetries}
+
+\subsubsection*{Physical Motivation}
+
+Not all symmetries act in the same space.  Lorentz transformations and translations act on spacetime.  Internal symmetries act on labels or components of fields at a fixed spacetime point.  Separating these ideas prevents a common confusion: an internal ``rotation'' is usually not a physical rotation of the coordinate axes.
+
+\subsubsection*{Spacetime symmetries}
+
+The symmetries of special relativity form the Poincare group: translations, rotations, and boosts.  In this course they are always imposed.  The Lagrangian must be built from Lorentz scalars, with all Lorentz indices contracted properly.
+
+There are also important discrete spacetime-related transformations:
+\begin{itemize}
+  \item \textbf{Parity} $P$: spatial inversion $\bvec{x}\to-\bvec{x}$, with $t$ unchanged.
+  \item \textbf{Time reversal} $T$: reversal of time direction.
+  \item \textbf{Charge conjugation} $C$: replacement of particles by antiparticles.
+\end{itemize}
+
+The combined $CPT$ transformation is believed to be an exact symmetry of local Lorentz-invariant quantum field theory.  However, $C$, $P$, and $T$ separately can be violated, and the course will later discuss this mostly through the language of $CP$ violation.
+
+\subsubsection*{Internal symmetries}
+
+Internal symmetries act on the mathematical space generated by the fields, not on spacetime itself.  For example, a complex field may be multiplied by a phase without moving the spacetime point $x^\mu$.
+
+Allowed Lagrangian terms must be singlets under the imposed internal symmetry:
+\begin{equation}
+  \boxed{
+  \text{allowed terms in }\lagr
+  =
+  \text{combinations of fields that are internal-symmetry singlets.}}
+  \label{eq:lec09:singlet-rule}
+\end{equation}
+
+\textit{Physical significance:} ``Invariant'', ``scalar'', and ``singlet'' are the same idea in this context: the object does not transform under the symmetry.  Model building is therefore the art of forming all possible singlets from the available fields.
+
+%%------------------------------------------------------------------
+\subsection*{A First Discrete Example: $\mathbb{Z}_2$}
+
+\subsubsection*{Physical Motivation}
+
+The simplest useful internal symmetry is a sign flip of a real scalar field.  This example shows how a symmetry removes an interaction term and produces a selection rule for physical processes.
+
+Start from the real-scalar Lagrangian in Eq.~\eqref{eq:lec09:real-scalar-lagrangian} and impose:
+\begin{equation}
+  \boxed{
+  \phi \longrightarrow -\phi.}
+  \label{eq:lec09:z2-transformation}
+\end{equation}
+
+This is a $\mathbb{Z}_2$ symmetry: applying the transformation twice gives back the original field.
+
+\textit{Physical significance:} The field $\phi$ is called $\mathbb{Z}_2$-odd because it changes sign.  The Lagrangian must be $\mathbb{Z}_2$-even because it must transform into itself.
+
+\subsubsection*{Which terms survive?}
+
+Under $\phi\to-\phi$,
+\begin{equation}
+  \partial_\mu\phi\,\partial^\mu\phi\to
+  \partial_\mu\phi\,\partial^\mu\phi,
+  \qquad
+  \phi^2\to\phi^2,
+  \qquad
+  \phi^3\to-\phi^3,
+  \qquad
+  \phi^4\to\phi^4.
+  \label{eq:lec09:z2-term-transformations}
+\end{equation}
+
+Therefore the cubic term is forbidden.  Equivalently, invariance requires $\mu=0$.  The resulting Lagrangian is:
+\begin{equation}
+  \boxed{
+  \lagr_{\phi,\mathbb{Z}_2}
+  =
+  \frac{1}{2}\partial_\mu\phi\,\partial^\mu\phi
+  -\frac{1}{2}m^2\phi^2
+  -\frac{\lambda}{4}\phi^4.}
+  \label{eq:lec09:z2-lagrangian}
+\end{equation}
+
+\textit{Physical significance:} The symmetry removes every term containing an odd number of $\phi$ fields.  Thus interactions can change the number of $\phi$ particles only by an even number.
+
+\subsubsection*{$\phi$-parity conservation}
+
+Define the $\phi$-parity of a state by
+\begin{equation}
+  \boxed{
+  P_\phi \equiv (-1)^{N_\phi},}
+  \label{eq:lec09:phi-parity}
+\end{equation}
+where $N_\phi$ is the number of external $\phi$ particles in the state.
+
+The only interaction vertex is now a four-$\phi$ vertex.  Each vertex changes $N_\phi$ by an even number.  Hence
+\begin{equation}
+  \boxed{
+  P_\phi^{\rm initial}=P_\phi^{\rm final}.}
+  \label{eq:lec09:phi-parity-conservation}
+\end{equation}
+
+\textit{Physical significance:} The $\mathbb{Z}_2$ symmetry gives a selection rule.  Processes with an odd change in the number of $\phi$ particles are forbidden because they would violate $\phi$-parity.
+
+In group-theory language the multiplication rule is:
+\begin{equation}
+  \boxed{
+  \text{even}\times\text{even}=\text{even},
+  \qquad
+  \text{odd}\times\text{odd}=\text{even},
+  \qquad
+  \text{even}\times\text{odd}=\text{odd}.}
+  \label{eq:lec09:z2-multiplication}
+\end{equation}
+
+\textit{Physical significance:} A Lagrangian term must multiply to an even object.  This is the prototype of the more general singlet-building rule.
+
+%%------------------------------------------------------------------
+\subsection*{Global Continuous Symmetries}
+
+\subsubsection*{Physical Motivation}
+
+The $\mathbb{Z}_2$ example had only two transformations: do nothing or flip a sign.  Continuous symmetries have a continuous transformation parameter.  The simplest example is a phase rotation of a complex scalar field.
+
+The word \textbf{global} means that the transformation parameter is the same at every spacetime point:
+\begin{equation}
+  \boxed{
+  \theta=\text{constant},
+  \qquad
+  \partial_\mu\theta=0.}
+  \label{eq:lec09:global-parameter}
+\end{equation}
+
+\textit{Physical significance:} Global symmetries lead to conserved charges.  Later, when $\theta$ becomes spacetime-dependent, the symmetry becomes local and will require gauge fields.
+
+%%------------------------------------------------------------------
+\subsection*{One Complex Scalar and a $U(1)$ Symmetry}
+
+\subsubsection*{Physical Motivation}
+
+A complex scalar has two real degrees of freedom.  It can be viewed either as $\phi$ and $\phi^\dagger$, or as real and imaginary components.  A phase rotation in the complex plane mixes these two real degrees of freedom while preserving $\phi^\dagger\phi$.
+
+The $U(1)$ transformation is:
+\begin{equation}
+  \boxed{
+  \phi\longrightarrow e^{i\theta}\phi,
+  \qquad
+  \phi^\dagger\longrightarrow e^{-i\theta}\phi^\dagger.}
+  \label{eq:lec09:u1-single-scalar}
+\end{equation}
+
+The most general renormalizable Lagrangian invariant under this phase rotation is:
+\begin{equation}
+  \boxed{
+  \lagr
+  =
+  \partial_\mu\phi^\dagger\,\partial^\mu\phi
+  -m^2\phi^\dagger\phi
+  -\lambda(\phi^\dagger\phi)^2.}
+  \label{eq:lec09:complex-scalar-u1-lagrangian}
+\end{equation}
+
+\textit{Physical significance:} The invariant building block is $\phi^\dagger\phi$.  Every allowed term contains equal numbers of $\phi$ and $\phi^\dagger$, so the total phase cancels.
+
+\subsubsection*{Equivalence to $SO(2)$}
+
+Write
+\begin{equation}
+  \boxed{
+  \phi=\frac{1}{\sqrt{2}}(\phi_R+i\phi_I),}
+  \label{eq:lec09:complex-to-real}
+\end{equation}
+where $\phi_R$ and $\phi_I$ are real scalar fields.  The same transformation can be written as a rotation of the two real components:
+\begin{equation}
+  \boxed{
+  \begin{pmatrix}\phi_R\\ \phi_I\end{pmatrix}
+  \longrightarrow
+  \begin{pmatrix}
+    \cos\theta & -\sin\theta\\
+    \sin\theta & \cos\theta
+  \end{pmatrix}
+  \begin{pmatrix}\phi_R\\ \phi_I\end{pmatrix}.}
+  \label{eq:lec09:so2-rotation}
+\end{equation}
+
+\textit{Physical significance:} $U(1)$ phase rotations of one complex field and $SO(2)$ rotations of two real fields are two equivalent descriptions of the same symmetry.
+
+For this one-field example, writing instead
+\begin{equation}
+  \boxed{
+  \phi\longrightarrow e^{iq\theta}\phi}
+  \label{eq:lec09:u1-charge-single-field}
+\end{equation}
+does not change the allowed Lagrangian, provided $q\neq0$.  One can absorb $q$ into the definition of the parameter $\theta$.
+
+\textit{Physical significance:} With a single charged field, the absolute normalization of charge is conventional.  With multiple fields, only one charge can be normalized this way; relative charges become physical.
+
+%%------------------------------------------------------------------
+\subsection*{Charges and Several Fields}
+
+\subsubsection*{Physical Motivation}
+
+When several fields transform under the same $U(1)$, the important data are their relative phase rotations.  These relative rotations are called charges.  Charges are part of the model-building input: they determine which interactions are allowed and, for local symmetries, how strongly the fields couple to gauge bosons.
+
+For two complex scalars $\phi_1$ and $\phi_2$, impose the simultaneous transformations
+\begin{equation}
+  \boxed{
+  \phi_1\to e^{iq_1\theta}\phi_1,
+  \qquad
+  \phi_2\to e^{iq_2\theta}\phi_2,}
+  \label{eq:lec09:two-field-u1}
+\end{equation}
+with conjugates
+\begin{equation}
+  \boxed{
+  \phi_1^\dagger\to e^{-iq_1\theta}\phi_1^\dagger,
+  \qquad
+  \phi_2^\dagger\to e^{-iq_2\theta}\phi_2^\dagger.}
+  \label{eq:lec09:two-field-u1-conjugates}
+\end{equation}
+
+The number $q_i$ is the $U(1)$ charge of $\phi_i$.  One may set one nonzero charge to $1$ by convention, but in general one cannot set all charges to $1$ simultaneously.  The ratio $q_2/q_1$ is physical.
+
+\begin{equation}
+  \boxed{
+  \text{charge of a product}
+  =
+  \text{sum of charges of its factors, with }
+  q(\phi_i^\dagger)=-q(\phi_i).}
+  \label{eq:lec09:charge-addition}
+\end{equation}
+
+\textit{Physical significance:} A term is invariant precisely when its total charge is zero.  This turns symmetry checking into simple charge bookkeeping.
+
+Real fields cannot carry this kind of $U(1)$ charge, because multiplying a real field by a nontrivial phase would make it complex:
+\begin{equation}
+  \boxed{
+  \text{continuous phase charges require complex fields.}}
+  \label{eq:lec09:real-fields-neutral}
+\end{equation}
+
+\textit{Physical significance:} Electromagnetic charge is a familiar example of this idea.  Charged fields are complex; neutral real fields do not pick up a $U(1)$ phase.
+
+%%------------------------------------------------------------------
+\subsection*{Example: Two Complex Scalars with $q_1=1$, $q_2=3$}
+
+\subsubsection*{Physical Motivation}
+
+This example is the first nontrivial model-building exercise with charges.  We choose field content and charges, then write every renormalizable term whose total charge is zero.  The result shows how symmetry allows some interactions and forbids others.
+
+The transformations are:
+\begin{equation}
+  \boxed{
+  \phi_1\to e^{i\theta}\phi_1,
+  \qquad
+  \phi_2\to e^{3i\theta}\phi_2.}
+  \label{eq:lec09:q1-q2-transformations}
+\end{equation}
+
+\subsubsection*{Allowed kinetic and mass terms}
+
+The kinetic and mass terms are:
+\begin{equation}
+  \boxed{
+  \partial_\mu\phi_1^\dagger\partial^\mu\phi_1
+  +
+  \partial_\mu\phi_2^\dagger\partial^\mu\phi_2
+  -
+  m_1^2\phi_1^\dagger\phi_1
+  -
+  m_2^2\phi_2^\dagger\phi_2.}
+  \label{eq:lec09:two-scalar-kinetic-mass}
+\end{equation}
+
+The two masses are independent.  Nothing in the imposed symmetry requires $m_1=m_2$.
+
+\textit{Physical significance:} A symmetry relates parameters only when it relates the corresponding fields.  Here $\phi_1$ and $\phi_2$ have different charges, so their masses are not forced to be equal.
+
+\subsubsection*{Allowed quartic interactions}
+
+The charge-neutral quartic interactions built only from $\phi_i^\dagger\phi_i$ are:
+\begin{equation}
+  \boxed{
+  -\lambda_{11}(\phi_1^\dagger\phi_1)^2
+  -\lambda_{22}(\phi_2^\dagger\phi_2)^2
+  -\lambda_{12}(\phi_1^\dagger\phi_1)(\phi_2^\dagger\phi_2).}
+  \label{eq:lec09:two-scalar-quartics}
+\end{equation}
+
+In addition, the special charge assignment $q_2=3q_1$ permits:
+\begin{equation}
+  \boxed{
+  -\eta\,\phi_1^3\phi_2^\dagger
+  -\eta^*\,(\phi_1^\dagger)^3\phi_2.}
+  \label{eq:lec09:eta-interaction}
+\end{equation}
+
+Indeed,
+\begin{equation}
+  q(\phi_1^3\phi_2^\dagger)=3q_1-q_2=3-3=0.
+  \label{eq:lec09:eta-charge-check}
+\end{equation}
+
+\textit{Physical significance:} The interaction $\phi_1^3\phi_2^\dagger$ converts charge-three worth of $\phi_1$ quanta into one $\phi_2$ quantum, or the reverse through the Hermitian conjugate.  It changes particle numbers, but it conserves total $U(1)$ charge.
+
+\subsubsection*{Full renormalizable Lagrangian}
+
+Putting the allowed terms together gives:
+\begin{equation}
+  \boxed{
+  \begin{aligned}
+  \lagr
+  ={}&
+  \partial_\mu\phi_1^\dagger\partial^\mu\phi_1
+  +
+  \partial_\mu\phi_2^\dagger\partial^\mu\phi_2
+  -
+  m_1^2\phi_1^\dagger\phi_1
+  -
+  m_2^2\phi_2^\dagger\phi_2
+  \\
+  &-\lambda_{11}(\phi_1^\dagger\phi_1)^2
+  -\lambda_{22}(\phi_2^\dagger\phi_2)^2
+  -\lambda_{12}(\phi_1^\dagger\phi_1)(\phi_2^\dagger\phi_2)
+  \\
+  &-\eta\,\phi_1^3\phi_2^\dagger
+  -\eta^*\,(\phi_1^\dagger)^3\phi_2 .
+  \end{aligned}}
+  \label{eq:lec09:two-scalar-full-lagrangian}
+\end{equation}
+
+\textit{Physical significance:} Every term is both renormalizable and charge-neutral.  The Lagrangian is therefore the most general one compatible with the chosen field content and global $U(1)$ charge assignment, up to the conventional normalization of couplings.
+
+%%------------------------------------------------------------------
+\subsection*{Charge Conservation and Noether's Theorem}
+
+\subsubsection*{Physical Motivation}
+
+The word charge has two connected meanings.  First, it labels how a field transforms under a symmetry.  Second, it is the conserved quantity implied by that symmetry.  Noether's theorem is the bridge between the two meanings.
+
+For a continuous global symmetry,
+\begin{equation}
+  \boxed{
+  \text{continuous global symmetry}
+  \quad\Longrightarrow\quad
+  \partial_\mu j^\mu=0
+  \quad\Longrightarrow\quad
+  Q=\int d^3x\,j^0\ \text{is conserved}.}
+  \label{eq:lec09:noether-chain}
+\end{equation}
+
+\textit{Physical significance:} The Lagrangian-level statement that each term has total charge zero becomes the physical statement that interactions cannot change the total charge between initial and final states.
+
+For the two-scalar example, every allowed interaction satisfies:
+\begin{equation}
+  \boxed{
+  Q_{\rm total}^{\rm initial}=Q_{\rm total}^{\rm final}.}
+  \label{eq:lec09:charge-conservation}
+\end{equation}
+
+\textit{Physical significance:} Particles may be created or annihilated, but only in combinations whose total charge is unchanged.  This is the same logic as electric charge conservation, before the gauge-field interpretation is introduced.
+
+The lecture emphasized two aspects of charge:
+\begin{enumerate}
+  \item \textbf{Global symmetry aspect}: charge is conserved.  This follows from Noether's theorem.
+  \item \textbf{Local symmetry aspect}: charge controls the coupling strength to gauge bosons, such as the photon.  This will be developed later when $\theta$ is allowed to depend on $x^\mu$.
+\end{enumerate}
+
+%%------------------------------------------------------------------
+\subsection*{Terminology: Charges, Quantum Numbers, Representations}
+
+In later lectures the words \textbf{charge}, \textbf{quantum number}, and \textbf{representation} will often appear close together.  They are not always identical, but in model-building language they play the same role: they tell us how a field transforms under a symmetry group.
+
+\begin{equation}
+  \boxed{
+  \text{field content}
+  +
+  \text{symmetry representations}
+  \quad\Longrightarrow\quad
+  \text{allowed singlet operators in }\lagr.}
+  \label{eq:lec09:representations-to-lagrangian}
+\end{equation}
+
+\textit{Physical significance:} In the Standard Model, particles are distinguished not only by mass and spin, but also by their quantum numbers under $SU(3)\times SU(2)\times U(1)$.  Those quantum numbers determine which interactions exist.
+
+%%------------------------------------------------------------------
+\subsection*{To Remember}
+
+\begin{itemize}
+  \item A model is specified by symmetries, field content, and transformation rules.
+  \item The Lagrangian is the most general local, renormalizable singlet built from those fields.
+  \item For a real scalar, imposing $\phi\to-\phi$ forbids odd powers of $\phi$ and conserves $\phi$-parity.
+  \item For a complex scalar, $U(1)$ phase symmetry means $\phi\to e^{i\theta}\phi$ and forces terms to contain equal total phase.
+  \item ``Global'' means the parameter $\theta$ is constant in spacetime.
+  \item Charges are the coefficients in the phase rotation, $\phi_i\to e^{iq_i\theta}\phi_i$.
+  \item A product of fields is allowed only if the sum of charges in the product is zero.
+  \item With several charged fields, relative charges are physical; one can normalize only one nonzero charge by convention.
+  \item Noether's theorem connects continuous symmetries to conserved currents and conserved charges.
+  \item Local symmetries, where $\theta=\theta(x)$, will lead to gauge interactions.
+\end{itemize}
+
+%%------------------------------------------------------------------
+\subsection*{Recommended Reading}
+
+\begin{itemize}
+  \item \textbf{Tong, \textit{Lectures on Particle Physics}, Chapters~1--2}
+    (\href{https://www.damtp.cam.ac.uk/user/tong/pp.html}{\texttt{damtp.cam.ac.uk/user/tong/pp.html}}):
+    model-building logic, renormalizable Lagrangians, and the first discussion of internal symmetries.
+  \item \textbf{Peskin \& Schroeder, Sections~2.2--2.4}: Noether's theorem, conserved currents, and symmetries in field theory.
+  \item \textbf{Schwartz, \textit{Quantum Field Theory and the Standard Model}, Chapters~8 and~25}: internal symmetries, charges, and the transition toward gauge theory.
+  \item \textbf{Georgi, \textit{Lie Algebras in Particle Physics}, Chapters~1--2}: group-theory language behind singlets, representations, and charge assignments.
+\end{itemize}
+
+\end{document}

@@ -1,0 +1,337 @@
+%%═══════════════════════════════════════════════════════════════════
+%% Lecture 01 — Introduction: What Is Particle Physics?
+%%              Classical Field Theory and Its Lagrangian Formulation
+%% 77609 — Introduction to Elementary Particles
+%% Date:
+%% Lecturer: Prof. Yonit Hochberg
+%%═══════════════════════════════════════════════════════════════════
+
+\section{Lecture 01 — Introduction: Particle Physics, Classical Field
+  Theory, and the Limits of Non-Relativistic Quantum
+  Mechanics}\label{sec:lec01}
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 22/03/2026   & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Overview}
+
+This lecture opens the course by framing the central question of
+particle physics — \emph{what is the Lagrangian of nature?} — and
+presenting the Standard Model as the current, symmetry-based answer.
+Hochberg argues that non-relativistic quantum mechanics is fundamentally
+insufficient because it cannot describe the creation and annihilation of
+particles; the correct framework is relativistic quantum field theory
+(QFT), valid up to the energies probed so far (a few TeV).
+The lecture then introduces the building block that makes this
+transition possible: the \emph{classical field}, a quantity depending on
+both space and time.  By reviewing the Lagrangian formalism of classical
+mechanics and generalizing the role of the generalized coordinate from a
+particle position $x(t)$ to a field $\phi(\mathbf{x}, t)$, Hochberg
+sketches the logical path from classical mechanics $\to$ classical field
+theory $\to$ quantum field theory that the rest of the course will
+follow.
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Definitions}
+
+\dfn{Particle physics / high-energy physics}{The branch of physics that asks: \emph{what are the fundamental laws of
+nature?}  The working assumption is that nature obeys the
+\emph{principle of minimal action}, so the question reduces to: what
+is the Lagrangian (or Hamiltonian) of nature?}
+
+\dfn{Standard Model (SM)}{The current best answer to the above question: a relativistic quantum
+field theory built on axioms and symmetry principles that describes all
+known elementary particles and three of the four fundamental forces.}
+
+\dfn{Field}{A \emph{field} is a quantity $\phi$ that depends on \emph{both} space
+and time:
+\begin{equation}
+  \phi = \phi(\mathbf{x}, t).
+  \label{eq:lec01:field}
+\end{equation}
+A field may be:
+\begin{itemize}
+  \item a \emph{scalar field} — a single number at each spacetime point
+    (e.g.\ temperature $T(\mathbf{x},t)$, density $\rho(\mathbf{x},t)$);
+  \item a \emph{vector field} — a vector at each spacetime point
+    (e.g.\ wind velocity $\mathbf{W}(\mathbf{x},t)$, magnetic field
+    $\mathbf{B}(\mathbf{x},t)$);
+  \item a \emph{tensor field} — a tensor at each spacetime point
+    (examples deferred to relativistic notation).
+\end{itemize}}
+
+\dfn{Vector field (precise)}{A collection of component fields that \emph{transforms as a vector
+under spatial rotations}.  While one may formally decompose
+$\mathbf{B} = (B_x, B_y, B_z)$ into three independent scalar
+functions, it is the rotational transformation property
+\begin{equation}
+  B_i \;\xrightarrow{\text{rotation}}\; R_{ij}\,B_j
+  \label{eq:lec01:vector-rotation}
+\end{equation}
+that promotes them to a single vector field.}
+
+\dfn{UV cutoff}{The energy scale (equivalently, the shortest length scale) at which a
+given field description ceases to be valid.  For the electromagnetic
+field and QED, the UV cutoff is believed to be at or below the
+\emph{Planck scale}.  For macroscopic fields (temperature, density),
+the UV cutoff is set by the microscopic structure (e.g.\ interatomic
+spacing).}
+
+\dfn{IR cutoff}{The complementary scale: the \emph{largest} distance (lowest energy)
+at which a given field description remains valid.}
+
+\dfn{Classical field theory}{A dynamical theory whose \emph{generalized coordinates are fields}
+$\phi(\mathbf{x},t)$ rather than particle positions $x_i(t)$.  Solving
+a classical field theory means finding $\phi(\mathbf{x},t)$ for all
+$\mathbf{x}$ and $t$, given initial data — a function rather than a
+finite set of numbers.}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Key Results}
+
+\thm{Lagrangian of classical mechanics: standard form}{In fundamental physics, the Lagrangian for a system with generalized
+coordinates $\{x_i\}$ takes the form
+\begin{equation}
+  L = L(x_i,\,\dot{x}_i),
+  \label{eq:lec01:Lcm}
+\end{equation}
+with \emph{no} explicit time dependence (to ensure energy conservation)
+and dependence on \emph{at most} first time-derivatives (standard
+assumption).  The equation of motion follows from the
+\emph{Euler–Lagrange equation}:
+\begin{equation}
+  \frac{d}{dt}\frac{\partial L}{\partial \dot{x}_i}
+  - \frac{\partial L}{\partial x_i} = 0.
+  \label{eq:lec01:EL}
+\end{equation}
+Each degree of freedom $x_i$ requires \emph{two} initial conditions
+(e.g.\ $x_i(t_0)$ and $\dot{x}_i(t_0)$).}
+
+The central boxed statement of the lecture — the key conceptual shift:
+\begin{equation}
+  \boxed{
+    \underbrace{x_i(t)}_{\text{mechanics}}
+    \;\longrightarrow\;
+    \underbrace{\phi(\mathbf{x},t)}_{\text{field theory}}
+    \qquad
+    \text{(generalized coordinate becomes the field)}
+  }
+  \label{eq:lec01:shift}
+\end{equation}
+
+\thm{Why non-relativistic QM is insufficient}{Non-relativistic quantum mechanics conserves particle number: the
+normalization $\int|\psi|^2\,d^3x = 1$ encodes the assumption that the
+particle is \emph{always present}.  In reality, particles are created
+and annihilated (e.g.\ $e^+e^- \to \gamma\gamma$, nuclear decays,
+collider events).  Describing such processes requires a framework where
+particle number is not conserved — quantum field theory.}
+
+\thm{Scope of QFT}{Relativistic quantum field theory is a good description of nature at
+all energy scales probed so far, up to $\mathcal{O}(\text{few TeV})$.
+Beyond this scale (towards the Planck scale), the framework may break
+down, but no experimental violation has been found.}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Derivations}
+
+%% DERIVATION 1: Euler-Lagrange equation in classical mechanics
+\subsubsection*{Review: principle of minimal action and the
+Euler–Lagrange equation}
+
+The \emph{action} is defined as
+\begin{equation}
+  S[x_i] = \int_{t_1}^{t_2} L(x_i, \dot{x}_i)\,dt.
+  \label{eq:lec01:action}
+\end{equation}
+The \emph{principle of minimal action} states that the physical
+trajectory $x_i(t)$ is the one that makes $S$ stationary,
+$\delta S = 0$.  Varying \eqref{eq:lec01:action}:
+\begin{align}
+  \delta S
+  &= \int_{t_1}^{t_2}
+     \left(
+       \frac{\partial L}{\partial x_i}\,\delta x_i
+       + \frac{\partial L}{\partial \dot{x}_i}\,\delta \dot{x}_i
+     \right) dt \notag\\
+  &= \int_{t_1}^{t_2}
+     \left(
+       \frac{\partial L}{\partial x_i}
+       - \frac{d}{dt}\frac{\partial L}{\partial \dot{x}_i}
+     \right)\delta x_i\,dt
+     + \left[\frac{\partial L}{\partial \dot{x}_i}\,\delta x_i
+       \right]_{t_1}^{t_2}.
+\label{eq:lec01:deltaS}
+\end{align}
+With fixed endpoints $\delta x_i(t_1)=\delta x_i(t_2)=0$, the
+boundary term vanishes.  Since $\delta x_i$ is arbitrary, $\delta S=0$
+requires \eqref{eq:lec01:EL}.
+
+\noindent\textit{Physical meaning of no explicit time dependence.}
+If $L$ has no explicit $t$, then by Noether's theorem the associated
+conserved charge is the \emph{Hamiltonian} (energy).  Hence, the
+assumption $\partial L/\partial t = 0$ is the mathematical statement
+that energy is conserved.
+
+%% DERIVATION 2: Effect of symmetry on Lagrangian — worked examples
+\subsubsection*{Symmetry constraints on the Lagrangian: examples}
+
+Hochberg illustrated how symmetry requirements constrain the allowed
+form of the Lagrangian.  Take
+$L = \tfrac{1}{2}m\dot{x}^2 - V(x)$ in one spatial dimension.
+
+\noindent\textbf{Example 1: $\mathbb{Z}_2$ symmetry $x\to -x$.}
+Requiring invariance of $L$ under $x\to -x$ means $V(-x)=V(x)$,
+i.e.\ $V$ must be an \emph{even} function of $x$ (equivalently, a
+function of $|x|$).
+
+\noindent\textbf{Example 2: $SO(3)$ rotational invariance in 3D.}
+Promoting $x\to\mathbf{x}\in\mathbb{R}^3$ and requiring invariance
+under $\mathbf{x}\to R\mathbf{x}$ for all $R\in SO(3)$ forces $V$ to
+depend only on $|\mathbf{x}|$:
+\begin{equation}
+  V = V(|\mathbf{x}|) \quad \text{(central potential).}
+  \label{eq:lec01:central-potential}
+\end{equation}
+The general lesson: \emph{symmetry principles constrain and
+ultimately determine the allowed form of the Lagrangian.}  This will
+be the central strategy for model building later in the course.
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Examples}
+
+\ex{Familiar fields from everyday life}{\begin{itemize}
+  \item \textbf{Temperature} $T(\mathbf{x},t)$: scalar field.
+    Valid only at scales larger than the interatomic spacing (UV
+    cutoff $\sim$ \AA).
+  \item \textbf{Wind velocity} $\mathbf{W}(\mathbf{x},t)$: vector
+    field.
+  \item \textbf{Population density} $\rho(\mathbf{x},t)$: scalar
+    field.  Valid only at scales larger than the typical size of a
+    person.
+  \item \textbf{Magnetic field} $\mathbf{B}(\mathbf{x},t)$: vector
+    field.  Its three components $(B_x, B_y, B_z)$ transform as a
+    vector under rotations, which is why we bundle them together
+    rather than treating them as three independent scalars.
+\end{itemize}}
+
+\ex{Solving mechanics vs.\ solving field theory}{In \emph{classical mechanics} with one degree of freedom, solving the
+problem means finding $x(t)$ — a function of one argument — given two
+initial conditions $x(t_0)$ and $\dot{x}(t_0)$.
+
+In \emph{classical field theory} in $D$ spatial dimensions, solving
+the problem means finding $\phi(\mathbf{x},t)$ — a function of $D+1$
+arguments.  The ``initial condition'' is now an \emph{entire function}
+$\phi(\mathbf{x},t_0)$ (and its time derivative), i.e.\ infinitely
+many numbers.}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Connections}
+
+\begin{itemize}
+  \item \textbf{Analytical Mechanics.}  Hochberg explicitly stated
+    that the course assumes knowledge of analytical mechanics at the
+    level of the Lagrangian formalism, Euler–Lagrange equations, and
+    the principle of minimal action.  Classical field theory is
+    presented as a direct generalization of that framework.
+  \item \textbf{Quantum Mechanics (two semesters).}  The course also
+    assumes two semesters of QM.  The limitations of non-relativistic
+    QM (fixed particle number, non-covariant Schrödinger equation)
+    motivate the move to QFT.
+  \item \textbf{Electromagnetism.}  Basic knowledge of E\&M is
+    assumed.  The electromagnetic field $(\mathbf{E}, \mathbf{B})$
+    is used as the canonical example of a physical vector field.
+  \item \textbf{Quantum Field Theory.}  This course builds a
+    ``baby version'' of QFT: classical field theory $\to$ second
+    quantization $\to$ perturbation theory $\to$ Feynman diagrams.
+    Students are not assumed to have taken QFT previously.
+  \item \textbf{Standard Model.}  The SM is the long-range target.
+    The course works towards it by building QED, QCD, and spontaneous
+    symmetry breaking from first principles.
+  \item \textbf{Grossman \& Nir (draft/book).}  From roughly weeks
+    5–6 onward, the course follows a draft by Yossi Nir and Yuval
+    Grossman (now also a published book), available on Moodle as a
+    PDF for internal course use only.
+\end{itemize}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{To Remember}
+
+\begin{itemize}
+  \item The central question of particle physics is: \emph{what is
+    the Lagrangian of nature?}  The answer, as of now, is the Standard
+    Model.
+  \item Nature obeys the \emph{principle of minimal action}; all
+    dynamics follows from $\delta S = 0$ with
+    $S = \int L\,dt$.
+  \item Non-relativistic QM cannot describe particle creation and
+    annihilation.  The correct framework is relativistic QFT.
+  \item In QFT, particles are \emph{excitations of fields}, not
+    fundamental objects in their own right.
+  \item A field $\phi(\mathbf{x},t)$ is the generalized coordinate of
+    field theory; it replaces the particle position $x(t)$ of mechanics.
+  \item Every field description has a \textbf{UV cutoff} (shortest
+    scale of validity) and an \textbf{IR cutoff} (longest scale).  For
+    QED, the UV cutoff is at or below the Planck scale.
+  \item Symmetry requirements constrain the form of the Lagrangian:
+    this will be the main tool for model building.
+\end{itemize}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Exam / HW Hints}
+
+\begin{itemize}
+  \item \textbf{HW is mandatory for exam eligibility}: all sets must
+    be submitted; at most one set may be skipped.  If an extension is
+    needed, email Hochberg in advance — she is flexible if asked.
+  \item The \textbf{first HW set} will include: (a) deriving
+    additional constraints on Lagrangians from symmetry requirements
+    (parity, rotational invariance, etc.), extending the examples
+    worked in class; (b) elements of the Lagrangian construction for
+    classical mechanics.  Hochberg explicitly pointed to the
+    in-lecture examples ($x\to -x$ symmetry, rotational invariance)
+    as representative of what the homework will ask.
+  \item Hochberg explicitly warned against submitting AI-generated
+    solutions without understanding them; the exam requires genuine
+    mastery of the material.
+  \item \textbf{Next topic}: relativistic notation and natural units.
+    A COVID-era Panopto recording (2 hours) may be posted if the
+    Thursday session cannot be held live.
+\end{itemize}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Further Reading}
+
+No specific textbook was cited in this lecture.  The following are recommended:
+
+\begin{itemize}
+  \item \textbf{Griffiths, \textit{Introduction to Elementary Particles} (2nd ed.), Chapter~1}
+    — ``Historical Introduction to the Elementary Particles'': the cast of
+    characters (quarks, leptons, bosons), the four forces, and the logic behind
+    the Standard Model.  Ideal companion to this introductory lecture.
+
+  \item \textbf{Griffiths, Chapter~6.1} — Brief derivation of Fermi's Golden Rule
+    in the particle-physics context, motivating the $(2\pi)^4\delta^{(4)}$ phase-space
+    factor that appears throughout the course.
+
+  \item \textbf{Halzen \& Martin, \textit{Quarks and Leptons}, Chapter~1}
+    — ``Quarks and Leptons'': a concise survey of the known particles and their
+    quantum numbers ($I$, $J^{PC}$, colour).  Good reading alongside the SM overview
+    from this lecture.
+
+  \item \textbf{Tong, \textit{Lectures on Particle Physics}, Chapter~1}
+    (freely available at
+    \href{https://www.damtp.cam.ac.uk/user/tong/particle.html}{\texttt{damtp.cam.ac.uk/user/tong/particle.html}}):
+    a streamlined account of what a relativistic quantum field theory is and why
+    particles arise from fields.
+
+  \item \textbf{PDG Summary Tables} —
+    \href{https://pdg.lbl.gov/2023/tables/contents_tables.html}{\texttt{pdg.lbl.gov}}:
+    the definitive up-to-date listing of all known particles, masses, widths, and
+    quantum numbers.  Useful to skim even at this early stage to get a concrete
+    sense of what the Standard Model contains.
+\end{itemize}
+
+%%──────────────────────────────────────────────────────────────────

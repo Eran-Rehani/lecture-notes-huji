@@ -1,0 +1,508 @@
+%%═══════════════════════════════════════════════════════════════════
+%% Lecture 02 — Classical Field Theory (continued):
+%%              Euler–Lagrange for Fields, Examples,
+%%              Relativistic Notation, Natural Units
+%% 77609 — Introduction to Elementary Particles
+%% Date: 26/03/2026 
+%% Lecturer: Prof. Yonit Hochberg
+%%═══════════════════════════════════════════════════════════════════
+
+\section{Lecture 02 — Euler--Lagrange Equations for Fields, Basic
+  Examples, and Relativistic Notation}\label{sec:lec02}
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 26/03/2026   & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Overview}
+
+This lecture continues the construction of \emph{classical field theory}
+as the direct generalization of analytical mechanics in which the
+\textbf{generalized coordinates are fields} \(\phi(x,t)\) rather than
+particle positions \(x(t)\). Starting from an \emph{action}
+\(S=\int \lagr\,dx\,dt\) built from a \emph{local} (single spacetime point)
+and \emph{real} Lagrangian density \(\lagr\), we impose the principle of
+minimal action (\(\delta S=0\)) to obtain the Euler--Lagrange equations
+for fields. Several instructive examples are worked out: the wave
+equation, the Klein--Gordon equation (adding a ``mass term''), and a
+nonlinear interacting equation from a cubic interaction \(\sim\phi^3\),
+which motivates perturbation theory.
+
+The second half of the lecture is a compact but thorough recap of
+\textbf{relativistic notation} needed for Lorentz-invariant field
+theories: four-vectors, upper/lower indices, Einstein summation, the
+mostly-negative metric \(g_{\mu\nu}\), raising and lowering indices, the
+Lorentz-invariant scalar product, four-derivatives \(\partial_\mu\), and
+the d'Alembertian (box) operator \(\Box\). These tools are then used to
+rewrite the earlier Lagrangians and equations of motion in manifestly
+Lorentz-covariant form. The lecture closes with a brief discussion of
+the Lorentz group condition \(\Lambda^T g \Lambda = g\), the
+classification timelike/lightlike/spacelike via \(A^2\), the
+transformation of tensors, and the convention of \textbf{natural units}
+\(\hbar=c=1\).
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Foundational viewpoint: fields as generalized coordinates}
+
+\begin{remark}[The conceptual shift]
+In classical mechanics we solve for a finite number of generalized
+coordinates \(q(t)\) (e.g.\ \(x(t)\)). In classical field theory the
+generalized coordinate is a \emph{field} \(\phi(x,t)\); solving the theory
+means determining \(\phi\) for \emph{all} spacetime points \((x,t)\). In
+\(d\) spatial dimensions, \(\phi\) depends on \(d+1\) arguments.
+\end{remark}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Axioms/assumptions for the classical field theories we study}
+
+We consider a theory with (possibly) several fields \(\phi_i(x,t)\), but
+for most of the lecture we restrict to a \textbf{single real scalar
+field} \(\phi(x,t)\) in \textbf{\(1+1\) dimensions} (one space coordinate
+\(x\) and time \(t\)).
+
+\dfn{Action and Lagrangian density}{The action functional is
+\begin{equation}
+  S[\phi] = \int dt\,dx\; \lagr\big(\phi, \partial_t\phi, \partial_x\phi; x,t\big),
+\end{equation}
+where \(\lagr\) is the \emph{Lagrangian density} (denoted \(\mathcal{L}\)
+in lecture).}
+
+The lecture adopts simplifying assumptions that mirror standard choices
+in mechanics:
+\begin{itemize}
+  \item \textbf{No explicit spacetime dependence:} we focus on
+    \(\lagr=\lagr(\phi,\dot\phi,\phi')\) with no explicit \(x\) or \(t\)
+    dependence. This is the field-theory analogue of ``no explicit time
+    dependence'' in mechanics and encodes \textbf{translational
+    invariance}, ensuring conservation of energy and momentum (via
+    Noether's theorem).
+  \item \textbf{First derivatives only:} we take \(\lagr\) to depend on
+    \(\phi\) and at most \(\dot\phi\equiv\partial_t\phi\) and
+    \(\phi'\equiv\partial_x\phi\). Higher-derivative theories exist but
+    are beyond the baseline framework introduced here.
+  \item \textbf{Locality:} \(\lagr\) depends on fields evaluated at the
+    \emph{same} spacetime point \((x,t)\). This defines a \textbf{local
+    field theory}.
+  \item \textbf{Reality:} \(\lagr\in\mathbb{R}\). Physically, this
+    ensures a real Hamiltonian and (in the quantum theory) unitary time
+    evolution / probability conservation.
+\end{itemize}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Euler--Lagrange equation for fields}
+
+\thm{Euler--Lagrange equation in \(1+1\) dimensions}{For an action
+\begin{equation}
+  S[\phi]=\int dt\,dx\;\lagr(\phi,\dot\phi,\phi')
+\end{equation}
+the principle of minimal action (\(\delta S=0\)) gives the field
+equation
+\begin{equation}
+  \frac{\partial \lagr}{\partial \phi}
+  = \frac{\partial}{\partial t}\left(\frac{\partial \lagr}{\partial \dot\phi}\right)
+  + \frac{\partial}{\partial x}\left(\frac{\partial \lagr}{\partial \phi'}\right).
+  \label{eq:lec02:EL-1p1}
+\end{equation}}
+
+\begin{remark}[Analogy with mechanics]
+Compare \eqref{eq:lec02:EL-1p1} with
+\(\frac{d}{dt}\frac{\partial L}{\partial \dot q}-\frac{\partial L}{\partial q}=0\).
+Field theory introduces an additional ``evolution-like'' variable \(x\),
+so stationarity of the action produces \emph{both} a \(t\)-derivative term
+and an \(x\)-derivative term. This is a concrete sense in which
+\textbf{space and time appear on similar footing} in the variational
+principle.
+\end{remark}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Worked examples: free waves, mass term, and nonlinearity}
+
+\subsubsection*{Example 1: the wave equation}
+
+Take
+\begin{equation}
+  \lagr = \frac12 \dot\phi^{\,2} - v^2(\phi')^2.
+  \label{eq:lec02:L-wave}
+\end{equation}
+Here \(v\) is a constant with units of velocity (the wave speed).
+
+\begin{itemize}
+  \item Since \(\lagr\) has no explicit \(\phi\) dependence,
+    \(\partial\lagr/\partial\phi = 0\).
+  \item \(\partial\lagr/\partial\dot\phi = \dot\phi\), so
+    \(\partial_t(\partial\lagr/\partial\dot\phi)=\ddot\phi\).
+  \item \(\partial\lagr/\partial\phi'\propto -v^2\phi'\), so the spatial
+    contribution yields a term proportional to \(v^2\phi''\).
+\end{itemize}
+
+The resulting equation of motion is the \textbf{wave equation}
+\begin{equation}
+  \ddot\phi = v^2 \phi''.
+  \label{eq:lec02:wave-eom}
+\end{equation}
+A plane-wave solution is
+\begin{equation}
+  \phi(x,t) = e^{i(kx-\omega t)},
+  \qquad
+  \omega = kv.
+  \label{eq:lec02:wave-sol}
+\end{equation}
+
+\begin{remark}[Why this is ``free'']
+The equation is linear, so superpositions of solutions are solutions.
+There is no term nonlinear in \(\phi\); physically, different waves do
+not interact with each other.
+\end{remark}
+
+\subsubsection*{Example 2: adding a ``mass term'' \(-m^2\phi^2\)}
+
+Now take
+\begin{equation}
+  \lagr = \frac12 \dot\phi^{\,2} - v^2(\phi')^2 - m^2 \phi^2,
+  \label{eq:lec02:L-KG}
+\end{equation}
+where the additional term \(-m^2\phi^2\) is called the \textbf{mass term}.
+
+Now \(\partial\lagr/\partial\phi\neq 0\), and the Euler--Lagrange equation
+becomes
+\begin{equation}
+  \ddot\phi = v^2\phi'' - m^2 \phi.
+  \label{eq:lec02:KG-eom-1p1}
+\end{equation}
+This is the \textbf{Klein--Gordon equation} (in the \(1+1\) notation used
+in class; later it will be written in a Lorentz-covariant form).
+
+Try the same plane-wave ansatz \(\phi=e^{i(kx-\omega t)}\). Plugging into
+\eqref{eq:lec02:KG-eom-1p1} yields the modified dispersion relation
+\begin{equation}
+  \omega^2 = (kv)^2 + m^2.
+  \label{eq:lec02:KG-dispersion}
+\end{equation}
+
+\begin{remark}[Physical intuition for the mass term]
+Compared to the pure wave equation, the additional \(-m^2\phi\) term acts
+like a restoring force even at \(k=0\): the field can oscillate locally
+with frequency \(\omega=m\). In the quantum theory, this same parameter
+will set the rest energy of the corresponding particle.
+\end{remark}
+
+\subsubsection*{Example 3: an interaction \(\sim \phi^3\) and nonlinearity}
+
+Consider
+\begin{equation}
+  \lagr = \frac12 \dot\phi^{\,2} - v^2(\phi')^2 + \frac{\lambda}{3}\phi^3.
+  \label{eq:lec02:L-cubic}
+\end{equation}
+The Euler--Lagrange equation becomes
+\begin{equation}
+  \ddot\phi = v^2\phi'' + \lambda \phi^2.
+  \label{eq:lec02:cubic-eom}
+\end{equation}
+This is \textbf{nonlinear} because of the \(\phi^2\) term. Unlike the
+previous two examples, there is generally \textbf{no closed-form exact
+solution} for arbitrary initial data.
+
+\begin{remark}[Why this matters for the course: perturbation theory]
+Interactions corresponding to terms \(\phi^n\) with \(n\ge 3\) typically
+produce nonlinear equations. The course strategy will be
+\textbf{perturbation theory}: expand around a minimum of an effective
+potential and treat higher powers of the field as small corrections.
+This will be the seed of the perturbative expansion that later becomes
+Feynman diagrams in the quantum theory.
+\end{remark}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Relativistic notation: four-vectors and indices}
+
+Up to this point we wrote \(x\) and \(t\) explicitly. For most of the
+systems of interest in particle physics we want \textbf{Lorentz
+invariance} to be manifest, so it is efficient to adopt relativistic
+notation.
+
+\subsubsection*{Spacetime interval}
+
+Special relativity implies invariance of
+\begin{equation}
+  s^2 = c^2t^2 - x_i x_i,
+  \qquad i=1,2,3,
+\end{equation}
+between inertial frames.
+
+\subsubsection*{Four-vectors \(x^\mu\) and general \(A^\mu\)}
+
+\dfn{Position four-vector}{The spacetime coordinate of an event is
+\begin{equation}
+  x^\mu = (ct,\,x,\,y,\,z),
+  \qquad \mu=0,1,2,3.
+\end{equation}
+All four components have dimensions of length.}
+
+For a boost in the \(x\)-direction,
+\begin{align}
+  x^{0'} &= \gamma(x^0-\beta x^1), &
+  x^{1'} &= \gamma(x^1-\beta x^0), &
+  x^{2'} &= x^2, &
+  x^{3'} &= x^3,
+\end{align}
+where \(\beta=v/c\) and \(\gamma = 1/\sqrt{1-\beta^2}\).
+
+\dfn{Four-vector}{A four-vector is any object \(A^\mu=(A^0,A^1,A^2,A^3)\) that transforms
+under boosts/rotations in the same way as \(x^\mu\).}
+
+\ex{Four-momentum}{\(p^\mu=(E/c,\bvec{p})\) is a four-vector.}
+
+\subsubsection*{Scalar (dot) product}
+
+\dfn{Lorentz-invariant scalar product}{The scalar product of four-vectors \(A^\mu\) and \(B^\mu\) is defined as
+\begin{equation}
+  A\cdot B \equiv A^0B^0 - A^1B^1 - A^2B^2 - A^3B^3.
+  \label{eq:lec02:dot}
+\end{equation}}
+With this definition, \(A\cdot B\) is Lorentz invariant.
+
+\subsubsection*{Lower indices and Einstein summation}
+
+\dfn{Lower-index components}{Define the lower-index version of the position four-vector by
+\begin{equation}
+  x_\mu = (ct,\,-x,\,-y,\,-z),
+  \label{eq:lec02:x-lower}
+\end{equation}
+and similarly for any four-vector \(A^\mu\),
+\begin{equation}
+  A_\mu = (A^0,\,-A^1,\,-A^2,\,-A^3).
+  \label{eq:lec02:A-lower}
+\end{equation}}
+
+\dfn{Einstein summation convention}{Any index appearing twice is summed from \(0\) to \(3\).}
+
+Then
+\begin{equation}
+  A^\mu B_\mu
+  = A^0B_0 + A^1B_1 + A^2B_2 + A^3B_3
+  = A^0B^0 - A^1B^1 - A^2B^2 - A^3B^3
+  = A\cdot B.
+  \label{eq:lec02:einstein-dot}
+\end{equation}
+
+\begin{remark}[Upper vs.\ lower indices]
+Quantities like \(A^\mu B^\mu\) (both indices upstairs) are not Lorentz
+invariant and should not appear in physical expressions. In sensible
+Lorentz-covariant formulas, repeated indices appear once upstairs and
+once downstairs.
+\end{remark}
+
+\begin{remark}[Index sanity checks from lecture]
+\begin{itemize}
+  \item Never repeat an index more than twice in the same product
+    (\(A_\mu B^\mu C^\mu\) is ambiguous).
+  \item The name of a dummy summed index does not matter:
+    \(A_\mu B^\mu = A_\nu B^\nu\).
+  \item All indices contracted \(\Rightarrow\) scalar; one free index
+    \(\Rightarrow\) vector; two free indices \(\Rightarrow\) rank-2
+    tensor; etc.
+\end{itemize}
+\end{remark}
+
+\subsubsection*{Metric tensor and raising/lowering}
+
+\dfn{Metric tensor}{The Minkowski metric (``mostly negative'') is
+\begin{equation}
+  g_{\mu\nu}=\mathrm{diag}(1,-1,-1,-1),
+  \label{eq:lec02:metric}
+\end{equation}
+often denoted \(\eta_{\mu\nu}\).}
+
+It lowers indices:
+\begin{equation}
+  A_\mu = g_{\mu\nu}A^\nu,
+  \label{eq:lec02:lowering}
+\end{equation}
+and raises them with \(g^{\mu\nu}\), which has the same numerical
+entries:
+\begin{equation}
+  A^\mu = g^{\mu\nu}A_\nu,
+  \qquad g^{\mu\nu}=\mathrm{diag}(1,-1,-1,-1).
+  \label{eq:lec02:raising}
+\end{equation}
+
+The scalar product can be written as
+\begin{equation}
+  A\cdot B = A^\mu B_\mu = A^\mu g_{\mu\nu} B^\nu.
+  \label{eq:lec02:dot-metric}
+\end{equation}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Four-derivatives and the box operator}
+
+\dfn{Four-derivative}{Define
+\begin{equation}
+  \partial_\mu \equiv \frac{\partial}{\partial x^\mu}
+  = \left(\frac{1}{c}\frac{\partial}{\partial t},\,\frac{\partial}{\partial x},\,
+  \frac{\partial}{\partial y},\,\frac{\partial}{\partial z}\right),
+  \label{eq:lec02:partial-lower}
+\end{equation}
+and
+\begin{equation}
+  \partial^\mu = g^{\mu\nu}\partial_\nu
+  = \left(\frac{1}{c}\frac{\partial}{\partial t},\,-\frac{\partial}{\partial x},\,
+  -\frac{\partial}{\partial y},\,-\frac{\partial}{\partial z}\right).
+  \label{eq:lec02:partial-upper}
+\end{equation}}
+
+\ex{Derivative of a scalar is a four-vector}{If \(f(x)\) is a scalar function of spacetime, then \(\partial_\mu f\) is
+a four-vector.}
+
+\ex{Divergence of a four-vector is a scalar}{If \(h^\mu(x)\) is a four-vector field, then \(\partial_\mu h^\mu\) is a
+Lorentz scalar.}
+
+\dfn{D'Alembertian / box operator}{\begin{equation}
+  \Box \equiv \partial^\mu\partial_\mu
+  = \frac{1}{c^2}\frac{\partial^2}{\partial t^2}
+  - \frac{\partial^2}{\partial x^2}
+  - \frac{\partial^2}{\partial y^2}
+  - \frac{\partial^2}{\partial z^2}.
+  \label{eq:lec02:box}
+\end{equation}}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Rewriting the scalar field theory in covariant form}
+
+The free scalar Lagrangian with a mass term can be written as
+\begin{equation}
+  \lagr
+  = \frac12\,\partial_\mu\phi\,\partial^\mu\phi - m^2\phi^2.
+  \label{eq:lec02:L-covariant}
+\end{equation}
+The \(\partial_\mu\phi\,\partial^\mu\phi\) term is called the
+\textbf{kinetic term}, and \(-m^2\phi^2\) is the \textbf{mass term}.
+
+The Klein--Gordon equation becomes
+\begin{equation}
+  (\Box + m^2)\phi = 0.
+  \label{eq:lec02:KG-box}
+\end{equation}
+
+The Euler--Lagrange equation in relativistic notation was given as
+\begin{equation}
+  \partial_\mu\left(\frac{\partial \lagr}{\partial(\partial_\mu\phi)}\right)
+  = \frac{\partial \lagr}{\partial\phi}.
+  \label{eq:lec02:EL-covariant}
+\end{equation}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Lorentz group, invariants, and tensors (recap)}
+
+Write a Lorentz transformation as
+\begin{equation}
+  x^{\mu'} = \Lambda^{\mu}{}_{\nu}\,x^\nu.
+  \label{eq:lec02:lorentz-transform}
+\end{equation}
+Invariance of \(x^2=x^\mu x_\mu\) implies
+\begin{equation}
+  \Lambda^{T} g\,\Lambda = g,
+  \label{eq:lec02:Lorentz-condition}
+\end{equation}
+equivalently \(g\,\Lambda^T g = \Lambda^{-1}\).
+
+\dfn{Timelike / lightlike / spacelike}{For any four-vector \(A^\mu\),
+\begin{equation}
+  A^2 \equiv A\cdot A = (A^0)^2 - \abs{\bvec{A}}^2.
+  \label{eq:lec02:A-square}
+\end{equation}
+If \(A^2>0\), \(A^\mu\) is \emph{timelike}. If \(A^2=0\), it is
+\emph{lightlike}. If \(A^2<0\), it is \emph{spacelike}.}
+
+\begin{remark}[One \(\Lambda\) per Lorentz index]
+Tensors transform with one Lorentz matrix \(\Lambda\) for each Lorentz
+index. For example, a rank-2 tensor \(A^{\mu\nu}\) transforms as
+\begin{equation}
+  A^{\mu'\nu'} = \Lambda^{\mu}{}_{\sigma}\Lambda^{\nu}{}_{\rho}\,A^{\sigma\rho},
+  \label{eq:lec02:tensor-transform}
+\end{equation}
+and a rank-3 tensor similarly with three factors of \(\Lambda\).
+\end{remark}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Natural units}
+
+\dfn{Natural units}{We often work in units where
+\begin{equation}
+  \hbar = c = 1.
+  \label{eq:lec02:natural-units}
+\end{equation}
+Then
+\begin{equation}
+  [\text{length}] = [\text{time}] = [E^{-1}] = [m^{-1}].
+  \label{eq:lec02:natural-units-dimensions}
+\end{equation}}
+
+\begin{remark}[Electron mass example]
+The lecture emphasized that in natural units, a mass can be expressed as
+an energy (rest energy) and also as an inverse length scale (inverse
+Compton wavelength). For the electron, \(m_e\simeq 0.511\,\mathrm{MeV}\),
+and this corresponds to a characteristic inverse length scale.
+\end{remark}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{To Remember}
+
+\begin{itemize}
+  \item Classical field theory treats fields \(\phi(x,t)\) as generalized
+    coordinates; the action is \(S=\int dt\,dx\,\lagr\).
+  \item Under the assumptions (locality, reality, at most first
+    derivatives), \(\delta S=0\) gives
+    \(\frac{\partial \lagr}{\partial \phi}
+    = \partial_t(\partial \lagr/\partial \dot\phi)
+    + \partial_x(\partial \lagr/\partial \phi')\).
+  \item \(\lagr=\frac12\dot\phi^2 - v^2(\phi')^2\) gives the wave equation
+    \(\ddot\phi=v^2\phi''\) and plane waves with \(\omega=kv\).
+  \item Adding \(-m^2\phi^2\) yields the Klein--Gordon equation with
+    \(\omega^2=(kv)^2+m^2\).
+  \item Interactions \(\phi^n\) with \(n\ge 3\) generically lead to
+    nonlinear equations, motivating perturbation theory.
+  \item Lorentz invariance is made manifest with four-vectors, the metric
+    \(g_{\mu\nu}=\mathrm{diag}(1,-1,-1,-1)\), and contractions of one
+    upper with one lower index.
+  \item The box operator \(\Box=\partial^\mu\partial_\mu\) packages the
+    wave operator, and \((\Box+m^2)\phi=0\) is the covariant KG equation.
+  \item In natural units \(\hbar=c=1\), energies, masses, inverse
+    lengths, and inverse times are interchangeable as units.
+\end{itemize}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Further Reading}
+
+The lecturer explicitly recommended the following:
+
+\begin{itemize}
+  \item \textbf{Griffiths, \textit{Introduction to Elementary Particles}, Chapter~3}
+    — Relativistic kinematics and four-vector notation.  The lecturer suggested
+    this as a reference for the special-relativity review and the $g_{\mu\nu}$
+    conventions used in this course.
+
+  \item \textbf{Peskin \& Schroeder, \textit{An Introduction to QFT}, \S2.2}
+    — ``The Klein--Gordon Field as Harmonic Oscillators'': covers the classical
+    field Lagrangian, the Euler--Lagrange equation for fields, and the
+    Klein--Gordon equation.  The lecturer described P\&S as ``one of the Bibles
+    of particle physics''.
+
+  \item \textbf{Goldstein, Poole \& Safko, \textit{Classical Mechanics} (3rd ed.),
+    Chapter~13} — Lagrangian field theory from a classical-mechanics perspective,
+    bridging the gap between particle mechanics (generalised coordinates $q_i(t)$)
+    and field theory (the field $\phi(x,t)$ as a continuous generalised coordinate).
+\end{itemize}
+
+Additional recommended reading:
+
+\begin{itemize}
+  \item \textbf{Tong, \textit{Quantum Field Theory} (lecture notes), Chapter~1}
+    (\href{https://www.damtp.cam.ac.uk/user/tong/qft.html}{\texttt{damtp.cam.ac.uk/user/tong/qft.html}},
+    free): ``Classical Field Theory'' — Lagrangian densities, Noether's theorem,
+    energy--momentum tensor.  Closely parallels the material of this lecture.
+
+  \item \textbf{Halzen \& Martin, \textit{Quarks and Leptons}, Chapter~1}
+    — Four-vector notation and relativistic kinematics in the particle-physics
+    style, with worked examples of Lorentz invariants.
+\end{itemize}

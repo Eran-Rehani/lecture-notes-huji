@@ -1,0 +1,750 @@
+%% Lecture 12 -- Dynamics of an Ideal Fluid
+
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\section{Lecture 12 -- Dynamics of an Ideal Fluid}\label{sec:lec12}
+\date{May 18, 2026}
+\begin{center}
+  \textbf{Date:} May 18, 2026
+\end{center}
+
+\subsection*{Overview}
+The previous lectures treated fluids at rest. In hydrostatics the velocity field vanishes, and the central equation is the force balance
+\begin{equation}
+  \boxed{\grad p=\rho \bvec{g}.}
+  \label{eq:lec12_hydrostatic_recall}
+\end{equation}
+\textit{Physical significance:} Hydrostatics is the special case in which pressure gradients only balance body forces; there is no acceleration of fluid elements.
+
+This lecture begins fluid dynamics. The unknowns are now fields depending on position $\bvec{x}$ and time $t$:
+\begin{equation}
+  \boxed{\rho(\bvec{x},t),\qquad p(\bvec{x},t),\qquad \vel(\bvec{x},t).}
+  \label{eq:lec12_fluid_fields}
+\end{equation}
+\textit{Physical significance:} Once the fluid moves, density and pressure are not enough. We must also know the velocity of the material passing through each point.
+
+The first dynamical model is the \emph{ideal fluid}. It keeps pressure forces but neglects viscosity, that is, internal friction between neighboring layers of the fluid. This is not the most general model, but it is the simplest model that already contains mass conservation, Newton's second law, equations of state, boundary conditions, and the first conservation law: Bernoulli's equation.
+
+\begin{note}
+The logical order of the lecture is important: first identify the fields, then write conservation of mass, then write Newton's law for a moving fluid element, then close the system with an equation of state. Bernoulli's equation is not an extra postulate; it is a consequence of Euler's equation under additional assumptions.
+\end{note}
+
+% ------------------------------------------------------------------------------
+\subsection{Fields and the Ideal-Fluid Approximation}\label{sec:lec12:fields-ideal}
+% ------------------------------------------------------------------------------
+
+\subsubsection*{Physical Motivation}
+A continuum description replaces many molecules by smooth fields. At each point we ask: how much mass is there, how strongly is it compressed, and with what velocity is it moving? The ideal-fluid approximation then says that the local stress is still isotropic, as in hydrostatics, even though the fluid is moving.
+
+\subsubsection{Pressure Versus General Stress}\label{subsec:lec12:pressure-stress}
+In a general continuum the force transmitted through surfaces is described by the stress tensor $\stress$. In a static fluid the stress is isotropic:
+\begin{equation}
+  \stress=-p\tens{I},
+  \label{eq:lec12_static_fluid_stress}
+\end{equation}
+or in components,
+\begin{equation}
+  \sigma_{ij}=-p\delta_{ij}.
+  \label{eq:lec12_static_fluid_stress_components}
+\end{equation}
+The ideal-fluid approximation assumes that this remains true during motion:
+\begin{equation}
+  \boxed{\sigma_{ij}(\bvec{x},t)=-p(\bvec{x},t)\delta_{ij}.}
+  \label{eq:lec12_ideal_stress}
+\end{equation}
+\textit{Physical significance:} An ideal fluid can push normally on surfaces through pressure, but it cannot exert tangential viscous shear stresses.
+
+Physically, this means that we neglect viscosity. In a real moving fluid, neighboring fluid elements with different velocities rub against one another and exchange momentum through viscous stresses. Those terms will be added later. For now, pressure is the only internal mechanical stress.
+
+\begin{Definition}{Ideal Fluid}{def:lec12_ideal_fluid}
+An ideal fluid is a continuum model in which the stress tensor is purely isotropic,
+\[
+  \sigma_{ij}=-p\delta_{ij},
+\]
+so the only internal force is pressure. It is also called an inviscid fluid because viscous shear stresses are neglected.
+\end{Definition}
+
+% ------------------------------------------------------------------------------
+\subsection{Mass Conservation: The Continuity Equation}\label{sec:lec12:continuity}
+% ------------------------------------------------------------------------------
+
+\subsubsection*{Physical Motivation}
+Mass cannot appear or disappear inside a small volume. If the mass in that volume changes, the reason must be that mass flowed through the boundary. This is the same local conservation idea as charge conservation in electromagnetism.
+
+\subsubsection{Mass Current}\label{subsec:lec12:mass-current}
+The mass current density is defined by
+\begin{equation}
+  \boxed{\bvec{j}_m=\rho\vel.}
+  \label{eq:lec12_mass_current}
+\end{equation}
+\textit{Physical significance:} The amount of mass crossing a unit area per unit time is density times the velocity normal to that area.
+
+For a fixed control volume $V$ with boundary $\partial V$, conservation of mass says
+\begin{equation}
+  \frac{d}{dt}\int_V \rho\,dV
+  =
+  -\oint_{\partial V}\bvec{j}_m\cdot d\bvec{S}.
+  \label{eq:lec12_integral_mass_conservation}
+\end{equation}
+Using the divergence theorem,
+\begin{align}
+  \frac{d}{dt}\int_V \rho\,dV
+  &=
+  -\int_V \divg \bvec{j}_m\,dV,
+  \label{eq:lec12_continuity_divergence_1}\\
+  \int_V \qty(\pdv{\rho}{t}+\divg \bvec{j}_m)\,dV
+  &=
+  0.
+  \label{eq:lec12_continuity_divergence_2}
+\end{align}
+Since this holds for every small volume $V$, the integrand must vanish:
+\begin{equation}
+  \boxed{\pdv{\rho}{t}+\divg(\rho\vel)=0.}
+  \label{eq:lec12_continuity_equation}
+\end{equation}
+\textit{Physical significance:} Local density increases only where more mass flows in than flows out.
+
+\subsubsection{Steady Flow Through a Tube}\label{subsec:lec12:steady-tube}
+Consider steady flow through a tube whose cross-sectional area is $A(z)$. If the velocity is approximately uniform across each section, the mass flux is
+\begin{equation}
+  \dot{M}(z)=\rho(z)v(z)A(z).
+  \label{eq:lec12_tube_mass_flux}
+\end{equation}
+For a steady flow no mass accumulates between two cross sections, so
+\begin{equation}
+  \boxed{\rho(z)v(z)A(z)=\mathrm{const}.}
+  \label{eq:lec12_tube_continuity}
+\end{equation}
+\textit{Physical significance:} In steady flow the same mass per unit time must pass through every section of the tube.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.95]
+  \draw[thick] (0,0.8) .. controls (1.6,1.0) and (2.6,1.3) .. (4.0,1.2)
+               .. controls (5.2,1.1) and (6.2,0.75) .. (7.3,0.75);
+  \draw[thick] (0,-0.8) .. controls (1.6,-1.0) and (2.6,-1.3) .. (4.0,-1.2)
+               .. controls (5.2,-1.1) and (6.2,-0.75) .. (7.3,-0.75);
+  \draw[dashed] (1.0,-0.95) -- (1.0,0.95);
+  \draw[dashed] (4.0,-1.25) -- (4.0,1.25);
+  \draw[vvec] (0.35,0) -- (1.35,0) node[midway,above] {$v_1$};
+  \draw[vvec] (3.3,0) -- (3.95,0) node[midway,above] {$v_2$};
+  \draw[width] (1.25,-0.8) -- (1.25,0.8) node[midway,right] {$A_1$};
+  \draw[width] (4.25,-1.2) -- (4.25,1.2) node[midway,right] {$A_2$};
+  \node at (2.45,-1.65) {$\rho_1 v_1 A_1=\rho_2 v_2 A_2$};
+  \node[align=center] at (5.85,1.45) {wider section\\slower flow if $\rho=\rho_0$};
+\end{tikzpicture}
+\end{center}
+
+For an incompressible fluid, $\rho=\rho_0$ is constant, and therefore
+\begin{equation}
+  \boxed{v(z)A(z)=\mathrm{const}.}
+  \label{eq:lec12_incompressible_tube}
+\end{equation}
+\textit{Physical significance:} Where the tube widens the flow slows down; where the tube narrows the flow speeds up.
+
+The qualification ``steady'' matters. If the flow depends on time, mass may temporarily accumulate inside a section of the tube, so the incoming and outgoing fluxes need not be equal at the same instant.
+
+% ------------------------------------------------------------------------------
+\subsection{The Material Derivative}\label{sec:lec12:material-derivative}
+% ------------------------------------------------------------------------------
+
+\subsubsection*{Physical Motivation}
+A field such as temperature, density, or velocity can change at a fixed point. But Newton's second law follows a material element. We therefore need a derivative that moves with the fluid particle, not one that watches a fixed point in space.
+
+\subsubsection{Definition}\label{subsec:lec12:material-definition}
+Let $\phi(\bvec{x},t)$ be any scalar field. The material derivative is
+\begin{equation}
+  \boxed{
+  \DDt \phi
+  =
+  \pdv{\phi}{t}
+  +
+  \vel\cdot\grad\phi.}
+  \label{eq:lec12_material_derivative_scalar}
+\end{equation}
+\textit{Physical significance:} The first term is the explicit time change at a fixed point; the second term is the change seen because the fluid element moves into a neighboring region where the field has a different value.
+
+Equivalently, as an operator,
+\begin{equation}
+  \boxed{\DDt=\pdv{}{t}+\vel\cdot\grad.}
+  \label{eq:lec12_material_derivative_operator}
+\end{equation}
+\textit{Physical significance:} The material derivative is the time derivative in the frame that accompanies the moving fluid element.
+
+\begin{Definition}{Material Derivative}{def:lec12_material_derivative}
+The material derivative $\DDt$ means ``differentiate while riding with the same fluid element.'' It is the correct derivative for acceleration because Newton's law follows matter, not a fixed point in space.
+\end{Definition}
+
+\subsubsection{Derivation from a Particle Trajectory}\label{subsec:lec12:material-trajectory}
+Let a fluid element be labeled by its initial position $\bvec{X}$, and let its position at time $t$ be
+\begin{equation}
+  \bvec{x}=\bvec{x}(\bvec{X},t).
+  \label{eq:lec12_lagrangian_map}
+\end{equation}
+Along this particular element, the scalar field becomes the single-variable function
+
+\begin{center}
+\begin{tikzpicture}[scale=1.0]
+  \draw[->] (-0.2,0) -- (6.3,0) node[right] {$x$};
+  \draw[->] (0,-0.2) -- (0,3.0) node[above] {$y$};
+  \draw[thick, myblue] (0.7,0.55) .. controls (1.9,1.8) and (3.4,1.0) .. (5.6,2.35);
+  \foreach \x/\y/\lab in {0.7/0.55/t_0,2.2/1.45/t_1,3.7/1.35/t_2,5.6/2.35/t_3} {
+    \fill[myred] (\x,\y) circle (2pt);
+    \node[above] at (\x,\y) {$\lab$};
+  }
+  \draw[vvec] (2.2,1.45) -- (3.1,1.38) node[midway,below] {$\vel(\bvec{x},t)$};
+  \node[align=center] at (3.15,2.65) {one material element\\moving through a field};
+  \node[align=left] at (4.55,0.55) {$\displaystyle \frac{D}{Dt}=\frac{\partial}{\partial t}+\vel\cdot\grad$};
+\end{tikzpicture}
+\end{center}
+
+\begin{equation}
+  \Phi(t)=\phi(\bvec{x}(\bvec{X},t),t).
+  \label{eq:lec12_scalar_along_particle}
+\end{equation}
+Applying the chain rule,
+\begin{align}
+  \dv{\Phi}{t}
+  &=
+  \pdv{\phi}{t}
+  +
+  \pdv{\phi}{x_i}\dv{x_i}{t},
+  \label{eq:lec12_chain_rule_1}\\
+  &=
+  \pdv{\phi}{t}
+  +
+  v_i\partial_i\phi,
+  \label{eq:lec12_chain_rule_2}\\
+  &=
+  \pdv{\phi}{t}
+  +
+  \vel\cdot\grad\phi.
+  \label{eq:lec12_chain_rule_3}
+\end{align}
+This is exactly equation~\eqref{eq:lec12_material_derivative_scalar}.
+
+The same operator applies component by component to vector fields. In particular, the acceleration of a fluid element is
+\begin{equation}
+  \boxed{
+  \bvec{a}
+  =
+  \DDt\vel
+  =
+  \pdv{\vel}{t}
+  +
+  (\vel\cdot\grad)\vel.}
+  \label{eq:lec12_acceleration_vector}
+\end{equation}
+\textit{Physical significance:} A flow can accelerate a fluid element even when the velocity field is steady in time, because the element moves from one location to another where the velocity is different.
+
+In index notation,
+\begin{equation}
+  \boxed{
+  a_i
+  =
+  \pdv{v_i}{t}
+  +
+  v_j\partial_j v_i.}
+  \label{eq:lec12_acceleration_index}
+\end{equation}
+\textit{Physical significance:} The index $i$ labels the component of acceleration, while $j$ is summed over and describes the direction along which the fluid element is advected.
+
+This is the fluid-mechanics analogue of the total derivative used in analytical mechanics. There, one follows a trajectory in phase space; here, one follows a continuum of material elements carried by the flow.
+
+% ------------------------------------------------------------------------------
+\subsection{Momentum Balance and Euler's Equation}\label{sec:lec12:euler}
+% ------------------------------------------------------------------------------
+
+\subsubsection*{Physical Motivation}
+Once the acceleration of a material element is known, the equation of motion is still Newton's second law: mass times acceleration equals force. The only new point is that the forces are continuum forces, produced by stresses on surfaces and by body forces such as gravity.
+
+\subsubsection{General Momentum Balance}\label{subsec:lec12:general-momentum}
+Consider a small material volume element $\Delta V$ with mass
+\begin{equation}
+  \Delta m=\rho\,\Delta V.
+  \label{eq:lec12_mass_element}
+\end{equation}
+Newton's second law is
+\begin{equation}
+  \Delta m\,\DDt\vel=\Delta\bvec{F}.
+  \label{eq:lec12_newton_element}
+\end{equation}
+The force contains an internal stress contribution and an external body-force contribution:
+\begin{equation}
+  \Delta\bvec{F}
+  =
+  (\divg\stress)\Delta V
+  +
+  \rho\bvec{g}\Delta V,
+  \label{eq:lec12_force_decomposition}
+\end{equation}
+where $\bvec{g}$ denotes the acceleration due to the external force field. Dividing by $\Delta m=\rho\Delta V$ gives
+\begin{equation}
+  \boxed{
+  \DDt\vel
+  =
+  \frac{1}{\rho}\divg\stress+\bvec{g}.}
+  \label{eq:lec12_general_momentum}
+\end{equation}
+\textit{Physical significance:} Fluid acceleration is driven by stress gradients per unit mass and by external acceleration fields.
+
+In components this is
+\begin{equation}
+  \boxed{
+  \DDt v_i
+  =
+  \frac{1}{\rho}\partial_j\sigma_{ij}+g_i.}
+  \label{eq:lec12_general_momentum_components}
+\end{equation}
+\textit{Physical significance:} The divergence of the stress tensor is a force density; dividing by $\rho$ converts it into acceleration.
+
+\subsubsection{Euler Equation for an Ideal Fluid}\label{subsec:lec12:euler-ideal}
+Substituting the ideal-fluid stress \eqref{eq:lec12_ideal_stress} into the stress divergence gives
+\begin{align}
+  \partial_j\sigma_{ij}
+  &=
+  \partial_j(-p\delta_{ij}),
+  \label{eq:lec12_pressure_divergence_1}\\
+  &=
+  -\delta_{ij}\partial_j p,
+  \label{eq:lec12_pressure_divergence_2}\\
+  &=
+  -\partial_i p.
+  \label{eq:lec12_pressure_divergence_3}
+\end{align}
+Therefore
+\begin{equation}
+  \boxed{
+  \DDt\vel
+  =
+  -\frac{1}{\rho}\grad p+\bvec{g}.}
+  \label{eq:lec12_euler_material}
+\end{equation}
+\textit{Physical significance:} An ideal fluid accelerates from high pressure toward low pressure, with body forces added in the usual way.
+
+Writing out the material derivative,
+\begin{equation}
+  \boxed{
+  \pdv{\vel}{t}
+  +
+  (\vel\cdot\grad)\vel
+  =
+  -\frac{1}{\rho}\grad p+\bvec{g}.}
+  \label{eq:lec12_euler_equation}
+\end{equation}
+\textit{Physical significance:} Euler's equation is Newton's second law for an inviscid continuum.
+
+This equation is more general than hydrostatics. If $\vel=0$ and the fields are time independent, the left side vanishes and equation~\eqref{eq:lec12_euler_equation} reduces to
+\begin{equation}
+  \grad p=\rho\bvec{g},
+  \label{eq:lec12_euler_hydrostatic_limit}
+\end{equation}
+which is the hydrostatic equation recalled at the beginning of the lecture.
+
+The unknowns in the ideal-fluid problem are $\rho$, $p$, and the three components of $\vel$. Continuity gives one scalar equation, Euler's equation gives three scalar equations, and one more scalar relation is still needed. That last relation is supplied by the equation of state.
+
+% ------------------------------------------------------------------------------
+\subsection{Mechanical Closure and Equations of State}\label{sec:lec12:closure}
+% ------------------------------------------------------------------------------
+
+\subsubsection*{Physical Motivation}
+A gas or liquid is not only mechanical; it also has temperature, entropy, and internal energy. A fully general fluid theory must follow those thermal variables. In this lecture we restrict to mechanically closed situations, where the thermal behavior can be summarized by a relation between pressure and density.
+
+\subsubsection{Barotropic Closure}\label{subsec:lec12:barotropic}
+The closure assumption is that pressure and density are connected by an algebraic equation of state
+\begin{equation}
+  \boxed{f(p,\rho)=0.}
+  \label{eq:lec12_equation_of_state_general}
+\end{equation}
+\textit{Physical significance:} If this relation holds, knowing $p$ determines $\rho$ or knowing $\rho$ determines $p$, so no independent thermal field is needed for the mechanical problem.
+
+Equivalently, when the relation can be solved explicitly, one may write
+\begin{equation}
+  \boxed{p=p(\rho).}
+  \label{eq:lec12_barotropic_relation}
+\end{equation}
+\textit{Physical significance:} A fluid with $p=p(\rho)$ is called barotropic; pressure surfaces and density surfaces are locked together.
+
+\begin{note}
+The word ``closure'' means that the mechanical equations now have enough relations to determine the mechanical unknowns. Without an equation of state, continuity and Euler's equation do not know how pressure responds when a fluid element is compressed.
+\end{note}
+
+A useful diagnostic follows by taking the gradient of $f(p,\rho)=0$:
+\begin{equation}
+  f_p\grad p+f_\rho\grad\rho=0.
+  \label{eq:lec12_eos_gradient}
+\end{equation}
+Thus $\grad p$ and $\grad\rho$ are parallel, and
+\begin{equation}
+  \boxed{\grad p\times\grad\rho=\bvec{0}.}
+  \label{eq:lec12_barotropic_test}
+\end{equation}
+\textit{Physical significance:} If measured pressure and density gradients are not parallel, the flow cannot be described by a single equation of state $f(p,\rho)=0$.
+
+\subsubsection{Incompressible Fluids}\label{subsec:lec12:incompressible-closure}
+The simplest example is an incompressible fluid:
+\begin{equation}
+  \boxed{\rho=\rho_0=\mathrm{const}.}
+  \label{eq:lec12_incompressible_density}
+\end{equation}
+\textit{Physical significance:} The density is fixed independently of pressure, so volume elements do not compress or expand.
+
+Substituting $\rho=\rho_0$ into the continuity equation gives
+\begin{align}
+  \pdv{\rho_0}{t}+\divg(\rho_0\vel)
+  &=
+  0,
+  \label{eq:lec12_incompressible_continuity_1}\\
+  \rho_0\divg\vel
+  &=
+  0.
+  \label{eq:lec12_incompressible_continuity_2}
+\end{align}
+Since $\rho_0\ne0$,
+\begin{equation}
+  \boxed{\divg\vel=0.}
+  \label{eq:lec12_incompressible_divergence_free}
+\end{equation}
+\textit{Physical significance:} In an incompressible flow, the velocity field has no local source or sink of volume.
+
+\subsubsection{Isentropic Ideal Gases}\label{subsec:lec12:isentropic-gas}
+Another important class is isentropic flow. The entropy carried by each fluid element is constant:
+\begin{equation}
+  \boxed{\DDt s=0,}
+  \label{eq:lec12_isentropic_condition}
+\end{equation}
+where $s$ is entropy per unit mass.
+\textit{Physical significance:} No heat flows between neighboring elements and no heat is produced inside an element, so the thermal state is carried along with the motion.
+
+For an isentropic ideal gas the equation of state has the adiabatic form
+\begin{equation}
+  \boxed{p=K\rho^\gamma,}
+  \label{eq:lec12_adiabatic_ideal_gas}
+\end{equation}
+where $K$ is constant along the chosen isentrope and $\gamma$ is the adiabatic index.
+\textit{Physical significance:} Compression raises the pressure more strongly than in an isothermal gas because the temperature also rises.
+
+For an ideal gas with $f$ active molecular degrees of freedom,
+\begin{equation}
+  \boxed{\gamma=1+\frac{2}{f}.}
+  \label{eq:lec12_gamma_degrees_freedom}
+\end{equation}
+\textit{Physical significance:} More internal degrees of freedom store energy during compression, so they reduce the pressure response and lower $\gamma$.
+
+Typical values are
+\begin{equation}
+  \boxed{
+  \gamma=\frac{5}{3}\quad\text{monatomic},\qquad
+  \gamma=\frac{7}{5}\quad\text{diatomic},\qquad
+  \gamma=\frac{4}{3}\quad\text{polyatomic with } f=6.}
+  \label{eq:lec12_gamma_examples}
+\end{equation}
+\textit{Physical significance:} The equation of state depends on microscopic structure, but once it is known it closes the macroscopic mechanical equations.
+
+\subsubsection{Enthalpy per Unit Mass}\label{subsec:lec12:enthalpy}
+For isentropic motion it is useful to introduce the enthalpy per unit mass, denoted here by $h_{\mathrm{th}}$. Thermodynamics gives
+\begin{equation}
+  dh_{\mathrm{th}}=T\,ds+\frac{1}{\rho}\,dp.
+  \label{eq:lec12_enthalpy_differential}
+\end{equation}
+Along an isentrope $ds=0$, so
+\begin{equation}
+  \boxed{dh_{\mathrm{th}}=\frac{1}{\rho}\,dp.}
+  \label{eq:lec12_isentropic_enthalpy}
+\end{equation}
+\textit{Physical significance:} In an isentropic ideal fluid, pressure work can be represented as a gradient of enthalpy per unit mass.
+
+Taking a spatial gradient,
+\begin{equation}
+  \boxed{\grad h_{\mathrm{th}}=\frac{1}{\rho}\grad p.}
+  \label{eq:lec12_enthalpy_gradient}
+\end{equation}
+\textit{Physical significance:} This identity makes the pressure force behave like a conservative force.
+
+% ------------------------------------------------------------------------------
+\subsection{The Closed Ideal-Fluid System and Boundary Conditions}\label{sec:lec12:closed-system}
+% ------------------------------------------------------------------------------
+
+\subsubsection*{Physical Motivation}
+Differential equations do not define a physical flow by themselves. We also need initial conditions and boundary conditions. The most basic boundary condition says that a fluid cannot pass through an impermeable wall.
+
+\subsubsection{Counting Unknowns and Equations}\label{subsec:lec12:counting}
+The unknowns are
+\begin{equation}
+  \boxed{\rho,\qquad p,\qquad \vel.}
+  \label{eq:lec12_unknowns}
+\end{equation}
+\textit{Physical significance:} In three dimensions this is five scalar unknowns: two scalars and one vector.
+
+The equations are
+\begin{equation}
+  \boxed{
+  \pdv{\rho}{t}+\divg(\rho\vel)=0,}
+  \label{eq:lec12_closed_continuity}
+\end{equation}
+\textit{Physical significance:} This is one scalar equation expressing mass conservation.
+
+\begin{equation}
+  \boxed{
+  \pdv{\vel}{t}
+  +
+  (\vel\cdot\grad)\vel
+  =
+  -\frac{1}{\rho}\grad p+\bvec{g},}
+  \label{eq:lec12_closed_euler}
+\end{equation}
+\textit{Physical significance:} This is a vector equation, giving three scalar momentum equations.
+
+\begin{equation}
+  \boxed{f(p,\rho)=0.}
+  \label{eq:lec12_closed_eos}
+\end{equation}
+\textit{Physical significance:} This final scalar equation supplies the mechanical closure.
+
+Thus the number of scalar equations matches the number of scalar unknowns. The system is mechanically closed, but a particular solution still requires initial and boundary data.
+
+\subsubsection{Impermeable Boundary}\label{subsec:lec12:impermeable-boundary}
+Let $\uvec{n}$ be the unit normal to a fixed impermeable wall. The normal component of the fluid velocity at the wall must vanish:
+\begin{equation}
+  \boxed{\vel\cdot\uvec{n}=0.}
+  \label{eq:lec12_impermeable_boundary}
+\end{equation}
+\textit{Physical significance:} The fluid may slide along an ideal wall, but it cannot flow through the wall.
+
+For an ideal fluid there is no no-slip condition. The tangential velocity at the wall is not forced to vanish:
+\begin{equation}
+  \boxed{\vel_{\parallel}\ \text{may be nonzero at an ideal boundary}.}
+  \label{eq:lec12_tangential_velocity_ideal}
+\end{equation}
+\textit{Physical significance:} No viscosity means no tangential friction force that would glue the fluid to the wall.
+
+For a viscous fluid, by contrast, the tangential velocity at a stationary wall will also vanish. That stronger boundary condition belongs to the later, viscous theory.
+
+% ------------------------------------------------------------------------------
+\subsection{How These Field Equations Are Solved}\label{sec:lec12:solving-field-equations}
+% ------------------------------------------------------------------------------
+
+\subsubsection*{Physical Motivation}
+The equations above are field equations: they must hold at every point in space and time. This makes them partial differential equations. Sometimes symmetry gives analytic solutions; in general, one solves them numerically.
+
+\subsubsection{Analytic Versus Numerical Solutions}\label{subsec:lec12:analytic-numerical}
+An analytic solution gives formulae such as
+\begin{equation}
+  \rho=\rho(\bvec{x},t),\qquad
+  p=p(\bvec{x},t),\qquad
+  \vel=\vel(\bvec{x},t).
+  \label{eq:lec12_analytic_solution_form}
+\end{equation}
+Such solutions are especially valuable because they expose parameter dependence and physical structure.
+
+For general geometries one discretizes space and time:
+\begin{equation}
+  t\rightarrow t_n,\qquad
+  \bvec{x}\rightarrow \bvec{x}_j.
+  \label{eq:lec12_discretization_grid}
+\end{equation}
+The fields become a finite set of values,
+\begin{equation}
+  \rho(\bvec{x},t)\rightarrow \rho_j^n,\qquad
+  p(\bvec{x},t)\rightarrow p_j^n,\qquad
+  \vel(\bvec{x},t)\rightarrow \vel_j^n.
+  \label{eq:lec12_discrete_fields}
+\end{equation}
+Derivatives are replaced by difference approximations. For example,
+\begin{equation}
+  \boxed{
+  \pdv{f}{x}(x_i)
+  \simeq
+  \frac{f(x_{i+1})-f(x_i)}{x_{i+1}-x_i}.}
+  \label{eq:lec12_finite_difference_example}
+\end{equation}
+\textit{Physical significance:} A continuum field problem is converted into a large algebraic or time-stepping problem for finitely many numbers.
+
+\begin{Example}{Finite-Difference Mindset}{ex:lec12_finite_difference_mindset}
+The computer does not store a whole continuous function. It stores numbers such as $p_j^n$ and $\rho_j^n$ on grid points, then replaces derivatives by algebraic differences. The physical equation is still the same conservation law, but its numerical form is a rule for updating finitely many stored values.
+\end{Example}
+
+Computational fluid dynamics therefore sits between theory and experiment. It uses theoretical equations, but the outcome of a complex simulation is often not obvious before the computation is performed.
+
+% ------------------------------------------------------------------------------
+\subsection{Bernoulli's Equation as Energy Conservation}\label{sec:lec12:bernoulli}
+% ------------------------------------------------------------------------------
+
+\subsubsection*{Physical Motivation}
+After writing Newton's law, the next useful step in mechanics is usually to find conserved quantities. Bernoulli's equation is the corresponding energy conservation statement for an ideal flow, under additional assumptions.
+
+\subsubsection{Mechanical Analogy}\label{subsec:lec12:mechanical-analogy}
+For a particle in a conservative potential $U(\bvec{x})$,
+\begin{equation}
+  m\ddot{\bvec{x}}=-\grad U.
+  \label{eq:lec12_particle_newton}
+\end{equation}
+Taking the scalar product with $\dot{\bvec{x}}$ gives
+\begin{equation}
+  m\ddot{\bvec{x}}\cdot\dot{\bvec{x}}
+  =
+  -\grad U\cdot\dot{\bvec{x}}.
+  \label{eq:lec12_particle_energy_1}
+\end{equation}
+The two sides are total time derivatives:
+\begin{equation}
+  \dv{}{t}\qty(\frac{1}{2}m\dot{\bvec{x}}^2)
+  =
+  -\dv{U}{t}.
+  \label{eq:lec12_particle_energy_2}
+\end{equation}
+Therefore
+\begin{equation}
+  \boxed{
+  \frac{1}{2}m\dot{\bvec{x}}^2+U=\mathrm{const}.}
+  \label{eq:lec12_particle_energy_conservation}
+\end{equation}
+\textit{Physical significance:} Multiplying Newton's law by velocity converts a force law into an energy law.
+
+\subsubsection{Derivation for an Ideal Isentropic Flow}\label{subsec:lec12:bernoulli-derivation}
+Now take Euler's equation with no external body force:
+\begin{equation}
+  \DDt\vel
+  =
+  -\frac{1}{\rho}\grad p.
+  \label{eq:lec12_euler_no_body_force}
+\end{equation}
+Assume the flow is isentropic, so equation~\eqref{eq:lec12_enthalpy_gradient} applies:
+\begin{equation}
+  \frac{1}{\rho}\grad p=\grad h_{\mathrm{th}}.
+  \label{eq:lec12_pressure_to_enthalpy}
+\end{equation}
+Then
+\begin{equation}
+  \DDt\vel=-\grad h_{\mathrm{th}}.
+  \label{eq:lec12_euler_enthalpy}
+\end{equation}
+Take the scalar product with $\vel$:
+\begin{equation}
+  \vel\cdot\DDt\vel
+  =
+  -\vel\cdot\grad h_{\mathrm{th}}.
+  \label{eq:lec12_bernoulli_dot_velocity}
+\end{equation}
+The left side is
+\begin{equation}
+  \vel\cdot\DDt\vel
+  =
+  \DDt\qty(\frac{1}{2}v^2).
+  \label{eq:lec12_kinetic_material_derivative}
+\end{equation}
+For steady flow, $\partial h_{\mathrm{th}}/\partial t=0$, so
+\begin{equation}
+  \DDt h_{\mathrm{th}}
+  =
+  \pdv{h_{\mathrm{th}}}{t}
+  +
+  \vel\cdot\grad h_{\mathrm{th}}
+  =
+  \vel\cdot\grad h_{\mathrm{th}}.
+  \label{eq:lec12_steady_enthalpy_material}
+\end{equation}
+Therefore equation~\eqref{eq:lec12_bernoulli_dot_velocity} becomes
+\begin{equation}
+  \DDt\qty(\frac{1}{2}v^2)
+  =
+  -\DDt h_{\mathrm{th}}.
+  \label{eq:lec12_bernoulli_material_step}
+\end{equation}
+Combining the two material derivatives,
+\begin{equation}
+  \DDt\qty(\frac{1}{2}v^2+h_{\mathrm{th}})=0.
+  \label{eq:lec12_bernoulli_material_conservation}
+\end{equation}
+Hence, along a streamline,
+\begin{equation}
+  \boxed{
+  \frac{1}{2}v^2+h_{\mathrm{th}}=\mathrm{const}.}
+  \label{eq:lec12_bernoulli_enthalpy}
+\end{equation}
+\textit{Physical significance:} Along the path of a fluid element, kinetic energy per unit mass and enthalpy per unit mass trade off while their sum remains fixed.
+
+\subsubsection{Incompressible Form}\label{subsec:lec12:bernoulli-incompressible}
+For an incompressible fluid, $\rho=\rho_0$ and
+\begin{equation}
+  dh_{\mathrm{th}}=\frac{1}{\rho_0}\,dp.
+  \label{eq:lec12_incompressible_enthalpy_diff}
+\end{equation}
+Integrating,
+\begin{equation}
+  h_{\mathrm{th}}=\frac{p}{\rho_0}+\mathrm{const}.
+  \label{eq:lec12_incompressible_enthalpy}
+\end{equation}
+Substituting into equation~\eqref{eq:lec12_bernoulli_enthalpy},
+\begin{equation}
+  \boxed{
+  \frac{1}{2}v^2+\frac{p}{\rho_0}=\mathrm{const}
+  \quad\text{along a streamline}.}
+  \label{eq:lec12_bernoulli_incompressible}
+\end{equation}
+\textit{Physical significance:} In a steady incompressible ideal flow, regions of larger speed have smaller pressure along the same streamline.
+
+Multiplying by $\rho_0$ gives the common pressure form:
+\begin{equation}
+  \boxed{
+  \frac{1}{2}\rho_0 v^2+p=\mathrm{const}
+  \quad\text{along a streamline}.}
+  \label{eq:lec12_bernoulli_pressure_form}
+\end{equation}
+\textit{Physical significance:} Dynamic pressure $\frac{1}{2}\rho_0v^2$ and static pressure $p$ exchange like kinetic and potential energy densities.
+
+If a conservative body force such as gravity is retained, a potential term is added. For $\bvec{g}=-g\uvec{z}$,
+\begin{equation}
+  \boxed{
+  \frac{1}{2}v^2+\frac{p}{\rho_0}+gz=\mathrm{const}
+  \quad\text{along a streamline}.}
+  \label{eq:lec12_bernoulli_with_gravity}
+\end{equation}
+\textit{Physical significance:} Height, pressure, and speed are three reservoirs of mechanical energy per unit mass.
+
+% ------------------------------------------------------------------------------
+\subsection{Summary}\label{sec:lec12:summary}
+% ------------------------------------------------------------------------------
+
+The ideal-fluid model developed in this lecture is
+\begin{equation}
+  \boxed{
+  \pdv{\rho}{t}+\divg(\rho\vel)=0,\qquad
+  \pdv{\vel}{t}+(\vel\cdot\grad)\vel
+  =
+  -\frac{1}{\rho}\grad p+\bvec{g},\qquad
+  f(p,\rho)=0.}
+  \label{eq:lec12_summary_ideal_system}
+\end{equation}
+\textit{Physical significance:} These are mass conservation, Newton's second law, and mechanical closure.
+
+The central new mathematical object is the material derivative:
+\begin{equation}
+  \boxed{\DDt=\pdv{}{t}+\vel\cdot\grad.}
+  \label{eq:lec12_summary_material_derivative}
+\end{equation}
+\textit{Physical significance:} It is the derivative seen by a moving fluid element.
+
+For an impermeable ideal boundary,
+\begin{equation}
+  \boxed{\vel\cdot\uvec{n}=0,\qquad \vel_\parallel\ \text{need not vanish}.}
+  \label{eq:lec12_summary_boundary}
+\end{equation}
+\textit{Physical significance:} Ideal fluids cannot cross walls, but without viscosity they may slide along them.
+
+Under the additional assumptions of steady, ideal, isentropic flow with no nonconservative forcing,
+\begin{equation}
+  \boxed{\frac{1}{2}v^2+h_{\mathrm{th}}=\mathrm{const}}
+  \label{eq:lec12_summary_bernoulli}
+\end{equation}
+\textit{Physical significance:} Bernoulli's equation is the energy conservation law obtained from Euler's equation along a streamline.
+
+\subsection*{Further Reading}
+\begin{itemize}
+  \item L. D. Landau and E. M. Lifshitz, \textit{Fluid Mechanics}, Secs. 1--5: ideal fluids, Euler's equation, and Bernoulli's theorem.
+  \item G. K. Batchelor, \textit{An Introduction to Fluid Dynamics}, Ch. 1: kinematics, material derivative, and inviscid equations.
+  \item D. J. Acheson, \textit{Elementary Fluid Dynamics}, Chs. 1--2: continuity, Euler's equation, and elementary Bernoulli applications.
+  \item Any analytical mechanics text, section on energy conservation: the derivation by dotting Newton's equation with velocity is the template for Bernoulli's theorem.
+\end{itemize}
+
+\end{document}

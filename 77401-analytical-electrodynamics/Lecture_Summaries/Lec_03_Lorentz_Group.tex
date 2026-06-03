@@ -1,0 +1,495 @@
+%%═══════════════════════════════════════════════════════════════════
+%% Lecture 03 — Deriving the Lorentz Group from Interval Invariance
+%% 77401 — Analytical Electrodynamics
+%% Date: 2026-04-12
+%% Lecturer: Prof. Michael Smolkin
+%%═══════════════════════════════════════════════════════════════════
+
+\section{Lecture 03 — Deriving the Lorentz Group from Interval Invariance}%
+\label{sec:lec03:lorentz_group}
+
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 12/04/2026   & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Overview}
+
+Lecture~03 picks up directly from the result of Lecture~02 — that
+the spacetime interval $ds^2 = c^2 dt^2 - d\mathbf{r}^2$ is invariant
+under passage between inertial frames — and uses this single fact to
+\emph{derive} the structure of the allowed coordinate transformations.
+
+The strategy is the following. Write the interval in a compact
+index notation using the Minkowski metric $\eta_{\alpha\beta}$
+(signature $+{-}{-}{-}$). Demand that $ds^2 = ds'^2$ for an
+\emph{arbitrary} smooth, invertible map $x'^\alpha = x'^\alpha(x)$.
+Differentiating the invariance condition twice forces the Jacobian of
+the transformation to satisfy the defining relation of the Lorentz
+group, and a further differentiation argument shows that the Jacobian
+must be \emph{constant} — i.e., the transformation is necessarily
+\emph{linear}. The most general inertial-frame transition is therefore
+an affine map: a homogeneous Lorentz transformation $\Lambda^\alpha{}_\beta$
+(which mixes all four coordinates) composed with a constant spacetime
+translation $a^\alpha$ (which merely synchronises origins). The
+lecture closes by introducing the proper orthochronous subgroup
+$SO^+(3,1)$ — the physically relevant sector — characterised by
+$\det\Lambda = +1$ and $\Lambda^0{}_0 \ge +1$.
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Notation and Definitions}
+
+\dfn{Four-coordinates}{Choose a unified coordinate label
+\begin{equation}
+  x^0 \equiv ct, \qquad x^1 \equiv x, \qquad x^2 \equiv y, \qquad
+  x^3 \equiv z,
+  \label{eq:lec03:coords}
+\end{equation}
+so that all four components carry dimensions of length.  Greek indices
+$\alpha,\beta,\ldots$ run from $0$ to $3$.  The four-displacement is
+$dx^\alpha = (c\,dt,\,dx,\,dy,\,dz)$.}
+
+\dfn{Minkowski metric}{The \emph{Minkowski metric} is the diagonal $4\times 4$ matrix
+\begin{equation}
+  \eta_{\alpha\beta} = \operatorname{diag}(+1,-1,-1,-1),
+  \label{eq:lec03:eta}
+\end{equation}
+with row and column indices running from $0$ to $3$.  Explicitly:
+$\eta_{00}=+1$, $\eta_{11}=\eta_{22}=\eta_{33}=-1$, and
+$\eta_{\alpha\beta}=0$ for $\alpha\neq\beta$.}
+
+\dfn{Interval in compact form}{With the Einstein summation convention (repeated upper–lower index pairs
+are summed from $0$ to $3$), the infinitesimal squared interval is
+\begin{equation}
+  \boxed{ds^2 = \eta_{\alpha\beta}\,dx^\alpha\,dx^\beta
+         = c^2 dt^2 - dx^2 - dy^2 - dz^2.}
+  \label{eq:lec03:interval_compact}
+\end{equation}
+This is the relativistic generalisation of the Euclidean inner product
+$\delta_{ij}\,dx^i\,dx^j = dx^2+dy^2+dz^2$, but with an indefinite
+metric: $ds^2$ can be positive (time-like), negative (space-like), or
+zero (null/light-like).}
+
+\begin{remark}
+The notation $\eta_{\alpha\beta}$ with both indices \emph{down} is
+standard; upper-index coordinates $x^\alpha$ are \emph{contravariant}
+vectors.  The metric serves the role of lowering indices:
+$x_\alpha \equiv \eta_{\alpha\beta}x^\beta$, so
+$x_0 = +ct$ while $x_i = -x^i$ for $i=1,2,3$.  This distinction will
+become significant when covariant and contravariant components are
+compared in later lectures.
+\end{remark}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Derivations}
+
+%% ─── PART I: Setting up the invariance condition ─────────────────
+\subsubsection*{Step 1 — Invariance condition in index notation}
+
+By Lecture~02's result, $ds^2 = ds'^2$ for any two inertial frames.
+In the notation of Eq.~\eqref{eq:lec03:interval_compact},
+\begin{align}
+  ds^2 &= \eta_{\alpha\beta}\,dx^\alpha\,dx^\beta, \label{eq:lec03:ds2}\\
+  ds'^2 &= \eta_{\alpha\beta}\,dx'^\alpha\,dx'^\beta, \label{eq:lec03:dsp2}
+\end{align}
+where $dx'^\alpha$ are the coordinate differentials in the primed frame.
+Since the same metric tensor $\eta_{\alpha\beta}$ appears in both frames
+(the metric is part of the physical structure of flat spacetime, not a
+choice of coordinates), the invariance requirement is
+\begin{equation}
+  \eta_{\alpha\beta}\,dx^\alpha\,dx^\beta
+  = \eta_{\alpha\beta}\,dx'^\alpha\,dx'^\beta.
+  \label{eq:lec03:inv_cond}
+\end{equation}
+
+%% ─── PART II: Substituting the differential of an arbitrary smooth map ──
+\subsubsection*{Step 2 — Jacobian substitution}
+
+Assume a smooth, invertible transformation $x'^\alpha = x'^\alpha(x)$.
+Its differential is (chain rule)
+\begin{equation}
+  dx'^\alpha = \frac{\partial x'^\alpha}{\partial x^\gamma}\,dx^\gamma,
+  \label{eq:lec03:differential}
+\end{equation}
+where $\frac{\partial x'^\alpha}{\partial x^\gamma}$ is the
+$(4\times 4)$ \emph{Jacobian matrix} of the transformation.
+Substituting into Eq.~\eqref{eq:lec03:dsp2}:
+\begin{equation}
+  ds'^2 = \eta_{\alpha\beta}
+          \frac{\partial x'^\alpha}{\partial x^\gamma}
+          \frac{\partial x'^\beta}{\partial x^\delta}
+          \,dx^\gamma\,dx^\delta.
+  \label{eq:lec03:dsp2_sub}
+\end{equation}
+Setting $ds^2 = ds'^2$ and writing both sides with the same dummy
+indices $\gamma,\delta$:
+\begin{equation}
+  \left(
+    \eta_{\alpha\beta}
+    \frac{\partial x'^\alpha}{\partial x^\gamma}
+    \frac{\partial x'^\beta}{\partial x^\delta}
+    - \eta_{\gamma\delta}
+  \right)
+  dx^\gamma\,dx^\delta = 0
+  \qquad \forall\; dx^\alpha.
+  \label{eq:lec03:M_cond_raw}
+\end{equation}
+
+Define the symmetric $4\times 4$ matrix
+\begin{equation}
+  M_{\gamma\delta} \equiv
+    \eta_{\alpha\beta}
+    \frac{\partial x'^\alpha}{\partial x^\gamma}
+    \frac{\partial x'^\beta}{\partial x^\delta}
+    - \eta_{\gamma\delta}.
+  \label{eq:lec03:M_def}
+\end{equation}
+
+\paragraph{$M_{\gamma\delta}$ is symmetric.}
+Under the exchange $\gamma\leftrightarrow\delta$:
+the first term transforms as
+$\eta_{\alpha\beta}\,\partial_\delta x'^\alpha\,\partial_\gamma x'^\beta$.
+Renaming the dummy indices $\alpha\leftrightarrow\beta$ (which is
+permissible since $\eta_{\alpha\beta}=\eta_{\beta\alpha}$) returns this
+to the original form.  The second term $\eta_{\gamma\delta}$ is
+symmetric by definition.  Hence $M_{\gamma\delta} = M_{\delta\gamma}$.
+
+\paragraph{$M_{\gamma\delta} = 0$ everywhere.}
+Because Eq.~\eqref{eq:lec03:M_cond_raw} holds for \emph{all}
+$dx^\gamma$, and $M_{\gamma\delta}$ is symmetric, one may contract it
+with eigenvectors of $M$ (which exist since $M$ is a real symmetric
+matrix and therefore diagonalisable).  For any eigenvector $v^\gamma$
+with eigenvalue $\lambda$:
+\begin{equation*}
+  M_{\gamma\delta}\,v^\gamma\,v^\delta
+  = \lambda\,\underbrace{v^\gamma v_\gamma}_{>0} = 0
+  \;\Rightarrow\; \lambda = 0.
+\end{equation*}
+Since all eigenvalues vanish and $M$ is symmetric, $M_{\gamma\delta}=0$
+identically. Therefore:
+\begin{equation}
+  \boxed{
+  \eta_{\alpha\beta}\,
+  \frac{\partial x'^\alpha}{\partial x^\gamma}\,
+  \frac{\partial x'^\beta}{\partial x^\delta}
+  = \eta_{\gamma\delta}.}
+  \label{eq:lec03:star}
+\end{equation}
+This is sometimes called the \emph{fundamental identity} $(\star)$ of
+the Lorentz group.  It is the direct analogue of $R^T R = \mathbf{1}$
+for orthogonal matrices.
+
+%% ─── PART III: Differentiating * to force linearity ──────────────
+\subsubsection*{Step 3 — Differentiating $(\star)$ to prove linearity}
+
+Take $\partial/\partial x^\varepsilon$ on both sides of
+Eq.~\eqref{eq:lec03:star}.  The right-hand side is the constant matrix
+$\eta_{\gamma\delta}$, so its derivative vanishes:
+\begin{align}
+  \partial_\varepsilon \Bigl(
+    \eta_{\alpha\beta}\,\partial_\gamma x'^\alpha\,\partial_\delta x'^\beta
+  \Bigr) &= 0, \notag\\
+  \eta_{\alpha\beta}\,
+    \frac{\partial^2 x'^\alpha}{\partial x^\varepsilon \partial x^\gamma}\,
+    \frac{\partial x'^\beta}{\partial x^\delta}
+  +
+  \eta_{\alpha\beta}\,
+    \frac{\partial x'^\alpha}{\partial x^\gamma}\,
+    \frac{\partial^2 x'^\beta}{\partial x^\varepsilon \partial x^\delta}
+  &= 0.
+  \label{eq:lec03:diff1}
+\end{align}
+Denote the second-derivative terms by
+$A_{\varepsilon\gamma}^{(\alpha)} \equiv \partial_\varepsilon\partial_\gamma x'^\alpha$.
+Equation~\eqref{eq:lec03:diff1} reads
+\begin{equation}
+  \eta_{\alpha\beta}\,A^\alpha_{\varepsilon\gamma}\,\partial_\delta x'^\beta
+  + \eta_{\alpha\beta}\,\partial_\gamma x'^\alpha\,A^\beta_{\varepsilon\delta}
+  = 0.
+  \label{eq:lec03:diff1_short}
+\end{equation}
+Since $A^\alpha_{\varepsilon\gamma} = A^\alpha_{\gamma\varepsilon}$ (partial
+derivatives commute), this equation is symmetric under
+$\varepsilon\leftrightarrow\gamma$.  Write two further permuted copies
+of the same equation:
+\begin{align}
+  (\text{original, indices }\varepsilon,\gamma,\delta):\quad &
+  \eta_{\alpha\beta}\,A^\alpha_{\varepsilon\gamma}\,\partial_\delta x'^\beta
+  + \eta_{\alpha\beta}\,\partial_\gamma x'^\alpha\,A^\beta_{\varepsilon\delta}
+  = 0, \label{eq:lec03:e1}\\
+  (\text{swap }\gamma\leftrightarrow\varepsilon):\quad &
+  \eta_{\alpha\beta}\,A^\alpha_{\gamma\varepsilon}\,\partial_\delta x'^\beta
+  + \eta_{\alpha\beta}\,\partial_\varepsilon x'^\alpha\,A^\beta_{\gamma\delta}
+  = 0, \label{eq:lec03:e2}\\
+  (\text{swap }\delta\leftrightarrow\varepsilon):\quad &
+  \eta_{\alpha\beta}\,A^\alpha_{\delta\varepsilon}\,\partial_\gamma x'^\beta
+  + \eta_{\alpha\beta}\,\partial_\varepsilon x'^\alpha\,A^\beta_{\delta\gamma}
+  = 0. \label{eq:lec03:e3}
+\end{align}
+Using $A^\alpha_{\varepsilon\gamma} = A^\alpha_{\gamma\varepsilon}$, add
+Eq.~\eqref{eq:lec03:e1} and Eq.~\eqref{eq:lec03:e2} and subtract
+Eq.~\eqref{eq:lec03:e3}:
+\begin{equation}
+  2\,\eta_{\alpha\beta}\,A^\alpha_{\varepsilon\gamma}\,
+  \partial_\delta x'^\beta = 0.
+  \label{eq:lec03:diff_result}
+\end{equation}
+The Jacobian matrix $\partial_\delta x'^\beta$ is invertible (the
+transformation is assumed bijective, so its Jacobian is non-singular).
+Multiplying both sides by the inverse Jacobian and using
+$\eta_{\alpha\beta}$ being non-degenerate:
+\begin{equation}
+  A^\alpha_{\varepsilon\gamma} =
+  \frac{\partial^2 x'^\alpha}{\partial x^\varepsilon\,\partial x^\gamma}
+  = 0
+  \qquad\forall\;\alpha,\varepsilon,\gamma.
+  \label{eq:lec03:second_deriv_zero}
+\end{equation}
+All second (and hence all higher) partial derivatives of $x'^\alpha$
+vanish.  A smooth function with vanishing second derivative is
+\emph{at most linear} (first-order polynomial) in its arguments.
+
+%% ─── PART IV: General linear form ────────────────────────────────
+\subsubsection*{Step 4 — Most general form of the transformation}
+
+The most general affine map consistent with
+Eq.~\eqref{eq:lec03:second_deriv_zero} is
+\begin{equation}
+  x'^\alpha = \Lambda^\alpha{}_\beta\,x^\beta + a^\alpha,
+  \label{eq:lec03:affine}
+\end{equation}
+where $\Lambda^\alpha{}_\beta$ is a constant invertible $4\times 4$
+matrix (the \emph{Lorentz matrix}) and $a^\alpha$ is a constant
+four-vector (a \emph{spacetime translation}).
+
+\paragraph{Physical meaning of $a^\alpha$.}
+The constant $a^\alpha$ encodes the offset between the coordinate
+origins of frames $K$ and $K'$.  By convention one synchronises the
+two frames so that their origins coincide at $t=0$, i.e.\
+$x'^\alpha=0$ when $x^\alpha=0$, which forces $a^\alpha = 0$.  This
+is the standard choice; the general case with $a^\alpha\neq 0$
+describes a spacetime translation (Poincaré transformation).
+
+\paragraph{Setting $a^\alpha = 0$.}
+With this convention,
+\begin{equation}
+  x'^\alpha = \Lambda^\alpha{}_\beta\,x^\beta,
+  \label{eq:lec03:lorentz_map}
+\end{equation}
+and the Jacobian reduces to the constant matrix $\Lambda$ itself:
+$\partial x'^\alpha/\partial x^\gamma = \Lambda^\alpha{}_\gamma$.
+
+%% ─── PART V: Lorentz group defining relation ─────────────────────
+\subsubsection*{Step 5 — The defining relation of the Lorentz group}
+
+Substituting $\partial x'^\alpha/\partial x^\gamma = \Lambda^\alpha{}_\gamma$
+into the fundamental identity~\eqref{eq:lec03:star}:
+\begin{equation}
+  \eta_{\alpha\beta}\,\Lambda^\alpha{}_\gamma\,\Lambda^\beta{}_\delta
+  = \eta_{\gamma\delta}.
+  \label{eq:lec03:lorentz_def_index}
+\end{equation}
+In matrix notation (with $\Lambda^T$ denoting the transpose of
+$\Lambda$):
+\begin{equation}
+  \boxed{\Lambda^T \eta\,\Lambda = \eta,}
+  \label{eq:lec03:lorentz_def_matrix}
+\end{equation}
+where $\eta = \operatorname{diag}(+1,-1,-1,-1)$.  This is the
+relativistic analogue of the orthogonality condition
+$R^T \mathbf{1}\,R = \mathbf{1}$ (i.e.\ $R^T R = \mathbf{1}$) for
+Euclidean rotations $R\in O(3)$.
+
+The set of all $4\times 4$ real matrices satisfying
+Eq.~\eqref{eq:lec03:lorentz_def_matrix} is called the
+\emph{Lorentz group} $O(3,1)$.  Closure under matrix multiplication,
+existence of an identity ($\Lambda = \mathbf{1}$), and existence of
+inverses all follow from Eq.~\eqref{eq:lec03:lorentz_def_matrix}.
+
+\begin{figure}[h]
+  \centering
+  \begin{tikzpicture}[scale=0.95, >=Latex]
+    \draw[->] (-0.2,0) -- (4.6,0) node[right] {$x$};
+    \draw[->] (0,-0.2) -- (0,4.6) node[above] {$ct$};
+    \draw[->, thick, blue] (0,0) -- (1.4,3.2) node[above right] {$ct'$};
+    \draw[->, thick, blue] (0,0) -- (3.2,1.4) node[below right] {$x'$};
+    \draw[dashed] (-0.1,-0.1) -- (4.3,4.3);
+    \draw[dashed] (-0.1,0.1) -- (4.3,-4.3);
+    \node[align=left] at (3.2,4.0) {$x=\pm ct$\\null directions};
+  \end{tikzpicture}
+  \caption{A $1+1$-dimensional Lorentz boost mixes the $ct$ and $x$
+  axes while preserving the null lines $x=\pm ct$, which encode the
+  invariant interval structure.}
+  \label{fig:lec03:boosted-axes}
+\end{figure}
+
+%% ─── PART VI: Consequences of * ──────────────────────────────────
+\subsubsection*{Step 6 — Determinant and time-orientation constraints}
+
+Taking the determinant of both sides of
+Eq.~\eqref{eq:lec03:lorentz_def_matrix}:
+\begin{equation}
+  (\det\Lambda)^2\det\eta = \det\eta
+  \;\Rightarrow\;
+  (\det\Lambda)^2 = 1
+  \;\Rightarrow\;
+  \det\Lambda = \pm 1.
+  \label{eq:lec03:det}
+\end{equation}
+Setting $\gamma=\delta=0$ in Eq.~\eqref{eq:lec03:lorentz_def_index}
+and using $\eta_{00}=+1$, $\eta_{ii}=-1$:
+\begin{equation}
+  (\Lambda^0{}_0)^2 - \sum_{i=1}^{3}(\Lambda^i{}_0)^2 = 1,
+  \label{eq:lec03:00_condition}
+\end{equation}
+so $(\Lambda^0{}_0)^2 \ge 1$, giving $\Lambda^0{}_0 \ge +1$ or
+$\Lambda^0{}_0 \le -1$.
+
+These two discrete conditions ($\det\Lambda=\pm 1$,
+$\Lambda^0{}_0 \gtrless\pm 1$) divide $O(3,1)$ into four disconnected
+components.  The physically realised component — continuously connected
+to the identity transformation — satisfies
+\begin{equation}
+  \det\Lambda = +1 \qquad\text{and}\qquad \Lambda^0{}_0 \ge +1.
+  \label{eq:lec03:proper_orthochronous}
+\end{equation}
+This subgroup is called the \emph{proper orthochronous Lorentz group}
+$SO^+(3,1)$ (also written $L^\uparrow_+$).
+
+\paragraph{Excluded transformations.}
+\begin{itemize}
+  \item \textbf{Time reversal} ($T$): $\Lambda^0{}_0 = -1$,
+    $\det\Lambda=+1$.  Reverses the time coordinate; physically
+    possible but not continuously connected to the identity.
+  \item \textbf{Spatial parity} ($P$): flips all three spatial
+    coordinates; $\det\Lambda = -1$, $\Lambda^0{}_0 = +1$.  Equivalent
+    to a rotation by $\pi$ about a spatial axis combined with a single
+    reflection; has $\det\Lambda=-1$.
+  \item \textbf{Combined $PT$}: $\det\Lambda = -1$,
+    $\Lambda^0{}_0 = -1$.
+\end{itemize}
+
+\begin{remark}
+A reflection of only two spatial axes (e.g.\ $x\to -x$, $y\to -y$,
+$z\to z$) is equivalent to a rotation by $180^\circ$ about the $z$-axis
+and therefore has $\det\Lambda = +1$; it belongs to $SO^+(3,1)$ and is
+\emph{not} a parity inversion.
+\end{remark}
+
+%% ─── PART VII: Poincaré group ────────────────────────────────────
+\subsubsection*{Step 7 — The Poincaré group}
+
+The full set of symmetries of flat spacetime that preserve the interval
+is the \emph{Poincaré group} (inhomogeneous Lorentz group), whose
+elements are pairs $(\Lambda, a)$ with multiplication law
+\begin{equation}
+  (\Lambda_2,a_2)\circ(\Lambda_1,a_1)
+  = (\Lambda_2\Lambda_1,\; \Lambda_2 a_1 + a_2).
+  \label{eq:lec03:poincare_mult}
+\end{equation}
+The Poincaré group has 10 generators: 6 (from $O(3,1)$: 3 boosts +
+3 rotations) $+$ 4 (spacetime translations $a^\alpha$).
+
+For the purpose of deriving the explicit form of $\Lambda$ (next
+lecture), one restricts to the homogeneous case $a=0$.
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Examples}
+
+\ex{Spatial rotations are Lorentz transformations}{A spatial rotation $R\in SO(3)$ embedded in $4\times 4$ form as
+\[
+  \Lambda = \begin{pmatrix} 1 & \mathbf{0}^T \\ \mathbf{0} & R \end{pmatrix}
+\]
+satisfies Eq.~\eqref{eq:lec03:lorentz_def_matrix} because $R^T R = \mathbf{1}$
+and the $(0,0)$ block is unaffected.  Moreover $\det\Lambda = \det R = +1$
+and $\Lambda^0{}_0 = 1 \ge +1$, so rotations belong to $SO^+(3,1)$.}
+
+\ex{Anti-symmetric matrices cannot represent $M_{\gamma\delta}$}{An anti-symmetric $2\times 2$ matrix $M = \bigl(\begin{smallmatrix}0&1\\-1&0\end{smallmatrix}\bigr)$ satisfies
+$v^T M v = 0$ for all $v \in \mathbb{R}^2$.  This illustrates why
+the conclusion $M_{\gamma\delta}=0$ requires the additional input that
+$M$ is \emph{symmetric} — without symmetry, the quadratic form
+vanishing identically does not force $M=0$.}
+
+\ex{Spatial parity has $\det\Lambda = -1$}{For $\Lambda = \operatorname{diag}(1,-1,-1,-1)$:
+$\det\Lambda = 1\cdot(-1)^3 = -1$, so parity is \emph{not} in $SO^+(3,1)$.}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Connections}
+
+\begin{itemize}
+  \item \textbf{Lecture 02.}  The starting point is the invariance
+    $ds^2 = ds'^2$ proved (by physical argument) in Lecture~02.  The
+    present lecture extracts the full algebraic content of that one
+    scalar equation.
+
+  \item \textbf{Euclidean analogy.}  The derivation is formally
+    identical to showing that distance-preserving maps in $\mathbb{R}^3$
+    are affine with an orthogonal linear part ($R^T R = \mathbf{1}$).
+    Replacing $\delta_{ij}$ by $\eta_{\mu\nu}$ promotes $O(3)$ to
+    $O(3,1)$.
+
+  \item \textbf{Jacobi matrix / Jacobian.}  The matrix
+    $\partial x'^\alpha/\partial x^\gamma$ is the relativistic Jacobian.
+    After proving linearity, it collapses to the constant matrix
+    $\Lambda^\alpha{}_\gamma$.  This connection to Jacobians will reappear
+    when transforming tensor components and when changing integration
+    measures.
+
+  \item \textbf{Lie group structure.}  $SO^+(3,1)$ is a Lie group;
+    every element can be reached from the identity by continuous
+    parameter deformation.  The argument in Step~6 — that
+    $\det\Lambda$ is a continuous function, so its value cannot jump
+    between $+1$ and $-1$ along a continuous path — is a standard
+    topological argument in Lie group theory.
+
+  \item \textbf{Next lecture.}  With the structure
+    $x'^\alpha = \Lambda^\alpha{}_\beta\,x^\beta$ established, one can
+    parametrise $\Lambda$ explicitly by boost velocity and rotation
+    angles, yielding the textbook Lorentz transformation formulas.
+
+  \item \textbf{Quantum Field Theory.}  The representation theory of
+    $SO^+(3,1)$ (finite-dimensional, non-unitary representations plus
+    the infinite-dimensional unitary representations) determines the
+    particle content of relativistic quantum field theories.
+\end{itemize}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{To Remember}
+
+\begin{itemize}
+  \item The four-coordinate notation $x^\alpha = (ct,x,y,z)$ makes
+    all components carry dimensions of length and allows the interval to
+    be written $ds^2 = \eta_{\alpha\beta}\,dx^\alpha\,dx^\beta$.
+
+  \item The metric $\eta_{\alpha\beta} = \operatorname{diag}(+1,-1,-1,-1)$
+    encodes the Minkowski indefinite inner product.  Unlike the Euclidean
+    metric $\delta_{ij}$, it is \emph{not} positive definite.
+
+  \item Any smooth invertible transformation preserving $ds^2$ must
+    satisfy the fundamental identity~\eqref{eq:lec03:star}.
+    Differentiating it once shows all second derivatives of the
+    transformation vanish; hence the transformation is \emph{linear}
+    (plus a possible constant translation).
+
+  \item The constant linear part $\Lambda^\alpha{}_\beta$
+    obeys $\Lambda^T\eta\Lambda = \eta$.  The set of such matrices is
+    the Lorentz group $O(3,1)$.
+
+  \item Physical transformations (continuously connected to the
+    identity) form the proper orthochronous subgroup $SO^+(3,1)$:
+    $\det\Lambda = +1$, $\Lambda^0{}_0 \ge +1$.  Reflections (parity,
+    time reversal) lie in other disconnected components.
+
+  \item Spatial rotations are a subgroup of $SO^+(3,1)$; they act
+    trivially on $x^0 = ct$ and satisfy $R^T R = \mathbf{1}$ in the
+    spatial block.
+
+  \item A general inertial-frame transformation is a \emph{Poincaré
+    transformation}: $x'^\alpha = \Lambda^\alpha{}_\beta\,x^\beta + a^\alpha$,
+    with $(\Lambda,a)$ parametrised by 10 real numbers.
+\end{itemize}
+
+%%──────────────────────────────────────────────────────────────────

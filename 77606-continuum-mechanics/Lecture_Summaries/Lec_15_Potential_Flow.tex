@@ -1,0 +1,494 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\section{Lecture 15 -- Potential Flow}\label{sec:lec15}
+\begin{center}
+  \textbf{Date:} May 27, 2026
+\end{center}
+
+\subsection*{Overview}
+With Euler's equation and the continuity equation in hand, we have a closed system for ideal flow, but the equations are nonlinear and we have not yet exhibited concrete flow fields. This lecture introduces a powerful simplifying assumption — \emph{irrotational flow} (vorticity $\bvec{\omega}=\bvec{0}$ everywhere) — that reduces the dynamics to a single scalar potential $\phi$. Layering on incompressibility collapses the entire problem onto Laplace's equation $\lapl\phi=0$, which we already know how to solve from electrostatics. The lecture closes with three worked examples: a point source, a source near a wall (image method), and a time-dependent flow from a syringe.
+
+\medskip\noindent\textbf{Topics:}
+\begin{enumerate}
+  \item Motivation from Kelvin: when is $\bvec{\omega}=\bvec{0}$?
+  \item The velocity potential $\phi$, its dimensions, and equipotential surfaces
+  \item Bernoulli-like equation from Euler's equation
+  \item Incompressible potential flow $\Rightarrow$ Laplace's equation
+  \item Boundary conditions: rigid wall and sources/sinks
+  \item Solution methods (numerical, symmetry, Fourier, Green functions, images)
+  \item Example 1: point source in 3D
+  \item Example 2: point source near a rigid wall (image method, stagnation point)
+  \item Example 3: time-dependent incompressible flow in a syringe
+\end{enumerate}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Irrotational Flow: Motivation and Definition}\label{sec:lec15:irrot}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Conceptual Background}
+Kelvin's theorem (Lec~14) tells us that an ideal barotropic fluid cannot \emph{generate} vorticity: $D\Gamma/Dt=0$ along any material curve. In many natural setups (uniform flow at infinity, a body moving through fluid at rest) the vorticity is zero in the asymptotic region. Kelvin then guarantees it remains zero everywhere the fluid eventually visits. This makes \emph{irrotational flow} a physically realistic regime, not merely a mathematical convenience.
+
+\dfn[irrotational]{Irrotational (Potential) Flow}{%
+  A flow is \emph{irrotational} if
+  \begin{equation}
+    \bvec{\omega} \equiv \curl\vel = \bvec{0} \quad \text{everywhere in the fluid.}
+    \label{eq:lec15_irrot}
+  \end{equation}
+}
+\textit{Significance:} A uniform stream at infinity has $\curl\vel=\bvec{0}$. Combined with Kelvin's theorem, this is automatically inherited throughout the flow for an ideal fluid -- so flows past bodies in an otherwise undisturbed stream are irrotational.
+
+\subsubsection{Velocity Potential}
+
+Because $\curl\vel = \bvec{0}$, the velocity field is a gradient:
+
+\dfn[vel-potential]{Velocity Potential}{%
+  In an irrotational flow there exists a scalar field $\phi(\curcoord,t)$, called the \emph{velocity potential}, such that
+  \begin{equation}
+    \boxed{\vel = \grad\phi.}
+    \label{eq:lec15_vel_pot}
+  \end{equation}
+  (Note the $+$ sign; in mechanics one writes $\bvec{F}=-\grad U$, but here the convention is opposite.)
+}
+\textit{Significance:} A vector field with $3$ components has been replaced by a single scalar $\phi$ -- this is the entire payoff of the irrotational assumption. The Helmholtz decomposition (Lec~14) of $\vel=\vel_\parallel+\vel_\perp$ has collapsed onto its longitudinal piece, with $\vel_\perp=\bvec{0}$.
+
+\subsubsection{Dimensions of $\phi$}
+
+From $\vel=\grad\phi$:
+\begin{equation}
+  [\phi] = [\vel]\cdot[\text{length}] = \frac{L^2}{T}.
+  \label{eq:lec15_phi_dim}
+\end{equation}
+This is \emph{not} the dimension of a mechanical potential energy. It is the dimension of \textbf{angular momentum per unit mass}, or equivalently, of \textbf{action per unit mass}. In Hamilton--Jacobi theory the action $S$ satisfies $p=\partial S/\partial x$, exactly mirroring $v=\partial\phi/\partial x$. Thus $\phi$ is closer in spirit to the Hamilton--Jacobi action than to a force-potential.
+
+\nt{The name ``potential'' is appropriate in the sense that $\phi$ contains the potential to recover the full velocity field. But conceptually $\phi$ behaves like an action density, not a potential energy. Kol attributes the formulation to Euler (1752).}
+
+\subsubsection{Equipotential Surfaces}
+
+Since $\vel=\grad\phi$ and the gradient is perpendicular to level sets, \emph{surfaces of constant $\phi$ are perpendicular to the flow}:
+\begin{equation}
+  \vel \perp \{\phi=\mathrm{const}\}.
+  \label{eq:lec15_phi_perp}
+\end{equation}
+This generalises the familiar electrostatics statement that $\bvec{E}$-lines are perpendicular to equipotentials.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Bernoulli-Like Equation}\label{sec:lec15:bernoulli_like}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Mathematical Setup}
+We now translate Euler's equation into a single scalar equation for $\phi$. The key tool is an algebraic identity that rewrites the nonlinear convective term $(\vel\cdot\grad)\vel$ in a form well-suited to potential flow.
+
+\subsubsection{Vector Identity for the Convective Term}
+
+\lem[conv-id]{Convective-Term Identity}{%
+  For any smooth vector field $\vel$,
+  \begin{equation}
+    \boxed{(\vel\cdot\grad)\vel = \grad\!\left(\tfrac{1}{2}v^2\right) - \vel\times\bvec{\omega},}
+    \label{eq:lec15_conv_id}
+  \end{equation}
+  where $\bvec{\omega}=\curl\vel$.
+}
+\begin{proof}
+In index notation,
+\[
+  v_j\partial_j v_i = v_j(\partial_j v_i - \partial_i v_j) + v_j\partial_i v_j
+  = -\epsilon_{ijk}v_j\omega_k + \partial_i(\tfrac{1}{2}v^2),
+\]
+using $\epsilon_{ijk}\omega_k=\partial_i v_j-\partial_j v_i$ (curl in components) and $v_j\partial_i v_j=\partial_i(\tfrac{1}{2}v_j v_j)$.
+\end{proof}
+
+\subsubsection{Euler's Equation in Potential Form}
+
+Recall Euler's equation for an ideal fluid in a conservative external field $\bvec{g}=-\grad\Phi_g$:
+\begin{equation}
+  \pdv{\vel}{t} + (\vel\cdot\grad)\vel = -\frac{1}{\rho}\grad p - \grad\Phi_g.
+  \label{eq:lec15_euler}
+\end{equation}
+For a barotropic fluid, $\tfrac{1}{\rho}\grad p = \grad h_{\rm th}$, where $h_{\rm th}=\int dp/\rho$ is the specific enthalpy (per unit mass). Using Lemma~\ref{th:conv-id} and dropping the $\vel\times\bvec{\omega}$ term (irrotational $\Rightarrow \bvec{\omega}=\bvec{0}$):
+\begin{equation}
+  \pdv{\vel}{t} + \grad\!\left(\tfrac{1}{2}v^2\right)
+  = -\grad h_{\rm th} - \grad\Phi_g.
+  \label{eq:lec15_euler_pot}
+\end{equation}
+Substitute $\vel=\grad\phi$, so $\partial_t\vel = \grad(\partial_t\phi)$:
+\begin{equation}
+  \grad\!\left[\pdv{\phi}{t} + \tfrac{1}{2}v^2 + h_{\rm th} + \Phi_g\right] = \bvec{0}.
+  \label{eq:lec15_grad_zero}
+\end{equation}
+A function whose gradient vanishes everywhere is independent of space. We absorb that arbitrary time-function into $\phi$ (which is defined only up to such a function, since adding $f(t)$ to $\phi$ does not change $\vel$):
+
+\thm[bernoulli-like]{Bernoulli-Like Equation for Potential Flow}{%
+  In an irrotational, barotropic, ideal flow in a conservative body force,
+  \begin{equation}
+    \boxed{\pdv{\phi}{t} + \tfrac{1}{2}v^2 + h_{\rm th} + \Phi_g = f(t),}
+    \label{eq:lec15_bernoulli_like}
+  \end{equation}
+  where $f(t)$ is an arbitrary function of time alone.
+}
+\textit{Significance:} Euler's vector equation has been integrated to a single scalar relation. The novel term, absent in ordinary Bernoulli, is the unsteady contribution $\partial_t\phi$. In steady flow ($\partial_t\phi=0$) this is \emph{stronger} than Bernoulli: the constant holds throughout the entire fluid, not merely along each streamline.
+
+\nt{Pay attention: $\Phi_g$ is the gravitational potential (capital), distinct from the velocity potential $\phi$ (small). In this chapter $\phi$ is reserved for the velocity potential, so we will keep using capital $\Phi_g$ for gravity.}
+
+\subsubsection{Summary of Equations for Potential Flow}
+
+The complete system of three scalar equations for three unknowns $(\phi,\rho,p)$:
+\begin{align}
+  &\pdv{\phi}{t} + \tfrac{1}{2}|\grad\phi|^2 + h_{\rm th}(\rho) + \Phi_g = f(t), \label{eq:lec15_sys_bern}\\
+  &\pdv{\rho}{t} + \divg(\rho\,\grad\phi) = 0, \label{eq:lec15_sys_cont}\\
+  &p = p(\rho)\quad\text{(equation of state)}. \label{eq:lec15_sys_eos}
+\end{align}
+This is already a major reduction: the vector unknown $\vel$ has been traded for a scalar $\phi$. One further assumption simplifies dramatically.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Incompressible Potential Flow}\label{sec:lec15:incompressible}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Mathematical Setup}
+Take $\rho=\mathrm{const}$ in addition to irrotational. The equation of state becomes trivial, the continuity equation collapses to $\divg\vel=0$, and Bernoulli-like decouples from the field equation.
+
+\subsubsection{Laplace's Equation}
+
+With $\rho=\mathrm{const}$, the continuity equation reduces to
+\begin{equation}
+  \divg\vel = 0 \;\Longrightarrow\; \divg(\grad\phi)=0,
+  \label{eq:lec15_cont_inc}
+\end{equation}
+which is
+
+\thm[laplace]{Laplace's Equation for Incompressible Potential Flow}{%
+  \begin{equation}
+    \boxed{\lapl\phi = 0.}
+    \label{eq:lec15_laplace}
+  \end{equation}
+}
+\textit{Significance:} The full nonlinear problem of an ideal incompressible irrotational flow has collapsed onto Laplace's equation -- the very same equation governing electrostatic potentials in source-free regions. Existence, uniqueness, and a vast library of solutions are inherited from electrostatics. Crucially, the equation is \emph{linear}, so \textbf{superposition holds}: any linear combination of solutions is itself a solution.
+
+\subsubsection{Decoupling and the Role of Pressure}
+
+Notice the structural change. In \eqref{eq:lec15_sys_bern}--\eqref{eq:lec15_sys_cont} the unknowns $\phi$ and $\rho$ were coupled. Now $\rho$ is a constant and \eqref{eq:lec15_laplace} involves only $\phi$. The pressure has been demoted to an output: once $\phi$ is known, $p$ is determined from the Bernoulli-like equation
+\begin{equation}
+  \pdv{\phi}{t} + \tfrac{1}{2}|\grad\phi|^2 + \frac{p}{\rho} + \Phi_g = f(t),
+  \label{eq:lec15_pressure_out}
+\end{equation}
+(in the incompressible case $h_{\rm th}=p/\rho$ since $\rho$ is constant). \textbf{Solve Laplace for $\phi$; then read off $p$.}
+
+\nt{This is the same role pressure plays in the Lagrangian for incompressible flow (Lec~14): it is a constraint force enforcing $\divg\vel=0$, not a thermodynamic variable.}
+
+\subsubsection{Boundary Conditions}
+
+To solve $\lapl\phi=0$ we need boundary data.
+
+\paragraph{Rigid impermeable wall.}
+The fluid cannot penetrate a solid surface, so the normal component of $\vel$ vanishes there: $v_n=0$. In terms of $\phi$,
+\begin{equation}
+  \boxed{\partial_n\phi \equiv \uvec{n}\cdot\grad\phi = 0 \quad\text{on the wall.}}
+  \label{eq:lec15_bc_wall}
+\end{equation}
+This is a \textbf{Neumann} boundary condition -- in contrast with electrostatics, where rigid conductors typically impose Dirichlet ($\phi_{\rm elec}=\mathrm{const}$).
+
+\paragraph{Source (or sink).}
+A localized source at $\curcoord_0$ injects volume into the flow at a rate $F$ (volume per unit time); a sink has $F<0$. As an equation,
+\begin{equation}
+  \lapl\phi = F\,\delta^{(3)}(\curcoord - \curcoord_0).
+  \label{eq:lec15_bc_source}
+\end{equation}
+Equivalently, one may treat the source as a boundary at a small sphere around $\curcoord_0$ with prescribed outward flux $F$. The sign $+F$ on the right (versus the $-\rho$ in electrostatics) follows from $\vel=+\grad\phi$.
+
+\subsubsection{Solution Methods}
+
+How does one actually solve $\lapl\phi=0$ with given boundary data? The truthful answer is that there is no general analytic method; the universally applicable technique is \emph{numerical}.
+
+\begin{enumerate}
+  \item \textbf{Numerical (relaxation, finite differences).} Discretise space and iterate
+  $\phi_{ijk} \to \tfrac{1}{6}(\phi_{i\pm 1,j,k}+\phi_{i,j\pm 1,k}+\phi_{i,j,k\pm 1})$.
+  \emph{Always works.} Physically, relaxation minimises the electrostatic-like energy density $\tfrac{1}{2}|\grad\phi|^2$.
+  \item \textbf{Separation of variables.} Works when the geometry has symmetry (Cartesian, spherical, cylindrical).
+  \item \textbf{Fourier methods.} For translationally-invariant geometries; a special case of separation.
+  \item \textbf{Method of images.} Replace a wall by a fictitious source whose superposed field automatically satisfies the wall boundary condition.
+  \item \textbf{Green's functions.} For arbitrary source distributions: $\phi = \int G(\curcoord,\curcoord')\rho_{\rm src}(\curcoord')\,d^3x'$; the image method is a special case.
+  \item \textbf{Superposition.} Linearity allows building complicated solutions from elementary ones (point sources, dipoles, uniform flow, vortex lines).
+\end{enumerate}
+
+\nt{Physics is the art of finding the simple limits where analytic understanding is possible. The general case is the domain of numerics; analytic techniques work only when geometry/symmetry cooperate. The set of analytically tractable problems is small but instructive.}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Example 1: Point Source in 3D}\label{sec:lec15:point_source}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+A small spherical reservoir at radius $r_f$ ejects fluid radially with volumetric flow rate $F$ into an unbounded incompressible irrotational fluid. We compute the velocity, the velocity potential, and the pressure field, and find a physically required lower bound on $r_f$.
+
+\begin{center}
+\begin{tikzpicture}[scale=1.1]
+  \shade[ball color=myblue!40] (0,0) circle (0.45);
+  \node[font=\small] at (0,0) {$r_f,\,p_0$};
+  \foreach \ang in {0,30,...,330}{
+    \draw[vvec] (\ang:0.55) -- (\ang:1.6);
+  }
+  \draw[dashed,gray] (0,0) circle (2.2);
+  \node[font=\small] at (1.85,1.55) {$p_\infty$};
+\end{tikzpicture}
+\end{center}
+
+\subsubsection{Symmetry and the Form of $\vel$}
+
+Spherical symmetry forces $\vel = v(r)\uvec{r}$ and $\phi=\phi(r)$. Mass conservation (or, equivalently, Gauss' theorem applied to a sphere of radius $r$) requires that the same volume per unit time crosses every concentric sphere:
+\begin{equation}
+  F = v(r)\cdot 4\pi r^2 \;\Longrightarrow\; v(r) = \frac{F}{4\pi r^2}.
+  \label{eq:lec15_v_source}
+\end{equation}
+
+\subsubsection{Velocity Potential}
+
+Integrating $v=d\phi/dr$:
+\begin{equation}
+  \boxed{\phi(r) = -\frac{F}{4\pi r}, \qquad \vel(\curcoord) = \frac{F}{4\pi r^2}\,\uvec{r}.}
+  \label{eq:lec15_phi_source}
+\end{equation}
+\textit{Significance:} This is structurally identical to the Coulomb potential of a point charge, but with reversed sign convention ($\vel=+\grad\phi$). For a sink, $F<0$ and the formulas hold unchanged.
+
+\subsubsection{Pressure Field}
+
+Apply the steady incompressible Bernoulli-like equation (no time dependence, $\Phi_g=0$):
+\begin{equation}
+  \frac{p(r)}{\rho} + \tfrac{1}{2}v(r)^2 = \mathrm{const}.
+  \label{eq:lec15_bern_source}
+\end{equation}
+Match at the reservoir surface where $r=r_f$, $p=p_0$, $v=F/(4\pi r_f^2)$:
+\begin{equation}
+  p(r) = p_0 + \frac{\rho}{2}\!\left[v(r_f)^2 - v(r)^2\right]
+       = p_0 + \frac{\rho F^2}{32\pi^2}\!\left[\frac{1}{r_f^4} - \frac{1}{r^4}\right].
+  \label{eq:lec15_p_source}
+\end{equation}
+At infinity $v\to 0$ and
+\begin{equation}
+  p_\infty = p_0 + \frac{\rho F^2}{32\pi^2 r_f^4}.
+  \label{eq:lec15_p_inf}
+\end{equation}
+
+\subsubsection{Minimum Source Size}
+
+Pressure is bounded below by zero (no negative absolute pressures). Demanding $p_0\ge 0$ in \eqref{eq:lec15_p_inf}:
+\begin{equation}
+  \boxed{r_f^4 \;\ge\; \frac{\rho F^2}{32\pi^2 p_\infty}.}
+  \label{eq:lec15_rf_min}
+\end{equation}
+\textit{Significance:} The source cannot be arbitrarily small. Pushing more volume through a smaller hole eventually demands negative pressures at the reservoir surface, which is unphysical (cavitation in practice). Intuitively: as $r\to r_f$, the speed $v\propto 1/r_f^2$ blows up; Bernoulli then demands the pressure $p_0$ to drop arbitrarily low.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Example 2: Point Source Near a Rigid Wall}\label{sec:lec15:source_wall}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+Place a point source at distance $d$ from an infinite rigid wall. The wall is impermeable, so streamlines must bend tangentially as they approach it. We solve by the method of images.
+
+\begin{center}
+\begin{tikzpicture}[scale=1.0]
+  \fill[gray!30] (-3,-0.4) rectangle (3,0);
+  \draw[thick] (-3,0) -- (3,0);
+  \fill[myred] (0,1.3) circle(3pt);
+  \node[font=\small,right] at (0.1,1.35) {source $F$};
+  \fill[myred!40,dashed] (0,-1.3) circle(3pt);
+  \draw[dashed] (0,-1.3) circle(3pt);
+  \node[font=\small,right] at (0.1,-1.35) {image $F$};
+  \foreach \ang in {30,60,90,120,150}{
+    \draw[vvec] (0,1.3) -- ++(\ang:0.7);
+  }
+  % Curved streamline
+  \draw[myblue,thick,->] (0,1.3) .. controls (0.7,1.0) and (1.5,0.4) .. (2.5,0.2);
+  \draw[myblue,thick,->] (0,1.3) .. controls (-0.7,1.0) and (-1.5,0.4) .. (-2.5,0.2);
+  \fill[black] (0,0) circle(2pt);
+  \node[font=\small,below] at (0,-0.1) {stagnation};
+\end{tikzpicture}
+\end{center}
+
+\subsubsection{Image Method}
+
+The wall condition $\partial_n\phi=0$ is satisfied if the flow is symmetric across the wall. Place an image source of \emph{the same sign} $F'=F$ at the mirror position:
+\begin{equation}
+  \boxed{\phi(\curcoord) = -\frac{F}{4\pi}\!\left[\frac{1}{|\curcoord - d\uvec{z}|} + \frac{1}{|\curcoord + d\uvec{z}|}\right].}
+  \label{eq:lec15_phi_image}
+\end{equation}
+\textit{Significance:} Note the sign contrast with electrostatics. For a grounded conductor in electrostatics, $\phi_{\rm elec}=0$ on the plane and one uses an image of \emph{opposite} sign. Here we want vanishing \emph{normal derivative}, which is achieved by an image of the \emph{same} sign.
+
+\subsubsection{Stagnation Point}
+
+By symmetry, fluid leaving the source straight toward the wall must, upon reaching the wall, have no tangential preference. Yet $v_n=0$ on the wall by construction, so all components of $\vel$ vanish on the symmetry axis exactly at the wall:
+
+\dfn[stagnation]{Stagnation Point}{%
+  A point in the flow where $\vel=\bvec{0}$. Here it occurs at the foot of the perpendicular from the source to the wall.
+}
+\textit{Significance:} Stagnation points are where Bernoulli sends pressure to a maximum. In the source-with-wall configuration the maximum pressure is attained at the stagnation point on the wall.
+
+\subsubsection{Equipotential Surfaces -- Qualitative Picture}
+
+\begin{itemize}
+  \item Close to the source: nearly spherical surfaces centred at the source.
+  \item Very far away: the two sources merge into a single effective source of strength $2F$, and equipotentials are again nearly spherical, centred at the wall.
+  \item In between: a one-parameter family that smoothly interpolates -- closed spheres around the source, transitioning through a critical surface that touches the wall, and finally half-spheres terminating on the wall.
+\end{itemize}
+
+\subsubsection{Pressure Maximum from Bernoulli}
+
+In steady incompressible flow with no gravity,
+\begin{equation}
+  p(\curcoord) = \mathrm{const} - \tfrac{1}{2}\rho\,v(\curcoord)^2.
+  \label{eq:lec15_p_bern2}
+\end{equation}
+Maximum pressure occurs at $v=0$, i.e.\ at the stagnation point:
+\begin{equation}
+  p_{\max} = p_{\rm stagnation}.
+  \label{eq:lec15_pmax_stag}
+\end{equation}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Local Flow Near a Stagnation Point}\label{sec:lec15:stagnation_local}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Mathematical Setup}
+Independently of any specific source distribution, we can characterise \emph{universal} features of potential flow near any stagnation point $\curcoord_0$, where $\vel(\curcoord_0)=\bvec{0}$. Place the origin at $\curcoord_0$ and Taylor-expand $\phi$.
+
+\subsubsection{Taylor Expansion of $\phi$}
+
+Write
+\begin{equation}
+  \phi(\curcoord) = \phi(0) + x_i\,\partial_i\phi\big|_0 + \tfrac{1}{2}x_i x_j\,\partial_i\partial_j\phi\big|_0 + \mathcal{O}(x^3).
+  \label{eq:lec15_taylor}
+\end{equation}
+The constant $\phi(0)$ is irrelevant (gauge). The linear term has coefficient $\grad\phi|_0=\vel(\curcoord_0)=\bvec{0}$ at a stagnation point. Hence near $\curcoord_0$,
+\begin{equation}
+  \phi(\curcoord) = \tfrac{1}{2}\,B_{ij}\,x_i x_j + \mathcal{O}(x^3),
+  \qquad B_{ij}=\partial_i\partial_j\phi\big|_0.
+  \label{eq:lec15_phi_quad}
+\end{equation}
+
+\subsubsection{Constraints on the Quadratic Form}
+
+\paragraph{Laplace's equation:} $\lapl\phi=0\Rightarrow \mathrm{tr}\,B = B_{11}+B_{22}+B_{33}=0$.
+
+\paragraph{Rigid wall (if present):} If the stagnation point sits on a rigid wall $z=0$ with normal $\uvec{z}$, then $v_z=\partial_z\phi=0$ on the wall (not just at the origin). This forces $B_{13}=B_{23}=0$ -- no off-diagonal mixing of $z$ with the wall-tangential directions.
+
+After diagonalising the wall-tangential block, the canonical form near a wall-stagnation point in 2D is
+\begin{equation}
+  \boxed{\phi(x,z) = \tfrac{1}{2}A\,(x^2 - z^2),}
+  \label{eq:lec15_stag_canonical}
+\end{equation}
+yielding $\vel = (Ax,\,-Az)$ -- a hyperbolic flow with the wall as a separatrix.
+
+\textit{Significance:} The local structure of potential flow near any stagnation point on a wall is universal -- a quadratic potential, equivalently a hyperbolic velocity field. Streamlines are hyperbolae $xz=\mathrm{const}$.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Example 3: Time-Dependent Syringe}\label{sec:lec15:syringe}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+A vertical syringe of cross-section $A$ contains fluid up to height $h(t)$. A piston applies constant overpressure $p_1$ on top; the bottom opens to atmospheric pressure $p_a$ and gravity $g$ pulls the fluid down. We want $h(t)$. This example uses incompressible time-dependent potential flow, so the $\partial_t\phi$ term in the Bernoulli-like equation contributes.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.9]
+  \draw[thick] (-0.6,3.5) -- (-0.6,0.4) -- (-0.15,0.0) -- (-0.15,-0.6);
+  \draw[thick] (0.6,3.5) -- (0.6,0.4) -- (0.15,0.0) -- (0.15,-0.6);
+  \fill[myblue!30] (-0.6,2.0) rectangle (0.6,3.4);
+  \fill[myblue!30] (-0.15,0) rectangle (0.15,-0.6);
+  \draw[force] (-0.5,3.6) -- (-0.5,3.1);
+  \draw[force] (0,3.6) -- (0,3.1);
+  \draw[force] (0.5,3.6) -- (0.5,3.1);
+  \node[font=\small] at (1.4,3.3) {$p_1$};
+  \node[font=\small] at (1.2,2.7) {$h(t)$};
+  \draw[<->] (0.85,2.0)--(0.85,3.4);
+  \node[font=\small] at (1.4,-0.4) {$p_a$};
+  \draw[->,thick] (0,-0.7)--(0,-1.2);
+  \node[font=\small,right] at (0,-1.0) {$g$};
+  \draw[->] (-1.4,0) -- (-1.4,1.0) node[left,font=\small] {$z$};
+\end{tikzpicture}
+\end{center}
+
+\subsubsection{Continuity: $v$ Depends Only on Time}
+
+In a uniform vertical column, $\vel = -v(z,t)\uvec{z}$ (downwards). Incompressibility gives
+\begin{equation}
+  \divg\vel = -\pdv{v}{z} = 0 \;\Longrightarrow\; v=v(t)\text{ only.}
+  \label{eq:lec15_v_t}
+\end{equation}
+Physically: by mass conservation the column moves as a rigid slab; what enters at the top must leave at the bottom at the same rate.
+
+\subsubsection{Velocity Potential}
+
+From $\vel = -v(t)\uvec{z}$ and $\vel=\grad\phi$:
+\begin{equation}
+  \phi(z,t) = -v(t)\,z.
+  \label{eq:lec15_phi_syringe}
+\end{equation}
+
+\subsubsection{Bernoulli-Like at Top and Bottom}
+
+The Bernoulli-like equation reads, in incompressible form,
+\begin{equation}
+  \pdv{\phi}{t} + \tfrac{1}{2}v^2 + \frac{p}{\rho} + g\,z = f(t).
+  \label{eq:lec15_bern_syringe}
+\end{equation}
+Evaluate at:
+
+\paragraph{Top of the column ($z=h(t)$, $p=p_1$):}
+\[
+  -\dot v(t)\,h + \tfrac{1}{2}v^2 + \frac{p_1}{\rho} + g h = f(t).
+\]
+
+\paragraph{Bottom of the syringe ($z=0$, $p=p_a$):}
+\[
+  0 + \tfrac{1}{2}v^2 + \frac{p_a}{\rho} = f(t).
+\]
+
+Subtracting:
+\begin{equation}
+  -\dot v(t)\,h + g h + \frac{p_1 - p_a}{\rho} = 0
+  \;\Longrightarrow\;
+  \dot v(t) = g + \frac{p_1 - p_a}{\rho\,h(t)}.
+  \label{eq:lec15_vdot}
+\end{equation}
+
+\subsubsection{Equation of Motion for $h(t)$}
+
+Now $v(t) = -\dot h(t)$ (the column descends), so $\dot v = -\ddot h$. Substituting:
+\begin{equation}
+  \boxed{\ddot h(t) = -\,g - \frac{p_1 - p_a}{\rho\,h(t)}.}
+  \label{eq:lec15_eom_h}
+\end{equation}
+This is a second-order ODE for $h(t)$, with initial conditions $h(0)=h_0$, $\dot h(0)=0$.
+
+\subsubsection{Effective-Potential Interpretation}
+
+Equation~\eqref{eq:lec15_eom_h} has the form $\ddot h = -\partial_h V_{\rm eff}(h)$ with
+\begin{equation}
+  V_{\rm eff}(h) = g\,h + \frac{p_1 - p_a}{\rho}\,\ln h.
+  \label{eq:lec15_Veff}
+\end{equation}
+The motion of the fluid level $h(t)$ is identical to that of a unit-mass ``particle'' in $V_{\rm eff}$. Both terms pull the particle toward $h=0$: gravity contributes the linear part, the overpressure contributes the logarithmic part. The fluid level accelerates as it drops, and the syringe empties in finite time.
+
+\textit{Significance:} A time-dependent fluid problem with internal volume conservation reduces to one-dimensional Lagrangian mechanics. This is the cleanest example of how the $\partial_t\phi$ term in the Bernoulli-like equation produces inertial-like dynamics for a geometric variable (here, the fluid level).
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection*{Summary}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\begin{itemize}
+  \item \textbf{Potential flow}: $\bvec{\omega}=\bvec{0}\Rightarrow\vel=\grad\phi$; $[\phi]=L^2/T$ (action per unit mass).
+  \item \textbf{Bernoulli-like}: $\partial_t\phi + \tfrac{1}{2}v^2 + h_{\rm th} + \Phi_g = f(t)$; equals to a constant everywhere (not just on streamlines).
+  \item \textbf{Incompressible $+$ irrotational} $\Rightarrow$ $\lapl\phi=0$ -- linear, Laplace, superposition.
+  \item \textbf{BCs}: rigid wall $\partial_n\phi=0$ (Neumann); source $\lapl\phi=F\delta^{(3)}$.
+  \item \textbf{Solution methods}: numerical relaxation, separation, Fourier, images, Green functions, superposition.
+  \item \textbf{Point source}: $\phi=-F/(4\pi r)$, $v=F/(4\pi r^2)$; minimum reservoir size from $p_0\ge 0$.
+  \item \textbf{Image method (wall)}: image of \emph{same sign} satisfies Neumann.
+  \item \textbf{Stagnation point}: $\vel=\bvec{0}$, $p$ maximal; local potential is quadratic with $\mathrm{tr}\,B=0$.
+  \item \textbf{Syringe}: $\phi=-v(t)z$, EOM $\ddot h = -g -(p_1-p_a)/(\rho h)$, reducible to a particle in an effective potential.
+\end{itemize}
+
+\subsection*{Further Reading}
+\begin{itemize}
+  \item L.\,D. Landau and E.\,M. Lifshitz, \textit{Fluid Mechanics} (Vol.\ 6): \S10--11 (potential flow, irrotational flow).
+  \item D.\,J. Acheson, \textit{Elementary Fluid Dynamics}: Ch.\ 4 (potential flow, image method, time-dependent Bernoulli).
+  \item J.\,D. Jackson, \textit{Classical Electrodynamics}: Ch.\ 2 (Laplace's equation, boundary-value methods, images) -- mathematically identical machinery.
+\end{itemize}
+
+\end{document}

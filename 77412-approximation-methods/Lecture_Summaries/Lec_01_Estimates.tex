@@ -1,0 +1,346 @@
+%% ═══════════════════════════════════════════════════════════════════════════
+\section{Introduction: Order-of-Magnitude Estimation}
+%% ═══════════════════════════════════════════════════════════════════════════
+
+\subsection{Motivation}
+
+In most physics courses, the problem is already pre-packaged for you: the relevant physics is identified, the boundary conditions are given, and the main challenge is to carry out the correct mathematical procedure. Real life is completely different.
+
+In practice---whether you are designing an experiment for your PhD, evaluating whether cracks in a hospital building are dangerous, or checking if the vibrations of an approaching light-rail will disturb a precision magnetic measurement---you are given a raw situation and asked: \emph{does this matter?} You need to identify the relevant physics, estimate which effects dominate, and obtain a reliable answer without solving the full problem from first principles.
+
+This is the art of \textbf{order-of-magnitude (Fermi) estimation}: a set of reasoning principles that let a physicist quickly obtain a result accurate to within one or two orders of magnitude, which is usually enough to decide whether something is important.
+
+\begin{remark}[Enrico Fermi]
+  Fermi was famous for such problems. He would ask his students, for example: \emph{``How many piano tuners are there in Chicago?''} The point is not whimsy---it is that a physicist can estimate this reliably by decomposing the problem: city population $\to$ fraction with pianos $\to$ tuning frequency $\to$ time per tuning $\to$ number of tuners. The same decomposition principle underlies every example in this lecture.
+\end{remark}
+
+\subsection{Principle 1: Divide and Conquer}
+
+The first and most important strategy is to \textbf{decompose} a seemingly intractable problem into a product (or ratio) of simpler sub-quantities, each of which can be estimated independently.
+
+\[
+  \text{Answer} = Q_1 \times Q_2 \times Q_3 \times \cdots
+\]
+
+Each $Q_i$ may carry its own uncertainty, but because the factors multiply, dimensional analysis and unit tracking help catch algebraic errors. After estimating each factor, collect the results and read off the order of magnitude.
+
+%% ───────────────────────────────────────────────────────────────────────────
+\ex{Diaper Landfills --- Hiriya}{\label{ex:diapers}
+\textbf{Question.} How many landfills the size of the Hiriya (Park Ariel Sharon, near Tel Aviv) are filled each year by the diapers of American babies?
+
+\bigskip
+\textbf{Decomposition.}
+
+We identify four building blocks:
+\begin{enumerate}[label=\textbf{\arabic*.}]
+  \item $N_\text{baby}$: number of American babies
+  \item $D_\text{yr}$: diapers per baby per year
+  \item $V_\text{diaper}$: volume of one (used) diaper
+  \item $V_\text{H}$: volume of the Hiriya landfill
+\end{enumerate}
+
+\medskip
+\textbf{Step 1: Number of American babies.}
+
+The US population is approximately $N_\text{total} \approx 4\times10^{8}$ people. For a developed country with a life expectancy of $\sim80$ years and a roughly uniform age distribution, the fraction who are under 2 years old (the diaper-wearing period) is:
+\[
+  f_\text{baby} = \frac{2\,\text{yr}}{80\,\text{yr}} = \frac{1}{40}.
+\]
+Therefore:
+\[
+  \boxed{N_\text{baby} = N_\text{total}\times f_\text{baby} \approx 4\times10^{8}\times\frac{1}{40} = 10^{7}\ \text{babies}.}
+\]
+
+\medskip
+\textbf{Step 2: Diapers per baby per year.}
+
+A newborn uses roughly 4 diapers per day:
+\[
+  D_\text{yr} \approx 4 \ \frac{\text{diapers}}{\text{day}} \times 300\,\text{days/yr} \approx 10^{3}\ \frac{\text{diapers}}{\text{baby}\cdot\text{yr}}.
+\]
+(Using 300 instead of 365 for arithmetic convenience; the error is $\lesssim 20\%$, well within our target precision.)
+
+\medskip
+\textbf{Step 3: Volume of one diaper.}
+
+Empirically (from a standard supermarket pack): a package of 50 diapers measures roughly $50\,\text{cm}\times 20\,\text{cm}\times 10\,\text{cm}$.
+\[
+  V_\text{pack} = 50\times 20\times 10 = 10{,}000\ \text{cm}^3.
+\]
+Volume per diaper (compressed, as sold):
+\[
+  V_\text{dry} = \frac{10{,}000}{50} = 200\ \text{cm}^3\,\text{per diaper}.
+\]
+When soiled and deposited in a landfill, the diaper expands slightly but most moisture evaporates; we estimate the effective deposited volume at:
+\[
+  V_\text{diaper} \approx 300\ \text{cm}^3.
+\]
+
+\medskip
+\textbf{Step 4: Volume of the Hiriya.}
+
+The Hiriya is a roughly conical hill with base diameter $\sim 600\,\text{m}$ and height $\sim 60\,\text{m}$ (the lecturer and students debated the height; Google Earth values are around $60$~m). Treating it as a cone:
+\[
+  V_H = \frac{1}{3}\pi r^2 h \approx \frac{1}{3}\times 300^2\times 60 \approx \frac{\pi}{3}(300)^2(60).
+\]
+For a quick estimate we drop the $\pi/3 \approx 1$ factor:
+\[
+  V_H \approx (600\,\text{m})^2 \times 60\,\text{m} \times \frac{1}{3}
+       \approx 600^2 \times 60 / 3\ \text{m}^3.
+\]
+Numerically: $600^2 = 3.6\times10^5$, so $V_H \approx 3.6\times10^5\times 20 \approx 7\times10^{6}\ \text{m}^3$. To keep a round number we use:
+\[
+  \boxed{V_H \approx 2\times10^{7}\ \text{m}^3.}
+\]
+
+\medskip
+\textbf{Assembling the result.}
+
+The total diaper volume generated in the US per year is:
+\[
+  \dot{V}_\text{diapers} = N_\text{baby}\times D_\text{yr}\times V_\text{diaper}
+  = 10^7\ \text{baby}
+    \times 10^3\ \frac{\text{diapers}}{\text{baby}\cdot\text{yr}}
+    \times 300\ \frac{\text{cm}^3}{\text{diaper}}.
+\]
+Units cancel perfectly: baby $\times$ diaper / baby = diaper, diaper $\times$ cm$^3$ / diaper = cm$^3$.
+\[
+  \dot{V}_\text{diapers} = 3\times10^{12}\ \frac{\text{cm}^3}{\text{yr}}.
+\]
+Converting to m$^3$ (1 m = 100 cm, so 1 m$^3$ = $10^6$ cm$^3$):
+\[
+  \dot{V}_\text{diapers} = \frac{3\times10^{12}}{10^6}\ \frac{\text{m}^3}{\text{yr}} = 3\times10^6\ \frac{\text{m}^3}{\text{yr}}.
+\]
+
+The number of Hiriya-equivalents filled per year:
+\[
+  \boxed{n_H = \frac{\dot{V}_\text{diapers}}{V_H} = \frac{3\times10^6}{2\times10^7}\ \text{yr}^{-1} \approx 0.15\ \text{yr}^{-1},}
+\]
+i.e.\ it takes approximately $1/0.15 \approx \mathbf{6\ \text{years}}$ for American diapers to fill one Hiriya.}
+
+%% ───────────────────────────────────────────────────────────────────────────
+\subsection{Principle 2: Cross-Check via an Independent Route}
+
+A single estimate is useful; \emph{two independent estimates of the same quantity is much more powerful}. If both routes agree within an order of magnitude, you have good confidence in the answer. If they disagree by more than two orders of magnitude, you have almost certainly made a conceptual error (wrong model, wrong assumption) somewhere---and finding it teaches you something deep about the problem.
+
+\ex{Hiriya cross-check via human-waste accounting}{\label{ex:diapers_cross}
+
+Instead of tracking diaper volume directly, we can estimate the Hiriya's volume in units of \emph{person-years of garbage}.
+
+\medskip
+\textbf{Hiriya in person-years:}
+
+The Hiriya accumulated garbage from the Gush Dan region (greater Tel Aviv area) for $\sim 50$ years. The population grew from $\sim200{,}000$ to $\sim 1{,}000{,}000$ over that period; a reasonable average is $\bar{P}\approx 5\times10^{5}$ people:
+\[
+  \text{person-years in Hiriya} = \bar{P}\times t = 5\times10^5 \times 50 = 2.5\times10^7\ \text{person-yr}.
+\]
+
+\textbf{Diaper fraction of garbage:}
+
+A family of 4 produces $\sim$1 garbage bag per day. If the family has a baby using 4 diapers per day, each diaper has roughly the same volume as $\frac{1}{4}$ of a garbage bag. So diapers are $\sim\frac{4}{4\times(\text{bags per bag})}$ of the family's garbage. More carefully: 4 diapers $\approx \frac{1}{2}$ bag, total garbage $\approx 1$ bag $\Rightarrow$ diaper fraction $\approx \frac{1}{2}$. But only the fraction of the population that has a baby uses diapers. For a family of 4 with a baby present for 2 of 80 years:
+\[
+  f_\text{diap} \approx \frac{1}{2}\ (\text{diaper fraction while baby present})\times\frac{2}{80}\ (\text{fraction of family lifetime}) = \frac{1}{80} \approx 0.012.
+\]
+Alternatively: one baby-year corresponds to one out of the family's $80/4=20$ person-years where a baby is present, and diapers are $\sim\frac{1}{2}$ of the waste during that time:
+\[
+  f_\text{diap} \approx \frac{1}{2}\times\frac{1}{20} = \frac{1}{40} \approx 0.025.
+\]
+We take $f_\text{diap}\approx \frac{1}{20}$.
+
+\textbf{US population equivalent:}
+
+$N_{\rm US} = 4\times10^8$ persons. In the US, diapers accumulate at a rate of:
+\[
+  \dot{V}_\text{diapers}^{(2)} = \frac{\text{person-year of Hiriya}}{N_{\rm US}}\times f_\text{diap}^{-1}\times V_H.
+\]
+More directly: the time to fill Hiriya is:
+\[
+  \tau = \frac{\text{person-yr of Hiriya}\times f_\text{diap}}{N_{\rm US}}
+       = \frac{2.5\times10^7 \times \tfrac{1}{20}}{4\times10^8}
+       = \frac{1.25\times10^6}{4\times10^8}
+       \approx 3\times10^{-3}\ \text{yr}.
+\]
+
+\begin{remark}
+  This gives $\sim 1$ day---clearly too short! The lecturer used this discrepancy to illustrate that the diaper fraction $f_\text{diap}$ here acts in the \emph{wrong direction}: a smaller $f_\text{diap}$ means diapers constitute a smaller fraction of waste, so it takes \emph{longer}, not shorter, to fill Hiriya with diapers. Correcting the inversion:
+  \[
+    \tau_\text{corrected} = \frac{2.5\times10^7}{4\times10^8 \times f_\text{diap}}
+    = \frac{2.5\times10^7}{4\times10^8 \times \tfrac{1}{20}}
+    = \frac{2.5\times10^7}{2\times10^7} \approx 1\ \text{yr}.
+  \]
+  This crosses route 1's answer of $\sim6$ years within a factor of 6, which is excellent for a Fermi estimate. The lesson: \textbf{always track sign/direction carefully}, and the fact that the two routes agreed within a factor of 6 (not 6 orders of magnitude) means the model is self-consistent.
+\end{remark}}
+
+%% ───────────────────────────────────────────────────────────────────────────
+\ex{Meteor Impact Rate on Earth}{\label{ex:meteors}
+
+\textbf{Question.} How many meteorites hit the Earth per year?
+
+\bigskip
+\textbf{Key data.} Throughout all of recorded human history there are exactly \textbf{two} documented cases of a meteorite striking a living creature: one woman (bruised, Alabama, USA, 1954) and one dog (killed, Egypt, 1911). We can use this fact together with a model of human population growth to infer the meteorite flux.
+
+\medskip
+\textbf{Strategy.}
+
+We compute the effective \emph{total cross-section-time} exposed by humanity, $\Sigma_\text{HR}$ [m$^2\cdot$yr], and then extract the meteorite flux $\Phi$ [m$^{-2}$\,yr$^{-1}$] from:
+\[
+  \Phi \times \Sigma_\text{HR} \approx 1 \quad (\text{roughly 1 recorded strike on a human}).
+\]
+
+\medskip
+\textbf{Model for human population growth.}
+
+The human population has grown roughly exponentially. Let $N(t)$ be the population at time $t$ before the present ($t$ measured in years, increasing into the past). We write:
+\[
+  N(t) = N_0\,e^{-t/\tau},
+\]
+where $N_0 \approx 8\times10^9$ is today's population and $\tau\approx 70\,\text{yr}$ is the population doubling-time-related scale (the population roughly doubled in the last 70 years, consistent with $\tau\sim 70/\ln 2 \approx 100$ yr; we use $\tau = 70$ yr as a round number).
+
+The total person-years of history is dominated by recent centuries:
+\[
+  \text{PY} = \int_0^\infty N_0\,e^{-t/\tau}\,dt = N_0\,\tau
+           \approx 8\times10^9 \times 70 \approx 5.6\times10^{11}\ \text{person-yr}.
+\]
+
+\medskip
+\textbf{Human cross-section and total exposure.}
+
+The cross-sectional area of one person (projected onto the ground) is:
+\[
+  \sigma_1 \approx \frac{1}{2}\ \text{m}^2.
+\]
+Therefore the total human cross-section-time is:
+\[
+  \Sigma_\text{HR} = \sigma_1 \times \text{PY} \approx \frac{1}{2}\times 5.6\times10^{11}
+  \approx 2.8\times10^{11}\ \text{m}^2\cdot\text{yr}.
+\]
+
+\medskip
+\textbf{Inferred meteorite flux.}
+
+\[
+  \Phi = \frac{1\ \text{event}}{\Sigma_\text{HR}} \approx \frac{1}{2.8\times10^{11}}
+       \approx \frac{1}{3\times10^{11}}\ \text{m}^{-2}\,\text{yr}^{-1}.
+\]
+
+\medskip
+\textbf{Impacts on all of Earth.}
+
+The surface area of the Earth is:
+\[
+  A_\oplus = 4\pi R_\oplus^2, \quad R_\oplus \approx 6.4\times10^6\ \text{m}.
+\]
+\[
+  A_\oplus \approx 4\times 3 \times (6.4)^2\times10^{12} \approx 5.1\times10^{14}\ \text{m}^2.
+\]
+
+Annual number of meteorite impacts on Earth:
+\[
+  \dot{N}_\text{impacts} = \Phi\times A_\oplus
+  \approx \frac{5.1\times10^{14}}{3\times10^{11}}
+  \approx \frac{5\times10^{14}}{3\times10^{11}}
+  \approx \boxed{1{,}500\ \text{meteorites per year.}}
+\]
+
+\begin{remark}
+  Humans cover only a tiny fraction of Earth's surface ($\sim 10^{-4}$), so the flux inferred from the 1 human-strike event maps onto $\sim1{,}500$ total Earth impacts per year. This result is consistent with observational estimates. The key physical insights are:
+  \begin{enumerate}
+    \item Population growth is exponential, so the \emph{effective} person-year baseline is just $N_0\tau$---almost all of humanity's exposure has happened in modern times.
+    \item A simple exponential model for a complex historical process is nonetheless a good starting point.
+  \end{enumerate}
+\end{remark}}
+
+%% ───────────────────────────────────────────────────────────────────────────
+\ex{Is it Worth Robbing a Brink's Truck?}{\label{ex:brinks}
+
+\textbf{Question.} How much cash does a Brink's armored vehicle typically carry? Is there enough to make a heist financially worthwhile?
+
+\bigskip
+\textbf{Method 1: Weight approach.}
+
+\emph{Step 1: Value-to-weight ratio of cash.}
+
+Take 40 bills and fold them twice: the stack fits in $\sim 0.5$ cm $\times$ $5$ cm $\times$ $10$ cm:
+\[
+  V_\text{40 bills} \approx 0.5\times5\times10 = 25\ \text{cm}^3.
+\]
+A single bill therefore occupies:
+\[
+  v_\text{bill} \approx \frac{25}{40} \approx 0.6\ \text{cm}^3.
+\]
+Paper has density $\rho \approx 1\ \text{g/cm}^3$, so one bill weighs $\sim 0.6$ g. A typical banknote in Israel is \num{200} NIS $\approx \num{50}$ USD. The value-to-mass ratio:
+\[
+  \frac{\text{value}}{\text{mass}} \approx \frac{\num{200}\ \text{NIS}}{0.6\ \text{g}} \approx \num{330}\ \frac{\text{NIS}}{\text{g}} \approx \num{80}\ \frac{\text{USD}}{\text{g}}.
+\]
+
+\begin{remark}[Curious equivalence with gold]
+  Gold's current price is $\sim \$3{,}000$ per troy ounce ($\approx 30$ g), giving:
+  \[
+    \frac{\text{gold value}}{\text{mass}} \approx \frac{3000}{30} = 100\ \frac{\text{USD}}{\text{g}}.
+  \]
+  Remarkably, \textbf{cash and gold have nearly the same value per unit mass}---which means it is no more efficient to carry gold than banknotes in a heist!
+\end{remark}
+
+\emph{Step 2: Payload of the truck.}
+
+One duffel bag of cash weighs $\sim \SI{10}{kg}$. A typical Brink's run might involve a few bags:
+\[
+  \text{Cash} \approx \text{few bags} \times \SI{10}{kg/bag} \times \frac{80\ \text{USD}}{\text{g}}
+             = \text{few}\times 10\times10^3\times 80\ \text{USD}
+             = \text{few}\times \num{800000}\ \text{USD}.
+\]
+So one bag already represents $\sim \$800{,}000$.
+
+\medskip
+\textbf{Method 2: Bank-turnover approach (Equipartition argument).}
+
+\emph{A branch bank serves a neighbourhood.} Consider a city of 25,000, with 3 bank branches, so each branch has $\sim 8{,}000$ customers ($\sim 2{,}500$ households).
+
+\emph{Weekly cash withdrawal per household}: roughly \SI{1000}{NIS} $\approx \$250$ (for expenses paid in cash: groceries market, domestic help, etc.).
+
+\emph{Total cash distributed by one branch per week}:
+\[
+  C_\text{out} \approx 2{,}500\ \text{households}\times \frac{\$250}{\text{household}\cdot\text{week}}
+             = \$625{,}000\ \text{per week}.
+\]
+
+\emph{Equipartition principle:} The cash that private customers withdraw must eventually return through business deposits (shop owners, market vendors, service providers). In steady state (no net accumulation under the mattresses!) the cash-in rate equals the cash-out rate. Therefore the Brink's truck, which services the branch roughly once per week, carries $\sim \$600{,}000$ --- consistent with Method 1.
+
+\medskip
+\textbf{Conclusion.}
+
+Both methods point to \textbf{several hundred thousand dollars per Brink's run}. Whether that is ``worth it'' depends on the probability of being caught---a calculation left to the student. The deeper lesson for physics is the \textbf{equipartition / steady-state argument}: whenever two coupled flows must balance in equilibrium, each flow carries roughly the same quantity.}
+
+%% ───────────────────────────────────────────────────────────────────────────
+\subsection{Principle 3: Equipartition}
+
+The Brink's example illustrates a general physics principle that reappears throughout the course:
+
+\dfn{Equipartition of coupled quantities}{When two (or more) physical processes are coupled by exchange, and the system reaches steady state (or thermodynamic equilibrium), the relevant energy or quantity is \emph{shared roughly equally} among the coupled degrees of freedom.}
+
+\textbf{Examples from physics:}
+\begin{itemize}
+  \item \textbf{Virial theorem:} For a gravitationally or Coulomb-bound system, $\langle T \rangle = -\tfrac{1}{2}\langle U\rangle$, so $\langle T\rangle$ and $|\langle U\rangle|$ are of the same order.
+  \item \textbf{Interstellar medium (ISM):} The ISM contains magnetic fields, thermal gas, turbulent kinetic energy, and cosmic rays. Because each couples to the others (shock waves accelerate cosmic rays; cosmic rays exert pressure on magnetic fields; turbulence amplifies magnetic fields), all four energy densities are within an order of magnitude of each other: $\sim 1\,\text{eV\,cm}^{-3} \sim 10^{-12}\,\text{erg\,cm}^{-3}$.
+  \item \textbf{Cash in a bank:} Private withdrawals $\approx$ business deposits in steady state.
+\end{itemize}
+
+\subsection{Preview: The Shooting Star (to be continued)}
+
+At the end of the lecture, the following problem was introduced and will be completed in the next session:
+
+\textbf{Question.} When you see a shooting star (meteor), what is its mass?
+
+The strategy: compare the brightness of the meteor to a known source (e.g., a streetlamp at 10 km). The meteor travels at $v \sim \SI{30}{km/s}$ (of order the Earth's orbital velocity around the Sun); the kinetic energy $\tfrac{1}{2}mv^2$ is partially converted into light. Estimating what fraction becomes visible light, and matching to the observed brightness, will yield the mass.
+
+\begin{remark}
+  Speeds of order $\SI{30}{km/s}$ are natural because a typical meteoroid starts at rest relative to the Sun at some distance, falls toward Earth, and arrives approximately at the escape velocity from the Sun at Earth's orbit---which turns out to be $\sim\sqrt{2}\,v_\oplus \approx 42\,\text{km/s}$. Orbiting meteors reach Earth's frame at $|v_\oplus \pm v_\text{meteor}|$, so $\sim10$--$70$ km/s is the expected range.
+\end{remark}
+
+\subsubsection*{Summary of Principles Introduced in Lecture 1}
+
+\begin{enumerate}
+  \item \textbf{Divide and conquer}: decompose the problem into independently estimable factors and multiply them together. Track units to catch errors.
+  \item \textbf{Cross-check with an independent route}: if two very different derivations agree, the result is probably right; if they disagree by $\gg 10^2$, find the conceptual error.
+  \item \textbf{Equipartition / steady-state}: coupled processes tend to equilibrate, so the shared quantities are of the same order of magnitude.
+\end{enumerate}

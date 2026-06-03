@@ -1,0 +1,224 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage{geometry}
+\geometry{a4paper, portrait, margin=1.8cm}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage[utf8]{inputenc}
+\usepackage[skip=\medskipamount]{parskip}
+\usepackage{units}
+\usepackage{mathtools}
+\usepackage{cancel}
+\usepackage{fancyhdr}
+\usepackage{physics}
+\usepackage{graphicx}
+\usepackage{color}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{tikz}
+\usepackage{tikz-3dplot}
+\usepackage{tikz-feynman}
+\usepackage{titlesec}
+\author{Eran Rehani}
+\title{Lecture 08 - Radioactive Decay}
+\date{02/06/2026}
+\begin{document}
+\maketitle
+
+\section{Theory Of Radioactive Decay}
+
+We cannot write the state as in Q.M
+\begin{equation}
+    \ket{\psi}=A\ket{\psi_{1}}+B\ket{\psi_{2}}
+\end{equation}
+
+This is not time depandent.
+
+We will use perturbation theory.
+
+Assume a small perturbation and add it to the Hamiltonian
+\begin{equation}
+    H=\underset{\text{Stable config}}{\underbrace{H_{0}}}+\underset{\text{Radioactive decay}}{\underbrace{V}}
+\end{equation}
+
+We can assume that $V\ll H_{0}$ cause the time scale of the decay
+is very small comapre to the Hamiltonian.
+
+We can calculate $\lambda$ by exploit Fermi's Golden-rule
+\begin{equation}
+    \lambda=\frac{2\pi}{\hbar}\left|V_{fi}\right|^{2}\rho\left(E_{f}\right)
+\end{equation}
+
+Where $\rho\left(E_{fi}\right)$ is the density of states (D.O.S)
+, defined as
+\begin{equation}
+    \rho\left(E_{f}\right)=\frac{dn_{f}~}{dE_{f}}~
+\end{equation}
+
+There is a linear dpeandence between the phase space volume of the
+decay and the probaility the nucleun will decay into that state.
+
+For $H_{0}$ the wavefunction $\Psi\left(\vec{r},t\right)=\psi\left(\vec{r}\right)e^{i\frac{E}{\hbar}t}$
+for $H=H_{0}+V;$
+\begin{equation}
+    \left|\Psi\left(t\right)\right|^{2}=\left|\psi\left(t=0\right)\right|^{2}e^{-t/\tau}
+\end{equation}
+
+Thus,
+\begin{equation}
+    \Psi\left(\vec{r},t\right)=\psi\left(\vec{r}\right)e^{-iEt/\hbar}e^{-t/2\tau}
+\end{equation}
+\begin{equation}
+    \psi\left(t\right)=\intop^{\infty}_{-\infty}A\left(E\right)e^{-iEt/\hbar}dE
+\end{equation}
+
+\begin{equation}
+    A\left(E\right)\propto\intop^{\infty}_{-\infty}dte^{-iEt/\hbar}e^{-t/2\tau}e^{iEt/\hbar}
+\end{equation}
+{}
+\[
+    \vdots
+\]
+\begin{equation}
+    \rho\left(E\right)\propto\left|A\left(E\right)\right|^{2}
+\end{equation}
+
+\begin{equation}
+    \boxed{\rho\left(E\right)dE=\frac{dE}{\left(E-E_{a}\right)^{2}+\nicefrac{\Gamma^{2}_{a}}{4}}}
+\end{equation}
+where $\Gamma_{a}=\nicefrac{\hbar}{\tau_{a}}$is the energy width
+and it's the width of the Lorrentzian.
+
+What if there two decay options? $A\rightarrow B(80\%)+C(20\%)$
+\[
+    \Gamma_{a}=\Gamma_{b}+\Gamma_{c}
+\]
+\begin{equation}
+    \Gamma=\sum_{i}\Gamma_{i},\qquad\text{Branching Ratio}=\frac{\Gamma_{c}}{\Gamma}
+\end{equation}
+
+In this we way we can measure the energy width of a specific brunch.
+
+\rule[0.5ex]{1\columnwidth}{1pt}
+
+\begin{equation}
+    \underset{\text{Parent state}}{\underbrace{\psi_{a}}}+\psi\frac{V_{ba}}{E_{a}-E_{b}}\underset{\text{Daughter state}}{\underbrace{\psi_{b}}}
+\end{equation}
+The denomenator can be large and this can bring the parent and daughter
+state to a close energy states and because of that the probability
+can be similar for this two states.
+
+\rule[0.5ex]{1\columnwidth}{1pt}
+
+\section{Alpha Decay}
+
+\begin{equation}
+    ^{A}_{Z}X\rightarrow_{Z-2}Y+^{4}_{2}He
+\end{equation}
+
+Alpha decay was found because of traces of helim.
+
+The name was given because of the scale of the decay.
+
+The Q value is
+\begin{equation}
+    Q=\left[M\left(^{A}_{Z}X\right)-M\left(^{A-4}_{z-2}Y\right)-M\left(^{4}_{2}He\right)\right]c^{2}
+\end{equation}
+This is the energy emitted in the process.
+
+This is almost the energy of the alpha particle.
+
+There is a small chance to get $^{12}C$ but is negligable comapre
+to Helium 4 nucleus.
+
+By the conservation laws.
+\begin{itemize}
+    \item Momentum - determine the direction of the particle.
+\end{itemize}
+
+\subsection{Geiger–Nuttall law}
+
+The law relate the half life of the alpha decay to the energy of the emitted alpha particle.
+\begin{equation}
+    {\displaystyle \log_{10}T_{1/2}={\frac{A(Z)}{\sqrt{E}}}+B(Z)}
+\end{equation}
+Where $A$ and $B$ are constants that depend on the element.
+
+\textbf{Derivation:}
+The alpha particle is trapped in the nucleus by a potential barrier. The probability of tunneling through this barrier can be calculated using:
+\begin{equation}
+    dp=P_{tunnel}=\exp\left(-2\int_{r_1}^{r_2} \sqrt{\frac{2m}{\hbar^2}(V(r)-E)} dr\right)
+\end{equation}
+Where $r_1$ and $r_2$ are the classical turning points of the potential barrier, $V(r)$ is the potential energy as a function of distance from the center of the nucleus, and $E$ is the energy of the alpha particle.
+The Gamow factor, which is the exponential term in the tunneling probability, can be approximated for a Coulomb potential as:
+\begin{equation}
+    G = \frac{2\pi Z e^2}{\hbar v}
+\end{equation}
+Where $Z$ is the atomic number of the daughter nucleus, $e$ is the elementary charge, $\hbar$ is the reduced Planck constant, and $v$ is the velocity of the alpha particle.
+The half-life $T_{1/2}$ is inversely proportional to the tunneling probability, so we can write:
+\begin{equation}
+    T_{1/2} \propto \exp(G) = \exp\left(\frac{2\pi Z e^2}{\hbar v}\right)
+\end{equation}
+Since the kinetic energy $E$ of the alpha particle is related to its velocity by $E = \frac{1}{2}mv^2$, we can express the velocity in terms of energy:
+\begin{equation}
+    v = \sqrt{\frac{2E}{m}}
+\end{equation}
+Substituting this back into the expression for the half-life gives:
+\begin{equation}
+    T_{1/2} \propto \exp\left(\frac{2\pi Z e^2}{\hbar \sqrt{\frac{2E}{m}}}\right) = \exp\left(\frac{A(Z)}{\sqrt{E}}\right)
+\end{equation}
+Where $A(Z)$ is a constant that depends on the atomic number $Z$ of the daughter nucleus. Taking the logarithm of both sides, we arrive at the Geiger–Nuttall law:
+\begin{equation}
+    \log_{10} T_{1/2} = \frac{A(Z)}{\sqrt{E}} + B(Z)
+\end{equation}
+Where $B(Z)$ is another constant that depends on the element.
+The number of times that penetration is
+\begin{equation}
+    f=\frac{v}{2R},\qquad\text{where }R\text{ is the nuclear radius}
+\end{equation}
+Thus, the decay constant $\lambda$ can be expressed as:
+\begin{equation}
+    \lambda = f P_{tunnel} = \frac{v}{2R} \exp\left(-2\int_{r_1}^{r_2} \sqrt{\frac{2m}{\hbar^2}(V(r)-E)} dr\right) \approx \frac{v}{2R} \exp\left(-\frac{A(Z)}{\sqrt{E}}\right)
+\end{equation}
+This shows that the decay constant, and therefore the half-life, is exponentially sensitive to the energy of the emitted alpha particle, which is the essence of the Geiger–Nuttall law.
+\subsection{Conservations Laws}
+\begin{itemize}
+    \item Energy - the energy of the alpha particle is determined by the Q value of the decay.
+    \item Momentum - the alpha particle and the daughter nucleus recoil in opposite directions to conserve momentum.
+    \item Angular Momentum - the total angular momentum before and after the decay must be conserved. This can affect the probability of decay and the energy distribution of the emitted alpha particles.
+    \item Parity - the parity of the initial and final states must be conserved, which can also influence the decay process.
+\end{itemize}
+\subsubsection{Selectivity Rules}
+When we change between two quantum states (for example, between the parent and daughter nucleus), we have to consider the selection rules that govern the allowed transitions. These rules are based on the conservation of angular momentum and parity, and they can significantly affect the probability of decay. For example, if the transition involves a change in angular momentum that is not allowed by the selection rules, the decay will be suppressed, leading to a longer half-life for the parent nucleus.
+The difference between the initial and final states can be expressed in terms of the change in angular momentum ($\Delta J$) and parity ($\Delta \pi$). The selection rules for alpha decay typically require that:
+\begin{equation}
+    |I_{initial} - I_{final}| \leq \Delta J \leq I_{initial} + I_{final}
+\end{equation}
+\begin{equation}
+    \Delta \pi = (-1)^{\Delta J}
+\end{equation}
+Where $I_{initial}$ and $I_{final}$ are the spins of the initial and final states, respectively. If the transition does not satisfy these selection rules, the decay will be hinder
+ed, resulting in a longer half-life for the parent nucleus. This is why some alpha decays are much slower than others, even if they have similar Q values.
+
+\vspace{0.5cm}
+\textbf{Forbidden transition}
+In some cases, the transition between the parent and daughter nucleus may be forbidden by the selection rules. This can occur when there is a large change in angular momentum or when the parity change is not allowed. In such cases, the decay will be highly suppressed, and the half-life of the parent nucleus can be significantly longer than expected based on its Q value alone. Forbidden transitions are often observed in nuclei with high spin states or in cases where the daughter nucleus has a different parity than the parent nucleus.
+forbidden transitions also occur in beta decay, but they are different from the forbidden transitions in alpha decay.
+
+\hrule
+\section{Exercise}
+\textbf{Question:}
+Take Th-232 that decays by alpha decay.
+\begin{enumerate}
+    \item What is the decay product?
+    \item Calculate the $I^{\pi}$ of the parent and daughter nucleus.
+    \item The first excited state of the daughter nucleus is  What is the main decay mode of this state?
+    \item The high energy of  , calculate the Q value of the decay. take into account the error of the mass of the daughter nucleus.
+\end{enumerate}
+\text{Solutions}
+\begin{enumerate}
+    \item The decay product of Th-232 is Ra-228, which is formed by the emission of an alpha particle (He-4 nucleus) from Th-232.
+    \item The spin and parity of the parent nucleus Th-232 is $I^{\pi} = 0^+$, since it is an even-even nucleus. The daughter nucleus Ra-228 has a spin and parity of $I^{\pi} = 0^+$ as well, since it is also an even-even nucleus.
+    \item The first excited state of the
+    \item
+\end{enumerate}
+%this is not a complete summary. Complete it later by the lecture transcript.
+\end{document}

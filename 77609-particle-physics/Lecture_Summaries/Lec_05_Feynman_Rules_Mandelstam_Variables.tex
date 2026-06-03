@@ -1,0 +1,567 @@
+%%═══════════════════════════════════════════════════════════════════
+%% Lecture 05 — Feynman Rules for Scalar Fields, On/Off-Shell
+%%              Particles, Tree vs. Loop Diagrams, s/t/u Channels,
+%%              and Mandelstam Variables
+%% 77609 — Introduction to Elementary Particles
+%% Date: 23/04/2026
+%% Lecturer: Prof. Yonit Hochberg
+%%═══════════════════════════════════════════════════════════════════
+
+\documentclass[../main.tex]{subfiles}
+\usepackage{preamble}
+
+\begin{document}
+
+\section{Lecture 05 — Feynman Rules for Scalar Fields and Mandelstam Variables}\label{sec:lec05:feynman-rules}
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 23/04/2026   & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Overview}
+
+In Lecture~04 we proved that Feynman diagrams give the correct perturbation-theory amplitudes for coupled harmonic oscillators.  Today we make the leap to quantum \emph{field} theory.  The motivating observation is that a quantum field is nothing but an infinite collection of harmonic oscillators (one per Fourier mode), so the same diagrammatic logic carries over — with one key upgrade: particles now carry \emph{four-momenta} rather than occupation numbers, and the propagator (internal-line factor) becomes $i/(q^2-m^2)$ rather than $1/(E_i - E_n)$.
+
+The lecture develops the complete \textbf{Feynman rules for real scalar fields}, illustrates them through a series of worked examples, introduces the tree/loop-level distinction, identifies the three kinematic \textbf{channels} ($s$, $t$, $u$) for $2\to2$ scattering, and derives the celebrated \textbf{Mandelstam sum rule} $s + t + u = \sum_i m_i^2$.
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Bridge: From Harmonic Oscillators to Fields}
+
+Recall from Lecture~03 that a free real scalar field $\phi$ is expanded in Fourier modes as
+\begin{equation}
+  \phi(\bvec{x}, t)
+  = \int \frac{d^3k}{(2\pi)^3}
+    \frac{1}{\sqrt{2\omega_{\bvec{k}}}}
+    \Bigl(
+      a_{\bvec{k}}\, e^{i(\bvec{k}\cdot\bvec{x} - \omega_k t)}
+      + a_{\bvec{k}}^\dagger\, e^{-i(\bvec{k}\cdot\bvec{x} - \omega_k t)}
+    \Bigr),
+  \label{eq:lec05:field-expansion}
+\end{equation}
+where $\omega_k = \sqrt{|\bvec{k}|^2 + m^2}$ and $a_{\bvec{k}}, a_{\bvec{k}}^\dagger$ are ladder operators satisfying the canonical commutation relation $[a_{\bvec{k}}, a_{\bvec{k}'}^\dagger] = (2\pi)^3 \delta^{(3)}(\bvec{k} - \bvec{k}')$.
+
+\begin{remark}[Why the harmonic-oscillator rules extend to fields]
+Compare \eqref{eq:lec05:field-expansion} with the harmonic-oscillator expression $q = (a + a^\dagger)/\sqrt{2\omega}$.  They are structurally identical: each Fourier mode of $\phi$ is an independent harmonic oscillator.  When we write an interaction term $\phi^n$ in the Lagrangian, it creates/annihilates particles through the same ladder-operator algebra we studied for the harmonic oscillator.  The Feynman rules are therefore the same machinery — just with four-momenta replacing occupation numbers, and a Lorentz-invariant propagator replacing the energy-denominator.
+\end{remark}
+
+\textbf{Momentum eigenstates.}  We label single-particle states by their four-momentum $p = (E_p, \bvec{p})$:
+\begin{equation}
+  |p\rangle \;\propto\; a_{\bvec{p}}^\dagger\, |0\rangle,
+  \label{eq:lec05:momentum-state}
+\end{equation}
+normalised so that these states are Lorentz invariant.  For the present course, all that matters is that a state with momentum $p$ is created by $a_{\bvec{p}}^\dagger$ acting on the vacuum.
+
+\textbf{What generates transitions?}  Terms in the Lagrangian with \emph{three or more fields} are interaction terms — they produce matrix elements that connect different particle-number states, giving rise to decays and scattering processes.  The decay rate and scattering cross-section are both computed via Fermi's Golden Rule:
+\begin{equation}
+  \DecayRate,\,\sigma \;\propto\; |\mathcal{A}|^2 \times \text{(phase space)},
+  \label{eq:lec05:FGR-compact}
+\end{equation}
+where the amplitude $\mathcal{A}$ is read off from the Feynman diagram.
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{The Feynman Rules for Scalar Fields}
+
+For a theory of real scalar fields with a given interaction Lagrangian $\lagr_{\mathrm{int}}$, the transition amplitude for any process is computed by the following systematic procedure.
+
+\subsubsection*{Step 1 — Draw all Feynman diagrams}
+
+For the process of interest, draw every topologically distinct diagram built from the available \emph{vertices}.  Each vertex corresponds to an interaction term in $\lagr_{\mathrm{int}}$: an interaction $\lambda\,\phi_1^{a}\phi_2^{b}\cdots$ gives a vertex with $a$ legs of type $\phi_1$, $b$ legs of type $\phi_2$, etc.  Different line styles (solid, dashed, \ldots) are used to distinguish different fields.
+
+\subsubsection*{Step 2 — Label all momenta}
+
+Label the incoming and outgoing four-momenta of every external state ($p_1, p_2, p_3, \ldots$), including a direction arrow.  Assign a label (say $q$) and direction to each internal line; the direction is arbitrary but must be chosen and held fixed.
+
+\subsubsection*{Step 3 — Apply the Feynman rules}
+
+\dfn{Feynman rules for real scalar fields}{Multiply together a factor for each element of the diagram:
+\begin{center}
+\renewcommand{\arraystretch}{1.6}
+\begin{tabular}{lll}
+  \toprule
+  Element & Factor & Notes \\
+  \midrule
+  Vertex with coupling $\lambda$ & $i\lambda$ & one factor per vertex \\
+  Internal line (propagator) with momentum $q$, mass $m$ & $\dfrac{i}{q^2 - m^2}$ & $q^2 \equiv q^\mu q_\mu$ \\
+  External line (initial or final state) & — & no factor; just label $p$ \\
+  Momentum conservation at vertex & $\delta^{(4)}\!\bigl(\sum p_{\rm in} - \sum p_{\rm out}\bigr)$ & imposed at every vertex \\
+  Undetermined (loop) momentum $\ell$ & $\displaystyle\int \frac{d^4\ell}{(2\pi)^4}$ & one integral per loop \\
+  Symmetry factor & $S$ & combinatorial; see examples \\
+  \bottomrule
+\end{tabular}
+\end{center}
+Sum the contributions of \textbf{all} distinct diagrams at the given order to obtain the total amplitude $i\mathcal{A}$.}
+
+\begin{remark}[Physical interpretation of the propagator]
+The harmonic-oscillator energy denominator $1/(E_i - E_n)$ from second-order perturbation theory becomes $i/(q^2 - m^2)$ in the field theory.  In relativistic notation, $q^2 = E_q^2 - |\bvec{q}|^2$.  For a real, on-shell particle, $q^2 = m^2$, so the denominator would vanish — but internal (virtual) particles are \emph{off-shell} ($q^2 \neq m^2$), so the propagator is finite and well-defined.
+\end{remark}
+
+\subsubsection*{On-shell versus off-shell particles}
+
+\dfn{On-shell and off-shell}{A particle with four-momentum $p$ is \textbf{on-shell} (physical) if
+\begin{equation}
+  p^2 = E^2 - |\bvec{p}|^2 = m^2.
+  \label{eq:lec05:on-shell}
+\end{equation}
+External (initial and final) particles are always on-shell.  Internal lines in a Feynman diagram represent \textbf{virtual} (or \textbf{off-shell}) particles: they carry four-momentum forced upon them by energy-momentum conservation at each vertex, and this four-momentum need not satisfy \eqref{eq:lec05:on-shell}.}
+
+The physical picture is this: a real particle in the lab has a definite mass.  A virtual particle is a quantum-mechanical intermediate state that exists only for a brief time, limited by the uncertainty principle, and therefore need not satisfy the mass-shell condition.  The heavier the virtual particle relative to the energy available, the more suppressed the process — this suppression is captured by the propagator $i/(q^2 - m^2)$.
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Vertices from Interaction Lagrangians}
+
+Before doing full calculations, it is useful to be able to read off the vertex structure from $\lagr_{\rm int}$.  For a coupling $\lambda\,\phi_1^a\,\phi_2^b$, the vertex has $a$ legs of type $\phi_1$ and $b$ legs of type $\phi_2$.  Some examples:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{lll}
+  \toprule
+  Interaction & Vertex legs & Diagram \\
+  \midrule
+  $\lambda\,\phi^3$ & 3 identical legs & $\phi\phi\phi$ \\
+  $\lambda\,\phi_1^2\,\phi_2$ & 2 of type $\phi_1$ + 1 of type $\phi_2$ & $\phi_1\phi_1\phi_2$ \\
+  $\lambda\,\phi^4$ & 4 identical legs & $\phi\phi\phi\phi$ \\
+  $\lambda\,|\phi|^4 = \lambda\,\phi^\dagger\phi\phi^\dagger\phi$ & 2 incoming + 2 outgoing & (complex scalar) \\
+  $\lambda\,\phi_1^2\,\phi_2^2$ & 2 of type $\phi_1$ + 2 of type $\phi_2$ & $\phi_1\phi_1\phi_2\phi_2$ \\
+  $\lambda\,\phi_1^3\,\phi_2$ & 3 of type $\phi_1$ + 1 of type $\phi_2$ & $\phi_1\phi_1\phi_1\phi_2$ \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\begin{remark}[Directionality]
+Right now we are thinking of vertices as abstract building blocks.  When we analyse a specific process, we connect these building blocks to external legs (initial/final states) and to each other via internal lines.  The orientation (which leg is incoming, which outgoing) is determined by the process: there is no directionality in the vertex itself — only in the process diagram.
+\end{remark}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Worked Example 1: $\phi_1 \to \phi_2 + \phi_3$ with $\lagr_{\rm int} = \lambda\,\phi_1\phi_2\phi_3$}
+
+\subsubsection*{Setup}
+
+The interaction Lagrangian $\lagr_{\rm int} = \lambda\,\phi_1\phi_2\phi_3$ gives a single vertex with one leg of each type.  We wish to compute the amplitude for $\phi_1(p) \to \phi_2(k_2) + \phi_3(k_3)$.
+
+\subsubsection*{Kinematic constraint}
+
+For this decay to be kinematically allowed, the mass of $\phi_1$ must be at least $m_2 + m_3$ (the threshold condition from four-momentum conservation):
+\begin{equation}
+  m_1 \;\geq\; m_2 + m_3.
+  \label{eq:lec05:decay-threshold}
+\end{equation}
+
+\subsubsection*{Feynman diagram}
+
+\begin{center}
+  \begin{tikzpicture}
+    \begin{feynman}
+      \vertex (v);
+      \vertex [left=2.0cm of v] (in) {\(\phi_1\)};
+      \vertex [above right=1.6cm of v] (out1) {\(\phi_2\)};
+      \vertex [below right=1.6cm of v] (out2) {\(\phi_3\)};
+      \diagram*{
+        (in)   -- [scalar, momentum=\(p\)] (v),
+        (v)    -- [scalar, momentum=\(k_2\)] (out1),
+        (v)    -- [scalar, momentum=\(k_3\)] (out2),
+      };
+    \end{feynman}
+  \end{tikzpicture}
+\end{center}
+
+\subsubsection*{Amplitude}
+
+This diagram has:
+\begin{itemize}
+  \item One vertex: factor $i\lambda$.
+  \item No internal lines (all three legs are external).
+  \item No undetermined momenta.
+\end{itemize}
+Momentum conservation at the vertex gives $p = k_2 + k_3$.  The amplitude is simply
+\begin{equation}
+  i\mathcal{A}(\phi_1 \to \phi_2 \phi_3)
+  = i\lambda.
+  \label{eq:lec05:phi1-decay}
+\end{equation}
+The decay rate therefore scales as $\DecayRate \propto \lambda^2$.
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Worked Example 2: $\phi\phi \to \phi\phi$ with $\lagr_{\rm int} = \lambda\,\phi^4$}
+
+\subsubsection*{Setup}
+
+With a single $\phi^4$ vertex, label the incoming momenta $p_1, p_2$ and outgoing momenta $p_3, p_4$.  Momentum conservation for the whole process: $p_1 + p_2 = p_3 + p_4$.
+
+\subsubsection*{Leading order: $\mathcal{O}(\lambda)$}
+
+A single vertex connects all four external legs.  There are no internal lines and no undetermined momenta.
+
+\begin{center}
+  \begin{tikzpicture}
+    \begin{feynman}
+      \vertex (v);
+      \vertex [above left=1.4cm of v]  (p1) {\(p_1\)};
+      \vertex [below left=1.4cm of v]  (p2) {\(p_2\)};
+      \vertex [above right=1.4cm of v] (p3) {\(p_3\)};
+      \vertex [below right=1.4cm of v] (p4) {\(p_4\)};
+      \diagram*{
+        (p1) -- [scalar] (v),
+        (p2) -- [scalar] (v),
+        (v)  -- [scalar] (p3),
+        (v)  -- [scalar] (p4),
+      };
+    \end{feynman}
+  \end{tikzpicture}
+\end{center}
+
+\begin{equation}
+  i\mathcal{A}^{(1)} = i\lambda.
+  \label{eq:lec05:phi4-leading}
+\end{equation}
+
+\subsubsection*{Next order: $\mathcal{O}(\lambda^2)$ — Tree-level}
+
+At order $\lambda^2$ we connect two $\phi^4$ vertices.  There are three inequivalent ways to pair up the four external momenta through the internal line (we will name them the $s$, $t$, and $u$ channel diagrams below).  The first is:
+
+\begin{center}
+  \begin{tikzpicture}
+    \begin{feynman}
+      \vertex (v1);
+      \vertex [right=2.4cm of v1] (v2);
+      \vertex [above left=1.2cm of v1]  (p1) {\(p_1\)};
+      \vertex [below left=1.2cm of v1]  (p2) {\(p_2\)};
+      \vertex [above right=1.2cm of v2] (p3) {\(p_3\)};
+      \vertex [below right=1.2cm of v2] (p4) {\(p_4\)};
+      \diagram*{
+        (p1) -- [scalar] (v1),
+        (p2) -- [scalar] (v1),
+        (v1) -- [scalar, edge label=\(q\)] (v2),
+        (v2) -- [scalar] (p3),
+        (v2) -- [scalar] (p4),
+      };
+    \end{feynman}
+  \end{tikzpicture}
+\end{center}
+
+Here $p_1 + p_2$ flows into the internal line, so $q = p_1 + p_2$.  The amplitude contribution is:
+\begin{equation}
+  i\mathcal{A}_s^{(2)}
+  = (i\lambda)\,\frac{i}{q^2 - m^2}\,(i\lambda)
+  = \frac{-\lambda^2}{(p_1+p_2)^2 - m^2}.
+  \label{eq:lec05:phi4-s}
+\end{equation}
+
+\subsubsection*{Next order: $\mathcal{O}(\lambda^2)$ — Loop level (tadpole)}
+
+The $\phi^4$ vertex also allows a \emph{loop} diagram for $\phi \to \phi$ where one particle emits and reabsorbs a virtual $\phi\phi$ pair:
+
+\begin{center}
+  \begin{tikzpicture}
+    \begin{feynman}
+      \vertex (v);
+      \vertex [left=2cm of v]  (in)  {\(p\)};
+      \vertex [right=2cm of v] (out) {\(p\)};
+      \diagram*{
+        (in) -- [scalar] (v),
+        (v)  -- [scalar, out=45,  in=135, looseness=2.5, edge label=\(\ell\)] (v),
+        (v)  -- [scalar] (out),
+      };
+    \end{feynman}
+  \end{tikzpicture}
+\end{center}
+
+This \textbf{loop diagram} has one undetermined loop momentum $\ell$.  The amplitude contains:
+\begin{equation}
+  i\mathcal{A}_{\rm loop}
+  = (i\lambda)\int \frac{d^4\ell}{(2\pi)^4}\, \frac{i}{\ell^2 - m^2}.
+  \label{eq:lec05:phi4-loop}
+\end{equation}
+Notice that this integral over all $\ell$ is not obviously finite — it requires regularisation and renormalisation, topics beyond this course.  The key distinction here is:
+
+\dfn{Tree-level vs.\ loop-level diagrams}{A \textbf{tree-level diagram} contains no closed loops; all internal momenta are fully determined by four-momentum conservation at each vertex.  A \textbf{loop diagram} contains at least one closed loop, leading to an undetermined loop momentum that must be integrated over.  At each loop order, the diagram is suppressed by an additional factor of the coupling squared relative to tree level.}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Worked Example 3: $\phi_1\phi_1 \to \phi_1\phi_1$ with $\lagr_{\rm int} = \lambda\,\phi_1^2\phi_2$}
+
+\subsubsection*{Why there is no order-$\lambda$ contribution}
+
+The vertex $\lambda\phi_1^2\phi_2$ has two $\phi_1$ legs and one $\phi_2$ leg.  A single vertex would require one $\phi_2$ leg to connect to an external state, but the process $\phi_1\phi_1 \to \phi_1\phi_1$ has \emph{only} external $\phi_1$ lines.  Therefore, there is no diagram at order $\lambda$: the leading contribution is at order $\lambda^2$.
+
+\subsubsection*{Leading order diagram}
+
+Two vertices are connected by an internal $\phi_2$ line:
+
+\begin{center}
+  \begin{tikzpicture}
+    \begin{feynman}
+      \vertex (v1);
+      \vertex [right=2.4cm of v1] (v2);
+      \vertex [above left=1.2cm of v1]  (p1) {\(\phi_1, p_1\)};
+      \vertex [below left=1.2cm of v1]  (p2) {\(\phi_1, p_2\)};
+      \vertex [above right=1.2cm of v2] (p3) {\(\phi_1, p_3\)};
+      \vertex [below right=1.2cm of v2] (p4) {\(\phi_1, p_4\)};
+      \diagram*{
+        (p1) -- [scalar] (v1),
+        (p2) -- [scalar] (v1),
+        (v1) -- [scalar, edge label=\(\phi_2\)] (v2),
+        (v2) -- [scalar] (p3),
+        (v2) -- [scalar] (p4),
+      };
+    \end{feynman}
+  \end{tikzpicture}
+\end{center}
+
+The internal $\phi_2$ carries momentum $q = p_1 + p_2$ and is off-shell.  The amplitude is
+\begin{equation}
+  i\mathcal{A}
+  = (i\lambda)\,\frac{i}{(p_1+p_2)^2 - m_2^2}\,(i\lambda)
+  = \frac{-\lambda^2}{(p_1+p_2)^2 - m_2^2}.
+  \label{eq:lec05:phi12-phi2}
+\end{equation}
+
+\begin{remark}[Physical analogy]
+This is structurally identical to the harmonic-oscillator $y \to 3x$ decay computed in Lecture~04, with $\phi_1 \leftrightarrow x$, $\phi_2 \leftrightarrow z$.  The same virtual-particle mechanism underlies, for example, the \emph{muon decay} $\mu^- \to e^- \bar\nu_e \nu_\mu$ through a virtual $W^-$ boson.
+\end{remark}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Worked Example 4: $\phi_2 \to \phi_1\phi_1\phi_1$ with Two Interactions}
+
+\subsubsection*{Setup}
+
+Consider the theory
+\begin{equation}
+  \lagr_{\rm int} = \lambda_1\,\phi_1\phi_2\phi_3 + \lambda_2\,\phi_1^2\phi_3,
+  \label{eq:lec05:two-vertex-lag}
+\end{equation}
+and the decay $\phi_2(p) \to \phi_1(k_1) + \phi_1(k_2) + \phi_1(k_3)$.
+
+\subsubsection*{Why second order is needed}
+
+The $\lambda_1$ vertex has legs $\phi_1\phi_2\phi_3$ and the $\lambda_2$ vertex has legs $\phi_1\phi_1\phi_3$.  Neither vertex alone can connect a single $\phi_2$ to three $\phi_1$ lines in one step.  We need \emph{two} vertices, so the leading contribution is $\mathcal{O}(\lambda_1\lambda_2)$.
+
+\subsubsection*{Diagram and amplitude}
+
+The process proceeds through a virtual $\phi_3$:
+
+\begin{center}
+  \begin{tikzpicture}
+    \begin{feynman}
+      \vertex (v1);
+      \vertex [right=2.6cm of v1] (v2);
+      \vertex [left=2.0cm of v1]         (in)  {\(\phi_2\)};
+      \vertex [above right=1.4cm of v1]  (k1)  {\(\phi_1, k_1\)};
+      \vertex [above right=1.4cm of v2]  (k2)  {\(\phi_1, k_2\)};
+      \vertex [below right=1.4cm of v2]  (k3)  {\(\phi_1, k_3\)};
+      \diagram*{
+        (in) -- [scalar, momentum=\(p\)] (v1),
+        (v1) -- [scalar, momentum'=\(k_1\)] (k1),
+        (v1) -- [scalar, edge label=\(\phi_3\) (virtual), momentum=\(q\)] (v2),
+        (v2) -- [scalar, momentum=\(k_2\)] (k2),
+        (v2) -- [scalar, momentum=\(k_3\)] (k3),
+      };
+    \end{feynman}
+  \end{tikzpicture}
+\end{center}
+
+Momentum conservation at $v_1$: $p = k_1 + q$, so $q = p - k_1$.  The amplitude is:
+\begin{equation}
+  i\mathcal{A}
+  = (i\lambda_1)\,\frac{i}{q^2 - m_3^2}\,(i\lambda_2)
+  = \frac{-\lambda_1\lambda_2}{(p - k_1)^2 - m_3^2}.
+  \label{eq:lec05:two-vertex-amp}
+\end{equation}
+(There is also a second diagram in which $v_1$ emits $k_2$ and $v_2$ emits $k_1$ and $k_3$, plus a third; all must be summed.)
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{The $s$, $t$, $u$ Channels}
+
+\subsubsection*{Setup}
+
+Consider $\phi_1\phi_1 \to \phi_1\phi_1$ in the theory $\lagr_{\rm int} = \lambda\,\phi_1^2\phi_2^2$ (two $\phi_1$ legs and two $\phi_2$ legs at each vertex).  At order $\lambda^2$, the two $\lambda$ vertices are connected by a virtual $\phi_2$.  There are \emph{three topologically inequivalent ways} to connect the external legs, corresponding to three different momentum channels.
+
+\begin{remark}[Why diagrams with relabelled momenta are not equivalent]
+Even if two diagrams look graphically identical, they are \emph{not equivalent} if different combinations of external momenta are flowing through the internal line.  The propagator $i/(q^2 - m^2)$ is a function of $q^2$, so different $q$ means a different amplitude contribution.  Each distinct pairing must be summed separately.
+\end{remark}
+
+\subsubsection*{$s$-channel: $p_1 + p_2$ flows internally}
+
+\begin{center}
+  \begin{tikzpicture}
+    \begin{feynman}
+      \vertex (v1);
+      \vertex [right=2.4cm of v1] (v2);
+      \vertex [above left=1.1cm of v1]  (p1) {\(p_1\)};
+      \vertex [below left=1.1cm of v1]  (p2) {\(p_2\)};
+      \vertex [above right=1.1cm of v2] (p3) {\(p_3\)};
+      \vertex [below right=1.1cm of v2] (p4) {\(p_4\)};
+      \diagram*{
+        (p1) -- [scalar] (v1),
+        (p2) -- [scalar] (v1),
+        (v1) -- [scalar, edge label=\(\phi_2\)] (v2),
+        (v2) -- [scalar] (p3),
+        (v2) -- [scalar] (p4),
+      };
+    \end{feynman}
+  \end{tikzpicture}
+\end{center}
+
+Internal momentum: $q_s = p_1 + p_2$.  Contribution:
+\begin{equation}
+  i\mathcal{A}_s = \frac{-\lambda^2}{(p_1+p_2)^2 - m_2^2}.
+  \label{eq:lec05:s-channel}
+\end{equation}
+
+\subsubsection*{$t$-channel: $p_1 - p_3$ flows internally}
+
+\begin{center}
+  \begin{tikzpicture}
+    \begin{feynman}
+      \vertex (v1);
+      \vertex [right=2.4cm of v1] (v2);
+      \vertex [above left=1.1cm of v1]  (p1) {\(p_1\)};
+      \vertex [above right=1.1cm of v2] (p3) {\(p_3\)};
+      \vertex [below left=1.1cm of v1]  (p2) {\(p_2\)};
+      \vertex [below right=1.1cm of v2] (p4) {\(p_4\)};
+      \diagram*{
+        (p1) -- [scalar] (v1),
+        (p2) -- [scalar] (v1),
+        (v1) -- [scalar, edge label=\(\phi_2\)] (v2),
+        (v2) -- [scalar] (p3),
+        (v2) -- [scalar] (p4),
+      };
+    \end{feynman}
+  \end{tikzpicture}
+\end{center}
+
+In this pairing, $p_1$ and $p_3$ scatter off each other through the internal line, so $q_t = p_1 - p_3$.  Contribution:
+\begin{equation}
+  i\mathcal{A}_t = \frac{-\lambda^2}{(p_1-p_3)^2 - m_2^2}.
+  \label{eq:lec05:t-channel}
+\end{equation}
+
+\subsubsection*{$u$-channel: $p_1 - p_4$ flows internally}
+
+With $p_1$ and $p_4$ pairing: $q_u = p_1 - p_4$.  Contribution:
+\begin{equation}
+  i\mathcal{A}_u = \frac{-\lambda^2}{(p_1-p_4)^2 - m_2^2}.
+  \label{eq:lec05:u-channel}
+\end{equation}
+
+The full $\mathcal{O}(\lambda^2)$ amplitude is the sum $i\mathcal{A} = i\mathcal{A}_s + i\mathcal{A}_t + i\mathcal{A}_u$.
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Mandelstam Variables}
+
+\dfn{Mandelstam variables}{For a $2 \to 2$ process with incoming momenta $p_1, p_2$ and outgoing momenta $p_3, p_4$, the three \textbf{Mandelstam variables} are:
+\begin{align}
+  s &\equiv (p_1 + p_2)^2 = (p_3 + p_4)^2,
+  \label{eq:lec05:s}\\
+  t &\equiv (p_1 - p_3)^2 = (p_2 - p_4)^2,
+  \label{eq:lec05:t}\\
+  u &\equiv (p_1 - p_4)^2 = (p_2 - p_3)^2.
+  \label{eq:lec05:u}
+\end{align}}
+
+\begin{remark}[Physical meaning]
+$s$ is the square of the total centre-of-mass energy; $\sqrt{s}$ is the invariant mass of the two incoming particles together.  $t$ and $u$ are related to the momentum transfer in the two scattering channels.  Because $s$, $t$, $u$ are Lorentz scalars, they are the natural kinematic variables for writing amplitudes in a manifestly frame-independent way.  In particular, the three diagrams above contribute amplitudes $\propto 1/(s-m^2)$, $1/(t-m^2)$, $1/(u-m^2)$ respectively, immediately visible from the Mandelstam variables.
+\end{remark}
+
+\subsubsection*{The Mandelstam sum rule}
+
+\thm{Mandelstam sum rule}{For a $2 \to 2$ process involving particles with masses $m_1, m_2, m_3, m_4$,
+\begin{equation}
+  s + t + u = m_1^2 + m_2^2 + m_3^2 + m_4^2.
+  \label{eq:lec05:stu-sum}
+\end{equation}}
+
+\begin{proof}[Proof (equal-mass case, $m_i = m$ for all $i$)]
+Expand each variable using $p_i^2 = m^2$ (all external particles are on-shell):
+\begin{align}
+  s &= p_1^2 + p_2^2 + 2\,p_1\cdot p_2
+     = 2m^2 + 2\,p_1\cdot p_2,
+  \label{eq:lec05:s-expand}\\
+  t &= p_1^2 + p_3^2 - 2\,p_1\cdot p_3
+     = 2m^2 - 2\,p_1\cdot p_3,
+  \label{eq:lec05:t-expand}\\
+  u &= p_1^2 + p_4^2 - 2\,p_1\cdot p_4
+     = 2m^2 - 2\,p_1\cdot p_4.
+  \label{eq:lec05:u-expand}
+\end{align}
+Summing:
+\begin{equation}
+  s + t + u = 6m^2 + 2\,p_1\cdot(p_2 - p_3 - p_4).
+  \label{eq:lec05:sum-step1}
+\end{equation}
+Four-momentum conservation gives $p_1 + p_2 = p_3 + p_4$, i.e.\ $p_2 = p_3 + p_4 - p_1$.  Substituting:
+\begin{equation}
+  p_1 \cdot p_2
+  = p_1 \cdot (p_3 + p_4 - p_1)
+  = p_1\cdot p_3 + p_1\cdot p_4 - m^2.
+  \label{eq:lec05:p1p2-sub}
+\end{equation}
+Therefore:
+\begin{equation}
+  p_2 - p_3 - p_4
+  = (p_3 + p_4 - p_1) - p_3 - p_4
+  = -p_1.
+  \label{eq:lec05:momentum-difference}
+\end{equation}
+Substituting back into \eqref{eq:lec05:sum-step1}:
+\begin{equation}
+  s + t + u
+  = 6m^2 + 2\,p_1 \cdot (-p_1)
+  = 6m^2 - 2m^2
+  = 4m^2.
+  \label{eq:lec05:stu-equal-mass}
+\end{equation}
+Since all four masses are equal, this matches $\sum_{i=1}^4 m_i^2 = 4m^2$. \qed
+\end{proof}
+
+The general proof follows the same steps with $p_i^2 = m_i^2$ and yields \eqref{eq:lec05:stu-sum}.  The Mandelstam sum rule is a purely kinematic identity — it holds regardless of the dynamics (coupling constants) of the theory.
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{To Remember}
+
+\begin{itemize}
+  \item \textbf{Feynman rules for scalar fields}: vertex $\to$ $i\lambda$; propagator (internal line with momentum $q$) $\to$ $i/(q^2 - m^2)$; external states carry no factor; impose four-momentum conservation at each vertex; integrate over each undetermined loop momentum $\int d^4\ell/(2\pi)^4$.
+
+  \item \textbf{On-shell}: $p^2 = m^2$ — satisfied by all physical (external) particles.
+  \textbf{Off-shell}: $q^2 \neq m^2$ — the condition for virtual (internal) particles; makes the propagator non-singular for physical processes.
+
+  \item An interaction $\phi^n$ generates an $n$-leg vertex with factor $i\lambda$.  Only operators with $n \geq 3$ fields contribute to transitions.
+
+  \item \textbf{Tree-level diagrams} have no loops; all internal momenta are fixed by conservation laws.  \textbf{Loop diagrams} require integration over undetermined momenta and arise at higher order in the coupling.
+
+  \item For $2 \to 2$ scattering with two vertices, there are exactly three inequivalent channels: $s$, $t$, and $u$, named after the Mandelstam variables $s = (p_1+p_2)^2$, $t = (p_1-p_3)^2$, $u = (p_1-p_4)^2$.
+
+  \item \textbf{Mandelstam sum rule}: $s + t + u = \sum_i m_i^2$ (summed over all four external particles).  This is a kinematic identity that follows from on-shell conditions and four-momentum conservation.
+\end{itemize}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Further Reading}
+
+The lecturer noted that Peskin \& Schroeder use an unconventional $(-,+,+,+)$ metric
+sign convention; all other references below use $(+,-,-,-)$ as in this course.
+
+\begin{itemize}
+  \item \textbf{Griffiths, Chapter~6.3--6.4} — Feynman rules for scalar theories,
+    diagrammatic computation of $\phi\phi \to \phi\phi$ scattering, and the three
+    channels.  Provides worked calculations close in style to the lecture examples.
+
+  \item \textbf{Peskin \& Schroeder, \S4.4--4.7} — Feynman rules derived from the
+    path integral and Wick contractions, cross-section calculations, the optical
+    theorem.  The standard graduate-level reference (note their metric convention).
+
+  \item \textbf{Halzen \& Martin, Chapter~3} — ``Electrodynamics of Spinless
+    Particles'': Feynman rules for scalar QED, Mandelstam variables, and explicit
+    cross-section calculations.  Very accessible with good worked examples.
+
+  \item \textbf{Tong, \textit{QFT Notes}, Chapter~3, \S3.3--3.5}
+    (\href{https://www.damtp.cam.ac.uk/user/tong/qft.html}{\texttt{damtp.cam.ac.uk/user/tong/qft.html}}):
+    ``Feynman Diagrams'' — derivation of the Feynman rules including symmetry
+    factors and combinatorics.
+
+  \item \textbf{PDG Kinematics Review}
+    (\href{https://pdg.lbl.gov/2023/reviews/rpp2023-rev-kinematics.pdf}{\texttt{pdg.lbl.gov/2023/reviews/rpp2023-rev-kinematics.pdf}}):
+    the canonical reference for $s$, $t$, $u$ and all relativistic kinematic
+    identities in the particle-physics notation used throughout this course.
+\end{itemize}
+
+\end{document}

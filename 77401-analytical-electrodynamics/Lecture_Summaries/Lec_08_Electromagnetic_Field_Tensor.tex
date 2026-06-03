@@ -1,0 +1,278 @@
+%% Lecture 08 — Components of the EM Tensor, Classical Field Theory, and the Field Action
+\section{Lecture 08 — The Electromagnetic Field Tensor and the Field Action}\label{sec:lec08}
+
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 03/05/2026 & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+
+\subsection*{Overview}
+In the previous lecture the action for a charged particle in an electromagnetic field,
+\begin{equation}
+  S = -mc\int ds - \frac{e}{c}\int A_\mu\,dx^\mu,
+\end{equation}
+was varied to obtain the covariant equation of motion
+\begin{equation}\label{eq:eom-lec08}
+  \frac{dp^\mu}{d\tau} = \frac{e}{c}\,F^{\mu}{}_\nu\,u^\nu,
+  \qquad u^\nu = \frac{dx^\nu}{d\tau},
+\end{equation}
+where the electromagnetic field tensor is defined as
+\begin{equation}\label{eq:F-def}
+  F_{\mu\nu} = \partial_\mu A_\nu - \partial_\nu A_\mu.
+\end{equation}
+This lecture completes the treatment of $F_{\mu\nu}$ in three stages: (1)~prove rigorously that $F_{\mu\nu}$ is a genuine rank-2 Lorentz tensor; (2)~identify its six independent components with the physical electric and magnetic fields; (3)~derive the Lorentz-invariant action that governs the free electromagnetic field, applying the three guiding principles of Lorentz invariance, gauge invariance, and the superposition principle.
+
+%------------------------------------------------------------
+\subsection{$F_{\mu\nu}$ as a Rank-2 Lorentz Tensor}\label{subsec:F-tensor}
+
+\subsubsection*{Physical Motivation}
+The equation of motion \eqref{eq:eom-lec08} is manifestly covariant only if $F^{\mu}{}_\nu$ truly transforms as a tensor.  Since the left-hand side is a four-vector and $u^\nu$ is a four-vector, the right-hand side must also be a four-vector for any choice of inertial frame.  We therefore prove that $F_{\mu\nu}$ inherits the correct transformation law from its definition as a derivative of a four-vector.
+
+\subsubsection*{Transformation of the four-gradient}
+
+Let $f(x)$ be a Lorentz scalar, i.e.\ $f'(x) = f(x')$ where $x'^\mu = \Lambda^\mu{}_\nu x^\nu$.  Using the chain rule,
+\begin{equation}
+  \partial_\mu f'(x)
+  = \frac{\partial f'}{\partial x^\mu}
+  = \frac{\partial f'}{\partial x'^\nu}\,\frac{\partial x'^\nu}{\partial x^\mu}
+  = \Lambda^\nu{}_\mu\,\partial_\nu f(x).
+\end{equation}
+Here $\partial_\mu \equiv \partial/\partial x^\mu$ is the covariant four-gradient (lower index), and $\Lambda^\nu{}_\mu$ is the Lorentz transformation matrix.  The result shows:
+\begin{equation}\label{eq:grad-transform}
+  \boxed{\partial'_\mu f'(x) = \Lambda^\nu{}_\mu\,\partial_\nu f(x).}
+\end{equation}
+\textit{Physical significance:} Applying a single derivative to a Lorentz scalar yields a covariant four-vector (rank-1 tensor).  More generally, each additional derivative raises the tensor rank by one.
+
+\subsubsection*{$F_{\mu\nu}$ transforms as a rank-2 tensor}
+
+The four-potential $A_\mu$ is a four-vector: $A'_\mu(x) = \Lambda^\nu{}_\mu A_\nu(x')$.  Applying two derivatives and antisymmetrizing,
+\begin{align}
+  F'_{\mu\nu}(x) &= \partial'_\mu A'_\nu(x) - \partial'_\nu A'_\mu(x) \notag\\
+  &= \Lambda^\alpha{}_\mu\,\partial_\alpha\bigl(\Lambda^\beta{}_\nu A_\beta(x')\bigr)
+    - \Lambda^\beta{}_\nu\,\partial_\beta\bigl(\Lambda^\alpha{}_\mu A_\alpha(x')\bigr) \notag\\
+  &= \Lambda^\alpha{}_\mu\,\Lambda^\beta{}_\nu\,
+    \bigl(\partial_\alpha A_\beta(x') - \partial_\beta A_\alpha(x')\bigr).
+\end{align}
+Hence
+\begin{equation}\label{eq:F-transform}
+  \boxed{F'_{\mu\nu}(x) = \Lambda^\alpha{}_\mu\,\Lambda^\beta{}_\nu\,F_{\alpha\beta}(x').}
+\end{equation}
+\textit{Physical significance:} $F_{\mu\nu}$ transforms with two copies of the Lorentz matrix, exactly the definition of a covariant rank-2 tensor.  The equation of motion is therefore genuinely Lorentz covariant, taking the same form in every inertial frame.
+
+%------------------------------------------------------------
+\subsection{Electric and Magnetic Fields from $F_{\mu\nu}$}\label{subsec:F-components}
+
+\subsubsection*{Physical Motivation}
+$F_{\mu\nu}$ is an antisymmetric $4\times 4$ matrix ($F_{\mu\nu} = -F_{\nu\mu}$, so $F_{\mu\mu} = 0$), with $\tfrac{1}{2}\cdot 4\cdot 3 = 6$ independent components.  Since the physical fields $\mathbf{E}$ and $\mathbf{B}$ together carry $3 + 3 = 6$ real components, there is a one-to-one correspondence.
+
+\subsubsection*{Identifying the components}
+
+Let spatial indices $i,j,k \in \{1,2,3\}$.  Recall $\partial_0 = (1/c)\partial_t$, $\partial_i = \partial/\partial x^i$, and in the convention with signature $(+,-,-,-)$: $A_0 = \phi/c$, $A_i = -A^i$.
+
+\paragraph{Electric field.}
+
+\begin{align}
+  F_{0i} &= \partial_0 A_i - \partial_i A_0 \notag\\
+  &= \frac{1}{c}\frac{\partial A_i}{\partial t} - \partial_i\!\left(\frac{\phi}{c}\right) \notag\\
+  &= -\frac{1}{c}\frac{\partial A^i}{\partial t} - \frac{\partial\phi}{\partial x^i} \,.
+\end{align}
+The right-hand side is the $i$-th component of $\bE = -\nabla\phi - \frac{1}{c}\partial_t\Avec$, so
+\begin{equation}\label{eq:E-from-F}
+  \boxed{E_i = F_{0i}.}
+\end{equation}
+
+\paragraph{Magnetic field.}
+
+For the spatial--spatial components, $F_{jk} = \partial_j A_k - \partial_k A_j$.  Since $\bB = \nabla\times\Avec$,
+\begin{equation}
+  B_i = (\nabla\times\Avec)_i = \epsilon_{ijk}\,\partial_j A_k
+  = \frac{1}{2}\,\epsilon_{ijk}\,(\partial_j A_k - \partial_k A_j)
+  = \frac{1}{2}\,\epsilon_{ijk}\,F_{jk},
+\end{equation}
+where $\epsilon_{ijk}$ is the three-dimensional Levi-Civita symbol ($\epsilon_{123}=+1$).  Therefore
+\begin{equation}\label{eq:B-from-F}
+  \boxed{B_i = \tfrac{1}{2}\,\epsilon_{ijk}\,F_{jk}.}
+\end{equation}
+\textit{Physical significance:} All six physical field components are encoded in the single antisymmetric tensor $F_{\mu\nu}$.  The explicit matrix (rows/columns labeled $0,1,2,3$) is:
+\begin{equation}\label{eq:F-matrix}
+  F_{\mu\nu} =
+  \begin{pmatrix}
+    0    &  E_1  &  E_2  &  E_3 \\
+   -E_1  &  0    & -B_3  &  B_2 \\
+   -E_2  &  B_3  &  0    & -B_1 \\
+   -E_3  & -B_2  &  B_1  &  0
+  \end{pmatrix}.
+\end{equation}
+Under a Lorentz boost, $\bE$ and $\bB$ mix with each other — they are two aspects of a single unified field.
+
+%------------------------------------------------------------
+\subsection{Gauge Invariance of $F_{\mu\nu}$}\label{subsec:gauge}
+
+\subsubsection*{Physical Motivation}
+Only $\bE$ and $\bB$ are directly measurable; the four-potential $A_\mu$ is auxiliary.  Different choices of $A_\mu$ describing the same physical fields are related by gauge transformations.
+
+Under the gauge transformation
+\begin{equation}
+  A_\mu \;\longrightarrow\; A_\mu + \partial_\mu f,
+\end{equation}
+where $f(x)$ is an arbitrary smooth scalar function,
+\begin{align}
+  F_{\mu\nu} &\;\longrightarrow\;
+    \partial_\mu(A_\nu + \partial_\nu f) - \partial_\nu(A_\mu + \partial_\mu f) \notag\\
+  &= F_{\mu\nu} + \underbrace{\partial_\mu\partial_\nu f - \partial_\nu\partial_\mu f}_{=\,0}.
+\end{align}
+Hence
+\begin{equation}\label{eq:gauge-inv}
+  \boxed{F_{\mu\nu} \text{ is invariant under gauge transformations.}}
+\end{equation}
+\textit{Physical significance:} Because $\bE$ and $\bB$ are components of $F_{\mu\nu}$, the physical fields are gauge-invariant.  Any valid action for electromagnetism must be expressed solely in terms of $F_{\mu\nu}$.
+
+%------------------------------------------------------------
+\subsection{The $\mu=0$ Component: Work--Energy Theorem}\label{subsec:energy}
+
+\subsubsection*{Physical Motivation}
+The covariant equation of motion \eqref{eq:eom-lec08} contains four equations.  The spatial components ($\mu = 1,2,3$) give the relativistic Lorentz force.  The $\mu = 0$ component encodes the rate at which the field does work on the particle — it is the relativistic power equation.
+
+\subsubsection*{Derivation}
+
+The four-momentum is $p^\mu = (\mathcal{E}/c,\,\mathbf{p})$ and the four-velocity is $u^\nu = \gamma(c,\bv)$.  Setting $\mu = 0$ in the equation of motion,
+\begin{align}
+  \frac{dp^0}{d\tau}
+  &= \frac{e}{c}\,F^{0}{}_\nu\,u^\nu
+   = \frac{e}{c}\bigl(F^{0}{}_{0}\,u^0 + F^{0}{}_{i}\,u^i\bigr).
+\end{align}
+Antisymmetry gives $F^0{}_0 = 0$.  Using $F^{\mu}{}_\nu = \eta^{\mu\alpha}F_{\alpha\nu}$ and $\eta^{00}=+1$, we get $F^0{}_i = \eta^{00}F_{0i} = E_i$.  Then,
+\begin{equation}
+  \frac{dp^0}{d\tau} = \frac{e}{c}\,E_i\,u^i = \frac{e}{c}\,\mathbf{E}\cdot(\gamma\bv).
+\end{equation}
+Converting to coordinate time ($d\tau = dt/\gamma$) and using $p^0 = \mathcal{E}/c$:
+\begin{equation}
+  \frac{1}{c}\frac{d\mathcal{E}}{d\tau} = \frac{e}{c}\,\gamma\,\mathbf{E}\cdot\bv
+  \;\;\Longrightarrow\;\;
+  \frac{d\mathcal{E}}{dt} = e\,\mathbf{E}\cdot\bv.
+\end{equation}
+\begin{equation}\label{eq:power}
+  \boxed{\frac{d\mathcal{E}}{dt} = e\,\bE\cdot\bv.}
+\end{equation}
+\textit{Physical significance:} Only the electric field does work on the particle.  The magnetic force $e\bv\times\bB$ is always perpendicular to $\bv$ and performs no work; it only redirects the particle.  This is the relativistic generalisation of the classical power equation.
+
+%------------------------------------------------------------
+\subsection{Transition to Classical Field Theory}\label{subsec:CFT}
+
+\subsubsection*{Physical Motivation}
+So far the electromagnetic field has entered only as an external background.  But a moving charged particle itself generates a field.  To obtain a self-consistent description we must give the field its own dynamical degrees of freedom and derive its equations of motion from a variational principle.
+
+\subsubsection*{From particles to fields}
+
+In mechanics, $N$ particles carry a finite set of coordinates $q_i(t)$.  The electromagnetic field $A_\mu(t,\mathbf{x})$ is a function over all of spacetime, carrying \emph{infinitely many} degrees of freedom — one four-component value per spatial point $\mathbf{x}\in\mathbb{R}^3$.
+
+The dynamics is encoded in a \textbf{Lagrangian density} $\mathcal{L}(A_\mu, \partial_\nu A_\mu)$, and the action is
+\begin{equation}\label{eq:S-field}
+  S_{\rm field} = \int \mathcal{L}(A_\mu,\,\partial_\nu A_\mu)\,d^4x.
+\end{equation}
+
+\noindent The correspondence between mechanics and field theory is:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{p{0.46\linewidth} p{0.46\linewidth}}
+  \hline
+  \textbf{Classical mechanics} & \textbf{Classical field theory} \\
+  \hline
+  D.O.F.: $q_i(t)$, \;$1\le i\le N$ & D.O.F.: $A_\mu(t,\mathbf{x})$, \;$\mathbf{x}\in\mathbb{R}^3$ \\
+  Lagrangian: $L(q_i,\dot{q}_i)$ & Lagrangian density: $\mathcal{L}(A_\mu,\partial_\nu A_\mu)$ \\
+  $S = \displaystyle\int L\,dt$ & $S = \displaystyle\int \mathcal{L}\,d^4x$ \\
+  E-L: $\displaystyle\frac{\partial L}{\partial q_i} - \frac{d}{dt}\frac{\partial L}{\partial \dot{q}_i} = 0$
+  & E-L: $\displaystyle\frac{\partial \mathcal{L}}{\partial A_\mu} - \partial_\nu\frac{\partial \mathcal{L}}{\partial(\partial_\nu A_\mu)} = 0$ \\
+  \hline
+\end{tabular}
+\end{center}
+
+\subsubsection*{Field Euler--Lagrange equations}
+
+Varying $A_\mu \to A_\mu + \delta A_\mu$ with $\delta A_\mu = 0$ on the boundary and integrating by parts, $\delta S = 0$ yields:
+\begin{equation}\label{eq:EL-field}
+  \boxed{\frac{\partial\mathcal{L}}{\partial A_\mu}
+  - \partial_\nu\frac{\partial\mathcal{L}}{\partial(\partial_\nu A_\mu)} = 0.}
+\end{equation}
+\textit{Physical significance:} These field equations of motion will yield Maxwell's equations when the electromagnetic Lagrangian density is substituted — which is the goal of the next lecture.
+
+%------------------------------------------------------------
+\subsection{Determining the Electromagnetic Field Lagrangian}\label{subsec:Lem}
+
+\subsubsection*{Physical Motivation}
+We want to write $\mathcal{L}_{\rm field}$ without arbitrary assumptions, relying only on three symmetry principles that are established by experiment.
+
+\subsubsection*{Three constraints}
+
+\begin{enumerate}
+  \item \textbf{Lorentz invariance.}  $\mathcal{L}$ must be a Lorentz scalar — no free four-indices.
+
+  \item \textbf{Gauge invariance.}  $\mathcal{L}$ must be invariant under $A_\mu \to A_\mu + \partial_\mu f$.  Since $A_\mu$ transforms non-trivially but $F_{\mu\nu}$ does not, $\mathcal{L}$ must depend on $A_\mu$ only through $F_{\mu\nu}$.  For example, a term $\alpha\,A_\mu A^\mu$ would transform as
+  \[
+    A_\mu A^\mu \;\to\; A_\mu A^\mu + 2A^\mu\partial_\mu f + (\partial_\mu f)(\partial^\mu f),
+  \]
+  which is not gauge invariant; hence such terms are forbidden.
+
+  \item \textbf{Superposition principle.}  The electromagnetic field obeys linear superposition (experimentally verified).  Linearity of the field equations requires the Lagrangian to be \emph{quadratic} in the fields.  A term $\sim (F_{\mu\nu}F^{\mu\nu})^2$ would give equations of motion cubic in $F$, violating linearity.
+\end{enumerate}
+
+\subsubsection*{Unique Lagrangian}
+
+The most general Lorentz scalar quadratic in $F_{\mu\nu}$ is a linear combination of
+\begin{equation}
+  I_1 = F_{\mu\nu}F^{\mu\nu}, \qquad
+  I_2 = \epsilon^{\mu\nu\rho\sigma}F_{\mu\nu}F_{\rho\sigma},
+\end{equation}
+where $\epsilon^{\mu\nu\rho\sigma}$ is the four-dimensional Levi-Civita tensor (totally antisymmetric, $\epsilon^{0123} = +1$) and $I_2 = F_{\mu\nu}\widetilde{F}^{\mu\nu}$ with $\widetilde{F}^{\mu\nu} = \tfrac{1}{2}\epsilon^{\mu\nu\rho\sigma}F_{\rho\sigma}$ the dual tensor.
+
+The combination $I_2$ is a total derivative:
+\[
+  \epsilon^{\mu\nu\rho\sigma}F_{\mu\nu}F_{\rho\sigma} = 4\,\partial_\mu\!\left(\epsilon^{\mu\nu\rho\sigma}A_\nu\partial_\rho A_\sigma\right).
+\]
+A total derivative does not affect the equations of motion and can be discarded.
+
+The unique candidate is therefore $I_1 = F_{\mu\nu}F^{\mu\nu}$, and the Lagrangian density is fixed up to an overall constant:
+\begin{equation}\label{eq:Lem}
+  \boxed{\mathcal{L}_{\rm field} = -\frac{1}{16\pi}\,F_{\mu\nu}F^{\mu\nu}.}
+\end{equation}
+\textit{Physical significance:} The coefficient $-1/(16\pi)$ is chosen in Gaussian units so that the resulting Maxwell equations take their standard form.  The negative sign ensures a positive field energy density.
+
+\subsubsection*{Relation to $\bE$ and $\bB$}
+
+Using the matrix \eqref{eq:F-matrix} and the metric ($\eta^{00}=+1$, $\eta^{ii}=-1$),
+\begin{align}
+  F_{\mu\nu}F^{\mu\nu}
+  &= 2\bigl(F_{0i}F^{0i} + \tfrac{1}{2}F_{ij}F^{ij}\bigr) \notag\\
+  &= 2\bigl(-E_i^2 + B_i^2\bigr) = 2(\mathbf{B}^2 - \mathbf{E}^2),
+\end{align}
+so that
+\begin{equation}\label{eq:Lem-EB}
+  \boxed{\mathcal{L}_{\rm field}
+  = -\frac{1}{16\pi}\cdot 2(\mathbf{B}^2-\mathbf{E}^2)
+  = \frac{\mathbf{E}^2-\mathbf{B}^2}{8\pi}.}
+\end{equation}
+\textit{Physical significance:} $\bE^2 - \bB^2$ is a Lorentz invariant; all inertial observers agree on its value at any event in spacetime.
+
+\subsubsection*{Complete action}
+
+Combining the free-particle, interaction, and free-field terms,
+\begin{equation}\label{eq:S-total}
+  \boxed{S = -mc\!\int\! ds
+        -\frac{e}{c}\!\int\! A_\mu\,dx^\mu
+        -\frac{1}{16\pi}\!\int\! F_{\mu\nu}F^{\mu\nu}\,d^4x.}
+\end{equation}
+\textit{Physical significance:} This is the complete action of classical electrodynamics.  Varying with respect to the particle trajectory yields the Lorentz force equation; varying with respect to $A_\mu$ (next lecture) will yield Maxwell's equations.
+
+\subsection*{Summary}
+
+\begin{itemize}
+  \item The four-gradient of a scalar transforms as a covariant four-vector; $F_{\mu\nu} = \partial_\mu A_\nu - \partial_\nu A_\mu$ transforms as a covariant rank-2 tensor.
+  \item Electric field: $E_i = F_{0i}$; magnetic field: $B_i = \tfrac{1}{2}\epsilon_{ijk}F_{jk}$.  Together they fill all 6 independent components of the antisymmetric $4\times4$ matrix $F_{\mu\nu}$.
+  \item $F_{\mu\nu}$ is gauge-invariant; the action must be written in terms of $F_{\mu\nu}$, not $A_\mu$ directly.
+  \item The $\mu=0$ equation of motion gives $d\mathcal{E}/dt = e\bE\cdot\bv$: only the electric field does work.
+  \item Promoting the field to a dynamical entity requires a Lagrangian density $\mathcal{L}(A_\mu,\partial_\nu A_\mu)$ and the field Euler--Lagrange equations.
+  \item Three experimental principles (Lorentz invariance, gauge invariance, superposition) uniquely fix the free-field Lagrangian to $\mathcal{L}_{\rm field} = -F_{\mu\nu}F^{\mu\nu}/(16\pi) = (\mathbf{E}^2-\mathbf{B}^2)/(8\pi)$.
+\end{itemize}

@@ -1,0 +1,488 @@
+%% Lecture 11 -- Hydrostatics Applications and Buoyancy
+
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\section{Lecture 11 -- Hydrostatics Applications and Buoyancy}\label{sec:lec11}
+\date{May 13, 2026}
+\begin{center}
+  \textbf{Date:} May 13, 2026
+\end{center}
+
+\subsection*{Overview}
+Lecture~10 developed the local law of hydrostatic equilibrium. For an incompressible liquid, with depth $h$ measured downward from the free surface, the result is
+\begin{equation}
+  \boxed{p(h)=p_0+\rho g h.}
+  \label{eq:lec11_recall_hydrostatic_pressure}
+\end{equation}
+\textit{Physical significance:} In water or hydraulic oil, pressure changes by about one atmosphere only over a height of order $10\,\mathrm{m}$, so in small hydraulic devices the pressure can often be treated as spatially uniform.
+
+This lecture uses that simple pressure law in three ways:
+\begin{itemize}
+  \item hydraulic machines, where Pascal's principle transmits pressure through a liquid;
+  \item buoyancy, where the vertical pressure gradient produces a net upward force;
+  \item hydrostatic exam problems, where one integrates pressure over a surface and locates the effective line of action by moments.
+\end{itemize}
+
+The important conceptual shift is that pressure is local and normal to surfaces. Once we know $p(\bvec{x})$, every force on a boundary is obtained from
+\begin{equation}
+  \boxed{d\bvec{F}=-p\,d\bvec{S}.}
+  \label{eq:lec11_pressure_surface_force}
+\end{equation}
+\textit{Physical significance:} Hydrostatics problems are mostly geometry problems after the pressure field has been found.
+
+\begin{note}
+The working recipe for this lecture is always the same: find the pressure field, multiply pressure by the appropriate surface element, then integrate forces or moments. The physics is local pressure; the rest is geometry and torque balance.
+\end{note}
+
+% ------------------------------------------------------------------------------
+\subsection{Pascal's Principle and Hydraulic Machines}\label{sec:lec11:pascal-hydraulics}
+% ------------------------------------------------------------------------------
+
+\subsubsection*{Physical Motivation}
+Hydraulic machines use a liquid not because the liquid creates energy, but because it transmits pressure efficiently. If the device is much smaller than the depth scale $\Delta h\sim p/(\rho g)$, gravity produces only a small pressure variation inside the machine. The liquid can then be approximated as being at one pressure everywhere.
+
+\subsubsection{Uniform Pressure in a Small Hydraulic Device}\label{subsec:lec11:uniform-pressure}
+Suppose a sealed incompressible liquid is in quasistatic equilibrium and height differences are negligible. From equation~\eqref{eq:lec11_recall_hydrostatic_pressure},
+\begin{equation}
+  \Delta p = \rho g\,\Delta h.
+  \label{eq:lec11_pressure_change_height}
+\end{equation}
+For a device whose height is small compared with $10\,\mathrm{m}$ of water, or compared with the relevant scale for hydraulic oil, this pressure difference is negligible compared with atmospheric or working pressures. Therefore
+\begin{equation}
+  \boxed{p(\bvec{x})\simeq p=\mathrm{const}.}
+  \label{eq:lec11_pascal_principle}
+\end{equation}
+\textit{Physical significance:} Pascal's principle says that an externally applied pressure change is transmitted through the confined liquid. This is the basic reason a force can be applied at one place and received at another.
+
+\begin{Definition}{Pascal's Principle}{def:lec11_pascal_principle}
+In a small quasistatic hydraulic device, an imposed pressure change is transmitted throughout the confined fluid. The statement is approximate when height differences are not negligible, because gravity then adds the hydrostatic correction $\rho g\Delta h$.
+\end{Definition}
+
+\subsubsection{Force Transmission Without Amplification}\label{subsec:lec11:force-transmission}
+Consider a piston of area $A$ pushed with an input force $F_{\mathrm{in}}$. The pressure increase in the fluid is
+\begin{equation}
+  p=\frac{F_{\mathrm{in}}}{A}.
+  \label{eq:lec11_input_pressure_same_area}
+\end{equation}
+If the output piston has the same area $A$, then
+\begin{equation}
+  F_{\mathrm{out}}=pA
+  =
+  \frac{F_{\mathrm{in}}}{A}A
+  =
+  \boxed{F_{\mathrm{in}}.}
+  \label{eq:lec11_same_area_force}
+\end{equation}
+\textit{Physical significance:} A hydraulic fluid can carry a force to a different location and redirect it, even when it does not amplify the force.
+
+\subsubsection{The Hydraulic Press}\label{subsec:lec11:hydraulic-press}
+Now let the input piston have area $A_1$ and the output piston have a larger area $A_2$. The input pressure is
+\begin{equation}
+  p=\frac{F_1}{A_1}.
+  \label{eq:lec11_press_pressure}
+\end{equation}
+The output force is the same pressure times the larger area:
+\begin{align}
+  F_2 &= pA_2,
+  \label{eq:lec11_press_force_1}\\
+      &= \frac{F_1}{A_1}A_2.
+  \label{eq:lec11_press_force_2}
+\end{align}
+Therefore
+\begin{equation}
+  \boxed{\frac{F_2}{F_1}=\frac{A_2}{A_1}.}
+  \label{eq:lec11_force_amplification}
+\end{equation}
+\textit{Physical significance:} The force gain is exactly the area ratio. A small force on a small piston can produce a large force on a large piston.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.95]
+  \draw[thick] (0,0) rectangle (6,1.35);
+  \draw[thick] (1.0,1.35) -- (1.0,2.35) -- (2.0,2.35) -- (2.0,1.35);
+  \draw[thick] (4.0,1.35) -- (4.0,2.95) -- (5.7,2.95) -- (5.7,1.35);
+  \fill[blue!12] (0,0) rectangle (6,1.35);
+  \fill[blue!12] (1.0,1.35) rectangle (2.0,2.05);
+  \fill[blue!12] (4.0,1.35) rectangle (5.7,2.35);
+  \draw[metal] (1.0,2.05) rectangle (2.0,2.22);
+  \draw[metal] (4.0,2.35) rectangle (5.7,2.52);
+  \draw[force] (1.5,3.0) -- (1.5,2.25) node[midway,right] {$F_1$};
+  \draw[force] (4.85,2.55) -- (4.85,3.25) node[midway,right] {$F_2$};
+  \node at (1.5,1.65) {$A_1$};
+  \node at (4.85,1.75) {$A_2$};
+  \node at (3.0,0.68) {$p=F_1/A_1=F_2/A_2$};
+  \node[align=center] at (3.0,-0.45) {same pressure, different piston areas};
+\end{tikzpicture}
+\end{center}
+
+This result does not violate energy conservation. If the input piston moves a distance $\Delta x_1$ and the output piston moves $\Delta x_2$, incompressibility gives conservation of displaced volume:
+\begin{equation}
+  A_1\Delta x_1=A_2\Delta x_2.
+  \label{eq:lec11_volume_conservation_press}
+\end{equation}
+Multiplying by the common pressure,
+\begin{equation}
+  pA_1\Delta x_1=pA_2\Delta x_2.
+  \label{eq:lec11_work_conservation_press_1}
+\end{equation}
+Using $F_1=pA_1$ and $F_2=pA_2$ gives
+\begin{equation}
+  \boxed{F_1\Delta x_1=F_2\Delta x_2.}
+  \label{eq:lec11_work_conservation_press}
+\end{equation}
+\textit{Physical significance:} Hydraulic machines trade distance for force. The larger output force moves through a shorter distance.
+
+\begin{note}
+A hydraulic press amplifies force, not work. The larger piston gains force by moving a smaller distance, exactly as required by incompressibility and energy conservation.
+\end{note}
+
+\subsubsection{Quasistatic Assumption and Boundary Forces}\label{subsec:lec11:quasistatic-boundary}
+During operation, the fluid is not literally motionless at every instant. A piston is moved, fluid flows, and then the system settles. Hydrostatics applies when this process is slow enough that the pressure field is well approximated by a sequence of static equilibria.
+
+The applied piston forces are boundary forces. In continuum language, this is the same logic as in elasticity: one imposes boundary tractions, solves the equilibrium equations, and obtains the transmitted stress or pressure field.
+
+% ------------------------------------------------------------------------------
+\subsection{Archimedes' Principle}\label{sec:lec11:archimedes}
+% ------------------------------------------------------------------------------
+
+\subsubsection*{Physical Motivation}
+A submerged body feels pressure from every side. If pressure were the same everywhere, these forces would cancel. In a gravitational field, however, the pressure is larger lower down than higher up. The lower surface is pushed upward more strongly than the upper surface is pushed downward, so a net upward force remains.
+
+\subsubsection{Statement of the Buoyant Force}\label{subsec:lec11:buoyant-force}
+Let a body displace a volume $V_{\mathrm{disp}}$ of a fluid of density $\rho_f$. The buoyant force is upward and has magnitude
+\begin{equation}
+  \boxed{B=\rho_f g V_{\mathrm{disp}}.}
+  \label{eq:lec11_archimedes_magnitude}
+\end{equation}
+\textit{Physical significance:} A body is pushed upward by the weight of the fluid it displaces, not by its own weight or its own density directly.
+
+In vector form, if $\uvec{z}$ points upward,
+\begin{equation}
+  \boxed{\bvec{B}=\rho_f g V_{\mathrm{disp}}\,\uvec{z}.}
+  \label{eq:lec11_archimedes_vector}
+\end{equation}
+\textit{Physical significance:} The buoyant force is vertical because the hydrostatic pressure gradient is vertical.
+
+\begin{Definition}{Center of Buoyancy}{def:lec11_center_buoyancy_definition}
+The center of buoyancy is the centroid of the displaced fluid volume. It is the point through which the resultant buoyant force acts.
+\end{Definition}
+
+\subsubsection{Displaced-Fluid Proof}\label{subsec:lec11:displaced-fluid-proof}
+The most economical proof is to replace the body by the same volume of fluid. Imagine the region occupied by the body is instead filled with the surrounding fluid. The pressure field outside that region is unchanged, because in hydrostatics
+\begin{equation}
+  p=p_0+\rho_f gh
+  \label{eq:lec11_pressure_depends_depth}
+\end{equation}
+depends only on depth $h$, not on the material placed inside the imagined boundary.
+
+Therefore the surface pressure forces on the original body are the same as the surface pressure forces on the imagined displaced fluid. But the imagined displaced fluid is in equilibrium. It has weight
+\begin{equation}
+  W_{\mathrm{disp}}=\rho_f V_{\mathrm{disp}}g
+  \label{eq:lec11_displaced_weight}
+\end{equation}
+downward, so the total pressure force on it must be the same magnitude upward:
+\begin{equation}
+  B-W_{\mathrm{disp}}=0.
+  \label{eq:lec11_displaced_equilibrium}
+\end{equation}
+Thus
+\begin{equation}
+  \boxed{B=W_{\mathrm{disp}}=\rho_f gV_{\mathrm{disp}}.}
+  \label{eq:lec11_archimedes_proof_result}
+\end{equation}
+\textit{Physical significance:} The theorem works for any body shape because it avoids doing a complicated surface integral; the integral is evaluated indirectly by equilibrium of the displaced fluid.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.95]
+  \fill[blue!10] (-0.8,-1.2) rectangle (5.8,2.2);
+  \draw[blue!50!black,thick] (-0.8,1.65) -- (5.8,1.65);
+  \draw[thick,fill=gray!18] (1.0,-0.75) .. controls (0.55,0.0) and (0.95,0.95) .. (1.9,1.05)
+    .. controls (3.0,1.2) and (3.8,0.55) .. (3.55,-0.35)
+    .. controls (3.25,-1.15) and (1.55,-1.25) .. (1.0,-0.75);
+  \fill[myred] (2.2,-0.1) circle (2pt) node[right] {$G$};
+  \fill[myblue] (2.35,0.15) circle (2pt) node[right] {$B$};
+  \draw[force] (2.2,-0.1) -- (2.2,-1.0) node[midway,left] {$Mg$};
+  \draw[force] (2.35,0.15) -- (2.35,1.15) node[midway,right] {$\rho_f gV_{\mathrm{disp}}$};
+  \node at (2.5,-1.55) {pressure resultant equals displaced-fluid weight};
+\end{tikzpicture}
+\end{center}
+
+\subsubsection{Point of Application}\label{subsec:lec11:center-of-buoyancy}
+The buoyant force acts through the center of mass of the displaced fluid. For a homogeneous fluid this is the center of volume of the displaced region, called the center of buoyancy:
+\begin{equation}
+  \boxed{\bvec{r}_B
+  =
+  \frac{1}{V_{\mathrm{disp}}}\int_{V_{\mathrm{disp}}}\bvec{r}\,dV.}
+  \label{eq:lec11_center_buoyancy}
+\end{equation}
+\textit{Physical significance:} The center of buoyancy is determined by the geometry of the submerged volume, not by how mass is distributed inside the solid object.
+
+For a completely submerged homogeneous body, the center of buoyancy may coincide with the body's center of mass. For an inhomogeneous body, or for a floating body only partly submerged, the two points need not coincide.
+
+% ------------------------------------------------------------------------------
+\subsection{Floating Bodies and Ship Stability}\label{sec:lec11:ship-stability}
+% ------------------------------------------------------------------------------
+
+\subsubsection*{Physical Motivation}
+Floating is not only about balancing vertical forces. A ship must also be stable against rotations. If a small tilt creates a restoring torque, the ship returns toward upright; if it creates an overturning torque, the ship is unstable.
+
+\subsubsection{Force Balance for Floating}\label{subsec:lec11:floating-force-balance}
+For a floating body in vertical equilibrium,
+\begin{equation}
+  B=W,
+  \label{eq:lec11_float_balance_1}
+\end{equation}
+or
+\begin{equation}
+  \boxed{\rho_f g V_{\mathrm{disp}}=Mg,}
+  \label{eq:lec11_float_balance}
+\end{equation}
+where $M$ is the total mass of the body.
+\textit{Physical significance:} A ship floats by sinking until it displaces a weight of water equal to its own weight.
+
+The weight acts through the center of mass $G$, while buoyancy acts through the center of buoyancy $B$. In the untilted symmetric state, their lines of action are vertical and usually coincide.
+
+\subsubsection{Small Tilt and the Restoring Moment}\label{subsec:lec11:small-tilt}
+When the ship tilts, the submerged shape changes. The center of mass $G$ stays fixed in the ship, but the center of buoyancy moves toward the side that sinks deeper. The upward buoyant force now acts along a shifted vertical line. The intersection of this line with the ship's symmetry axis is called the metacenter $M$.
+
+The lecture used the following stability criterion:
+\begin{equation}
+  \boxed{\text{stable floating equilibrium} \quad \Longleftrightarrow \quad M \text{ lies above } G.}
+  \label{eq:lec11_metacenter_criterion}
+\end{equation}
+\textit{Physical significance:} If the metacenter is above the center of mass, the buoyancy and weight form a restoring couple; if it is below, the couple increases the tilt.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.95]
+  \draw[blue!50!black,thick] (-0.8,0) -- (6.2,0);
+  \begin{scope}[rotate around={-10:(2.6,0.15)}]
+    \draw[thick,fill=gray!15] (0.7,0.0) .. controls (1.0,-0.9) and (4.2,-0.9) .. (4.7,0.0)
+      -- (4.25,0.55) -- (1.05,0.55) -- cycle;
+    \draw[dashed] (2.7,-0.85) -- (2.7,1.55);
+  \end{scope}
+  \fill[myred] (2.7,0.2) circle (2pt) node[right] {$G$};
+  \fill[myblue] (3.15,-0.25) circle (2pt) node[right] {$B$};
+  \fill[black] (2.7,1.05) circle (2pt) node[right] {$M$};
+  \draw[force] (2.7,0.2) -- (2.7,-0.8) node[midway,left] {$Mg$};
+  \draw[force] (3.15,-0.25) -- (3.15,0.85) node[midway,right] {$B$};
+  \draw[dashed] (3.15,-0.35) -- (3.15,1.25);
+  \node[align=center] at (4.95,1.2) {$M$ above $G$\\restoring moment};
+\end{tikzpicture}
+\end{center}
+
+Equivalently, the metacentric height
+\begin{equation}
+  \boxed{GM>0}
+  \label{eq:lec11_metacentric_height}
+\end{equation}
+is the sign criterion for small-angle stability.
+\textit{Physical significance:} Increasing stability means lowering the center of mass or designing the hull so that the center of buoyancy shifts sideways enough when the ship tilts.
+
+The historical example discussed in class was the Swedish warship \textit{Vasa}, launched in 1628. It was tall and heavily armed, and it capsized shortly after leaving harbor. The pedagogical lesson is mechanical: impressive size is irrelevant if the center of mass and hull geometry do not give a restoring moment.
+
+% ------------------------------------------------------------------------------
+\subsection{Resultant Hydrostatic Force on a Dam}\label{sec:lec11:dam-force}
+% ------------------------------------------------------------------------------
+
+\subsubsection*{Physical Motivation}
+Hydrostatic forces on walls and dams are distributed forces. To replace them by a single resultant force, we must find two things: the total force and the point where it acts. The point of application matters because it determines the torque.
+
+\subsubsection{Pressure Distribution}\label{subsec:lec11:dam-pressure}
+Consider a vertical rectangular dam of width $w$ holding water of height $H$. Let $y$ be depth measured downward from the free surface. The pressure on the water side is
+\begin{equation}
+  p_{\mathrm{water}}(y)=p_0+\rho g y.
+  \label{eq:lec11_dam_water_pressure}
+\end{equation}
+The outside air exerts atmospheric pressure $p_0$, so the net pressure difference is
+\begin{equation}
+  \Delta p(y)=p_{\mathrm{water}}(y)-p_0=\rho g y.
+  \label{eq:lec11_dam_net_pressure}
+\end{equation}
+\textit{Physical significance:} Atmospheric pressure cancels in this problem because it acts on both sides. Only the gauge pressure $\rho gy$ pushes the dam.
+
+An area strip of height $dy$ has area
+\begin{equation}
+  dA=w\,dy.
+  \label{eq:lec11_dam_strip_area}
+\end{equation}
+The horizontal force on that strip is
+\begin{equation}
+  dF=\Delta p(y)dA=\rho g y\,w\,dy.
+  \label{eq:lec11_dam_differential_force}
+\end{equation}
+
+\subsubsection{Total Force}\label{subsec:lec11:dam-total-force}
+Integrating from the surface to the bottom,
+\begin{align}
+  F_{\mathrm{tot}}
+  &=\int_0^H dF,
+  \label{eq:lec11_dam_force_int_1}\\
+  &=\rho g w\int_0^H y\,dy,
+  \label{eq:lec11_dam_force_int_2}\\
+  &=\rho g w\qty[\frac{y^2}{2}]_0^H.
+  \label{eq:lec11_dam_force_int_3}
+\end{align}
+Thus
+\begin{equation}
+  \boxed{F_{\mathrm{tot}}=\frac{1}{2}\rho g wH^2.}
+  \label{eq:lec11_dam_total_force}
+\end{equation}
+\textit{Physical significance:} The pressure distribution is triangular, so the total force is the area of a triangle with height $\rho gH$ and base $H$, multiplied by the width $w$.
+
+\subsubsection{Center of Pressure}\label{subsec:lec11:center-pressure}
+Let $Y$ be the depth at which the single resultant force acts. It is defined by matching the torque about the free surface:
+\begin{equation}
+  YF_{\mathrm{tot}}=\tau_{\mathrm{tot}},
+  \label{eq:lec11_center_pressure_definition}
+\end{equation}
+where
+\begin{align}
+  \tau_{\mathrm{tot}}
+  &=\int_0^H y\,dF,
+  \label{eq:lec11_dam_torque_int_1}\\
+  &=\rho g w\int_0^H y^2\,dy,
+  \label{eq:lec11_dam_torque_int_2}\\
+  &=\rho g w\qty[\frac{y^3}{3}]_0^H
+  =
+  \frac{1}{3}\rho g wH^3.
+  \label{eq:lec11_dam_torque}
+\end{align}
+Therefore
+\begin{align}
+  Y
+  &=
+  \frac{\tau_{\mathrm{tot}}}{F_{\mathrm{tot}}},
+  \label{eq:lec11_center_pressure_calc_1}\\
+  &=
+  \frac{(1/3)\rho g wH^3}{(1/2)\rho g wH^2},
+  \label{eq:lec11_center_pressure_calc_2}\\
+  &=
+  \boxed{\frac{2H}{3}.}
+  \label{eq:lec11_center_pressure_result}
+\end{align}
+\textit{Physical significance:} The resultant force acts below the midpoint because the pressure is larger at greater depth. Measured from the bottom, the line of action is at height $H/3$.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.95]
+  \draw[thick] (0,0) -- (0,3.2);
+  \draw[blue!50!black,thick] (-0.15,3.2) -- (3.4,3.2);
+  \fill[blue!10] (0,0) rectangle (3.4,3.2);
+  \draw[->,thick] (0.15,3.0) -- (0.6,3.0);
+  \draw[->,thick] (0.15,2.0) -- (1.15,2.0);
+  \draw[->,thick] (0.15,1.0) -- (1.75,1.0);
+  \draw[->,thick] (0.15,0.25) -- (2.25,0.25);
+  \draw[thick,myred] (2.55,3.2) -- (2.55,0) -- (0.25,0);
+  \node[rotate=90] at (-0.35,1.6) {dam};
+  \node at (3.1,1.35) {$\Delta p=\rho gy$};
+  \draw[width] (-0.65,3.2) -- (-0.65,0) node[midway,left] {$H$};
+  \draw[dashed] (0,1.07) -- (2.2,1.07);
+  \node[right] at (2.2,1.07) {$Y=2H/3$ below surface};
+\end{tikzpicture}
+\end{center}
+
+% ------------------------------------------------------------------------------
+\subsection{Lift on a Truncated Cone Filled with Water}\label{sec:lec11:truncated-cone}
+% ------------------------------------------------------------------------------
+
+\subsubsection*{Physical Motivation}
+The final problem asks why a water-filled vessel resting on a table might need its own weight to keep it in contact with the table. The key is that pressure acts normal to the walls. On slanted walls, the pressure force has a vertical component. If that component points upward, the water tries to lift the vessel.
+
+\subsubsection{Setting Up the Integral}\label{subsec:lec11:cone-setup}
+Consider an open truncated cone resting on its larger base, filled with water to height $H$. Let $y$ be depth below the free surface. Let $\alpha$ be the angle between the side wall and the vertical direction, and let $R$ be the radius at the free surface. Then the radius of a horizontal ring at depth $y$ is
+\begin{equation}
+  r(y)=R+y\tan\alpha.
+  \label{eq:lec11_cone_radius}
+\end{equation}
+The gauge pressure is
+\begin{equation}
+  \Delta p(y)=\rho g y.
+  \label{eq:lec11_cone_gauge_pressure}
+\end{equation}
+
+The slanted area of a thin ring is its circumference times its slant height:
+\begin{equation}
+  dS=2\pi r(y)\,\frac{dy}{\cos\alpha}.
+  \label{eq:lec11_cone_area_element}
+\end{equation}
+The vertical component of the pressure force contains a factor $\sin\alpha$, since for a vertical wall $\alpha=0$ there should be no vertical pressure component. Hence
+\begin{equation}
+  dF_{\uparrow}
+  =
+  \Delta p(y)\,dS\,\sin\alpha.
+  \label{eq:lec11_cone_differential_lift}
+\end{equation}
+
+\subsubsection{Total Upward Force}\label{subsec:lec11:cone-total-force}
+Substituting equations~\eqref{eq:lec11_cone_radius}--\eqref{eq:lec11_cone_area_element} gives
+\begin{align}
+  F_{\uparrow}
+  &=
+  \int_0^H
+  \rho g y\,
+  2\pi\qty(R+y\tan\alpha)
+  \frac{\sin\alpha}{\cos\alpha}\,dy,
+  \label{eq:lec11_cone_lift_int_1}\\
+  &=
+  2\pi\rho g\tan\alpha
+  \int_0^H
+  \qty(Ry+y^2\tan\alpha)\,dy,
+  \label{eq:lec11_cone_lift_int_2}\\
+  &=
+  2\pi\rho g\tan\alpha
+  \qty(
+    \frac{RH^2}{2}
+    +
+    \frac{H^3\tan\alpha}{3}
+  ).
+  \label{eq:lec11_cone_lift_int_3}
+\end{align}
+Therefore
+\begin{equation}
+  \boxed{
+  F_{\uparrow}
+  =
+  \pi\rho g RH^2\tan\alpha
+  +
+  \frac{2\pi}{3}\rho gH^3\tan^2\alpha.}
+  \label{eq:lec11_cone_lift_result}
+\end{equation}
+\textit{Physical significance:} A slanted wall converts part of the normal pressure force into a vertical lifting force. The effect vanishes for a vertical wall, $\alpha=0$, as it should.
+
+For the cone to remain in contact with the table, its weight $W$ must be at least this upward hydrostatic lift:
+\begin{equation}
+  \boxed{W_{\min}=F_{\uparrow}.}
+  \label{eq:lec11_cone_min_weight}
+\end{equation}
+\textit{Physical significance:} Contact is lost when the upward force from water pressure exceeds the downward weight of the container.
+
+\begin{Example}{How to Read Slanted-Wall Pressure}{ex:lec11_slanted_wall_pressure}
+Pressure is normal to the wall, not vertical. The upward force in the truncated-cone problem appears only because the normal to a slanted wall has a vertical component. When $\alpha=0$, the wall is vertical, the normal is horizontal, and the lifting contribution vanishes.
+\end{Example}
+
+% ------------------------------------------------------------------------------
+\subsection{Summary}\label{sec:lec11:summary}
+% ------------------------------------------------------------------------------
+
+The lecture's main tools are all consequences of hydrostatic pressure:
+\begin{equation}
+  \boxed{p=p_0+\rho gh,\qquad d\bvec{F}=-p\,d\bvec{S}.}
+  \label{eq:lec11_summary_tools}
+\end{equation}
+
+For hydraulic devices,
+\begin{equation}
+  \boxed{\frac{F_2}{F_1}=\frac{A_2}{A_1},
+  \qquad
+  F_1\Delta x_1=F_2\Delta x_2.}
+  \label{eq:lec11_summary_hydraulics}
+\end{equation}
+
+For buoyancy,
+\begin{equation}
+  \boxed{B=\rho_f gV_{\mathrm{disp}},\qquad
+  \bvec{r}_B=\frac{1}{V_{\mathrm{disp}}}\int_{V_{\mathrm{disp}}}\bvec{r}\,dV.}
+  \label{eq:lec11_summary_buoyancy}
+\end{equation}
+
+For distributed hydrostatic loads, the point of application is found by the same moment rule used in mechanics:
+\

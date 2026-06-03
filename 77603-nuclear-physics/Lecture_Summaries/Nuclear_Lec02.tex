@@ -1,0 +1,257 @@
+%% LyX 2.6.0~devel created this file.  For more info, see https://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass[12pt,english,hebrew]{article}
+\usepackage{amsmath}
+\usepackage{fontspec}
+\usepackage{unicode-math}
+\usepackage[a4paper]{geometry}
+\geometry{verbose,tmargin=2cm,bmargin=2cm,lmargin=1cm,rmargin=1cm}
+\usepackage{esint}
+\usepackage{microtype}
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+\providecommand\textquotedblplain{%
+  \bgroup\addfontfeatures{Mapping=}\char34\egroup}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+% -------------------------------------------------
+% Encoding and Fonts (fontspec is usually handled by LyX with XeTeX)
+% \usepackage{fontspec} % LyX will add this if XeTeX/LuaTeX is used.
+% \usepackage{polyglossia} % LyX handles this with language settings.
+% \setmainlanguage{hebrew} % Set this in LyX: Document > Settings > Language
+% \setotherlanguage{english} % Set this in LyX: Document > Settings > Language
+
+\newfontfamily\hebrewfont{David CLM} % Keep for custom commands/styles
+\newfontfamily\hebrewfontsf{Nachlieli CLM} % Keep for custom commands/styles
+\newfontfamily\englishfont{Latin Modern Roman} % Keep for custom commands/styles
+
+% -------------------------------------------------
+% Math and Symbols
+\usepackage{amsmath, mathtools, amsthm} % amsmath & amsthm often by LyX, mathtools is a good addition.
+% Add this if not automatically handled by LyX's math font settings.
+% \setmathfont{Latin Modern Math} % Set this in LyX: Document > Settings > Math Options > Use unicode-math
+                                % If you set it here, it overrides LyX's GUI setting.
+\setmathfont{XITS Math}
+%\setmathfont{Libertinus Math}
+\usepackage{physics}          % For \bra, \ket, etc.
+\usepackage{autobreak}        % Break long equations automatically
+\usepackage{relsize}          % For \mathlarger
+\usepackage{microtype}        % Better text rendering (often default with fontspec)
+
+% -------------------------------------------------
+% Document Layout
+% \usepackage{geometry} % Configure in LyX: Document > Settings > Page Layout
+% \geometry{a4paper, margin=1in} % Configure in LyX
+% \usepackage{setspace} % Configure in LyX: Document > Settings > Text Layout
+% \onehalfspacing % Configure in LyX
+\usepackage{float}            % Improved float control
+
+% -------------------------------------------------
+% Titles
+\usepackage{titlesec}
+\titleformat{\section}{\Large\bfseries\hebrewfont}{\thesection}{10pt}{}
+\titleformat{\subsection}{\large\bfseries\hebrewfont}{\thesubsection}{10pt}{}
+\titleformat{\subsubsection}{\normalsize\bfseries\hebrewfont}{\thesubsubsection}{10pt}{}
+
+% -------------------------------------------------
+% Headers
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[R]{\leftmark} % Or \rightmark, depending on desired output with polyglossia/Hebrew
+\renewcommand{\headrulewidth}{0.5pt}
+% \setlength{\footskip}{12pt} % If needed, keep. Default might be okay. Avoids fancyhdr warning.
+
+% -------------------------------------------------
+% Lists
+\usepackage{enumitem}
+\setlist[itemize]{label=\textbullet, leftmargin=1.5em, nosep}
+\setlist[enumerate]{leftmargin=1.5em, labelsep=0.5em, nosep}
+
+% -------------------------------------------------
+% Footnote Rule
+\renewcommand{\footnoterule}{%
+  \kern 3pt
+  \hbox to \textwidth{\hfill\vrule height 0.5pt width 0.4\textwidth}
+  \kern 4pt
+}
+
+% -------------------------------------------------
+% Math Display Spacing
+\AtBeginDocument{
+  \setlength\abovedisplayskip{6pt}
+  \setlength\belowdisplayskip{6pt}
+  \setlength\abovedisplayshortskip{6pt}
+  \setlength\belowdisplayshortskip{6pt}
+  \relpenalty=9999
+  \binoppenalty=9999
+}
+
+% -------------------------------------------------
+% RTL Math Tag Fix
+\makeatletter
+\def\maketag@@@#1{\hbox{\m@th\normalfont\LRE{#1}}}
+\def\tagform@#1{\maketag@@@{(\ignorespaces#1\unskip)}}
+\makeatother
+
+% -------------------------------------------------
+% QED Symbol
+\renewcommand{\qedsymbol}{$\blacksquare$} % Requires amsthm
+
+% -------------------------------------------------
+% Hebrew inside math mode
+% \usepackage{amsmath} % Already loaded above, \text command source
+\newcommand{\hebtext}[1]{\text{\hebrewfont #1}}
+
+\makeatother
+
+\usepackage{polyglossia}
+\setdefaultlanguage{hebrew}
+\setotherlanguage{english}
+\begin{document}
+$\date{14/04/2026}$
+\begin{english}[variant=american]%
+
+\section*{Form factor}
+
+\end{english}%
+ניקח אלומת אלקטרונים ונקרין אותם על הגרעין.
+
+לאלקטרון אורך גל קטן.
+
+נרצה להשתמש באלקטרונים בעלי אורך גל קטנים משל אורך הכל של הגרעין.
+(בערך $\sim100Mev$).
+
+האלקטרון אדיש לכוח הגרעיני החזק.
+
+ניתן לקבל מידע על התפלגות המסה של הגרעין ע\textquotedbl י אופי הפיזור
+של האלקטרון מהגרעין.
+
+\[
+f\left(k-k'\right)=\intop\psi^{\ast}V\psi d^{3}r
+\]
+
+כאשר $\psi=e^{-ik\cdot r},\qquad\psi'=e^{-ik'\cdot r}$
+\[
+f=\intop e^{i\overset{q}{\overbrace{\left(k-k'\right)}}\cdot r}\cdot Vd^{3}r
+\]
+\begin{equation}
+F\left(q\right)=\frac{1}{Ze}\intop d^{3}r\rho\left(r\right)e^{iq\cdot r}\label{eq:Scattering Amplitude}
+\end{equation}
+
+$F\left(q\right)$ היא אמפליטודת הפיזור (\textenglish[variant=american]{(Form
+Factor}
+
+צפיפות הגרעינים של אטומים שונים לא שונה במיוחד.
+
+בערך $\sim0.15\frac{n}{fm^{3}}$ זוהי גם הצפיפות של כוכב נויטרונים.
+
+רדיוס- $R=R_{0}A^{1/3}$
+
+כאשר $R_{0}=1.25\ fm$ .
+
+\paragraph{סימטריית איזו-ספין}
+
+\[
+^{A}_{Z}X_{N}\leftrightarrow{}^{A}_{N-1}X_{Z+1}
+\]
+
+\[
+E=\frac{3}{5}\frac{Z^{2}e^{2}}{4\pi\varepsilon_{0}R}
+\]
+
+\begin{english}[variant=american]%
+
+\section*{Mass and binding energy}
+
+\end{english}%
+\[
+M_{nuc}\left(A,Z\right)=M_{atom}\left(A,Z\right)-Zm_{e}
+\]
+ כאשר מזניחים את אנרגיית הקשר האלקטרונית.
+
+\subsubsection*{אנרגיית הקשר הגרעינית ניתנת לחישוב ע\textquotedbl י 
+\[
+B\left(A,Z\right)=\left[Zm_{p}+Nm_{n}-M_{nuc}\left(A,Z\right)\right]c^{2}
+\]
+\[
+B\left(A,Z\right)=\left[Zm_{p}+Zm_{e}+Nm_{n}-M_{nuc}\left(A,Z\right)-M_{nuc}\left(A,Z\right)-Z\cdot m_{e}\right]c^{2}
+\]
+\[
+B\left(A,Z\right)=\left[Z\cdot m_{H}+Nm_{n}-M_{atom}\left(A,Z\right)\right]c^{2}
+\]
+}
+
+\paragraph*{יחידות: }
+
+יחידות מסה אטומית $a.m.u=u=931.5MeV/c^{2}$ 
+
+\paragraph*{פיחות המסה \textenglish[variant=american]{Mass Defect }}
+
+\[
+\Delta\equiv\left(Au-m\right)
+\]
+
+לדוגמה 
+\[
+m_{17}=7.016...u\Rightarrow\Delta=0.016...u
+\]
+
+\begin{english}[variant=american]%
+
+\subsubsection*{Q-Value\texthebrew{ }}
+
+\end{english}%
+\[
+x\rightarrow y
+\]
+\[
+Q=\left(m_{x}-m_{y}\right)c^{2}
+\]
+\[
+^{8}Be\rightarrow He+He
+\]
+\[
+Q=\left(m_{^{8}Be}-2m_{He}\right)c^{2}
+\]
+ $Q>0$ - תהליך אקזו-טרמי שיכול להתקיים ספונטינית בטבע.
+
+$Q<0$ - תהליך אנדו-טרמי שצריך להשקיע אנרגיה כדי לקיימו.
+\begin{english}[variant=american]%
+
+\subsection*{Neutron-Proton seperation energy}
+
+\end{english}%
+\begin{align*}
+S_{n}\left(A,Z\right) & =\left[\underset{after}{\underbrace{M\left(A-1,Z\right)}}+m_{n}-\underset{before}{\underbrace{M\left(A,Z\right)}}\right]c^{2}\\
+S_{p}\left(A,Z\right) & =\left[M\left(A-1,Z-1\right)+m_{H}-M\left(A,Z\right)\right]c^{2}
+\end{align*}
+
+
+\subsubsection*{ספקטרוסקופיית מסות}
+
+\[
+\frac{m}{q}=r\frac{B^{2}}{E}
+\]
+
+\begin{english}[variant=american]%
+
+\subsubsection*{Multi reflection time of flight mass spectrometer }
+
+\end{english}%
+\[
+qV=\frac{1}{2}mv^{2}
+\]
+\[
+v=\sqrt{\frac{2qV}{m}}
+\]
+ 
+\begin{english}[variant=american]%
+
+\subsection*{Penning Trap }
+
+\end{english}%
+שדה מגנטי ושדה קוואדרופולי חשמלי . החלקיק נלכד ועושה סיבובים.
+\end{document}

@@ -1,0 +1,410 @@
+%%═══════════════════════════════════════════════════════════════════
+%% Lecture 04 — Perturbation Theory for the Harmonic Oscillator:
+%%              Transition Amplitudes, Fermi's Golden Rule,
+%%              Second-Order Perturbation Theory, and
+%%              Introduction to Feynman Diagrams
+%% 77609 — Introduction to Elementary Particles
+%% Date: 19/04/2026
+%% Lecturer: Prof. Yonit Hochberg
+%%═══════════════════════════════════════════════════════════════════
+
+\section{Lecture 04 — Perturbation Theory and Feynman Diagrams for the Harmonic Oscillator}\label{sec:lec04:perturbation}
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 19/04/2026   & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Overview}
+
+This lecture introduces \textbf{perturbation theory} in the context of coupled harmonic oscillators — a tractable system where results can be verified explicitly.  The central objects are:
+\begin{enumerate}
+  \item \textbf{Fermi's Golden Rule}: the transition rate between states expressed in terms of a transition \emph{amplitude} and a \emph{phase-space} factor.
+  \item \textbf{Selection rules}: which transitions are kinematically and dynamically allowed for a given interaction Hamiltonian.
+  \item \textbf{Second-order perturbation theory}: explicit computation of a $y \to 3x$ decay amplitude via a sum over intermediate states.
+  \item \textbf{Feynman diagrams}: a pictorial — and ultimately computational — shorthand that encodes the same information with far less effort.
+\end{enumerate}
+
+The motivating philosophy is to \emph{prove} that Feynman diagrams work on a familiar system (the harmonic oscillator), so that one can later \emph{trust} the same machinery when applied to quantum field theory.
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Setup: Coupled Harmonic Oscillators}
+
+Consider a two-dimensional system with potential
+\begin{equation}
+  V(x,y)
+  = \frac{k\,x^2}{2}
+    + \frac{4k^2 y^2}{2}
+    + \alpha\, x^2 y.
+  \label{eq:lec04:potential}
+\end{equation}
+
+\begin{itemize}
+  \item The first two terms describe two \emph{decoupled} harmonic oscillators: an $x$-mode with angular frequency $\omega_x = \sqrt{k}$ and a $y$-mode with $\omega_y = 2\omega_x$.
+  \item The third term $\alpha x^2 y$ is an \emph{anharmonic} (interaction) term that couples the two modes and transfers energy between them.
+  \item The coupling constant $\alpha$ is assumed small, so this term is treated as a perturbation.
+\end{itemize}
+
+\begin{remark}[Physical picture of the interaction term]
+The anharmonic term $\alpha x^2 y$ can be thought of as an \emph{interaction vertex}: it can annihilate one $y$-quantum and create two $x$-quanta (or vice versa).  This is the harmonic-oscillator analogue of a particle decay in QFT.  The parameter $\alpha$ controls the \emph{rate} of energy transfer between the modes — just as a coupling constant controls an interaction rate in field theory.
+\end{remark}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Fermi's Golden Rule}
+
+\dfn{Fermi's Golden Rule}{The transition \emph{rate} $W$ from an initial state $|i\rangle$ to a final state $|f\rangle$ is
+\begin{equation}
+  W_{i \to f}
+  \;\propto\;
+  |\mathcal{A}|^2 \times \text{(phase space)},
+  \label{eq:lec04:FGR}
+\end{equation}
+where $\mathcal{A} = \langle f | H_1 | i \rangle$ is the \textbf{transition amplitude} (sometimes written $\mathcal{M}$) and the phase-space factor encodes the kinematic constraints.}
+
+\begin{itemize}
+  \item The amplitude $\mathcal{A}$ contains \textbf{all dynamical information} about the interaction.  It is computed via perturbation theory or, equivalently, via Feynman diagrams.
+  \item The \textbf{phase-space} factor accounts for kinematics: how much ``room'' is available in the space of final states.  For example, if a heavy particle decays into products whose combined mass is close to its own mass, the phase space is small and the decay rate is suppressed, regardless of the coupling strength.
+\end{itemize}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Ladder Operators and Matrix Elements}
+
+In the quantum harmonic oscillator with coordinate $q$ (standing for $x$ or $y$ or $z$), the position operator is expressed in terms of creation and annihilation operators as
+\begin{equation}
+  q
+  = \frac{1}{\sqrt{2\omega_q}}
+    \bigl(a_q + a_q^\dagger\bigr),
+  \label{eq:lec04:q-ladder}
+\end{equation}
+where $\omega_q$ is the frequency of that mode.  The standard ladder-operator actions are
+\begin{equation}
+  a_q^\dagger |n\rangle = \sqrt{n+1}\,|n+1\rangle,
+  \qquad
+  a_q |n\rangle = \sqrt{n}\,|n-1\rangle.
+  \label{eq:lec04:ladder-actions}
+\end{equation}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Selection Rules from the Interaction Hamiltonian}
+
+The interaction Hamiltonian for the two-oscillator system is
+\begin{equation}
+  H_1 = \alpha\, x^2 y.
+  \label{eq:lec04:H1-two}
+\end{equation}
+Using \eqref{eq:lec04:q-ladder}, $x^2 \propto (a_x + a_x^\dagger)^2$ and $y \propto (a_y + a_y^\dagger)$.  Expanding these products reveals which changes in occupation numbers $\Delta n_x$ and $\Delta n_y$ are possible:
+
+\dfn{Selection rules for $H_1 = \alpha x^2 y$}{A transition $|i\rangle \to |f\rangle$ has a non-zero amplitude \emph{only} if
+\begin{equation}
+  \Delta n_y = \pm 1
+  \qquad \text{and} \qquad
+  \Delta n_x \in \{0,\, \pm 2\}.
+  \label{eq:lec04:selection-rules}
+\end{equation}}
+
+\begin{remark}[Generalisation]
+For a general interaction $H_1 \propto x^p y^q$, the selection rules become $\Delta n_x \in \{-p, -p+2, \ldots, p\}$ and $\Delta n_y \in \{-q, -q+2, \ldots, q\}$.  For example, $H_1 \propto x^2 y^3$ gives $\Delta n_x \in \{0, \pm 2\}$ and $\Delta n_y \in \{\pm 1, \pm 3\}$.
+\end{remark}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{First Example: $y \to 2x$ Decay (Two-Oscillator System)}
+
+\subsubsection*{Kinematic setup}
+With $\omega_y = 2\omega_x$, energy conservation requires that the final state has $n_y = 0$ and $n_x = 2$.  Starting from $|i\rangle = |n_x, n_y\rangle = |0,1\rangle$, the allowed final state is $|f\rangle = |2,0\rangle$.
+
+\subsubsection*{First-order amplitude}
+\begin{align}
+  \mathcal{A}
+  &= \langle 2,0 | \,\alpha\, x^2 y\, | 0,1 \rangle \notag\\
+  &= \alpha\,\langle 2,0 |
+      \frac{(a_x + a_x^\dagger)^2}{2\omega_x}
+      \cdot
+      \frac{(a_y + a_y^\dagger)}{\sqrt{2\omega_y}}
+    | 0,1 \rangle.
+  \label{eq:lec04:amp-2osc}
+\end{align}
+The $y$ factor $a_y + a_y^\dagger$ acting on $|n_y = 1\rangle$ gives $a_y|1\rangle = |0\rangle$ (the relevant term, since $a_y^\dagger|1\rangle = \sqrt{2}|2\rangle$ does not lead to $|0\rangle$).  The $x$ factor $(a_x + a_x^\dagger)^2$ acting on $|0\rangle$ produces $|2\rangle$ via two applications of $a_x^\dagger$:
+\begin{equation}
+  (a_x^\dagger)^2 |0\rangle = \sqrt{2}\,|2\rangle.
+  \label{eq:lec04:x-create-two}
+\end{equation}
+This process is described pictorially as:
+
+\begin{center}
+\emph{One $y$-particle enters the vertex and is annihilated; two $x$-particles are created and exit.}
+\end{center}
+
+\subsubsection*{The Feynman diagram}
+\begin{center}
+  \begin{tikzpicture}
+    \begin{feynman}
+      \vertex (v);
+      \vertex [above left=1.5cm of v] (yi) {\(y\)};
+      \vertex [above right=1.2cm of v] (xf1) {\(x\)};
+      \vertex [right=1.8cm of v] (xf2) {\(x\)};
+      \diagram*{
+        (yi) -- [scalar, edge label=\(y\)] (v),
+        (v)  -- [scalar, edge label=\(x\)] (xf1),
+        (v)  -- [scalar, edge label=\(x\)] (xf2),
+      };
+    \end{feynman}
+  \end{tikzpicture}
+\end{center}
+
+The vertex carries a factor $\alpha$ (the coupling constant).
+
+\subsubsection*{Decay width and lifetime}
+\begin{equation}
+  \DecayRate \equiv \Gamma_{y \to 2x}
+  \;\propto\; |\mathcal{A}|^2 \times \text{phase space}
+  \;\propto\; \alpha^2.
+  \label{eq:lec04:decay-width}
+\end{equation}
+The \textbf{lifetime} of the $y$ particle is
+\begin{equation}
+  \tau = \frac{1}{\Gamma} \;\propto\; \frac{1}{\alpha^2}.
+  \label{eq:lec04:lifetime}
+\end{equation}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Second Example: $y \to 3x$ Decay — Three-Oscillator System}
+
+\subsubsection*{System and Hamiltonian}
+Now consider a \emph{three-mode} system with coordinates $x$, $y$, $z$ and frequencies $\omega_x$, $\omega_y = 3\omega_x$, $\omega_z \gg \omega_x, \omega_y$.  The interaction Hamiltonian has two terms:
+\begin{equation}
+  H_1 = \lambda_1\, xyz + \lambda_2\, x^2 z,
+  \label{eq:lec04:H1-three}
+\end{equation}
+where $\lambda_1$ and $\lambda_2$ are small coupling constants treated perturbatively.
+
+States are labelled $|n_x, n_y, n_z\rangle$.  We wish to compute the transition amplitude for
+\begin{equation}
+  |i\rangle = |0,1,0\rangle
+  \;\longrightarrow\;
+  |f\rangle = |3,0,0\rangle.
+  \label{eq:lec04:process}
+\end{equation}
+Energy conservation: $E_i = \omega_y = 3\omega_x = E_f$. \checkmark
+
+\subsubsection*{Why second-order perturbation theory is needed}
+Neither $\lambda_1 xyz$ nor $\lambda_2 x^2 z$ alone can connect $|0,1,0\rangle$ to $|3,0,0\rangle$ in a single step.  Each interaction changes occupation numbers by limited amounts (e.g.\ $\lambda_1$ changes $n_x, n_y, n_z$ by $\pm 1$ each; $\lambda_2$ changes $n_x$ by $\pm 2$ and $n_z$ by $\pm 1$).  Therefore, one must act with $H_1$ \emph{twice} (second order), passing through an intermediate state $|n\rangle$.
+
+\dfn{Second-order perturbation theory amplitude}{\begin{equation}
+  \mathcal{A}^{(2)}_{i \to f}
+  = \sum_{n} \frac{\langle f | H_1 | n \rangle \langle n | H_1 | i \rangle}{E_i - E_n},
+  \label{eq:lec04:2nd-order}
+\end{equation}
+where the sum runs over all intermediate states $|n\rangle$ with $E_n \neq E_i$.}
+
+\begin{remark}[Virtual intermediate states]
+The intermediate state $|n\rangle$ in \eqref{eq:lec04:2nd-order} need \emph{not} satisfy energy conservation ($E_n \neq E_i$ is generically the case).  These are called \textbf{virtual} (or \emph{off-shell}) intermediate states.  Only the initial and final states must be on-shell (energy-conserving).  This is the quantum mechanical precursor to virtual particles in QFT.
+\end{remark}
+
+\subsubsection*{Identifying intermediate states}
+
+We must find all $|n\rangle$ such that both $\langle n | H_1 | i \rangle \neq 0$ and $\langle f | H_1 | n \rangle \neq 0$.
+
+\paragraph{Intermediate state 1: $|n_1\rangle = |1,0,1\rangle$}
+\begin{itemize}
+  \item Step 1 (act on $|i\rangle = |0,1,0\rangle$ with $\lambda_1 xyz$): annihilate the $y$ and create one $x$ and one $z$, reaching $|1,0,1\rangle$.
+  \item Step 2 (act on $|1,0,1\rangle$ with $\lambda_2 x^2 z$): annihilate the $z$ and create two more $x$, reaching $|3,0,0\rangle = |f\rangle$.
+\end{itemize}
+
+\paragraph{Intermediate state 2: $|n_2\rangle = |2,1,1\rangle$}
+\begin{itemize}
+  \item Step 1 (act on $|0,1,0\rangle$ with $\lambda_2 x^2 z$): create two $x$ and one $z$; $y$ is untouched, reaching $|2,1,1\rangle$.
+  \item Step 2 (act on $|2,1,1\rangle$ with $\lambda_1 xyz$): annihilate the $y$ and the $z$, create one more $x$, reaching $|3,0,0\rangle = |f\rangle$.
+\end{itemize}
+
+These are the \emph{only} two contributing intermediate states.
+
+\subsubsection*{Matrix elements}
+
+Using $q = \frac{1}{\sqrt{2\omega_q}}(a_q + a_q^\dagger)$ and defining the shorthand
+\begin{equation}
+  C_1 \equiv \frac{1}{(2)^{3/2}\sqrt{\omega_x\,\omega_y\,\omega_z}},
+  \qquad
+  C_2 \equiv \frac{1}{(2)^{3/2}\,\omega_x\sqrt{\omega_z}},
+  \label{eq:lec04:C1-C2}
+\end{equation}
+the relevant matrix elements evaluate to:
+
+\begin{align}
+  \langle 1,0,1 | \lambda_1 xyz | 0,1,0 \rangle
+  &= \lambda_1\, C_1,
+  \label{eq:lec04:me1a}\\
+  \langle 3,0,0 | \lambda_2 x^2 z | 1,0,1 \rangle
+  &= \lambda_2\, C_2 \cdot \sqrt{6},
+  \label{eq:lec04:me1b}\\
+  \langle 2,1,1 | \lambda_2 x^2 z | 0,1,0 \rangle
+  &= \lambda_2\, C_2 \cdot \sqrt{2},
+  \label{eq:lec04:me2a}\\
+  \langle 3,0,0 | \lambda_1 xyz | 2,1,1 \rangle
+  &= \lambda_1\, C_1 \cdot \sqrt{6}.
+  \label{eq:lec04:me2b}
+\end{align}
+
+The $\sqrt{6}$ and $\sqrt{2}$ factors arise from the ladder-operator actions $a^\dagger|n\rangle = \sqrt{n+1}|n+1\rangle$.
+
+\subsubsection*{Full second-order amplitude}
+
+The energy denominators for the two channels are:
+\begin{align}
+  E_i - E_{n_1}
+  &= 3\omega_x - (\omega_x + \omega_z)
+   = 2\omega_x - \omega_z,\\
+  E_i - E_{n_2}
+  &= 3\omega_x - (2\omega_x + \omega_y + \omega_z)
+   = -(2\omega_x + \omega_z)
+   \quad [\text{using }\omega_y = 3\omega_x].
+\label{eq:lec04:energy-denominators}
+\end{align}
+
+Substituting into \eqref{eq:lec04:2nd-order}:
+\begin{align}
+  \mathcal{A}^{(2)}
+  &= \frac{(\lambda_2 C_2 \sqrt{6})(\lambda_1 C_1)}{2\omega_x - \omega_z}
+   + \frac{(\lambda_1 C_1 \sqrt{6})(\lambda_2 C_2\sqrt{2})}
+          {-(2\omega_x + \omega_z)}.
+  \label{eq:lec04:amp-full}
+\end{align}
+
+Factoring out $\lambda_1 \lambda_2 C_1 C_2 \sqrt{6}$:
+\begin{align}
+  \mathcal{A}^{(2)}
+  &= \lambda_1 \lambda_2\, C_1 C_2\,\sqrt{6}
+    \left[
+      \frac{1}{2\omega_x - \omega_z}
+      - \frac{\sqrt{2}}{\omega_z + 2\omega_x}
+    \right].
+  \label{eq:lec04:amp-factored}
+\end{align}
+
+Taking a common denominator $(\omega_z^2 - 4\omega_x^2)$:
+\begin{equation}
+  \boxed{
+    \mathcal{A}^{(2)}
+    = -\frac{\lambda_1\lambda_2\sqrt{2}}{4\,\omega_x^2}
+      \cdot\frac{1}{\omega_z^2/(4\omega_x^2) - 1}
+  }
+  \label{eq:lec04:amp-final}
+\end{equation}
+(after substituting $\omega_y = 3\omega_x$ and simplifying).  This is the complete first-nontrivial-order transition amplitude for $y \to 3x$.
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Introduction to Feynman Diagrams}
+
+\subsubsection*{Motivation}
+
+The second-order calculation above requires:
+\begin{enumerate}
+  \item Identifying all contributing intermediate states by inspection.
+  \item Computing each matrix element using ladder operators.
+  \item Combining all terms with the correct energy denominators.
+\end{enumerate}
+For homework problems with many interactions or many modes, this becomes \emph{very} cumbersome.  Feynman diagrams provide a systematic pictorial method that automatically generates the correct answer.
+
+\subsubsection*{Elements of a Feynman diagram}
+
+\dfn{External states}{\textbf{External states} (also called \emph{external lines}) represent the physical, on-shell initial and final particles.  In the $y \to 3x$ example there is one external initial line ($y$) and three external final lines ($x$, $x$, $x$).}
+
+\dfn{Vertices}{\textbf{Vertices} are points where lines meet; they correspond to interaction terms in $H_1$.  Each vertex contributes a factor of the coupling constant ($\lambda_1$ or $\lambda_2$).}
+
+\dfn{Internal lines / propagators}{\textbf{Internal lines} (also called \emph{propagators} or \emph{virtual lines}) connect two vertices and represent the virtual intermediate state.  They correspond to the energy denominator $1/(E_i - E_n)$ in second-order perturbation theory.  Unlike external lines, internal lines need not be on-shell.}
+
+\subsubsection*{Feynman diagram for $y \to 3x$}
+
+The process requires one $\lambda_1$ vertex (the only one that can annihilate a $y$) and one $\lambda_2$ vertex (to build up the remaining $x$ quanta via $x^2 z$).  The $z$ mode plays the role of the internal (virtual) line:
+
+\begin{center}
+  \begin{tikzpicture}
+    \begin{feynman}
+      \vertex (v1);
+      \vertex [left=2cm of v1] (yin) {\(y\)};
+      \vertex [above right=1.5cm of v1] (xout1) {\(x\)};
+      \vertex [right=2cm of v1] (v2);
+      \vertex [above right=1.5cm of v2] (xout2) {\(x\)};
+      \vertex [below right=1.5cm of v2] (xout3) {\(x\)};
+      \diagram*{
+        (yin)   -- [scalar] (v1),
+        (v1)    -- [scalar, edge label=\(x\)] (xout1),
+        (v1)    -- [scalar, edge label'=\(z\) (virtual)] (v2),
+        (v2)    -- [scalar] (xout2),
+        (v2)    -- [scalar] (xout3),
+      };
+    \end{feynman}
+  \end{tikzpicture}
+\end{center}
+
+\begin{itemize}
+  \item Vertex $v_1$: corresponds to $\lambda_1 xyz$.  The $y$ is annihilated; one $x$ and one $z$ emerge.
+  \item Internal line: the $z$ particle propagates from $v_1$ to $v_2$.  It is \emph{virtual} — its energy need not equal $\omega_z$.
+  \item Vertex $v_2$: corresponds to $\lambda_2 x^2 z$.  The $z$ is annihilated; two $x$ particles emerge.
+\end{itemize}
+
+There is a second diagram corresponding to the other ordering (acting with $\lambda_2$ first, then $\lambda_1$), which gives the second term in \eqref{eq:lec04:amp-factored}.
+
+\subsubsection*{From diagram to amplitude — preview of Feynman rules}
+
+Each element of the Feynman diagram maps to a mathematical factor.  The full set of \textbf{Feynman rules} (to be derived in Lecture~05) will specify:
+\begin{center}
+\begin{tabular}{ll}
+  \toprule
+  Diagram element & Mathematical factor \\
+  \midrule
+  External line (particle $q$) & $\dfrac{1}{\sqrt{2\omega_q}}$ \\[8pt]
+  Internal line (particle $q$) & $\dfrac{1}{E_i - E_q}$ (energy denominator) \\[8pt]
+  Vertex with coupling $\lambda$ & $\lambda$ \\[4pt]
+  Symmetry factor & $S$ (combinatorial, diagram-dependent) \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+Multiplying these factors together and summing all topologically distinct diagrams reproduces the perturbation-theory result — in this case \eqref{eq:lec04:amp-final} — without ever writing down an explicit sum over intermediate states.
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{To Remember}
+
+\begin{itemize}
+  \item \textbf{Fermi's Golden Rule}: $W \propto |\mathcal{A}|^2 \times \text{phase space}$.  The amplitude $|\mathcal{A}|$ carries all dynamical information; phase space carries kinematics.
+  \item For a coupling $\alpha$ at a single vertex, the decay rate goes as $\Gamma \propto \alpha^2$ and the lifetime as $\tau \propto 1/\alpha^2$.
+  \item \textbf{Selection rules} from $H_1 \propto x^p y^q$: only transitions with $|\Delta n_x| \leq p$ (same parity as $p$) and $|\Delta n_y| \leq q$ (same parity as $q$) are allowed.
+  \item \textbf{Second-order perturbation theory}: $\mathcal{A}^{(2)} = \sum_n \langle f|H_1|n\rangle\langle n|H_1|i\rangle/(E_i-E_n)$.  Sum over \emph{all} intermediate states reachable from $|i\rangle$ and from which $|f\rangle$ can be reached.
+  \item \textbf{Virtual (intermediate) states} need not conserve energy; only external states must.
+  \item A \textbf{Feynman diagram} has external lines (initial/final), vertices (couplings), and internal lines (propagators/virtual particles).
+  \item The \textbf{Feynman rules} (next lecture) translate each diagram element into a factor; the product of all factors gives the amplitude without explicit sums over intermediate states.
+\end{itemize}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Further Reading}
+
+No specific textbook was cited in this lecture.  The following are recommended:
+
+\begin{itemize}
+  \item \textbf{Griffiths, Chapter~6.1} — ``The Theory of Ionization and Excitation
+    by Impact'': derives Fermi's Golden Rule in the particle-physics context and
+    explains the role of the matrix element and the phase-space factor.  This is
+    the closest Griffiths chapter to the perturbation-theory content of this
+    lecture.
+
+  \item \textbf{Peskin \& Schroeder, \S4.1--4.3} — Interaction picture, time-ordered
+    products, and Wick's theorem.  These sections provide the formal QFT justification
+    for the diagrammatic rules that were here derived for the harmonic oscillator and
+    extended heuristically to field theory in Lecture~05.
+
+  \item \textbf{Tong, \textit{QFT Notes}, Chapter~3, \S3.1--3.2}
+    (\href{https://www.damtp.cam.ac.uk/user/tong/qft.html}{\texttt{damtp.cam.ac.uk/user/tong/qft.html}}):
+    ``Interacting Fields'' — introduces the interaction picture and perturbation
+    expansion in a QFT context, culminating in the same diagrammatic logic.
+
+  \item \textbf{Sakurai \& Napolitano, \textit{Modern Quantum Mechanics}, Chapter~5}
+    — Time-dependent perturbation theory and Fermi's Golden Rule in the
+    non-relativistic QM setting.  A useful review of the underlying formalism
+    before the field-theory generalisation.
+
+  \item \textbf{Feynman, \textit{QED: The Strange Theory of Light and Matter}}
+    (\href{https://press.princeton.edu/books/paperback/9780691164090/qed}{\texttt{Princeton UP}}):
+    a non-technical but surprisingly deep account of how Feynman diagrams encode
+    quantum amplitudes.  Recommended for conceptual grounding.
+\end{itemize}

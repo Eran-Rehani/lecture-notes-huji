@@ -1,0 +1,234 @@
+
+%% Lecture 04 — Tensor Algebra, Coordinate Systems, and 1D Constitutive Laws
+
+\section{Lecture 04 — Tensor Algebra, Coordinate Systems, and 1D Constitutive Laws}\label{sec:lec04:tensor_algebra}
+\date{April 15 2026}
+\subsection*{Overview}
+In this lecture, we expand upon the mathematical foundations of the stress tensor ($\mathbf{\sigma}$) and the infinitesimal strain tensor ($\boldsymbol{\epsilon}$). We explore tensor diagonalization, isotropic/deviatoric decomposition, and introduce new tensor algebraic operations (dyadic and symmetric tensor products). These mathematical tools are then applied to derive the strain tensor in polar coordinates. Finally, we bridge the gap between abstract tensors and physical reality by introducing the phenomenological 1D stress-strain curve and Hooke's Law, representing our first constitutive relation.
+
+\subsection*{Review: Properties of Symmetric Tensors}
+Both the stress tensor $\mathbf{\sigma}$ and the strain tensor $\boldsymbol{\epsilon}$ are second-rank symmetric tensors ($\sigma_{ij} = \sigma_{ji}$). A fundamental property of symmetric tensors is that they can always be diagonalized by choosing an appropriate orthogonal coordinate system.
+
+\begin{itemize}
+    \item \textbf{Principal Axes:} The coordinate axes in which the tensor is diagonal.
+    \item \textbf{Principal Values:} The eigenvalues of the tensor (e.g., principal stresses $\sigma_1, \sigma_2, \sigma_3$ or principal strains $\epsilon_1, \epsilon_2, \epsilon_3$).
+    \item \textbf{Invariants:} The Trace ($\text{Tr}(\mathbf{\sigma})$) and the Determinant ($\text{Det}(\mathbf{\sigma})$) remain invariant under coordinate transformations.
+\end{itemize}
+
+\textit{Note on Tensor Fields:} While a tensor field $\mathbf{\sigma}(\mathbf{x})$ can be diagonalized at any specific point $\mathbf{x}$, it generally cannot be diagonalized globally across the entire domain using a single Cartesian coordinate system, because the principal directions may vary spatially.
+
+\subsubsection*{Example 1: Diagonalizing a Pure Shear State}
+Consider a 2D pure shear stress state. In the standard Cartesian basis, the stress tensor is:
+\begin{align}
+    \mathbf{\sigma} = \begin{pmatrix} 0 & \sigma_0 \\ \sigma_0 & 0 \end{pmatrix}
+\end{align}
+To find the principal stresses, we can calculate the eigenvalues. Several methods exist:
+\begin{enumerate}
+    \item \textbf{Pauli Matrices Analogy:} Recognizing this as proportional to the Pauli matrix $\sigma_x$, the eigenvalues are immediately known to be $\pm \sigma_0$.
+    \item \textbf{Invariants Method:} We know $\text{Tr}(\mathbf{\sigma}) = \lambda_1 + \lambda_2 = 0$ and $\text{Det}(\mathbf{\sigma}) = \lambda_1 \lambda_2 = -\sigma_0^2$. Solving this system yields $\lambda_{1,2} = \pm \sigma_0$.
+\end{enumerate}
+In the principal basis (rotated by $45^\circ$), the tensor becomes:
+\begin{align}
+    \mathbf{\sigma}' = \begin{pmatrix} \sigma_0 & 0 \\ 0 & -\sigma_0 \end{pmatrix}
+\end{align}
+\textbf{Physical Context:} A state of pure shear on one set of planes is physically equivalent to a state of pure tension ($\sigma_0$) and pure compression ($-\sigma_0$) on planes rotated by $45^\circ$.
+
+%%────────────────────────────────────────────────────────────────────
+%% Pure shear (x₁,x₂) → tension + compression in principal axes (45°)
+%%────────────────────────────────────────────────────────────────────
+\begin{center}
+\begin{tikzpicture}[scale=1.55, >=Stealth]
+  \def\sz{0.78}   % element half-side
+  \def\fa{0.48}   % force arrow length
+  % ── LEFT: pure shear in original (x₁, x₂) frame ─────────────────
+  \begin{scope}[xshift=-2.7cm]
+    \fill[blue!8] (-\sz,-\sz) rectangle (\sz,\sz);
+    \draw[very thick] (-\sz,-\sz) rectangle (\sz,\sz);
+    % σ₁₂ on top and bottom faces (force in x₁ direction on x₂-face)
+    \draw[force] ( 0,  \sz) --++ ( \fa, 0) node[above right=-2] {$\sigma_0$};
+    \draw[force] ( 0, -\sz) --++ (-\fa, 0) node[below left=-2]  {$\sigma_0$};
+    % σ₂₁ on right and left faces (force in x₂ direction on x₁-face)
+    \draw[force] ( \sz, 0)  --++ (0,  \fa) node[right]          {$\sigma_0$};
+    \draw[force] (-\sz, 0)  --++ (0, -\fa) node[left]           {$\sigma_0$};
+    % Axes
+    \draw[->,gray,thin] (-\sz-0.35,-\sz-0.30) --++ (0.55,0)
+      node[right,gray,scale=0.75] {$x_1$};
+    \draw[->,gray,thin] (-\sz-0.35,-\sz-0.30) --++ (0,0.55)
+      node[above,gray,scale=0.75] {$x_2$};
+    % Matrix label
+    \node[below=20,align=center,scale=0.82] at (0,-\sz)
+      {$\begin{pmatrix}0&\sigma_0\\\sigma_0&0\end{pmatrix}$};
+  \end{scope}
+  % ── Arrow ────────────────────────────────────────────────────────
+  \draw[->,very thick,gray!70] (-0.55,0) --++ (1.10,0)
+    node[midway,above,black,scale=0.88] {$45^\circ$ rot.};
+  % ── RIGHT: tension + compression in principal frame ───────────────
+  \begin{scope}[xshift=2.7cm]
+    % Diamond element (square rotated 45° in the original frame)
+    \fill[blue!8]  (0,\sz) -- (\sz,0) -- (0,-\sz) -- (-\sz,0) -- cycle;
+    \draw[very thick] (0,\sz) -- (\sz,0) -- (0,-\sz) -- (-\sz,0) -- cycle;
+    % Tension along x₁′ (horizontal)
+    \draw[force,myblue] ( \sz, 0) --++ (\fa, 0)  node[right]    {$+\sigma_0$};
+    \draw[force,myblue] (-\sz, 0) --++ (-\fa, 0) node[left]     {$+\sigma_0$};
+    % Compression along x₂′ (vertical, arrows pointing inward)
+    \draw[force,myred] (0, \sz+\fa) -- (0, \sz)  node[pos=0,above] {$-\sigma_0$};
+    \draw[force,myred] (0,-\sz-\fa) -- (0,-\sz)  node[pos=0,below] {$-\sigma_0$};
+    % Principal axes (dashed)
+    \draw[->,gray,dashed,thin] (-\sz-0.35,0) --++ (2*\sz+0.70,0)
+      node[right,gray,scale=0.75] {$x_1'$};
+    \draw[->,gray,dashed,thin] (0,-\sz-0.35) --++ (0,2*\sz+0.70)
+      node[above,gray,scale=0.75] {$x_2'$};
+    % Matrix label
+    \node[below=20,align=center,scale=0.82] at (0,-\sz)
+      {$\begin{pmatrix}\sigma_0&0\\0&-\sigma_0\end{pmatrix}$};
+  \end{scope}
+\end{tikzpicture}
+\end{center}
+
+\subsubsection*{Example 2: Isotropic and Deviatoric Decomposition}
+Any second-rank tensor can be decomposed into an isotropic part (a multiple of the identity tensor) and a deviatoric (traceless) part. In the principal axis system:
+\begin{align}
+    \begin{pmatrix} \sigma_1 & 0 & 0 \\ 0 & \sigma_2 & 0 \\ 0 & 0 & \sigma_3 \end{pmatrix} 
+    &= \bar{\sigma} \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix} 
+    + \begin{pmatrix} \sigma_1 - \bar{\sigma} & 0 & 0 \\ 0 & \sigma_2 - \bar{\sigma} & 0 \\ 0 & 0 & \sigma_3 - \bar{\sigma} \end{pmatrix}
+\end{align}
+where the mean hydrostatic stress is $\bar{\sigma} = \frac{1}{3}\text{Tr}(\mathbf{\sigma}) = \frac{1}{3}(\sigma_1 + \sigma_2 + \sigma_3)$.
+The second term on the RHS is the \textbf{deviatoric stress tensor}, $\mathbf{\sigma}'$. By definition, $\text{Tr}(\mathbf{\sigma}') = (\sigma_1 - \bar{\sigma}) + (\sigma_2 - \bar{\sigma}) + (\sigma_3 - \bar{\sigma}) = \sigma_1 + \sigma_2 + \sigma_3 - 3\bar{\sigma} = 0$.
+
+\subsection*{New Tensor Algebra Operations}
+
+To generalize our formulation of continuum mechanics, we define new algebraic operations.
+
+\subsubsection*{1. Tensor Product (Dyadic/Outer Product)}
+Given two vectors $\mathbf{a}$ and $\mathbf{b}$, the tensor product $\mathbf{a} \otimes \mathbf{b}$ produces a second-rank tensor (matrix).
+\begin{align}
+    (\mathbf{a} \otimes \mathbf{b})_{ij} = a_i b_j
+\end{align}
+\textit{Properties:} It is multilinear (linear in both $\mathbf{a}$ and $\mathbf{b}$) but \textbf{non-commutative} ($\mathbf{a} \otimes \mathbf{b} \neq \mathbf{b} \otimes \mathbf{a}$).
+
+\subsubsection*{2. Symmetric Tensor Product}
+We define the symmetric tensor product of two vectors, denoted by $\odot$, as:
+\begin{align}
+    \mathbf{a} \odot \mathbf{b} = \frac{1}{2}(\mathbf{a} \otimes \mathbf{b} + \mathbf{b} \otimes \mathbf{a})
+\end{align}
+In index notation:
+\begin{align}
+    (\mathbf{a} \odot \mathbf{b})_{ij} = \frac{1}{2}(a_i b_j + b_i a_j)
+\end{align}
+\textbf{Physical Context:} We can now express the infinitesimal strain tensor elegantly without indices. Recalling that $\epsilon_{ij} = \frac{1}{2}(\partial_i u_j + \partial_j u_i)$, using the Del operator $\nabla$, we can write:
+\begin{align}
+    \boldsymbol{\epsilon} = \nabla \odot \mathbf{u}
+\end{align}
+
+\subsubsection*{3. Tensor-Vector Contraction (Dot Product)}
+Given a second-rank tensor $\mathbf{\sigma}$ and a vector $\mathbf{v}$, their inner product (contraction) produces a new vector $\mathbf{u}$:
+\begin{align}
+    \mathbf{u} = \mathbf{\sigma} \cdot \mathbf{v} \implies u_i = \sigma_{ij} v_j
+\end{align}
+For symmetric tensors, left-multiplication and right-multiplication yield the same result. 
+
+\subsection*{Derivations: Strain Tensor in Polar Coordinates}
+
+We wish to calculate the strain tensor $\boldsymbol{\epsilon} = \nabla \odot \mathbf{u}$ in 2D polar coordinates $(r, \phi)$. 
+Let the displacement vector be $\mathbf{u} = u_r \hat{\mathbf{r}} + u_\phi \hat{\boldsymbol{\phi}}$, and the gradient operator be $\nabla = \hat{\mathbf{r}} \frac{\partial}{\partial r} + \hat{\boldsymbol{\phi}} \frac{1}{r} \frac{\partial}{\partial \phi}$.
+
+\textbf{Physical Context:} When operating with $\nabla$ in curvilinear coordinates, the derivatives must act not only on the vector components ($u_r, u_\phi$) but also on the basis vectors ($\hat{\mathbf{r}}, \hat{\boldsymbol{\phi}}$), as they change direction in space.
+The derivatives of the unit vectors are:
+\begin{align}
+    \frac{\partial \hat{\mathbf{r}}}{\partial \phi} = \hat{\boldsymbol{\phi}}, \quad \frac{\partial \hat{\boldsymbol{\phi}}}{\partial \phi} = -\hat{\mathbf{r}}, \quad \frac{\partial \hat{\mathbf{r}}}{\partial r} = \mathbf{0}, \quad \frac{\partial \hat{\boldsymbol{\phi}}}{\partial r} = \mathbf{0}
+\end{align}
+
+First, we compute the full tensor gradient $\nabla \otimes \mathbf{u}$:
+\begin{align}
+    \nabla \otimes \mathbf{u} &= \left( \hat{\mathbf{r}} \frac{\partial}{\partial r} + \hat{\boldsymbol{\phi}} \frac{1}{r} \frac{\partial}{\partial \phi} \right) \otimes (u_r \hat{\mathbf{r}} + u_\phi \hat{\boldsymbol{\phi}}) \nonumber \\
+    &= \hat{\mathbf{r}} \otimes \frac{\partial \mathbf{u}}{\partial r} + \frac{1}{r}\hat{\boldsymbol{\phi}} \otimes \frac{\partial \mathbf{u}}{\partial \phi}
+\end{align}
+Evaluating the partial derivatives using the product rule:
+\begin{align}
+    \frac{\partial \mathbf{u}}{\partial r} &= \frac{\partial u_r}{\partial r} \hat{\mathbf{r}} + \frac{\partial u_\phi}{\partial r} \hat{\boldsymbol{\phi}} \\
+    \frac{\partial \mathbf{u}}{\partial \phi} &= \frac{\partial u_r}{\partial \phi} \hat{\mathbf{r}} + u_r \underbrace{\frac{\partial \hat{\mathbf{r}}}{\partial \phi}}_{=\hat{\boldsymbol{\phi}}} + \frac{\partial u_\phi}{\partial \phi} \hat{\boldsymbol{\phi}} + u_\phi \underbrace{\frac{\partial \hat{\boldsymbol{\phi}}}{\partial \phi}}_{=-\hat{\mathbf{r}}} \nonumber \\
+    &= \left( \frac{\partial u_r}{\partial \phi} - u_\phi \right) \hat{\mathbf{r}} + \left( \frac{\partial u_\phi}{\partial \phi} + u_r \right) \hat{\boldsymbol{\phi}}
+\end{align}
+Assembling the tensor product:
+\begin{align}
+    \nabla \otimes \mathbf{u} = \frac{\partial u_r}{\partial r} (\hat{\mathbf{r}} \otimes \hat{\mathbf{r}}) + \frac{\partial u_\phi}{\partial r} (\hat{\mathbf{r}} \otimes \hat{\boldsymbol{\phi}}) + \frac{1}{r}\left( \frac{\partial u_r}{\partial \phi} - u_\phi \right) (\hat{\boldsymbol{\phi}} \otimes \hat{\mathbf{r}}) + \frac{1}{r}\left( \frac{\partial u_\phi}{\partial \phi} + u_r \right) (\hat{\boldsymbol{\phi}} \otimes \hat{\boldsymbol{\phi}})
+\end{align}
+Symmetrizing to find $\boldsymbol{\epsilon} = \frac{1}{2}(\nabla \otimes \mathbf{u} + (\nabla \otimes \mathbf{u})^T)$, we extract the components:
+\begin{align}
+    \epsilon_{rr} &= \frac{\partial u_r}{\partial r} \nonumber \\
+    \epsilon_{\phi\phi} &= \frac{1}{r} \frac{\partial u_\phi}{\partial \phi} + \frac{u_r}{r} \\
+    \epsilon_{r\phi} &= \epsilon_{\phi r} = \frac{1}{2}\left( \frac{1}{r}\frac{\partial u_r}{\partial \phi} + \frac{\partial u_\phi}{\partial r} - \frac{u_\phi}{r} \right) \nonumber 
+\end{align}
+\textit{Note:} The terms $\frac{u_r}{r}$ and $-\frac{u_\phi}{r}$ arise entirely from the rotation of the local basis vectors, a hallmark of curvilinear continuum mechanics.
+
+\subsection*{The 1D Constitutive Law: Stress-Strain Curve}
+
+Up to this point, our treatment of stress and strain has been purely geometrical and based on equilibrium. To close the system of equations, we need a relationship that links deformation ($\boldsymbol{\epsilon}$) to the applied internal forces ($\mathbf{\sigma}$). This relationship depends strictly on the material and is called a \textbf{Constitutive Equation}.
+
+For a standard 1D tensile test (e.g., pulling a steel rod), the phenomenological mapping between normal stress $\sigma$ and normal strain $\epsilon$ yields the \textbf{Stress-Strain Curve}. Key regions include:
+
+\begin{enumerate}
+    \item \textbf{Proportional Limit (A):} The region where $\sigma$ scales linearly with $\epsilon$.
+    \begin{equation}
+        \boxed{\sigma = E \epsilon}
+    \end{equation}
+    This is \textbf{Hooke's Law}, where the constant of proportionality $E$ is \textit{Young's Modulus}. For steel, this regime is valid up to $\sim 200 \text{ MPa}$, corresponding to a tiny strain of roughly $0.1\%$.
+    \item \textbf{Elastic Limit:} For metals like steel, this generally coincides with the proportional limit. If unloaded from here, the material returns exactly to its original shape (reversible deformation).
+    \item \textbf{Yield Point (B - \textit{Kniya}):} The point beyond which the material undergoes significant plastic (irreversible) deformation with very little increase in applied stress.
+    \item \textbf{Necking and Fracture (C):} The cross-sectional area decreases rapidly (necking), eventually leading to structural failure (rupture). Note that strains here are $10-15$ times larger than in the elastic regime.
+\end{enumerate}
+
+\textbf{Engineering Working Stress:} In engineering design, components must operate strictly within the linear elastic regime to prevent permanent deformation. 
+\begin{align}
+    \sigma_{\text{working}} = \frac{\sigma_{\text{yield}}}{\text{S.F.}}
+\end{align}
+where $\text{S.F.}$ is a \textit{Safety Factor} (e.g., $1.6$), accounting for unpredictable environmental loads, material imperfections, or modelling simplifications.
+
+\textit{Material Typology:}
+\begin{itemize}
+    \item \textbf{Ductile Materials (e.g., Steel, Aluminum):} Exhibit a long plastic deformation region before fracture, providing physical warning before failure.
+    \item \textbf{Brittle Materials (e.g., Cast Iron, Ceramics, Glass):} Fail suddenly with almost no plastic deformation.
+\end{itemize}
+
+\subsection*{Connections}
+\begin{itemize}
+    \item \textbf{Linear Algebra:} Finding principal stresses is mathematically identical to finding the eigenvalues of an operator. The trace and determinant properties directly translate from standard matrix invariants.
+    \item \textbf{Engineering Mechanics:} Cauchy's stress principle, heavily reliant on the tensor-vector contraction ($\mathbf{t} = \mathbf{\sigma} \cdot \hat{\mathbf{n}}$), forms the boundary conditions for practically all structural simulations.
+\end{itemize}
+\begin{figure}
+    \centering
+    \caption{Stress-Strain Plot}
+    \label{fig:stress_strain_plot}
+% STRESS - STRAIN plot
+\begin{tikzpicture}
+  \def\xmax{4.5}
+  \def\ymax{2.8}
+  \def\xa{0.24*\xmax} % elastic limit
+  \def\xb{0.30*\xmax} % yield strength
+  \def\xc{0.64*\xmax} % ultimate strength
+  \def\xd{0.90*\xmax} % facture
+  \coordinate (O) at (0,0); % origin
+  \coordinate (A) at (\xa,0.55*\ymax); % elastic limit
+  \coordinate (B) at (\xb,0.65*\ymax); % yield strength
+  \coordinate (C) at (\xc,0.80*\ymax); % ultimate strength
+  \coordinate (D) at (\xd,0.70*\ymax); % facture
+  \fill[myblue!8] (0,0) rectangle (\xb,\ymax);
+  %\fill[myorange!10] (\xa,0) rectangle (\xb,\ymax);
+  \fill[myred!8] (\xb,0) rectangle (\xmax,\ymax);
+  \draw[->,thick] (-0.1*\ymax,0) -- (0.04+\xmax,0) node[below left=0] {Strain $\epsilon=\Delta L/L$};
+  \draw[->,thick] (0,-0.1*\ymax) -- (0,0.04+\ymax) node[above left=0,rotate=90] {Stress $\sigma$};
+  %\draw[thick] ({(\xa+\xb)/2},0.035*\ymax) --++ (0,-0.07*\ymax);
+  \draw[myblue,very thick]
+    (O) -- (A) -- (B) to[out=46,in=180,looseness=0.7] (C) to[out=0,in=150,looseness=0.7]  (D);
+  \fill[myblue] (A) circle(0.08) node[above left=-3,scale=0.9,align=left] {elastic\\limit};
+  \fill[myorange] (C) circle(0.08) node[above=1,scale=0.9] {ultimate strength};
+  \fill[myred] (D) circle(0.08) node[left=5,below,scale=0.9] {fracture};
+  \node[right=1,above left=1,myblue!80!black,scale=0.9] at (\xb,0) {elastic};
+  \node[above,myred!80!black,scale=0.9] at ({(\xmax+\xb)/2},0) {plastic};
+\end{tikzpicture}
+\end{figure}
+\subsection*{Exam / HW Hints}
+\begin{itemize}
+    \item When calculating strain in curvilinear coordinates (cylindrical or spherical), \textbf{do not} simply take partial derivatives of the components. You must account for the spatial derivatives of the basis vectors ($\hat{\mathbf{r}}, \hat{\boldsymbol{\theta}}, \hat{\boldsymbol{\phi}}$).
+    \item Remember the definitions of invariants: if a problem asks you to verify if two stress states are rotations of one another, simply check if their Traces and Determinants are equal.
+\end{itemize}

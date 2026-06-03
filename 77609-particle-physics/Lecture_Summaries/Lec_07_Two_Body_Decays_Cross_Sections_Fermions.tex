@@ -1,0 +1,554 @@
+%%═══════════════════════════════════════════════════════════════════
+%% Lecture 07 — Two-Body Decays, Scattering Cross-Sections,
+%%              Symmetry Factors, and Introduction to Fermions
+%% 77609 — Introduction to Elementary Particles
+%% Date: 30/04/2026
+%% Lecturer: Prof. Yonit Hochberg
+%%═══════════════════════════════════════════════════════════════════
+
+\documentclass[../main.tex]{subfiles}
+\usepackage{preamble}
+
+\begin{document}
+
+\section{Lecture 07 — Two-Body Decays, Cross-Sections, Symmetry Factors, and Fermions}\label{sec:lec07}
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 30/04/2026   & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Overview}
+
+This lecture completes the treatment of phase space and observables, then opens the chapter on fermions.
+
+\begin{enumerate}
+  \item \textbf{Two-body decay kinematics}: explicit formulae for the energies and three-momenta of the daughter particles in the rest frame; integration over the solid angle; the compact two-body decay rate formula.
+  \item \textbf{General scattering cross-section}: the phase-space formula for $1+2 \to 3+\cdots+n$; the Lorentz-invariant prefactor; the standard form of $d\sigma$.
+  \item \textbf{$2\to2$ scattering in the center-of-mass frame}: working out $s$, $t$, $u$ for $\phi^3$ theory; the equal-mass simplification; the full differential cross-section.
+  \item \textbf{Symmetry factors via contraction counting}: why the three channels in $\phi\phi\to\phi\phi$ enter with equal weight; the concept of contractions.
+  \item \textbf{Dimensional analysis of matrix elements}: $[\mathcal{M}] = \text{mass}^{4-n}$ for an $n$-particle process; sanity checks on $\DecayRate$ and $\sigma$.
+  \item \textbf{Summary of perturbative QFT}: free vs.\ interacting fields; role of Feynman diagrams.
+  \item \textbf{Introduction to fermions}: the Dirac equation; gamma matrices and Clifford algebra; $\gamma^5$; Dirac conjugate $\bar\psi$; the Dirac Lagrangian; Weyl spinors.
+\end{enumerate}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Two-Body Decay Kinematics}
+
+\noindent\textbf{Physical intuition:} When a particle at rest decays to exactly two daughters, four-momentum conservation in 3D leaves no freedom in the magnitude of the momenta — the daughters must fly back-to-back with equal and opposite three-momenta, completely determined by the three masses.  The only remaining freedom is the direction of the decay axis, which is integrated over to obtain the total rate.
+
+\subsubsection*{Setup}
+
+Consider particle~1 of mass $M_1$ at rest decaying to particles~2 and~3:
+\[
+  1 \;\xrightarrow{\text{rest}}\; 2 + 3.
+\]
+The four-momentum of particle~1 is $p_1 = (M_1,\,\bvec{0})$, since it is at rest.
+
+\subsubsection*{Energies and momenta of the daughters}
+
+Conservation of four-momentum, $p_1 = p_2 + p_3$, together with the on-shell conditions $p_i^2 = m_i^2$ uniquely determines:
+\begin{equation}
+  \boxed{E_2 = \frac{M_1^2 + m_2^2 - m_3^2}{2M_1},}
+  \label{eq:lec07:E2}
+\end{equation}
+and (by the same calculation with $2 \leftrightarrow 3$)
+\begin{equation}
+  E_3 = \frac{M_1^2 + m_3^2 - m_2^2}{2M_1}.
+  \label{eq:lec07:E3}
+\end{equation}
+Because three-momentum is conserved and the parent is at rest, $\bvec{p}_2 + \bvec{p}_3 = \bvec{0}$, so $|\bvec{p}_2| = |\bvec{p}_3| \equiv p_*$.  The magnitude is:
+\begin{equation}
+  \boxed{
+  p_* = \frac{\sqrt{
+    \bigl[M_1^2 - (m_2+m_3)^2\bigr]\bigl[M_1^2 - (m_2-m_3)^2\bigr]
+  }}{2M_1}.
+  }
+  \label{eq:lec07:pstar}
+\end{equation}
+This can be written more compactly using the triangle (Källén) function $\lambda(a,b,c)=(a-b-c)^2-4bc$, but the form above makes the physics transparent: $p_* > 0$ requires $M_1 > m_2 + m_3$ (the decay threshold).
+
+\subsubsection*{Integration over the solid angle}
+
+From Lecture~06, the standard decay rate formula (with the $p_j^0$ integrals already done) gives the differential decay rate:
+\begin{equation}
+  d\DecayRate = \frac{1}{32\pi^2}\,|\Mamp|^2\,
+    \frac{p_*}{M_1^2}\,d\Omega_2,
+  \label{eq:lec07:dGamma2body}
+\end{equation}
+where $d\Omega_2 = \sin\theta_2\,d\theta_2\,d\phi_2$ is the solid angle of particle~2.  If $|\Mamp|^2$ is independent of the decay direction (true for scalar particles), we integrate:
+\[
+  \int d\Omega = \int_{-1}^{1}d(\cos\theta)\int_0^{2\pi}d\phi = 4\pi.
+\]
+The total two-body decay rate is then:
+\begin{equation}
+  \boxed{
+  \DecayRate_{1\to 23} = \frac{p_*}{8\pi\,M_1^2}\,|\Mamp|^2.
+  }
+  \label{eq:lec07:Gamma2body}
+\end{equation}
+
+\begin{remark}[Kinematics fully determined]
+For a two-body decay, all momenta are uniquely determined by the masses up to the overall direction.  In contrast, for three-body and higher decays there is a continuous distribution of final-state configurations — the Dalitz plot.  The two-body case is therefore both the simplest and the most predictive.
+\end{remark}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{General Scattering Cross-Section}
+
+\noindent\textbf{Physical intuition:} The cross-section is the effective area that a target particle presents to an incoming beam.  It is defined so that the rate equals the flux times the cross-section.  The factor $1/(2E_1\,2E_2\,|\bvec{v}_1-\bvec{v}_2|)$ in the formula is exactly this flux factor, and the rest is the same phase-space integral as in the decay rate.
+
+\subsubsection*{The general formula}
+
+For the $2\to n$ scattering process $1+2 \to 3+\cdots+n$, the total cross-section is:
+\begin{equation}
+  \sigma = \frac{1}{2E_1\,2E_2\,|\bvec{v}_1-\bvec{v}_2|}
+  \int |\Mamp|^2\,
+  (2\pi)^4\,\delta^{(4)}\!\Bigl(p_1+p_2 - \sum_{j=3}^{n}p_j\Bigr)
+  \prod_{j=3}^{n}\frac{d^3p_j}{(2\pi)^3\,2E_j},
+  \label{eq:lec07:sigma-general}
+\end{equation}
+where $E_j = \sqrt{|\bvec{p}_j|^2+m_j^2}$ throughout.  The three kinematic constraints — on-shell, positive energy, and four-momentum conservation — are built into the measure, exactly as in the decay rate.
+
+\subsubsection*{Origin of the prefactor}
+
+The prefactor $1/(2E_1\,2E_2\,|\bvec{v}_1-\bvec{v}_2|)$ has two origins:
+\begin{itemize}
+  \item $1/(2E_1)\cdot 1/(2E_2)$: normalization of the two initial-state wave functions (same $\sqrt{2\omega_k}$ normalization used for the decay rate).
+  \item $1/|\bvec{v}_1-\bvec{v}_2|$: the cross-section is obtained by dividing the transition rate by the flux of incoming particles; the flux is proportional to the relative velocity $|\bvec{v}_1-\bvec{v}_2|$.
+\end{itemize}
+
+\subsubsection*{Lorentz-invariant form of the prefactor}
+
+While individual $E_i$ and $|\bvec{v}_i|$ are frame-dependent, the combination
+\begin{equation}
+  2E_1\,2E_2\,|\bvec{v}_1-\bvec{v}_2|
+  = 4\sqrt{(p_1\cdot p_2)^2 - m_1^2\,m_2^2}
+  \label{eq:lec07:flux-Lorentz}
+\end{equation}
+is Lorentz invariant (it is a Lorentz scalar).  This makes the total cross-section Lorentz invariant, as it must be: the total number of scattering events is a physical observable, independent of frame.
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{$2\to 2$ Scattering: Differential Cross-Section}
+
+\subsubsection*{General result}
+
+For $1+2\to3+4$, the differential cross-section with respect to the solid angle in the center-of-mass (CM) frame is:
+\begin{equation}
+  \dcross\bigg|_{\rm CM}
+  = \frac{1}{2E_1\,2E_2\,|\bvec{v}_1-\bvec{v}_2|}
+    \cdot \frac{|\bvec{p}_3|}{(2\pi)^2\,4\sqrt{s}}\,
+    |\Mamp(1+2\to3+4)|^2,
+  \label{eq:lec07:dsigma-22}
+\end{equation}
+where $\sqrt{s}$ is the CM energy.
+
+\subsubsection*{Equal-mass simplification}
+
+When all four particles have the same mass $m$ (including the massless limit $m\to0$), the CM momenta satisfy $|\bvec{p}_3| = |\bvec{p}_1| \equiv p_{\rm CM}$, and \eqref{eq:lec07:dsigma-22} simplifies to:
+\begin{equation}
+  \boxed{
+  \dcross\bigg|_{\rm CM}
+  = \frac{|\Mamp|^2}{64\pi^2\,s}.
+  }
+  \label{eq:lec07:dsigma-equal-mass}
+\end{equation}
+This is the form most frequently used in practice.
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Worked Example: $\phi\phi\to\phi\phi$ in $\phi^3$ Theory}
+
+\noindent\textbf{Physical intuition:} In $\phi^3$ theory, two scalar particles can scatter by exchanging a virtual $\phi$, and the intermediate virtual particle can carry different four-momenta depending on which pair of external legs it connects.  The three distinct topologies ($s$, $t$, $u$ channels) correspond to these three choices, and in the CM frame they differ by how the scattering angle $\theta$ enters.
+
+\subsubsection*{Review of the three diagrams}
+
+The interaction Lagrangian is $\lagr_{\rm int} = \lambda\phi^3$.  For $\phi\phi\to\phi\phi$ there are three Feynman diagrams at order $\lambda^2$, labeled by the Mandelstam variable of the propagator:
+\begin{align}
+  \Mamp_s &\sim \frac{\lambda^2}{s - m^2}, & s &= (p_1+p_2)^2, \label{eq:lec07:Ms}\\
+  \Mamp_t &\sim \frac{\lambda^2}{t - m^2}, & t &= (p_1-p_3)^2, \label{eq:lec07:Mt}\\
+  \Mamp_u &\sim \frac{\lambda^2}{u - m^2}, & u &= (p_1-p_4)^2. \label{eq:lec07:Mu}
+\end{align}
+The total amplitude is $\Mamp = \Mamp_s + \Mamp_t + \Mamp_u$.
+
+\subsubsection*{Kinematics in the center-of-mass frame}
+
+Choose the $z$-axis along the beam.  The four four-momenta are:
+\begin{align}
+  p_1 &= (E,\;0,\;0,\;+p_{\rm CM}), \label{eq:lec07:p1}\\
+  p_2 &= (E,\;0,\;0,\;-p_{\rm CM}), \label{eq:lec07:p2}\\
+  p_3 &= (E,\;p_{\rm CM}\sin\theta,\;0,\;+p_{\rm CM}\cos\theta), \label{eq:lec07:p3}\\
+  p_4 &= (E,\;-p_{\rm CM}\sin\theta,\;0,\;-p_{\rm CM}\cos\theta), \label{eq:lec07:p4}
+\end{align}
+where all particles have equal mass $m$, so $E^2 = p_{\rm CM}^2 + m^2$.
+
+\subsubsection*{Computing the Mandelstam variables}
+
+\textbf{Computing $s$.}  We have $p_1+p_2 = (2E,\bvec{0})$, so:
+\begin{equation}
+  s = (p_1+p_2)^2 = 4E^2.
+  \label{eq:lec07:s-result}
+\end{equation}
+
+\textbf{Computing $t$.}  We compute $p_1 - p_3$ component by component:
+\[
+  p_1 - p_3 = \bigl(0,\; -p_{\rm CM}\sin\theta,\; 0,\; p_{\rm CM}(1-\cos\theta)\bigr).
+\]
+Then:
+\begin{align}
+  t = (p_1-p_3)^2
+  &= 0^2 - p_{\rm CM}^2\sin^2\theta - p_{\rm CM}^2(1-\cos\theta)^2 \notag\\
+  &= -p_{\rm CM}^2\bigl[\sin^2\theta + 1 - 2\cos\theta + \cos^2\theta\bigr] \notag\\
+  &= -p_{\rm CM}^2\bigl[2 - 2\cos\theta\bigr] \notag\\
+  &= \boxed{-2p_{\rm CM}^2(1-\cos\theta).}
+  \label{eq:lec07:t-result}
+\end{align}
+(Note: the Minkowski metric introduces an overall minus sign on the spatial part; the zero component is zero here since all masses are equal.)
+
+\textbf{Computing $u$.}  Similarly, $p_1 - p_4 = (0,\;p_{\rm CM}\sin\theta,\;0,\;p_{\rm CM}(1+\cos\theta))$, giving:
+\begin{equation}
+  u = -p_{\rm CM}^2(1+\cos\theta)^2 - p_{\rm CM}^2\sin^2\theta
+  = \boxed{-2p_{\rm CM}^2(1+\cos\theta).}
+  \label{eq:lec07:u-result}
+\end{equation}
+
+\begin{remark}[Sanity check: $s+t+u = 4m^2$]
+One can verify $s+t+u = 4E^2 - 2p_{\rm CM}^2(1-\cos\theta) - 2p_{\rm CM}^2(1+\cos\theta) = 4E^2 - 4p_{\rm CM}^2 = 4m^2$, as required by the general identity $s+t+u=\sum_i m_i^2$.
+\end{remark}
+
+\subsubsection*{The full differential cross-section}
+
+Substituting into $\Mamp = \Mamp_s + \Mamp_t + \Mamp_u$ and then into \eqref{eq:lec07:dsigma-equal-mass}:
+\begin{equation}
+  \dcross = \frac{1}{64\pi^2 s}\,\left|
+    \frac{\lambda^2}{s-m^2}
+    + \frac{\lambda^2}{t-m^2}
+    + \frac{\lambda^2}{u-m^2}
+  \right|^2.
+  \label{eq:lec07:dsigma-full}
+\end{equation}
+Explicitly, using $s = 4E^2$, $t = -2p_{\rm CM}^2(1-c)$, $u = -2p_{\rm CM}^2(1+c)$ where $c\equiv\cos\theta$:
+\begin{equation}
+  |\Mamp|^2 = \lambda^4\left(
+    \frac{1}{4E^2 - m^2}
+    + \frac{1}{-2p_{\rm CM}^2(1-c)-m^2}
+    + \frac{1}{-2p_{\rm CM}^2(1+c)-m^2}
+  \right)^2.
+  \label{eq:lec07:M2-explicit}
+\end{equation}
+Each channel depends differently on $\cos\theta$: the $s$-channel is flat in angle, while the $t$- and $u$-channels peak in the forward and backward directions respectively.
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Symmetry Factors via Contraction Counting}
+
+\noindent\textbf{Physical intuition:} When writing down $\Mamp = \Mamp_s + \Mamp_t + \Mamp_u$, one must ensure that the three diagrams enter with the correct relative numerical coefficients.  These come from counting the number of distinct ways to ``wire up'' the external legs to the interaction vertices, using a procedure called \emph{Wick contractions}.
+
+\subsubsection*{The method}
+
+Each $\phi^3$ vertex contributes $\lambda\phi\phi\phi$ — three distinguishable leg ``slots''.  For $\phi\phi\to\phi\phi$ at order $\lambda^2$ there are two vertices, each with three legs, giving $3+3=6$ slots in total.  The four external states ($p_1, p_2, p_3, p_4$) and the one internal propagator must each connect a specific pair of slots.
+
+To count the symmetry factor for a given diagram, proceed as follows:
+\begin{enumerate}
+  \item For each external leg, count the number of available vertex slots it can connect to (given the topology of the diagram), and write down that number.
+  \item For the internal propagator, count the number of ways the two remaining slots can connect to each other (usually $1$, since they are forced by topology once the external legs are placed).
+  \item Multiply all the numbers together.
+\end{enumerate}
+
+\subsubsection*{$s$-channel: diagram A}
+
+External legs $p_1$ and $p_2$ both connect to vertex~1; $p_3$ and $p_4$ both connect to vertex~2; the internal line connects the two vertices.
+
+\begin{center}
+\begin{tabular}{lcc}
+  \toprule
+  Leg & Vertex & Available slots\\
+  \midrule
+  $p_1$ & vertex 1 & 3\\
+  $p_2$ & vertex 1 & 2 (one slot taken)\\
+  $p_3$ & vertex 2 & 3\\
+  $p_4$ & vertex 2 & 2 (one slot taken)\\
+  internal & v1--v2 & 1 (fully determined)\\
+  \bottomrule
+\end{tabular}
+\end{center}
+Total: $3 \times 2 \times 3 \times 2 \times 1 = 36$.
+
+\subsubsection*{$t$-channel: diagram B}
+
+External legs $p_1$ and $p_3$ connect to vertex~1; $p_2$ and $p_4$ connect to vertex~2.  The same counting gives:
+\[
+  3\times 2\times 3\times 2\times 1 = 36.
+\]
+
+\subsubsection*{$u$-channel: diagram C}
+
+External legs $p_1$ and $p_4$ connect to vertex~1; $p_2$ and $p_3$ connect to vertex~2.  Again:
+\[
+  3\times 2\times 3\times 2\times 1 = 36.
+\]
+
+\subsubsection*{Conclusion}
+
+All three diagrams have the same symmetry factor (36), so they enter $\Mamp$ with equal coefficients — no extra numerical prefactors between channels.  This confirms that the sum $\Mamp = \Mamp_s + \Mamp_t + \Mamp_u$ with unit relative weights is correct.
+
+\begin{remark}[Interchange of identical vertices]
+One might worry about the factor arising from swapping the two vertices (i.e., relabeling vertex~1 as vertex~2).  In full perturbation theory, every $n$-th order term in the expansion of $e^{iS_{\rm int}}$ comes with a factor $1/n!$ from the Taylor expansion.  For two vertices, this $1/2!$ exactly cancels the 2 ways of labeling the vertices.  Therefore, \textbf{one never needs to include an extra factor for interchanging identical vertices}; it is automatically cancelled by the perturbative expansion.
+\end{remark}
+
+\dfn{Wick contraction}{The procedure of assigning external states to vertex legs and connecting remaining legs via internal propagators is called a \textbf{Wick contraction}.  Each distinct complete contraction corresponds to one Feynman diagram, and the number of ways to perform a given contraction gives the numerical (symmetry) factor for that diagram.}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Dimensional Analysis of Matrix Elements}
+
+\noindent\textbf{Physical intuition:} Natural units relate mass, energy, time, and length.  A quick dimensional check — before evaluating a single loop integral or performing any computation — can immediately reveal algebra errors.
+
+\subsubsection*{Units of observables}
+
+In natural units ($\hbar = c = 1$):
+\begin{itemize}
+  \item \textbf{Decay rate} $\DecayRate$: has units of $[{\rm time}]^{-1} = [{\rm mass}]^1$.
+  \item \textbf{Cross-section} $\sigma$: has units of area $= [{\rm length}]^2 = [{\rm mass}]^{-2}$.
+\end{itemize}
+
+\begin{remark}[The barn]
+Cross-sections are sometimes quoted in \textbf{barns}: $1\,{\rm barn} = 10^{-24}\,{\rm cm}^2$.  This is a convenient unit for nuclear and particle physics cross-sections.
+\end{remark}
+
+\subsubsection*{Mass dimension of the matrix element}
+
+\thm{Dimension of $\Mamp$}{For a process involving $n$ external particles (initial plus final), regardless of how they are distributed between initial and final states, the matrix element has mass dimension:
+\begin{equation}
+  [\Mamp] = \text{mass}^{4-n}.
+  \label{eq:lec07:Mdim}
+\end{equation}}
+
+Examples:
+\begin{itemize}
+  \item $1\to2+3$ (decay, $n=3$): $[\Mamp] = {\rm mass}^1$.
+  \item $1+2\to3+4$ (scattering, $n=4$): $[\Mamp] = {\rm mass}^0$ (dimensionless).
+  \item $1\to2+3+4$ (three-body decay, $n=4$): $[\Mamp] = {\rm mass}^0$ (dimensionless).
+\end{itemize}
+
+\subsubsection*{Consistency check}
+
+One can verify these dimensions are consistent with the formulas for $\DecayRate$ and $\sigma$:
+\begin{itemize}
+  \item \textbf{Two-body decay} \eqref{eq:lec07:Gamma2body}: $[\DecayRate] = [p_*]/[M_1^2]\cdot[\Mamp]^2 = {\rm mass}\cdot{\rm mass}^{-2}\cdot{\rm mass}^2 = {\rm mass}^1$.\ \checkmark
+  \item \textbf{$2\to2$ cross-section} \eqref{eq:lec07:dsigma-equal-mass}: $[\dcross] = [\Mamp]^2/[s] = {\rm mass}^0/{\rm mass}^2 = {\rm mass}^{-2}$. \checkmark
+\end{itemize}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Summary: Structure of Perturbative QFT}
+
+The framework we have built can be summarized as follows:
+
+\begin{itemize}
+  \item \textbf{Quadratic (free) terms} in $\lagr$: terms with exactly two fields, $\lagr \supset \frac{1}{2}(\partial\phi)^2 - \frac{1}{2}m^2\phi^2$.  These describe \textbf{free fields} — particles that propagate without interacting.  Free particles cannot be created or destroyed; there are no nontrivial scattering or decay processes.
+
+  \item \textbf{Higher-order (interaction) terms}: terms with three or more fields, e.g., $\lagr \supset \lambda\phi^3$ or $\lambda\phi^4$.  These are treated as \textbf{perturbations} of the free theory, valid when the coupling $\lambda$ is small.  They introduce interactions: particles can now be created, destroyed, scattered, or decay.
+
+  \item \textbf{Feynman diagrams}: a systematic graphical tool for computing the transition amplitude (matrix element $\Mamp$) for any process, order by order in $\lambda$.  Each diagram corresponds to a term in perturbation theory.
+
+  \item \textbf{From $\Mamp$ to observables}: the matrix element squared $|\Mamp|^2$, combined with the appropriate phase-space integral, gives physical observables — decay rates $\DecayRate$ and cross-sections $\sigma$ — that can be compared to experiment.
+
+  \item \textbf{Experiment}: once calculations are in hand, one runs experiments to measure $\DecayRate$ or $\sigma$ and compare with theory to test whether the theory describes nature.
+\end{itemize}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Fields We Care About}
+
+Before diving into fermions, it is useful to catalog the types of fields that appear in the Standard Model and in any relativistic QFT:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{llll}
+  \toprule
+  Spin & Field type & Symbol & Example \\
+  \midrule
+  $0$ & Scalar & $\phi$ & Higgs boson $H$\\
+  $1/2$ & Fermion (Dirac spinor) & $\psi$, $\psi_L$, $\psi_R$ & Quarks, leptons (electrons, neutrinos, etc.)\\
+  $1$ & Vector (gauge boson) & $A^\mu$ & Photon $\gamma$, $W^\pm$, $Z^0$, gluons\\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+Scalars and vectors are in some sense analogous in their treatment; fermions require substantially more formalism.  The gauge bosons (spin-1) will be covered when we discuss local (gauge) symmetries later in the course.
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Introduction to Fermions}
+
+\noindent\textbf{Physical intuition:} For bosons (spin-0, spin-1), we started from the Klein--Gordon equation.  For fermions (spin-$\frac{1}{2}$), the appropriate starting point is the Dirac equation.  Fermions obey anti-commutation relations (rather than commutation relations) for their creation/annihilation operators, and their fields carry spinor indices.
+
+\subsubsection*{The Dirac equation}
+
+The equation of motion for a free spin-$\frac{1}{2}$ field is the \textbf{Dirac equation}:
+\begin{equation}
+  \boxed{\bigl(i\gamma^\mu\partial_\mu - m\bigr)\psi(x) = 0.}
+  \label{eq:lec07:Dirac}
+\end{equation}
+
+The field $\psi(x)$ is called a \textbf{Dirac fermion} (or Dirac spinor); it obeys the Dirac equation because of the specific structure of $\gamma^\mu$.
+
+\subsubsection*{The Dirac spinor $\psi$}
+
+$\psi(x)$ is a \textbf{four-component} field:
+\begin{equation}
+  \psi(x) = \begin{pmatrix}\psi_1(x)\\\psi_2(x)\\\psi_3(x)\\\psi_4(x)\end{pmatrix}.
+  \label{eq:lec07:spinor-components}
+\end{equation}
+\textbf{Important}: $\psi$ is \emph{not} a four-vector.  A four-vector transforms under Lorentz boosts and rotations as $V^\mu \to \Lambda^\mu_{\ \nu}V^\nu$; $\psi$ transforms differently (as a spinor representation of the Lorentz group).  The four components of $\psi$ are internal degrees of freedom — two spin states times two particle/antiparticle states.  $\psi$ is also called a \textbf{Dirac spinor}.
+
+From the quantum-mechanical perspective: fermions are excitations of fields whose mode expansions use \emph{fermionic} harmonic oscillator operators, satisfying anti-commutation relations $\{a, a^\dagger\} = 1$ rather than commutation relations.
+
+\subsubsection*{Gamma matrices (Dirac matrices)}
+
+\noindent\textbf{Physical intuition:} In non-relativistic quantum mechanics, spin-$\frac{1}{2}$ particles are described using Pauli matrices $\sigma^i$.  The Dirac matrices $\gamma^\mu$ are the relativistic generalization: four $4\times4$ matrices (one for each spacetime direction) that encode both the Pauli matrices and the relativistic kinematics.
+
+The index $\mu$ in $\gamma^\mu$ runs from $0$ to $3$, so $\gamma^\mu$ represents four matrices:
+\[
+  \gamma^0,\; \gamma^1,\; \gamma^2,\; \gamma^3.
+\]
+Each $\gamma^\mu$ is a $4\times4$ matrix.  In the \textbf{standard (Dirac) basis}, they are written in $2\times2$ block form:
+\begin{equation}
+  \gamma^\mu = \begin{pmatrix}0 & \sigma^\mu \\ \bar\sigma^\mu & 0\end{pmatrix},
+  \label{eq:lec07:gamma-block}
+\end{equation}
+where
+\begin{align}
+  \sigma^\mu &\equiv \bigl(\mathbf{1}_{2\times2},\;\sigma^1,\;\sigma^2,\;\sigma^3\bigr), \label{eq:lec07:sigma-mu}\\
+  \bar\sigma^\mu &\equiv \bigl(\mathbf{1}_{2\times2},\;-\sigma^1,\;-\sigma^2,\;-\sigma^3\bigr), \label{eq:lec07:sigmabar-mu}
+\end{align}
+and $\sigma^i$ are the three $2\times2$ Pauli matrices.  Explicitly:
+\begin{equation}
+  \gamma^0 = \begin{pmatrix}0 & \mathbf{1}\\\mathbf{1} & 0\end{pmatrix}, \qquad
+  \gamma^i = \begin{pmatrix}0 & \sigma^i\\-\sigma^i & 0\end{pmatrix},\quad i=1,2,3.
+  \label{eq:lec07:gamma-explicit}
+\end{equation}
+
+\begin{remark}[Different bases]
+The representation \eqref{eq:lec07:gamma-block} is sometimes called the \textbf{Weyl} or \textbf{chiral basis}.  Peskin \& Schroeder use this basis.  Other texts (e.g., Griffiths) use a different basis (the \textbf{Dirac basis}) related by a unitary transformation.  Physical results are basis-independent.
+\end{remark}
+
+\subsubsection*{Clifford algebra}
+
+The gamma matrices satisfy the fundamental anti-commutation relation:
+\begin{equation}
+  \boxed{\anticomm{\gamma^\mu}{\gamma^\nu} \equiv \gamma^\mu\gamma^\nu + \gamma^\nu\gamma^\mu = 2g^{\mu\nu}\,\mathbf{1}_{4\times4},}
+  \label{eq:lec07:Clifford}
+\end{equation}
+where $g^{\mu\nu} = \mathrm{diag}(+1,-1,-1,-1)$ is the Minkowski metric.  This is the \textbf{Clifford algebra}.  It is the defining property of the Dirac matrices — any $4\times4$ matrix representation satisfying \eqref{eq:lec07:Clifford} gives an equivalent formulation of the Dirac equation.
+
+\subsubsection*{The $\gamma^5$ matrix}
+
+An additional important matrix is:
+\begin{equation}
+  \gamma^5 \equiv i\,\gamma^0\gamma^1\gamma^2\gamma^3.
+  \label{eq:lec07:gamma5-def}
+\end{equation}
+In the standard basis:
+\begin{equation}
+  \gamma^5 = \begin{pmatrix}-\mathbf{1} & 0 \\ 0 & \mathbf{1}\end{pmatrix}.
+  \label{eq:lec07:gamma5-matrix}
+\end{equation}
+Key properties:
+\begin{itemize}
+  \item $(\gamma^5)^2 = \mathbf{1}$ (it squares to the identity).
+  \item $(\gamma^5)^\dagger = \gamma^5$ (it is Hermitian).
+  \item $\anticomm{\gamma^5}{\gamma^\mu} = 0$ for $\mu = 0,1,2,3$ (it anti-commutes with all $\gamma^\mu$).
+\end{itemize}
+$\gamma^5$ is the chirality operator.  Its eigenvalues $\pm1$ define right-handed ($+$) and left-handed ($-$) chirality states (the Weyl spinors, discussed below).
+
+\subsubsection*{Dirac conjugate $\bar\psi$}
+
+For building Lorentz-invariant bilinears, one defines the \textbf{Dirac conjugate}:
+\begin{equation}
+  \bar\psi \equiv \psi^\dagger\,\gamma^0.
+  \label{eq:lec07:Dirac-conjugate}
+\end{equation}
+One always works with $\bar\psi$ rather than $\psi^\dagger$; the factor of $\gamma^0$ is needed to ensure Lorentz invariance.  For example, $\bar\psi\psi$ is a Lorentz scalar, while $\psi^\dagger\psi$ is not.
+
+\subsubsection*{Dirac Lagrangian}
+
+The Lagrangian that yields the Dirac equation as its equation of motion is:
+\begin{equation}
+  \boxed{\lagr_{\rm Dirac} = \bar\psi\,(i\gamma^\mu\partial_\mu - m)\,\psi.}
+  \label{eq:lec07:Dirac-Lagrangian}
+\end{equation}
+Applying the Euler--Lagrange equation with respect to $\bar\psi$ (treated as an independent degree of freedom) gives:
+\[
+  \frac{\partial\lagr}{\partial\bar\psi} = (i\gamma^\mu\partial_\mu - m)\psi = 0,
+\]
+which is precisely the Dirac equation \eqref{eq:lec07:Dirac}.  We treat $\psi$ and $\bar\psi$ as independent degrees of freedom, exactly as one treats $\phi$ and $\phi^\dagger$ independently for a complex scalar.
+
+\subsubsection*{Weyl spinors}
+
+The Dirac spinor $\psi$ decomposes into two \textbf{two-component Weyl spinors}:
+\begin{equation}
+  \psi = \begin{pmatrix}\psi_L \\ \psi_R\end{pmatrix},
+  \label{eq:lec07:Weyl-decomp}
+\end{equation}
+where $\psi_L$ (the upper two components) is called the \textbf{left-handed Weyl spinor} and $\psi_R$ (the lower two components) is the \textbf{right-handed Weyl spinor}.  Each is a two-component object.
+
+\dfn{Weyl spinors}{The left- and right-handed Weyl spinors $\psi_{L,R}$ are the eigenstates of $\gamma^5$:
+\begin{equation}
+  \gamma^5\psi_L = -\psi_L, \qquad \gamma^5\psi_R = +\psi_R.
+  \label{eq:lec07:chirality-eigenvalues}
+\end{equation}
+They are the irreducible representations of the Lorentz group for spin-$\frac{1}{2}$ fields.  Under Lorentz transformations, $\psi_L$ and $\psi_R$ transform into themselves (not into each other), making them the basic building blocks of any spinor field.}
+
+\begin{remark}[Why Weyl spinors are fundamental]
+Under Lorentz boosts and rotations, $\psi_L$ and $\psi_R$ transform separately (though with related parameters).  The Dirac spinor $\psi$ is therefore a reducible representation: it is the direct sum of a left-handed and a right-handed Weyl representation.  In the Standard Model, it turns out that the matter fields (quarks and leptons) have different quantum numbers for $\psi_L$ and $\psi_R$ — left and right handedness are treated differently by the weak force — so the Weyl spinors are the physically natural variables.
+\end{remark}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{To Remember}
+
+\begin{itemize}
+  \item \textbf{Two-body decay rate}:
+    $\displaystyle\DecayRate_{1\to23} = \frac{p_*}{8\pi M_1^2}\,|\Mamp|^2,$
+    where $p_*$ is the CM momentum of either daughter, fixed by the three masses.
+
+  \item \textbf{General cross-section prefactor}: $1/(2E_1\,2E_2\,|\bvec{v}_1-\bvec{v}_2|)$; its Lorentz-invariant form is $1/(4\sqrt{(p_1\cdot p_2)^2-m_1^2m_2^2})$.
+
+  \item \textbf{Equal-mass $2\to2$ cross-section}: $d\sigma/d\Omega = |\Mamp|^2/(64\pi^2 s)$.
+
+  \item \textbf{Mandelstam variables in CM frame} (equal mass $m$): $s = 4E^2$, $t = -2p_{\rm CM}^2(1-\cos\theta)$, $u = -2p_{\rm CM}^2(1+\cos\theta)$.
+
+  \item \textbf{Symmetry factors via contraction counting}: count the number of ways to wire external legs to vertex slots; equal factors for all channels means equal relative weights.
+
+  \item \textbf{Dimension of $\Mamp$}: $[\Mamp] = {\rm mass}^{4-n}$ for an $n$-particle process.
+
+  \item \textbf{Dirac equation}: $(i\Dirac{\partial}-m)\psi = 0$.
+
+  \item \textbf{$\psi$ is a four-component Dirac spinor}, not a four-vector.
+
+  \item \textbf{Gamma matrices} satisfy the Clifford algebra: $\anticomm{\gamma^\mu}{\gamma^\nu} = 2g^{\mu\nu}$.
+
+  \item \textbf{$\gamma^5 = i\gamma^0\gamma^1\gamma^2\gamma^3$}: squares to $+1$, anti-commutes with $\gamma^\mu$, eigenvalues $\pm1$ define chirality.
+
+  \item \textbf{Dirac conjugate}: $\bar\psi = \psi^\dagger\gamma^0$.  Always use $\bar\psi$, not $\psi^\dagger$.
+
+  \item \textbf{Dirac Lagrangian}: $\lagr = \bar\psi(i\Dirac\partial - m)\psi$.
+
+  \item \textbf{Weyl decomposition}: $\psi = (\psi_L,\,\psi_R)^T$; $\psi_L$ and $\psi_R$ are the irreducible Lorentz representations, each two-component.
+\end{itemize}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Recommended Reading}
+
+\begin{itemize}
+  \item \textbf{Griffiths, Chapter~6.3--6.4} — Two-body and three-body decay rates in the toy scalar theory; cross-section formula.  The worked kinematics are directly parallel to this lecture.
+
+  \item \textbf{Peskin \& Schroeder, Chapter~3} — The Dirac equation, Dirac matrices, Clifford algebra, Weyl spinors, and the Dirac Lagrangian.  The lecturer explicitly recommended Chapter~3 for the fermion material in this and subsequent lectures.
+
+  \item \textbf{Halzen \& Martin, Chapter~4--5} — Phase-space kinematics, two-body scattering and decay, followed by the introduction of spinors and Dirac fermions.  A very accessible treatment.
+
+  \item \textbf{Tong, \textit{Lectures on Particle Physics}, Chapter~3}
+    (\href{https://www.damtp.cam.ac.uk/user/tong/pp.html}{\texttt{damtp.cam.ac.uk/user/tong/pp.html}}):
+    phase space and cross-sections with the same conventions used in this course; Chapter~4 covers the Dirac equation.
+
+  \item \textbf{PDG Review of Kinematics}
+    (\href{https://pdg.lbl.gov/2023/reviews/rpp2023-rev-kinematics.pdf}{\texttt{pdg.lbl.gov/2023/reviews/rpp2023-rev-kinematics.pdf}}):
+    compact reference for two-body decay kinematics, Mandelstam variables, and cross-section formulas.
+\end{itemize}
+
+\end{document}

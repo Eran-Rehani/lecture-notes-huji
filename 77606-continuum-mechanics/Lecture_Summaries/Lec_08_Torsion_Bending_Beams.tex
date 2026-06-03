@@ -1,0 +1,384 @@
+%% Lecture 08 — Torsion and Bending of Beams
+
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\section{Lecture 08 — Torsion and Bending of Beams}\label{sec:lec08}
+\date{May 4, 2026}
+
+\subsection*{Overview}
+This lecture begins the study of \textbf{rods and beams} — continuum bodies whose length is much larger than any transverse dimension. Two canonical problems are treated in full. First, we analyze \textbf{torsion} of a straight circular rod: a torque $T$ is applied about the long axis, every cross-section rotates by an angle proportional to its position along the axis, and the resulting shear stress grows linearly with radial distance. Integrating the torque from those stresses yields the \emph{torsional stiffness} $C = GJ$, where $J = \pi R^4/2$ is the polar second moment of area. Second, we analyze \textbf{bending}: a transverse load forces the beam to curve, the fibers above the neutral axis stretch while those below compress, and the bending stiffness turns out to be $EI_y$, where $I_y = \int x^2 \, dA$ is the second moment of area about the bending axis. Both calculations follow the same three-step workflow: write the displacement ansatz, extract the strain and stress, then integrate to find the resultant moment.
+
+%%────────────────────────────────────────────────────────────
+\subsection*{Part I — Geometry and Classification of Rods}
+%%────────────────────────────────────────────────────────────
+
+\subsubsection*{What is a rod?}
+
+\noindent\textbf{Physical intuition:} Continuum bodies come in families distinguished by their geometry. An ordinary solid has all three dimensions comparable. A \emph{plate} has two large dimensions and one small one (thickness). A \emph{rod} (or beam) has one large dimension — the length $L$ — and two small transverse dimensions. The small transverse scale is characterized by the cross-sectional radius or half-width $a$. The rod approximation is valid when
+\[
+    a \ll L.
+\]
+Common cross-sectional shapes are the full circle, the rectangle, the hollow circle, the hollow rectangle, and the I-beam. The I-shape is popular in construction because it concentrates material far from the neutral axis, maximizing bending stiffness per unit weight.
+
+\subsubsection*{Types of structural elements and loading}
+
+The name given to a rod depends on how it is loaded:
+\begin{itemize}
+    \item \textbf{Strut or column} — loaded axially (tension or compression along the long axis). A strut in compression is sometimes called a \emph{column} (vertical) or simply a \emph{compression member}.
+    \item \textbf{Beam} — loaded transversely (the external force is perpendicular to the long axis). The weight the beam supports, or its self-weight, causes it to bend.
+\end{itemize}
+This lecture focuses on two types of deformation special to rod geometry: \textbf{torsion} (twisting about the long axis) and \textbf{bending} (curving in a transverse plane).
+
+%%────────────────────────────────────────────────────────────
+\subsection*{Part II — Torsion of a Circular Rod}
+%%────────────────────────────────────────────────────────────
+
+\subsubsection*{Problem statement}
+
+Consider a straight elastic rod of length $L$ and circular cross-section of radius $R$. The rod is fixed at one end and a torque $T$ is applied about the symmetry axis $z$ at the other end. We want to find:
+\begin{enumerate}
+    \item The internal stress distribution.
+    \item The torsional stiffness $C \equiv T/\kappa$, where $\kappa = d\theta/dz$ is the rate of twist.
+\end{enumerate}
+
+\subsubsection*{Physical intuition and the rate of twist}
+
+\noindent\textbf{Physical intuition:} By linearity, the total twist angle $\Delta\theta$ between two ends must be proportional to the applied torque $T$. A free-body cut isolating any segment of the rod reveals that the same torque $T$ acts on both faces of every cross-section — the torque is transmitted uniformly, just as an axial force is transmitted uniformly in a stretched rod. Therefore each infinitesimal slice of length $dz$ twists by the same angle $d\theta$, and the total twist grows linearly with length:
+\[
+    \theta(z) = \kappa z, \qquad \kappa \equiv \frac{d\theta}{dz} = \mathrm{const.}
+\]
+The quantity $\kappa$ is the \emph{rate of twist} (angle per unit length), analogous to angular velocity but along a spatial axis rather than in time.
+
+\subsubsection*{Displacement ansatz}
+
+We work in cylindrical coordinates $(r, \varphi, z)$. Each cross-section at height $z$ undergoes a rigid rotation by angle $\theta(z) = \kappa z$. A material point at $(r, \varphi, z)$ is displaced tangentially by $r\theta(z) = \kappa r z$, with no radial or axial movement:
+\begin{equation}
+    u_r = 0, \qquad u_\varphi = \kappa r z, \qquad u_z = 0.
+    \label{eq:lec08_torsion_displacement}
+\end{equation}
+
+\subsubsection*{Strain calculation}
+
+The relevant off-diagonal strain components in cylindrical coordinates are:
+\[
+    2\varepsilon_{\varphi z} = \frac{1}{r}\partial_\varphi u_z + \partial_z u_\varphi,
+    \qquad
+    2\varepsilon_{r\varphi} = r\,\partial_r\!\left(\frac{u_\varphi}{r}\right) + \frac{1}{r}\partial_\varphi u_r,
+    \qquad
+    2\varepsilon_{rz} = \partial_r u_z + \partial_z u_r.
+\]
+Substituting~\eqref{eq:lec08_torsion_displacement}:
+\begin{align*}
+    2\varepsilon_{\varphi z} &= 0 + \partial_z(\kappa r z) = \kappa r, \\
+    2\varepsilon_{r\varphi} &= r\,\partial_r(\kappa z) + 0 = 0
+    \qquad\bigl[\text{since }u_\varphi/r = \kappa z\text{ is independent of }r\bigr], \\
+    2\varepsilon_{rz} &= 0.
+\end{align*}
+All diagonal components $\varepsilon_{rr}$, $\varepsilon_{\varphi\varphi}$, $\varepsilon_{zz}$ vanish by inspection. The only non-vanishing strain is
+\begin{equation}
+    \boxed{\varepsilon_{\varphi z} = \frac{1}{2}\kappa r.}
+    \label{eq:lec08_torsion_strain}
+\end{equation}
+\textit{Physical significance:} The deformation is pure shear in the $(\varphi, z)$ plane. Within each cross-section the rotation is rigid — no inter-fiber stretching occurs inside a slice — so strain lives exclusively across slices. A key cancellation occurs in $\varepsilon_{r\varphi}$: the term from differentiating the $\hat{\varphi}$ basis vector (which produces $-u_\varphi/r$) cancels exactly with $\partial_r u_\varphi$, confirming that a rigid in-plane rotation contributes nothing to strain.
+
+\subsubsection*{Stress and physical picture}
+
+Since the strain is pure shear, only the shear modulus $G$ enters Hooke's law:
+\begin{equation}
+    \sigma_{\varphi z} = 2G\,\varepsilon_{\varphi z} = G\kappa r.
+    \label{eq:lec08_torsion_stress}
+\end{equation}
+\noindent\textbf{Physical intuition:} The shear stress $\sigma_{\varphi z}$ grows linearly with $r$ — zero at the center, maximum at the outer surface. Rotating to the principal axes of this shear reveals equal tension and compression at $45°$ to the cylinder axis. This explains why a chalk rod breaks along a $45°$ helical fracture surface when twisted: the principal tensile stress exceeds the tensile strength first, since chalk is much stronger in compression than in tension.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}
+  %--- (a) circular cross-section with tangential stress arrows ---
+  \fill[mydarkblue!8] (0,0) circle (2);
+  \draw[thick,mydarkblue] (0,0) circle (2);
+  \fill (0,0) circle (2pt);
+  \draw[dashed,gray] (0,0) -- (2,0) node[midway,above,gray,font=\small] {$R$};
+  % tangential arrows at rim (8 directions, length proportional to r=2)
+  \foreach \a in {0,45,...,315}{
+    \pgfmathsetmacro{\px}{2*cos(\a)}
+    \pgfmathsetmacro{\py}{2*sin(\a)}
+    \pgfmathsetmacro{\tx}{-0.6*sin(\a)}
+    \pgfmathsetmacro{\ty}{0.6*cos(\a)}
+    \draw[->,myred,thick] (\px,\py) -- ++(\tx,\ty);
+  }
+  % shorter arrows at mid-radius r=1.1
+  \foreach \a in {0,90,180,270}{
+    \pgfmathsetmacro{\px}{1.1*cos(\a)}
+    \pgfmathsetmacro{\py}{1.1*sin(\a)}
+    \pgfmathsetmacro{\tx}{-0.33*sin(\a)}
+    \pgfmathsetmacro{\ty}{0.33*cos(\a)}
+    \draw[->,myred] (\px,\py) -- ++(\tx,\ty);
+  }
+  \node[font=\small,below] at (0,-2.6) {(a)};
+  %--- (b) linear stress profile ---
+  \begin{scope}[xshift=5.5cm]
+    \draw[->] (-0.3,0) -- (2.7,0) node[right,font=\small] {$r$};
+    \draw[->] (0,-0.3) -- (0,2.3) node[above,font=\small] {$\sigma_{\varphi z}$};
+    \fill[myred!20] (0,0) -- (2,1.8) -- (2,0) -- cycle;
+    \draw[myred,very thick] (0,0) -- (2,1.8);
+    \draw[dashed,gray] (2,0) node[below,font=\small] {$R$} -- (2,1.8);
+    \draw[dashed,gray] (0,1.8) node[left,font=\small] {$G\kappa R$} -- (2,1.8);
+    \node[font=\small,below] at (1,-0.5) {(b)};
+  \end{scope}
+\end{tikzpicture}
+\caption{Shear stress in torsion of a circular rod. \textbf{(a)} Tangential stress arrows on the cross-section; arrow lengths are proportional to $r$ (the shorter inner arrows at $r\approx R/2$ illustrate the linear growth). \textbf{(b)} Linear profile $\sigma_{\varphi z}=G\kappa r$: zero at the axis, maximum $G\kappa R$ at the rim.}
+\label{fig:lec08_torsion}
+\end{figure}
+
+\subsubsection*{Torque calculation and torsional stiffness}
+
+Integrate the tangential force per unit area times the moment arm $r$ over the cross-section:
+\begin{equation}
+    T = \int_A r\,\sigma_{\varphi z}\,dA
+    = G\kappa \int_A r^2\,dA
+    = G\kappa\,J,
+    \label{eq:lec08_torque_integral}
+\end{equation}
+where
+\begin{equation}
+    J \equiv \int_A r^2\,dA
+    \label{eq:lec08_polar_moment_def}
+\end{equation}
+is the \emph{polar second moment of area}. For a solid circular cross-section of radius $R$:
+\begin{equation}
+    J = \int_0^R \int_0^{2\pi} r^2 \cdot r\,d\varphi\,dr
+    = 2\pi \cdot \frac{R^4}{4}
+    = \frac{\pi R^4}{2}.
+    \label{eq:lec08_polar_moment_circle}
+\end{equation}
+Therefore the \emph{torsional stiffness} is
+\begin{equation}
+    \boxed{C \equiv \frac{T}{\kappa} = GJ = \frac{\pi G R^4}{2}.}
+    \label{eq:lec08_torsional_stiffness}
+\end{equation}
+\textit{Physical significance:} Stiffness factorizes into a material part $G$ and a geometric part $J$. The strong dependence $C \propto R^4$ means a small increase in radius greatly increases torsional stiffness.
+
+\begin{remark}
+Equation~\eqref{eq:lec08_torsional_stiffness} holds only for \emph{circular} cross-sections. For non-circular cross-sections the cross-section warps out of its plane and a more general analysis (Saint-Venant torsion) is required. Symmetry forbids warping in the circular case.
+\end{remark}
+
+%%────────────────────────────────────────────────────────────
+\subsection*{Part III — Bending of a Beam}
+%%────────────────────────────────────────────────────────────
+
+\subsubsection*{Problem statement and free-body diagram}
+
+Consider a beam lying along the $z$-axis, clamped at the left end, with a transverse force $F$ applied at the right end in the $x$-direction. A free-body cut at an arbitrary cross-section reveals two internal quantities needed for equilibrium of the right-hand portion:
+\begin{enumerate}
+    \item An internal \emph{shear force} $V = F$, opposing the applied load.
+    \item An internal \emph{bending moment} $M_y$ about the $y$-axis, preventing the portion from rotating.
+\end{enumerate}
+
+\noindent\textbf{Physical intuition:} A shear force alone cannot prevent rotation — the finite width of the cross-section is what turns a stress distribution into a net moment. The bending moment $M_y$ is the key quantity that drives the curvature of the beam.
+
+\subsubsection*{The neutral fiber and radius of curvature}
+
+\noindent\textbf{Physical intuition:} When the beam curves, fibers on the convex side are stretched and fibers on the concave side are compressed. There is exactly one fiber that neither stretches nor compresses: the \emph{neutral fiber} along the centroid of the cross-section. If the beam curves with local \emph{radius of curvature} $R_c$, a fiber at signed transverse distance $x$ from the neutral axis traces an arc of radius $R_c + x$. Its fractional change in length relative to the neutral fiber is
+\[
+    \frac{(R_c + x)\,d\theta - R_c\,d\theta}{R_c\,d\theta} = \frac{x}{R_c}.
+\]
+Therefore the axial strain is
+\begin{equation}
+    \boxed{\varepsilon_{zz} = \frac{x}{R_c}.}
+    \label{eq:lec08_bending_strain}
+\end{equation}
+The strain is linear in $x$: zero on the neutral axis, tensile above, compressive below (for a sagging beam).
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}[scale=1.0]
+  %--- (a) bent beam side view: concave-down neutral axis y = -z^2/12, half-height 0.4 ---
+  \fill[myred!15]
+    plot[domain=-2.5:2.5,samples=40] (\x, {-\x*\x/12})
+    -- plot[domain=2.5:-2.5,samples=40] (\x, {0.4-\x*\x/12}) -- cycle;
+  \fill[myblue!15]
+    plot[domain=-2.5:2.5,samples=40] (\x, {-0.4-\x*\x/12})
+    -- plot[domain=2.5:-2.5,samples=40] (\x, {-\x*\x/12}) -- cycle;
+  \draw[thick] plot[domain=-2.5:2.5,samples=40] (\x, { 0.4-\x*\x/12});
+  \draw[thick] plot[domain=-2.5:2.5,samples=40] (\x, {-0.4-\x*\x/12});
+  \draw[dashed,mydarkblue,thick] plot[domain=-2.5:2.5,samples=40] (\x, {-\x*\x/12});
+  \draw[thick] (-2.5,{ 0.4-6.25/12}) -- (-2.5,{-0.4-6.25/12});
+  \draw[thick] ( 2.5,{ 0.4-6.25/12}) -- ( 2.5,{-0.4-6.25/12});
+  \node[myred, font=\small] at (0, 0.2) {tension ($+$)};
+  \node[myblue,font=\small] at (0,-0.2) {compression ($-$)};
+  \node[right,mydarkblue,font=\small] at (2.6,{-6.25/12}) {N.A.};
+  \node[font=\small,below] at (0,{-0.4-6.25/12-0.3}) {(a) side view};
+  %--- (b) stress distribution on rectangular cross-section ---
+  \begin{scope}[xshift=7.2cm]
+    \fill[myred!15] (0,0) rectangle (0.5, 1.5);
+    \fill[myblue!15] (0,-1.5) rectangle (0.5, 0);
+    \draw[thick,mydarkblue] (0,-1.5) rectangle (0.5,1.5);
+    \draw[dashed,mydarkblue] (-0.4,0) -- (0.5,0);
+    \node[left,font=\small] at (-0.4,0) {N.A.};
+    \foreach \y in {0.3,0.6,0.9,1.2,1.5}{
+      \pgfmathsetmacro{\len}{0.8*\y/1.5}
+      \draw[->,myred,thin] (0.5,\y) -- ++(\len,0);
+    }
+    \foreach \y in {-0.3,-0.6,-0.9,-1.2,-1.5}{
+      \pgfmathsetmacro{\absy}{0-\y}
+      \pgfmathsetmacro{\len}{0.8*\absy/1.5}
+      \draw[->,myblue,thin] (0.5,\y) -- ++(\len,0);
+    }
+    \draw[myred, thick] (0.5,0) -- (1.3, 1.5);
+    \draw[myblue,thick] (0.5,0) -- (1.3,-1.5);
+    \node[right,font=\small,myred]  at (1.3, 1.5) {$+\!\dfrac{Ea}{2R_c}$};
+    \node[right,font=\small,myblue] at (1.3,-1.5) {$-\!\dfrac{Ea}{2R_c}$};
+    \draw[->] (-0.9,-1.7) -- (-0.9,1.7) node[above,font=\small] {$x$};
+    \node[font=\small,below] at (0.65,-1.9) {(b) $\sigma_{zz}$ on cross-section};
+  \end{scope}
+\end{tikzpicture}
+\caption{Bending geometry and stress distribution. \textbf{(a)} Bent beam (side view): the neutral axis (dashed blue) curves concave-downward; fibres above (pink) are in tension, those below (blue) in compression. \textbf{(b)} Axial stress $\sigma_{zz}=Ex/R_c$ varies linearly across the cross-section of height $a$, reaching $\pm Ea/(2R_c)$ at the extreme fibres.}
+\label{fig:lec08_bending}
+\end{figure}
+
+\subsubsection*{Stress and bending moment}
+
+For a slender beam ($a \ll L$), the dominant stress is axial. Treating each fiber as in simple tension or compression:
+\begin{equation}
+    \sigma_{zz} = E\,\varepsilon_{zz} = \frac{E\,x}{R_c}.
+    \label{eq:lec08_bending_stress}
+\end{equation}
+The internal bending moment about the $y$-axis is
+\begin{align}
+    M_y &= \int_A x\,\sigma_{zz}\,dA
+         = \frac{E}{R_c}\int_A x^2\,dA
+         = \frac{E\,I_y}{R_c},
+    \label{eq:lec08_bending_moment}
+\end{align}
+where
+\begin{equation}
+    I_y \equiv \int_A x^2\,dA
+    \label{eq:lec08_second_moment_def}
+\end{equation}
+is the \emph{second moment of area} about the $y$-axis. Rearranging:
+\begin{equation}
+    \boxed{\frac{1}{R_c} = \frac{M_y}{E\,I_y}.}
+    \label{eq:lec08_curvature_moment}
+\end{equation}
+The \emph{bending stiffness} is $EI_y$: stiffer material or larger second moment of area means less curvature per unit moment.
+
+%%────────────────────────────────────────────────────────────
+\subsection*{Part IV — Second Moment of Area: Calculations}
+%%────────────────────────────────────────────────────────────
+
+\subsubsection*{Polar decomposition}
+
+By $r^2 = x^2 + y^2$:
+\begin{equation}
+    J = \int_A r^2\,dA = I_y + I_x.
+    \label{eq:lec08_polar_decomposition}
+\end{equation}
+For any cross-section with two perpendicular axes of symmetry, $I_x = I_y = J/2$.
+
+\subsubsection*{Circular cross-section}
+
+From~\eqref{eq:lec08_polar_moment_circle}, $J = \pi R^4/2$, so by symmetry:
+\begin{equation}
+    \boxed{I_y^{(\mathrm{circle})} = \frac{\pi R^4}{4}.}
+    \label{eq:lec08_Iy_circle}
+\end{equation}
+
+\paragraph{Direct verification in polar coordinates.}
+\[
+    I_y = \int_0^R \int_0^{2\pi} r^2\cos^2\!\varphi \cdot r\,d\varphi\,dr
+    = \frac{R^4}{4}\cdot\pi = \frac{\pi R^4}{4},
+\]
+where $\int_0^{2\pi}\cos^2\!\varphi\,d\varphi = \pi$ (mean value of $\cos^2$ is $1/2$ over length $2\pi$).
+
+\subsubsection*{Rectangular cross-section}
+
+For a rectangle of height $a$ (in the bending direction $x$) and width $b$:
+\begin{equation}
+    I_y^{(\mathrm{rect})} = b\int_{-a/2}^{a/2} x^2\,dx
+    = b\cdot 2\cdot\frac{(a/2)^3}{3}
+    = \frac{b\,a^3}{12}.
+    \label{eq:lec08_Iy_rectangle}
+\end{equation}
+
+\noindent\textbf{Physical intuition:} Height $a$ enters to the \emph{third} power while width $b$ is linear. This is why deep beams are far stiffer in bending than shallow wide ones with the same cross-sectional area, and why I-beams concentrate material in flanges far from the neutral axis.
+
+\begin{figure}[htb]
+\centering
+\begin{tikzpicture}
+  %--- Circle ---
+  \begin{scope}
+    \fill[mydarkblue!10] (0,0) circle (1.2);
+    \draw[thick,mydarkblue] (0,0) circle (1.2);
+    \draw[<->,gray] (0,0) -- (1.2,0) node[midway,above,font=\small] {$R$};
+    \node[align=center,font=\small,below] at (0,-1.6)
+      {$J=\dfrac{\pi R^4}{2}$\\[2pt]$I_y=\dfrac{\pi R^4}{4}$};
+  \end{scope}
+  %--- Rectangle ---
+  \begin{scope}[xshift=5.5cm]
+    \fill[mydarkblue!10] (-0.6,-1.2) rectangle (0.6,1.2);
+    \draw[thick,mydarkblue] (-0.6,-1.2) rectangle (0.6,1.2);
+    \draw[<->,gray] (0.8,-1.2) -- (0.8,1.2) node[midway,right,font=\small] {$a$};
+    \draw[<->,gray] (-0.6,-1.55) -- (0.6,-1.55) node[midway,below,font=\small] {$b$};
+    % neutral axis (bending about y-axis: x is vertical)
+    \draw[dashed,mydarkblue] (-0.6,0) -- (0.6,0) node[right,font=\small,mydarkblue] {N.A.};
+    \node[align=center,font=\small,below] at (0,-2.0)
+      {$I_y=\dfrac{b\,a^3}{12}$};
+  \end{scope}
+\end{tikzpicture}
+\caption{Cross-sectional shapes and second moments of area. \textbf{Left:} circular cross-section; by symmetry $I_x=I_y=J/2$. \textbf{Right:} rectangular cross-section of height $a$ (bending direction) and width $b$; the $a^3$ dependence means doubling the height increases bending stiffness eightfold.}
+\label{fig:lec08_sections}
+\end{figure}
+
+\subsubsection*{Analogy with the mass moment of inertia}
+
+The second moment of area $I_y = \int x^2\,dA$ is structurally identical to the mass moment of inertia $\mathcal{I} = \int r^2\,dm$ from rigid-body mechanics, with area replacing mass. Dimensions differ:
+\[
+    [I_y] = \mathrm{length}^4, \qquad [\mathcal{I}] = \mathrm{mass}\times\mathrm{length}^2.
+\]
+For a uniform-density cross-section the two are proportional. The Steiner (parallel-axis) theorem $\mathcal{I} = \mathcal{I}_\mathrm{cm} + Md^2$ has a direct area analogue $I = I_\mathrm{centroid} + A\,d^2$.
+
+%%────────────────────────────────────────────────────────────
+\subsection*{Part V — Displacement Field for Bending (Brief)}
+%%────────────────────────────────────────────────────────────
+
+Integrating $\varepsilon_{zz} = x/R_c$ with Poisson contraction in the transverse directions gives the full displacement field:
+\begin{equation}
+    u_z = -\frac{x\,z}{R_c}, \qquad
+    u_x = \frac{z^2 + \nu(x^2 - y^2)}{2R_c}, \qquad
+    u_y = -\frac{\nu\,x\,y}{R_c},
+    \label{eq:lec08_bending_displacement}
+\end{equation}
+where $\nu$ is the Poisson ratio. The transverse displacements $u_x$, $u_y$ arise from Poisson contraction of the axially stressed fibers. The next lecture will use $1/R_c \approx d^2 u_x/dz^2$ (valid for small deflections) to derive the \textbf{Euler--Bernoulli beam equation}.
+
+%%────────────────────────────────────────────────────────────
+\subsection*{Summary}
+%%────────────────────────────────────────────────────────────
+
+Both torsion and bending follow the same pattern: displacement ansatz $\to$ strain $\to$ stress $\to$ integrate for resultant moment $\to$ read off stiffness.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.6}
+\begin{tabular}{lll}
+    \toprule
+    Problem & Stiffness & Geometric factor \\
+    \midrule
+    Torsion (circle) & $C = GJ$ & $J = \dfrac{\pi R^4}{2}$ \\[6pt]
+    Bending & $EI_y$ & $I_y = \displaystyle\int_A x^2\,dA$ \\
+    \bottomrule
+\end{tabular}
+\end{center}
+
+In both cases stiffness factorizes into an elastic modulus ($G$ for torsion, $E$ for bending) and a purely geometric moment of the cross-section.
+
+%%────────────────────────────────────────────────────────────
+\subsection*{Further Reading}
+%%────────────────────────────────────────────────────────────
+
+\begin{itemize}
+    \item \textbf{L. D. Landau, E. M. Lifshitz, \textit{Theory of Elasticity}, Vol.\,7, §§16--17.} Primary reference for this lecture: §16 covers torsion (including Saint-Venant's general solution), §17 covers bending.
+    \item \textbf{S. Timoshenko and J. N. Goodier, \textit{Theory of Elasticity}.} Engineering treatment of torsion (Ch.\,10) and bending with many cross-sectional examples.
+    \item \textbf{S. Timoshenko and S. Woinowsky-Krieger, \textit{Theory of Plates and Shells}.} Extends beam results to plates (two large dimensions) — the family mentioned but not covered in this course.
+\end{itemize}
+
+\end{document}

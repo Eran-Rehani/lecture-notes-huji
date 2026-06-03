@@ -1,0 +1,324 @@
+%% Lecture 12 -- Green's function for Poisson; Green's identities; uniqueness; Earnshaw
+\section{Lecture 12 -- Poisson's Equation, Green's Identities, and Uniqueness}\label{sec:lec12}
+
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 17/05/2026 & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+
+\subsection*{Overview}
+
+This lecture develops the mathematical machinery for solving electrostatics boundary-value
+problems.  Starting from Poisson's equation (derived last lecture as the electrostatic limit
+of Maxwell's equations), we:
+\begin{itemize}
+  \item construct the Green's function as the inverse of the Laplacian operator, recovering
+        Coulomb's law from an operator-inversion argument;
+  \item formulate the general boundary-value problem and discuss why the free-space solution
+        is insufficient when boundaries are present;
+  \item prove the two Green's identities from Gauss's theorem;
+  \item use the second identity to prove uniqueness of solutions under Dirichlet or Neumann
+        boundary conditions;
+  \item derive a general representation formula for $\phi$ inside a domain in terms of
+        boundary data (left incomplete — the full story comes next lecture);
+  \item state and physically interpret Earnshaw's theorem.
+\end{itemize}
+
+%------------------------------------------------------------
+\subsection{Poisson's Equation as an Operator Inversion Problem}\label{subsec:lec12-operator}
+
+\subsubsection*{Mathematical Setup}
+Electrostatics reduces Maxwell's equations to
+\begin{equation}\label{eq:lec12:poisson}
+  \boxed{
+    \nabla^2 \phi = -4\pi\rho .
+  }
+\end{equation}
+\textit{Significance:} One scalar equation for one unknown function $\phi(\br)$;
+the full electromagnetic problem has collapsed to an elliptic PDE.
+
+Think of \eqref{eq:lec12:poisson} in the language of linear algebra.  The Laplacian
+$\nabla^2$ is a linear operator acting on the infinite-dimensional space of sufficiently
+smooth functions.  Poisson's equation is
+\begin{equation}\label{eq:lec12:operator-form}
+  \hat{L}\,\phi = -4\pi\rho,
+  \qquad
+  \hat{L} \equiv \nabla^2 .
+\end{equation}
+To find $\phi$ we need the \emph{inverse operator} $\hat{L}^{-1}$, which in matrix language
+has ``matrix elements'' $G(\br,\br')$ defined by
+\begin{equation}\label{eq:lec12:G-def}
+  \boxed{
+    \nabla^2_{\br}\, G(\br,\br') = -4\pi\,\delta^{(3)}(\br - \br') .
+  }
+\end{equation}
+\textit{Significance:} $G(\br,\br')$ is the potential of a unit point charge at $\br'$; knowing it
+lets us reconstruct $\phi$ for any source $\rho$ by superposition.
+
+\begin{remark}
+  The Laplacian does have a non-trivial kernel in all of $\mathbb{R}^3$: harmonic functions
+  that grow at infinity (e.g.\ linear functions) satisfy $\nabla^2 f = 0$.  Restricting to
+  functions that decay at infinity removes this kernel, making $\hat{L}$ invertible on that
+  restricted space.  This is why the free-space Green's function exists uniquely.
+\end{remark}
+
+%------------------------------------------------------------
+\subsection{Computing the Free-Space Green's Function}\label{subsec:lec12-greens-function}
+
+\subsubsection*{Mathematical Setup}
+We seek $G(\br,\br')$ satisfying \eqref{eq:lec12:G-def} that decays at infinity.
+By translational invariance, $G$ can only depend on $\br - \br'$, so place $\br' = \mathbf{0}$
+and write $G = G(r)$ with $r = |\br|$.
+
+Apply a Fourier transform: $\nabla^2 \to -k^2$ in momentum space.  The equation becomes
+\begin{equation}\label{eq:lec12:fourier-G}
+  -k^2\,\tilde{G}(\bvec{k}) = -4\pi
+  \quad\Longrightarrow\quad
+  \tilde{G}(\bvec{k}) = \frac{4\pi}{k^2} .
+\end{equation}
+Inverting the Fourier transform in spherical coordinates (integrating over the polar angle
+trivially, then using $\int_0^\infty \frac{\sin y}{y}\,dy = \frac{\pi}{2}$):
+\begin{equation}\label{eq:lec12:G-result}
+  \boxed{
+    G(\br,\br') = \frac{1}{|\br - \br'|} .
+  }
+\end{equation}
+\textit{Significance:} This is precisely the Coulomb potential of a unit point charge.
+The Green's function is not a new object; it is the familiar $1/r$ Coulomb kernel
+reinterpreted as the inverse of the Laplacian.
+
+The general solution for charge distributed in infinite space follows immediately:
+\begin{equation}\label{eq:lec12:phi-free-space}
+  \boxed{
+    \phi(\br) = \int \frac{\rho(\br')}{|\br-\br'|}\,d^3r' .
+  }
+\end{equation}
+\textit{Significance:} This is the superposition principle for the potential —
+the textbook Year-1 result — derived here as an operator-inversion identity.
+
+%------------------------------------------------------------
+\subsection{Why Free Space is Not Enough: Boundary-Value Problems}\label{subsec:lec12-bvp}
+
+\subsubsection*{Physical Motivation}
+In practice, electrostatics problems live inside a \emph{bounded domain} $\Omega$ with
+boundary $\partial\Omega = \Sigma$, and the experimenter fixes conditions on $\Sigma$
+(e.g.\ holding conductors at prescribed potentials).  The free-space formula
+\eqref{eq:lec12:phi-free-space} only accounts for the known charges $\rho$ inside $\Omega$;
+it ignores whatever surface charges accumulate on $\Sigma$ to enforce the boundary condition.
+
+The proper problem is:
+\begin{equation}\label{eq:lec12:bvp}
+  \nabla^2\phi = -4\pi\rho
+  \quad\text{in } \Omega ,
+  \qquad
+  \text{with boundary condition on } \Sigma .
+\end{equation}
+Two standard types of boundary condition:
+\begin{itemize}
+  \item \textbf{Dirichlet}: $\phi\big|_\Sigma = f(\br)$ (potential prescribed on the boundary).
+  \item \textbf{Neumann}: $\partial_n\phi\big|_\Sigma = g(\br)$ (normal component of $\bE$
+        prescribed on the boundary, since $E_n = -\partial_n\phi$).
+\end{itemize}
+It is over-determined to impose \emph{both} simultaneously; one condition already uniquely
+fixes $\phi$ (as we prove below).  This is analogous to classical mechanics: position and
+velocity at one time uniquely determine the trajectory — you cannot additionally prescribe
+the acceleration.
+
+%------------------------------------------------------------
+\subsection{Green's Identities}\label{subsec:lec12-green-identities}
+
+\subsubsection*{Mathematical Setup}
+The identities follow from Gauss's theorem applied to carefully chosen vector fields.
+Let $\phi, \psi$ be sufficiently smooth functions on $\Omega$.
+
+\paragraph{First Green's Identity.}
+Apply Gauss's theorem to $\bvec{F} = \phi\,\nabla\psi$:
+\begin{equation}\label{eq:lec12:gauss-phi-grad-psi}
+  \int_\Omega \nabla\cdot(\phi\,\nabla\psi)\,d^3r
+  =
+  \oint_\Sigma \phi\,\nabla\psi\cdot\hat{n}\,dA
+  =
+  \oint_\Sigma \phi\,\partial_n\psi\,dA .
+\end{equation}
+Expanding the left-hand side,
+$\nabla\cdot(\phi\nabla\psi) = \nabla\phi\cdot\nabla\psi + \phi\nabla^2\psi$, gives
+\begin{equation}\label{eq:lec12:green1}
+  \boxed{
+    \int_\Omega \!\!\bigl(\phi\,\nabla^2\psi + \nabla\phi\cdot\nabla\psi\bigr)\,d^3r
+    =
+    \oint_\Sigma \phi\,\partial_n\psi\,dA .
+  }
+\end{equation}
+\textit{Significance:} Green's first identity is the integration-by-parts rule for the
+Laplacian: the Laplacian can be ``transferred'' from $\psi$ to $\phi$ at the cost of a
+boundary term.
+
+\paragraph{Second Green's Identity.}
+Write \eqref{eq:lec12:green1} once with $(\phi,\psi)$ and once with $(\psi,\phi)$, then
+subtract.  The symmetric term $\nabla\phi\cdot\nabla\psi$ cancels:
+\begin{equation}\label{eq:lec12:green2}
+  \boxed{
+    \int_\Omega \!\!\bigl(\phi\,\nabla^2\psi - \psi\,\nabla^2\phi\bigr)\,d^3r
+    =
+    \oint_\Sigma \!\!\bigl(\phi\,\partial_n\psi - \psi\,\partial_n\phi\bigr)\,dA .
+  }
+\end{equation}
+\textit{Significance:} The Laplacian is self-adjoint up to a boundary term; when both
+functions satisfy homogeneous boundary conditions the Laplacian is truly self-adjoint on
+$\Omega$.  Equation~\eqref{eq:lec12:green2} is the key tool for both uniqueness and the
+representation formula.
+
+%------------------------------------------------------------
+\subsection{Uniqueness of Solutions}\label{subsec:lec12-uniqueness}
+
+\subsubsection*{Motivation}
+We show that the boundary-value problem \eqref{eq:lec12:bvp} has \emph{at most one}
+solution under either Dirichlet or Neumann conditions (existence is guaranteed physically —
+nature produces a unique field).
+
+\paragraph{Proof.}
+Suppose $\phi_1$ and $\phi_2$ both solve \eqref{eq:lec12:bvp} with the same source $\rho$
+and the same boundary data.  Define
+\begin{equation}\label{eq:lec12:u-def}
+  u \equiv \phi_1 - \phi_2 .
+\end{equation}
+Then $u$ satisfies:
+\begin{equation}\label{eq:lec12:u-laplace}
+  \nabla^2 u = 0 \quad\text{in }\Omega ,
+  \qquad
+  u\big|_\Sigma = 0 \;(\text{Dirichlet})
+  \quad\text{or}\quad
+  \partial_n u\big|_\Sigma = 0 \;(\text{Neumann}).
+\end{equation}
+Apply the first Green's identity \eqref{eq:lec12:green1} with $\phi = \psi = u$:
+\begin{equation}\label{eq:lec12:uniqueness-identity}
+  \int_\Omega \!\!\bigl(u\,\nabla^2 u + |\nabla u|^2\bigr)\,d^3r
+  =
+  \oint_\Sigma u\,\partial_n u\,dA .
+\end{equation}
+The right-hand side vanishes under either boundary condition
+(for Dirichlet: $u|_\Sigma = 0$; for Neumann: $\partial_n u|_\Sigma = 0$).
+The first term on the left also vanishes because $\nabla^2 u = 0$.  Hence
+\begin{equation}\label{eq:lec12:grad-u-zero}
+  \int_\Omega |\nabla u|^2\,d^3r = 0 .
+\end{equation}
+Since $|\nabla u|^2 \geq 0$, the integrand must vanish identically:
+\begin{equation}\label{eq:lec12:uniqueness-result}
+  \boxed{
+    \nabla u = \mathbf{0}
+    \;\Longrightarrow\;
+    u = \text{const.}
+  }
+\end{equation}
+For Dirichlet conditions, $u|_\Sigma = 0$ forces the constant to be zero, so
+$\phi_1 = \phi_2$ exactly.  For Neumann conditions, $u$ is an arbitrary constant,
+meaning the potential is unique \emph{up to an overall additive constant} — which
+has no physical content.
+\textit{Significance:} One cannot impose both Dirichlet and Neumann conditions on
+the same boundary; either one already pins the solution (up to an irrelevant constant).
+
+%------------------------------------------------------------
+\subsection{Representation Formula via the Second Green's Identity}\label{subsec:lec12-representation}
+
+\subsubsection*{Mathematical Setup}
+We now use the second identity \eqref{eq:lec12:green2} to write $\phi(\mathbf{y})$ at
+any interior point $\mathbf{y}\in\Omega$ in terms of the source and boundary data.
+
+Choose $\phi = \phi(\br)$ (the solution we want) and $\psi = G(\br,\mathbf{y})$ where
+\begin{equation}\label{eq:lec12:G-choice}
+  G(\br,\mathbf{y}) = \frac{1}{|\br - \mathbf{y}|},
+  \qquad
+  \nabla^2_{\br}\,G(\br,\mathbf{y}) = -4\pi\,\delta^{(3)}(\br-\mathbf{y}).
+\end{equation}
+Substituting into \eqref{eq:lec12:green2}:
+\begin{align}
+  &\int_\Omega\!\!\left[\phi(\br)\,\bigl(-4\pi\delta^{(3)}(\br-\mathbf{y})\bigr)
+   - G(\br,\mathbf{y})\,\bigl(-4\pi\rho(\br)\bigr)\right]d^3r
+  \notag\\
+  &\qquad=
+  \oint_\Sigma\!\!\left[\phi\,\partial_n G - G\,\partial_n\phi\right]dA .
+  \label{eq:lec12:before-simplify}
+\end{align}
+For $\mathbf{y}\in\Omega$ the delta function gives $-4\pi\phi(\mathbf{y})$; dividing
+through by $-4\pi$:
+\begin{equation}\label{eq:lec12:representation}
+  \boxed{
+    \phi(\mathbf{y})
+    =
+    \int_\Omega \frac{\rho(\br)}{|\br-\mathbf{y}|}\,d^3r
+    \;+\;
+    \frac{1}{4\pi}\oint_\Sigma
+    \!\!\left[G(\br,\mathbf{y})\,\partial_n\phi
+    - \phi\,\partial_n G(\br,\mathbf{y})\right]dA .
+  }
+\end{equation}
+\textit{Significance:} The potential is expressed as a volume integral over sources
+plus a surface integral over boundary data.  The first term is the familiar free-space
+Coulomb contribution.  The second term captures the effect of the boundary.
+
+\begin{remark}
+  Equation~\eqref{eq:lec12:representation} is \emph{not yet} a solution because
+  the surface integrand contains both $\phi|_\Sigma$ and $\partial_n\phi|_\Sigma$.
+  In a Dirichlet problem only $\phi|_\Sigma$ is given; in a Neumann problem only
+  $\partial_n\phi|_\Sigma$ is given.  The resolution — replacing $G$ with a modified
+  Green's function $G_D$ or $G_N$ that satisfies an additional boundary condition
+  so that the unwanted term vanishes — will be carried out in the next lecture.
+\end{remark}
+
+%------------------------------------------------------------
+\subsection{Earnshaw's Theorem}\label{subsec:lec12-earnshaw}
+
+\subsubsection*{Physical Motivation}
+A harmonic function (one satisfying $\nabla^2\phi = 0$) cannot have a local maximum or
+minimum \emph{inside} a domain; extrema can occur only on the boundary.  This is the
+maximum principle for Laplace's equation.
+
+\paragraph{Physical consequence.}
+Consider a system of static point charges interacting only through electrostatic forces.
+A charge $q$ at position $\br_0$ is in stable equilibrium only if $\br_0$ is a local
+minimum of the potential $\Phi(\br)$ created by all \emph{other} charges.  But $\Phi$
+satisfies Laplace's equation in the neighbourhood of $\br_0$ (no source there).  By the
+maximum principle, $\Phi$ has no local minimum at $\br_0$.  Therefore:
+
+\begin{equation}\label{eq:lec12:earnshaw}
+  \boxed{
+    \text{No configuration of static charges can be held in stable equilibrium}
+    \text{ by electrostatic forces alone.}
+  }
+\end{equation}
+\textit{Significance:} Electrostatics is an \emph{effective} description only — real
+matter requires quantum mechanics, nuclear forces, or external constraints to remain stable.
+A ``local'' saddle point does exist (forces cancel), but any small perturbation drives the
+charge away.  True stable equilibrium requires a local minimum, which Laplace's equation
+forbids in the interior.
+
+\begin{remark}
+  The theorem does not forbid a charge sitting at a point where $\nabla\Phi = \mathbf{0}$
+  (a saddle); it only forbids a local minimum.  A saddle gives unstable equilibrium:
+  perturbations in some directions restore, in others they diverge.
+\end{remark}
+
+%------------------------------------------------------------
+\subsection{Summary}\label{subsec:lec12-summary}
+
+\begin{itemize}
+  \item Poisson's equation $\nabla^2\phi = -4\pi\rho$ is solved in free space by
+        convolving with the Green's function $G(\br,\br') = |\br-\br'|^{-1}$.
+  \item In a bounded domain, boundary conditions (Dirichlet or Neumann) are needed;
+        imposing \emph{both} is over-determined.
+  \item \textbf{Green's first identity:}
+        $\int_\Omega(\phi\nabla^2\psi + \nabla\phi\cdot\nabla\psi)\,d^3r =
+        \oint_\Sigma\phi\,\partial_n\psi\,dA$.
+  \item \textbf{Green's second identity:}
+        $\int_\Omega(\phi\nabla^2\psi - \psi\nabla^2\phi)\,d^3r =
+        \oint_\Sigma(\phi\,\partial_n\psi - \psi\,\partial_n\phi)\,dA$.
+  \item Uniqueness: the Dirichlet or Neumann problem has a unique solution
+        (up to an additive constant for Neumann).
+  \item Representation formula: $\phi(\mathbf{y}) = \int_\Omega\frac{\rho}{|\br-\mathbf{y}|}d^3r
+        + \frac{1}{4\pi}\oint_\Sigma(G\,\partial_n\phi - \phi\,\partial_n G)\,dA$;
+        completing this into a true solution requires a modified Green's function (next lecture).
+  \item Earnshaw's theorem: no stable electrostatic equilibrium exists from purely
+        electrostatic forces — harmonic functions have no interior extrema.
+\end{itemize}

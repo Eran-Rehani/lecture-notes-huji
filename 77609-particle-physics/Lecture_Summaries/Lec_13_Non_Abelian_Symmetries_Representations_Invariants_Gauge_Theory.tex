@@ -1,0 +1,456 @@
+%%===================================================================
+%% Lecture 13 -- Non-Abelian Symmetries: Representations,
+%%               Building Invariants, and Non-Abelian Gauge Theory
+%% 77609 -- Introduction to Elementary Particles
+%% Date: 28/05/2026
+%% Lecturer: Prof. Yonit Hochberg
+%%===================================================================
+
+\documentclass[../main.tex]{subfiles}
+\usepackage{preamble}
+
+\begin{document}
+
+\section{Lecture 13 -- Non-Abelian Symmetries: Representations, Invariants, and Gauge Theory}\label{sec:lec13}
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 28/05/2026 & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+
+%%------------------------------------------------------------------
+\subsection*{Overview}
+
+Lecture~12 introduced the \emph{idea} of a non-Abelian symmetry through the single statement ``the order of operations matters.'' This lecture makes that idea operational. We build the full machinery a physicist actually uses: \textbf{multiplets}, \textbf{generators}, \textbf{structure constants}, and the two most important \textbf{representations} (fundamental and adjoint). We then learn the central practical skill of the course --- deciding which field combinations are \emph{allowed} in a Lagrangian by asking whether they contain a \textbf{singlet}. Finally we gauge the symmetry: promoting $SU(N)$ to a \emph{local} symmetry forces a gauge field into the adjoint representation, and --- unlike $U(1)$ --- this gauge field \emph{talks to itself}. This self-interaction is the seed of the entire theory of the strong force.
+
+\begin{enumerate}
+  \item \textbf{Multiplets and generators}: how a field transforms under a non-Abelian group; the Lie algebra and structure constants.
+  \item \textbf{Fundamental and adjoint representations}; the $SU(2)$ doublet and $SU(3)$ triplet; the Gell-Mann matrices.
+  \item \textbf{Product groups}: assigning one index per simple factor.
+  \item \textbf{Building invariants}: contracting representations into singlets; the ``make an invariant'' game; QCD bound states (mesons, baryons, glueballs).
+  \item \textbf{Local non-Abelian invariance}: covariant derivative, gauge field in the adjoint, non-Abelian field strength, gauge self-interactions, and masslessness.
+\end{enumerate}
+
+This lecture follows \textbf{Chapter~4} of the course notes and the much-loved \textbf{Appendix~A} (group theory).
+
+%%==================================================================
+\subsection{From $U(1)$ to $SU(N)$: Multiplets and Generators}\label{sec:lec13:multiplets}
+
+\subsubsection*{Conceptual Background}
+
+For an Abelian $U(1)$ symmetry (Lec.~9--11) the story was \emph{per field}: every field $\phi$ carried a charge $q$ and transformed by an independent phase,
+\begin{equation}
+  \phi \;\to\; e^{iq\theta}\,\phi .
+  \label{eq:lec13:u1transf}
+\end{equation}
+Each field rotated separately and the order of two rotations never mattered. For a non-Abelian group the basic object is no longer a single charged field but a \emph{collection} of fields that the symmetry rotates \emph{into one another}.
+
+\begin{Definition}{Representation and Multiplet}{def:lec13:multiplet}
+A field $\phi$ \textbf{sits in a representation} $R$ of a symmetry group $G$, of \textbf{dimension} $n$, if under the symmetry $\phi$ is an $n$-component vector
+\begin{equation*}
+  \phi = \begin{pmatrix}\phi_1\\ \vdots \\ \phi_n\end{pmatrix},
+  \qquad i = 1,\dots,n ,
+\end{equation*}
+and the symmetry acts by an $n\times n$ \textbf{unitary} matrix $U$ that mixes the components:
+\begin{equation*}
+  \phi_i \;\to\; U_{ij}\,\phi_j .
+\end{equation*}
+This $n$-component object is called a \textbf{multiplet}. The Abelian case is the special case $n=1$ (a ``singlet'' carrying only a phase).
+\end{Definition}
+
+The unitary matrix is written as an exponential of Hermitian \textbf{generators} $T^a$:
+\begin{equation}
+  \boxed{\;\phi_i \;\to\; \left(e^{\,i\,T^a\theta^a}\right)_{ij}\phi_j\;}
+  \qquad
+  a = 1,\dots,N^2-1 \;\;(\text{for }SU(N)).
+  \label{eq:lec13:nonabtransf}
+\end{equation}
+
+\textit{Significance:} The transformation law is now defined \emph{for the whole multiplet at once}, not field-by-field. The single number $q$ of the Abelian case is replaced by a \emph{set of matrices} $T^a$.
+
+\begin{note}
+Notation for Eq.~\eqref{eq:lec13:nonabtransf}: the index $i,j=1,\dots,n$ label \emph{components of the multiplet} (which generator-matrix row/column we are in); the index $a=1,\dots,N^2-1$ labels \emph{which generator} and is summed over (repeated-index convention). The $\theta^a$ are real continuous parameters of the transformation.
+\end{note}
+
+\begin{Lemma}{The Lie Algebra and Structure Constants}{lem:lec13:algebra}
+The generators of $SU(N)$ are Hermitian matrices obeying the closed commutation relations
+\begin{equation*}
+  [\,T^a, T^b\,] = i f^{abc}\, T^c .
+\end{equation*}
+This is the \textbf{algebra} of the group. The real numbers $f^{abc}$ are the \textbf{structure constants}; they are totally antisymmetric and encode the non-commutativity. For an Abelian group all $f^{abc}=0$.
+\end{Lemma}
+
+In a representation $R$ of dimension $n$, the generators $T^a$ are concrete $n\times n$ matrices. The \emph{same} abstract algebra $[T^a,T^b]=if^{abc}T^c$ holds in every representation --- only the size of the matrices changes.
+
+%%==================================================================
+\subsection{The Two Representations You Must Know}\label{sec:lec13:reps}
+
+\subsubsection*{Mathematical Setup}
+
+Out of the infinitely many representations of $SU(N)$, two appear everywhere in physics.
+
+\begin{Definition}{Fundamental Representation}{def:lec13:fundamental}
+The \textbf{fundamental} representation is the smallest non-trivial irreducible representation. For $SU(N)$ it has dimension $N$. For $SU(2)$ this is the \textbf{doublet} (the familiar spin-$\tfrac12$); for $SU(3)$ it is the \textbf{triplet}.
+\end{Definition}
+
+\begin{Definition}{Adjoint Representation}{def:lec13:adjoint}
+The \textbf{adjoint} representation is built directly out of the structure constants $f^{abc}$ themselves. Its dimension equals the number of generators, i.e.\ the dimension of the group:
+\begin{equation*}
+  \dim(\text{adjoint}) = N^2-1 .
+\end{equation*}
+\end{Definition}
+
+\textit{Significance:} The adjoint will turn out to be the home of the \emph{gauge bosons}. The fact that gluons live in the $8$ of $SU(3)$ is exactly the statement ``gauge fields sit in the adjoint.''
+
+\paragraph{Example 1 --- the $SU(2)$ doublet.}
+A field $\phi$ that is a doublet of $SU(2)$ sits in the $\mathbf{2}$ (the fundamental). It has two components and transforms as
+\begin{equation}
+  \phi \;\to\; \exp\!\left(i\,\frac{\tau^a}{2}\,\theta^a\right)\phi ,
+  \qquad a = 1,2,3 ,
+  \label{eq:lec13:su2doublet}
+\end{equation}
+where $\tau^a$ are the Pauli matrices and the generators in the doublet are $T^a = \tau^a/2$. There are $2^2-1=3$ of them.
+
+\paragraph{Example 2 --- the $SU(3)$ triplet.}
+A field $\phi$ that is a triplet of $SU(3)$ sits in the $\mathbf{3}$. It has three components and transforms as
+\begin{equation}
+  \phi \;\to\; \exp\!\left(i\,\frac{\lambda^a}{2}\,\theta^a\right)\phi ,
+  \qquad a = 1,\dots,8 ,
+  \label{eq:lec13:su3triplet}
+\end{equation}
+where the generators are $T^a = \lambda^a/2$ and the $\lambda^a$ are the eight \textbf{Gell-Mann matrices} ($3^2-1=8$), the $SU(3)$ analogue of the Pauli matrices. They are $3\times3$ traceless Hermitian matrices:
+\begin{align}
+  \lambda^1 &= \begin{pmatrix}0&1&0\\1&0&0\\0&0&0\end{pmatrix},
+  &\lambda^2 &= \begin{pmatrix}0&-i&0\\i&0&0\\0&0&0\end{pmatrix},
+  &\lambda^3 &= \begin{pmatrix}1&0&0\\0&-1&0\\0&0&0\end{pmatrix},
+  \notag\\[4pt]
+  \lambda^4 &= \begin{pmatrix}0&0&1\\0&0&0\\1&0&0\end{pmatrix},
+  &\lambda^5 &= \begin{pmatrix}0&0&-i\\0&0&0\\i&0&0\end{pmatrix},
+  &\lambda^6 &= \begin{pmatrix}0&0&0\\0&0&1\\0&1&0\end{pmatrix},
+  \label{eq:lec13:gellmann}\\[4pt]
+  \lambda^7 &= \begin{pmatrix}0&0&0\\0&0&-i\\0&i&0\end{pmatrix},
+  &\lambda^8 &= \frac{1}{\sqrt3}\begin{pmatrix}1&0&0\\0&1&0\\0&0&-2\end{pmatrix}.
+  & &\notag
+\end{align}
+
+\begin{Claim}{Embedded $SU(2)$ subalgebras}{clm:lec13:su2sub}
+Notice $(\lambda^1,\lambda^2,\lambda^3)$ act only on the first two components --- they are exactly the Pauli matrices padded with a zero row/column. They generate an $SU(2)$ \emph{subalgebra} sitting inside $SU(3)$. In fact $SU(3)$ contains \textbf{three} such $SU(2)$ subalgebras (acting on the $(1,2)$, $(1,3)$, and $(2,3)$ pairs of components). Verifying this is a homework exercise.
+\end{Claim}
+
+%%==================================================================
+\subsection{Product Groups: One Index per Factor}\label{sec:lec13:product}
+
+\subsubsection*{Motivation}
+
+Realistic symmetry groups are products of \emph{simple} factors, e.g.\ $G = SU(3)\times SU(2)\times U(1)$. The rule is mechanical: we must state how a field transforms under \emph{each} factor separately, because a transformation in one factor does not touch the others.
+
+\begin{Example}{A field in $SU(3)\times SU(2)$}{ex:lec13:product}
+Let $\phi$ be a \textbf{triplet of $SU(3)$} \emph{and} a \textbf{doublet of $SU(2)$}. Then it carries \emph{two} indices, one per factor:
+\begin{equation*}
+  \phi_{\alpha i},
+  \qquad
+  \alpha = 1,2,3 \;\;(SU(3)\text{ triplet index}),
+  \qquad
+  i = 1,2 \;\;(SU(2)\text{ doublet index}).
+\end{equation*}
+Under an $SU(3)$ rotation only the $\alpha$ index moves:
+\begin{equation*}
+  \phi_{\alpha i} \;\to\; \left(e^{i\lambda^a\theta^a/2}\right)_{\alpha\beta}\phi_{\beta i}
+  \qquad(\text{the }i\text{ index is untouched}).
+\end{equation*}
+Under an $SU(2)$ rotation only the $i$ index moves:
+\begin{equation*}
+  \phi_{\alpha i} \;\to\; \left(e^{i\tau^a\theta^a/2}\right)_{ij}\phi_{\alpha j}
+  \qquad(\text{the }\alpha\text{ index is untouched}).
+\end{equation*}
+\end{Example}
+
+\textit{Key insight:} ``one index per factor.'' Conceptually simple, but keeping the bookkeeping straight is what saves you from confusion later.
+
+%%==================================================================
+\subsection{Building Invariants: the Singlet Rule}\label{sec:lec13:invariants}
+
+\subsubsection*{Conceptual Background}
+
+How do we know which terms are allowed in a Lagrangian? For a global $U(1)$ (Lec.~9) the rule was: each term must have total charge zero, so the phases cancel and the term returns to itself. The non-Abelian generalisation replaces ``charge sums to zero'' with ``the product of representations contains a \textbf{singlet}.''
+
+\begin{Claim}{The Singlet Rule}{clm:lec13:singlet}
+A Lagrangian invariant under a (global) non-Abelian symmetry consists of terms that are products of representations contracted into a \textbf{singlet} --- an object that does not transform. A singlet is the non-Abelian way of saying ``invariant.'' A term is allowed if and only if its field content \emph{can} be contracted into a singlet, under \emph{every} imposed symmetry factor simultaneously.
+\end{Claim}
+
+\begin{note}
+In this course we care only about \emph{which combinations can give a singlet}, not about writing the explicit index contractions. (Writing the contractions explicitly is a job for a dedicated group-theory or QFT course.) Whenever we write down a term, it is \emph{implied} that we take the singlet contraction. If no singlet contraction exists, the term is simply not allowed.
+\end{note}
+
+\subsubsection*{The decomposition rules we will be handed}
+
+To play the game we only need the ``multiplication table'' of representations, which will always be provided. For $SU(2)$ (real/pseudoreal representations):
+\begin{equation}
+  \mathbf{2}\otimes\mathbf{2} = \mathbf{3}\oplus\mathbf{1},
+  \qquad
+  \mathbf{3}\otimes\mathbf{3} \supset \mathbf{1}.
+  \label{eq:lec13:su2decomp}
+\end{equation}
+The first is nothing but the familiar ``spin-$\tfrac12\otimes$ spin-$\tfrac12$ = triplet $\oplus$ singlet.''
+
+For $SU(3)$ (which has \emph{complex} representations, so $\mathbf{3}\neq\bar{\mathbf{3}}$):
+\begin{align}
+  \mathbf{3}\otimes\bar{\mathbf{3}} &= \mathbf{1}\oplus\mathbf{8},
+  \label{eq:lec13:su3_33bar}\\
+  \mathbf{3}\otimes\mathbf{3} &= \mathbf{6}\oplus\bar{\mathbf{3}},
+  \label{eq:lec13:su3_33}\\
+  \mathbf{3}\otimes\mathbf{8} &= \mathbf{15}\oplus\bar{\mathbf{6}}\oplus\mathbf{3},
+  \label{eq:lec13:su3_38}\\
+  \mathbf{8}\otimes\mathbf{8} &\supset \mathbf{1}.
+  \label{eq:lec13:su3_88}
+\end{align}
+Here $\mathbf{8}$ is the adjoint (the ``octet''). Note that a singlet appears in $\mathbf{3}\otimes\bar{\mathbf{3}}$ but \emph{not} in $\mathbf{3}\otimes\mathbf{3}$.
+
+\begin{Example}{Two $SU(2)$ doublets, and adding a triplet}{ex:lec13:su2game}
+Take two $SU(2)$ doublets $\rho,\sigma$ (both in the $\mathbf{2}$).
+\begin{itemize}
+  \item \textbf{Quadratic term $\rho\,\sigma$:} since $\mathbf{2}\otimes\mathbf{2}=\mathbf{3}\oplus\mathbf{1}$, a singlet exists. The explicit contraction (which we usually do \emph{not} write) is $\varepsilon_{ij}\rho^i\sigma^j$. \emph{Allowed.}
+  \item \textbf{Cubic term $\Delta\,\rho\,\sigma$ with a triplet $\Delta$ (the $\mathbf{3}$):} contract $\rho\otimes\sigma$ into their \emph{triplet} piece; then $\mathbf{3}\otimes\mathbf{3}\supset\mathbf{1}$, so a singlet exists. \emph{Allowed.}
+\end{itemize}
+\end{Example}
+
+\textit{Key insight:} you are free to route the contraction through whichever intermediate representation makes a singlet possible. The term is allowed as long as \emph{some} route works.
+
+\subsubsection*{The ``make an invariant'' game}
+
+Impose $SU(3)\times SU(2)\times U(1)$ and assign each field its transformation properties, written as $\big(R_{SU(3)},\,R_{SU(2)}\big)_{q_{U(1)}}$:
+\begin{equation}
+  Q = (\mathbf{3},\mathbf{2})_{+1},
+  \qquad
+  U = (\mathbf{3},\mathbf{1})_{+4},
+  \qquad
+  D = (\mathbf{3},\mathbf{1})_{-2},
+  \qquad
+  H = (\mathbf{1},\mathbf{2})_{+3}.
+  \label{eq:lec13:gamefields}
+\end{equation}
+For each candidate term we check all three factors. The $U(1)$ check is the easiest (charges must sum to zero); the non-Abelian checks ask whether a singlet exists.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lcccc}
+  \toprule
+  Term & $SU(3)$ & $SU(2)$ & $U(1)$ & Invariant? \\
+  \midrule
+  $H^\dagger H$ & $\mathbf{1}$ trivially & $\mathbf{2}\otimes\bar{\mathbf{2}}\supset\mathbf{1}$ & $3-3=0$ & \textbf{yes} \\
+  $H^3$ & --- & --- & $3+3+3=9\neq0$ & \textbf{no} \\
+  $H\,Q\,U^\dagger$ & $\mathbf{3}\otimes\bar{\mathbf{3}}\supset\mathbf{1}$ & $\mathbf{2}\otimes\mathbf{2}\supset\mathbf{1}$ & $3+1-4=0$ & \textbf{yes} \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\begin{note}
+For $SU(2)$ the anti-fundamental is equivalent to the fundamental, $\bar{\mathbf{2}}\simeq\mathbf{2}$ (the doublet is pseudoreal). That is why $H^\dagger H$ already gives a singlet, and why we may freely contract $H\otimes Q$ as $\mathbf{2}\otimes\mathbf{2}$. The bar on $U^\dagger$ merely denotes the complex conjugate field, not a different fermion.
+\end{note}
+
+The third row, $H\,Q\,U^\dagger$, is a genuine invariant under all three factors --- it is precisely a \textbf{Yukawa interaction} of the type that gives quarks their mass in the Standard Model. Your homework will have you run through $\sim$1000 more such combinations.
+
+%%==================================================================
+\subsection{$SU(3)$ Colour and the Bound States of QCD}\label{sec:lec13:qcd}
+
+\subsubsection*{Physical Motivation}
+
+$SU(3)$ is not just a mathematical example: a \emph{gauged} version of $SU(3)$ --- called $SU(3)_c$, ``colour'' --- is the symmetry of \textbf{Quantum Chromodynamics} ($\QCD$), the theory of the strong force. The fields are:
+\begin{itemize}
+  \item \textbf{quarks} $q$: triplets, the $\mathbf{3}$ of colour;
+  \item \textbf{antiquarks} $\bar q$: the $\bar{\mathbf{3}}$;
+  \item \textbf{gluons} $g$: the adjoint, the $\mathbf{8}$ (these are the gauge bosons --- next section).
+\end{itemize}
+$\QCD$ at low energy is \textbf{confined}: free quarks are never seen, only colour-singlet bound states. So the question ``which combinations can be observed as bound states in nature?'' is \emph{the same question} as ``which combinations are colour singlets?''
+
+\begin{Example}{Which colour combinations are observable?}{ex:lec13:bound}
+Using Eqs.~\eqref{eq:lec13:su3_33bar}--\eqref{eq:lec13:su3_88}:
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{lll}
+  \toprule
+  Combination & Decomposition & Physical state \\
+  \midrule
+  $q\,\bar q$ & $\mathbf{3}\otimes\bar{\mathbf{3}}\supset\mathbf{1}$ & \textbf{mesons} (pions, kaons) --- observed \\
+  $q\,q$ & $\mathbf{3}\otimes\mathbf{3}=\mathbf{6}\oplus\bar{\mathbf{3}}$, no $\mathbf{1}$ & not allowed \\
+  $q\,g$ & $\mathbf{3}\otimes\mathbf{8}$, no $\mathbf{1}$ & not allowed \\
+  $g\,g$ & $\mathbf{8}\otimes\mathbf{8}\supset\mathbf{1}$ & \textbf{glueball} \\
+  $q\,\bar q\,g$ & contains a $\mathbf{1}$ & \textbf{hybrid} state \\
+  $q\,q\,q$ & $\mathbf{3}\otimes\mathbf{3}\otimes\mathbf{3}\supset\mathbf{1}$ & \textbf{baryons} (proton, neutron) --- observed \\
+  \bottomrule
+\end{tabular}
+\end{center}
+For $qqq$: combine two quarks via $\mathbf{3}\otimes\mathbf{3}\supset\bar{\mathbf{3}}$, then $\bar{\mathbf{3}}\otimes\mathbf{3}\supset\mathbf{1}$.
+\end{Example}
+
+\textit{Significance:} The very existence of mesons ($q\bar q$) and baryons ($qqq$) as the building blocks of matter is a direct consequence of which colour products contain a singlet. ``Why three quarks in a proton?'' --- because that is what makes a colour singlet.
+
+\begin{OpenQuestion}{Glueballs and hybrids}{opn:lec13:glueball}
+Pure-glue singlets ($gg$, ``glueballs'') and hybrid states ($q\bar q g$) are \emph{allowed} by colour symmetry and are expected on theoretical grounds, but have \textbf{not yet been unambiguously observed}. Because $\QCD$ at low energy is strongly coupled, perturbation theory fails and predictions for these states are hard to make precise; they are typically hunted experimentally by scanning for resonances and identifying their quantum numbers. Confirming glueballs remains an open experimental question.
+\end{OpenQuestion}
+
+%%==================================================================
+\subsection{Local Non-Abelian Invariance: Gauging $SU(N)$}\label{sec:lec13:gauging}
+
+\subsubsection*{Conceptual Background}
+
+So far the parameters $\theta^a$ were constants (a \emph{global} symmetry). We now make them spacetime-dependent, $\theta^a\to\theta^a(x)$ --- a \emph{local} (gauge) symmetry. As in the Abelian case (Lec.~10), most terms survive untouched, but kinetic terms do not.
+
+\begin{itemize}
+  \item Terms built from scalar/fermion fields \emph{without derivatives}: if they were invariant under the global symmetry, they remain invariant under the local one.
+  \item \textbf{Kinetic terms} (which contain $\partial_\mu$) are \emph{not} invariant, because $\partial_\mu$ hits the spacetime-dependent $\theta^a(x)$ and produces an extra term.
+\end{itemize}
+
+The cure, exactly as for $U(1)$, is to replace the ordinary derivative by a \textbf{covariant derivative} containing a new \textbf{gauge field}.
+
+\subsubsection*{The covariant derivative}
+
+We demand a derivative $D_\mu$ such that $D_\mu\phi$ transforms the \emph{same way} as $\phi$ itself, $D_\mu\phi \to U\,D_\mu\phi$ with $U=e^{iT^a\theta^a(x)}$. This is achieved by
+\begin{equation}
+  \boxed{\;D_\mu = \partial_\mu + i\,g\,T^a A_\mu^a\;,\qquad a=1,\dots,N^2-1\;}
+  \label{eq:lec13:covderiv}
+\end{equation}
+where $g$ is the \textbf{gauge coupling}, $T^a$ are the generators in the representation of the field $\phi$ being acted on, and $A_\mu^a$ is the gauge field. The index $a$ runs over the generators --- so \emph{the gauge field carries an adjoint index}, i.e.\ it sits in the adjoint representation.
+
+\begin{note}
+The generators $T^a$ in $D_\mu$ take whatever form is appropriate to the representation of the field they act on: $\tau^a/2$ when acting on an $SU(2)$ doublet, $\lambda^a/2$ on an $SU(3)$ triplet, and so on. The gauge field $A_\mu^a$ itself, however, always lives in the adjoint.
+\end{note}
+
+\subsubsection*{Transformation law of the gauge field}
+
+For $D_\mu\phi$ to transform correctly, the gauge field must transform as
+\begin{equation}
+  \boxed{\;A_\mu^a \;\to\; A_\mu^a \;-\; f^{abc}\,\theta^b A_\mu^c \;-\; \frac{1}{g}\,\partial_\mu\theta^a\;}
+  \label{eq:lec13:gaugetransf}
+\end{equation}
+
+Comparing with the Abelian photon ($A_\mu\to A_\mu-\tfrac1g\partial_\mu\theta$): the first and last terms are the familiar $U(1)$-like pieces. The \emph{middle} term $-f^{abc}\theta^b A_\mu^c$ is genuinely new --- it is present only because the algebra is non-trivial ($f^{abc}\neq0$). It is the structure constants reappearing, and it is responsible for everything that distinguishes a non-Abelian gauge theory from electromagnetism.
+
+\textit{Significance:} The non-Abelian gauge field transforms \emph{in the adjoint representation} of the group (the structure-constant piece is exactly an adjoint rotation). For $U(1)$ the ``adjoint'' is trivial (one uncharged field, the photon); here it is an $(N^2-1)$-component multiplet that transforms non-trivially.
+
+\subsubsection*{The non-Abelian field strength}
+
+The gauge field is dynamical, so it needs its own kinetic term, built from a field-strength tensor. The Abelian $F_{\mu\nu}=\partial_\mu A_\nu-\partial_\nu A_\mu$ generalises to
+\begin{equation}
+  \boxed{\;F_{\mu\nu}^a = \partial_\mu A_\nu^a - \partial_\nu A_\mu^a - g\,f^{abc}\,A_\mu^b A_\nu^c\;}
+  \label{eq:lec13:fieldstrength}
+\end{equation}
+The first two terms are the photon-like part (now carrying an adjoint index $a$). The last term $-g f^{abc}A_\mu^b A_\nu^c$ is \emph{new} compared to the Abelian case --- it is quadratic in the gauge field. The gauge-invariant kinetic Lagrangian is
+\begin{equation}
+  \boxed{\;\lagr_{\rm gauge} = -\tfrac14\,F_{\mu\nu}^a\,F^{a\,\mu\nu}\;}
+  \label{eq:lec13:gaugekinetic}
+\end{equation}
+($F_{\mu\nu}^a$ carries three group indices in the structure constant but is a Lorentz scalar after contraction.)
+
+\textit{Significance:} Because $F^a$ contains a piece $\sim A A$, squaring it in $\lagr_{\rm gauge}$ produces terms with \emph{three and four gauge fields} --- the gauge bosons interact \emph{with each other}. This never happens for the photon.
+
+\begin{Corollary}{Gauge self-interactions}{cor:lec13:selfint}
+A non-Abelian gauge field couples to itself. Expanding $-\tfrac14 F^a_{\mu\nu}F^{a\,\mu\nu}$ gives, beyond the free part, a \textbf{three-gauge-boson} vertex and a \textbf{four-gauge-boson} vertex:
+\begin{align}
+  \lagr_3 &\sim -g\,f^{abc}\,(\partial_\mu A_\nu^a)\,A^{b\,\mu}A^{c\,\nu},
+  \label{eq:lec13:threegluon}\\
+  \lagr_4 &\sim -\tfrac14\,g^2\,f^{abc}f^{ade}\,A_\mu^b A_\nu^c A^{d\,\mu}A^{e\,\nu}.
+  \label{eq:lec13:fourgluon}
+\end{align}
+These are absent in the Abelian (photon) case. For $SU(3)_c$ they are the gluon self-interactions that make the strong force ``strong.''
+\end{Corollary}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+  \begin{feynman}
+    \vertex (c) at (0,0);
+    \vertex (a) at (-1.2, 1.0);
+    \vertex (b) at ( 1.2, 1.0);
+    \vertex (d) at ( 0.0,-1.4);
+    \diagram*{
+      (a) -- [gluon] (c),
+      (b) -- [gluon] (c),
+      (d) -- [gluon] (c),
+    };
+  \end{feynman}
+\end{tikzpicture}
+\hspace{2.2cm}
+\begin{tikzpicture}
+  \begin{feynman}
+    \vertex (c) at (0,0);
+    \vertex (a) at (-1.0, 1.0);
+    \vertex (b) at ( 1.0, 1.0);
+    \vertex (d) at (-1.0,-1.0);
+    \vertex (e) at ( 1.0,-1.0);
+    \diagram*{
+      (a) -- [gluon] (c),
+      (b) -- [gluon] (c),
+      (d) -- [gluon] (c),
+      (e) -- [gluon] (c),
+    };
+  \end{feynman}
+\end{tikzpicture}
+\caption{The self-interactions of a non-Abelian gauge field. \emph{Left}: the three-gauge-boson vertex ($\propto g\,f^{abc}$, Eq.~\eqref{eq:lec13:threegluon}). \emph{Right}: the four-gauge-boson vertex ($\propto g^2 f^{abc}f^{ade}$, Eq.~\eqref{eq:lec13:fourgluon}). Neither exists in $U(1)$ (the photon does not couple to itself).}
+\label{fig:lec13:selfint}
+\end{figure}
+
+\subsubsection*{Gauge bosons are massless}
+
+\begin{Theorem}{Local non-Abelian invariance $\Rightarrow$ massless gauge bosons}{thm:lec13:massless}
+A naive mass term $m^2 A_\mu^a A^{a\,\mu}$ is \emph{not} invariant under the gauge transformation \eqref{eq:lec13:gaugetransf}. Therefore local non-Abelian gauge invariance \textbf{forbids} a gauge-boson mass:
+\begin{equation*}
+  m_A = 0 .
+\end{equation*}
+The gauge bosons of an unbroken non-Abelian symmetry are massless.
+\end{Theorem}
+
+\begin{proof}
+The field $A_\mu^a$ is dynamical, so its excitations are physical particles. To give them mass we would add $\tfrac12 m^2 A_\mu^a A^{a\,\mu}$. Under \eqref{eq:lec13:gaugetransf} the shift $-\tfrac1g\partial_\mu\theta^a$ (and the structure-constant rotation) change this term, so it is not invariant. Hence it cannot appear in a gauge-invariant Lagrangian, and $m_A=0$. (Exactly as for the photon in the Abelian case --- but here it applies to an entire adjoint multiplet.)
+\end{proof}
+
+\textit{Significance:} The masslessness of the gluon is \emph{not} a choice --- it is forced by gauge invariance, just as $m_\gamma=0$ was. If $SU(3)_c$ is a good (unbroken) symmetry of nature, the gluon \emph{must} be massless.
+
+\subsubsection*{Several gauge factors}
+
+\begin{Corollary}{One gauge field and coupling per simple factor}{cor:lec13:multifactor}
+If the gauge group has several commuting factors, each factor gets its \emph{own} gauge field in \emph{its own} adjoint representation, and its \emph{own} independent coupling constant.
+\end{Corollary}
+
+\begin{Example}{Gauging $SU(3)\times SU(2)\times U(1)$}{ex:lec13:smgroup}
+This is the Standard-Model gauge group. We must introduce three gauge fields:
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lccccl}
+  \toprule
+  Gauge field & $SU(3)$ & $SU(2)$ & $U(1)$ & Coupling & SM identity \\
+  \midrule
+  $G_\mu^a$ (gluon) & $\mathbf{8}$ & $\mathbf{1}$ & $0$ & $g_3$ & $SU(3)_c$ gluons \\
+  $W_\mu^a$        & $\mathbf{1}$ & $\mathbf{3}$ & $0$ & $g_2$ & $W^\pm,\,W^0$ \\
+  $B_\mu$          & $\mathbf{1}$ & $\mathbf{1}$ & $0$ & $g_1$ & hypercharge $U(1)_Y$ \\
+  \bottomrule
+\end{tabular}
+\end{center}
+Each gauge field is the adjoint of its own factor, a singlet (uncharged) under the others. The $SU(3)$ gluon is the $\mathbf{8}$ of colour; the $SU(2)$ gauge field is its $\mathbf{3}$ (the $W$ bosons we will meet in about a week); the $U(1)$ gauge field is an uncharged singlet, exactly like a photon.
+\end{Example}
+
+%%------------------------------------------------------------------
+\subsection*{To Remember}
+
+\begin{itemize}
+  \item A non-Abelian field is a \textbf{multiplet} $\phi_i$ transforming as $\phi\to e^{iT^a\theta^a}\phi$; the Hermitian generators obey $[T^a,T^b]=if^{abc}T^c$ with structure constants $f^{abc}$.
+  \item \textbf{Fundamental} rep $=$ smallest non-trivial irrep (dim $N$): $SU(2)$ doublet ($T^a=\tau^a/2$), $SU(3)$ triplet ($T^a=\lambda^a/2$). \textbf{Adjoint} rep is built from $f^{abc}$, dim $N^2-1$ --- home of the gauge bosons.
+  \item \textbf{Product groups}: one index per simple factor; a transformation in one factor leaves the others' indices alone.
+  \item \textbf{Singlet rule}: a term is allowed iff its representations can be contracted into a singlet under every factor (the non-Abelian version of ``charges sum to zero''). We track \emph{which} combinations contain a singlet, not the explicit contractions.
+  \item $SU(3)_c$ colour: $q\bar q\supset\mathbf1$ (mesons), $qqq\supset\mathbf1$ (baryons); $qq$ and $qg$ contain no singlet. Glueballs ($gg$) and hybrids ($q\bar q g$) are allowed but not yet observed.
+  \item \textbf{Gauging}: $\partial_\mu\to D_\mu=\partial_\mu+igT^aA_\mu^a$; gauge field $A_\mu^a$ sits in the adjoint; field strength $F_{\mu\nu}^a=\partial_\mu A_\nu^a-\partial_\nu A_\mu^a-gf^{abc}A_\mu^bA_\nu^c$.
+  \item The extra $f^{abc}$ term gives \textbf{gauge self-interactions} (3- and 4-boson vertices) --- absent for the photon. Gauge invariance forbids a mass term: non-Abelian gauge bosons are \textbf{massless}. Each commuting factor has its own adjoint gauge field and independent coupling.
+\end{itemize}
+
+%%------------------------------------------------------------------
+\subsection*{Recommended Reading}
+
+\begin{itemize}
+  \item \textbf{Course notes, Chapter~4 \& Appendix~A}: non-Abelian groups, generators, representations, structure constants.
+  \item \textbf{Tong, \textit{Lectures on Particle Physics}, Ch.~4}: non-Abelian gauge theory, covariant derivative, field strength, self-interactions.
+  \item \textbf{Peskin \& Schroeder, Ch.~15}: non-Abelian gauge theory in full detail (generators, $F_{\mu\nu}^a$, the gauge Lagrangian).
+  \item \textbf{Griffiths, \textit{Introduction to Elementary Particles}, Ch.~8--9}: colour, $\QCD$, the quark model, mesons and baryons as colour singlets.
+\end{itemize}
+
+\end{document}

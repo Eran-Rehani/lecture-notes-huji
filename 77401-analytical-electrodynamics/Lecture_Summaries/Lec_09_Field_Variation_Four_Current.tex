@@ -1,0 +1,567 @@
+%% Lecture 09 -- Field variation and four-current
+\section{Lecture 09 -- Field Variation and Four-Current}\label{sec:lec09}
+
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 05/05/2026 & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+
+\subsection*{Overview}
+The previous lecture constructed the electromagnetic field tensor
+\begin{equation}\label{eq:lec09:F-def}
+  F_{\mu\nu} = \partial_\mu A_\nu - \partial_\nu A_\mu
+\end{equation}
+and argued that Lorentz invariance, gauge invariance, and the superposition
+principle almost uniquely determine the free-field action.  This lecture begins
+the variational derivation of Maxwell's equations.  The main idea is simple:
+the complete system has two kinds of degrees of freedom.  Varying the particle
+worldlines gives the Lorentz force law; varying the electromagnetic field
+$A_\mu(x)$ gives the field equations.
+
+The live lecture reached the following points:
+\begin{itemize}
+  \item the total action for point charges plus the electromagnetic field;
+  \item the first variation of the free-field action;
+  \item the definition of charge density, current density, and four-current;
+  \item the proof that the four-current obeys the covariant continuity equation.
+\end{itemize}
+
+The derivation of Maxwell's equations is therefore almost complete: one still
+has to vary the interaction term and combine it with the free-field variation.
+That combination will give the inhomogeneous Maxwell equations
+$\partial_\mu F^{\mu\nu} = (4\pi/c)J^\nu$.
+
+%------------------------------------------------------------
+\subsection{The Total Action}\label{subsec:lec09-total-action}
+
+\subsubsection*{Physical Motivation}
+A charged particle and the electromagnetic field are not separate mechanical
+problems.  The particle moves in the field, and the field is sourced by the
+particle.  The action must therefore contain three pieces: a free-particle
+piece, an interaction piece, and a free-field piece.  Each term has a clear
+role: inertia, coupling, and field dynamics.
+
+For $N$ point charges, labelled by $n=1,\ldots,N$, the total action is
+\begin{equation}\label{eq:lec09-total-action}
+  \boxed{
+  S =
+  -\sum_{n=1}^N m_n c\int ds_n
+  -\frac{1}{c}\sum_{n=1}^N e_n\int_{\Gamma_n} A_\mu\,dx_n^\mu
+  -\frac{1}{16\pi c}\int F_{\mu\nu}F^{\mu\nu}\,d^4x .
+  }
+\end{equation}
+\textit{Physical significance:} The first term says that a free relativistic
+particle extremizes its proper time.  The second term couples the particle
+worldline $\Gamma_n$ to the four-potential.  The third term gives the
+electromagnetic field its own dynamics.
+
+Here $x^\mu=(ct,\mathbf{x})$, $d^4x=dx^0\,d^3x=c\,dt\,d^3x$, and the metric
+convention is $(+,-,-,-)$.  The factor of $1/c$ in the field action is the
+standard Gaussian-units normalization when the four-volume element is written
+as $d^4x$.
+
+\subsubsection*{Why the field action is quadratic}
+
+The free-field part is not guessed arbitrarily.  It is forced by three physical
+requirements:
+\begin{enumerate}
+  \item \textbf{Lorentz invariance:} the action must be a scalar.
+  \item \textbf{Gauge invariance:} the action may depend on $A_\mu$ only through
+  gauge-invariant combinations, especially $F_{\mu\nu}$.
+  \item \textbf{Superposition:} the field equations must be linear, so the
+  action must be quadratic in the field.
+\end{enumerate}
+
+The derivative matrix $\partial_\mu A_\nu$ can be decomposed into a symmetric
+and an antisymmetric part:
+\begin{equation}\label{eq:lec09-sym-antisym}
+  \partial_\mu A_\nu
+  =
+  \frac{1}{2}\left(\partial_\mu A_\nu+\partial_\nu A_\mu\right)
+  +
+  \frac{1}{2}\left(\partial_\mu A_\nu-\partial_\nu A_\mu\right).
+\end{equation}
+The antisymmetric part is precisely $F_{\mu\nu}/2$.  Under a gauge
+transformation,
+\begin{equation}\label{eq:lec09-gauge}
+  A_\mu \longrightarrow A_\mu+\partial_\mu f ,
+\end{equation}
+the antisymmetric combination is unchanged:
+\begin{align}
+  F_{\mu\nu}
+  &\longrightarrow
+  \partial_\mu(A_\nu+\partial_\nu f)
+  -\partial_\nu(A_\mu+\partial_\mu f) \notag\\
+  &= F_{\mu\nu}
+  +\partial_\mu\partial_\nu f
+  -\partial_\nu\partial_\mu f
+  = F_{\mu\nu}.
+  \label{eq:lec09-F-gauge-inv}
+\end{align}
+Thus the allowed quadratic Lorentz scalar is
+\begin{equation}\label{eq:lec09-free-action}
+  \boxed{
+  S_{\rm field}
+  =
+  -\frac{1}{16\pi c}\int F_{\mu\nu}F^{\mu\nu}\,d^4x .
+  }
+\end{equation}
+\textit{Physical significance:} Gauge symmetry throws away the symmetric part
+of $\partial_\mu A_\nu$ and keeps only the curl-like object $F_{\mu\nu}$.  This
+is the covariant version of the familiar fact that physical electromagnetic
+fields are built from derivatives of potentials.
+
+\subsubsection*{Why $d^4x$ is Lorentz invariant}
+
+The four-volume element behaves like an ordinary volume element under a change
+of variables:
+\begin{equation}\label{eq:lec09-jacobian}
+  d^4x' = \left|\det \Lambda\right|\,d^4x .
+\end{equation}
+For a proper Lorentz transformation, $\det\Lambda=1$, so
+\begin{equation}\label{eq:lec09-d4x-scalar}
+  \boxed{d^4x'=d^4x.}
+\end{equation}
+\textit{Physical significance:} A Lorentz boost squeezes spatial volume and
+stretches time in just the compensating way needed to leave the four-dimensional
+spacetime volume unchanged.
+
+\begin{center}
+\begin{tikzpicture}[scale=0.95, >=Latex]
+  \draw[->] (-0.2,0) -- (5.2,0) node[right] {$x$};
+  \draw[->] (0,-0.2) -- (0,4.2) node[above] {$ct$};
+  \draw[thick, blue] (0.8,0.6) -- (3.6,3.4);
+  \draw[thick, blue!60] (1.0,0.6) -- (3.8,3.4);
+  \draw[thick, blue!60] (0.8,0.9) -- (3.6,3.7);
+  \draw[thick, blue!60] (1.0,0.9) -- (3.8,3.7);
+  \node[blue] at (3.9,3.15) {boosted cell};
+  \draw[dashed] (0.8,0.6) -- (1.0,0.6) -- (1.0,0.9) -- (0.8,0.9) -- cycle;
+  \node at (1.25,0.35) {$d^4x$};
+  \node[align=center] at (2.7,1.1) {spatial contraction\\and time dilation\\compensate};
+\end{tikzpicture}
+\end{center}
+
+%------------------------------------------------------------
+\subsection{Varying the Free Electromagnetic Field}\label{subsec:lec09-field-variation}
+
+\subsubsection*{Physical Motivation}
+In mechanics, one varies the path $q(t)\to q(t)+\delta q(t)$ and demands that
+the first-order change in the action vanish.  For a field, the same idea is
+applied at every spacetime point:
+\begin{equation}\label{eq:lec09-A-variation}
+  A_\mu(x)\longrightarrow A_\mu(x)+\delta A_\mu(x).
+\end{equation}
+The variation $\delta A_\mu$ is assumed to vanish on the boundary of the
+spacetime integration region, just as $\delta q(t_1)=\delta q(t_2)=0$ in
+ordinary mechanics.
+
+\subsubsection*{First variation of $F_{\mu\nu}$}
+
+Since $F_{\mu\nu}$ is linear in $A_\mu$,
+\begin{align}
+  F_{\mu\nu}[A+\delta A]
+  &=
+  \partial_\mu(A_\nu+\delta A_\nu)
+  -\partial_\nu(A_\mu+\delta A_\mu) \notag\\
+  &=
+  F_{\mu\nu}[A]
+  +\partial_\mu\delta A_\nu
+  -\partial_\nu\delta A_\mu.
+  \label{eq:lec09-F-var-expanded}
+\end{align}
+Therefore
+\begin{equation}\label{eq:lec09-delta-F}
+  \boxed{
+  \delta F_{\mu\nu}
+  =
+  \partial_\mu\delta A_\nu-\partial_\nu\delta A_\mu .
+  }
+\end{equation}
+\textit{Physical significance:} A small change in the potential changes the
+field tensor only through derivatives of that change.  This is why integration
+by parts will move derivatives from $\delta A_\mu$ onto $F^{\mu\nu}$ and produce
+field equations.
+
+\subsubsection*{First variation of the free-field action}
+
+Starting from
+\begin{equation}\label{eq:lec09-Sf-start}
+  S_{\rm field}
+  =
+  -\frac{1}{16\pi c}\int F_{\mu\nu}F^{\mu\nu}\,d^4x ,
+\end{equation}
+the first-order variation is
+\begin{align}
+  \delta S_{\rm field}
+  &=
+  -\frac{1}{16\pi c}\int
+  \left[
+    \delta F_{\mu\nu}F^{\mu\nu}
+    +F_{\mu\nu}\delta F^{\mu\nu}
+  \right]d^4x .
+  \label{eq:lec09-dSf-two-terms}
+\end{align}
+The two terms are equal.  Indeed,
+\begin{align}
+  F_{\mu\nu}\delta F^{\mu\nu}
+  &=
+  F_{\mu\nu}\eta^{\mu\alpha}\eta^{\nu\beta}\delta F_{\alpha\beta}
+  =
+  F^{\alpha\beta}\delta F_{\alpha\beta}.
+  \label{eq:lec09-raising-deltaF}
+\end{align}
+Renaming the dummy indices $\alpha,\beta$ back to $\mu,\nu$ gives
+\begin{equation}\label{eq:lec09-two-terms-equal}
+  F_{\mu\nu}\delta F^{\mu\nu}=F^{\mu\nu}\delta F_{\mu\nu}.
+\end{equation}
+Thus
+\begin{equation}\label{eq:lec09-dSf-one-term}
+  \delta S_{\rm field}
+  =
+  -\frac{1}{8\pi c}\int F^{\mu\nu}\delta F_{\mu\nu}\,d^4x .
+\end{equation}
+Substituting \eqref{eq:lec09-delta-F},
+\begin{align}
+  \delta S_{\rm field}
+  &=
+  -\frac{1}{8\pi c}\int
+  F^{\mu\nu}
+  \left(\partial_\mu\delta A_\nu-\partial_\nu\delta A_\mu\right)d^4x .
+  \label{eq:lec09-dSf-sub}
+\end{align}
+The two terms again combine.  In the second term, exchange the dummy indices
+$\mu\leftrightarrow\nu$:
+\begin{align}
+  -F^{\mu\nu}\partial_\nu\delta A_\mu
+  &\longrightarrow
+  -F^{\nu\mu}\partial_\mu\delta A_\nu
+  =
+  +F^{\mu\nu}\partial_\mu\delta A_\nu,
+  \label{eq:lec09-antisym-combine}
+\end{align}
+where $F^{\nu\mu}=-F^{\mu\nu}$.  Therefore
+\begin{equation}\label{eq:lec09-dSf-before-parts}
+  \delta S_{\rm field}
+  =
+  -\frac{1}{4\pi c}\int
+  F^{\mu\nu}\partial_\mu\delta A_\nu\,d^4x .
+\end{equation}
+
+\subsubsection*{Integration by parts in spacetime}
+
+Use the product rule
+\begin{equation}\label{eq:lec09-product-rule}
+  F^{\mu\nu}\partial_\mu\delta A_\nu
+  =
+  \partial_\mu\!\left(F^{\mu\nu}\delta A_\nu\right)
+  -(\partial_\mu F^{\mu\nu})\delta A_\nu .
+\end{equation}
+Then
+\begin{align}
+  \delta S_{\rm field}
+  &=
+  -\frac{1}{4\pi c}\int
+  \partial_\mu\!\left(F^{\mu\nu}\delta A_\nu\right)d^4x
+  +
+  \frac{1}{4\pi c}\int
+  (\partial_\mu F^{\mu\nu})\delta A_\nu\,d^4x .
+  \label{eq:lec09-dSf-parts}
+\end{align}
+The first term is a four-dimensional boundary term.  Since
+$\delta A_\nu=0$ on the boundary, it vanishes.  Hence
+\begin{equation}\label{eq:lec09-dSf-final}
+  \boxed{
+  \delta S_{\rm field}
+  =
+  \frac{1}{4\pi c}\int
+  (\partial_\mu F^{\mu\nu})\delta A_\nu\,d^4x .
+  }
+\end{equation}
+\textit{Physical significance:} The quantity $\partial_\mu F^{\mu\nu}$ is the
+field-theory analogue of ``force equals derivative of the action''.  Once the
+source term is included, it will be set equal to the charge-current source.
+
+%------------------------------------------------------------
+\subsection{Charge Density and Current Density for Point Charges}\label{subsec:lec09-rho-J}
+
+\subsubsection*{Physical Motivation}
+To vary the interaction term with respect to the field, we want to express the
+point particles as a spacetime source distribution.  A point charge is not a
+smooth lump of charge; all of its charge is concentrated at one position.
+Dirac delta functions are the correct language for that concentration.
+
+For point charges $e_n$ moving along spatial trajectories $\mathbf{x}_n(t)$, the
+charge density is
+\begin{equation}\label{eq:lec09-rho-def}
+  \boxed{
+  \rho(t,\mathbf{x})
+  =
+  \sum_{n=1}^N e_n\,
+  \delta^{(3)}\!\left(\mathbf{x}-\mathbf{x}_n(t)\right).
+  }
+\end{equation}
+\textit{Physical significance:} Integrating $\rho$ over a region returns the
+total charge of the particles inside that region.  If a particle is outside the
+region, its delta function contributes zero.
+
+The ordinary current density is charge density times velocity:
+\begin{equation}\label{eq:lec09-J-def}
+  \boxed{
+  \mathbf{J}(t,\mathbf{x})
+  =
+  \sum_{n=1}^N e_n\,\dot{\mathbf{x}}_n(t)\,
+  \delta^{(3)}\!\left(\mathbf{x}-\mathbf{x}_n(t)\right).
+  }
+\end{equation}
+\textit{Physical significance:} $\mathbf{J}$ measures how much charge crosses a
+unit area per unit time.  A static charge contributes to $\rho$ but not to
+$\mathbf{J}$.
+
+\begin{center}
+\begin{tikzpicture}[scale=1.0, >=Latex]
+  \draw[->] (-0.2,0) -- (5.2,0) node[right] {$x$};
+  \draw[->] (0,-0.2) -- (0,3.8) node[above] {$ct$};
+  \draw[thick, blue] (0.8,0.5) .. controls (1.4,1.3) and (2.0,1.5) .. (2.5,2.2)
+    .. controls (3.0,2.9) and (3.7,3.0) .. (4.4,3.4);
+  \fill[red] (2.5,2.2) circle (2pt);
+  \draw[dashed] (2.5,2.2) -- (2.5,0);
+  \draw[dashed] (2.5,2.2) -- (0,2.2);
+  \node[blue] at (4.25,3.1) {$\Gamma_n$};
+  \node[red] at (3.25,2.25) {$\mathbf{x}_n(t)$};
+  \node at (2.5,-0.3) {$\mathbf{x}_n$};
+  \node[left] at (0,2.2) {$ct$};
+  \node[align=center] at (2.7,0.9) {delta function\\selects the\\worldline};
+\end{tikzpicture}
+\end{center}
+
+%------------------------------------------------------------
+\subsection{The Four-Current}\label{subsec:lec09-four-current}
+
+\subsubsection*{Physical Motivation}
+The electromagnetic field is written covariantly using four-vectors and tensors.
+The source must also be written covariantly.  The natural object is the
+four-current: its time component is charge density, and its spatial components
+are ordinary current density.
+
+Define
+\begin{equation}\label{eq:lec09-four-current-components}
+  \boxed{
+  J^\mu=(c\rho,\mathbf{J}).
+  }
+\end{equation}
+\textit{Physical significance:} Charge density and current density are not
+separate relativistic objects.  They are frame-dependent components of one
+four-vector, just as energy and momentum are components of one four-momentum.
+
+Using \eqref{eq:lec09-rho-def} and \eqref{eq:lec09-J-def}, this can be written
+componentwise as
+\begin{equation}\label{eq:lec09-four-current-dt}
+  \boxed{
+  J^\mu(x)
+  =
+  \sum_{n=1}^N e_n\,
+  \frac{dx_n^\mu}{dt}\,
+  \delta^{(3)}\!\left(\mathbf{x}-\mathbf{x}_n(t)\right).
+  }
+\end{equation}
+Indeed, for $\mu=0$,
+\begin{equation}\label{eq:lec09-J0-check}
+  J^0
+  =
+  \sum_{n=1}^N e_n\,\frac{d(ct)}{dt}\,
+  \delta^{(3)}\!\left(\mathbf{x}-\mathbf{x}_n(t)\right)
+  =
+  c\rho,
+\end{equation}
+and for $\mu=i$,
+\begin{equation}\label{eq:lec09-Ji-check}
+  J^i
+  =
+  \sum_{n=1}^N e_n\,\frac{dx_n^i}{dt}\,
+  \delta^{(3)}\!\left(\mathbf{x}-\mathbf{x}_n(t)\right)
+  =
+  J^i_{\rm spatial}.
+\end{equation}
+
+\subsubsection*{Why this is really a four-vector}
+
+At first glance \eqref{eq:lec09-four-current-dt} is not manifestly covariant
+because it contains $dt$ and a three-dimensional delta function.  The more
+covariant way to see the structure is to insert a delta function in time as
+well, so that the source is supported on the entire worldline:
+\begin{equation}\label{eq:lec09-current-covariant}
+  \boxed{
+  J^\mu(x)
+  =
+  c\sum_{n=1}^N e_n\int d\tau_n\,
+  u_n^\mu(\tau_n)\,
+  \delta^{(4)}\!\left(x-x_n(\tau_n)\right),
+  }
+\end{equation}
+where
+\begin{equation}\label{eq:lec09-four-velocity}
+  u_n^\mu=\frac{dx_n^\mu}{d\tau_n}
+\end{equation}
+is the four-velocity of particle $n$.  The four-dimensional delta function is
+defined by
+\begin{equation}\label{eq:lec09-delta4-def}
+  \int d^4x\,\delta^{(4)}(x-a)=1.
+\end{equation}
+Since $d^4x$ is Lorentz invariant, $\delta^{(4)}(x-a)$ transforms as a scalar
+under proper Lorentz transformations.  The charge $e_n$ is a scalar, $d\tau_n$
+is a scalar, and $u_n^\mu$ is a four-vector.  Therefore $J^\mu$ is a
+four-vector.
+
+\begin{equation}\label{eq:lec09-J-vector-result}
+  \boxed{J^\mu \text{ is a Lorentz four-vector.}}
+\end{equation}
+\textit{Physical significance:} Different observers disagree on how much source
+is called ``charge density'' and how much is called ``current'', but they agree
+that both are components of the same spacetime current.
+
+%------------------------------------------------------------
+\subsection{Charge Conservation as a Continuity Equation}\label{subsec:lec09-continuity}
+
+\subsubsection*{Physical Motivation}
+Charge cannot disappear from one place without flowing somewhere else.  Locally,
+this means that a decrease of charge density inside a small volume must be
+balanced by current flowing through its boundary.  The continuity equation is
+the differential statement of this local conservation law.
+
+Start with the ordinary current density:
+\begin{equation}\label{eq:lec09-Ji-start}
+  J^i(t,\mathbf{x})
+  =
+  \sum_{n=1}^N e_n\,\dot{x}_n^i(t)\,
+  \delta^{(3)}\!\left(\mathbf{x}-\mathbf{x}_n(t)\right).
+\end{equation}
+Its spatial divergence is
+\begin{align}
+  \partial_i J^i
+  &=
+  \sum_{n=1}^N e_n\,\dot{x}_n^i(t)\,
+  \partial_i
+  \delta^{(3)}\!\left(\mathbf{x}-\mathbf{x}_n(t)\right).
+  \label{eq:lec09-divJ-first}
+\end{align}
+Use the delta-function identity
+\begin{equation}\label{eq:lec09-delta-identity}
+  \partial_i
+  \delta^{(3)}\!\left(\mathbf{x}-\mathbf{x}_n(t)\right)
+  =
+  -\frac{\partial}{\partial x_n^i}
+  \delta^{(3)}\!\left(\mathbf{x}-\mathbf{x}_n(t)\right).
+\end{equation}
+Then
+\begin{align}
+  \partial_i J^i
+  &=
+  -\sum_{n=1}^N e_n\,\dot{x}_n^i(t)\,
+  \frac{\partial}{\partial x_n^i}
+  \delta^{(3)}\!\left(\mathbf{x}-\mathbf{x}_n(t)\right) \notag\\
+  &=
+  -\frac{\partial}{\partial t}
+  \sum_{n=1}^N e_n\,
+  \delta^{(3)}\!\left(\mathbf{x}-\mathbf{x}_n(t)\right) \notag\\
+  &=
+  -\frac{\partial \rho}{\partial t}.
+  \label{eq:lec09-divJ-final}
+\end{align}
+Thus
+\begin{equation}\label{eq:lec09-continuity-3d}
+  \boxed{
+  \frac{\partial \rho}{\partial t}+\nabla\cdot\mathbf{J}=0.
+  }
+\end{equation}
+\textit{Physical significance:} Charge conservation is local.  If $\rho$ changes
+inside a region, the change is accounted for by current crossing the boundary,
+not by charge being created or destroyed.
+
+\subsubsection*{Covariant form}
+
+Since $x^0=ct$ and $J^0=c\rho$,
+\begin{equation}\label{eq:lec09-time-part}
+  \partial_0 J^0
+  =
+  \frac{\partial}{\partial x^0}(c\rho)
+  =
+  \frac{1}{c}\frac{\partial}{\partial t}(c\rho)
+  =
+  \frac{\partial\rho}{\partial t}.
+\end{equation}
+Therefore the ordinary continuity equation
+\eqref{eq:lec09-continuity-3d} becomes
+\begin{equation}\label{eq:lec09-continuity-covariant}
+  \boxed{
+  \partial_\mu J^\mu=0.
+  }
+\end{equation}
+\textit{Physical significance:} Charge conservation is Lorentz covariant.  It
+is not a statement true only in one preferred frame; it is the vanishing
+four-divergence of the source four-vector.
+
+%------------------------------------------------------------
+\subsection{How This Leads to Maxwell's Equations}\label{subsec:lec09-next-step}
+
+\subsubsection*{Physical Motivation}
+The free-field variation knows how the electromagnetic field wants to evolve in
+empty space.  The interaction term tells the field where its sources are.
+Maxwell's equations are obtained by demanding that the total variation vanish
+for every allowed $\delta A_\mu$.
+
+Using the four-current, the interaction term can be rewritten as a spacetime
+integral:
+\begin{equation}\label{eq:lec09-Sint-current}
+  \boxed{
+  S_{\rm int}
+  =
+  -\frac{1}{c^2}\int J^\mu A_\mu\,d^4x .
+  }
+\end{equation}
+\textit{Physical significance:} The compact contraction $J^\mu A_\mu$ is the
+covariant version of ``sources couple to potentials''.  The charge density
+couples to the scalar potential, and the current density couples to the vector
+potential.
+
+Varying this term with respect to $A_\mu$ gives
+\begin{equation}\label{eq:lec09-dSint}
+  \delta S_{\rm int}
+  =
+  -\frac{1}{c^2}\int J^\nu\delta A_\nu\,d^4x .
+\end{equation}
+Combining with \eqref{eq:lec09-dSf-final} and imposing
+$\delta S_{\rm field}+\delta S_{\rm int}=0$ for arbitrary $\delta A_\nu$ gives
+\begin{equation}\label{eq:lec09-maxwell-covariant}
+  \boxed{
+  \partial_\mu F^{\mu\nu}
+  =
+  \frac{4\pi}{c}J^\nu .
+  }
+\end{equation}
+\textit{Physical significance:} This is the covariant form of the inhomogeneous
+Maxwell equations.  The $\nu=0$ component is Gauss's law, and the spatial
+components are the Ampere--Maxwell law.
+
+Although the live lecture stopped just before completing this last combination,
+all ingredients were prepared: the field variation \eqref{eq:lec09-dSf-final},
+the source $J^\mu$, and the conservation law $\partial_\mu J^\mu=0$.
+
+\subsection*{Summary}
+
+\begin{itemize}
+  \item The complete action contains free-particle, interaction, and free-field
+  terms.
+  \item Gauge invariance selects the antisymmetric field tensor
+  $F_{\mu\nu}=\partial_\mu A_\nu-\partial_\nu A_\mu$.
+  \item The first variation of the free-field action is
+  $\delta S_{\rm field}=(4\pi c)^{-1}\int(\partial_\mu F^{\mu\nu})\delta A_\nu\,d^4x$.
+  \item Point charges are represented by delta-function charge and current
+  densities.
+  \item The four-current $J^\mu=(c\rho,\mathbf{J})$ is a Lorentz four-vector.
+  \item Local charge conservation is the covariant equation
+  $\partial_\mu J^\mu=0$.
+  \item Combining the field variation with the interaction variation gives
+  $\partial_\mu F^{\mu\nu}=(4\pi/c)J^\nu$, the inhomogeneous Maxwell equations.
+\end{itemize}

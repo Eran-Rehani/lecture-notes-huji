@@ -1,0 +1,386 @@
+%%═══════════════════════════════════════════════════════════════════
+%% Lecture 04 — Deuteron Ground State & Nuclear Shell Model
+%% 77603 — Nuclear Physics
+%% Date: 5 May 2026
+%% Lecturer: Dr. Moshe Friedman
+%%═══════════════════════════════════════════════════════════════════
+
+\section{Lecture 04 — Deuteron Ground State and the Nuclear Shell Model}
+\label{sec:lec04}
+\date{5 May 2026}
+
+%%───────────────────────────────────────────────────────────────────
+\subsection*{Overview}
+%%─────────────────────
+This lecture has two parts.  The first solves the quantum mechanics of the
+deuteron: we determine its ground-state angular momentum by combining parity
+and magnetic-moment arguments, discover that the ground state is a
+superposition of $l=0$ and $l=2$ components (proving the nuclear force has a
+tensor part), and solve the Schrödinger equation for a square-well potential to
+extract the potential depth $V_0\approx35\,\mathrm{MeV}$.  The second part
+introduces the nuclear shell model: we motivate the existence of nuclear magic
+numbers, justify why independent-particle motion is not unreasonable, try
+several model potentials and fail, and finally show that a spin-orbit coupling
+term $V_\mathrm{so}\propto\vec{l}\cdot\vec{s}$ reorganizes the levels so as
+to reproduce all observed magic numbers.
+
+
+%%───────────────────────────────────────────────────────────────────
+\section{Part I — Solving the Deuteron}
+%%───────────────────────────────────────────────────────────────────
+
+\subsection{Determining the Orbital Angular Momentum}
+
+\subsubsection*{Physical Motivation}
+We know from Lecture~03 that the deuteron binding energy is
+$B_d\approx2.22\,\mathrm{MeV}$ and that its spin-parity is $I^\pi=1^+$.  We
+now ask: what orbital angular momentum $l$ does the proton–neutron pair carry?
+The answer is not trivial, and it turns out to be more interesting than a simple
+integer.
+
+The measured spin-parity $I^\pi=1^+$ constrains the possible $l$ values.
+Parity of the spatial part of the wavefunction is $(-1)^l$.  For the nuclear
+state to have $\pi=+1$ we need $(-1)^l=+1$, so $l$ must be \emph{even}: $l=0,
+2, 4, \ldots$.  Including the spin of the nucleon pair $S=0$ (singlet) or $S=1$
+(triplet) and requiring the total $J=1$ reduces the candidates further:
+\begin{itemize}
+  \item $l=0,\;S=1$: $J=1$, $\pi=+1$\quad$\checkmark$
+  \item $l=2,\;S=1$: $J=1,2,3$ (all have $\pi=+1$), $J=1$ is possible\quad$\checkmark$
+  \item $l=1,\;S=0$: $J=1$, $\pi=-1$\quad$\times$ (wrong parity)
+  \item $l=1,\;S=1$: $J=0,1,2$, $\pi=-1$\quad$\times$ (wrong parity)
+\end{itemize}
+So \textbf{two choices survive: $l=0$ or $l=2$ (or a mixture)}.
+
+\subsubsection*{Using the Magnetic Moment to Distinguish}
+
+\paragraph{Prediction for $l=0$ (pure S-wave).}
+If $l=0$ there is no orbital contribution and the magnetic moment comes entirely
+from the spins.  With both nucleons in the triplet $S=1$ state:
+\begin{equation}
+  \label{eq:lec04:mu_Swave}
+  \mu_{l=0} = \frac{1}{2}\bigl[g_s(p)+g_s(n)\bigr]\,\mu_N
+  = \frac{1}{2}(5.586-3.826)\,\mu_N
+  \approx 0.879\,\mu_N.
+\end{equation}
+The measured value is
+\begin{equation}
+  \label{eq:lec04:mu_measured}
+  \mu_d = 0.8574\,\mu_N.
+\end{equation}
+These are close but do \emph{not} agree — the discrepancy is well outside
+experimental uncertainty.
+
+\paragraph{Prediction for $l=2$ (pure D-wave).}
+A more involved calculation gives $\mu_{l=2}\approx0.31\,\mu_N$, which is even
+further from the measured value.
+
+\paragraph{Conclusion: a mixed S–D ground state.}
+Neither pure $l=0$ nor pure $l=2$ fits.  The resolution is that the deuteron
+ground state is a \emph{superposition}:
+\begin{equation}
+  \label{eq:lec04:psi_d}
+  \psi_d = A\,\psi_{S\text{-wave}}\;+\;B\,\psi_{D\text{-wave}},
+\end{equation}
+with normalization $|A|^2+|B|^2=1$.  Matching the measured $\mu_d$ fixes the
+D-wave probability:
+\begin{equation}
+  \label{eq:lec04:d_wave}
+  \boxed{|B|^2 \equiv P_D \approx 0.04.}
+\end{equation}
+\textit{Physical significance:} About $4\%$ of the time the proton and neutron
+are in an $l=2$ state.  Because $l$ is not fixed, $l$ is \emph{not a good
+quantum number} for the deuteron.  A central potential cannot mix $l=0$ and
+$l=2$; therefore the nuclear force contains a \textbf{non-central (tensor)
+component}.  The tensor force is the dominant deviation from a simple central
+interaction.
+
+\subsection{Square-Well Model for the Deuteron}
+
+\subsubsection*{Physical Motivation}
+With $P_D\approx4\%$ being small, we can work to good approximation in the
+$l=0$ sector alone.  The goal is to relate the measured binding energy
+$B_d\approx2.22\,\mathrm{MeV}$ and the known nuclear radius $R\approx2\,\mathrm{fm}$
+to the depth $V_0$ of the nuclear potential.  The simplest possible potential that
+is short-ranged and attractive is the square well.
+
+\paragraph{Reduced-mass setup.}
+Working in the centre-of-mass frame, the two-body problem reduces to a
+one-body problem with the reduced mass
+\begin{equation}
+  \label{eq:lec04:reduced_mass}
+  \mu = \frac{m_p m_n}{m_p+m_n}\approx\frac{m_N}{2},
+\end{equation}
+and the relative coordinate $\vec{r}$.  The wavefunction factorises as
+$\psi(\vec{r})=R_{nl}(r)Y_l^m(\theta,\phi)$.  Setting $u(r)=r R(r)$ and
+$l=0$, the radial Schrödinger equation becomes
+\begin{equation}
+  \label{eq:lec04:radial_eq}
+  -\frac{\hbar^2}{2\mu}\dv[2]{u}{r}+V(r)u(r)=Eu(r).
+\end{equation}
+For a bound state $E=-B<0$.
+
+\paragraph{Square-well potential.}
+\begin{equation}
+  \label{eq:lec04:square_well}
+  V(r)=\begin{cases}-V_0&r<R,\\0&r\geq R.\end{cases}
+\end{equation}
+
+\paragraph{Solutions in each region.}
+Define
+\begin{equation}
+  k_1=\sqrt{\frac{2\mu(V_0-B)}{\hbar^2}},\qquad
+  k_2=\sqrt{\frac{2\mu B}{\hbar^2}}.
+\end{equation}
+\begin{itemize}
+  \item \textbf{Inside} ($r<R$): equation $u''+k_1^2 u=0$; general solution
+    $A\sin k_1 r+C\cos k_1 r$.  The boundary condition $u(0)=0$ (so that
+    $\psi(0)=u(0)/r$ stays finite) forces $C=0$:
+    \begin{equation}
+      u_\mathrm{in}(r)=A\sin k_1 r.
+    \end{equation}
+  \item \textbf{Outside} ($r>R$): equation $u''-k_2^2 u=0$; general solution
+    $De^{-k_2 r}+Fe^{+k_2 r}$.  Normalizability forces $F=0$:
+    \begin{equation}
+      u_\mathrm{out}(r)=De^{-k_2 r}.
+    \end{equation}
+\end{itemize}
+
+\paragraph{Matching boundary conditions at $r=R$.}
+Continuity of $u$ and $u'$:
+\begin{align}
+  A\sin k_1 R &= De^{-k_2 R},\\
+  Ak_1\cos k_1 R &= -k_2 De^{-k_2 R}.
+\end{align}
+Dividing eliminates $A$ and $D$:
+\begin{equation}
+  \label{eq:lec04:bc}
+  \boxed{k_1\cot(k_1 R)=-k_2.}
+\end{equation}
+\textit{Physical significance:} This transcendental equation, together with the
+definitions of $k_1$ and $k_2$ (which depend on $V_0$, $B$, $\mu$), uniquely
+determines $V_0$ once $B_d$ and $R$ are known from experiment.
+
+\paragraph{Numerical result.}
+Inserting $B_d=2.22\,\mathrm{MeV}$, $R\approx2\,\mathrm{fm}$, $\mu\approx
+m_N/2$:
+\begin{equation}
+  \label{eq:lec04:V0}
+  \boxed{V_0\approx35\,\mathrm{MeV}.}
+\end{equation}
+The deuteron sits near the very edge of the well: $k_1 R\approx\pi/2$,
+meaning the wavefunction inside is just reaching its first quarter-oscillation
+when it meets the wall.
+
+\subsubsection*{Minimum Potential Depth for a Bound State}
+A bound state requires $k_1 R\geq\pi/2$, i.e.\
+\begin{equation}
+  \label{eq:lec04:Vmin}
+  V_{0,\min}=\frac{\pi^2\hbar^2}{8\mu R^2}\approx25\,\mathrm{MeV}.
+\end{equation}
+\textit{Physical significance:} The actual depth $V_0\approx35\,\mathrm{MeV}$ is only
+$40\%$ above the minimum needed.  The deuteron is barely bound.  Had the nuclear
+force been slightly weaker, no bound state of the two nucleons would exist, and
+nuclear chemistry as we know it would be impossible.
+
+
+%%───────────────────────────────────────────────────────────────────
+\section{Part II — The Nuclear Shell Model}
+%%───────────────────────────────────────────────────────────────────
+
+\subsection{Magic Numbers and Empirical Evidence}
+
+\subsubsection*{Physical Motivation}
+Atoms are stable when electron shells are complete (noble gases).  By analogy,
+nuclei might be especially stable when their proton or neutron numbers fill
+particular ``shells.''  The numbers at which this happens are called
+\textbf{magic numbers}:
+\begin{equation}
+  \label{eq:lec04:magic}
+  \boxed{2,\quad 8,\quad 20,\quad 28,\quad 50,\quad 82,\quad 126.}
+\end{equation}
+Several independent experimental observations converge on the same numbers:
+\begin{enumerate}
+  \item \textbf{Number of stable isotopes/isotones} — magic-$N$ or magic-$Z$
+    nuclides have unusually many stable species.  For example, $N=28$ has
+    5--6 stable isotones; neighbouring $N$ values have only 1--2.
+  \item \textbf{Alpha-decay energies} — the kinetic energy released in $\alpha$
+    decay of nuclei with $N=126$ (a filled neutron shell) drops sharply as
+    $N$ crosses 126, then rises again.
+  \item \textbf{Neutron-capture cross sections} — nuclei at magic $N$ have
+    anomalously \emph{small} cross sections: the full shell resists adding one
+    more neutron.
+  \item \textbf{Nuclear radii} — the empirical $R=r_0 A^{1/3}$ trend shows
+    kinks at magic numbers.
+\end{enumerate}
+The pattern unmistakably echoes atomic shell closure.
+
+\subsection{Why Independent-Particle Motion is Plausible}
+
+\subsubsection*{Physical Motivation}
+At first sight, treating nucleons as free particles in a mean potential seems
+absurd: the nucleus is a dense system where every nucleon interacts strongly
+with its neighbours.  Yet the Pauli exclusion principle saves the picture.
+
+In the ground state, all orbitals up to the Fermi energy are occupied.  For two
+nucleons to scatter, one must transfer enough energy to the other to kick it
+into an unoccupied orbital above the Fermi level.  But \emph{all nearby states
+are already full}.  The energy required is $\sim E_F\approx33\,\mathrm{MeV}$,
+far larger than the thermal energy scale.  As a result, nucleons effectively
+\emph{pass through each other without scattering}, and each nucleon moves in
+a slowly varying mean-field potential $V(r)$ created by all the others.  This
+is the \textbf{independent-particle approximation}.
+
+\subsection{Mean-Field Potentials and their Failures}
+
+\paragraph{Infinite square well.}
+Solving $-\frac{\hbar^2}{2m}\nabla^2\psi=E\psi$ inside a sphere of radius $R$
+gives energy levels labelled by $(n_r,l)$.  Filling them with $2(2l+1)$
+nucleons each (factor 2 for spin) produces cumulative occupations that hit
+shell gaps at
+\[
+  2,\;8,\;20,\;40,\;58,\;92,\;\ldots
+\]
+The first three (2, 8, 20) agree with experiment; beyond 20 the model fails.
+
+\paragraph{Harmonic oscillator.}
+Energy levels $E_N=\hbar\omega(N+3/2)$ with degeneracy $(N+1)(N+2)/2$ per
+oscillator quantum $N=2n_r+l$.  Shell closures occur at
+\[
+  2,\;8,\;20,\;40,\;70,\;\ldots
+\]
+Again, only the first three magic numbers are reproduced.
+
+\paragraph{Woods–Saxon potential.}
+A more realistic rounded well,
+\begin{equation}
+  \label{eq:lec04:woods_saxon}
+  \boxed{V(r)=\frac{-V_0}{1+\exp\!\left(\frac{r-R}{a}\right)},}
+\end{equation}
+where $R\approx r_0 A^{1/3}$ is the nuclear radius and $a\approx0.5\,\mathrm{fm}$
+is the skin thickness, gives a softer level sequence.  It agrees better than
+the square well with observed radii and separation energies, but still fails to
+reproduce magic numbers beyond 20.
+
+\textit{Physical significance:} The parameter $a$ in the Woods–Saxon potential
+is the same skin thickness that appears in the charge-density profiles measured
+by electron scattering in Lecture~02, confirming self-consistency.
+
+\subsection{Spin-Orbit Coupling Solves the Problem}
+
+\subsubsection*{Physical Motivation}
+In atomic physics, the electron's spin couples to the magnetic field generated
+by its orbital motion, splitting each $l$-level into $j=l+\frac{1}{2}$ and
+$j=l-\frac{1}{2}$ sub-levels.  Maria Goeppert Mayer and J.\ Hans D.\ Jensen
+showed (1949, Nobel Prize 1963) that adding a spin-orbit term to the nuclear
+mean field,
+\begin{equation}
+  \label{eq:lec04:Vso}
+  V_\mathrm{so}(r) = -V_\mathrm{ls}\,f(r)\,\vec{l}\cdot\vec{s},
+\end{equation}
+with $V_\mathrm{ls}>0$ and $f(r)\propto-dV_\mathrm{WS}/dr$, generates the
+correct magic numbers.  The sign is important: in \emph{nuclei} the $j=l+\frac{1}{2}$
+state is pushed \emph{down} (more bound), opposite to the atomic case.
+
+\paragraph{Evaluating $\vec{l}\cdot\vec{s}$.}
+Using $\vec{j}=\vec{l}+\vec{s}$ and squaring:
+\begin{equation}
+  \label{eq:lec04:LS_identity}
+  \vec{l}\cdot\vec{s}=\frac{1}{2}\bigl(\vec{j}^2-\vec{l}^2-\vec{s}^2\bigr).
+\end{equation}
+In a state $|j,l,s\rangle$ with $s=\frac{1}{2}$:
+\begin{equation}
+  \label{eq:lec04:LS_expectation}
+  \boxed{
+  \langle\vec{l}\cdot\vec{s}\rangle =
+  \begin{cases}
+    +\dfrac{\hbar^2\,l}{2} & j=l+\tfrac{1}{2},\\[6pt]
+    -\dfrac{\hbar^2\,(l+1)}{2} & j=l-\tfrac{1}{2}.
+  \end{cases}
+  }
+\end{equation}
+The energy splitting between the two sub-levels is
+\begin{equation}
+  \label{eq:lec04:LS_splitting}
+  \Delta E = V_\mathrm{ls}\,f_0\,\frac{\hbar^2}{2}\,(2l+1),
+\end{equation}
+which \emph{grows with $l$}.  For large $l$ (e.g.\ $l=4$, the $g$-shell), the
+splitting is large enough to push a level from one major oscillator shell into
+the one below it, rearranging the cumulative level occupations and producing the
+correct gaps at 28, 50, 82, and 126.
+
+\textit{Physical significance:} Before Mayer and Jensen, the failure at 28, 50,
+82, 126 was an embarrassment.  Adding a single physically motivated term — the
+spin-orbit interaction — solved the entire problem at once.
+
+\subsection{The Extreme Independent-Particle Model (EIPM)}
+
+\subsubsection*{Physical Motivation}
+Once the shell structure is established, predicting the ground-state spin and
+parity of a nucleus becomes a counting exercise.  For simplicity we use the
+\textbf{Extreme Independent-Particle Model}: even-$A$ nuclei have $I=0$ (all
+pairs cancel), and for odd-$A$ nuclei \emph{only the last unpaired nucleon
+determines $I^\pi$}.
+
+\paragraph{Rule.}
+Fill the proton and neutron shells separately up to the $A$-th nucleon.  The
+last unpaired nucleon occupies a state with orbital quantum number $l$ and
+total angular momentum $j$.  Then:
+\begin{equation}
+  \label{eq:lec04:EIPM}
+  \boxed{I^\pi = j^\pi,\qquad \pi=(-1)^l.}
+\end{equation}
+
+\paragraph{Example: $\nucleus{O}{17}$ ($Z=8$, $N=9$).}
+The eight protons fill $1s_{1/2}$, $1p_{3/2}$, $1p_{1/2}$ completely; since
+$Z=8$ is magic, protons contribute $I=0$.  The nine neutrons fill the same
+sequence plus one extra neutron that must go into the $1d_{5/2}$ level:
+\begin{center}
+\begin{tabular}{lcc}
+\toprule
+Level & Capacity & Cumulative $N$ \\
+\midrule
+$1s_{1/2}$ & 2 & 2 \\
+$1p_{3/2}$ & 4 & 6 \\
+$1p_{1/2}$ & 2 & 8 \\
+$1d_{5/2}$ & 6 & 14 \\ \bottomrule
+\end{tabular}
+\end{center}
+The 9th neutron sits in $1d_{5/2}$, so $j=\frac{5}{2}$, $l=2$, $\pi=+1$:
+\begin{equation}
+  I^\pi(\nucleus{O}{17}) = \tfrac{5}{2}^+.\quad \checkmark
+\end{equation}
+(The experimental value is indeed $\frac{5}{2}^+$.)
+
+\paragraph{Example: $\nucleus{O}{15}$ ($Z=8$, $N=7$).}
+Seven neutrons fill $1s_{1/2}$ (2), $1p_{3/2}$ (4), and one of the $1p_{1/2}$
+states.  The last neutron is in $1p_{1/2}$: $j=\frac{1}{2}$, $l=1$,
+$\pi=-1$:
+\begin{equation}
+  I^\pi(\nucleus{O}{15}) = \tfrac{1}{2}^-.\quad \checkmark
+\end{equation}
+
+\subsubsection*{Successes and Limitations}
+The EIPM reproduces the \emph{spin-parity} of most odd-$A$ ground states correctly.
+Magnetic moments are only reproduced qualitatively (the predicted values lie
+between the Schmidt lines; real nuclei cluster near the lines but are not on
+them).  Electric quadrupole moments are sometimes off by large factors, signalling
+that collective deformation beyond the single-particle picture is present.
+
+
+%%───────────────────────────────────────────────────────────────────
+\subsection*{Summary of Key Results}
+%%─────────────────────
+
+\begin{enumerate}
+  \item Deuteron ground state: $\psi_d=A\psi_S+B\psi_D$,
+    $P_D=|B|^2\approx4\%$.  The $l=0$ and $l=2$ admixture proves the nuclear
+    force has a tensor component.
+  \item Square-well model: boundary condition $k_1\cot(k_1 R)=-k_2$ gives
+    $V_0\approx35\,\mathrm{MeV}$; minimum for a bound state is
+    $V_{0,\min}\approx25\,\mathrm{MeV}$.
+  \item Magic numbers 2, 8, 20 follow from both the infinite-square-well and
+    the harmonic-oscillator potential.  Reproducing 28, 50, 82, 126 requires
+    spin-orbit coupling $V_\mathrm{so}\propto-\vec{l}\cdot\vec{s}$.
+  \item EIPM prediction: for odd-$A$, $I^\pi=j^\pi$ of the last unpaired
+    nucleon, with $\pi=(-1)^l$.
+\end{enumerate}

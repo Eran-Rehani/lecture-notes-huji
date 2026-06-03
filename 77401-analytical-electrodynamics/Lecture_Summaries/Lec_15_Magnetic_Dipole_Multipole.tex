@@ -1,0 +1,399 @@
+%% Lecture 15 — Magnetic Multipole Expansion and the Magnetic Dipole Moment
+\section{Lecture 15 — Magnetic Multipole Expansion and the Magnetic Dipole Moment}\label{sec:lec15}
+
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 26/05/2026 & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+
+\subsection*{Overview}
+
+This lecture asks: what does the vector potential of a \emph{localised} current
+distribution look like at large distances?  The answer is a magnetic multipole
+expansion — the direct analogue of the electrostatic expansion $\phi = Q/r +
+\bvec{p}\cdot\br/r^3 + \cdots$.  The crucial difference is that the monopole term
+always vanishes in magnetostatics ($\nabla\cdot\Jvec = 0$ forces $\int\Jvec\,d^3r'=0$),
+so the leading term is always a \emph{magnetic dipole}.  The results connect
+directly to the physics of magnetism in materials.
+
+\begin{itemize}
+  \item Monopole term: $\int\Jvec\,d^3r' = \bvec{0}$ (current conservation, proved rigorously).
+  \item Magnetic dipole moment: $\bmu = \frac{1}{2c}\int\br'\times\Jvec(\br')\,d^3r'$.
+  \item Dipole vector potential: $\Avec^{\rm dip} = \bmu\times\br/r^3$.
+  \item For a thin current loop: $\bmu = (I/c)\,\boldsymbol{\Sigma}$, where
+        $\boldsymbol{\Sigma}$ is the (oriented) area vector spanning the loop.
+  \item For a planar loop of area $S$: $\bmu = (IS/c)\,\hat{n}$.
+  \item For electrons: $\bmu = (e/2m_e c)\,\bvec{L}$ (orbital gyromagnetic ratio).
+\end{itemize}
+
+%------------------------------------------------------------
+\subsection{Physical Setup: Why Expand?}\label{subsec:lec15-setup}
+
+\subsubsection*{Physical Motivation}
+
+Magnetism in materials arises from \emph{molecular currents}: electrons orbit nuclei
+at speeds $v \sim \alpha c \approx 2200\;\text{km/s}$ (fine structure constant
+$\alpha = e^2/\hbar c \approx 1/137$).  These currents are confined to atomic-scale
+regions of size $d \sim 1\;\text{\AA}$.  At macroscopic observation distances
+$r \gg d$ we cannot — and do not need to — know the full microscopic $\Jvec(\br')$.
+The multipole expansion replaces all that information with a hierarchy of moments.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[>=Stealth, thick, scale=1.0]
+  \draw[blue!50!black, thick, dashed]
+    plot[smooth cycle, tension=0.9]
+    coordinates {(-1.0,0.2)(-0.4,0.9)(0.7,0.7)(1.0,-0.1)(0.4,-0.7)(-0.8,-0.5)};
+  \node[blue!50!black] at (0.05, 0.1) {$\Jvec(\br')$};
+  \fill[red!70!black] (0.45,0.55) circle (2pt) node[above right] {$\br'$};
+  \draw[->,gray] (0,-1.2) -- (0.45,0.55) node[midway,left] {$\br'$};
+  \fill (0,-1.2) circle (1.5pt) node[below] {$O$};
+  \draw[<->] (-1.15,-0.9) -- (1.05,-0.9) node[midway,below] {$d$};
+  \fill[black] (4.5, 0.4) circle (2pt) node[above] {$\br$};
+  \draw[->, thick] (0,-1.2) -- (4.5,0.4) node[midway,above,sloped] {$r \gg d$};
+\end{tikzpicture}
+\caption{Source currents confined to a ball of radius $\sim d$; observation point
+$\br$ with $r \gg d$.  The exact formula integrates over $\br'$ inside the source
+ball; the expansion gives a series in $r'/r \ll 1$.}
+\label{fig:lec15-geometry}
+\end{figure}
+
+Starting from the exact vector potential derived in Lecture~14,
+\begin{equation}\label{eq:lec15-exact-A}
+  \Avec(\br) = \frac{1}{c}\int \frac{\Jvec(\br')}{|\br-\br'|}\,d^3r',
+\end{equation}
+we expand $1/|\br-\br'|$ as a power series in the small ratio $r'/r$.
+
+%------------------------------------------------------------
+\subsection{The Multipole Expansion}\label{subsec:lec15-expansion}
+
+\subsubsection*{Mathematical Setup}
+
+Write the denominator as
+\begin{equation}\label{eq:lec15-denom}
+  |\br-\br'|^2 = r^2 - 2\,\br\cdot\br' + r'^{\,2}
+  = r^2\!\left(1 + \varepsilon\right),\qquad
+  \varepsilon \equiv \frac{r'^{\,2} - 2\,\br\cdot\br'}{r^2} = O(r'/r).
+\end{equation}
+Expanding $(1+\varepsilon)^{-1/2}$ to first order in $\varepsilon$,
+\begin{align}
+  \frac{1}{|\br-\br'|}
+  &= \frac{1}{r}(1+\varepsilon)^{-1/2}
+   = \frac{1}{r}\!\left(1 - \frac{\varepsilon}{2} + \cdots\right) \notag\\
+  &= \frac{1}{r}\!\left(1 + \frac{\br\cdot\br'}{r^2}
+     - \frac{r'^{\,2}}{2r^2} + \cdots\right)
+   = \frac{1}{r} + \frac{\br\cdot\br'}{r^3} + O\!\left(\frac{r'^{\,2}}{r^3}\right).
+   \label{eq:lec15-1overR}
+\end{align}
+Substituting into \eqref{eq:lec15-exact-A},
+\begin{equation}\label{eq:lec15-expansion}
+  \boxed{
+    \Avec(\br) = \underbrace{\frac{1}{cr}\int\Jvec(\br')\,d^3r'}_{\text{monopole}}
+    + \underbrace{\frac{1}{cr^3}\int(\br\cdot\br')\,\Jvec(\br')\,d^3r'}_{\text{dipole}}
+    + \cdots
+  }
+\end{equation}
+\textit{Significance:} The structure mirrors the electrostatic multipole expansion.
+The monopole coefficient is $\int\Jvec\,d^3r'$; the dipole coefficient involves
+$\int r'_j\Jvec\,d^3r'$ (a matrix in source coordinates).  As we will show, the
+monopole always vanishes and the dipole carries all the long-range information.
+
+%------------------------------------------------------------
+\subsection{No Magnetic Monopole}\label{subsec:lec15-no-monopole}
+
+\subsubsection*{Physical Motivation}
+
+Every element of a steady current loop flows in one direction somewhere and returns
+in the opposite direction elsewhere — nothing accumulates.  Macroscopically: current
+lines cannot terminate in bulk.  Thus there is no ``net magnetic charge'' to build a
+monopole field.
+
+\subsubsection*{Proof that $\int\Jvec\,d^3r' = \bvec{0}$}
+
+To show a vector is zero it suffices to show its inner product with every constant
+vector $\bvec{a}$ is zero.  Compute
+\begin{equation}\label{eq:lec15-mono-start}
+  \bvec{a}\cdot\int\Jvec\,d^3r' = \int(\bvec{a}\cdot\Jvec)\,d^3r'.
+\end{equation}
+Use $\nabla'\cdot\Jvec = 0$ and the product rule:
+\begin{equation}\label{eq:lec15-div-id}
+  \nabla'\cdot\bigl[(\bvec{a}\cdot\br')\Jvec\bigr]
+  = (\bvec{a}\cdot\br')\underbrace{\nabla'\cdot\Jvec}_{0}
+    + \Jvec\cdot\underbrace{\nabla'(\bvec{a}\cdot\br')}_{\bvec{a}}
+  = \bvec{a}\cdot\Jvec.
+\end{equation}
+Therefore
+\begin{equation}\label{eq:lec15-gauss-monopole}
+  \int(\bvec{a}\cdot\Jvec)\,d^3r'
+  = \int\nabla'\cdot\bigl[(\bvec{a}\cdot\br')\Jvec\bigr]\,d^3r'
+  \overset{\text{Gauss}}{=}
+  \oint_{\partial V}(\bvec{a}\cdot\br')\,\Jvec\cdot d\bvec{S}' = 0,
+\end{equation}
+since $\Jvec = 0$ on a surface taken outside all currents.  Since $\bvec{a}$ was
+arbitrary,
+\begin{equation}\label{eq:lec15-no-monopole}
+  \boxed{\int\Jvec(\br')\,d^3r' = \bvec{0}.}
+\end{equation}
+\textit{Significance:} This holds for \emph{every} steady localised current, regardless
+of geometry.  It is not a special symmetry but a direct consequence of current
+conservation $\nabla\cdot\Jvec = 0$.  There is no magnetic monopole.
+
+%------------------------------------------------------------
+\subsection{The Magnetic Dipole Moment}\label{subsec:lec15-dipole}
+
+\subsubsection*{Mathematical Setup}
+
+The leading term is now the dipole:
+\begin{equation}\label{eq:lec15-dipole-raw}
+  \Avec^{\rm dip}(\br) = \frac{1}{cr^3}\int(\br\cdot\br')\,\Jvec(\br')\,d^3r'.
+\end{equation}
+We simplify the integrand.  First we need a lemma.
+
+\lem[lem:lec15-symm]{Current Symmetry Identity}{%
+  For a steady, localised current ($\nabla\cdot\Jvec = 0$, $\Jvec|_{\partial V}=0$):
+  \begin{equation}\label{eq:lec15-symm-id}
+    \int\!\bigl(r'_i J_j + r'_j J_i\bigr)\,d^3r' = 0\quad\text{for all }i,j.
+  \end{equation}
+}
+
+\paragraph{Proof.}
+Apply the product rule with $\nabla'\cdot\Jvec = 0$:
+\begin{equation}
+  \nabla'\cdot(r'_i\,r'_j\,\Jvec)
+  = r'_j J_i + r'_i J_j + r'_i r'_j\underbrace{\nabla'\cdot\Jvec}_{0}
+  = r'_j J_i + r'_i J_j.
+\end{equation}
+Integrating and applying Gauss's theorem with $\Jvec|_{\partial V}=0$ gives the result.
+
+\paragraph{Simplifying the dipole integral.}
+Decompose $r'_j J_i$ into symmetric and antisymmetric parts:
+\begin{equation}\label{eq:lec15-decompose}
+  r'_j J_i
+  = \underbrace{\tfrac{1}{2}(r'_j J_i + r'_i J_j)}_{\text{integrates to }0\text{ by Lemma}}
+  + \tfrac{1}{2}(r'_j J_i - r'_i J_j).
+\end{equation}
+Hence
+\begin{equation}\label{eq:lec15-antisym}
+  \int r'_j J_i\,d^3r' = \frac{1}{2}\int(r'_j J_i - r'_i J_j)\,d^3r'.
+\end{equation}
+The antisymmetric combination is proportional to the cross product.  Using the
+Levi-Civita identity $(\br'\times\Jvec)_k = \epsilon_{klm}r'_l J_m$, one can
+verify:
+\begin{equation}\label{eq:lec15-cross-id}
+  r'_i J_j - r'_j J_i = \epsilon_{ijk}(\br'\times\Jvec)_k,
+\end{equation}
+so $r'_j J_i - r'_i J_j = -\epsilon_{ijk}(\br'\times\Jvec)_k$, giving
+\begin{equation}\label{eq:lec15-antisym-2}
+  \int r'_j J_i\,d^3r' = -\frac{1}{2}\epsilon_{ijk}\int(\br'\times\Jvec)_k\,d^3r'.
+\end{equation}
+Define the vector
+\begin{equation}\label{eq:lec15-M-def}
+  \bvec{M} \equiv \int\br'\times\Jvec(\br')\,d^3r'.
+\end{equation}
+The $i$-th component of $\Avec^{\rm dip}$ is
+\begin{align}
+  A^{\rm dip}_i
+  &= \frac{r_j}{cr^3}\int r'_j J_i\,d^3r'
+   = -\frac{\epsilon_{ijk}\,r_j\,M_k}{2cr^3}
+   = -\frac{(\br\times\bvec{M})_i}{2cr^3}
+   = \frac{(\bvec{M}\times\br)_i}{2cr^3}. \label{eq:lec15-Adip-index}
+\end{align}
+Defining
+\begin{equation}\label{eq:lec15-bmu-def-math}
+  \bmu \equiv \frac{\bvec{M}}{2c} = \frac{1}{2c}\int\br'\times\Jvec(\br')\,d^3r',
+\end{equation}
+we obtain the clean result:
+
+\dfn[dfn:lec15-bmu]{Magnetic Dipole Moment}{%
+  The \emph{magnetic dipole moment} of a localised current distribution is
+  \begin{equation}\label{eq:lec15-bmu}
+    \boxed{\bmu = \frac{1}{2c}\int\br'\times\Jvec(\br')\,d^3r'.}
+  \end{equation}
+  In Gaussian units, $[\bmu] = \text{erg/G} = \text{G\,cm}^3$.  The moment is
+  linear in $\Jvec$: moments of separate current loops simply add.
+}
+
+\thm[thm:lec15-dipole-A]{Dipole Vector Potential}{%
+  The leading-order vector potential of a steady localised current at distance
+  $r \gg d$ is
+  \begin{equation}\label{eq:lec15-Adip}
+    \boxed{\Avec^{\rm dip}(\br) = \frac{\bmu\times\br}{r^3}.}
+  \end{equation}
+}
+
+\textit{Significance:} The entire long-range behaviour of any steady current
+distribution is encoded in a single vector $\bmu$.  The field falls off as
+$\Avec^{\rm dip}\sim 1/r^2$, and the magnetic field $\bvec{B}=\nabla\times\Avec$
+will fall off as $1/r^3$ — faster than the electrostatic dipole field, the same
+power law.  This is the fundamental building block of the theory of magnetic materials.
+
+\nt{This is the exact magnetic analogue of the electric dipole potential
+$\phi^{\rm dip} = \bvec{p}\cdot\br/r^3$.  The difference is that the ``source'' is
+$\bmu$ (built from $\br'\times\Jvec$) rather than $\bvec{p}$ (built from
+$\br'\rho$), and the potential is a vector (because $\Avec$ is a vector field).}
+
+%------------------------------------------------------------
+\subsection{Geometric Interpretation: Current Loop}\label{subsec:lec15-loop}
+
+\subsubsection*{Physical Motivation}
+
+For a thin wire carrying steady current $I$, the volume current element becomes a
+line element: $\Jvec(\br')\,d^3r' \to I\,d\bvec{\ell}'$.  The magnetic moment
+reduces to a line integral around the closed loop $C$:
+\begin{equation}\label{eq:lec15-bmu-loop-raw}
+  \bmu = \frac{1}{2c}\oint_C I\,\br'\times d\bvec{\ell}'
+       = \frac{I}{2c}\oint_C \br'\times d\bvec{\ell}'.
+\end{equation}
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[>=Stealth, thick, scale=1.1]
+  \draw[blue!60!black, thick]
+    plot[smooth cycle, tension=0.8]
+    coordinates {(-1.4,0.2)(-0.7,1.1)(0.5,0.9)(1.2,0.1)(0.6,-0.8)(-0.7,-0.9)};
+  \draw[->,blue!60!black] (-1.38,0.55) -- (-1.1,0.85) node[above left] {$I$};
+  \fill (0,0) circle (1.5pt) node[below left] {$O$};
+  \fill[red!70!black] (0.3,0.75) circle (2pt) node[above right] {$\br'$};
+  \draw[->,red!70!black] (0.3,0.75) -- (0.9,0.58) node[midway,above] {$d\bvec{\ell}'$};
+  \draw[->,gray!70] (0,0) -- (0.3,0.75) node[midway,left] {$\br'$};
+  \draw[gray!60,dashed] (0,0) -- (0.9,0.58);
+  \fill[gray!30,opacity=0.5] (0,0) -- (0.3,0.75) -- (0.9,0.58) -- cycle;
+  \draw[->,green!50!black] (0.4,0.35) -- (0.4,0.8) node[right,green!50!black] {$d\boldsymbol{\Sigma}$};
+\end{tikzpicture}
+\caption{Area element $d\boldsymbol{\Sigma}=\frac{1}{2}\br'\times d\bvec{\ell}'$
+is the vector area of the triangle swept from origin $O$ to element $d\bvec{\ell}'$
+at $\br'$.  Summing all triangles fills the surface spanning the loop.}
+\label{fig:lec15-loop}
+\end{figure}
+
+The quantity $\frac{1}{2}\br'\times d\bvec{\ell}'$ is exactly the vector area of the
+infinitesimal triangle with two sides $\br'$ and $\br'+d\bvec{\ell}'$:
+\begin{equation}\label{eq:lec15-dSigma}
+  d\boldsymbol{\Sigma} = \frac{1}{2}\,\br'\times d\bvec{\ell}'.
+\end{equation}
+Integrating around the loop fills in a surface $\mathcal{S}$ spanning $C$:
+\begin{equation}\label{eq:lec15-Sigma}
+  \boldsymbol{\Sigma} \equiv \oint_C \frac{1}{2}\,\br'\times d\bvec{\ell}'
+  = \iint_{\mathcal{S}} d\bvec{S}'.
+\end{equation}
+
+\dfn[dfn:lec15-loop-mu]{Magnetic Moment of a Current Loop}{%
+  For a closed current loop carrying current $I$,
+  \begin{equation}\label{eq:lec15-bmu-loop}
+    \boxed{\bmu = \frac{I}{c}\,\boldsymbol{\Sigma},}
+  \end{equation}
+  where $\boldsymbol{\Sigma}=\iint_\mathcal{S} d\bvec{S}'$ is the oriented area
+  vector of any surface $\mathcal{S}$ bounded by the loop.  The direction follows
+  the right-hand rule with respect to the sense of the current.
+}
+
+\textit{Significance:} $\bmu$ depends only on the current and the total area vector —
+not on the shape of the loop, nor on the choice of origin.
+
+\subsubsection*{Surface Independence of $\boldsymbol{\Sigma}$}
+
+The formula \eqref{eq:lec15-bmu-loop} requires $\boldsymbol{\Sigma}$ to be
+independent of the surface $\mathcal{S}$ chosen to span the loop.  Let
+$\mathcal{S}_1$ and $\mathcal{S}_2$ be two such surfaces, with outward normals
+oriented so that together they bound a closed volume $V$.  Then for any constant
+$\bvec{a}$,
+\begin{equation}
+  \bvec{a}\cdot(\boldsymbol{\Sigma}_1 - \boldsymbol{\Sigma}_2)
+  = \oint_{\partial V}\bvec{a}\cdot d\bvec{S}'
+  = \int_V\nabla'\cdot\bvec{a}\,d^3r' = 0,
+\end{equation}
+since $\bvec{a}$ is constant.  Because $\bvec{a}$ is arbitrary,
+$\boldsymbol{\Sigma}_1 = \boldsymbol{\Sigma}_2$.
+
+\subsubsection*{Planar Loop}
+
+For a planar loop all area elements point in the same direction $\hat{n}$
+(the right-hand normal), so the integral just sums scalar areas:
+
+\cor[cor:lec15-planar]{Magnetic Moment of a Planar Loop}{%
+  For a planar loop of area $S$ carrying current $I$,
+  \begin{equation}\label{eq:lec15-planar-mu}
+    \boxed{\bmu = \frac{IS}{c}\,\hat{n},}
+  \end{equation}
+  where $\hat{n}$ is the right-hand normal to the plane of the loop.
+}
+
+\textit{Significance:} This is the simplest and most widely used result.  A circular
+loop of radius $R$ has $|\bmu| = \pi R^2 I/c$.  Two parallel co-axial loops with
+the same current in the same sense have $|\bmu| = 2\pi R^2 I/c$ (moments add).
+
+%------------------------------------------------------------
+\subsection{Magnetic Moment and Angular Momentum}\label{subsec:lec15-angular-momentum}
+
+\subsubsection*{Physical Motivation}
+
+Inside a material, the molecular currents arise from electrons orbiting nuclei.
+We model these as $N$ point particles (electrons) with charge $e$, mass $m_e$,
+positions $\br_n(t)$, and velocities $\bvec{v}_n(t)$.  The corresponding current
+density is
+\begin{equation}\label{eq:lec15-point-J}
+  \Jvec(\br,t) = e\sum_n \bvec{v}_n(t)\,\delta^{(3)}(\br - \br_n(t)).
+\end{equation}
+
+\subsubsection*{Derivation}
+
+Insert \eqref{eq:lec15-point-J} into \eqref{eq:lec15-bmu}:
+\begin{align}
+  \bmu &= \frac{1}{2c}\int\br'\times\Jvec(\br')\,d^3r' \notag\\
+       &= \frac{e}{2c}\sum_n\int\br'\times\bvec{v}_n\,\delta^{(3)}(\br'-\br_n)\,d^3r' \notag\\
+       &= \frac{e}{2c}\sum_n \br_n\times\bvec{v}_n. \label{eq:lec15-bmu-electrons}
+\end{align}
+The orbital angular momentum of the $n$-th electron is $\bvec{L}_n = m_e\,\br_n\times\bvec{v}_n$,
+so $\br_n\times\bvec{v}_n = \bvec{L}_n/m_e$.  Summing over all electrons,
+
+\thm[thm:lec15-gyro]{Orbital Gyromagnetic Relation}{%
+  For a system of electrons with total orbital angular momentum
+  $\bvec{L} = \sum_n \bvec{L}_n$,
+  \begin{equation}\label{eq:lec15-gyro}
+    \boxed{\bmu = \frac{e}{2m_e c}\,\bvec{L}.}
+  \end{equation}
+  The ratio $\bmu/L = e/(2m_e c)$ is the \emph{gyromagnetic ratio} for orbital motion.
+}
+
+\textit{Significance:} Any rotating charge generates a magnetic moment proportional to
+its angular momentum.  The orbital gyromagnetic ratio $e/(2m_e c)$ follows purely from
+classical electrodynamics.  In quantum mechanics, spin also carries angular momentum:
+since orbital and spin angular momenta contribute to $\bmu$, and spin behaves like a
+half-integer angular momentum, the Dirac equation gives
+\begin{equation}\label{eq:lec15-spin-mu}
+  \bmu_{\rm spin} = g\,\frac{e}{2m_e c}\,\bvec{S}, \qquad g \approx 2,
+\end{equation}
+with the Landé $g$-factor $g \approx 2$ (exact $g=2$ from Dirac; small corrections from
+QED).  Thus \textbf{magnetism is fundamentally a quantum phenomenon}: without spin,
+completely random orbital orientation gives zero net moment; spin alignment is what
+creates observable ferromagnetism.
+
+\begin{remark}
+  The derivation used instantaneous positions $\br_n(t)$.  For atomic electrons
+  orbiting at $v\sim\alpha c$, $\br_n(t)$ oscillates at atomic frequencies.  The
+  correct procedure is to time-average: the total $\bvec{L}$ is conserved and hence
+  time-independent, so \eqref{eq:lec15-gyro} holds for the averaged magnetic moment.
+  The connection also justifies replacing the complicated quantum orbital with an
+  effective steady current loop — the central approximation of classical magnetism.
+\end{remark}
+
+%------------------------------------------------------------
+\subsection{Summary}\label{subsec:lec15-summary}
+
+\begin{itemize}
+  \item The vector potential of localised currents expands as monopole $+$ dipole
+        $+$ higher multipoles; \eqref{eq:lec15-expansion}.
+  \item \textbf{Monopole vanishes}: $\int\Jvec\,d^3r' = 0$ because $\nabla\cdot\Jvec=0$
+        (steady current loops have no net ``current charge'').
+  \item \textbf{Magnetic dipole moment}: $\bmu = \frac{1}{2c}\int\br'\times\Jvec\,d^3r'$.
+  \item \textbf{Dipole vector potential}: $\Avec^{\rm dip} = \bmu\times\br/r^3$;
+        falls off as $r^{-2}$.
+  \item \textbf{Current loop}: $\bmu = (I/c)\boldsymbol{\Sigma}$; $\boldsymbol{\Sigma}$
+        is surface-choice independent.
+  \item \textbf{Planar loop}: $\bmu = (IS/c)\hat{n}$ with right-hand rule.
+  \item \textbf{Orbital electrons}: $\bmu = (e/2m_e c)\bvec{L}$.
+  \item Spin contributes $\bmu_{\rm spin} = (ge/2m_e c)\bvec{S}$ with $g \approx 2$;
+        explaining real ferromagnetism requires quantum mechanics.
+\end{itemize}

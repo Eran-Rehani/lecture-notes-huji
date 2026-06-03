@@ -1,0 +1,533 @@
+%%═══════════════════════════════════════════════════════════════════
+%% Lecture 05 — Radioactive Decay, Activity, and Radiation Dose
+%% 77603 — Nuclear Physics
+%% Date: 12 May 2026
+%% Lecturer: Dr. Moshe Friedman
+%%═══════════════════════════════════════════════════════════════════
+
+\section{Lecture 05 — Radioactive Decay, Activity, and Radiation Dose}
+\label{sec:lec05}
+\date{12 May 2026}
+
+%%───────────────────────────────────────────────────────────────────
+\subsection*{Overview}
+%%───────────────────────────────────────────────────────────────────
+This lecture opens the second part of the course.  The first part treated the
+nucleus as a bound quantum system: nuclear sizes, binding energies, scattering,
+the deuteron, and shell structure.  We now turn to the processes by which an
+unstable nucleus changes in time.  The central idea is simple but powerful:
+radioactive decay is a \emph{statistical quantum process} in which a nucleus
+loses energy by moving to a more favourable nuclear state, often by becoming a
+different nucleus.
+
+The lecture has four main goals.  First, we classify the most important decay
+modes: $\gamma$ decay, internal conversion, $\alpha$ decay, fission, $\beta$
+decay, electron capture, and delayed particle emission.  Second, we quantify
+radioactivity using the decay constant, activity, half-life, and mean lifetime.
+Third, we study decay branches and decay chains, where a radioactive parent
+produces radioactive daughters.  Finally, we introduce the language used in
+radiation safety: exposure, absorbed dose, equivalent dose, and the practical
+principles ALARA and LNT.
+
+%%───────────────────────────────────────────────────────────────────
+\subsection{What Counts as Radioactive Decay?}
+\label{subsec:lec05:definition}
+
+\subsubsection*{Physical Motivation}
+A nucleus can be energetically unstable even when it is a perfectly well-defined
+bound quantum state.  It may sit in a local minimum: classically it looks stable,
+but quantum mechanically there can be a small probability per unit time to
+escape to a lower-energy configuration.  This is why a nucleus can have a
+lifetime ranging from less than a nanosecond to longer than the age of the
+Universe.
+
+\dfn{Radioactive decay}{Radioactive decay is a process in which a nucleus in its ground state or in an
+excited state releases energy and moves to a lower-energy nuclear configuration.
+The final configuration may be the same nucleus in a lower internal state, or a
+different nucleus.}
+
+The energy scale is set by nuclear binding energies.  In most ordinary nuclear
+decays the released energy is of order
+\begin{equation}
+  \label{eq:lec05:decay_energy_scale}
+  \boxed{Q \sim 10^2\,\mathrm{keV}\text{--}10\,\mathrm{MeV}.}
+\end{equation}
+\textit{Physical significance:} This is much larger than atomic transition
+energies, but much smaller than the rest energy of a nucleus.  Fission is the
+main exception: a single fission event releases roughly $200\,\mathrm{MeV}$.
+
+Because decay is probabilistic, we should not ask, ``When will this particular
+nucleus decay?'' as if the answer were deterministic.  The meaningful question
+is: \emph{what is the probability per unit time that it decays?}  That question
+leads directly to the decay constant $\lambda$ in
+Section~\ref{subsec:lec05:decay_law}.
+
+%%───────────────────────────────────────────────────────────────────
+\subsection{Decay Modes}
+\label{subsec:lec05:decay_modes}
+
+\subsubsection*{Physical Motivation}
+The nucleus must get rid of energy while preserving the conservation laws:
+energy, momentum, angular momentum, electric charge, baryon number, and lepton
+number where relevant.  Different decay modes are different ways of satisfying
+those constraints.  Some modes keep the identity of the nucleus fixed; others
+change $Z$, $A$, or both.
+
+\paragraph{Gamma decay.}
+In $\gamma$ decay an excited nucleus emits a high-energy photon and remains the
+same nuclide:
+\begin{equation}
+  \label{eq:lec05:gamma_decay}
+  \boxed{{}^{A}_{Z}X^{*}\rightarrow{}^{A}_{Z}X+\gamma.}
+\end{equation}
+The photon carries almost all the transition energy, but not exactly all of it:
+the daughter nucleus must recoil so that momentum is conserved.
+
+\textit{Physical significance:} A laboratory ``gamma source'' is usually not a
+source whose nuclei sit for macroscopic times in excited states.  Excited
+nuclear states typically live for very short times, often nanoseconds or less.
+The gamma photon is usually produced after some earlier decay, such as
+$\beta$ decay, leaves the daughter nucleus excited.
+
+\paragraph{Internal conversion.}
+An excited nucleus can also give its energy directly to an atomic electron,
+which is then ejected:
+\begin{equation}
+  \label{eq:lec05:internal_conversion}
+  \boxed{{}^{A}_{Z}X^{*}\rightarrow{}^{A}_{Z}X^{+}+e^{-}.}
+\end{equation}
+The ion charge reminds us that an atomic electron has been removed.  In practice
+one often focuses on the nuclear transition and treats the atomic rearrangement
+separately.
+
+\textit{Physical significance:} Internal conversion competes with gamma
+emission because both start from the same excited nuclear state.  Which channel
+dominates depends on the transition energy, multipolarity, and the electron
+wavefunction near the nucleus.
+
+\paragraph{Alpha decay.}
+In $\alpha$ decay a heavy nucleus emits a helium-4 nucleus:
+\begin{equation}
+  \label{eq:lec05:alpha_decay}
+  \boxed{{}^{A}_{Z}X\rightarrow{}^{A-4}_{Z-2}Y+{}^{4}_{2}\mathrm{He}.}
+\end{equation}
+The mass number decreases by $4$ and the proton number decreases by $2$.
+Although the $\alpha$ particle is strongly bound, it must typically tunnel
+through the Coulomb barrier to escape the parent nucleus.
+
+\textit{Physical significance:} Alpha decay is a clean example of a nucleus
+being energetically allowed to move to a lower state, while still being
+classically trapped for a long time.  The lifetime is extremely sensitive to the
+barrier width and to the decay energy.
+
+\paragraph{Fission.}
+In fission a very heavy nucleus splits into two medium-mass fragments, usually
+with extra neutrons and gamma rays:
+\begin{equation}
+  \label{eq:lec05:fission_decay}
+  \boxed{{}^{A}_{Z}X\rightarrow{}^{A_1}_{Z_1}Y
+  +{}^{A_2}_{Z_2}W+\bar{\nu}\,n+\gamma+\text{kinetic energy}.}
+\end{equation}
+Here $\bar{\nu}$ is the average number of emitted neutrons.  The notation is
+schematic: real fission has many possible fragment pairs and neutron
+multiplicities.
+
+\textit{Physical significance:} Fission releases an unusually large energy,
+about $200\,\mathrm{MeV}$ per event, because the fragments lie closer to the
+maximum of binding energy per nucleon than the original very heavy nucleus.
+
+\paragraph{Beta-minus decay.}
+In $\beta^{-}$ decay, a neutron inside the nucleus turns into a proton:
+\begin{equation}
+  \label{eq:lec05:beta_minus_decay}
+  \boxed{{}^{A}_{Z}X\rightarrow{}^{A}_{Z+1}Y+e^{-}+\bar{\nu}_{e}.}
+\end{equation}
+The emitted electron preserves electric charge, and the electron antineutrino
+preserves lepton number.  At the nucleon level,
+\begin{equation}
+  \label{eq:lec05:neutron_beta_decay}
+  n\rightarrow p+e^{-}+\bar{\nu}_{e}.
+\end{equation}
+
+\textit{Physical significance:} Because the final state contains three bodies
+(the daughter nucleus, electron, and antineutrino), the electron energy is not a
+single sharp value.  It forms a continuous spectrum from near zero up to the
+endpoint energy.
+
+\paragraph{Beta-plus decay.}
+In $\beta^{+}$ decay, a proton inside the nucleus turns into a neutron:
+\begin{equation}
+  \label{eq:lec05:beta_plus_decay}
+  \boxed{{}^{A}_{Z}X\rightarrow{}^{A}_{Z-1}Y+e^{+}+\nu_{e}.}
+\end{equation}
+The positron will usually annihilate with an electron, producing two photons:
+\begin{equation}
+  \label{eq:lec05:positron_annihilation}
+  e^{+}+e^{-}\rightarrow\gamma+\gamma,
+  \qquad E_{\gamma}=511\,\mathrm{keV}.
+\end{equation}
+The two photons are emitted nearly back-to-back in the centre-of-mass frame.
+
+\textit{Physical significance:} This back-to-back photon signature is the basis
+of positron emission tomography (PET): a positron-emitting isotope is placed in
+the body, and detectors reconstruct where the annihilations occurred.
+
+\paragraph{Electron capture.}
+Electron capture competes with $\beta^{+}$ decay.  Instead of emitting a
+positron, the nucleus captures one of its atomic electrons:
+\begin{equation}
+  \label{eq:lec05:electron_capture}
+  \boxed{{}^{A}_{Z}X+e^{-}\rightarrow{}^{A}_{Z-1}Y+\nu_{e}.}
+\end{equation}
+At the nucleon level, a proton and electron combine into a neutron and a
+neutrino.
+
+\textit{Physical significance:} Electron capture and $\beta^{+}$ decay both
+reduce $Z$ by one while keeping $A$ fixed.  They are therefore competing
+channels for proton-rich nuclei.
+
+\paragraph{Delayed proton and neutron emission.}
+Some nuclei are produced in excited states above the particle-emission
+threshold.  They can then emit a proton or neutron:
+\begin{align}
+  \label{eq:lec05:proton_emission}
+  {}^{A}_{Z}X^{*} &\rightarrow{}^{A-1}_{Z-1}Y+p,\\
+  \label{eq:lec05:neutron_emission}
+  {}^{A}_{Z}X^{*} &\rightarrow{}^{A-1}_{Z}Y+n.
+\end{align}
+These decays are less common in naturally occurring radioactivity, but they are
+important near the proton and neutron drip lines and in accelerator-produced
+nuclei.
+
+\textit{Physical significance:} Particle emission reminds us that ``decay
+mode'' is not only about the parent nucleus.  It also depends on which daughter
+states are energetically accessible.
+
+%%───────────────────────────────────────────────────────────────────
+\subsection{Branches, Cascades, and Why Gamma Rays Often Come Last}
+\label{subsec:lec05:branches}
+
+\subsubsection*{Physical Motivation}
+A nucleus does not necessarily have only one allowed decay path.  The same
+parent state can decay to several daughter states, and a daughter state may
+itself be unstable.  Nuclear data tables therefore show arrows with
+percentages: these are branching ratios.
+
+If a parent can decay through two channels with partial decay constants
+\(\lambda_a\) and \(\lambda_b\), the total decay constant is
+\begin{equation}
+  \label{eq:lec05:partial_lambdas}
+  \boxed{\lambda=\lambda_a+\lambda_b.}
+\end{equation}
+The branching ratios are
+\begin{equation}
+  \label{eq:lec05:branching_ratios}
+  \boxed{b_a=\frac{\lambda_a}{\lambda},\qquad
+  b_b=\frac{\lambda_b}{\lambda},\qquad b_a+b_b=1.}
+\end{equation}
+\textit{Physical significance:} The nucleus decays with the total rate
+\(\lambda\), but once a decay occurs the probability of a particular channel is
+set by its partial rate divided by the total rate.
+
+If the daughter is created in an excited state, it may emit one or more gamma
+photons while stepping down through the level scheme.  Such a sequence is called
+a cascade.  This is why gamma rays often appear as secondary radiation after a
+beta or alpha decay.
+
+%%───────────────────────────────────────────────────────────────────
+\subsection{The Radioactive Decay Law}
+\label{subsec:lec05:decay_law}
+
+\subsubsection*{Physical Motivation}
+The defining assumption is that each nucleus has the same probability per unit
+time to decay, independent of how long it has already existed.  This is a
+memoryless process.  The macroscopic exponential law follows from that one
+microscopic statement.
+
+Let \(N(t)\) be the number of undecayed nuclei at time \(t\).  If each nucleus
+has probability \(\lambda\,dt\) to decay during the short interval \(dt\), then
+\begin{equation}
+  \label{eq:lec05:decay_differential}
+  \boxed{\dv{N}{t}=-\lambda N.}
+\end{equation}
+Solving the differential equation gives
+\begin{equation}
+  \label{eq:lec05:decay_solution}
+  \boxed{N(t)=N_0 e^{-\lambda t}.}
+\end{equation}
+\textit{Physical significance:} The decay curve is exponential because the
+loss rate is proportional to how many unstable nuclei remain.
+
+The activity is the number of decays per unit time:
+\begin{equation}
+  \label{eq:lec05:activity_definition}
+  \boxed{\activity(t)=\lambda N(t)=\lambda N_0e^{-\lambda t}.}
+\end{equation}
+Activity has units of inverse time:
+\begin{equation}
+  \label{eq:lec05:activity_units}
+  \boxed{1\,\mathrm{Bq}=1\,\mathrm{s}^{-1}=1\,\mathrm{decay/s},\qquad
+  1\,\mathrm{Ci}=3.7\times10^{10}\,\mathrm{Bq}.}
+\end{equation}
+\textit{Physical significance:} Activity measures how many decays occur per
+second, not how much biological damage is caused.  A high-activity source is
+not fully characterized until we also know the radiation type and energy.
+
+\subsubsection{Half-Life and Mean Lifetime}
+\label{subsubsec:lec05:half_life}
+
+The half-life \(T_{1/2}\) is defined by \(N(T_{1/2})=N_0/2\).  Substituting
+Eq.~\eqref{eq:lec05:decay_solution},
+\begin{equation}
+  \label{eq:lec05:half_life_derivation}
+  \frac{1}{2}=e^{-\lambda T_{1/2}}
+  \quad\Rightarrow\quad
+  \boxed{T_{1/2}=\frac{\ln2}{\lambda}.}
+\end{equation}
+The mean lifetime \(\tau\) is the average decay time of one nucleus:
+\begin{equation}
+  \label{eq:lec05:mean_lifetime}
+  \boxed{\tau=\frac{\int_0^\infty t\,\lambda e^{-\lambda t}\,dt}
+  {\int_0^\infty \lambda e^{-\lambda t}\,dt}
+  =\frac{1}{\lambda}.}
+\end{equation}
+Thus
+\begin{equation}
+  \label{eq:lec05:tau_half_life_relation}
+  \boxed{T_{1/2}=(\ln2)\tau.}
+\end{equation}
+\textit{Physical significance:} ``Lifetime'' is sometimes used loosely in
+speech.  In formulas, \(T_{1/2}\) and \(\tau\) are different by the factor
+\(\ln2\).
+
+%%───────────────────────────────────────────────────────────────────
+\subsection{How Decay Constants Are Measured}
+\label{subsec:lec05:measuring_lifetimes}
+
+\subsubsection*{Physical Motivation}
+A lifetime measurement is not just a curve drawn through points.  Radioactive
+decay is intrinsically statistical, so the scatter of the data is part of the
+physics.  A good fit should not have every point exactly on the curve; it should
+have deviations consistent with the measurement uncertainties.
+
+In a simple lifetime measurement, one produces a radioactive isotope, records
+the number of decays in time bins, and fits the counting rate to
+\begin{equation}
+  \label{eq:lec05:counting_fit}
+  \boxed{\activity(t)=\activity_0e^{-\lambda t}+B,}
+\end{equation}
+where \(B\) is a possible background rate.  The quality of the fit is often
+checked with
+\begin{equation}
+  \label{eq:lec05:chi_squared}
+  \boxed{\chi^2=\sum_i
+  \left(\frac{y_i-f(x_i)}{\Delta y_i}\right)^2.}
+\end{equation}
+If the uncertainties \(\Delta y_i\) are realistic and the model is correct,
+\(\chi^2\) should be of order the number of degrees of freedom
+\(\nu=N_\mathrm{points}-N_\mathrm{fit\,parameters}\).
+
+\textit{Physical significance:} The usual correlation coefficient \(R^2\) is
+not enough for a physics fit because it does not know the experimental
+uncertainties.  A meaningful goodness-of-fit test must compare residuals to
+their errors.
+
+%%───────────────────────────────────────────────────────────────────
+\subsection{Building Radioactivity: Activation}
+\label{subsec:lec05:activation}
+
+\subsubsection*{Physical Motivation}
+Radioactivity can be produced artificially.  A stable material can be irradiated
+by particles or photons so that some nuclei are converted into radioactive
+isotopes.  This is how many medical radioisotopes are produced in reactors or
+accelerators.
+
+Suppose a radioactive isotope is produced at a constant rate \(R\) nuclei per
+second and decays with constant \(\lambda\).  Then
+\begin{equation}
+  \label{eq:lec05:activation_differential}
+  \dv{N}{t}=R-\lambda N,\qquad N(0)=0.
+\end{equation}
+Solving,
+\begin{equation}
+  \label{eq:lec05:activation_solution}
+  \boxed{N(t)=\frac{R}{\lambda}\left(1-e^{-\lambda t}\right).}
+\end{equation}
+The activity during production is
+\begin{equation}
+  \label{eq:lec05:activation_activity}
+  \boxed{\activity(t)=\lambda N(t)=R\left(1-e^{-\lambda t}\right).}
+\end{equation}
+\textit{Physical significance:} Production saturates.  After several lifetimes,
+the source is producing and losing nuclei at the same rate, so the activity
+approaches \(R\).  Irradiating much longer does not increase the activity
+substantially.
+
+%%───────────────────────────────────────────────────────────────────
+\subsection{Decay Chains and Equilibrium}
+\label{subsec:lec05:decay_chains}
+
+\subsubsection*{Physical Motivation}
+Often a radioactive parent decays into a daughter nucleus that is itself
+radioactive.  Then the daughter abundance is controlled by two competing
+effects: it is produced by parent decay and destroyed by its own decay.
+
+Consider a parent \(1\) with decay constant \(\lambda_1\), initially
+\(N_1(0)=N_0\), decaying into a daughter \(2\) with decay constant
+\(\lambda_2\), initially \(N_2(0)=0\):
+\begin{align}
+  \label{eq:lec05:chain_parent}
+  \dv{N_1}{t} &= -\lambda_1 N_1,\\
+  \label{eq:lec05:chain_daughter}
+  \dv{N_2}{t} &= \lambda_1N_1-\lambda_2N_2.
+\end{align}
+The parent solution is
+\begin{equation}
+  \label{eq:lec05:chain_parent_solution}
+  \boxed{N_1(t)=N_0e^{-\lambda_1t}.}
+\end{equation}
+Substituting this into Eq.~\eqref{eq:lec05:chain_daughter} gives
+\begin{equation}
+  \label{eq:lec05:chain_daughter_solution}
+  \boxed{N_2(t)=\frac{\lambda_1N_0}{\lambda_2-\lambda_1}
+  \left(e^{-\lambda_1t}-e^{-\lambda_2t}\right)}
+  \qquad(\lambda_1\neq\lambda_2).
+\end{equation}
+The daughter activity is therefore
+\begin{equation}
+  \label{eq:lec05:chain_daughter_activity}
+  \boxed{\activity_2(t)=\lambda_2N_2(t)
+  =\frac{\lambda_1\lambda_2N_0}{\lambda_2-\lambda_1}
+  \left(e^{-\lambda_1t}-e^{-\lambda_2t}\right).}
+\end{equation}
+
+\paragraph{Long-lived parent, short-lived daughter.}
+If \(\lambda_1\ll\lambda_2\), the parent changes very slowly compared with the
+daughter.  After several daughter lifetimes,
+\begin{equation}
+  \label{eq:lec05:secular_equilibrium}
+  \boxed{\activity_2(t)\approx\activity_1(t).}
+\end{equation}
+\textit{Physical significance:} This is secular equilibrium.  The daughter
+decays as fast as it is produced, so its activity equals the parent activity
+even though the daughter may have a much shorter lifetime.
+
+\paragraph{Comparable lifetimes.}
+If \(\lambda_1<\lambda_2\) but not by a huge factor, the ratio
+\(\activity_2/\activity_1\) approaches a constant after the daughter builds up:
+\begin{equation}
+  \label{eq:lec05:transient_equilibrium}
+  \boxed{\frac{\activity_2}{\activity_1}\rightarrow
+  \frac{\lambda_2}{\lambda_2-\lambda_1}.}
+\end{equation}
+\textit{Physical significance:} This is transient equilibrium.  Both activities
+eventually fall with the parent lifetime, but their ratio becomes nearly fixed.
+
+\paragraph{Short-lived parent, long-lived daughter.}
+If \(\lambda_1>\lambda_2\), the parent disappears quickly and leaves behind a
+daughter population that then decays on its own longer time scale:
+\begin{equation}
+  \label{eq:lec05:short_parent_limit}
+  \boxed{N_2(t)\approx N_0e^{-\lambda_2t}\quad
+  \text{after the parent has decayed}.}
+\end{equation}
+\textit{Physical significance:} The source changes character: initially the
+parent dominates the radiation, but later the daughter controls the activity.
+
+%%───────────────────────────────────────────────────────────────────
+\subsection{Radiation and Health}
+\label{subsec:lec05:radiation_health}
+
+\subsubsection*{Physical Motivation}
+Activity tells us how many decays occur per second, but biological risk depends
+on what radiation reaches tissue, how much energy it deposits, and how damaging
+that radiation type is.  We therefore need dose units, not only activity units.
+
+\paragraph{Ionizing versus non-ionizing radiation.}
+Ionizing radiation can remove electrons from atoms and break molecular bonds,
+including bonds in DNA.  Non-ionizing radiation does not have a comparably clear
+ionization mechanism at ordinary exposure levels, although very intense
+non-ionizing radiation can still cause heating and other effects.
+
+\paragraph{Radiation-protection principles.}
+Two working principles are used in radiation protection:
+\begin{itemize}
+  \item \textbf{ALARA}: exposures should be kept \emph{As Low As Reasonably
+  Achievable}.  This is a practical rule, not a microscopic law.
+  \item \textbf{LNT}: the \emph{Linear No-Threshold} model assumes that risk is
+  proportional to dose even at low doses, with no perfectly safe threshold.
+\end{itemize}
+\textit{Physical significance:} LNT is a conservative regulatory model.  It is
+used because high-dose harm is known and low-dose risk is hard to measure
+directly; it should not be confused with a precisely proven microscopic law at
+all dose levels.
+
+%%───────────────────────────────────────────────────────────────────
+\subsection{Radiation Units}
+\label{subsec:lec05:radiation_units}
+
+\subsubsection*{Physical Motivation}
+Different questions require different units.  ``How many nuclei decay per
+second?'' is an activity question.  ``How much energy entered the material?'' is
+an absorbed-dose question.  ``How risky is this for tissue?'' is an equivalent
+dose question.
+
+\paragraph{Exposure.}
+Exposure measures ionization produced in air.  The old unit is the roentgen:
+\begin{equation}
+  \label{eq:lec05:roentgen}
+  \boxed{1\,\mathrm{R}=2.58\times10^{-4}\,\mathrm{C\,kg^{-1}}
+  \quad\text{in air}.}
+\end{equation}
+It is historically important, but less fundamental than absorbed dose.
+
+\paragraph{Absorbed dose.}
+Absorbed dose \(D\) measures deposited energy per unit mass:
+\begin{equation}
+  \label{eq:lec05:gray}
+  \boxed{1\,\mathrm{Gy}=1\,\mathrm{J\,kg^{-1}},\qquad
+  1\,\mathrm{rad}=10^{-2}\,\mathrm{Gy}.}
+\end{equation}
+\textit{Physical significance:} Absorbed dose is a physical energy-deposition
+quantity.  It does not yet say whether the radiation was alpha, beta, gamma,
+neutrons, or protons.
+
+\paragraph{Equivalent dose.}
+Equivalent dose \(H\) weights the absorbed dose by a radiation quality factor
+\(Q\):
+\begin{equation}
+  \label{eq:lec05:equivalent_dose}
+  \boxed{H=Q\,D,\qquad 1\,\mathrm{Sv}=1\,\mathrm{J\,kg^{-1}},\qquad
+  1\,\mathrm{rem}=10^{-2}\,\mathrm{Sv}.}
+\end{equation}
+Typical quality factors are
+\begin{equation}
+  \label{eq:lec05:quality_factors}
+  \boxed{
+  Q_{\gamma}\approx Q_{\beta}\approx Q_{X}\approx1,\qquad
+  Q_p\approx2,\qquad
+  Q_n\approx5\text{--}20,\qquad
+  Q_{\alpha}\approx20.}
+\end{equation}
+\textit{Physical significance:} Alpha particles are far more damaging per unit
+absorbed energy than gamma rays or beta particles because they deposit their
+energy densely over a short range.  This is why an external alpha source may be
+easy to shield, while an internal alpha emitter can be biologically serious.
+
+%%───────────────────────────────────────────────────────────────────
+\subsection*{Key Takeaways}
+%%───────────────────────────────────────────────────────────────────
+\begin{itemize}
+  \item Radioactive decay is probabilistic: the microscopic input is a decay
+  probability per unit time, \(\lambda\).
+  \item Different decay modes are different ways to lower nuclear energy while
+  preserving conservation laws.
+  \item Activity is \(\activity=\lambda N\), measured in becquerel or curie; it
+  is not itself a dose or a risk.
+  \item Half-life and mean lifetime are related by
+  \(T_{1/2}=(\ln2)\tau\).
+  \item In decay chains, daughters may build up to secular or transient
+  equilibrium with the parent.
+  \item Radiation safety uses dose concepts: absorbed dose in gray and
+  equivalent dose in sievert.
+\end{itemize}

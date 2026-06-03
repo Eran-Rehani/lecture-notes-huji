@@ -1,0 +1,524 @@
+%% Lecture 10 -- From Elasticity to Hydrostatics
+
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\section{Lecture 10 -- From Elasticity to Hydrostatics}\label{sec:lec10}
+\date{May 11, 2026}
+
+\subsection*{Overview}
+This lecture closes the elasticity part of the course and opens the fluid-mechanics part. The transition is conceptually important: in elasticity we learned that a solid can sustain a general stress tensor, including shear stresses, because a deformed solid has restoring forces. A fluid at rest is more restrictive. It cannot sustain a static shear stress; otherwise the material would start moving. Therefore the stress tensor of a fluid in hydrostatic equilibrium is completely determined by one scalar field, the pressure $p(\bvec{x})$.
+
+The first main goal is to derive the hydrostatic equilibrium equation
+\begin{equation}
+  \boxed{\grad p = \rho\,\bvec{g}.}
+  \label{eq:lec10_hydrostatic_equilibrium_intro}
+\end{equation}
+Here $\rho(\bvec{x})$ is the mass density and $\bvec{g}$ is the gravitational acceleration vector. This equation is the fluid analogue of the static force-balance equation from elasticity, but with the elastic stress tensor replaced by the simple hydrostatic form $\stress=-p\,\tens{I}$.
+
+The second main goal is to solve this equation in two regimes. For an incompressible fluid, such as water to a good approximation, $\rho$ is constant and the pressure grows linearly with depth. For a compressible fluid, such as air, $\rho$ depends on $p$ through an equation of state; the same equilibrium equation then leads to the Gibbs potential per unit mass and, for an isothermal ideal gas atmosphere, to an exponential pressure profile.
+
+% ------------------------------------------------------------------------------
+\subsection{Final Recap of the Elasticity Chapter}\label{sec:lec10:elasticity-recap}
+% ------------------------------------------------------------------------------
+
+\subsubsection*{Physical Motivation}
+Before starting fluids, it is useful to identify what the elasticity chapter really gave us. The formulas for torsion and bending were important, but the deeper lesson was broader: continua are described by fields, and their static configurations are governed by field equations.
+
+\subsubsection*{Fields, Tensors, and Equilibrium}
+In the elastic-solid part of the course we introduced the displacement field
+\begin{equation}
+  \bvec{u}(\bvec{x})
+  =
+  \text{displacement of the material point originally near } \bvec{x}.
+  \label{eq:lec10_displacement_field}
+\end{equation}
+From $\bvec{u}$ we built the small-strain tensor
+\begin{equation}
+  \boxed{
+  \varepsilon_{ij}
+  =
+  \frac{1}{2}\qty(\pdv{u_i}{x_j}+\pdv{u_j}{x_i}).}
+  \label{eq:lec10_strain_recap}
+\end{equation}
+
+\textit{Physical significance:} The strain tensor measures local stretching and shearing, after removing pure rigid translations and rotations.
+
+The stress tensor $\sigma_{ij}$ encodes internal forces. If $d\bvec{S}$ is an oriented area element, the force exerted across it is
+\begin{equation}
+  \boxed{dF_i=\sigma_{ij}\,dS_j.}
+  \label{eq:lec10_traction_recap}
+\end{equation}
+
+\textit{Physical significance:} A stress tensor is a rule that turns a surface orientation into a force. This is why stress is naturally a rank-two tensor, not a vector.
+
+Static equilibrium required
+\begin{equation}
+  \boxed{\pdv{\sigma_{ij}}{x_j}+f_i=0,}
+  \label{eq:lec10_elastic_equilibrium_recap}
+\end{equation}
+where $f_i$ is an external force density, i.e. force per unit volume. In an isotropic linear elastic solid, Hooke's law relates $\sigma_{ij}$ to $\varepsilon_{ij}$ through Young's modulus $E$ and Poisson's ratio $\nu$.
+
+\textit{Physical significance:} Elasticity gave us an explicit example of a field theory in mechanics: the unknowns are functions of position, and the laws are differential equations for those functions.
+
+\subsubsection*{Rods and Beams}
+After the general tensor formulation, we specialized to one-dimensional structures:
+\begin{itemize}
+  \item \textbf{Torsion:} a torque is proportional to the twist rate.
+  \item \textbf{Bending:} a bending moment is proportional to the curvature.
+  \item \textbf{Euler--Bernoulli beams:} equilibrium plus bending elasticity gives a fourth-order equation.
+\end{itemize}
+The beam equation derived in Lecture~09 was
+\begin{equation}
+  \boxed{EI_y\,\dv[4]{x}{z}=q(z).}
+  \label{eq:lec10_beam_recap}
+\end{equation}
+
+\textit{Physical significance:} This equation is the endpoint of the solid-mechanics part of the course: it combines geometry, material response, and static equilibrium in one ordinary differential equation.
+
+\subsection*{Problems in  L. D. Landau and E. M. Lifshitz}
+\begin{itemize}
+  \item \textsection 7 problems 1-5
+  \item  \textsection 20 problems 1-5
+\end{itemize}% ------------------------------------------------------------------------------
+\subsection{What Is a Fluid?}\label{sec:lec10:what-is-fluid}
+% ------------------------------------------------------------------------------
+
+\subsubsection*{Physical Motivation}
+The word ``fluid'' groups liquids and gases together. This is not because they are microscopically identical, but because their mechanical response has a common feature: at rest, they cannot support shear stresses. A solid can sit in a deformed state; a fluid under shear keeps deforming, which means it flows.
+
+\subsubsection*{Stable Versus Neutral Equilibrium}
+A solid at rest is typically in \textbf{stable equilibrium}. If it is slightly displaced or deformed, restoring forces try to bring it back. Microscopically, one may imagine atoms connected by effective springs, and small disturbances produce elastic waves or vibrations.
+
+A fluid at rest is in \textbf{neutral equilibrium}. A small rearrangement of neighboring fluid elements does not produce the same kind of static restoring shear force. This is why water in a bowl can begin to flow when disturbed, whereas a solid object mainly vibrates.
+
+\subsubsection*{Liquids and Gases}
+The two most important classes of fluids are:
+\begin{itemize}
+  \item \textbf{Liquids}, such as water, often modeled as incompressible:
+  \begin{equation}
+    \boxed{\rho(\bvec{x})=\rho_0=\mathrm{const}.}
+    \label{eq:lec10_incompressible_definition}
+  \end{equation}
+  \item \textbf{Gases}, such as air, usually compressible:
+  \begin{equation}
+    \boxed{\rho=\rho(p,T).}
+    \label{eq:lec10_compressible_definition}
+  \end{equation}
+\end{itemize}
+
+\textit{Physical significance:} Liquids and gases differ strongly in compressibility, but many of their force-balance and motion equations have the same structure. This shared structure is the reason for treating them together under fluid mechanics.
+
+% ------------------------------------------------------------------------------
+\subsection{Hydrostatic Stress: Only Pressure Survives}\label{sec:lec10:hydrostatic-stress}
+% ------------------------------------------------------------------------------
+
+\subsubsection*{Physical Motivation}
+In a solid, a surface element can experience both normal and tangential components of force. In a fluid at rest, a tangential force would be a shear stress, and a shear stress would start a flow. Therefore only normal compressive forces can remain in hydrostatic equilibrium.
+
+\subsubsection*{Force on a Surface Element}
+Let $d\bvec{S}$ be an oriented area element whose direction is the outward normal. In a fluid at rest, the force exerted by the surrounding fluid on the element is normal to the surface and points inward:
+\begin{equation}
+  \boxed{d\bvec{F}=-p\,d\bvec{S}.}
+  \label{eq:lec10_pressure_force}
+\end{equation}
+
+\textit{Physical significance:} Pressure is a scalar. It has no preferred direction; the direction of the force comes entirely from the orientation of the surface.
+
+Comparing the general traction formula $dF_i=\sigma_{ij}dS_j$ with equation~\eqref{eq:lec10_pressure_force}, we identify the hydrostatic stress tensor:
+\begin{equation}
+  \boxed{\sigma_{ij}=-p\,\delta_{ij}.}
+  \label{eq:lec10_hydrostatic_stress}
+\end{equation}
+
+\textit{Physical significance:} A fluid at rest has no deviatoric part of the stress tensor. The entire stress state is encoded in one scalar field $p(\bvec{x})$.
+
+In tensor language, a general stress tensor can be decomposed as
+\begin{equation}
+  \sigma_{ij}
+  =
+  -p\,\delta_{ij}
+  +
+  \tau_{ij},
+  \qquad
+  \tau_{ii}=0,
+  \label{eq:lec10_stress_decomposition}
+\end{equation}
+where $\tau_{ij}$ is the shear/deviatoric part. Hydrostatics is the special case
+\begin{equation}
+  \boxed{\tau_{ij}=0.}
+  \label{eq:lec10_no_deviatoric_stress}
+\end{equation}
+
+\textit{Physical significance:} The vanishing of $\tau_{ij}$ is the mathematical statement that a resting fluid cannot hold a static shear stress.
+
+% ------------------------------------------------------------------------------
+\subsection{Units and Scales of Pressure}\label{sec:lec10:pressure-units}
+% ------------------------------------------------------------------------------
+
+\subsubsection*{Physical Motivation}
+Pressure is force per unit area. In fluids, numerical pressure scales become physically intuitive only after comparing them with everyday columns of water or air.
+
+\subsubsection*{Standard Units}
+The SI unit is the pascal:
+\begin{equation}
+  \boxed{1\,\mathrm{Pa}=1\,\mathrm{N\,m^{-2}}.}
+  \label{eq:lec10_pascal}
+\end{equation}
+
+Atmospheric pressure at sea level is approximately
+\begin{equation}
+  \boxed{1\,\mathrm{atm}\simeq 1.01\times 10^5\,\mathrm{Pa}\simeq 10^5\,\mathrm{Pa}.}
+  \label{eq:lec10_atmosphere}
+\end{equation}
+
+\textit{Physical significance:} The atmosphere exerts a force of order one kilogram-force on each square centimeter. We do not usually notice it because our bodies and surroundings are nearly pressure-balanced.
+
+Another common pressure unit is millimeters of mercury:
+\begin{equation}
+  \boxed{1\,\mathrm{atm}=760\,\mathrm{mmHg}.}
+  \label{eq:lec10_mmhg}
+\end{equation}
+In engineering contexts, one also meets PSI, pounds-force per square inch.
+
+% ------------------------------------------------------------------------------
+\subsection{Hydrostatic Equilibrium Equation}\label{sec:lec10:hydrostatic-equilibrium}
+% ------------------------------------------------------------------------------
+
+\subsubsection*{Physical Motivation}
+We now derive the central equation of hydrostatics. The force balance is the same continuum idea used in elasticity: internal forces plus external body forces must sum to zero for every small volume element.
+
+\subsubsection*{Derivation from Static Force Balance}
+The general static equilibrium equation is
+\begin{equation}
+  \pdv{\sigma_{ij}}{x_j}+f_i=0.
+  \label{eq:lec10_general_static_balance}
+\end{equation}
+For gravity, the external force density is
+\begin{equation}
+  f_i=\rho g_i,
+  \label{eq:lec10_gravity_force_density}
+\end{equation}
+where $\bvec{g}$ is the gravitational acceleration vector. Substituting the hydrostatic stress tensor $\sigma_{ij}=-p\delta_{ij}$ gives
+\begin{align}
+  \pdv{}{x_j}\qty(-p\delta_{ij})+\rho g_i &= 0,
+  \label{eq:lec10_hydrostatic_derivation_1}\\
+  -\delta_{ij}\pdv{p}{x_j}+\rho g_i &= 0,
+  \label{eq:lec10_hydrostatic_derivation_2}\\
+  -\pdv{p}{x_i}+\rho g_i &= 0.
+  \label{eq:lec10_hydrostatic_derivation_3}
+\end{align}
+Therefore, in vector form,
+\begin{equation}
+  \boxed{\grad p=\rho\,\bvec{g}.}
+  \label{eq:lec10_hydrostatic_equilibrium}
+\end{equation}
+
+\textit{Physical significance:} Pressure changes in the direction of the body force. In a gravitational field, the pressure is larger lower down because the lower fluid must support the weight of the fluid above it.
+
+% ------------------------------------------------------------------------------
+\subsection{Incompressible Fluid: Pressure in Water}\label{sec:lec10:incompressible-water}
+% ------------------------------------------------------------------------------
+
+\subsubsection*{Physical Motivation}
+Water is not perfectly incompressible, but for many hydrostatic problems its density changes so little that we can treat $\rho$ as constant. Then the hydrostatic equation can be integrated immediately.
+
+\subsubsection*{Linear Pressure Profile}
+Let $h$ denote depth measured downward from a reference surface. Then $\bvec{g}=g\,\uvec{h}$ and equation~\eqref{eq:lec10_hydrostatic_equilibrium} becomes
+\begin{equation}
+  \dv{p}{h}=\rho_0 g.
+  \label{eq:lec10_dpdh_water}
+\end{equation}
+Integrating from the surface $h=0$, where $p=p_0$, to depth $h$ gives
+\begin{equation}
+  \boxed{p(h)=p_0+\rho_0 g h.}
+  \label{eq:lec10_water_pressure_profile}
+\end{equation}
+
+\textit{Physical significance:} The pressure grows linearly with depth because each additional layer must support an additional slab of water of weight $\rho_0 g\,dh$ per unit area.
+
+\subsubsection*{One Atmosphere per Ten Meters}
+For water,
+\begin{equation}
+  \rho_{\mathrm{water}}\simeq 10^3\,\mathrm{kg\,m^{-3}},
+  \qquad
+  g\simeq 10\,\mathrm{m\,s^{-2}}.
+  \label{eq:lec10_water_numbers}
+\end{equation}
+Hence
+\begin{equation}
+  \dv{p}{h}
+  =
+  \rho_{\mathrm{water}}g
+  \simeq
+  10^4\,\mathrm{Pa\,m^{-1}},
+  \label{eq:lec10_water_pressure_gradient}
+\end{equation}
+so over $10\,\mathrm{m}$,
+\begin{equation}
+  \boxed{\Delta p\simeq 10^5\,\mathrm{Pa}\simeq 1\,\mathrm{atm}.}
+  \label{eq:lec10_one_atm_per_ten_meters}
+\end{equation}
+
+\textit{Physical significance:} A diver experiences roughly one additional atmosphere of pressure for every ten meters of depth. This simple estimate is one of the most useful hydrostatic scales.
+
+\subsubsection*{Pascal's Principle}
+If the height variation in a container is small compared with the scale over which pressure changes appreciably, then $\rho g\,\Delta h$ is negligible compared with the imposed pressure scale. In that limit
+\begin{equation}
+  \boxed{\grad p\simeq 0,\qquad p\simeq \mathrm{const}\ \text{throughout the connected fluid}.}
+  \label{eq:lec10_pascal_principle}
+\end{equation}
+
+\textit{Physical significance:} This is Pascal's principle. A pressure applied to a nearly incompressible confined fluid is transmitted throughout the fluid, which is the basis for hydraulic machines.
+
+% ------------------------------------------------------------------------------
+\subsection{Compressible Hydrostatics and the Equation of State}\label{sec:lec10:compressible-hydrostatics}
+% ------------------------------------------------------------------------------
+
+\subsubsection*{Physical Motivation}
+For a gas, the density is not fixed. Air near the ground is denser than air high in the atmosphere. To determine $p(z)$ we need, in addition to force balance, a relation between pressure, density, and temperature: an equation of state.
+
+\subsubsection*{Ideal Gas Reminder}
+For an ideal gas,
+\begin{equation}
+  \boxed{pV=nRT=Nk_B T,}
+  \label{eq:lec10_ideal_gas_law}
+\end{equation}
+where $n$ is the number of moles, $R$ is the gas constant, $N$ is the number of molecules, $k_B$ is Boltzmann's constant, and $T$ is the absolute temperature measured in kelvin.
+
+If the gas molecules have mass $m$, then $\rho=mN/V$. The ideal gas law can be written as
+\begin{equation}
+  \boxed{p=\frac{\rho}{m}k_B T.}
+  \label{eq:lec10_ideal_gas_density_form}
+\end{equation}
+Equivalently, using molar mass $M$,
+\begin{equation}
+  \boxed{p=\rho\,\frac{R}{M}T.}
+  \label{eq:lec10_ideal_gas_molar_form}
+\end{equation}
+
+\textit{Physical significance:} At fixed temperature, pressure is proportional to density. Therefore, if pressure decreases with height, density decreases with height as well.
+
+\subsubsection*{Thermal Equilibrium}
+In hydrostatic equilibrium with no heat currents, the temperature is spatially uniform:
+\begin{equation}
+  \boxed{\grad T=0.}
+  \label{eq:lec10_uniform_temperature}
+\end{equation}
+
+\textit{Physical significance:} The hydrostatic part of the course will mostly use cases with no heat flow. More general fluid mechanics can include heat currents, but that requires additional equations.
+
+% ------------------------------------------------------------------------------
+\subsection{The Gibbs Potential Per Unit Mass}\label{sec:lec10:gibbs-potential}
+% ------------------------------------------------------------------------------
+
+\subsubsection*{Physical Motivation}
+For a compressible fluid, $\rho$ depends on $p$, so we cannot integrate $\grad p=\rho\bvec{g}$ as simply as in water. The useful trick is to divide by $\rho(p)$ and recognize the result as the gradient of a new scalar function.
+
+\subsubsection*{Mathematical Definition}
+Assume the temperature is fixed, so the equation of state gives $\rho=\rho(p)$. Divide equation~\eqref{eq:lec10_hydrostatic_equilibrium} by $\rho(p)$:
+\begin{equation}
+  \frac{1}{\rho(p)}\grad p=\bvec{g}.
+  \label{eq:lec10_divide_by_density}
+\end{equation}
+Define
+\begin{equation}
+  \boxed{
+  g_T(p)=\int^p \frac{dp'}{\rho(p')}.}
+  \label{eq:lec10_gibbs_per_mass_definition}
+\end{equation}
+By the chain rule,
+\begin{align}
+  \grad g_T(p)
+  &=
+  \dv{g_T}{p}\,\grad p
+  \label{eq:lec10_chain_rule_gibbs_1}\\
+  &=
+  \frac{1}{\rho(p)}\grad p.
+  \label{eq:lec10_chain_rule_gibbs_2}
+\end{align}
+Therefore the hydrostatic equation becomes
+\begin{equation}
+  \boxed{\grad g_T=\bvec{g}.}
+  \label{eq:lec10_grad_gibbs_equals_g}
+\end{equation}
+
+\textit{Physical significance:} The function $g_T(p)$ packages the compressibility of the fluid into one scalar potential. For incompressible water it reduces to $p/\rho_0$; for a gas it becomes a logarithmic function of pressure.
+
+\subsubsection*{Connection to Thermodynamics}
+The notation $g_T$ is not accidental. The Gibbs free energy satisfies
+\begin{equation}
+  dG=-S\,dT+V\,dp.
+  \label{eq:lec10_gibbs_differential}
+\end{equation}
+At fixed temperature,
+\begin{equation}
+  \pdv{G}{p}\bigg|_T=V.
+  \label{eq:lec10_dGdp_volume}
+\end{equation}
+For the Gibbs free energy per unit mass, $g=G/M_{\mathrm{mass}}$, the volume per unit mass is $V/M_{\mathrm{mass}}=1/\rho$. Hence
+\begin{equation}
+  \boxed{\pdv{g}{p}\bigg|_T=\frac{1}{\rho}.}
+  \label{eq:lec10_specific_gibbs_derivative}
+\end{equation}
+
+\textit{Physical significance:} The same integral that solves compressible hydrostatics is the Gibbs potential per unit mass at fixed temperature. Hydrostatics and thermodynamics meet naturally here.
+
+\subsubsection*{Including the Gravitational Potential}
+If gravity derives from a potential $\Phi$,
+\begin{equation}
+  \bvec{g}=-\grad\Phi,
+  \label{eq:lec10_gravity_potential_definition}
+\end{equation}
+then equation~\eqref{eq:lec10_grad_gibbs_equals_g} gives
+\begin{equation}
+  \grad g_T=-\grad\Phi.
+  \label{eq:lec10_gibbs_phi_gradient}
+\end{equation}
+Therefore
+\begin{equation}
+  \boxed{g_T+\Phi=\mathrm{const}.}
+  \label{eq:lec10_bernoulli_hydrostatic_form}
+\end{equation}
+
+\textit{Physical significance:} In a static compressible fluid, the sum of thermodynamic Gibbs potential per unit mass and gravitational potential energy per unit mass is constant. This is the compressible analogue of $p+\rho g z=\mathrm{const}$ for an incompressible fluid.
+
+For an incompressible fluid, $\rho=\rho_0$, so equation~\eqref{eq:lec10_gibbs_per_mass_definition} gives
+\begin{equation}
+  \boxed{g_T(p)=\frac{p}{\rho_0}+\mathrm{const}.}
+  \label{eq:lec10_incompressible_gibbs}
+\end{equation}
+Substituting into equation~\eqref{eq:lec10_bernoulli_hydrostatic_form} recovers the usual hydrostatic pressure law.
+
+% ------------------------------------------------------------------------------
+\subsection{Example: Isothermal Atmosphere}\label{sec:lec10:isothermal-atmosphere}
+% ------------------------------------------------------------------------------
+
+\subsubsection*{Physical Motivation}
+The atmosphere is the canonical compressible hydrostatic example. Unlike water, air has a density that decreases strongly with height. We simplify the real atmosphere by assuming constant temperature; this is not exact, but it captures the central exponential scale.
+
+\subsubsection*{Direct Derivation}
+Let $z$ point upward. Then $\bvec{g}=-g\,\uvec{z}$ and the hydrostatic equation becomes
+\begin{equation}
+  \dv{p}{z}=-\rho g.
+  \label{eq:lec10_atmosphere_hydrostatic}
+\end{equation}
+For an isothermal ideal gas,
+\begin{equation}
+  p=\frac{\rho}{m}k_BT,
+  \qquad
+  \rho=\frac{m}{k_BT}p.
+  \label{eq:lec10_atmosphere_rho_p}
+\end{equation}
+Substitute this into equation~\eqref{eq:lec10_atmosphere_hydrostatic}:
+\begin{equation}
+  \dv{p}{z}
+  =
+  -\frac{mg}{k_BT}p.
+  \label{eq:lec10_atmosphere_ode}
+\end{equation}
+Separate variables:
+\begin{align}
+  \frac{1}{p}\,dp
+  &=
+  -\frac{mg}{k_BT}\,dz,
+  \label{eq:lec10_atmosphere_separation}\\
+  \ln\frac{p(z)}{p_0}
+  &=
+  -\frac{z}{H},
+  \label{eq:lec10_atmosphere_log_solution}
+\end{align}
+where the scale height is
+\begin{equation}
+  \boxed{H=\frac{k_BT}{mg}=\frac{RT}{Mg}.}
+  \label{eq:lec10_scale_height}
+\end{equation}
+Thus
+\begin{equation}
+  \boxed{p(z)=p_0 e^{-z/H},\qquad \rho(z)=\rho_0 e^{-z/H}.}
+  \label{eq:lec10_exponential_atmosphere}
+\end{equation}
+
+\textit{Physical significance:} In an isothermal atmosphere, pressure and density fall by a factor of $e$ every scale height $H$. The exponential appears because the pressure gradient is proportional to the pressure itself.
+
+\subsubsection*{Numerical Estimate of the Scale Height}
+A quick estimate can be made from sea-level values:
+\begin{equation}
+  p_0\simeq 10^5\,\mathrm{Pa},
+  \qquad
+  \rho_0\simeq 1.3\,\mathrm{kg\,m^{-3}},
+  \qquad
+  g\simeq 10\,\mathrm{m\,s^{-2}}.
+  \label{eq:lec10_air_numbers}
+\end{equation}
+Since $H=p_0/(\rho_0 g)$ for an isothermal ideal gas at $z=0$,
+\begin{equation}
+  \boxed{
+  H
+  \simeq
+  \frac{10^5}{(1.3)(10)}\,\mathrm{m}
+  \simeq
+  8\times 10^3\,\mathrm{m}.}
+  \label{eq:lec10_atmosphere_height_estimate}
+\end{equation}
+
+\textit{Physical significance:} The atmospheric scale height is of order several kilometers, much larger than the $10\,\mathrm{m}$ water scale for one atmosphere. The reason is simple: air is roughly a thousand times less dense than water.
+
+The density of air can be estimated from its composition. Dry air is mostly nitrogen and oxygen, with a typical molar mass
+\begin{equation}
+  M_{\mathrm{air}}\simeq 29\,\mathrm{g\,mol^{-1}}.
+  \label{eq:lec10_air_molar_mass}
+\end{equation}
+Using the molar volume near standard conditions, about $22.4\,\mathrm{L\,mol^{-1}}$, gives a density of order
+\begin{equation}
+  \rho_{\mathrm{air}}\simeq 1.3\,\mathrm{kg\,m^{-3}},
+  \label{eq:lec10_air_density_estimate}
+\end{equation}
+consistent with the estimate above.
+
+% ------------------------------------------------------------------------------
+\subsection{Summary and Bridge to the Next Lecture}\label{sec:lec10:summary}
+% ------------------------------------------------------------------------------
+
+The elasticity chapter ended with fields, tensors, and equilibrium equations. Hydrostatics keeps the same continuum logic but uses a much simpler stress tensor:
+\begin{equation}
+  \boxed{\sigma_{ij}=-p\delta_{ij}.}
+  \label{eq:lec10_summary_stress}
+\end{equation}
+
+Substituting this into static force balance gives the central equation:
+\begin{equation}
+  \boxed{\grad p=\rho\bvec{g}.}
+  \label{eq:lec10_summary_hydrostatic}
+\end{equation}
+
+For incompressible fluids:
+\begin{equation}
+  \boxed{p(h)=p_0+\rho_0gh,}
+  \qquad
+  \Delta p\simeq 1\,\mathrm{atm}\ \text{per}\ 10\,\mathrm{m}\ \text{of water}.
+  \label{eq:lec10_summary_incompressible}
+\end{equation}
+
+For compressible fluids at fixed temperature:
+\begin{equation}
+  \boxed{g_T(p)=\int^p\frac{dp'}{\rho(p')},\qquad g_T+\Phi=\mathrm{const}.}
+  \label{eq:lec10_summary_compressible}
+\end{equation}
+
+For an isothermal ideal-gas atmosphere:
+\begin{equation}
+  \boxed{p(z)=p_0e^{-z/H},\qquad \rho(z)=\rho_0e^{-z/H},\qquad H=\frac{k_BT}{mg}.}
+  \label{eq:lec10_summary_atmosphere}
+\end{equation}
+
+\subsection*{Further Reading}
+\begin{itemize}
+  \item L. D. Landau and E. M. Lifshitz, \textit{Fluid Mechanics}, Secs. 1--2: hydrostatics, stress in a fluid, and equilibrium.
+  \item G. K. Batchelor, \textit{An Introduction to Fluid Dynamics}, Ch. 1: continuum description and pressure in a fluid.
+  \item D. J. Acheson, \textit{Elementary Fluid Dynamics}, Ch. 1: basic ideas of pressure, hydrostatics, and scaling.
+  \item MIT OpenCourseWare, \href{https://ocw.mit.edu/courses/2-06-fluid-dynamics-spring-2013/}{2.06 Fluid Dynamics}: lecture notes for a broader engineering treatment of hydrostatics and fluid motion.
+  \item HyperPhysics, \href{http://hyperphysics.phy-astr.gsu.edu/hbase/pflu.html}{Fluid Pressure}: quick reference for pressure units, hydrostatic pressure, and atmospheric pressure.
+\end{itemize}
+
+\end{document}

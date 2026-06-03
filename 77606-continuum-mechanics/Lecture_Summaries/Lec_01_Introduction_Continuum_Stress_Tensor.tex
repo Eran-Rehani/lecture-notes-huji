@@ -1,0 +1,134 @@
+%%═══════════════════════════════════════════════════════════════════
+%% Lecture 01 — Introduction, Continuum Limit, and the Stress Tensor
+%% Continuum Mechanics
+%% Date: Spring 2026
+%% Lecturer: Prof. Barak Kol
+%%═══════════════════════════════════════════════════════════════════
+
+\section{Lecture 01 — Introduction, Continuum Limit, and the Stress Tensor}\label{sec:lec01}
+\date{March 23, 2026}
+\hrule\vspace{1.5em}
+
+\subsection*{Overview}
+This lecture introduces the field of continuum mechanics, describing the historical and conceptual shift from discrete point particles (Newtonian mechanics) to continuous media. The framework covers both solid mechanics (elasticity) and fluid dynamics (liquids and gases). The principles discussed—such as continuous fields, field equations, and tensors—are foundational for engineering applications as well as advanced physics, including electromagnetism and quantum field theory. The lecture defines the continuum limit, introduces the concept of the stress tensor, and demonstrates how surface contact forces are converted into a volume force density via the divergence theorem.
+
+\subsection*{Definitions}
+
+\dfn{Continuum Limit}{The regime where a discrete collection of atoms or molecules (with typical interatomic spacing $a \sim 10^{-10}\,\text{m}$) can be well-approximated as a continuous material. This macroscopic description is valid when the characteristic length scale $L$ of the system is much larger than the atomic scale ($L \gg a$). In this limit, discrete masses map to a continuous mass density $\rho = \lim_{\Delta L \to 0} \frac{\Delta m}{\Delta L}$.}
+
+\dfn{Area Element $d\mathbf{S}$}{An infinitesimal vector representing a surface patch. Its magnitude corresponds to the differential area $dS$, and its direction is perpendicular to the surface, pointing strictly along the \emph{outward normal}.}
+
+\dfn{Stress Tensor $\sigma_{ij}$}{A rank-2 tensor (often represented as a $3 \times 3$ matrix) that relates the area element $d\mathbf{S}$ of a given plane to the internal contact force $d\mathbf{F}$ exerted across that plane by adjacent volume elements.}
+
+\dfn{Levi-Civita Symbol $\epsilon_{ijk}$}{A completely antisymmetric rank-3 tensor used for expressing vector cross products and moments in index notation. $\epsilon_{ijk} = +1$ for even permutations of $(1,2,3)$, $-1$ for odd permutations, and $0$ if any index is repeated.}
+
+\subsection*{Key Results}
+
+\thm{Contact Force on a Surface}{The $i$-th component of the contact force $d\mathbf{F}$ acting on a surface element $d\mathbf{S}$ is strictly proportional to the area vector via the stress tensor:
+\begin{equation}
+  dF_i = \sigma_{ij} dS_j
+  \label{eq:lec01:stress_force}
+\end{equation}
+where the repeated index $j$ implies summation over the spatial coordinates (Einstein summation convention).}
+
+\thm{Force Density via Divergence}{The total contact force per unit volume (force density) acting on a continuum element is given by the spatial divergence of the stress tensor:
+\begin{equation}
+  \boxed{
+    f_i = \partial_j \sigma_{ij}
+  }
+  \label{eq:lec01:force_density}
+\end{equation}
+If the stress tensor is uniform ($\partial_j \sigma_{ij} = 0$), the net contact force on the macroscopic volume element vanishes.}
+
+\subsection*{Derivations}
+
+%% DERIVATION 1: Total Contact Force on a Volume Element
+\subsubsection*{Total Contact Force and Force Density}
+
+To find the total contact force $F_i^{\text{total}}$ acting on a macroscopic volume element $V$ bounded by a closed surface $S$, we integrate the surface contact forces over the entire boundary:
+\begin{align}
+  F_i^{\text{total}} &= \oint_S dF_i \notag\\
+                     &= \oint_S \sigma_{ij} dS_j.
+  \label{eq:lec01:surface_integral}
+\end{align}
+This expression represents a flux integral for each vector component $i$. By applying the divergence theorem (Gauss's theorem), we can convert this closed surface integral into a volume integral over $V$:
+\begin{equation}
+  \oint_S \sigma_{ij} dS_j = \int_V \partial_j \sigma_{ij} \, dV.
+  \label{eq:lec01:divergence_thm}
+\end{equation}
+Thus, the total force evaluates to:
+\begin{equation}
+  F_i^{\text{total}} = \int_V (\partial_j \sigma_{ij}) \, dV.
+\end{equation}
+For an infinitesimal volume element $dV$, the integrand $f_i = \partial_j \sigma_{ij}$ is precisely the net force per unit volume. For the element to remain in static equilibrium, this differential force must balance external body forces (such as gravity).
+
+\subsection*{Examples}
+
+\ex{Forces on the Faces of a Cube}{Consider an infinitesimal cubic volume element aligned with the Cartesian axes $(x, y, z)$.
+\begin{itemize}
+    \item \textbf{Top Face:} The outward normal points in the positive $z$-direction. The area vector is $d\mathbf{S} = (0, 0, dS)$, meaning $dS_3 = dS$. The force on this face is $dF_i = \sigma_{i3} dS$.
+    \item \textbf{Bottom Face:} The outward normal points in the negative $z$-direction. The area vector is $d\mathbf{S} = (0, 0, -dS)$. The force on this face is $dF_i = -\sigma_{i3} dS$.
+\end{itemize}
+If $\sigma_{i3}$ is uniform (constant) across the vertical height of the cube, the forces on these two opposing faces are equal and opposite, leading to exact cancellation.}
+
+\subsection*{Connections}
+
+\begin{itemize}
+  \item \textbf{Classical Mechanics:} Continuum mechanics builds upon the discrete point-particle mechanics developed by Newton, Euler, and Lagrange, generalizing it to bodies with infinite degrees of freedom.
+  \item \textbf{Electromagnetism:} The mathematical description of continuous material fields conceptually preceded and inspired the formulation of the electromagnetic fields by Maxwell and Faraday.
+  \item \textbf{Quantum Field Theory (QFT):} The classical field theories (and field equations) established in continuum mechanics form the classical basis that is eventually quantized in fundamental particle physics.
+  \item \textbf{Engineering \& Physics Applications:} The principles taught directly underly civil/mechanical engineering (steel, bridges, building structures), fluid engineering (hydraulics, aerodynamics), and modern physics domains (stellar structure, nuclear models, quark-gluon plasmas).
+\end{itemize}
+
+\subsection*{To Remember}
+
+\begin{itemize}
+  \item The continuum approximation replaces discrete molecular structures with continuous fields, valid for macroscopic length scales $L \gg 10^{-10}\,\text{m}$.
+  \item The local state of stress is encoded in a $3 \times 3$ tensor $\sigma_{ij}$.
+  \item The placement of tensor indices (upper vs. lower) carries no physical distinction in this specific course, in contrast to General Relativity.
+  \item The Einstein summation convention dictates that any index repeated twice in a multiplicative term is implicitly summed over the three spatial coordinates.
+  \item A net volume force arises strictly from the non-uniformity (spatial derivatives / divergence) of the stress tensor.
+\end{itemize}
+
+%%────────────────────────────────────────────────────────────────────
+%% 2‑D stress element — shows all four σᵢⱼ components
+%%────────────────────────────────────────────────────────────────────
+\begin{center}
+\begin{tikzpicture}[scale=2.4, >=Stealth]
+  \def\s{1}     % side length
+  \def\a{0.42}  % arrow length
+  \def\sh{0.28} % shear arrow length
+  % Element
+  \fill[blue!8] (0,0) rectangle (\s,\s);
+  \draw[very thick] (0,0) rectangle (\s,\s);
+  % Right face (+x_1 normal): normal σ₁₁ outward, shear σ₂₁ upward
+  \draw[force] (\s, \s/2) --++ (\a, 0)   node[right]       {$\sigma_{11}$};
+  \draw[force] (\s, \s/2) --++ (0, \sh)  node[right=1]     {$\sigma_{21}$};
+  % Top face (+x_2 normal): normal σ₂₂ outward, shear σ₁₂ rightward
+  \draw[force] (\s/2, \s) --++ (0, \a)   node[above]       {$\sigma_{22}$};
+  \draw[force] (\s/2, \s) --++ (\sh, 0)  node[above right] {$\sigma_{12}$};
+  % Left face (-x_1 normal): normal σ₁₁ outward (leftward), shear σ₂₁ downward
+  \draw[force] (0, \s/2) --++ (-\a, 0)   node[left]        {$\sigma_{11}$};
+  \draw[force] (0, \s/2) --++ (0, -\sh)  node[left=1]      {$\sigma_{21}$};
+  % Bottom face (-x_2 normal): normal σ₂₂ outward (downward), shear σ₁₂ leftward
+  \draw[force] (\s/2, 0) --++ (0, -\a)   node[below]       {$\sigma_{22}$};
+  \draw[force] (\s/2, 0) --++ (-\sh, 0)  node[below left]  {$\sigma_{12}$};
+  % Coordinate axes
+  \draw[->, gray, thin] (-0.18, -0.18) -- (0.22, -0.18) node[right, gray, scale=0.75] {$x_1$};
+  \draw[->, gray, thin] (-0.18, -0.18) -- (-0.18, 0.22) node[above, gray, scale=0.75] {$x_2$};
+  % Note: symmetry sigma_12 = sigma_21
+  \node[scale=0.75, gray] at (\s/2, \s/2) {$(\sigma_{12}=\sigma_{21})$};
+\end{tikzpicture}
+\end{center}
+
+\subsection*{Exam / HW Hints}
+
+\begin{itemize}
+  \item \textbf{Grading:} The course grade is based 100\% on a 2.5-hour final exam.
+  \item \textbf{Homework:} Due to budget cuts, there are no official TAs and no graded homework assignments. 
+  \item \textbf{Practice:} The lecturer will use one hour per week for active, guided problem-solving. Students are highly encouraged to participate actively in these sessions.
+  \item \textbf{Exam Preparation:} The best way to prepare for the exam is to solve the final exams from the previous two years.
+  \item \textbf{Textbooks:} Recommended reading includes Landau \& Lifshitz (Vol. 7 \emph{Theory of Elasticity} and Vol. 6 \emph{Fluid Mechanics}), as well as Timoshenko \& Gere (\emph{Mechanics of Materials}) for the engineering perspective.
+\end{itemize}
+
+

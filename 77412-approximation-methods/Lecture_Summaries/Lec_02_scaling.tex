@@ -1,0 +1,146 @@
+%% ═══════════════════════════════════════════════════════════════════════════
+\section{Lecture 2: Scaling and Approximation}
+%% ═══════════════════════════════════════════════════════════════════════════
+\date{16/04/2026}
+In this lecture, we conclude the examples of order-of-magnitude estimation (specifically, the shooting star problem) and introduce a new, extremely powerful tool: \textbf{Scaling Arguments}. By comparing a physical system either to another known system or to a different state of itself, we can cancel out many unknown factors and gain deep physical insights.
+
+\subsection{Completing the Shooting Star Estimate}
+
+Continuing from the previous lecture, we aim to estimate the mass of a typical ``shooting star'' (meteor).
+
+\ex{Mass of a Shooting Star}{\textbf{The Setup:} When a meteoroid enters Earth's atmosphere, it burns up, converting its kinetic energy into heat and light. We want to estimate its mass $M$ by observing the visible light it emits.
+
+\medskip
+\textbf{Observable Properties:}
+\begin{enumerate}[label=\textbf{\arabic*.}]
+    \item \textbf{Duration:} The event happens very quickly, typically taking $\Delta t \sim 0.5$--$1$ second.
+    \item \textbf{Velocity:} As discussed previously, the typical entry velocity is on the scale of Earth's orbital speed around the Sun: $V \sim \SI{30}{km/s} = 3 \times 10^4\,\text{m/s}$.
+    \item \textbf{Brightness (Luminosity):} To estimate the luminous power, we can compare it to a familiar object, such as a car headlight seen from a distance. Suppose a shooting star appears as bright as a car's headlight ($P_\text{ref} \sim \SI{10}{W}$ of \emph{pure optical power}) viewed from a distance of $D_\text{ref} \sim \SI{3}{km}$.
+    \item \textbf{Distance to Meteor:} The meteor typically burns up in the upper atmosphere, at an altitude $L \sim \SI{50}{km}$ to $\SI{100}{km}$. For our estimate, let us use $L \sim \SI{100}{km} = 10^5\,\text{m}$.
+\end{enumerate}
+
+\medskip
+\textbf{Energy Conversion Model:}
+The initial kinetic energy is $E_k = \frac{1}{2} M V^2$. By the principle of equipartition (assuming roughly equal partition of the dissipated energy into thermal energy of the plasma and radiated light), the energy radiated as light is a fraction $f_\text{light} \sim \frac{1}{2}$ of the total energy.
+Thus, the total light energy emitted is:
+\[
+    E_\text{light} = f_\text{light} \left(\frac{1}{2}M V^2 \right) \approx \frac{1}{4} M V^2
+\]
+The average optical power emitted during the time $\Delta t$ is:
+\[
+    P_\text{meteor} = \frac{E_\text{light}}{\Delta t} = \frac{M V^2}{4 \Delta t}
+\]
+
+\medskip
+\textbf{Flux Comparison:}
+We observe the flux (power per unit area). Assuming the light is emitted isotropically, the flux we observe from the meteor at distance $L$ is matched to the flux of the reference headlight at distance $D_\text{ref}$:
+\[
+    F_\text{obs} = \frac{P_\text{meteor}}{4\pi L^2} \approx \frac{P_\text{ref}}{4\pi D_\text{ref}^2} = F_\text{ref}
+\]
+Substituting $P_\text{meteor}$:
+\[
+    \frac{M V^2}{4 \Delta t \cdot 4\pi L^2} \approx \frac{P_\text{ref}}{4\pi D_\text{ref}^2} \implies \frac{M V^2}{4 \Delta t \cdot L^2} \approx \frac{P_\text{ref}}{D_\text{ref}^2}
+\]
+Solving for $M$:
+\[
+    M \approx \frac{4 \Delta t \cdot P_\text{ref}}{V^2} \left(\frac{L}{D_\text{ref}}\right)^2
+\]
+
+\medskip
+\textbf{Calculation:}
+Plugging in our rough numbers ($\Delta t = \SI{0.5}{s}$, $P_\text{ref} = \SI{10}{W}$, $V = \SI{3e4}{m/s}$, $L = \SI{100}{km}$, $D_\text{ref} = \SI{3}{km}$):
+\[
+    \left(\frac{L}{D_\text{ref}}\right)^2 \approx \left(\frac{100}{3}\right)^2 \approx 1000
+\]
+\[
+    M \approx \frac{4 \times 0.5 \times 10}{(3 \times 10^4)^2} \times 1000 = \frac{20}{9 \times 10^8} \times 1000 \approx 2 \times 10^{-5}\,\text{kg} = \SI{20}{mg}.
+\]
+\begin{remark}
+The result is startling: the brilliant streak across the night sky is caused not by a massive rock, but by a tiny grain of dust weighing barely a few milligrams. The enormous optical power derives entirely from the extremely high velocity ($V^2 \propto 10^9$)!
+\end{remark}}
+
+\subsection{Principle 4: Scaling Arguments}
+
+When making approximations, a single direct calculation often propagates huge uncertainties (e.g., getting a duration wrong by a factor of 2 leads to a significant error). \textbf{Scaling} allows us to bypass this by computing the \emph{ratio} of related quantities. This relies on referencing an unknown system against a known one, gracefully canceling out parameters we do not know.
+
+\ex{Estimating Gravity on the Moon}{\textbf{Question:} Suppose we want to estimate the acceleration of gravity on the Moon, $g_\text{moon}$, relative to Earth's $g_\oplus \approx \SI{10}{m/s^2}$, without looking up its mass or radius.
+
+From Newton's Law of Universal Gravitation, $g = \frac{GM}{R^2}$. Taking the ratio against Earth:
+\[
+    \frac{g_\text{moon}}{g_\oplus} = \frac{G M_\text{moon} / R_\text{moon}^2}{G M_\oplus / R_\oplus^2} = \frac{M_\text{moon}}{M_\oplus} \left(\frac{R_\oplus}{R_\text{moon}}\right)^2
+\]
+Since mass $M \propto \rho R^3$, we can rewrite this ratio in terms of density ($\rho$):
+\[
+    \frac{g_\text{moon}}{g_\oplus} = \frac{\rho_\text{moon}}{\rho_\oplus} \left(\frac{R_\text{moon}}{R_\oplus}\right)^3 \left(\frac{R_\oplus}{R_\text{moon}}\right)^2 = \frac{\rho_\text{moon}}{\rho_\oplus} \frac{R_\text{moon}}{R_\oplus}
+\]
+Notice that the gravitational constant $G$ has completely canceled out. We now just need the density ratio and the radius ratio.
+
+\medskip
+\textbf{Estimating the Radius Ratio:}
+We can measure the angular size of the Moon, $\theta_\text{moon}$. A finger at arm's length subtends roughly $\SI{1.5}{\degree}$, or $\approx 1/40$ radians. The Moon is about one-third of a finger width, yielding:
+\[
+    \theta_\text{moon} \approx \frac{1}{120}\ \text{rad}.
+\]
+The radius of the Moon is $R_\text{moon} \approx \frac{1}{2} \theta_\text{moon} D_\text{moon}$, where $D_\text{moon}$ is the distance to the Moon. How do we find $D_\text{moon}$ in terms of Earth's radius $R_\oplus$? We use Kepler's Third Law ($T \propto R^{3/2}$) and compare the Moon to a Low Earth Orbit (LEO) satellite:
+\[
+    \frac{T_\text{moon}}{T_\text{LEO}} = \left(\frac{D_\text{moon}}{R_\text{LEO}}\right)^{3/2}
+\]
+An LEO satellite orbits just above Earth's surface ($R_\text{LEO} \approx R_\oplus$) with a period $T_\text{LEO} \approx \SI{90}{min}$. The Moon's orbital period is $\approx 30$ days.
+\[
+    \left(\frac{D_\text{moon}}{R_\oplus}\right)^{3/2} \approx \frac{30 \times 24 \times 60\,\text{min}}{90\,\text{min}} \approx 480
+\]
+\[
+    \frac{D_\text{moon}}{R_\oplus} \approx 480^{2/3} \approx 60.
+\]
+Meaning the distance to the Moon is roughly 60 Earth radii.
+Now we return to the radius of the Moon:
+\[
+    R_\text{moon} = \frac{1}{2} \theta_\text{moon} D_\text{moon} = \frac{1}{2} \left(\frac{1}{120}\right) \left(60 R_\oplus\right) = \frac{1}{4} R_\oplus.
+\]
+So the radius of the Moon is about $1/4$ that of Earth (the true value is $\approx 1/3.7$).
+
+\medskip
+\textbf{Determining the Density Ratio:}
+If we tentatively assume the Moon has the same density as Earth ($\rho_\text{moon} \approx \rho_\oplus$), our formula gives:
+\[
+    \frac{g_\text{moon}}{g_\oplus} \approx 1 \times \frac{1}{4} = 0.25
+\]
+However, we know experimentally that $g_\text{moon} \approx \frac{1}{6} g_\oplus \approx 0.16$.
+The discrepancy signals a physical reality: \textbf{The Moon is less dense than Earth}. This happens because Earth has a dense iron core, whereas the Moon is primarily composed of lighter mantle-like material (supporting the giant-impact hypothesis for the Moon's formation). By scaling, we deduced an internal geophysical property purely from simple kinematic observations!}
+
+\ex{Tidal Forces: Sun vs Moon}{\textbf{Question:} Which exerts a stronger tidal force on Earth's oceans: the Sun or the Moon?
+
+The tidal force (or more precisely, the differential gravitational acceleration) on the surface of Earth due to a body of mass $M$ at distance $D$ is given by the difference in gravity across Earth's radius $R_\oplus$:
+\[
+    a_\text{tidal} \approx \frac{GM}{(D - R_\oplus)^2} - \frac{GM}{D^2} \approx \frac{2GM R_\oplus}{D^3}.
+\]
+Let us take the ratio of the Sun's tidal force to the Moon's tidal force:
+\[
+    \frac{a_\text{tidal, Sun}}{a_\text{tidal, Moon}} = \frac{2G M_\text{sun} R_\oplus / D_\text{sun}^3}{2G M_\text{moon} R_\oplus / D_\text{moon}^3} = \frac{M_\text{sun}}{M_\text{moon}} \left(\frac{D_\text{moon}}{D_\text{sun}}\right)^3.
+\]
+Here we use an elegant cosmic coincidence: \textbf{the angular sizes of the Sun and the Moon in the sky are nearly identical} (which is why total solar eclipses exist).
+\[
+    \theta_\text{sun} \approx \theta_\text{moon} \implies \frac{R_\text{sun}}{D_\text{sun}} \approx \frac{R_\text{moon}}{D_\text{moon}} \implies \left(\frac{D_\text{moon}}{D_\text{sun}}\right)^3 \approx \left(\frac{R_\text{moon}}{R_\text{sun}}\right)^3
+\]
+Substituting this back into the tidal ratio equation:
+\[
+    \frac{a_\text{tidal, Sun}}{a_\text{tidal, Moon}} \approx \frac{M_\text{sun}}{M_\text{moon}} \left(\frac{R_\text{moon}}{R_\text{sun}}\right)^3 = \frac{M_\text{sun} / R_\text{sun}^3}{M_\text{moon} / R_\text{moon}^3} = \frac{\rho_\text{sun}}{\rho_\text{moon}}.
+\]
+This highlights the immense power of scaling arguments: \textbf{The ratio of their tidal forces depends solely on the ratio of their average densities!}
+
+We know empirically from observing spring and neap tides that the solar tide is roughly half the amplitude of the lunar tide ($a_\text{tidal, Sun} \approx 0.5 \cdot a_\text{tidal, Moon}$).
+Consequently, we can conclude that the Sun's average density is about half of the Moon's density:
+\[
+    \rho_\text{sun} \approx \frac{1}{2}\rho_\text{moon}.
+\]
+Since the Moon's density is mostly rock ($\rho_\text{moon} \approx \SI{3}{g/cm^3}$), the average density of the Sun must be $\approx \SI{1.5}{g/cm^3}$ (just slightly denser than liquid water).}
+
+\subsection{Preview: Lunar Retreat and Earth's Spin}
+
+Looking ahead, we can analyze the macroscopic dynamics of the Earth-Moon system. Because Earth rotates faster than the Moon orbits (1 day vs 30 days), the tidal bulges raised by the Moon are dragged slightly ahead of the Earth-Moon axis. The gravitational pull of the Moon on this misaligned bulge creates a torque that slows Earth's rotation while simultaneously transferring angular momentum to the Moon, causing its orbit to expand.
+
+Current laser ranging measurements (using retroreflectors left by Apollo missions) indicate the Moon is receding at $v \approx \SI{3.8}{cm/yr}$. If we crudely extrapolate this linearly:
+\[
+    \text{Time to reach current distance } D_\text{moon} \approx \frac{\SI{380000}{km}}{\SI{3.8}{cm/yr}} = \frac{3.8 \times 10^{10}\,\text{cm}}{\SI{3.8}{cm/yr}} \approx 10^{10}\ \text{years}.
+\]
+This naive linear estimate yields 10 billion years. However, Earth is only about 4.5 billion years old! The resolution to this paradox is that the tidal interaction is highly non-linear with distance; when the Moon was closer, the tidal forces (which scale as $1/D^3$) were vastly stronger, causing a much faster recession rate. We will formulate the differential equation for this retreat in the next lecture.

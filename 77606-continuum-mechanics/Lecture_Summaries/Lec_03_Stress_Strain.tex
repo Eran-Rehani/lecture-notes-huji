@@ -1,0 +1,178 @@
+%% Lecture 03 — Stress, Strain, and Tensor Decomposition
+\section{Lecture 03 — Stress, Strain, and Tensor Decomposition}
+\label{sec:lec03:stress_strain}
+
+\subsection*{Overview}
+This lecture transitions from basic one-dimensional mechanics to the generalized three-dimensional formulation of continuum mechanics. We review uniaxial stress, introduce the concepts of shear stress and shear strain, and formulate the Cauchy stress tensor ($\mathbf{\sigma}$) and the infinitesimal strain tensor ($\mathbf{\epsilon}$). We conclude with the mathematical decomposition of these symmetric tensors into their hydrostatic (volumetric) and deviatoric (shape-changing) components. 
+
+\subsection*{Derivations}
+
+\subsubsection*{1. Introduction to Shear Stress and Shear Strain}
+For a uniaxial rod, the normal stress is $\sigma = F/A$ and the stretch is characterized by Young's modulus $E$, where $\sigma = E \epsilon$. In contrast, \textbf{Shear Stress} ($\tau$) arises when the applied force is parallel to the cross-sectional area. 
+
+Consider a block of height $H$ with its base fixed. A horizontal force $F$ applied parallel to its top face (area $A$) generates an average shear stress:
+\begin{align}
+    \tau &= \frac{F}{A}
+\end{align}
+Under this force, the top face displaces by a horizontal distance $\Delta x$. The block tilts by a small \textbf{engineering shear angle} $\gamma$:
+\begin{align}
+    \gamma &\approx \tan \gamma = \frac{\Delta x}{H}
+\end{align}
+For small deformations, the linear elastic relationship is governed by the shear modulus $G$:
+\begin{align}
+    \tau &= G \gamma
+\end{align}
+\textit{Physical Context:} The shear modulus quantifies the material's structural rigidity and resistance to shape-distortion under parallel sliding forces.
+
+%%────────────────────────────────────────────────────────────────────
+%% Shear block diagram — fixed base, tilted block, shear angle γ
+%%────────────────────────────────────────────────────────────────────
+\begin{center}
+\begin{tikzpicture}[scale=1.7, >=Stealth]
+  \def\W{1.8}   % width
+  \def\H{1.1}   % height
+  \def\dx{0.35} % shear displacement (exaggerated for visibility)
+  % Fixed base (ground hatching)
+  \fill[gray!35] (0,-0.10) rectangle (\W, 0);
+  \foreach \i in {1,...,8}{
+    \draw[gray!65, thin] ({0.18*\i},-0.10) -- ({0.18*\i - 0.10}, 0);
+  }
+  \draw[very thick] (0,0) -- (\W, 0);
+  % Undeformed outline (dashed reference)
+  \draw[dashed, gray!55, thick] (0,0) rectangle (\W,\H);
+  % Deformed block
+  \fill[blue!10] (0,0) -- (\W,0) -- (\W+\dx,\H) -- (\dx,\H) -- cycle;
+  \draw[very thick, myblue] (0,0) -- (\W,0) -- (\W+\dx,\H) -- (\dx,\H) -- cycle;
+  % Applied force F on top face
+  \draw[force] (\W/2+\dx, \H) --++ (0.70, 0) node[right] {$F$};
+  % Reaction at base
+  \draw[force] (\W/2, 0) --++ (-0.70, 0) node[left] {$F$};
+  % Height label H
+  \draw[width] (-0.30, 0) -- (-0.30, \H) node[midway, left=1] {$H$};
+  % Horizontal displacement Δx
+  \draw[width] (0, \H+0.24) -- (\dx, \H+0.24) node[midway, above] {$\Delta x$};
+  % Vertical reference (original left side)
+  \draw[dashed, gray!60] (0,0) -- (0, \H);
+  % Shear angle arc and label
+  \pgfmathsetmacro{\gangledeg}{atan2(\H, \dx)}
+  \draw[myred, thick] (0,0) ++(90:0.32) arc(90:\gangledeg:0.32);
+  \node[myred, scale=0.85] at (0.11, 0.42) {$\gamma$};
+  % Area label
+  \node[blue!70!black, scale=0.9] at (\W/2+\dx/2, \H/2) {$A$};
+  % Key relations outside
+  \node[right=4, align=left, scale=0.9] at (\W+\dx+0.72, \H*0.6)
+    {$\tau = \dfrac{F}{A}$\\[4pt] $\gamma \approx \dfrac{\Delta x}{H}$\\[4pt] $\tau = G\gamma$};
+\end{tikzpicture}
+\end{center}
+
+\subsubsection*{2. The Cauchy Stress Tensor ($\mathbf{\sigma}$)}
+In a 3D continuum, stress is not a single number or vector, but a rank-2 tensor $\mathbf{\sigma}$ (components $\sigma_{ij}$) that maps any arbitrary surface normal $\mathbf{n}$ to the traction vector $\mathbf{T}$ (force per unit area) acting upon that surface.
+
+\textbf{Cauchy's Stress Principle:}
+Consider a thin boundary layer at the surface of the body. To maintain equilibrium at the surface, the internal stresses acting on the area $\Delta S$ with outward normal $\mathbf{n}$ must balance the externally applied traction $\mathbf{T}^{\text{ext}}$ applied outside:
+\begin{align}
+    \mathbf{T}^{\text{ext}} \Delta S + \mathbf{\sigma} (-\mathbf{n}) \Delta S &= \mathbf{0} \nonumber \\
+    \mathbf{T}^{\text{ext}} &= \mathbf{\sigma} \mathbf{n} 
+\end{align}
+In indicial notation, this is written as $T_i = \sigma_{ji} n_j$. However, moment equilibrium on a differential element requires that the Cauchy stress tensor is symmetric:
+\begin{align}
+    \sigma_{ij} &= \sigma_{ji}
+\end{align}
+Thus, we commonly write $T_i = \sigma_{ij} n_j$. This symmetry reduces the tensor from 9 to 6 independent components.
+
+\textbf{Static Equilibrium:}
+Let us write the force per unit volume resulting from a varying stress field. Summing surface forces on a material volume via the divergence theorem and adding the body forces yields:
+\begin{align}
+    \oint_{\partial V} \mathbf{\sigma} \mathbf{n} \, dS + \int_V \mathbf{f} \, dV &= \mathbf{0} \nonumber \\
+    \int_V \left( \nabla \cdot \mathbf{\sigma} + \mathbf{f} \right) dV &= \mathbf{0}
+\end{align}
+Since the volume $V$ is arbitrary:
+\begin{align}
+    \Aboxed{ \nabla \cdot \mathbf{\sigma} + \mathbf{f} &= \mathbf{0} \quad \text{or} \quad \partial_j \sigma_{ji} + f_i = 0 }
+\end{align}
+where $\mathbf{f}$ is the external body force per unit volume (e.g., gravity).
+
+\subsubsection*{3. The Infinitesimal Strain Tensor ($\mathbf{\epsilon}$)}
+Let a material point initially reside at the Lagrangian (material) coordinate $\mathbf{X}$. After deformation, its Eulerian (spatial) coordinate is $\mathbf{x}$. The displacement field is:
+\begin{align}
+    \mathbf{u}(\mathbf{X}) &= \mathbf{x} - \mathbf{X}
+\end{align}
+To measure strain objectively, we evaluate the change in the square of the distance between two infinitesimally close material points, originally separated by $d\mathbf{X}$:
+\begin{align}
+    d\mathbf{x} &= d\mathbf{X} + d\mathbf{u} = d\mathbf{X} + (\nabla_{\mathbf{X}} \mathbf{u}) d\mathbf{X} \nonumber \\
+    dx_i &= dX_i + \frac{\partial u_i}{\partial X_j} dX_j
+\end{align}
+The new squared distance is calculated by taking the dot product $dx_i dx_i$:
+\begin{align}
+    dx_i dx_i &= \left(dX_i + \partial_j u_i dX_j\right) \left(dX_i + \partial_k u_i dX_k\right) \nonumber \\
+    &= dX_i dX_i + \partial_j u_i dX_j dX_i + \partial_k u_i dX_i dX_k + \partial_j u_i \partial_k u_i dX_j dX_k \nonumber \\
+    &= dX_i dX_i + \left( \partial_j u_i + \partial_i u_j + \partial_k u_i \partial_k u_j \right) dX_i dX_j
+\end{align}
+We assume a \textbf{small deformation limit} ($|\nabla \mathbf{u}| \ll 1$) and neglect the nonlinear quadratic term $\partial_k u_i \partial_k u_j$. The change in squared length is then characterized by the infinitesimal strain tensor $\mathbf{\epsilon}$:
+\begin{align}
+    \Aboxed{ \epsilon_{ij} &= \frac{1}{2} \left( \frac{\partial u_i}{\partial X_j} + \frac{\partial u_j}{\partial X_i} \right) }
+\end{align}
+\textit{Physical Context:} Similar to the stress tensor, $\mathbf{\epsilon}$ is a symmetric rank-2 tensor. The diagonal elements ($\epsilon_{11}$, etc.) are the relative normal elongations. The off-diagonal elements represent \emph{half} of the engineering shear angle: $\epsilon_{ij} = \frac{1}{2} \gamma_{ij}$ ($i \neq j$). 
+
+\subsubsection*{4. Isotropic / Deviatoric Tensor Decomposition}
+Every rank-2 symmetric tensor can be decomposed into an isotropic (volumetric) component and a deviatoric (shape-distorting) component. We demonstrate this for the strain tensor $\mathbf{\epsilon}$, but a parallel breakdown applies to the stress tensor $\mathbf{\sigma}$.
+\begin{align}
+    \epsilon_{ij} &= \underbrace{ \frac{1}{3} \epsilon_{kk} \delta_{ij} }_{\text{Isotropic (Hydrostatic)}} + \underbrace{ \left( \epsilon_{ij} - \frac{1}{3} \epsilon_{kk} \delta_{ij} \right) }_{\text{Deviatoric}}
+\end{align}
+\textit{Physical Context:}
+\begin{itemize}
+    \item \textbf{Isotropic Part:} Proportional to the trace $\epsilon_{kk} = \nabla \cdot \mathbf{u}$, it describes a homogeneous volumetric expansion or compression across all directions without altering the geometric proportions of the element.
+    \item \textbf{Deviatoric Part:} A traceless tensor containing all shear and differential stretching effects, capturing pure, isochoric (constant-volume) geometric distortion.
+\end{itemize}
+
+%%────────────────────────────────────────────────────────────────────
+%% Isotropic vs deviatoric: circle → uniform expansion vs. ellipse
+%%────────────────────────────────────────────────────────────────────
+\begin{center}
+\begin{tikzpicture}[scale=1.35, >=Stealth]
+  \def\r{0.65}   % original radius
+  \def\ri{0.90}  % expanded radius (isotropic)
+  % ── Left: Isotropic (uniform expansion) ──────────────────────────
+  \begin{scope}[xshift=-2.4cm]
+    \draw[dashed, gray!55, thick] (0,0) circle(\r);
+    \draw[thick, myblue] (0,0) circle(\ri);
+    \foreach \a in {0, 90, 180, 270}{
+      \draw[force, myblue, thin] ({\ri*cos(\a)},{\ri*sin(\a)})
+        --++ ({0.38*cos(\a)},{0.38*sin(\a)});
+    }
+    \node[below=22, myblue!80!black, scale=0.85, align=center] at (0,-\ri)
+      {Isotropic part\\$\tfrac{1}{3}\varepsilon_{kk}\,\delta_{ij}$\\
+       \footnotesize volume change, shape preserved};
+  \end{scope}
+  % ── Right: Deviatoric (shape change, ΔV = 0) ─────────────────────
+  \begin{scope}[xshift=2.4cm]
+    \draw[dashed, gray!55, thick] (0,0) circle(\r);
+    \draw[thick, myorange!85!black] (0,0) ellipse(0.94 and 0.45);
+    % Tension arrows (horizontal)
+    \draw[force, myorange!85!black, thin] (0.94,0) --++ (0.38,0);
+    \draw[force, myorange!85!black, thin] (-0.94,0) --++ (-0.38,0);
+    % Compression arrows (vertical, pointing inward)
+    \draw[force, myorange!85!black, thin] (0, 0.83) -- (0, 0.45);
+    \draw[force, myorange!85!black, thin] (0,-0.83) -- (0,-0.45);
+    \node[below=22, myorange!80!black, scale=0.85, align=center] at (0,-0.94)
+      {Deviatoric part\\$\varepsilon_{ij}-\tfrac{1}{3}\varepsilon_{kk}\,\delta_{ij}$\\
+       \footnotesize shape change, $\Delta V = 0$};
+  \end{scope}
+  % ── Dashed original in each panel, legend ────────────────────────
+  \node[gray!65, scale=0.75] at (-2.4, \r+0.12) {\textit{original}};
+  \node[gray!65, scale=0.75] at ( 2.4, \r+0.12) {\textit{original}};
+\end{tikzpicture}
+\end{center}
+
+\subsection*{Connections}
+\begin{itemize}
+    \item \textbf{Constitutive Laws / Mechanics:} The connection between the stress tensor $\mathbf{\sigma}$ and the strain tensor $\mathbf{\epsilon}$ is established via a constitutive relationship (e.g., generalized Hooke's Law for linear elastic solids), allowing us to close the system of variables conceptually.
+    \item \textbf{Linear Algebra:} Being real symmetric matrices, both stress and strain tensors are guaranteed to have real eigenvalues and orthogonal eigenvectors. Their principal eigen-axes define the frames where the state is purely diagonal (free of shear components).
+\end{itemize}
+
+\subsection*{Exam / HW Hints}
+\begin{itemize}
+    \item \textbf{Factor of 2 in Shear Strain:} To avoid errors, rigorously distinguish the engineering shear strain $\gamma$ and the physical tensor shear strain $\epsilon_{ij} = \frac{1}{2}\gamma$. Check whether given formulas expect $\gamma$ or $\epsilon_{ij}$.
+    \item \textbf{Symmetries in Static Equilibrium:} Ensure symmetry in the continuum stress tensor ($\sigma_{ij} = \sigma_{ji}$). Remember this to quickly relate tangential surface stress conditions (e.g., $\sigma_{xy} = \sigma_{yx}$).
+    \item \textbf{Pure Shear Conditions:} In a coordinate system perfectly oriented to the shear force, the block experiences only deviatoric stress. Under these axes, diagonal terms are zero ($\sigma_{11} = \sigma_{22} = \sigma_{33} = 0$).
+\end{itemize}

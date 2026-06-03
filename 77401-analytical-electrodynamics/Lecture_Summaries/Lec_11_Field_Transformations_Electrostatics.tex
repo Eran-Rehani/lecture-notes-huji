@@ -1,0 +1,535 @@
+%% Lecture 11 -- Field transformations and the electrostatic limit
+\section{Lecture 11 -- Field Transformations and Electrostatics}\label{sec:lec11}
+
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 12/05/2026 & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+
+\subsection*{Overview}
+
+This lecture closes one conceptual loop from Lecture~10 and opens the next topic.
+The central message is that the electric and magnetic fields are not two independent
+relativistic objects.  They are different components of one antisymmetric tensor
+$F_{\mu\nu}$, so a Lorentz boost generally mixes them.
+
+The lecture has four parts:
+\begin{itemize}
+  \item a clarification of the invariant $E^2-B^2$: it is compared at the same
+        spacetime event, not at unrelated spatial points;
+  \item a proof that the four-dimensional Levi-Civita symbol $\epsilon_{\mu\nu\rho\sigma}$
+        behaves as a tensor under proper Lorentz transformations, and as a pseudotensor
+        if reflections are included;
+  \item a derivation of the Lorentz transformation laws for $\bE$ and $\bB$;
+  \item the beginning of electrostatics, defined as the time-reversal symmetric sector
+        of Maxwell theory.
+\end{itemize}
+
+The physical bridge is simple: after Maxwell's equations have been written in covariant
+form, the next useful question is how familiar non-covariant language, such as
+``electric field'' and ``magnetic field'', is seen by different inertial observers.
+
+%------------------------------------------------------------
+\subsection{What Does an Electromagnetic Invariant Compare?}\label{subsec:lec11-invariant-events}
+
+\subsubsection*{Physical Motivation}
+An invariant is not a statement that a field has the same value everywhere in space.
+Fields can vary from point to point.  The invariant statement compares what two observers
+assign to the \emph{same event} in spacetime.  This distinction matters because a Lorentz
+transformation changes the coordinates of the event, not the event itself.
+
+Recall from Lecture~10 that the scalar
+\begin{equation}\label{eq:lec11:E2minusB2}
+  \boxed{
+  \frac{1}{2}F_{\mu\nu}F^{\mu\nu}=B^2-E^2
+  }
+\end{equation}
+is Lorentz invariant, equivalently $E^2-B^2$ is invariant up to the conventional
+overall sign used in writing the contraction.
+\textit{Physical significance:} If two observers describe the same spacetime event
+$x^\mu=(ct,\br)$ and $x'^\mu=(ct',\br')$, they may disagree about the separate
+values of $\bE$ and $\bB$, but they agree on the scalar combination $E^2-B^2$ at
+that event.
+
+\begin{center}
+\begin{tikzpicture}[scale=1.0, >=Stealth]
+  \draw[->] (-0.2,0) -- (5.0,0) node[right] {$x$};
+  \draw[->] (0,-0.2) -- (0,3.1) node[above] {$ct$};
+  \draw[->, blue!70!black, thick] (0.4,0.15) -- (3.8,2.7) node[right] {$ct'$};
+  \draw[->, blue!70!black, thick] (0.1,0.45) -- (4.5,1.4) node[right] {$x'$};
+  \fill[red!70!black] (2.6,1.55) circle (2.2pt);
+  \node[red!70!black, right] at (2.6,1.55) {same event};
+  \draw[dashed] (2.6,0) node[below] {$x$} -- (2.6,1.55) -- (0,1.55) node[left] {$ct$};
+  \node[align=center] at (2.8,-0.65) {Different coordinates,\\same physical point in spacetime.};
+\end{tikzpicture}
+\end{center}
+
+%------------------------------------------------------------
+\subsection{The Levi-Civita Symbol as a Tensor and Pseudotensor}\label{subsec:lec11-epsilon}
+
+\subsubsection*{Physical Motivation}
+In three dimensions, cross products and oriented volumes rely on the Levi-Civita symbol.
+In four-dimensional electrodynamics the analogous object $\epsilon_{\mu\nu\rho\sigma}$
+is needed to build the second electromagnetic invariant and the dual field tensor.
+Before using it in relativistic equations, we must know how it transforms.
+
+Define the completely antisymmetric object by
+\begin{equation}\label{eq:lec11-epsilon-def}
+  \boxed{
+  \epsilon_{0123}=+1,\qquad
+  \epsilon_{\mu\nu\rho\sigma}=0
+  \quad\text{if any two indices are equal,}
+  }
+\end{equation}
+with all other nonzero components fixed by antisymmetry.
+\textit{Physical significance:} $\epsilon_{\mu\nu\rho\sigma}$ is the algebraic
+device that remembers orientation in spacetime, just as the determinant remembers
+the oriented volume scaling of a matrix.
+
+To test whether it is a tensor, apply the tensor transformation rule:
+\begin{equation}\label{eq:lec11-epsilon-transform-question}
+  X_{\mu_1\mu_2\mu_3\mu_4}
+  =
+  \Lambda^{\nu_1}{}_{\mu_1}
+  \Lambda^{\nu_2}{}_{\mu_2}
+  \Lambda^{\nu_3}{}_{\mu_3}
+  \Lambda^{\nu_4}{}_{\mu_4}
+  \epsilon_{\nu_1\nu_2\nu_3\nu_4}.
+\end{equation}
+The object $X_{\mu_1\mu_2\mu_3\mu_4}$ is completely antisymmetric.  Indeed, if
+two free indices are interchanged, the corresponding two dummy indices in
+$\epsilon_{\nu_1\nu_2\nu_3\nu_4}$ can be interchanged, and the antisymmetry of
+$\epsilon$ gives a minus sign.  In four dimensions, every completely antisymmetric
+rank-four object is proportional to $\epsilon_{\mu_1\mu_2\mu_3\mu_4}$, so
+\begin{equation}\label{eq:lec11-epsilon-alpha}
+  X_{\mu_1\mu_2\mu_3\mu_4}
+  =
+  \alpha\,
+  \epsilon_{\mu_1\mu_2\mu_3\mu_4}.
+\end{equation}
+To find $\alpha$, choose $(\mu_1,\mu_2,\mu_3,\mu_4)=(0,1,2,3)$:
+\begin{align}
+  \alpha
+  &=
+  \Lambda^{\nu_1}{}_{0}
+  \Lambda^{\nu_2}{}_{1}
+  \Lambda^{\nu_3}{}_{2}
+  \Lambda^{\nu_4}{}_{3}
+  \epsilon_{\nu_1\nu_2\nu_3\nu_4}
+  \notag\\
+  &=
+  \det \Lambda .
+  \label{eq:lec11-alpha-det}
+\end{align}
+Therefore
+\begin{equation}\label{eq:lec11-epsilon-transform}
+  \boxed{
+  \Lambda^{\nu_1}{}_{\mu_1}
+  \Lambda^{\nu_2}{}_{\mu_2}
+  \Lambda^{\nu_3}{}_{\mu_3}
+  \Lambda^{\nu_4}{}_{\mu_4}
+  \epsilon_{\nu_1\nu_2\nu_3\nu_4}
+  =
+  (\det\Lambda)\,
+  \epsilon_{\mu_1\mu_2\mu_3\mu_4}.
+  }
+\end{equation}
+\textit{Physical significance:} For proper Lorentz transformations, $\det\Lambda=+1$,
+so $\epsilon_{\mu\nu\rho\sigma}$ behaves as a tensor.  Under a reflection, such as
+parity, $\det\Lambda=-1$, so it gains an extra sign.  That is why it is often called
+a pseudotensor when improper transformations are allowed.
+
+This also explains why angular momentum in relativistic notation is naturally an
+antisymmetric rank-two tensor rather than an ordinary four-vector: in more than
+three dimensions, a rotation is best associated with a plane, not only with an axis.
+
+%------------------------------------------------------------
+\subsection{Lorentz Boost Setup}\label{subsec:lec11-boost-setup}
+
+\subsubsection*{Physical Motivation}
+The cleanest way to see the mixing of $\bE$ and $\bB$ is to compare two inertial
+frames related by a boost along the $x$-axis.  This loses no conceptual content:
+any boost can be decomposed into a rotation, a boost along one axis, and another
+rotation.
+
+Let $K'$ move with speed $v$ along the positive $x$ direction as seen from $K$.
+Write
+\begin{equation}\label{eq:lec11-beta-gamma}
+  \boxed{
+  \beta=\frac{v}{c},\qquad
+  \gamma=\frac{1}{\sqrt{1-\beta^2}} .
+  }
+\end{equation}
+\textit{Physical significance:} $\beta$ measures the boost speed in units of the
+maximum signal speed $c$, while $\gamma$ is the relativistic stretching factor that
+controls time dilation, length contraction, and field mixing.
+
+The coordinate transformation from primed coordinates to unprimed coordinates is
+\begin{align}
+  x &= \gamma(x'+v t'), &
+  ct &= \gamma(ct'+\beta x'), &
+  y&=y', &
+  z&=z'.
+  \label{eq:lec11-lorentz-coordinates}
+\end{align}
+Equivalently, for the four-potential
+\begin{equation}\label{eq:lec11-four-potential}
+  A^\mu=(\phi,\Avec),
+\end{equation}
+the same boost gives
+\begin{align}
+  \phi &= \gamma(\phi' + \beta A'_x),&
+  A_x &= \gamma(A'_x+\beta\phi'),&
+  A_y &= A'_y,&
+  A_z &= A'_z .
+  \label{eq:lec11-potential-transform}
+\end{align}
+
+The fields are defined by
+\begin{equation}\label{eq:lec11-fields-potentials}
+  \boxed{
+  \bE = -\nabla\phi-\frac{1}{c}\pdv{\Avec}{t},
+  \qquad
+  \bB = \nabla\times\Avec .
+  }
+\end{equation}
+\textit{Physical significance:} The potentials transform simply as a four-vector,
+but the observed fields involve spacetime derivatives of the potentials.  This is
+why the transformation of $\bE$ and $\bB$ contains both the boost and the curl-like
+structure of electromagnetism.
+
+%------------------------------------------------------------
+\subsection{Transforming the Electric Field}\label{subsec:lec11-electric-transform}
+
+\subsubsection*{Physical Motivation}
+We first transform $\bE$ directly from the potentials.  This derivation is algebraic,
+but its physical content is important: a purely magnetic part of the field tensor
+in one frame can contribute to the electric field measured in another frame.
+
+The $y$ component in $K$ is
+\begin{equation}\label{eq:lec11-Ey-start}
+  E_y
+  =
+  -\pdv{\phi}{y}
+  -\frac{1}{c}\pdv{A_y}{t}.
+\end{equation}
+Since $y=y'$, the first derivative is
+\begin{equation}\label{eq:lec11-y-derivative}
+  \pdv{}{y}=\pdv{}{y'}.
+\end{equation}
+For the time derivative, the inverse boost gives
+\begin{equation}\label{eq:lec11-inverse-time-chain}
+  \pdv{}{t}
+  =
+  \pdv{t'}{t}\pdv{}{t'}
+  +
+  \pdv{x'}{t}\pdv{}{x'}
+  =
+  \gamma\pdv{}{t'}
+  -\gamma v\pdv{}{x'} .
+\end{equation}
+Substituting \eqref{eq:lec11-potential-transform} into \eqref{eq:lec11-Ey-start},
+\begin{align}
+  E_y
+  &=
+  -\pdv{}{y'}\!\left[\gamma(\phi'+\beta A'_x)\right]
+  -\frac{1}{c}
+  \left(\gamma\pdv{}{t'}-\gamma v\pdv{}{x'}\right)A'_y
+  \notag\\
+  &=
+  \gamma\left(-\pdv{\phi'}{y'}-\frac{1}{c}\pdv{A'_y}{t'}\right)
+  +\gamma\beta\left(\pdv{A'_y}{x'}-\pdv{A'_x}{y'}\right)
+  \notag\\
+  &=
+  \gamma\left(E'_y+\beta B'_z\right).
+  \label{eq:lec11-Ey-result}
+\end{align}
+In the last line we used
+\begin{equation}\label{eq:lec11-Bz-def}
+  B'_z=(\nabla'\times\Avec')_z
+  =
+  \pdv{A'_y}{x'}-\pdv{A'_x}{y'} .
+\end{equation}
+Similarly,
+\begin{align}
+  E_x &= E'_x, \label{eq:lec11-Ex-result}\\
+  E_z &= \gamma(E'_z-\beta B'_y). \label{eq:lec11-Ez-result}
+\end{align}
+Thus, for a boost along the $x$ direction,
+\begin{equation}\label{eq:lec11-E-components}
+  \boxed{
+  E_x=E'_x,\qquad
+  E_y=\gamma(E'_y+\beta B'_z),\qquad
+  E_z=\gamma(E'_z-\beta B'_y).
+  }
+\end{equation}
+\textit{Physical significance:} The component parallel to the boost is unchanged,
+while the perpendicular electric field mixes with the perpendicular magnetic field.
+
+It is useful to write this in vector form.  With the sign convention of
+\eqref{eq:lec11-lorentz-coordinates}, let $\boldsymbol{\beta}_{K|K'}$ denote the
+velocity of $K$ as seen from $K'$, divided by $c$.  Then
+\begin{equation}\label{eq:lec11-E-vector}
+  \boxed{
+  \bE_{\parallel}=\bE'_{\parallel},\qquad
+  \bE_{\perp}
+  =
+  \gamma\left(\bE'_{\perp}
+  +\boldsymbol{\beta}_{K|K'}\times\bB'\right).
+  }
+\end{equation}
+\textit{Physical significance:} The cross product says that only fields transverse
+to the relative motion are mixed; a field already pointing along the boost direction
+has no transverse area element with which to mix.
+
+%------------------------------------------------------------
+\subsection{Transforming the Magnetic Field}\label{subsec:lec11-magnetic-transform}
+
+\subsubsection*{Physical Motivation}
+The magnetic field can be transformed by repeating the potential calculation, but
+the tensor method shows the deeper reason immediately.  The magnetic components
+are spatial components of $F^{\mu\nu}$, and a boost mixes spatial and temporal
+indices.  Since temporal-spatial components are electric-field components, $\bB$
+must mix with $\bE$.
+
+For the electromagnetic tensor,
+\begin{equation}\label{eq:lec11-F-transform}
+  F^{\mu\nu}
+  =
+  \Lambda^\mu{}_{\alpha}\Lambda^\nu{}_{\beta}F'^{\alpha\beta}.
+\end{equation}
+Using the convention from Lecture~10,
+\begin{equation}\label{eq:lec11-F-components}
+  F^{0i}=-E_i,\qquad
+  F^{i0}=E_i,\qquad
+  F^{ij}=-\epsilon^{ijk}B_k .
+\end{equation}
+Take the component $F^{12}=-B_z$.  Since the boost only mixes the $0$ and $1$
+indices, while the $2$ direction is untouched,
+\begin{align}
+  F^{12}
+  &=
+  \Lambda^1{}_{\alpha}\Lambda^2{}_{\beta}F'^{\alpha\beta}
+  \notag\\
+  &=
+  \Lambda^1{}_{0}F'^{02}+\Lambda^1{}_{1}F'^{12}
+  \notag\\
+  &=
+  \gamma\beta(-E'_y)+\gamma(-B'_z).
+  \label{eq:lec11-F12-work}
+\end{align}
+Therefore
+\begin{equation}\label{eq:lec11-Bz-result}
+  B_z=\gamma(B'_z+\beta E'_y).
+\end{equation}
+The other components are obtained in the same way:
+\begin{equation}\label{eq:lec11-B-components}
+  \boxed{
+  B_x=B'_x,\qquad
+  B_y=\gamma(B'_y-\beta E'_z),\qquad
+  B_z=\gamma(B'_z+\beta E'_y).
+  }
+\end{equation}
+\textit{Physical significance:} The magnetic field transforms in the same pattern
+as the electric field, but with the opposite sign in the mixing term.  This is the
+tensor statement that electric and magnetic fields are two faces of one object.
+
+In vector form,
+\begin{equation}\label{eq:lec11-B-vector}
+  \boxed{
+  \bB_{\parallel}=\bB'_{\parallel},\qquad
+  \bB_{\perp}
+  =
+  \gamma\left(\bB'_{\perp}
+  -\boldsymbol{\beta}_{K|K'}\times\bE'\right).
+  }
+\end{equation}
+\textit{Physical significance:} If an observer moves relative to a purely electric
+configuration, they generally measure a magnetic field.  Magnetism is therefore
+not an optional extra phenomenon; it is required by relativity once electric fields
+exist.
+
+The inverse transformations are obtained by replacing $\boldsymbol{\beta}_{K|K'}$
+with $-\boldsymbol{\beta}_{K|K'}$.  The component formulas are often the safest
+way to check signs.
+
+%------------------------------------------------------------
+\subsection{Why Use Both Languages?}\label{subsec:lec11-which-language}
+
+\subsubsection*{Physical Motivation}
+Tensor notation and three-vector notation answer different practical questions.
+Tensor notation exposes symmetry; three-vector notation is often better for solving
+ordinary boundary-value problems.
+
+The tensor $F_{\mu\nu}$ makes it clear that:
+\begin{equation}\label{eq:lec11-one-field}
+  \boxed{
+  \text{there is one electromagnetic field, not two unrelated fields.}
+  }
+\end{equation}
+\textit{Physical significance:} What one observer calls ``electric'' and ``magnetic''
+depends on their state of motion.  The invariant object is the tensor, not the split
+into $\bE$ and $\bB$.
+
+However, in electrostatics there is no need to carry all tensor components if only
+$\bE$ is present in the chosen frame.  In that setting, the scalar potential $\phi$
+and the equation for $\bE$ are the efficient language.
+
+%------------------------------------------------------------
+\subsection{The Covariant Form of the Homogeneous Maxwell Equations}\label{subsec:lec11-homogeneous}
+
+\subsubsection*{Physical Motivation}
+Lecture~10 wrote the inhomogeneous Maxwell equations as
+$\partial_\mu F^{\mu\nu}=(4\pi/c)J^\nu$.  The other two Maxwell equations also have
+a covariant form.  They do not come from sources; they come from the definition of
+$F_{\mu\nu}$ in terms of the potential.
+
+The homogeneous Maxwell equations are
+\begin{equation}\label{eq:lec11-homogeneous-covariant}
+  \boxed{
+  \partial_\alpha F_{\beta\gamma}
+  +
+  \partial_\beta F_{\gamma\alpha}
+  +
+  \partial_\gamma F_{\alpha\beta}
+  =
+  0 .
+  }
+\end{equation}
+\textit{Physical significance:} This equation is the covariant form of
+$\nabla\cdot\bB=0$ and $\nabla\times\bE=-(1/c)\partial_t\bB$.  It says that the
+field tensor is built from a potential, so the antisymmetrized second derivative
+vanishes.
+
+Indeed, with
+\begin{equation}\label{eq:lec11-F-from-A}
+  F_{\mu\nu}=\partial_\mu A_\nu-\partial_\nu A_\mu,
+\end{equation}
+substitution into \eqref{eq:lec11-homogeneous-covariant} gives pairs of second
+derivatives such as $\partial_\alpha\partial_\beta A_\gamma$ and
+$-\partial_\beta\partial_\alpha A_\gamma$.  Since partial derivatives commute,
+each pair cancels:
+\begin{equation}\label{eq:lec11-second-derivative-cancel}
+  \partial_\alpha\partial_\beta A_\gamma
+  -
+  \partial_\beta\partial_\alpha A_\gamma
+  =
+  0 .
+\end{equation}
+
+%------------------------------------------------------------
+\subsection{Electrostatics as a Symmetry Sector}\label{subsec:lec11-electrostatics}
+
+\subsubsection*{Physical Motivation}
+Electrostatics is often introduced as ``nothing depends on time''.  That is true,
+but it is not the most structural definition.  The lecture defines electrostatics
+as the sector of Maxwell theory that respects time reversal $t\to -t$.  This
+distinguishes it from magnetostatics, where currents can be steady but reverse
+under time reversal.
+
+The Maxwell equations in Gaussian units are
+\begin{align}
+  \nabla\cdot\bB &= 0, \label{eq:lec11-maxwell-divB}\\
+  \nabla\times\bE &= -\frac{1}{c}\pdv{\bB}{t}, \label{eq:lec11-maxwell-faraday}\\
+  \nabla\cdot\bE &= 4\pi\rho, \label{eq:lec11-maxwell-gauss}\\
+  \nabla\times\bB &= \frac{4\pi}{c}\Jvec+\frac{1}{c}\pdv{\bE}{t}. \label{eq:lec11-maxwell-ampere}
+\end{align}
+The sources must also obey
+\begin{equation}\label{eq:lec11-continuity}
+  \boxed{
+  \pdv{\rho}{t}+\nabla\cdot\Jvec=0 .
+  }
+\end{equation}
+\textit{Physical significance:} Charge conservation is the consistency condition
+that allows the sources to appear on the right-hand side of Maxwell's equations.
+
+Under time reversal, velocities reverse, so currents reverse:
+\begin{equation}\label{eq:lec11-time-reversal-current}
+  \Jvec \longrightarrow -\Jvec .
+\end{equation}
+The electric field is even under time reversal, while the magnetic field is odd:
+\begin{equation}\label{eq:lec11-time-reversal-fields}
+  \bE\longrightarrow \bE,\qquad
+  \bB\longrightarrow -\bB .
+\end{equation}
+If a solution is invariant under time reversal for any choice of the time origin,
+then there can be no genuine time dependence, no current, and no magnetic field:
+\begin{equation}\label{eq:lec11-electrostatic-conditions}
+  \boxed{
+  \pdv{}{t}=0,\qquad
+  \Jvec=0,\qquad
+  \bB=0 .
+  }
+\end{equation}
+\textit{Physical significance:} Electrostatics is not merely ``slow dynamics''.
+It is the time-reversal-even part of the theory: charges sit as prescribed sources,
+and the magnetic, current-carrying sector is absent.
+
+With \eqref{eq:lec11-electrostatic-conditions}, Maxwell's equations reduce to
+\begin{equation}\label{eq:lec11-electrostatic-maxwell}
+  \boxed{
+  \nabla\times\bE=0,\qquad
+  \nabla\cdot\bE=4\pi\rho .
+  }
+\end{equation}
+\textit{Physical significance:} The first equation says the electric field is
+conservative; the second says charge density is the source of electric flux.
+
+Since $\nabla\times\bE=0$, one can write
+\begin{equation}\label{eq:lec11-E-potential}
+  \boxed{
+  \bE=-\nabla\phi .
+  }
+\end{equation}
+\textit{Physical significance:} In electrostatics the field can be described by
+one scalar function.  Equipotential surfaces organize the problem, and the field
+points in the direction of steepest decrease of $\phi$.
+
+Substituting \eqref{eq:lec11-E-potential} into Gauss's law gives Poisson's equation:
+\begin{equation}\label{eq:lec11-poisson}
+  \boxed{
+  \nabla^2\phi=-4\pi\rho .
+  }
+\end{equation}
+\textit{Physical significance:} Electrostatics becomes a boundary-value problem:
+given charges and boundary conditions, solve one elliptic equation for the scalar
+potential.
+
+\begin{center}
+\begin{tikzpicture}[scale=1.0, >=Stealth]
+  \fill[red!70!black] (0,0) circle (3pt) node[below left] {$+$};
+  \foreach \a in {0,30,...,330} {
+    \draw[->, red!70!black] (0,0) -- ({2.0*cos(\a)},{2.0*sin(\a)});
+  }
+  \draw[blue!70!black, dashed] (0,0) circle (0.75);
+  \draw[blue!70!black, dashed] (0,0) circle (1.35);
+  \draw[blue!70!black, dashed] (0,0) circle (1.95);
+  \node[blue!70!black] at (2.55,1.0) {$\phi=\text{const.}$};
+  \node[red!70!black] at (2.75,-0.55) {$\bE=-\nabla\phi$};
+\end{tikzpicture}
+\end{center}
+
+The lecture stops at the reduction to the electrostatic sector.  The next step is
+to solve \eqref{eq:lec11-poisson} for concrete charge distributions and boundary
+conditions.
+
+%------------------------------------------------------------
+\subsection{Summary}\label{subsec:lec11-summary}
+
+\begin{itemize}
+  \item Electromagnetic invariants compare fields at the same spacetime event as
+        described by different inertial observers.
+  \item The four-dimensional Levi-Civita symbol satisfies
+        $\epsilon\mapsto(\det\Lambda)\epsilon$; it is a tensor for proper Lorentz
+        transformations and a pseudotensor if reflections are included.
+  \item A boost mixes perpendicular electric and magnetic fields:
+        $\bE_\perp$ receives a contribution from $\bB'$, and $\bB_\perp$ receives
+        a contribution from $\bE'$.
+  \item The tensor $F_{\mu\nu}$ is the invariant electromagnetic object; the split
+        into $\bE$ and $\bB$ is observer-dependent.
+  \item Electrostatics is the time-reversal-even sector of Maxwell theory, where
+        $\Jvec=0$, $\bB=0$, and $\bE=-\nabla\phi$ with
+        $\nabla^2\phi=-4\pi\rho$.
+\end{itemize}

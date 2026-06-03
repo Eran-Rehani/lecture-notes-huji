@@ -1,0 +1,341 @@
+%%═══════════════════════════════════════════════════════════════════
+%% Lecture 02 — Invariance of the Spacetime Interval
+%% 77401 — Analytical Electrodynamics
+%% Date:
+%% Lecturer: Prof. Michael Smolkin
+%%═══════════════════════════════════════════════════════════════════
+
+\section{Lecture 02 — Invariance of the Spacetime Interval and the
+  Lorentz Group}\label{sec:lec02}
+
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 24/03/2026   & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+\subsection*{Overview}
+
+This lecture establishes the central kinematic fact of special
+relativity: the \emph{spacetime interval} $ds^2$ is invariant under
+passage between inertial frames.  Starting from the specific result
+of Lecture~01 — that a signal propagating at the maximum speed $c$
+has $ds^2 = 0$ in every frame — Smolkin argues, using homogeneity,
+isotropy, and a three-frame consistency condition, that $ds^2$ is
+proportional to $ds'^2$ for \emph{any} pair of events, and that the
+proportionality constant must equal unity.  The lecture concludes by
+connecting the interval to the Lorentz group: the Lorentz
+transformations are precisely the linear maps that preserve $ds^2$,
+in exact analogy with orthogonal transformations preserving the
+Euclidean distance $d\ell^2 = dx^2 + dy^2 + dz^2$.  The next
+lecture will derive the explicit form of the Lorentz transformation
+from this invariance requirement.
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Definitions}
+
+\dfn{Spacetime event}{An \emph{event} is a point in spacetime specified by a coordinate
+quadruplet $(t, \mathbf{r})$ or, in component form, $(t, x, y, z)$.}
+
+\dfn{Spacetime interval}{Given two events $(t_1, \mathbf{r}_1)$ and $(t_2, \mathbf{r}_2)$ in
+an inertial frame $S$, the \emph{spacetime interval} (squared) is
+\begin{equation}
+  \Delta s^2 = c^2(t_2-t_1)^2 - |\mathbf{r}_2-\mathbf{r}_1|^2.
+  \label{eq:lec02:interval}
+\end{equation}
+In the infinitesimal form:
+\begin{equation}
+  ds^2 = c^2\,dt^2 - d\mathbf{r}^2.
+  \label{eq:lec02:interval_inf}
+\end{equation}}
+
+\dfn{Lorentz transformations}{The \emph{Lorentz transformations} are the set of linear maps between
+inertial frames that leave the spacetime interval
+\eqref{eq:lec02:interval} invariant.  They form a group — the
+\emph{Lorentz group} $O(3,1)$ — under composition, in complete
+analogy with the orthogonal group $O(3)$ which preserves the
+Euclidean distance $d\ell^2 = dx^2+dy^2+dz^2$.}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Key Results}
+
+\thm{Invariance of the spacetime interval}{The spacetime interval between any two events is the same in all
+inertial frames:
+\begin{equation}
+  \boxed{ds^2 = ds'^2}
+  \label{eq:lec02:invariance}
+\end{equation}
+Equivalently, the proportionality factor $\lambda$ defined by
+$ds^2 = \lambda(|\mathbf{v}|/c)\,ds'^2$ satisfies $\lambda = 1$.}
+
+\thm{Lorentz group as the symmetry of the interval}{Lorentz transformations are the unique linear transformations
+preserving $ds^2$.  Mathematically, they are defined as the group
+$O(3,1)$, the set of matrices that preserve the indefinite quadratic
+form $\eta_{\mu\nu}$ with signature $(+,-,-,-)$.  This is the
+relativistic analogue of $O(3)$ preserving $\delta_{ij}$.}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Derivations}
+
+%% DERIVATION 1: General argument for interval invariance
+\subsubsection*{Proof (physical argument) that $ds^2 = ds'^2$ for
+arbitrary events}
+
+\paragraph{Setup.}
+Let $S$ and $S'$ be two inertial frames, with $S'$ moving at velocity
+$\mathbf{v}'$ relative to $S$.  Consider two events that are
+infinitesimally close; denote their separation in $S$ by $ds$ and in
+$S'$ by $ds'$.  The goal is to determine the relationship between
+$ds^2$ and $ds'^2$ for \emph{arbitrary} events, not merely for
+light-propagation events.
+
+\paragraph{Step 1: most general ansatz.}
+We write
+\begin{equation}
+  ds^2 = \lambda\bigl(t_1, \mathbf{r}_1,\,\mathbf{v}',\,
+         \widehat{\mathbf{v}}'\bigr)\;ds'^2,
+  \label{eq:lec02:ansatz0}
+\end{equation}
+where the proportionality factor $\lambda$ is, a priori, a function
+of the location of the event $(t_1,\mathbf{r}_1)$, the magnitude of
+the relative velocity $|\mathbf{v}'|$, and its direction
+$\widehat{\mathbf{v}}'$.  (The infinitesimal separation $ds'^2$
+itself already encodes the displacement $dt,\,d\mathbf{r}$, so no
+additional dependence on $dt$ or $d\mathbf{r}$ is needed beyond
+what is already in $ds'^2$.)
+
+\paragraph{Step 2: eliminate dependence on location (homogeneity).}
+Homogeneity of spacetime means no spacetime point is privileged:
+the laws of physics — and hence the transformation factor — cannot
+depend on where or when the events occur.  Therefore
+\begin{equation}
+  \lambda \;\text{ is independent of }\; t_1,\,\mathbf{r}_1.
+  \label{eq:lec02:drop_r1}
+\end{equation}
+
+\paragraph{Step 3: eliminate dependence on the direction of $\mathbf{v}'$
+(isotropy).}
+Isotropy of space means no spatial direction is preferred.  The
+magnitude of $ds^2$ (a scalar) cannot depend on which direction the
+frame $S'$ moves relative to $S$.  Therefore
+\begin{equation}
+  \lambda = \lambda\!\left(\frac{|\mathbf{v}'|}{c}\right).
+  \label{eq:lec02:drop_dir}
+\end{equation}
+The factor $1/c$ appears because $\lambda$ must be dimensionless and
+$c$ is the only invariant speed in the theory.
+
+After steps 2 and 3 the ansatz reduces to
+\begin{equation}
+  ds^2 = \lambda\!\left(\frac{|\mathbf{v}'|}{c}\right)\;ds'^2.
+  \label{eq:lec02:ansatz}
+\end{equation}
+
+\paragraph{Step 4: three-frame consistency (key argument).}
+Introduce a third inertial frame $S''$ moving at velocity
+$\mathbf{v}''$ relative to $S$.  Applying \eqref{eq:lec02:ansatz}
+twice:
+\begin{align}
+  ds^2   &= \lambda(|\mathbf{v}'|/c)\;ds'^2,
+             \label{eq:lec02:eq1}\\
+  ds^2   &= \lambda(|\mathbf{v}''|/c)\;ds''^2,
+             \label{eq:lec02:eq2}\\
+  ds'^2  &= \lambda(|\mathbf{v}|/c)\;ds''^2,
+             \label{eq:lec02:eq3}
+\end{align}
+where $|\mathbf{v}|$ is the speed of $S''$ relative to $S'$.
+Dividing \eqref{eq:lec02:eq1} by \eqref{eq:lec02:eq2}:
+\begin{equation}
+  \frac{ds'^2}{ds''^2}
+  = \frac{\lambda(|\mathbf{v}''|/c)}{\lambda(|\mathbf{v}'|/c)}.
+  \label{eq:lec02:div}
+\end{equation}
+But from \eqref{eq:lec02:eq3},
+\begin{equation}
+  \frac{ds'^2}{ds''^2} = \lambda(|\mathbf{v}|/c).
+  \label{eq:lec02:from3}
+\end{equation}
+Equating \eqref{eq:lec02:div} and \eqref{eq:lec02:from3}:
+\begin{equation}
+  \lambda\!\left(\frac{|\mathbf{v}|}{c}\right)
+  = \frac{\lambda(|\mathbf{v}''|/c)}{\lambda(|\mathbf{v}'|/c)}.
+  \label{eq:lec02:functional}
+\end{equation}
+
+\paragraph{Step 5: the right-hand side cannot depend on the angle
+between $\mathbf{v}'$ and $\mathbf{v}''$.}
+By isotropy, $\lambda$ depends only on the \emph{magnitude} of its
+argument, never on a direction.  The right-hand side of
+\eqref{eq:lec02:functional} involves only the magnitudes
+$|\mathbf{v}'|$ and $|\mathbf{v}''|$, so it carries no angular
+information.  The left-hand side, however, contains
+$|\mathbf{v}|$ — the speed of $S''$ relative to $S'$ — which in
+general \emph{does} depend on the angle $\theta$ between $\mathbf{v}'$
+and $\mathbf{v}''$.  (Concretely: if $\mathbf{v}' \parallel \mathbf{v}''$
+then $|\mathbf{v}| = 0$; if $\mathbf{v}' \perp \mathbf{v}''$ then
+$|\mathbf{v}| \neq 0$.)
+
+Equation \eqref{eq:lec02:functional} therefore requires the left-hand
+side to be independent of $\theta$, which is possible only if
+$\lambda$ is \emph{constant} (independent of its argument):
+\begin{equation}
+  \lambda = \text{const.}
+  \label{eq:lec02:const}
+\end{equation}
+
+\paragraph{Step 6: the constant must equal 1.}
+Substitute $\lambda = \text{const}$ back into
+\eqref{eq:lec02:functional}:
+\begin{equation}
+  \text{const} = \frac{\text{const}}{\text{const}}
+  \;\implies\;
+  \text{const}^2 = \text{const}
+  \;\implies\;
+  \text{const} = 1.
+  \label{eq:lec02:const1}
+\end{equation}
+(The value $\text{const} = 0$ is excluded because $ds^2 = 0$ for all
+events would be unphysical.)
+
+\paragraph{Conclusion.}
+\begin{equation}
+  ds^2 = ds'^2
+  \qquad \text{for any two infinitesimally separated events.}
+  \label{eq:lec02:infinitesimal-invariance}
+\end{equation}
+By integration (summing infinitesimal intervals), the result
+extends to any finite pair of events:
+\begin{equation}
+  \Delta s^2 = \Delta s'^2.
+  \label{eq:lec02:finite-invariance}
+\end{equation}
+
+\paragraph{Remark on rigor.}
+Smolkin emphasized explicitly that this is a \emph{physical argument},
+not a rigorous mathematical proof.  The extension from the
+infinitesimal to the finite case rests on the fact that we showed the
+proportionality factor equals~1 \emph{at every spacetime point}, so
+integrating up the infinitesimal intervals cannot introduce any
+discrepancy.  Formally constructing the Lorentz group from the
+requirement of interval preservation (the mathematician's route) makes
+this rigorous but takes the interval invariance as an axiom rather
+than deriving it.
+
+%% DERIVATION 2: Light signals have ds^2 = 0 (recap from Lec01)
+\subsubsection*{Recap: light signals satisfy $ds^2 = 0$ in every frame}
+
+For a signal propagating at the maximum speed $c$ in frame $S$,
+$|d\mathbf{r}| = c\,|dt|$, hence
+\begin{equation}
+  ds^2 = c^2\,dt^2 - d\mathbf{r}^2 = 0.
+  \label{eq:lec02:null-interval}
+\end{equation}
+The principle of relativity demands that the same signal satisfies
+$|d\mathbf{r}'| = c\,|dt'|$ in every frame $S'$ (the maximum speed
+is a law of nature, hence frame-independent), so $ds'^2 = 0$.  This
+is the special case $ds^2 = ds'^2 = 0$ that motivated the general
+invariance result.
+
+%% DERIVATION 3: Analogy with Euclidean rotations
+\subsubsection*{Analogy: orthogonal group $O(3)$ preserves Euclidean
+distance}
+
+The Euclidean distance
+$d\ell^2 = dx^2 + dy^2 + dz^2$
+is preserved by all \emph{orthogonal} transformations $R \in O(3)$:
+\begin{equation}
+  d\ell^2 = (R\,d\mathbf{r})^T(R\,d\mathbf{r})
+           = d\mathbf{r}^T R^T R\,d\mathbf{r}
+           = d\mathbf{r}^T d\mathbf{r}
+           = d\ell^2
+  \quad (R^T R = \mathbf{1}).
+  \label{eq:lec02:orthogonal-invariance}
+\end{equation}
+Lorentz transformations $\Lambda$ play the identical role for the
+indefinite form
+$ds^2 = c^2 dt^2 - dx^2 - dy^2 - dz^2 = \eta_{\mu\nu}\,dx^\mu\,dx^\nu$:
+\begin{equation}
+  \Lambda^T \eta\,\Lambda = \eta,
+  \qquad
+  \eta = \mathrm{diag}(+1,-1,-1,-1).
+  \label{eq:lec02:lorentz-metric-condition}
+\end{equation}
+The group of such $\Lambda$ is $O(3,1)$, the Lorentz group.
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Examples}
+
+\ex{Why the angle between $\mathbf{v}'$ and $\mathbf{v}''$
+matters for $|\mathbf{v}|$}{Let $|\mathbf{v}'| = |\mathbf{v}''| = V$.
+\begin{itemize}
+  \item If $\mathbf{v}'' \parallel \mathbf{v}'$ (same direction):
+    $S''$ moves at speed $V$ in the same direction as $S'$; both
+    frames co-move, so $|\mathbf{v}| = 0$.
+  \item If $\mathbf{v}'' \perp \mathbf{v}'$:
+    $S''$ moves orthogonally to $S'$; the relative speed
+    $|\mathbf{v}| \neq 0$.
+\end{itemize}
+Thus the left-hand side of \eqref{eq:lec02:functional} varies with
+the angle between $\mathbf{v}'$ and $\mathbf{v}''$, while the
+right-hand side does not — contradicting \eqref{eq:lec02:functional}
+unless $\lambda$ is constant.}
+
+\ex{Integers under addition and the Lorentz group}{Just as $(\mathbb{Z},+)$ is a group with identity $0$ and inverse
+$-n$ for each $n$, the Lorentz group is a set of transformations
+closed under composition, with the identity transformation (no boost,
+no rotation) and with an inverse for each element.  The specific
+feature distinguishing the Lorentz group from $O(3)$ is the
+indefinite signature of the preserved quadratic form.}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{Connections}
+
+\begin{itemize}
+  \item \textbf{Lecture 01.}  The starting point is the Lecture~01
+    result that Maxwell's equations are inconsistent with the Galilean
+    group.  The natural question — what group \emph{does} leave
+    Maxwell's equations invariant? — motivates the construction of
+    the Lorentz group from the invariance of $ds^2$.
+  \item \textbf{Euclidean geometry / $O(3)$.}  Smolkin used the
+    orthogonal group $O(3)$ as the canonical example of a group
+    defined by preservation of a quadratic form ($d\ell^2$).  The
+    Lorentz group $O(3,1)$ is its spacetime analogue.
+  \item \textbf{Next lecture.}  Interval invariance will be taken as
+    the axiom from which the explicit form of the Lorentz
+    transformation is derived.  Smolkin stated: ``invariance of the
+    interval is sufficient to uniquely determine the transformation.''
+  \item \textbf{Landau \& Lifshitz, Vol.~2, §2.}  The argument
+    presented here (homogeneity $+$ isotropy $+$ three-frame
+    consistency $\Rightarrow$ $\lambda = 1$) follows the L\&L
+    treatment closely, though Smolkin noted it should be read as
+    physical motivation rather than a rigorous proof.
+\end{itemize}
+
+%%──────────────────────────────────────────────────────────────────
+\subsection*{To Remember}
+
+\begin{itemize}
+  \item The spacetime interval is
+    $ds^2 = c^2\,dt^2 - d\mathbf{r}^2$; it is a Lorentz
+    \emph{scalar} — the same in every inertial frame.
+  \item The argument for $\lambda = 1$ uses three ingredients:
+    (1)~homogeneity eliminates dependence on the location of the
+    events; (2)~isotropy eliminates dependence on the direction of
+    $\mathbf{v}'$, leaving $\lambda = \lambda(|\mathbf{v}'|/c)$;
+    (3)~three-frame consistency forces $\lambda$ to be constant,
+    and the constant must be~1.
+  \item The speed $c$ enters as the unique invariant speed scale that
+    makes $\lambda$ dimensionless; its invariance is a consequence of
+    the principle of relativity applied to the maximum-speed signal,
+    not an independent postulate at this stage.
+  \item Lorentz transformations are the group $O(3,1)$, defined by
+    $\Lambda^T \eta \Lambda = \eta$ with
+    $\eta = \mathrm{diag}(+1,-1,-1,-1)$.  They play the same role
+    for $ds^2$ as orthogonal matrices play for $d\ell^2$.
+  \item The argument presented is physical motivation, not a
+    mathematically rigorous proof.  The mathematician's route takes
+    interval invariance as an axiom and defines the Lorentz group
+    directly as the symmetry group of the quadratic form.
+\end{itemize}
+
+%%──────────────────────────────────────────────────────────────────

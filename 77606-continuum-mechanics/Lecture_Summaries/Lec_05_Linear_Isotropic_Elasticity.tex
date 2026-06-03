@@ -1,0 +1,359 @@
+
+%% Lecture 05 — Hooke's Law and Linear Isotropic Elasticity
+
+\section{Lecture 05 — Hooke's Law and Linear Isotropic Elasticity}\label{sec:lec05}
+\date{April 20, 2026}
+
+\subsection*{Overview}
+This lecture has two parts. First, we complete the geometric interpretation of the strain tensor in cylindrical coordinates, illustrating the origin of the hoop-strain term $\varepsilon_{\varphi\varphi}=u_r/r$ and connecting it to differential geometry. Second, we derive Hooke's law for a linear isotropic elastic solid. Using an \textbf{effective-field-theory} argument, symmetry alone determines the most general linear relation between $\sigma_{ij}$ and $\varepsilon_{ij}$, leaving exactly two independent material constants $\tilde{K}$ and $\tilde{G}$. We define the shear modulus $G=\tilde{G}/2$ and bulk modulus $K=\tilde{K}/3$, invert the constitutive relation, and establish their connection to Young's modulus $E$ and Poisson's ratio $\nu$ through three worked examples.
+
+%%────────────────────────────────────────────────────────────
+\subsection*{Part I — Completion: Strain tensor in cylindrical coordinates}
+%%────────────────────────────────────────────────────────────
+
+\subsubsection*{Cylindrically symmetric displacement}
+
+Consider a cylindrically symmetric displacement field that depends only on the radial distance $r$:
+\[
+    \vec{u} = u_r(r)\,\hat{e}_r, \qquad u_\varphi = 0.
+\]
+No azimuthal component exists and there is no $\varphi$-dependence. The two non-trivial diagonal strain components are:
+\begin{align}
+    \varepsilon_{rr} &= \frac{\partial u_r}{\partial r}, \label{eq:eps_rr}\\[4pt]
+    \varepsilon_{\varphi\varphi} &= \frac{u_r}{r}. \label{eq:eps_phiphi}
+\end{align}
+The first term is the expected radial (longitudinal) strain. The second term, which contains no derivative, requires geometric explanation.
+
+\subsubsection*{Geometric interpretation of $\varepsilon_{\varphi\varphi} = u_r/r$}
+
+\begin{itemize}
+    \item A cylindrical shell at radius $r$ has original circumference $L = 2\pi r$.
+    \item After a radial displacement $u_r(r)$, the new radius is $r + u_r$ and the new circumference is $L' = 2\pi(r+u_r)$.
+    \item The azimuthal (hoop) strain is therefore
+    \[
+        \varepsilon_{\varphi\varphi} = \frac{L' - L}{L} = \frac{2\pi u_r}{2\pi r} = \frac{u_r}{r},
+    \]
+    even though $u_r$ is independent of $\varphi$.
+\end{itemize}
+This is entirely analogous to $\varepsilon_{rr} = \partial_r u_r = \Delta\ell/\ell$ for a radial segment: both express the fractional change in a material line length. The difference is that the hoop length changes because the \emph{radius} of the circle changes, not because $u_r$ varies along the circle.
+
+%%────────────────────────────────────────────────────────────────────
+%% Hoop strain geometry: cylindrical shell at r expands to r + u_r
+%%────────────────────────────────────────────────────────────────────
+\begin{center}
+\begin{tikzpicture}[scale=1.55, >=Stealth]
+  \def\r{1.30}   % original radius
+  \def\ur{0.40}  % radial displacement
+  % Outward displacement arrows (before drawing circles so circles sit on top)
+  \foreach \a in {0, 45, 90, 135, 180, 225, 270, 315}{
+    \draw[->, myred, thick]
+      ({\r*cos(\a)},{\r*sin(\a)})
+      --++ ({(\ur-0.05)*cos(\a)},{(\ur-0.05)*sin(\a)});
+  }
+  % Original circle (dashed)
+  \draw[dashed, gray!70, very thick] (0,0) circle(\r);
+  % Expanded circle
+  \draw[myblue, very thick] (0,0) circle(\r+\ur);
+  % Center
+  \fill[black] (0,0) circle(0.045) node[below right, scale=0.82] {$O$};
+  % Radius annotations along +x axis
+  \draw[width] (0, 0)    -- (\r, 0);
+  \node[below=2, scale=0.85] at ({\r/2}, 0)        {$r$};
+  \draw[width] (\r, 0) -- (\r+\ur, 0);
+  \node[below=2, scale=0.85] at ({\r+\ur/2}, 0)    {$u_r$};
+  % Circle labels via leader lines
+  \draw[gray!70, thin]
+    ({-\r*cos(40)},{\r*sin(40)}) --++ (-0.55, 0.30)
+    node[left, gray!80, scale=0.82] {$L=2\pi r$};
+  \draw[myblue, thin]
+    ({-(\r+\ur)*cos(40)},{(\r+\ur)*sin(40)}) --++ (-0.55, 0.30)
+    node[left, myblue!80!black, scale=0.82] {$L'=2\pi(r+u_r)$};
+  % Result
+  \node[right=6, align=left, scale=0.90] at (\r+\ur+0.10, -0.50)
+    {$\varepsilon_{\varphi\varphi}
+      =\dfrac{L'-L}{L}=\dfrac{u_r}{r}$};
+\end{tikzpicture}
+\end{center}
+
+\begin{remark}[Connection to differential geometry]
+    The extra term in~\eqref{eq:eps_phiphi} arises because the unit vectors $\hat{e}_r$ and $\hat{e}_\varphi$ depend on $\varphi$ in cylindrical coordinates. When differentiating a vector field in curvilinear coordinates, derivatives of the basis vectors produce additional terms. The coefficients of these corrections are called \textbf{Christoffel symbols} (or \textbf{connection coefficients}), and they are the foundational objects of \textbf{differential geometry} — the mathematics of curved spaces. Although our physical space is flat, the use of curvilinear coordinates introduces the same structure.
+\end{remark}
+
+%%────────────────────────────────────────────────────────────
+\subsection*{Part II — Constitutive relations: Hooke's law}
+%%────────────────────────────────────────────────────────────
+
+\subsubsection*{The problem: connecting $\sigma_{ij}$ and $\varepsilon_{ij}$}
+
+We have established two tensors:
+\begin{itemize}
+    \item The \textbf{strain tensor} $\varepsilon_{ij} = \tfrac{1}{2}(\partial_j u_i + \partial_i u_j)$, encoding local deformation.
+    \item The \textbf{stress tensor} $\sigma_{ij}$, giving surface forces via $\mathrm{d}F_i = \sigma_{ij}\,\mathrm{d}S_j$.
+\end{itemize}
+The missing link is the material-dependent \textbf{constitutive relation} $\sigma_{ij} = \sigma_{ij}(\varepsilon_{kl})$.
+
+\subsubsection*{Why linear elasticity?}
+
+We focus on the linear elastic regime for three reasons:
+
+\begin{enumerate}
+    \item \textbf{Universality (Taylor expansion):} For any stress-free reference configuration, $\sigma_{ij}\big|_{u=0}=0$. Taylor expansion then forces the leading correction to be linear in the strain.
+    \item \textbf{Physical validity:} Every material is approximately linear for sufficiently small strains; nonlinearity and yielding only appear beyond a material-dependent threshold.
+    \item \textbf{Engineering practice:} Structures (bridges, buildings) are designed to remain in the elastic regime. Reaching the yield point constitutes failure.
+\end{enumerate}
+
+\subsection*{Effective-field-theory derivation of Hooke's law}
+
+The strategy of \textbf{effective field theory} is: \emph{what is not forbidden by symmetry is compulsory}. We enumerate all symmetries that constrain $\sigma_{ij}(\varepsilon_{kl})$ and read off the most general permitted form.
+
+\subsubsection*{Step 1 — Stress-free reference state}
+
+\textbf{Assumption:} the body is stress-free in its rest configuration:
+\[
+    \sigma_{ij}\bigl|_{\,u=0} = 0.
+\]
+Taylor-expanding $\sigma_{ij}$ in powers of $u$, the constant term vanishes, so $\sigma_{ij}$ is at least first order in $u$.
+
+\subsubsection*{Step 2 — Uniform displacement generates no stress}
+
+For a rigid translation $\vec{u} = \vec{c}$ (constant, independent of position), the body is undistorted and $\sigma_{ij}=0$. Therefore $\sigma_{ij}$ cannot depend on $u_i$ itself, only on its spatial derivatives:
+\[
+    \sigma_{ij} \sim \partial_k u_l.
+\]
+Higher-derivative terms ($\partial^2 u$, etc.) are suppressed when spatial variation is slow and also lead to higher-order equations of motion; we keep only the leading term.
+
+\subsubsection*{Step 3 — Rigid-body rotation generates no stress}
+
+The displacement gradient decomposes into symmetric and antisymmetric parts:
+\[
+    \partial_j u_i = \varepsilon_{ij} + \omega_{ij},
+\]
+where $\varepsilon_{ij}=\tfrac{1}{2}(\partial_j u_i + \partial_i u_j)$ is the strain tensor and $\omega_{ij}=\tfrac{1}{2}(\partial_j u_i - \partial_i u_j)$ describes infinitesimal rigid rotation. A uniform rigid rotation
+\[
+    u_i = \epsilon_{ijk}\,\theta_j\,x_k \quad \Longrightarrow \quad \varepsilon_{ij} = 0,\; \omega_{ij} \neq 0
+\]
+produces no deformation and hence no stress. Therefore $\sigma_{ij}$ depends only on $\varepsilon_{ij}$, not on $\omega_{ij}$.
+
+\begin{remark}
+    This conclusion is also forced by the symmetry of the stress tensor: $\sigma_{ij}=\sigma_{ji}$. In a linear theory, a symmetric tensor can only depend linearly on another symmetric tensor. Adding a term proportional to the antisymmetric $\omega_{ij}$ would break the symmetry of $\sigma_{ij}$.
+\end{remark}
+
+\subsubsection*{Step 4 — General linear relation (stiffness tensor)}
+
+The most general \emph{linear} map from the symmetric tensor $\varepsilon_{kl}$ to the symmetric tensor $\sigma_{ij}$ is
+\begin{equation}
+    \sigma_{ij} = C_{ijkl}\,\varepsilon_{kl},
+    \label{eq:stiffness}
+\end{equation}
+where $C_{ijkl}$ is the \textbf{rank-4 stiffness tensor}. With the symmetry $C_{ijkl}=C_{jikl}=C_{ijlk}$ and the minor symmetry $C_{ijkl}=C_{klij}$, it has at most 21 independent components for a general anisotropic crystal.
+
+\subsubsection*{Step 5 — Isotropy reduces to two constants}
+
+For an \textbf{isotropic} material (macroscopically identical in all directions), $C_{ijkl}$ must itself be an isotropic rank-4 tensor. The most general such tensor is a linear combination of the three isotropic rank-4 tensors:
+\[
+    \delta_{ij}\delta_{kl},\quad \delta_{ik}\delta_{jl},\quad \delta_{il}\delta_{jk}.
+\]
+Imposing symmetry $C_{ijkl}=C_{jikl}=C_{ijlk}$ reduces these to two independent combinations, giving:
+\[
+    C_{ijkl} = \frac{\tilde{K}-\tilde{G}}{3}\,\delta_{ij}\delta_{kl} + \tilde{G}\,(\delta_{ik}\delta_{jl}+\delta_{il}\delta_{jk}).
+\]
+Substituting into~\eqref{eq:stiffness} and using $\delta_{ik}\delta_{jl}\,\varepsilon_{kl}=\varepsilon_{ij}$:
+
+\begin{equation}
+    \boxed{\sigma_{ij} = \frac{\tilde{K}}{3}\,\varepsilon_{kk}\,\delta_{ij} + \tilde{G}\!\left(\varepsilon_{ij} - \frac{1}{3}\varepsilon_{kk}\,\delta_{ij}\right)}
+    \label{eq:hooke_tilde}
+\end{equation}
+Every isotropic linear elastic material is fully characterised by the two constants $\tilde{K}$ and $\tilde{G}$.
+
+\begin{itemize}
+    \item The first term is proportional to $\varepsilon_{kk}=\mathrm{Tr}(\varepsilon)$, the \textbf{volumetric} (isotropic) part of the strain.
+    \item The second term involves the \textbf{deviatoric} (traceless) part $\varepsilon_{ij}-\tfrac{1}{3}\varepsilon_{kk}\delta_{ij}$, which describes shape change at constant volume.
+\end{itemize}
+
+\subsection*{Elastic moduli: shear modulus $G$ and bulk modulus $K$}
+
+Two standard moduli are defined from $\tilde{K}$ and $\tilde{G}$:
+\begin{align}
+    G &\equiv \frac{\tilde{G}}{2} \qquad \text{(shear modulus)}, \label{eq:G_def}\\[4pt]
+    K &\equiv \frac{\tilde{K}}{3} \qquad \text{(bulk modulus)}. \label{eq:K_def}
+\end{align}
+In terms of $K$ and $G$, Hooke's law~\eqref{eq:hooke_tilde} reads:
+\begin{equation}
+    \sigma_{ij} = K\,\varepsilon_{kk}\,\delta_{ij} + 2G\!\left(\varepsilon_{ij} - \frac{1}{3}\varepsilon_{kk}\,\delta_{ij}\right).
+    \label{eq:hooke_KG}
+\end{equation}
+Both $K$ and $G$ have dimensions of pressure (Pa).
+
+\subsection*{Inverse relation: strain from stress}
+
+Taking the trace of~\eqref{eq:hooke_tilde}:
+\[
+    \sigma_{kk} = \tilde{K}\,\varepsilon_{kk} \quad \Longrightarrow \quad \varepsilon_{kk} = \frac{\sigma_{kk}}{\tilde{K}} = \frac{\sigma_{kk}}{3K}.
+\]
+Substituting back and solving for $\varepsilon_{ij}$ yields the inverse Hooke's law:
+\begin{equation}
+    \boxed{\varepsilon_{ij} = \frac{1}{3\tilde{K}}\,\sigma_{kk}\,\delta_{ij} + \frac{1}{\tilde{G}}\!\left(\sigma_{ij} - \frac{1}{3}\sigma_{kk}\,\delta_{ij}\right)}
+    \label{eq:hooke_inv_tilde}
+\end{equation}
+or equivalently in terms of $K$ and $G$:
+\begin{equation}
+    \boxed{\varepsilon_{ij} = \frac{1}{9K}\,\sigma_{kk}\,\delta_{ij} + \frac{1}{2G}\!\left(\sigma_{ij} - \frac{1}{3}\sigma_{kk}\,\delta_{ij}\right).}
+    \label{eq:hooke_inv}
+\end{equation}
+The motivation for defining $G\equiv\tilde{G}/2$ and $K\equiv\tilde{K}/3$ is precisely that inversion maps $\tilde{K}\mapsto 1/\tilde{K}$ and $\tilde{G}\mapsto 1/\tilde{G}$ cleanly.
+
+%%────────────────────────────────────────────────────────────
+\subsection*{Example 2: Uniaxial tension — connecting $(K,G)$ to $(E,\nu)$}
+%%────────────────────────────────────────────────────────────
+
+\subsubsection*{Setup}
+A rod of cross-sectional area $A$ is pulled with force $F$ along the $z$-axis. The boundary conditions on the free lateral surfaces impose zero traction there, so the stress tensor is diagonal with a single nonzero entry:
+\[
+    \sigma_{ij} = \sigma_0\,\delta_{iz}\delta_{jz}, \qquad \sigma_0 = \frac{F}{A}, \qquad \mathrm{Tr}(\sigma) = \sigma_0.
+\]
+
+\subsubsection*{Strain from the inverse relation}
+
+Using~\eqref{eq:hooke_inv_tilde} component by component:
+\begin{align}
+    \varepsilon_{zz} &= \frac{\sigma_0}{3\tilde{K}} + \frac{1}{\tilde{G}}\!\left(\sigma_0 - \frac{\sigma_0}{3}\right)
+                      = \frac{\sigma_0}{3\tilde{K}} + \frac{2\sigma_0}{3\tilde{G}}, \label{eq:eps_zz}\\[6pt]
+    \varepsilon_{xx} = \varepsilon_{yy} &= \frac{\sigma_0}{3\tilde{K}} + \frac{1}{\tilde{G}}\!\left(0 - \frac{\sigma_0}{3}\right)
+                      = \frac{\sigma_0}{3\tilde{K}} - \frac{\sigma_0}{3\tilde{G}}. \label{eq:eps_xx}
+\end{align}
+
+\subsubsection*{Identification of $E$ and $\nu$}
+
+Comparing~\eqref{eq:eps_zz} with the definition $\varepsilon_{zz}=\sigma_0/E$, and~\eqref{eq:eps_xx} with $\varepsilon_{xx}=-\nu\,\varepsilon_{zz}$:
+\begin{align}
+    \frac{1}{E} &= \frac{1}{3\tilde{K}} + \frac{2}{3\tilde{G}} = \frac{1}{9K} + \frac{1}{3G}, \label{eq:1overE}\\[6pt]
+    \frac{\nu}{E} &= \frac{1}{3\tilde{G}} - \frac{1}{3\tilde{K}} = \frac{1}{6G} - \frac{1}{9K}. \label{eq:nu_over_E}
+\end{align}
+Inverting~\eqref{eq:1overE}--\eqref{eq:nu_over_E} gives the practical formulas:
+\begin{equation}
+    \boxed{K = \frac{E}{3(1-2\nu)}, \qquad G = \frac{E}{2(1+\nu)}.}
+    \label{eq:KG_from_Enu}
+\end{equation}
+
+\begin{remark}[Stability and the range of $\nu$]
+    Physical stability requires $K>0$ and $G>0$ (the elastic energy must be positive definite). Inserting into~\eqref{eq:KG_from_Enu}, these conditions translate to
+    \[
+        -1 < \nu < \frac{1}{2}.
+    \]
+    At $\nu\to\tfrac{1}{2}$, $K\to\infty$ (incompressible material, e.g.\ rubber). At $\nu\to -1$, $G\to 0$. The poles of $K$ and $G$ as functions of $\nu$ make the range $(-1,\tfrac{1}{2})$ physically inevitable.
+\end{remark}
+
+%%────────────────────────────────────────────────────────────
+\subsection*{Example 3: Simple shear — justifying the name ``shear modulus''}
+%%────────────────────────────────────────────────────────────
+
+Apply a shear force $F$ tangentially to the top face of a block, generating a stress:
+\[
+    \sigma_{12} = \sigma_{21} = \sigma_0, \qquad \text{all other } \sigma_{ij}=0.
+\]
+Since $\mathrm{Tr}(\sigma)=0$, the inverse relation~\eqref{eq:hooke_inv_tilde} gives:
+\[
+    \varepsilon_{12} = \frac{\sigma_0}{\tilde{G}} = \frac{\sigma_0}{2G}.
+\]
+Recalling that the engineering shear strain is $\gamma = 2\varepsilon_{12}$ (twice the off-diagonal entry, corresponding to the total angle of deformation):
+\[
+    G = \frac{\sigma_0}{\gamma}.
+\]
+This is precisely the definition of the shear modulus as the ratio of shear stress to shear angle. The factor of 2 between $\tilde{G}$ and $G$ originates in the difference between the physical (tensor) convention and the engineering (Voigt) convention for shear strains.
+
+%%────────────────────────────────────────────────────────────
+\subsection*{Example 4: Hydrostatic compression — justifying the name ``bulk modulus''}
+%%────────────────────────────────────────────────────────────
+
+\subsubsection*{Setup}
+A solid elastic body is immersed in a fluid at pressure $p$. Every surface element $\mathrm{d}\vec{S}$ experiences a force $\mathrm{d}\vec{F} = -p\,\mathrm{d}\vec{S}$ directed inward. The resulting stress tensor is \textbf{isotropic}:
+\[
+    \sigma_{ij} = -p\,\delta_{ij}, \qquad \mathrm{Tr}(\sigma) = -3p.
+\]
+
+%%────────────────────────────────────────────────────────────────────
+%% Hydrostatic compression: uniform inward pressure on all faces
+%%────────────────────────────────────────────────────────────────────
+\begin{center}
+\begin{tikzpicture}[scale=1.65, >=Stealth]
+  \def\s{0.80}   % element half-side
+  \def\pa{0.55}  % pressure arrow length
+  % Element
+  \fill[blue!10] (-\s,-\s) rectangle (\s,\s);
+  \draw[very thick] (-\s,-\s) rectangle (\s,\s);
+  % Inward pressure arrows (source OUTSIDE, arrowhead ON element face)
+  \draw[force,myred] ( \s+\pa,  0   ) -- ( \s,  0   ) node[pos=0,right]  {$p$};
+  \draw[force,myred] (-\s-\pa,  0   ) -- (-\s,  0   ) node[pos=0,left]   {$p$};
+  \draw[force,myred] ( 0,  \s+\pa   ) -- ( 0,  \s   ) node[pos=0,above]  {$p$};
+  \draw[force,myred] ( 0, -\s-\pa   ) -- ( 0, -\s   ) node[pos=0,below]  {$p$};
+  % Label inside
+  \node[scale=0.88, align=center] at (0,0.12)
+    {$\sigma_{ij} = -p\,\delta_{ij}$};
+  \node[scale=0.80, gray] at (0,-0.20) {(isotropic)};
+\end{tikzpicture}
+\end{center}
+
+\subsubsection*{Strain}
+The deviatoric part vanishes identically:
+\[
+    \sigma_{ij} - \frac{1}{3}\sigma_{kk}\,\delta_{ij} = -p\delta_{ij} - \frac{-3p}{3}\delta_{ij} = 0.
+\]
+From the inverse relation~\eqref{eq:hooke_inv_tilde}:
+\begin{equation}
+    \varepsilon_{ij} = \frac{1}{3\tilde{K}}\cdot(-3p)\cdot\delta_{ij} = -\frac{p}{\tilde{K}}\,\delta_{ij} = -\frac{p}{3K}\,\delta_{ij}.
+    \label{eq:hydrostatic_eps}
+\end{equation}
+The strain is isotropic (equal compression in every direction), as expected from the symmetry of the loading.
+
+\subsubsection*{Volume change and definition of $K$}
+
+\paragraph{General result: $\Delta V/V_0 = \varepsilon_{kk}$.}
+Consider an infinitesimal box with edge lengths $L_x, L_y, L_z$. After deformation, the edges become $L_\alpha(1+\varepsilon_{\alpha\alpha})$. Expanding the new volume and discarding quadratic and cubic terms (valid for small strains):
+\[
+    \frac{\Delta V}{V_0} = (1+\varepsilon_{xx})(1+\varepsilon_{yy})(1+\varepsilon_{zz}) - 1 \approx \varepsilon_{xx}+\varepsilon_{yy}+\varepsilon_{zz} = \varepsilon_{kk}.
+\]
+The trace of the strain tensor is the fractional volume change. This is a general result, not specific to the hydrostatic case.
+
+\paragraph{Application to hydrostatic compression.}
+From \eqref{eq:hydrostatic_eps}, $\varepsilon_{kk} = -3p/(3K) = -p/K$, so:
+\[
+    \frac{\Delta V}{V_0} = -\frac{p}{K} \quad \Longrightarrow \quad K = -\frac{p}{\Delta V/V_0}.
+\]
+The bulk modulus $K$ is the ratio of applied pressure to fractional volume decrease. A stiffer material (larger $K$) undergoes less compression under the same pressure. This is the direct physical meaning of the name \textit{bulk modulus}.
+
+%%────────────────────────────────────────────────────────────
+\subsection*{Summary of elastic moduli and their relations}
+%%────────────────────────────────────────────────────────────
+
+\begin{center}
+\begin{tabular}{llp{7cm}}
+\toprule
+Symbol & Name & Physical meaning \\
+\midrule
+$E$ & Young's modulus & Axial stiffness in uniaxial tension: $\sigma_{zz} = E\,\varepsilon_{zz}$ \\
+$\nu$ & Poisson's ratio & Transverse contraction: $\varepsilon_{xx} = -\nu\,\varepsilon_{zz}$ \\
+$G$ & Shear modulus & Resistance to shape change: $\sigma_{12}=G\,\gamma_{12}$ \\
+$K$ & Bulk modulus & Resistance to volume change: $K=-p\,V_0/\Delta V$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Any two of $\{E,\nu,G,K\}$ determine all others. The key inter-relations are:
+\begin{equation}
+    K = \frac{E}{3(1-2\nu)}, \quad
+    G = \frac{E}{2(1+\nu)}, \quad
+    E = \frac{9KG}{3K+G}, \quad
+    \nu = \frac{3K-2G}{2(3K+G)}.
+    \label{eq:moduli_relations}
+\end{equation}
+Stability ($K>0$, $G>0$) constrains $\nu\in(-1,\tfrac{1}{2})$.
+
+%%────────────────────────────────────────────────────────────
+\subsection*{Homework: Constrained uniaxial strain (oedometric loading)}
+%%────────────────────────────────────────────────────────────
+
+A steel rod of cross-section $A$ is compressed along the $z$-axis by a force $F$, but is \textbf{prevented from deforming in the transverse directions}:
+\[
+    \varepsilon_{xx} = \varepsilon_{yy} = 0.
+\]
+Find the effective \textbf{constrained modulus} $M$ defined by $\sigma_{zz} = M\,\varepsilon_{zz}$, expressed in terms of $E$ and $\nu$. Note that $M \neq E$ because the lateral constraint develops non-zero transverse stresses $\sigma_{xx}=\sigma_{yy}\neq 0$, even though the corresponding strains vanish.
