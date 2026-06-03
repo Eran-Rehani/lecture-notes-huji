@@ -1,0 +1,166 @@
+\section{חיבור תנע זוויתי - מבוא ומוטיבציה}
+
+במכניקה קלאסית, כאשר אנו דנים במערכת המורכבת ממספר גופים (למשל, שני חלקיקים), התנע הזוויתי של כל חלקיק בנפרד ($\vec{L}_1, \vec{L}_2$) אינו בהכרח שמור. זאת מכיוון שייתכנו כוחות פנימיים ומומנטים הפועלים בין החלקים השונים של המערכת.
+עם זאת, אם המערכת סגורה (אין כוחות חיצוניים), המערכת כולה אינווריאנטית לסיבובים במרחב. כתוצאה מכך, התנע הזוויתי הכולל $\vec{J}_{tot} = \vec{L}_1 + \vec{L}_2$ הוא גודל שמור.
+
+מעקרון ההתאמה (\LR{Correspondence Principle}), אנו מצפים להתנהגות דומה במכניקת הקוונטים. נרצה להגדיר אופרטור תנע זוויתי כולל המייצג את המערכת כולה, אשר יתחלף עם ההמילטוניאן הכולל של מערכת סגורה, גם אם התנעים הזוויתיים הנפרדים אינם מתחלפים איתו.
+
+\section{הפורמליזם המתמטי}
+
+נתבונן במערכת של שני חלקיקים המאופיינים על ידי תנע זוויתי $j_1$ ו-$j_2$. המצבים העצמיים של כל חלקיק בנפרד נתונים על ידי:
+\[
+|j_1, m_1\rangle \quad \text{and} \quad |j_2, m_2\rangle
+\]
+המצב של המערכת הכוללת מתואר במרחב המכפלה (\LR{Product Space}) שהוא מכפלה טנזורית של מרחבי ההילברט:
+\[
+|\psi\rangle = |j_1, m_1\rangle \otimes |j_2, m_2\rangle \equiv |j_1 m_1; j_2 m_2\rangle
+\]
+
+\subsection{אופרטור הסיבוב והיוצר הכולל}
+נבחן כיצד פועל סיבוב מרחבי $R$ על המערכת. אופרטור הסיבוב במרחב הכולל הוא מכפלה של אופרטורי הסיבוב בכל תת-מרחב:
+\[
+U(R) = U_1(R) \otimes U_2(R)
+\]
+עבור סיבוב אינפיניטסימלי בזווית $\delta\theta$ סביב ציר $\hat{n}$, אופרטור הסיבוב ניתן לכתיבה באמצעות היוצרים (\LR{Generators}) -- אופרטורי התנע הזוויתי (ביחידות בהן $\hbar=1$):
+\[
+U_k(\delta\theta) \approx \mathbb{I}_k - i \delta\theta (\hat{n} \cdot \vec{J}_k)
+\]
+כאשר נציב זאת במכפלה הטנזורית ונשמור רק איברים מסדר ראשון ב-$\delta\theta$:
+\begin{align*}
+U_{tot} &\approx \left(\mathbb{I}_1 - i \delta\theta \hat{n}\cdot\vec{J}_1\right) \otimes \left(\mathbb{I}_2 - i \delta\theta \hat{n}\cdot\vec{J}_2\right) \\
+&\approx \mathbb{I}_1 \otimes \mathbb{I}_2 - i \delta\theta \hat{n} \cdot \left( \vec{J}_1 \otimes \mathbb{I}_2 + \mathbb{I}_1 \otimes \vec{J}_2 \right)
+\end{align*}
+מהשוואה לצורה הכללית של אופרטור סיבוב $U_{tot} \approx 1 - i \delta\theta \hat{n} \cdot \vec{J}_{tot}$, אנו מקבלים את ההגדרה של אופרטור התנע הזוויתי הכולל.
+
+\begin{definitionbox}{אופרטור התנע הזוויתי הכולל}
+\begin{equation}
+\vec{J} = \vec{J}_1 \otimes \mathbb{I}_2 + \mathbb{I}_1 \otimes \vec{J}_2
+\end{equation}
+בכתיב מקוצר, נהוג להשמיט את אופרטורי היחידה ולכתוב:
+\begin{equation}
+\vec{J} = \vec{J}_1 + \vec{J}_2
+\end{equation}
+כאשר מובן ש-$\vec{J}_1$ פועל רק על תת-המרחב הראשון ו-$\vec{J}_2$ רק על השני.
+\end{definitionbox}
+
+\subsection{יחסי חילוף}
+כדי לוודא ש-$\vec{J}$ הוא אכן אופרטור תנע זוויתי חוקי, עליו לקיים את אלגברת התנע הזוויתי:
+\[
+[J_i, J_j] = i \epsilon_{ijk} J_k
+\]
+\begin{theorembox}{הוכחת יחסי החילוף ל-J הכולל}
+נחשב את הקומוטטור עבור רכיבים קרטזיים (למשל $x, y$):
+\[
+[J_x, J_y] = [J_{1x} + J_{2x}, J_{1y} + J_{2y}]
+\]
+נפתח את הסוגריים (לינאריות הקומוטטור):
+\[
+= [J_{1x}, J_{1y}] + [J_{1x}, J_{2y}] + [J_{2x}, J_{1y}] + [J_{2x}, J_{2y}]
+\]
+מכיוון שאופרטורים מתתי-מרחבים שונים מתחלפים ($[J_{1i}, J_{2j}] = 0$), האיברים המעורבים מתאפסים. נותרנו עם:
+\[
+= i J_{1z} + i J_{2z} = i(J_{1z} + J_{2z}) = i J_z
+\]
+\textbf{מסקנה:} $\vec{J}$ מקיים את יחסי החילוף הנדרשים, ולכן הספקטרום שלו הוא הספקטרום המוכר של תנע זוויתי (מספרים קוונטיים שלמים או חצי-שלמים).
+\end{theorembox}
+
+\section{המעבר לבסיס המצומד (\LR{Coupled Basis})}
+
+במערכת פיזיקלית טיפוסית (למשל אטום), ההמילטוניאן לרוב אינו מתחלף עם $\vec{J}_1$ או $\vec{J}_2$ בנפרד (בגלל אינטראקציית ספין-מסילה למשל), אך הוא כן מתחלף עם $\vec{J}_{tot}$.
+לכן, הבסיס של המכפלה הישרה $|j_1 m_1; j_2 m_2\rangle$ אינו הבסיס הנוח לתיאור הדינמיקה. אנו מחפשים בסיס חדש המאופיין על ידי המספרים הקוונטיים של האופרטורים הכוללים:
+\begin{itemize}
+    \item $J^2$ (ערך עצמי $J(J+1)$)
+    \item $J_z$ (ערך עצמי $M$)
+\end{itemize}
+בסיס זה נקרא \textbf{הבסיס המצומד} ומסומן $|J, M\rangle$ (או בפירוט $|j_1 j_2 J M\rangle$).
+
+\section{דוגמה: חיבור שני ספינים 1/2}
+
+נחקור את המקרה הפשוט ביותר: שני חלקיקים בעלי ספין $s_1 = \frac{1}{2}$ ו-$s_2 = \frac{1}{2}$.
+מימד מרחב ההילברט הוא $2 \times 2 = 4$.
+המצבים בבסיס המכפלה (הלא-מצומד) הם:
+\begin{itemize}
+    \item $|\uparrow \uparrow\rangle \equiv |\frac{1}{2}, \frac{1}{2}; \frac{1}{2}, \frac{1}{2}\rangle$
+    \item $|\uparrow \downarrow\rangle$
+    \item $|\downarrow \uparrow\rangle$
+    \item $|\downarrow \downarrow\rangle$
+\end{itemize}
+
+המטרה: למצוא את המצבים העצמיים של $\vec{S} = \vec{S}_1 + \vec{S}_2$ (הספין הכולל).
+
+\subsection{בניית הטריפלט (\LR{Triplet}) - $S=1$}
+
+נתחיל מהמצב בעל ההיטל המקסימלי האפשרי $M_{max} = m_1^{max} + m_2^{max} = \frac{1}{2} + \frac{1}{2} = 1$.
+המצב היחיד שמקיים זאת הוא:
+\[
+|J=1, M=1\rangle = |\uparrow \uparrow\rangle
+\]
+\begin{notebox}{בדיקת עקביות}
+נפעיל את אופרטור ההעלאה הכולל $S_+ = S_{1+} + S_{2+}$ על מצב זה.
+מכיוון ששני הספינים כבר במצב "למעלה" (מקסימלי), $S_{1+}|\uparrow\rangle = 0$ ו-$S_{2+}|\uparrow\rangle = 0$, ולכן:
+\[
+S_+ |\uparrow \uparrow\rangle = 0
+\]
+זה מאשר שזהו המצב העליון בסולם, כלומר $M=J=1$.
+\end{notebox}
+
+כעת, נבנה את שאר המצבים בסולם זה באמצעות אופרטור ההורדה הכולל:
+\[
+S_- = S_{1-} + S_{2-}
+\]
+נזכור כי פעולת אופרטור הורדה על מצב עצמי נתונה על ידי:
+\[
+J_- |j, m\rangle = \sqrt{j(j+1) - m(m-1)} |j, m-1\rangle
+\]
+עבור ספין חצי ($s=1/2$): $S_-|\uparrow\rangle = |\downarrow\rangle$ ו-$S_-|\downarrow\rangle = 0$.
+
+\subsubsection*{צעד 1: מציאת המצב $|1, 0\rangle$}
+נפעיל את $S_-$ על שני צידי המשוואה $|1, 1\rangle = |\uparrow \uparrow\rangle$:
+
+\textbf{צד שמאל (בסיס מצומד):}
+\[
+S_- |1, 1\rangle = \sqrt{1(2) - 1(0)} |1, 0\rangle = \sqrt{2} |1, 0\rangle
+\]
+
+\textbf{צד ימין (בסיס מכפלה):}
+\[
+(S_{1-} + S_{2-}) |\uparrow \uparrow\rangle = (S_{1-}|\uparrow\rangle)|\uparrow\rangle + |\uparrow\rangle(S_{2-}|\uparrow\rangle) = |\downarrow \uparrow\rangle + |\uparrow \downarrow\rangle
+\]
+
+נשווה את הצדדים ונבודד את $|1, 0\rangle$:
+\[
+\sqrt{2} |1, 0\rangle = |\downarrow \uparrow\rangle + |\uparrow \downarrow\rangle \implies \boxed{|1, 0\rangle = \frac{1}{\sqrt{2}} \left( |\uparrow \downarrow\rangle + |\downarrow \uparrow\rangle \right)}
+\]
+
+\subsubsection*{צעד 2: מציאת המצב $|1, -1\rangle$}
+נפעיל שוב את $S_-$ על המצב $|1, 0\rangle$:
+
+\textbf{צד שמאל:}
+\[
+S_- |1, 0\rangle = \sqrt{1(2) - 0(-1)} |1, -1\rangle = \sqrt{2} |1, -1\rangle
+\]
+
+\textbf{צד ימין:}
+\begin{align*}
+S_- \frac{1}{\sqrt{2}} ( |\uparrow \downarrow\rangle + |\downarrow \uparrow\rangle ) &= \frac{1}{\sqrt{2}} \left[ (S_{1-} + S_{2-})|\uparrow \downarrow\rangle + (S_{1-} + S_{2-})|\downarrow \uparrow\rangle \right] \\
+&= \frac{1}{\sqrt{2}} \left[ (|\downarrow \downarrow\rangle + 0) + (0 + |\downarrow \downarrow\rangle) \right] \\
+&= \frac{1}{\sqrt{2}} (2 |\downarrow \downarrow\rangle) = \sqrt{2} |\downarrow \downarrow\rangle
+\end{align*}
+
+מהשוואת הצדדים נקבל:
+\[
+\boxed{|1, -1\rangle = |\downarrow \downarrow\rangle}
+\]
+
+\begin{resultbox}{סיכום מצבי הטריפלט ($S=1$)}
+מצאנו שלושה מצבים סימטריים להחלפת חלקיקים, המהווים את הטריפלט:
+\begin{itemize}
+    \item $|1, 1\rangle = |\uparrow \uparrow\rangle$
+    \item $|1, 0\rangle = \frac{1}{\sqrt{2}} (|\uparrow \downarrow\rangle + |\downarrow \uparrow\rangle)$
+    \item $|1, -1\rangle = |\downarrow \downarrow\rangle$
+\end{itemize}
+\end{resultbox}
+
+\subsection{המצב הרביעי (\LR{Singlet})}
+מכיוון שמימד המרחב הוא 4, חייב להיות מצב נוסף אורתוגונלי לשלושת מצבי הטריפלט. מצב זה יהיה בעל $J=0, M=0$ (אנטי-סימטרי). נדון בבנייתו בהמשך (על ידי דרישת אורתוגונליות למצב $|1, 0\rangle$).
+

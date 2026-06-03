@@ -1,0 +1,254 @@
+\section{ חלקיק בשדה אלקטרומגנטי ורמות לנדאו}
+
+הרצאה זו עוסקת בפורמליזם הקוונטי של חלקיק טעון הנע בהשפעת שדות אלקטרומגנטיים, גזירת זרם ההסתברות, אינווריאנטיות לכיול (\LR{Gauge Invariance}), ופתרון מלא של בעיית לנדאו (חלקיק בשדה מגנטי קבוע).
+
+\subsection{המילטוניאן של חלקיק בשדה אלקטרומגנטי}
+
+נפתח בחזרה על המכניקה הקלאסית והמעבר לקוונטים[. עבור חלקיק בעל מסה $m$ ומטען $q$, הלגראנז'יאן נתון על ידי:
+\begin{equation}
+\mathcal{L} = \frac{1}{2}m\dot{\vec{x}}^2 + q\vec{x}\cdot\vec{A} - q\phi
+\end{equation}
+כאשר $\vec{A}(\vec{x},t)$ הוא הפוטנציאל הוקטורי ו-$\phi(\vec{x},t)$ הוא הפוטנציאל הסקלרי.
+
+\begin{definitionbox}{תנע קנוני מול תנע קינטי}
+התנע הקנוני (\LR{Canonical Momentum}), המסומן ב-$\vec{p}$, מוגדר על ידי הנגזרת של הלגראנז'יאן לפי המהירות:
+\begin{equation}
+\vec{p} = \frac{\partial \mathcal{L}}{\partial \dot{\vec{x}}} = m\dot{\vec{x}} + q\vec{A}
+\end{equation}
+מכאן נגדיר את התנע הקינטי (\LR{Kinetic Momentum}), $\vec{\pi}$, שמייצג את המהירות הפיזיקלית:
+\begin{equation}
+\vec{\pi} \equiv m\dot{\vec{x}} = \vec{p} - q\vec{A}
+\end{equation}
+\end{definitionbox}
+
+כדי לקבל את ההמילטוניאן, נבצע התמרת לז'נדר (\LR{Legendre Transform}):
+\begin{align}
+H &= \vec{p}\cdot\dot{\vec{x}} - \mathcal{L} \nonumber \\
+&= \vec{p}\cdot\frac{(\vec{p}-q\vec{A})}{m} - \left[ \frac{1}{2}m\left(\frac{\vec{p}-q\vec{A}}{m}\right)^2 + q\left(\frac{\vec{p}-q\vec{A}}{m}\right)\cdot\vec{A} - q\phi \right] \nonumber \\
+&= \frac{\vec{p}^2 - q\vec{p}\cdot\vec{A}}{m} - \frac{(\vec{p}-q\vec{A})^2}{2m} - \frac{q\vec{p}\cdot\vec{A} - q^2 A^2}{m} + q\phi
+\end{align}
+לאחר פישוט האלגברה, נקבל את ההמילטוניאן הקלאסי:
+\begin{equation}
+H = \frac{1}{2m}\left(\vec{p} - q\vec{A}\right)^2 + q\phi
+\end{equation}
+
+\begin{notebox}{קוונטיזציה קנונית}
+במעבר למכניקת הקוונטים, אופרטור התנע הקנוני הוא שמקיים את יחסי החילוף הקנוניים $[x_i, p_j] = i\hbar \delta_{ij}$. לכן, ההצבה היא:
+\[
+\vec{p} \to -i\hbar\vec{\nabla}
+\]
+ולא $m\vec{v} \to -i\hbar\vec{\nabla}$. ההמילטוניאן הקוונטי הוא:
+\[
+\boxed{H = \frac{1}{2m}\left(-i\hbar\vec{\nabla} - q\vec{A}\right)^2 + q\phi}
+\]
+\end{notebox}
+
+\subsection{גזירת זרם ההסתברות (\LR{Probability Current Density})}
+
+נחשב בפירוט את זרם ההסתברות $\vec{J}$ כדי להבין את השפעת הפוטנציאל הוקטורי.
+משוואת הרציפות היא:
+\begin{equation}
+\frac{\partial \rho}{\partial t} + \vec{\nabla}\cdot\vec{J} = 0
+\end{equation}
+כאשר $\rho = \psi^*\psi$. נגזור את צפיפות ההסתברות לפי הזמן:
+\begin{equation}
+\frac{\partial \rho}{\partial t} = \frac{\partial \psi^*}{\partial t}\psi + \psi^*\frac{\partial \psi}{\partial t}
+\end{equation}
+נשתמש במשוואת שרדינגר $i\hbar \partial_t \psi = H\psi$ ובמשוואה הצמודה $-i\hbar \partial_t \psi^* = (H\psi)^*$:
+\begin{equation}
+\frac{\partial \rho}{\partial t} = \frac{1}{-i\hbar}(H\psi)^*\psi + \frac{1}{i\hbar}\psi^*(H\psi) = -\frac{i}{\hbar} \left[ \psi^*(H\psi) - (H\psi)^*\psi \right]
+\end{equation}
+
+נציב את ההמילטוניאן $H = \frac{1}{2m}(\vec{p}-q\vec{A})^2 + q\phi$. האיבר הפוטנציאלי $q\phi$ הוא ממשי ולכן מתבטל בהפרש:
+\[
+\psi^*(q\phi\psi) - (q\phi\psi)^*\psi = 0
+\]
+נותרנו רק עם האיבר הקינטי $K = \frac{1}{2m}(\vec{p}-q\vec{A})^2$.
+נפתח את האיבר הקינטי בזהירות (תוך שמירה על סדר האופרטורים, שכן $\vec{p}$ ו-$\vec{A}$ אינם בהכרח מתחלפים):
+\begin{equation}
+(\vec{p}-q\vec{A})^2 = p^2 - q(\vec{p}\cdot\vec{A} + \vec{A}\cdot\vec{p}) + q^2 A^2
+\end{equation}
+גם האיבר $q^2 A^2$ הוא פונקציה ממשית ומתבטל. נשארנו עם:
+\begin{equation}
+\frac{\partial \rho}{\partial t} = -\frac{i}{\hbar}\frac{1}{2m} \left[ \psi^*(p^2 \psi) - (p^2\psi)^*\psi - q\left( \psi^*(\vec{p}\cdot\vec{A} + \vec{A}\cdot\vec{p})\psi - \text{c.c.} \right) \right]
+\end{equation}
+
+\subsubsection*{חישוב האיבר הקינטי הטהור ($p^2$)}
+זהו החישוב הסטנדרטי כמו בחלקיק חופשי:
+\begin{align}
+\psi^* p^2 \psi - (p^2 \psi)^* \psi &= \psi^* (-\hbar^2 \nabla^2 \psi) - (-\hbar^2 \nabla^2 \psi^*)\psi \nonumber \\
+&= -\hbar^2 \vec{\nabla} \cdot (\psi^* \vec{\nabla}\psi - \psi \vec{\nabla}\psi^*)
+\end{align}
+תרומתו לזרם (לאחר כפל ב- $-\frac{i}{\hbar 2m}$):
+\begin{equation}
+\vec{J}_0 = \frac{i\hbar}{2m}(\psi^* \vec{\nabla}\psi - \psi \vec{\nabla}\psi^*) = \frac{\hbar}{m} \text{Im}(\psi^* \vec{\nabla}\psi)
+\end{equation}
+
+\subsubsection*{חישוב האיברים המעורבים ($pA$)}
+נזכור כי $\vec{p} = -i\hbar\vec{\nabla}$. האיבר המעורב הוא:
+\begin{align}
+\langle \vec{p}\cdot\vec{A} + \vec{A}\cdot\vec{p} \rangle &= -i\hbar \left[ \psi^* \vec{\nabla}\cdot(\vec{A}\psi) + \psi^*\vec{A}\cdot(\vec{\nabla}\psi) \right] \nonumber \\
+&= -i\hbar \left[ \psi^* (\vec{\nabla}\cdot\vec{A})\psi + \psi^*\vec{A}\cdot\vec{\nabla}\psi + \psi^*\vec{A}\cdot\vec{\nabla}\psi \right] \nonumber \\
+&= -i\hbar \left[ \psi^* \psi (\vec{\nabla}\cdot\vec{A}) + 2\psi^*\vec{A}\cdot\vec{\nabla}\psi \right]
+\end{align}
+זהו החלק האופרטורי. נחזור למשוואת הרציפות. הדרך הקלה ביותר לראות את התוצאה היא על ידי זיהוי התבנית של המהירות.
+התנע הקינטי הוא $\vec{\pi} = \vec{p} - q\vec{A}$. נצפה שזרם ההסתברות יהיה קשור לערך התצפית של המהירות $\vec{v} = \vec{\pi}/m$.
+
+\begin{resultbox}{הביטוי הסופי לזרם ההסתברות}
+לאחר ביצוע האלגברה המלאה, מקבלים את הביטוי:
+\begin{equation}
+\vec{J} = \frac{1}{m} \text{Re}\left[ \psi^* (\vec{p} - q\vec{A})\psi \right]
+\end{equation}
+ובכתיב מפורש:
+\begin{equation}
+\boxed{\vec{J} = \frac{\hbar}{m} \text{Im}(\psi^* \vec{\nabla}\psi) - \frac{q}{m}\vec{A}|\psi|^2}
+\end{equation}
+\end{resultbox}
+
+\begin{theorembox}{משמעות פיזיקלית}
+האיבר הנוסף $-\frac{q}{m}\vec{A}|\psi|^2$ מבטיח שהזרם אינווריאנטי לכיול (כפי שנראה מיד). הוא משלים את התנע הקנוני לתנע הקינטי. ערך התצפית של הזרם הוא המהירות הפיזיקלית:
+\[
+\int \vec{J} \, d^3x = \frac{\langle \vec{p} - q\vec{A} \rangle}{m} = \frac{\langle \vec{\pi} \rangle}{m}
+\]
+\end{theorembox}
+
+\subsection{אינווריאנטיות לכיול (\LR{Gauge Invariance})}
+
+המשוואות הפיזיקליות חייבות להיות אינווריאנטיות תחת טרנספורמציית כיול של השדות:
+\begin{align}
+\vec{A} &\to \vec{A}' = \vec{A} + \vec{\nabla}\Lambda(\vec{x},t) \\
+\phi &\to \phi' = \phi - \frac{\partial \Lambda}{\partial t}
+\end{align}
+שינוי זה לא משנה את השדות $\vec{E}$ ו-$\vec{B}$. עם זאת, ההמילטוניאן משתנה:
+\[
+H(\vec{A}, \phi) \neq H(\vec{A}', \phi')
+\]
+כדי שמשוואת שרדינגר תישאר תקפה, פונקציית הגל חייבת לעבור טרנספורמציה אוניטרית תלויה במקום ובזמן (\LR{Local Gauge Transformation}).
+
+\subsubsection*{גזירת הטרנספורמציה לפונקציית הגל}
+נניח $\psi' = U\psi$ כאשר $U = e^{i\alpha(\vec{x},t)}$. נדרוש:
+\begin{equation}
+i\hbar \frac{\partial \psi'}{\partial t} = H' \psi' = \left[ \frac{1}{2m}(\vec{p} - q\vec{A}')^2 + q\phi' \right] \psi'
+\end{equation}
+נציב $\psi' = e^{i\alpha}\psi$:
+\[
+i\hbar \frac{\partial}{\partial t}(e^{i\alpha}\psi) = i\hbar (i\dot{\alpha} e^{i\alpha}\psi + e^{i\alpha}\dot{\psi}) = e^{i\alpha} (i\hbar \dot{\psi} - \hbar \dot{\alpha}\psi)
+\]
+כמו כן, נבדוק כיצד האופרטור הקינטי פועל על $U\psi$. נשתמש בזהות חשובה עבור אופרטור התנע:
+\begin{equation}
+(\vec{p} - q\vec{A}') e^{i\alpha}\psi = (-i\hbar\vec{\nabla} - q\vec{A} - q\vec{\nabla}\Lambda) e^{i\alpha}\psi
+\end{equation}
+נפעיל את הגרדיאנט (כלל השרשרת):
+\[
+\vec{\nabla}(e^{i\alpha}\psi) = i(\vec{\nabla}\alpha)e^{i\alpha}\psi + e^{i\alpha}\vec{\nabla}\psi
+\]
+לכן:
+\begin{align}
+(\vec{p} - q\vec{A}') e^{i\alpha}\psi &= e^{i\alpha} \left[ (-i\hbar\vec{\nabla} + \hbar\vec{\nabla}\alpha - q\vec{A} - q\vec{\nabla}\Lambda) \psi \right]
+\end{align}
+כדי לשחזר את הצורה המקורית $(\vec{p}-q\vec{A})\psi$, אנו חייבים לדרוש שהאיברים המיותרים יתבטלו:
+\[
+\hbar\vec{\nabla}\alpha - q\vec{\nabla}\Lambda = 0 \implies \alpha = \frac{q}{\hbar}\Lambda
+\]
+באופן דומה עבור החלק הזמני, האיבר $-\hbar \dot{\alpha}$ מהנגזרת הזמנית מתבטל עם השינוי בפוטנציאל הסקלרי $\phi' = \phi - \dot{\Lambda}$.
+
+\begin{resultbox}{טרנספורמציית הכיול הקוונטית}
+תחת טרנספורמציית כיול של הפוטנציאלים עם פונקציה $\Lambda(\vec{x},t)$, פונקציית הגל משתנה לפי:
+\begin{equation}
+\psi'(\vec{x},t) = e^{i\frac{q}{\hbar}\Lambda(\vec{x},t)} \psi(\vec{x},t)
+\end{equation}
+פאזה זו היא \textbf{לוקאלית} (תלויה במקום).
+\end{resultbox}
+
+\begin{notebox}{גדלים מדידים (\LR{Observables})}
+\begin{itemize}
+    \item התנע הקנוני $\vec{p}$ \textbf{אינו גודל מדיד} (תלוי כיול).
+    \item התנע הקינטי $\vec{\pi} = \vec{p} - q\vec{A}$ \textbf{הוא גודל מדיד} (אינווריאנטי לכיול).
+    \item הדרישה לאינווריאנטיות לכיול (סימטריה $U(1)$ לוקאלית) היא הבסיס ליצירת הכוח האלקטרומגנטי בתיאוריות שדות.
+\end{itemize}
+\end{notebox}
+
+\subsection{רמות לנדאו: חלקיק בשדה מגנטי קבוע}
+
+נפתור את משוואת שרדינגר עבור חלקיק בשדה מגנטי קבוע $\vec{B} = B_0 \hat{z}$.
+
+\subsubsection*{בחירת הכיול וההמילטוניאן}
+נבחר ב-\textbf{כיול לנדאו} (\LR{Landau Gauge}):
+\begin{equation}
+\vec{A} = (0, B_0 x, 0)
+\end{equation}
+בדיקה: $\vec{\nabla} \times \vec{A} = (\partial_x A_y - \partial_y A_x)\hat{z} = (B_0 - 0)\hat{z} = B_0\hat{z}$.
+ההמילטוניאן הוא:
+\begin{equation}
+H = \frac{1}{2m} \left[ p_x^2 + (p_y - q B_0 x)^2 + p_z^2 \right]
+\end{equation}
+נשים לב כי הקואורדינטות $y$ ו-$z$ הן ציקליות (לא מופיעות מפורשות, רק התנעים שלהן), ולכן האופרטורים $p_y$ ו-$p_z$ מתחלפים עם $H$. אלו הם קבועי תנועה.
+
+\subsubsection*{הפרדת משתנים}
+נחפש פתרון מהצורה:
+\begin{equation}
+\psi(x,y,z) = e^{ik_y y} e^{ik_z z} \varphi(x)
+\end{equation}
+כאשר הערכים העצמיים של התנעים הם $p_y \to \hbar k_y$ ו-$p_z \to \hbar k_z$.
+נציב במשוואת שרדינגר הבלתי-תלויה בזמן:
+\begin{equation}
+\left[ \frac{p_x^2}{2m} + \frac{(\hbar k_y - q B_0 x)^2}{2m} + \frac{\hbar^2 k_z^2}{2m} \right] \varphi(x) = E \varphi(x)
+\end{equation}
+
+\subsubsection*{הקבלה לאוסילטור הרמוני}
+נרצה להביא את האיבר האמצעי לצורה של פוטנציאל הרמוני $\frac{1}{2}m\omega^2 (x-x_0)^2$.
+נגדיר את \textbf{תדירות הציקלוטרון}:
+\begin{equation}
+\omega_B = \frac{q B_0}{m}
+\end{equation}
+נבצע השלמה לריבוע באיבר הפוטנציאל:
+\begin{equation}
+\frac{1}{2m} q^2 B_0^2 \left( x - \frac{\hbar k_y}{q B_0} \right)^2 = \frac{1}{2} m \omega_B^2 (x - x_0)^2
+\end{equation}
+כאשר מרכז האוסילציה הוא:
+\begin{equation}
+x_0(k_y) = \frac{\hbar k_y}{q B_0} = \frac{\hbar k_y}{m \omega_B}
+\end{equation}
+המשוואה עבור $\varphi(x)$ היא כעת משוואת אוסילטור הרמוני 1D:
+\begin{equation}
+\left[ \frac{p_x^2}{2m} + \frac{1}{2} m \omega_B^2 (x - x_0)^2 \right] \varphi(x) = \tilde{E} \varphi(x)
+\end{equation}
+כאשר האנרגיה האפקטיבית היא $\tilde{E} = E - \frac{\hbar^2 k_z^2}{2m}$.
+
+\begin{resultbox}{ספקטרום האנרגיה - רמות לנדאו}
+הערכים העצמיים של האנרגיה הם:
+\begin{equation}
+E_{n, k_z} = \hbar \omega_B \left( n + \frac{1}{2} \right) + \frac{\hbar^2 k_z^2}{2m}, \quad n=0,1,2,\dots
+\end{equation}
+\end{resultbox}
+
+פונקציות הגל הן פונקציות הרמיט מוזזות סביב $x_0$:
+\begin{equation}
+\varphi_n(x) \propto H_n\left(\frac{x-x_0}{a_B}\right) e^{-\frac{(x-x_0)^2}{2a_B^2}}, \quad a_B = \sqrt{\frac{\hbar}{m\omega_B}}
+\end{equation}
+כאשר $a_B$ הוא האורך המגנטי (\LR{Magnetic Length}).
+
+\subsubsection*{ניוון (\LR{Degeneracy})}
+האנרגיה אינה תלויה ב-$k_y$ (שקובע את מיקום מרכז המעגל $x_0$).
+עבור דגם סופי בגודל $L_x \times L_y$, מרכז המעגל חייב להיות בתוך הדגם: $0 \le x_0 \le L_x$.
+תנאי זה מגביל את תחום הערכים האפשריים של $k_y$:
+\[
+0 \le \frac{\hbar k_y}{q B_0} \le L_x \implies 0 \le k_y \le \frac{q B_0 L_x}{\hbar}
+\]
+צפיפות המצבים במרחב $k$ היא $L_y / 2\pi$. מספר המצבים המנוונים $N$ הוא:
+\[
+N = \frac{L_y}{2\pi} \Delta k_y = \frac{L_y}{2\pi} \frac{q B_0 L_x}{\hbar} = \frac{q}{h} (B_0 L_x L_y) = \frac{\Phi}{\Phi_0}
+\]
+הניוון הוא פרופורציונלי לשטף המגנטי הכולל $\Phi$ העובר בדגם.
+
+\subsection{מבוא לאפקט אהרונוב-בוהם}
+לקראת השיעור הבא, הוצגה הבעיה של סליל (\LR{Solenoid}) אינסופי:
+\begin{itemize}
+    \item בתוך הסליל ($r < a$): $\vec{B} = B_0 \hat{z}$.
+    \item מחוץ לסליל ($r > a$): $\vec{B} = 0$.
+\end{itemize}
+אף על פי שהשדה המגנטי מתאפס בחוץ, הפוטנציאל הוקטורי לא:
+\begin{equation}
+\vec{A} = \frac{\Phi}{2\pi r} \hat{\phi} \quad (r > a)
+\end{equation}
+העובדה ש-$\vec{A} \neq 0$ במקום בו החלקיק נמצא תשפיע על הפאזה הקוונטית ותגרום לאפקט התאבכות מדיד, למרות העדר כוח לורנץ קלאסי.

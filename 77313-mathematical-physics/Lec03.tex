@@ -1,0 +1,861 @@
+%% LyX 2.6.0~devel created this file.  For more info, see https://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fontspec}
+\setlength{\parindent}{0bp}
+\usepackage{xcolor}
+\definecolor{lyxboxbgcolor}{rgb}{0.800781, 0.800781, 0.800781}
+\usepackage{float}
+\usepackage{cancel}
+\usepackage{geometry}
+\geometry{verbose,tmargin=2.7cm,bmargin=2cm,lmargin=2cm,rmargin=2cm,headheight=2cm,headsep=0cm,footskip=0cm}
+\usepackage{setspace}
+\usepackage{esint}
+\usepackage{microtype}
+\onehalfspacing
+\usepackage[pdfusetitle,
+ bookmarks=true,bookmarksnumbered=true,bookmarksopen=true,bookmarksopenlevel=2,
+ breaklinks=true,pdfborder={0 0 0},pdfborderstyle={},backref=section,colorlinks=true]
+ {hyperref}
+\hypersetup{
+ linkcolor=black, citecolor=black}
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+\providecommand\textquotedblplain{%
+  \bgroup\addfontfeatures{Mapping=}\char34\egroup}
+
+\@ifundefined{date}{}{\date{}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+% Engine guard: use XeLaTeX/LuaLaTeX
+\usepackage{iftex}
+\ifPDFTeX
+  \PackageError{template}{Please compile with XeLaTeX or LuaLaTeX}{}
+\fi
+
+% ======== ADVANCED HEBREW ACADEMIC TEMPLATE ========
+% Packages (trimmed to avoid conflicts)
+% \usepackage{autobreak}  % REMOVE: can conflict with amsmath; use \allowdisplaybreaks
+% \usepackage[T1]{fontenc}  % REMOVE: not needed with fontspec
+\usepackage{relsize}
+\usepackage{xcolor}
+\usepackage{amssymb}
+\usepackage{titlesec}
+\usepackage{polyglossia}
+\usepackage{fancyhdr}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{geometry}
+\usepackage{microtype}
+\usepackage{fontspec}
+\usepackage{physics}
+\usepackage{siunitx}
+\usepackage{mathtools}
+\usepackage{empheq}
+\usepackage{mdframed}
+
+% Colors (deduplicated)
+\definecolor{primaryblue}{RGB}{33,150,243}
+\definecolor{secondaryblue}{RGB}{63,81,181}
+\definecolor{accentgreen}{RGB}{76,175,80}
+\definecolor{warningcolor}{RGB}{255,152,0}
+\definecolor{errorcolor}{RGB}{244,67,54}
+\definecolor{infocolor}{RGB}{3,169,244}
+\definecolor{notecolor}{RGB}{255,193,7}
+\definecolor{theoremcolor}{RGB}{156,39,176}
+\definecolor{definitioncolor}{RGB}{255,87,34}
+\definecolor{examplecolor}{RGB}{0,150,136}
+\definecolor{lightgray}{RGB}{245,245,245}
+\definecolor{darkgray}{RGB}{66,66,66}
+% Add aliases for colors referenced in layout to avoid missing-color errors
+\colorlet{successcolor}{accentgreen}
+\colorlet{warningred}{errorcolor}
+\colorlet{purple}{theoremcolor}
+\colorlet{green}{accentgreen}
+\colorlet{blue}{primaryblue}
+\colorlet{orange}{warningcolor}
+\definecolor{brown}{RGB}{121,85,72}
+
+% Language + fonts (polyglossia)
+\setdefaultlanguage{hebrew}
+\setotherlanguage{english}
+
+% Robust font selection with fallbacks (fixes Times New Roman not loadable)
+% Hebrew serif
+\IfFontExistsTF{David CLM}
+  {\newfontfamily\hebrewfont[Script=Hebrew]{David CLM}}
+  {\IfFontExistsTF{Noto Serif Hebrew}
+     {\newfontfamily\hebrewfont[Script=Hebrew]{Noto Serif Hebrew}}
+     {\newfontfamily\hebrewfont[Script=Hebrew]{Noto Sans Hebrew}}}
+
+% Hebrew sans
+\IfFontExistsTF{Nachlieli CLM}
+  {\newfontfamily\hebrewfontsf[Script=Hebrew]{Nachlieli CLM}}
+  {\IfFontExistsTF{Noto Sans Hebrew}
+     {\newfontfamily\hebrewfontsf[Script=Hebrew]{Noto Sans Hebrew}}
+     {\newfontfamily\hebrewfontsf[Script=Hebrew]{David CLM}}}
+
+% Latin main font (fallbacks for missing Times New Roman)
+\IfFontExistsTF{Times New Roman}
+  {\setmainfont{Times New Roman}}
+  {\IfFontExistsTF{TeX Gyre Termes}
+     {\setmainfont{TeX Gyre Termes}}
+     {\IfFontExistsTF{Liberation Serif}
+        {\setmainfont{Liberation Serif}}
+        {\IfFontExistsTF{FreeSerif}
+           {\setmainfont{FreeSerif}}
+           {\setmainfont{Latin Modern Roman}}}}}
+
+% siunitx
+\sisetup{
+  output-decimal-marker = {.},
+  group-separator = {,},
+  group-minimum-digits = 4,
+  per-mode = symbol
+}
+
+% Geometry (avoid overriding in LyX header)
+\geometry{
+  a4paper,
+  left=2cm, right=2cm, top=2.7cm, bottom=2cm,
+  headheight=16pt, headsep=0.5cm, footskip=1cm
+}
+
+% Display math spacing (fix duplicates)
+\AtBeginDocument{\setlength\abovedisplayskip{6pt}}
+\AtBeginDocument{\setlength\abovedisplayshortskip{6pt}}
+\AtBeginDocument{\setlength\belowdisplayskip{6pt}}
+\AtBeginDocument{\setlength\belowdisplayshortskip{6pt}}
+
+% Headers
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[R]{\nouppercase{\leftmark}}
+\renewcommand{\headrulewidth}{0.5pt}
+
+% Footnote rule (single definition)
+\AtBeginDocument{
+  \renewcommand\footnoterule{%
+    \kern 3pt
+    \hbox to \textwidth{\hfill\vrule height 0.5pt width 0.4\textwidth}
+    \kern 4pt
+  }%
+}
+
+% Word spacing
+\spaceskip=1.3\fontdimen2\font plus 1\fontdimen3\font minus 1.5\fontdimen4\font
+
+% Colors (deduplicated)
+\definecolor{primaryblue}{RGB}{33,150,243}
+\definecolor{secondaryblue}{RGB}{63,81,181}
+\definecolor{accentgreen}{RGB}{76,175,80}
+\definecolor{warningcolor}{RGB}{255,152,0}
+\definecolor{errorcolor}{RGB}{244,67,54}
+\definecolor{infocolor}{RGB}{3,169,244}
+\definecolor{notecolor}{RGB}{255,193,7}
+\definecolor{theoremcolor}{RGB}{156,39,176}
+\definecolor{definitioncolor}{RGB}{255,87,34}
+\definecolor{examplecolor}{RGB}{0,150,136}
+\definecolor{lightgray}{RGB}{245,245,245}
+\definecolor{darkgray}{RGB}{66,66,66}
+
+% QED symbol
+%\renewcommand{\qedsymbol}{$\blacksquare$}
+
+% Section formatting (wrap \@ macro with makeatletter)
+\makeatletter
+\renewcommand*{\@seccntformat}[1]{\hspace{0.5cm}\csname the#1\endcsname\hspace{0.5cm}}
+\makeatother
+\titleformat{\section}{\fontsize{20}{20}\bfseries}{\thesection}{10pt}{}
+\titleformat{\subsection}{\fontsize{15}{15}\bfseries}{\thesubsection}{10pt}{}
+\titleformat{\subsubsection}{\bfseries}{\thesubsubsection}{10pt}{}
+
+% RTL equation tag direction
+\makeatletter
+\def\maketag@@@#1{\hbox{\m@th\normalfont\LRE{#1}}}
+\def\tagform@#1{\maketag@@@{(\ignorespaces#1\unskip)}}
+\makeatother
+
+% Disjoint union, large logical and
+\makeatletter
+\def\moverlay{\mathpalette\mov@rlay}
+\def\mov@rlay#1#2{\leavevmode\vtop{%
+   \baselineskip\z@skip \lineskiplimit-\maxdimen
+   \ialign{\hfil$\m@th#1##$\hfil\cr#2\crcr}}}
+\newcommand{\charfusion}[3][\mathord]{#1{\ifx#1\mathop\vphantom{#2}\fi\mathpalette\mov@rlay{#2\cr#3}}\ifx#1\mathop\expandafter\displaylimits\fi}
+\makeatother
+\newcommand{\cupdot}{\charfusion[\mathbin]{\cup}{\cdot}}
+\newcommand{\bigcupdot}{\charfusion[\mathop]{\bigcup}{\cdot}}
+\newcommand{\kaliLargeLand}{\mathop{\mathlarger{\mathlarger{\mathlarger{\land}}}}}
+
+% Hebrew text helper (fix)
+\newcommand{\hebtext}[1]{\texthebrew{#1}}
+
+% Define theorem-like environments
+\newtheorem{theorem}{משפט}[section]
+\newtheorem{lemma}[theorem]{למה}
+\newtheorem{proposition}[theorem]{הצעה}
+\newtheorem{corollary}[theorem]{מסקנה}
+\newtheorem{definition}[theorem]{הגדרה}
+\newtheorem{example}[theorem]{דוגמה}
+\newtheorem{exercise}[theorem]{תרגיל}
+\newtheorem{problem}[theorem]{בעיה}
+\newtheorem{remark}[theorem]{הערה}
+\newtheorem{notation}[theorem]{סימון}
+\newtheorem{formula}[theorem]{נוסחה}
+\newtheorem{result}[theorem]{תוצאה}
+\newtheorem{experiment}[theorem]{ניסוי}
+\newtheorem{physicslaw}[theorem]{חוק פיזיקלי}
+
+% Define additional physics environments
+\newenvironment{physicsnote}{\begin{notebox}{}}{\end{notebox}}
+\newenvironment{physicsconstant}{\begin{mainbox}{קבוע פיזיקלי}}{\end{mainbox}}
+\newenvironment{physicsunits}{\begin{mainbox}{יחידות}}{\end{mainbox}}
+\newenvironment{physicsapplication}{\begin{examplebox}{יישום}}{\end{examplebox}}
+\newenvironment{important}{\begin{importantbox}{}}{\end{importantbox}}
+\newenvironment{summary}{\begin{summarybox}{}}{\end{summarybox}}
+
+% Define proof environment
+\newenvironment{solution}{\begin{proof}[פתרון]}{\end{proof}}
+
+% ======== TCOLORBOX CONFIGURATIONS ========
+\tcbuselibrary{breakable,skins,theorems,fitting,xparse}
+
+% Main content box
+\newtcolorbox{mainbox}[2][]{
+    enhanced,
+    breakable,
+    colback=lightgray!20,
+    colframe=primaryblue,
+    fonttitle=\bfseries\large,
+    title={#2},
+    attach boxed title to top center={yshift=-2mm},
+    boxed title style={size=small, colback=primaryblue, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Theorem box
+\newtcolorbox{theorembox}[2][]{
+    enhanced,
+    breakable,
+    colback=theoremcolor!10,
+    colframe=theoremcolor,
+    fonttitle=\bfseries\large,
+    title={משפט: #2},
+    attach boxed title to top left={yshift=-2mm, xshift=5mm},
+    boxed title style={size=small, colback=theoremcolor, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Definition box
+\newtcolorbox{definitionbox}[2][]{
+    enhanced,
+    breakable,
+    colback=definitioncolor!10,
+    colframe=definitioncolor,
+    fonttitle=\bfseries\large,
+    title={הגדרה: #2},
+    attach boxed title to top left={yshift=-2mm, xshift=5mm},
+    boxed title style={size=small, colback=definitioncolor, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Example box
+\newtcolorbox{examplebox}[2][]{
+    enhanced,
+    breakable,
+    colback=examplecolor!10,
+    colframe=examplecolor,
+    fonttitle=\bfseries\large,
+    title={דוגמה: #2},
+    attach boxed title to top right={yshift=-2mm, xshift=-5mm},
+    boxed title style={size=small, colback=examplecolor, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Problem box
+\newtcolorbox{problembox}[2][]{
+    enhanced,
+    breakable,
+    colback=primaryblue!10,
+    colframe=primaryblue,
+    fonttitle=\bfseries\large,
+    title={בעיה: #2},
+    attach boxed title to top right={yshift=-2mm, xshift=-5mm},
+    boxed title style={size=small, colback=primaryblue, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Solution box
+\newtcolorbox{solutionbox}[1][]{
+    enhanced,
+    breakable,
+    colback=successcolor!10,
+    colframe=successcolor,
+    fonttitle=\bfseries\large,
+    title=פתרון,
+    attach boxed title to top right={yshift=-2mm, xshift=-5mm},
+    boxed title style={size=small, colback=successcolor, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Note box
+\newtcolorbox{notebox}[2][]{
+    enhanced,
+    breakable,
+    colback=notecolor!15,
+    colframe=notecolor,
+    fonttitle=\bfseries,
+    title={הערה: #2},
+    attach boxed title to top left={yshift=-2mm, xshift=5mm},
+    boxed title style={size=small, colback=notecolor, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Warning box
+\newtcolorbox{warningbox}[2][]{
+    enhanced,
+    breakable,
+    colback=warningcolor!15,
+    colframe=warningcolor,
+    fonttitle=\bfseries,
+    title={אזהרה: #2},
+    attach boxed title to top center={yshift=-2mm},
+    boxed title style={size=small, colback=warningcolor, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Important box
+\newtcolorbox{importantbox}[2][]{
+    enhanced,
+    breakable,
+    colback=errorcolor!10,
+    colframe=errorcolor,
+    fonttitle=\bfseries,
+    title={חשוב: #2},
+    attach boxed title to top center={yshift=-2mm},
+    boxed title style={size=small, colback=errorcolor, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Summary box
+\newtcolorbox{summarybox}[2][]{
+    enhanced,
+    breakable,
+    colback=infocolor!10,
+    colframe=infocolor,
+    fonttitle=\bfseries\large,
+    title={סיכום: #2},
+    attach boxed title to top center={yshift=-2mm},
+    boxed title style={size=small, colback=infocolor, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Formula box
+\newtcolorbox{formulabox}[2][]{
+    enhanced,
+    breakable,
+    colback=purple!10,
+    colframe=purple,
+    fonttitle=\bfseries\large,
+    title={נוסחה: #2},
+    attach boxed title to top center={yshift=-2mm},
+    boxed title style={size=small, colback=purple, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Result box
+\newtcolorbox{resultbox}[2][]{
+    enhanced,
+    breakable,
+    colback=accentgreen!15,
+    colframe=accentgreen,
+    fonttitle=\bfseries\large,
+    title={תוצאה: #2},
+    attach boxed title to top center={yshift=-2mm},
+    boxed title style={size=small, colback=accentgreen, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Enhanced mathematical environments
+\newenvironment{calculation}
+  {\begin{align}}
+  {\end{align}}
+
+\newenvironment{steps}
+  {\begin{enumerate}[label=שלב \arabic*:, rightmargin=1cm]}
+  {\end{enumerate}}
+
+% Custom commands for common elements
+\newcommand{\highlight}[1]{\textcolor{primaryblue}{\textbf{#1}}}
+% CHANGED: avoid clash with the 'important' environment
+\newcommand{\imptext}[1]{\textcolor{errorcolor}{\textbf{#1}}}
+\newcommand{\note}[1]{\textcolor{notecolor}{\textit{#1}}}
+
+% Enhanced equation highlighting
+\newcommand{\boxedeq}[1]{\boxed{\displaystyle #1}}
+\newcommand{\redeq}[1]{\textcolor{errorcolor}{\boxed{\displaystyle #1}}}
+\newcommand{\blueeq}[1]{\textcolor{primaryblue}{\boxed{\displaystyle #1}}}
+
+\makeatother
+
+\begin{document}
+\title{סיכום הרצאה - משוואות (77313)}
+\maketitle
+\begin{center}
+כותב: ערן ריחני
+\par\end{center}
+
+\begin{center}
+סמסטר א' תשפ\textquotedblright ה, האוניברסיטה העברית
+\par\end{center}
+
+\newpage{}
+
+\tableofcontents{}
+\begin{center}
+\vfill{}
+\par\end{center}
+
+\begin{center}
+הערות
+\par\end{center}
+
+\[
+***
+\]
+
+\begin{center}
+\par\end{center}
+
+\[
+***
+\]
+
+\begin{center}
+\par\end{center}
+
+\newpage{}
+
+\section{פונקציות מוכללות }
+
+נתחיל מהפונקציה $\phi_{1}\left(x\right)$
+\begin{enumerate}
+\item יש לה מקסימום ב-$x=0$ 
+\item שואפת ב-$\pm\infty$ ל-0 (זוגית)
+\item $\intop^{\infty}_{-\infty}\phi_{1}\left(x\right)dx=1$
+\end{enumerate}
+לורנציאן :
+
+\[
+\phi^{\left(a\right)}_{1}\left(x\right)=\frac{1}{\pi}\frac{1}{1+x^{2}}
+\]
+
+גאוסיאן:
+\[
+\phi^{\left(b\right)}_{1}\left(x\right)=\frac{1}{\sqrt{\pi}}e^{-x^{2}}
+\]
+
+נראה שהאינטגרלים של הפונקציות האלו שווה 1 .
+
+\[
+\intop^{\infty}_{-\infty}\phi^{\left(a\right)}_{1}\left(x\right)dx=\frac{1}{\pi}\intop^{\infty}_{-\infty}\frac{1}{1+x^{2}}dx=\frac{1}{\pi}\arctan\left(x\right)\intop^{\infty}_{-\infty}\frac{1}{\pi}\left(\frac{\pi}{2}+\frac{\pi}{2}\right)=1
+\]
+
+כעת נבצע את האינטגרל על $\phi^{\left(b\right)}_{1}$:
+\[
+\intop^{\infty}_{-\infty}\phi^{\left(b\right)}_{1}\left(x\right)dx=\frac{1}{\sqrt{\pi}}\underset{I}{\underbrace{\intop^{\infty}_{-\infty}e^{-x^{2}}dx}}=
+\]
+
+צ\textquotedbl ל $I=\sqrt{\pi}$
+
+\begin{align*}
+I^{2} & =\intop^{\infty}_{-\infty}e^{-x^{2}}dx\intop^{\infty}_{-\infty}e^{-y^{2}}dy=\iint^{\infty}_{\infty}\exp-\left(x^{2}+y^{2}\right)dxdy\overset{x^{2}+y^{2}=r^{2}}{\underset{\frac{y}{x}=\tan\varphi}{=}}\intop^{2\pi}_{0}\intop^{\infty}_{0}e^{-r^{2}}drd\varphi\\
+ & =2\pi\intop^{\infty}_{0}e^{-r^{2}}dr\overset{r^{2}=z}{=}2\frac{\pi}{2}\intop^{\infty}_{0}e^{z}dz=\pi e^{-z}\mid^{0}_{\infty}=\pi
+\end{align*}
+
+\begin{important}
+אינטגרל של גאוסיאן 
+
+\[
+\intop^{\infty}_{-\infty}e^{-\beta x^{2}}dx=\sqrt{\frac{\pi}{\beta}}
+\]
+\end{important}
+נגדיר סדרת פונקציות : $\phi_{m}\left(x\right)=m\phi_{1}\left(mx\right)$
+כאשר $m=1,2,\ldots$ 
+
+ככל ש-$m$ גדל כך מתכוונת ומוגברת . 
+\[
+\intop^{\infty}_{-\infty}\phi_{m}\left(x\right)dx=\intop^{\infty}_{-\infty}m\phi_{1}\left(x\right)dx\overset{y=mx}{\underset{dy=mdx}{=}}\intop^{\infty}_{-\infty}\phi_{1}\left(y\right)dy=1
+\]
+
+\[
+\begin{cases}
+\phi^{\left(a\right)}_{m}=\frac{m}{\pi}\frac{1}{1+\left(mx\right)^{2}}\\
+\phi^{\left(b\right)}_{m}=\frac{m}{\sqrt{\pi}}\exp\left(-m^{2}x^{2}\right)
+\end{cases}
+\]
+
+אלו הן פונקציות יוצרות של פונקציית $\delta$.
+
+מה קורה כאשר $m\longrightarrow\infty$ ?
+\[
+\underset{x\neq0,\ m\rightarrow\infty}{\phi_{m}}\left(x\right)=m\underset{x\neq0,\ m\rightarrow\infty}{\phi_{1}\left(mx\right)}\rightarrow0
+\]
+
+\[
+\lim\phi_{m}\left(x\right)=\lim m\phi_{1}\left(x\right)\leqslant\lim_{m\rightarrow\infty}m\cdot\frac{1}{\left(mx\right)^{\alpha}}=x^{-\alpha}m^{1-\alpha}\underset{m\rightarrow\infty}{\longrightarrow}0
+\]
+
+לפיכך נגדיר 
+\[
+\delta\left(x\right)=\lim_{m\rightarrow\infty}\phi_{m}\left(x\right)
+\]
+\[
+\delta\left(x\right)=\begin{cases}
+0 & x\neq0\\
+\infty & x=0
+\end{cases}
+\]
+\[
+\intop^{\infty}_{-\infty}\delta\left(x\right)dx=1
+\]
+
+שימושים:
+\begin{enumerate}
+\item גדלים נקודתיים - 
+\[
+\varphi\left(x\right)=3\delta\left(x\right)\Rightarrow\intop^{\infty}_{-\infty}\varphi\left(x\right)dx=3\intop^{\infty}_{-\infty}\varphi\left(x\right)dx=3
+\]
+
+\begin{enumerate}
+\item לדוגמה, צפיפות מטען/מסה 
+\begin{align*}
+\lambda\left(x\right) & =m\delta\left(x-a\right)\\
+m & =\intop^{\infty}_{-\infty}\lambda\left(x\right)dx=m\intop^{\infty}_{-\infty}\delta\left(x-a\right)dx\underset{y=x-a}{=}m\intop^{\infty}_{-\infty}\delta\left(y\right)dy=m
+\end{align*}
+\end{enumerate}
+\end{enumerate}
+טענה: 
+\[
+\forall\varepsilon>0\ \intop^{\infty}_{-\infty}\delta\left(x\right)dx=\intop^{\varepsilon}_{-\varepsilon}\delta\left(x\right)dx=1
+\]
+
+זהות חשובה: 
+\[
+\intop^{\infty}_{-\infty}\delta\left(x-a\right)f\left(x\right)dx=f\left(a\right)
+\]
+
+
+\subsection*{זהויות חשובות של פונקציה דלתא }
+\begin{enumerate}
+\item $\delta\left(ax\right)=\frac{1}{}$
+\item $\delta\left(f\left(x\right)\right)=$
+\end{enumerate}
+%
+\newpage{}
+
+\section{שבוע שני הרצאה 4 - פונקציות מוכללות 30 October 2025 }
+
+תזכורת: 
+\[
+\delta\left(x\right)=\begin{cases}
+0 & x\neq0\\
+\infty & x=0
+\end{cases},\quad\intop^{\infty}_{-\infty}\delta\left(x\right)=1,\ \ \intop^{\infty}_{-\infty}\delta\left(x-a\right)f\left(x\right)=f\left(a\right)
+\]
+
+\[
+\Theta\left(x\right)=\intop^{\infty}_{-\infty}\delta\left(x'\right)dx'=\begin{cases}
+0 & x<0\\
+1 & x>0
+\end{cases}
+\]
+
+ראינו שפונקציית $\Theta$ היא הגבול: 
+\[
+\Theta\left(x\right)=\lim_{m\rightarrow\infty}\frac{1}{\pi}\left[\arctan\left(mx\right)+\frac{\pi}{2}\right]
+\]
+
+והנגזרת של פונקציית דלתא $\Theta$ היא $\delta$ .
+\[
+\delta\left(x\right)=\Theta'\left(x\right)
+\]
+
+סוף התזכורת.
+
+נחשב את האינטגרל הבא:
+\begin{align*}
+I=\intop^{\infty}_{-\infty}\delta\left(x\right)\Theta\left(x\right)dx & =\Theta\left(x\right)^{2}\Biggr|^{\infty}_{-\infty}-\intop^{\infty}_{-\infty}\delta\left(x\right)\Theta\left(x\right)dx=1-\underset{I}{\underbrace{\intop^{\infty}_{-\infty}\delta\left(x\right)\Theta\left(x\right)dx}}\\
+\Rightarrow & 2I=1\Rightarrow I=\frac{1}{2}
+\end{align*}
+
+זה מוביל אותו אל המשפט הבא:
+
+\[
+\intop^{\infty}_{-\infty}\delta\left(x-a\right)f\left(x\right)dx=\frac{f\left(a\rightarrow a_{+}\right)-f\left(a-a_{-}\right)}{2}
+\]
+ כלומר אם $f$ לא רציפה בנקודה $a$ אז נמצע את ערכי הפונקציה בנקודת
+אי הרציפות.
+
+דוגמה:
+
+\[
+f\left(x\right)=\begin{cases}
+x^{3} & 0<x<1\\
+x^{2}+2 & x<1
+\end{cases}
+\]
+
+נאיבית היינו רוצים לגזור כל תחום בנפרד אבל אז היינו נתקלים בבעיה שאנו
+לא יודעים מה קורה בנקודת אי-הרציפות.
+
+הפתרון הוא להגדיר פונקציה חדשה ולהשתמש בפונקציה מוכללת
+\[
+\varphi\left(x\right)=\begin{cases}
+x^{3} & 0\leqslant x\leqslant1\\
+x^{2} & x>1
+\end{cases},\quad\varphi'\left(x\right)=\begin{cases}
+3x^{2} & x<1\\
+2x & x>1
+\end{cases}
+\]
+\[
+f\left(x\right)=\varphi\left(x\right)+2\Theta\left(x-1\right)
+\]
+ כעת ניתן לגזור את הפונקציה בשלמותה.
+\[
+f'\left(x\right)=\varphi'\left(x\right)+2\delta\left(x-1\right)
+\]
+
+
+\subsubsection*{נגזרת של פונקצצית $\delta$}
+
+\[
+\delta\left(x\right)=\lim_{m\rightarrow\infty}\phi^{\left(b\right)}_{m}\left(x\right)=\frac{m}{\sqrt{\pi}}e^{-\left(mx\right)^{2}}
+\]
+\begin{align*}
+\delta'\left(x\right) & =\lim_{m\rightarrow\infty}\phi'^{\left(b\right)}_{m}\left(x\right)\\
+ & =\frac{m}{\sqrt{\pi}}\frac{d}{dx}\big(e^{-(mx)^{2}}\big)\\
+ & =\frac{d}{dx}e^{-(mx)^{2}}\\
+ & =e^{-(mx)^{2}}\cdot(-2mx)
+\end{align*}
+\[
+\phi_{m}'(x)=\frac{m}{\sqrt{\pi}}(-2mx)e^{-(mx)^{2}}=-\frac{2m^{2}x}{\sqrt{\pi}}e^{-(mx)^{2}}
+\]
+\begin{align*}
+\delta''\left(x\right) & =\lim_{m\rightarrow\infty}\phi''^{\left(b\right)}_{m}\left(x\right)\\
+ & =\frac{d}{dx}\left(-\frac{2m^{2}x}{\sqrt{\pi}}e^{-(mx)^{2}}\right)\\
+ & =-\frac{2m^{2}}{\sqrt{\pi}}\left(e^{-(mx)^{2}}+x\frac{d}{dx}e^{-(mx)^{2}}\right)\\
+ & =-\frac{2m^{2}}{\sqrt{\pi}}\left(e^{-(mx)^{2}}-2m^{2}x^{2}e^{-(mx)^{2}}\right)
+\end{align*}
+\[
+\delta_{m}''(x)=\frac{2m^{2}}{\sqrt{\pi}}e^{-(mx)^{2}}(2m^{2}x^{2}-1)
+\]
+
+לאחר השוואה לאפס לקבלת נקודות הקיצון נקבל 
+\[
+\delta'\left(x^{^{\ast}}\right)=\sqrt{\frac{2}{\pi e}}m^{2},\quad\delta'\left(x^{^{\ast}}_{-}\right)=-\sqrt{\frac{2}{\pi e}}m^{2}
+\]
+
+\selectlanguage{english}%
+\begin{center}
+insert here tickz graph of $\delta'\left(x\right)$ 
+\par\end{center}
+
+\selectlanguage{hebrew}%
+נשים לב שזה מזכיר לנו דיפול חשמלי.
+
+כעת נסתכל על האינטגרל הבא:
+\begin{align*}
+\intop^{\infty}_{-\infty}f\left(x\right)\delta'\left(x-a\right)dx & =\cancel{f\left(x\right)\delta\left(x-a\right)\Biggr|^{\infty}_{-\infty}}-\intop f'\left(x\right)\delta\left(x-a\right)dx\\
+ & =-f'\left(a\right)
+\end{align*}
+
+ניתן להכליל את זה לנגזרות גבוהות יותר.
+
+הכנס כאן את הנוסחה הכללית.
+
+מהו האינטגרל הבא:
+\[
+\intop^{\infty}_{-\infty}\delta'\left(x-a\right)dx=\delta\left(x\right)\Biggr|^{\infty}_{-\infty}=0
+\]
+
+לכן $\delta$ היא מועמדת מעולה לתאר צפיפות מטען של דיפול. (סה\textquotedbl כ
+המטען הוא אפס).
+
+\[
+\rho\left(x\right)=P_{0}\delta'\left(x\right)
+\]
+\[
+\intop^{\infty}_{-\infty}\rho_{dp}\left(x\right)dx=0,\quad\intop^{\infty}_{-\infty}x\rho_{dp}dx=-P_{0}
+\]
+קיבלנו שהמומנט שלילי כיוון שהמטען מכוון ממינוס לפלוס והוקטור מכוון
+ככה.
+
+ניתן להכליל את $\delta\left(x\right)$ למימדים יותר גבוהים.
+
+\[
+\delta\left(x\right)\delta\left(y\right)\delta\left(z\right)=\begin{cases}
+\infty & x,y,z=0\\
+0 & x,y,z\neq0
+\end{cases}
+\]
+\[
+\intop^{\infty}_{-\infty}\delta^{3}\left(z,y,z\right)=1,\quad\left[\delta^{3}\left(x,y,z\right)\right]=\frac{1}{m^{3}}
+\]
+
+
+\subsection*{טרנספורם פורייה של פונקציית $\delta$}
+
+\[
+\mathcal{F}\left(\omega\right)=\frac{1}{\sqrt{2\pi}}\intop^{\infty}_{-\infty}f\left(t\right)e^{i\omega t}dt
+\]
+
+והטרנספורם ההפוך
+\[
+f\left(t\right)=\frac{1}{\sqrt{2\pi}}\intop^{\infty}_{-\infty}F\left(\omega\right)e^{-i\omega t}d\omega
+\]
+\[
+f\left(t\right)=\frac{1}{\sqrt{2\pi}}\intop^{\infty}_{-\infty}e^{i\omega t}\delta\left(t\right)d\omega=\frac{1}{\sqrt{2\pi}}
+\]
+
+טענה:
+\[
+\delta\left(t\right)=\frac{1}{2\pi}\intop^{\infty}_{-\infty}e^{i\omega t}d\omega
+\]
+
+הוכחה: 
+\[
+insert\ proof\ here
+\]
+
+נוכיח שמקבלים את הפונקציה המקורית ע\textquotedbl י האינטגרל הבא:
+\[
+f\left(t\right)=\frac{1}{\sqrt{2\pi}}\intop^{\infty}_{-\infty}F\left(\omega\right)e^{-i\omega t}d\omega
+\]
+\begin{align*}
+f\left(t\right) & =\intop^{\infty}_{-\infty}\frac{1}{\sqrt{2\pi}}\underset{F\left(\omega\right)}{\underbrace{\intop^{\infty}_{-\infty}F\left(\omega\right)e^{-i\omega t'}dt'}}e^{-i\omega t}d\omega\\
+ & =\frac{1}{2\pi}\intop^{\infty}_{-\infty}dt'f\left(t'\right)\underset{2\pi\delta\left(t-t'\right)}{\underbrace{\intop^{\infty}_{-\infty}d\omega e^{i\omega\left(t'-t\right)}}}=f\left(t\right)
+\end{align*}
+
+
+\section{חשבון ווריאציה }
+
+היסטוריה: 
+
+ברנולי התעניין בשאלה באיזה מסלול הזמן של נפילה של כדור יהיה מינימלי?
+
+עד עכשיו דיברנו על פונקציות $f:\ \mathbb{R}\rightarrow\mathbb{R}$ 
+
+כעת נדבר על פונקציונל שמקבל פונקציה ומוציאה מספר.
+
+\[
+T_{AB}=\intop^{B}_{A}\frac{ds}{v}
+\]
+\[
+ds=\sqrt{dx^{2}+dy^{2}}=dx\sqrt{1+y'\left(x\right)^{2}}
+\]
+
+מצאנו את $ds$ כעת נמצא את $v$ מחוק שימור האנרגיה בין 2 נקודות.
+\[
+0=-mgy+\frac{1}{2}mv^{2}\Rightarrow v=\sqrt{2gy}
+\]
+
+\[
+T_{AB}=\intop^{x_{0}}_{0}\frac{dx\sqrt{1+y'\left(x\right)^{2}}}{\sqrt{2gy}}=\frac{1}{\sqrt{2gy}}\intop^{x_{0}}_{0}\sqrt{\frac{1+y'^{2}}{y}}dx
+\]
+
+קיבלנו גדול שנקרא פונקציונל שנסמנו ב-$I\left[y\left(x\right)\right]$
+\[
+I\left[y\left(x\right)\right]=\intop^{b}_{a}F\left(x,y,y',\ldots\right)dx
+\]
+המטרה היא למצוא $y\left(x\right)$שממזער (או ממקסם) את $I\left[y\left(x\right)\right]$. 
+
+כמעט כל חוק טבע ניתן לקבל מתוך חשבון וריאציות ועקרון מזעור אנרגיה.
+
+עם זאת חוקים אמפירים כגון חוק אוהם לא ניתן לקבל מתוכם.
+\end{document}

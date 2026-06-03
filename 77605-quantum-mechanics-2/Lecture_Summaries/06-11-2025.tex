@@ -1,0 +1,916 @@
+\subsection*{מטרות השיעור}
+\begin{itemize}
+    \item הבנת העיקרון הווריאציוני ויישומו בקירוב רמת היסוד
+    \item למידת משפט ריץ (\LR{Ritz Theorem}) והמשמעות הפיזיקלית שלו — סטציונריות מצבים עצמיים
+    \item הכרת משפט השונות (\LR{Variance Theorem}) לחסימת ערכי עצמיים
+    \item הכרת עקרון המינימקס (\LR{Minimax Principle}) למציאת רמות מעוררות
+    \item יישום על בעיה פיזיקלית: חלקיק בפוטנציאל מרכזי $V(r) = -\alpha/r^s$
+    \item הבנת תנאי הלגיטימיות הפיזיקלית: מדוע $s < 2$?
+    \item הבנת המקרה הקריטי $s = 2$ וסימטריית הסקייל
+    \item הוכחת קיום אינסוף מצבים קשורים עבור $s < 2$
+\end{itemize}
+
+\subsection*{תזכורת}
+
+בשיעורים הקודמים למדנו על סימטריות, חבורות והצגות. כעת אנו עוברים לנושא חדש לחלוטין: \textbf{שיטות קירוב במכניקה קוונטית}.
+
+\textbf{למה אנחנו צריכים שיטות קירוב?}
+
+רוב הבעיות במכניקה קוונטית אינן ניתנות לפתרון אנליטי מדויק. למעשה, רק מספר בעיות ספורות ניתנות לפתרון מדויק:
+\begin{itemize}
+    \item חלקיק חופשי
+    \item בור פוטנציאל אינסופי
+    \item אוסילטור הרמוני
+    \item אטום מימן (חלקיק בפוטנציאל קולוני)
+\end{itemize}
+
+לכל שאר הבעיות — אטומים עם יותר מאלקטרון אחד, מולקולות, גבישים, ועוד — אנו זקוקים ל\textbf{שיטות קירוב}.
+
+בשיעור זה נלמד שיטות \textbf{ווריאציוניות} — שיטות המבוססות על עקרון המינימיזציה של האנרגיה.
+
+\subsection{העיקרון הווריאציוני (\LR{Variational Principle})}
+
+\subsubsection*{משפט הווריאציה — גרסה בסיסית}
+
+\begin{theorembox}{משפט הווריאציה}
+תהי $\psi$ פונקציית גל \textbf{כלשהי} (לא בהכרח מצב עצמי) במרחב הילברט, ויהי $H$ המילטוניאן של המערכת. 
+
+אזי ערך התצפית של האנרגיה מקיים:
+\[
+\boxed{E[\psi] \equiv \frac{\braket{\psi|H|\psi}}{\braket{\psi|\psi}} \geq E_0}
+\]
+
+כאשר $E_0$ היא אנרגיית רמת היסוד של המערכת.
+
+\textbf{שוויון} מתקיים אם ורק אם $\psi$` היא פונקציית הגל של רמת היסוד.
+\end{theorembox}
+
+\subsubsection*{הוכחת משפט הווריאציה}
+
+\textbf{שלב 1 — פיתוח בבסיס עצמי:}
+
+כיוון שהמצבים העצמיים של $H$ מהווים בסיס שלם של המרחב, ניתן לייצג את $\psi$ כך:
+\[
+\ket{\psi} = \sum_{k=0}^{\infty} c_k \ket{\phi_k}
+\]
+כאשר $\{\ket{\phi_k}\}$ הם המצבים העצמיים המנורמלים של $H$:
+\[
+H\ket{\phi_k} = E_k\ket{\phi_k}, \quad \braket{\phi_i|\phi_j} = \delta_{ij}
+\]
+
+ונניח (ללא הגבלת הכלליות) שהערכים העצמיים מסודרים: $E_0 \leq E_1 \leq E_2 \leq \cdots$
+
+\textbf{שלב 2 — חישוב ערך התצפית של האנרגיה:}
+\begin{align*}
+\braket{\psi|H|\psi} &= \sum_{k,l} c_k^* c_l \braket{\phi_k|H|\phi_l} \\
+&= \sum_{k,l} c_k^* c_l E_l \braket{\phi_k|\phi_l} \\
+&= \sum_{k,l} c_k^* c_l E_l \delta_{kl} \\
+&= \sum_{k=0}^{\infty} |c_k|^2 E_k
+\end{align*}
+
+באופן דומה:
+\[
+\braket{\psi|\psi} = \sum_{k=0}^{\infty} |c_k|^2
+\]
+
+\textbf{שלב 3 — הפחתת $E_0$:}
+\begin{align*}
+\frac{\braket{\psi|H|\psi}}{\braket{\psi|\psi}} - E_0 &= \frac{\sum_{k=0}^{\infty} |c_k|^2 E_k}{\sum_{k=0}^{\infty} |c_k|^2} - E_0 \\
+&= \frac{\sum_{k=0}^{\infty} |c_k|^2 (E_k - E_0)}{\sum_{k=0}^{\infty} |c_k|^2}
+\end{align*}
+
+\textbf{שלב 4 — השוואה:}
+
+כיוון שלכל $k$: $E_k \geq E_0$, מתקיים $E_k - E_0 \geq 0$.
+
+כמו כן, $|c_k|^2 \geq 0$ לכל $k$.
+
+לכן:
+\[
+\frac{\sum_{k=0}^{\infty} |c_k|^2 (E_k - E_0)}{\sum_{k=0}^{\infty} |c_k|^2} \geq 0
+\]
+
+\textbf{מסקנה:}
+\[
+\boxed{\frac{\braket{\psi|H|\psi}}{\braket{\psi|\psi}} \geq E_0}
+\]
+
+\textbf{תנאי השוויון:}
+
+השוויון מתקיים אם ורק אם $(E_k - E_0) |c_k|^2 = 0$ לכל $k$.
+
+כלומר, $c_k = 0$ לכל $k \geq 1$, ורק $c_0 \neq 0$.
+
+במקרה זה: $\ket{\psi} = c_0 \ket{\phi_0}$ — כלומר, $\psi$ פרופורציונלי למצב היסוד.
+
+\subsubsection*{פרשנות פיזיקלית}
+
+\begin{importantbox}{השימוש במשפט הווריאציה}
+\textbf{מה המשפט נותן לנו?}
+\begin{itemize}
+    \item \textbf{חסם עליון} לאנרגיית רמת היסוד: $E_0 \leq E[\psi]$ לכל $\psi$
+    \item \textbf{שיטה למצוא קירוב} לאנרגיית היסוד: נבחר משפחת פונקציות ניסוי $\psi(\alpha)$ (עם פרמטרים $\alpha$), ונמזער את $E[\psi(\alpha)]$
+    \item ככל ש-$\psi$ קרובה יותר למצב היסוד האמיתי, כך $E[\psi]$ קרובה יותר ל-$E_0$
+\end{itemize}
+
+\textbf{יישום טיפוסי:}
+\begin{enumerate}
+    \item בוחרים פונקציית ניסוי: $\psi(r; \alpha_1, \alpha_2, \ldots)$ עם פרמטרים חופשיים
+    \item מחשבים: $E(\alpha_1, \alpha_2, \ldots) = \frac{\braket{\psi|H|\psi}}{\braket{\psi|\psi}}$
+    \item ממזערים לפי הפרמטרים: $\frac{\partial E}{\partial \alpha_i} = 0$
+    \item התוצאה: קירוב עליון לאנרגיית היסוד
+\end{enumerate}
+\end{importantbox}
+
+\subsection{משפט ריץ (\LR{Ritz Theorem}) — גרסה מוכללת}
+
+\subsubsection*{הנחה והוכחה}
+
+משפט ריץ מרחיב את משפט הווריאציה ומלמד שערך התצפית של האנרגיה הוא \textbf{סטציונארי} (נקודת קיצון) בסביבה של הערכים העצמיים.
+
+\begin{theorembox}{משפט ריץ המוכלל}
+תהי $\ket{\tilde{\psi}}$ פונקציית גל הקרובה למצב עצמי $\ket{\phi_n}$ בסדר $O(\varepsilon)$:
+\[
+\braket{\phi_k|\tilde{\psi}} \sim O(\varepsilon) \quad \text{לכל } k \neq n
+\]
+
+אזי ערך התצפית של ההמילטוניאן שונה מהערך העצמי רק בסדר $O(\varepsilon^2)$:
+\[
+\boxed{\bar{E} = \frac{\braket{\tilde{\psi}|H|\tilde{\psi}}}{\braket{\tilde{\psi}|\tilde{\psi}}} = E_n + O(\varepsilon^2)}
+\]
+
+\textbf{משמעות:} ערך התצפית של האנרגיה הוא \textbf{סטציונארי} (הנגזרת הראשונה מתאפסת) בסביבה של מצב עצמי!
+\end{theorembox}
+
+\textbf{שלב 1 — פיתוח:}
+
+נכתוב את הווריאציה הקטנה סביב המצב העצמי:
+\[
+\ket{\tilde{\psi}} = \ket{\phi_n} + \ket{\delta\psi}
+\]
+כאשר $\braket{\phi_n|\delta\psi} = 0$ (ללא הגבלת הכלליות), ו-$\|\ket{\delta\psi}\| \sim O(\varepsilon)$.
+
+\textbf{שלב 2 — חישוב האנרגיה:}
+\begin{align*}
+\braket{\tilde{\psi}|H|\tilde{\psi}} &= \braket{\phi_n + \delta\psi|H|\phi_n + \delta\psi} \\
+&= \braket{\phi_n|H|\phi_n} + \braket{\phi_n|H|\delta\psi} + \braket{\delta\psi|H|\phi_n} + \braket{\delta\psi|H|\delta\psi}
+\end{align*}
+
+\textbf{שלב 3 — ניצול תכונות המצב העצמי:}
+
+$H\ket{\phi_n} = E_n\ket{\phi_n}$ ו-$\braket{\phi_n|\delta\psi} = 0$:
+\begin{align*}
+\braket{\phi_n|H|\delta\psi} &= E_n\braket{\phi_n|\delta\psi} = 0 \\
+\braket{\delta\psi|H|\phi_n} &= E_n\braket{\delta\psi|\phi_n} = 0
+\end{align*}
+
+\textbf{שלב 4 — התוצאה:}
+\begin{align*}
+\braket{\tilde{\psi}|H|\tilde{\psi}} &= E_n\braket{\phi_n|\phi_n} + \braket{\delta\psi|H|\delta\psi} \\
+&= E_n + \braket{\delta\psi|H|\delta\psi}
+\end{align*}
+
+כיוון ש-$\|\delta\psi\| \sim O(\varepsilon)$, מתקיים:
+\[
+\braket{\delta\psi|H|\delta\psi} \sim O(\varepsilon^2)
+\]
+
+באופן דומה: $\braket{\tilde{\psi}|\tilde{\psi}} = 1 + O(\varepsilon^2)$.
+
+\textbf{מסקנה:}
+\[
+\bar{E} = \frac{\braket{\tilde{\psi}|H|\tilde{\psi}}}{\braket{\tilde{\psi}|\tilde{\psi}}} = E_n + O(\varepsilon^2)
+\]
+\end{proof}
+
+\begin{notebox}{פרשנות: מדוע זה חשוב?}
+\textbf{משפט ריץ מלמד:}
+\begin{itemize}
+    \item אם מצאנו פונקציית גל $\psi$ עם שגיאה מסדר $\varepsilon$ ביחס למצב העצמי, האנרגיה המחושבת תהיה מדויקת עד $\varepsilon^2$!
+    \item זה הופך את השיטה הווריאציונית ל\textbf{יעילה מאוד} — שגיאה קטנה בפונקציית הגל גורמת לשגיאה קטנה בריבוע באנרגיה
+    \item בפועל: אפילו פונקציית ניסוי פשוטה יכולה לתת קירוב טוב מאוד לאנרגיה
+\end{itemize}
+\end{notebox}
+
+\subsection{משפט השונות (\LR{Variance Theorem})}
+
+\subsubsection*{ניסוח המשפט}
+
+\begin{theorembox}{משפט השונות}
+תהי $\psi$ פונקציית גל כלשהי עם ערך תצפית אנרגיה:
+\[
+E = \frac{\braket{\psi|H|\psi}}{\braket{\psi|\psi}}
+\]
+
+ונגדיר את השונות (סטיית התקן בריבוע) של האנרגיה:
+\[
+\sigma^2 \equiv \frac{\braket{\psi|(H - E)^2|\psi}}{\braket{\psi|\psi}} = \frac{\braket{\psi|H^2|\psi}}{\braket{\psi|\psi}} - E^2
+\]
+
+אזי \textbf{קיים לפחות ערך-עצמי אחד} של $H$ בתחום:
+\[
+\boxed{[E - \sigma, E + \sigma]}
+\]
+\end{theorembox}
+
+\begin{proof}
+\textbf{שלב 1 — פיתוח בבסיס עצמי:}
+\[
+\ket{\psi} = \sum_{i=0}^{\infty} c_i \ket{\phi_i}, \quad H\ket{\phi_i} = E_i\ket{\phi_i}
+\]
+
+\textbf{שלב 2 — חישוב השונות:}
+\begin{align*}
+\sigma^2 &= \frac{\sum_i |c_i|^2 E_i^2}{\sum_i |c_i|^2} - \left(\frac{\sum_i |c_i|^2 E_i}{\sum_i |c_i|^2}\right)^2 \\
+&= \frac{\sum_i |c_i|^2 E_i^2 \cdot \sum_j |c_j|^2 - (\sum_i |c_i|^2 E_i)^2}{(\sum_i |c_i|^2)^2}
+\end{align*}
+
+לאחר פישוט:
+\[
+\sigma^2 = \frac{\sum_{i,j} |c_i|^2|c_j|^2 (E_i - E_j)^2}{(\sum_i |c_i|^2)^2} = \sum_{i=0}^{\infty} p_i (E_i - E)^2
+\]
+כאשר $p_i = \frac{|c_i|^2}{\sum_j |c_j|^2}$ הסתברות למדוד את המצב $\ket{\phi_i}$.
+
+\textbf{שלב 3 — מציאת הערך העצמי הקרוב ביותר:}
+
+נסמן $E_k$ בתור הערך העצמי הקרוב ביותר ל-$E$. אזי:
+\[
+|E_i - E| \geq |E_k - E| \quad \text{לכל } i
+\]
+
+ולכן:
+\begin{align*}
+\sigma^2 &= \sum_i p_i (E_i - E)^2 \\
+&\geq (E_k - E)^2 \sum_i p_i \\
+&= (E_k - E)^2
+\end{align*}
+
+\textbf{מסקנה:}
+\[
+\sigma \geq |E_k - E| \quad \Rightarrow \quad E_k \in [E - \sigma, E + \sigma]
+\]
+\end{proof}
+
+\begin{importantbox}{שימוש במשפט השונות}
+\textbf{יתרון המשפט:}
+\begin{itemize}
+    \item משפט הווריאציה נותן רק \textbf{חסם עליון} לאנרגיית היסוד
+    \item משפט השונות נותן \textbf{טווח ערכים} שבו חייב להימצא ערך עצמי כלשהו
+    \item אם $\sigma$ קטן — יש לנו הערכה טובה לערך עצמי!
+    \item שימוש משולב: אם $E[\psi] > E_0$ קרוב ו-$\sigma$ קטן, אנו יודעים ש-$E_0$ קרוב מאוד ל-$E[\psi]$
+\end{itemize}
+\end{importantbox}
+
+\subsection{יישום: חלקיק בפוטנציאל כדורי}
+
+\subsubsection*{הגדרת הבעיה}
+
+נסתכל על חלקיק נע בפוטנציאל כדורי מושך:
+\[
+V(r) = -\frac{\alpha}{r^s}, \qquad \alpha > 0, \quad s > 0
+\]
+
+ההמילטוניאן במקרה זה:
+\[
+H = -\frac{\hbar^2}{2m}\nabla^2 - \frac{\alpha}{r^s} = \frac{\hat{p}^2}{2m} + V(r)
+\]
+
+\textbf{דוגמאות פיזיקליות:}
+\begin{itemize}
+    \item $s = 1$ — פוטנציאל קולוני (אטום המימן): $V(r) = -\frac{e^2}{4\pi\epsilon_0 r}$
+    \item $s = 2$ — פוטנציאל הרמוני (קירוב): $V(r) \approx -\frac{k}{2}r^2$ (עבור $r$ קטן)
+    \item $s = 6$ — פוטנציאל לנרד-ג'ונס (מולקולות)
+\end{itemize}
+
+\textbf{מטרה:} להעריך את אנרגיית רמת היסוד באמצעות העיקרון הווריאציוני.
+
+\subsubsection*{בחירת פונקציית הניסוי}
+
+נבחר פונקציית גל גאוסית כפונקציית ניסוי:
+\[
+\psi(r) = N e^{-\frac{r^2}{2r_0^2}}
+\]
+
+כאשר:
+\begin{itemize}
+    \item $r_0$ הוא פרמטר ווריאציוני (אורך אופייני)
+    \item $N$ הוא פקטור נורמליזציה
+\end{itemize}
+
+\textbf{חישוב פקטור הנורמליזציה:}
+\[
+1 = \int_0^{\infty} |\psi(r)|^2 4\pi r^2 dr = N^2 \int_0^{\infty} e^{-\frac{r^2}{r_0^2}} 4\pi r^2 dr
+\]
+
+שימוש באינטגרל גאוסי:
+\[
+\int_0^{\infty} r^2 e^{-\frac{r^2}{r_0^2}} dr = \frac{r_0^3}{4}\sqrt{\pi}
+\]
+
+לכן:
+\[
+N^2 \cdot \pi^{3/2} r_0^3 = 1 \quad \Rightarrow \quad \boxed{N = \left(\frac{2}{\pi}\right)^{3/4} r_0^{-3/2}}
+\]
+
+\subsubsection*{ניתוח סימטריה}
+
+מתוך הסימטריה הכדורית של הבעיה:
+\[
+\braket{x_i} = \braket{p_i} = 0, \quad i = 1,2,3
+\]
+
+אך אי הוודאות אינן מתאפסות:
+\[
+\Delta x_i = \sqrt{\braket{x_i^2} - \braket{x_i}^2} = \sqrt{\braket{x_i^2}} \sim r_0
+\]
+
+מעקרון אי-הוודאות:
+\[
+\Delta p_i \sim \frac{\hbar}{\Delta x_i} \sim \frac{\hbar}{r_0}
+\]
+
+\subsubsection*{הערכת אנרגיה קינטית}
+
+מניתוח ממדים:
+\[
+\braket{p^2} \sim (\Delta p)^2 \sim \frac{\hbar^2}{r_0^2}
+\]
+
+לכן:
+\[
+\boxed{\braket{T} = \frac{\braket{p^2}}{2m} \sim \frac{\hbar^2}{2m r_0^2}}
+\]
+
+\subsubsection*{הערכת אנרגיה פוטנציאלית}
+
+\begin{align*}
+\braket{V} &= \int \psi^*(r) V(r) \psi(r) d^3r \\
+&= -\alpha \int_0^{\infty} |\psi(r)|^2 \frac{1}{r^s} 4\pi r^2 dr \\
+&= -\alpha N^2 4\pi \int_0^{\infty} e^{-\frac{r^2}{r_0^2}} r^{2-s} dr
+\end{align*}
+
+החלפת משתנים: $x = r/r_0$, $dr = r_0 dx$:
+\[
+\braket{V} = -\alpha N^2 4\pi r_0^{3-s} \int_0^{\infty} e^{-x^2} x^{2-s} dx
+\]
+
+האינטגרל תלוי רק ב-$s$ (מספר), לכן:
+\[
+\boxed{\braket{V} \sim -\frac{\alpha}{r_0^s}}
+\]
+
+\subsubsection*{הערכת האנרגיה הכוללת}
+
+\begin{align*}
+E(r_0) &= \braket{H} = \braket{T} + \braket{V} \\
+&\sim \frac{\hbar^2}{2m r_0^2} - \frac{\alpha}{r_0^s}
+\end{align*}
+
+\textbf{מזעור לפי $r_0$:}
+\[
+\frac{dE}{dr_0} = 0 \quad \Rightarrow \quad -\frac{2\hbar^2}{2m r_0^3} + \frac{s\alpha}{r_0^{s+1}} = 0
+\]
+
+\[
+\frac{s\alpha}{r_0^{s+1}} = \frac{\hbar^2}{m r_0^3} \quad \Rightarrow \quad s\alpha = \frac{\hbar^2}{m} r_0^{s-2}
+\]
+
+\[
+\boxed{r_0 = \left(\frac{m s \alpha}{\hbar^2}\right)^{\frac{1}{s-2}}}
+\]
+
+\textbf{אנרגיית היסוד המוערכת:}
+
+הצבה חזרה:
+\[
+E_0 \sim \frac{\hbar^2}{2m r_0^2} - \frac{\alpha}{r_0^s} \sim -\frac{\alpha}{r_0^s}
+\]
+
+(האנרגיה הקינטית והפוטנציאלית מתבטלות חלקית)
+
+\[
+\boxed{E_0 \sim -\alpha \left(\frac{\hbar^2}{m s \alpha}\right)^{\frac{s}{s-2}}}
+\]
+
+\subsubsection*{מקרים פרטיים}
+
+\begin{examplebox}{פוטנציאל קולוני: $s = 1$}
+\[
+V(r) = -\frac{\alpha}{r}
+\]
+
+\textbf{אורך אופייני:}
+\[
+r_0 \sim \frac{\hbar^2}{m\alpha} \quad \text{(רדיוס בוהר!)}
+\]
+
+\textbf{אנרגיית היסוד:}
+\[
+E_0 \sim -\frac{m\alpha^2}{\hbar^2}
+\]
+
+זה בדיוק \textbf{הריידברג} (\LR{Rydberg}) — אנרגיית היסוד של אטום המימן!
+\[
+E_0^{\text{exact}} = -\frac{me^4}{32\pi^2\epsilon_0^2\hbar^2} = -13.6\text{ eV}
+\]
+
+הקירוב הווריאציוני נותן את סדר הגודל הנכון!
+\end{examplebox}
+
+\begin{examplebox}{פוטנציאל הרמוני: $s = 2$}
+\[
+V(r) = -\frac{\alpha}{r^2}
+\]
+
+\textbf{בעיה:} $s - 2 = 0$ $\Rightarrow$ הנוסחה מתבדרת!
+
+\textbf{פרשנות פיזיקלית:} אין מצב קשור יציב!
+
+פוטנציאל מסוג $-1/r^2$ הוא \textbf{חזק מדי} ליצירת מצב קשור — החלקיק "נופל" למרכז.
+
+זה קשור למשפט ה\textbf{\LR{virial}} — איזון בין אנרגיה קינטית לפוטנציאלית אפשרי רק עבור $s < 2$ או $s > 2$ (לא בדיוק $s = 2$).
+\end{examplebox}
+
+\subsection{סיכום עיקרי הנקודות}
+
+\begin{summarybox}{}
+\textbf{משפט הווריאציה:}
+\begin{itemize}
+    \item לכל פונקציית גל $\psi$: $E[\psi] = \frac{\braket{\psi|H|\psi}}{\braket{\psi|\psi}} \geq E_0$
+    \item נותן חסם עליון לאנרגיית היסוד
+    \item שוויון מתקיים אם ורק אם $\psi$ היא מצב היסוד
+    \item שיטה: בוחרים פונקציית ניסוי $\psi(\alpha)$, ממזערים $E(\alpha)$
+\end{itemize}
+
+\textbf{משפט ריץ:}
+\begin{itemize}
+    \item אם $\psi$ קרובה למצב עצמי בסדר $O(\varepsilon)$, אז האנרגיה שונה בסדר $O(\varepsilon^2)$
+    \item ערך התצפית של האנרגיה סטציונארי בסביבת מצבים עצמיים
+    \item שגיאה קטנה בפונקציית הגל $\Rightarrow$ שגיאה קטנה בריבוע באנרגיה
+\end{itemize}
+
+\textbf{משפט השונות:}
+\begin{itemize}
+    \item $\sigma^2 = \braket{(H - E)^2}$ — שונות האנרגיה
+    \item לפחות ערך עצמי אחד נמצא בתחום $[E - \sigma, E + \sigma]$
+    \item נותן הערכה דו-צדדית לערכים עצמיים
+    \item $\sigma$ קטן $\Rightarrow$ קירוב טוב
+\end{itemize}
+
+\textbf{חלקיק בפוטנציאל $V(r) = -\alpha/r^s$:}
+\begin{itemize}
+    \item פונקציית ניסוי גאוסית: $\psi(r) = Ne^{-r^2/(2r_0^2)}$
+    \item מניתוח ממדים: $\braket{T} \sim \hbar^2/(2mr_0^2)$, $\braket{V} \sim -\alpha/r_0^s$
+    \item מזעור: $r_0 \sim (\hbar^2/(ms\alpha))^{1/(s-2)}$
+    \item $s = 1$ (קולון): $E_0 \sim -m\alpha^2/\hbar^2$ — אנרגיית ריידברג!
+    \item $s = 2$: אין מצב קשור יציב
+\end{itemize}
+
+\textbf{עקרונות כלליים:}
+\begin{itemize}
+    \item עקרון אי-וודאות: $\Delta x \cdot \Delta p \sim \hbar$
+    \item איזון אנרגיה: תחרות בין אנרגיה קינטית (רוצה $r_0 \to \infty$) לפוטנציאלית (רוצה $r_0 \to 0$)
+    \item $r_0$ אופטימלי נקבע מאיזון בין שתי התרומות
+\end{itemize}
+\end{summarybox}
+
+\newpage
+
+\subsection{משפט הווריאציה המוכלל — עקרון מינימקס}
+
+עד כה דיברנו על קירוב לרמת היסוד $E_0$. אך מה לגבי רמות מעוררות $E_1, E_2, \ldots$? 
+
+המשפט הווריאציוני הפשוט אינו מספיק — הוא נותן רק חסם עליון לרמת היסוד. כעת נציג הכללה חשובה המאפשרת לנו לקרב גם רמות מעוררות.
+
+\subsubsection*{הבעיה: חסם עליון לרמות מעוררות}
+
+\begin{importantbox}{השאלה המרכזית}
+נתון: המילטוניאן $H$ במרחב הילברט $V$ עם ספקטרום:
+\[
+E_0 \leq E_1 \leq E_2 \leq \cdots
+\]
+
+\textbf{שאלה:} כיצד ניתן להעריך את $E_1, E_2, \ldots$ באמצעות עקרונות ווריאציוניים?
+\end{importantbox}
+
+\subsubsection*{רעיון: הגבלה לתת-מרחב}
+
+\begin{definitionbox}{תת-מרחב ווריאציוני}
+תהי $V_k \subset V$ תת-מרחב $k$-ממדי של מרחב הילברט $V$.
+
+נגדיר את \textbf{ההמילטוניאן המוגבל} ל-$V_k$:
+\[
+H_{V_k} = P_{V_k} H P_{V_k}
+\]
+כאשר $P_{V_k}$ הוא אופרטור ההיטל על $V_k$.
+
+\textbf{במונחים מטריציוניים:} אם $\{b_1, b_2, \ldots, b_k\}$ בסיס ל-$V_k$, אזי:
+\[
+(H_{V_k})_{ij} = \braket{b_i|H|b_j}, \quad i,j = 1, 2, \ldots, k
+\]
+
+זוהי מטריצה $k \times k$ שניתן ללכסן!
+\end{definitionbox}
+
+\begin{notebox}{הסבר אינטואיטיבי}
+במקום לפתור את משוואת שרדינגר במרחב האינסופי-ממדי המלא, אנו:
+\begin{enumerate}
+    \item בוחרים תת-מרחב קטן יותר $V_k$ (למשל: 7 פונקציות בסיס)
+    \item מחשבים את $H$ בתוך תת-המרחב הזה $\Rightarrow$ מטריצה $7 \times 7$
+    \item מלכסנים מטריצה זו $\Rightarrow$ מקבלים 7 ערכי עצמיים: $\varepsilon_1, \ldots, \varepsilon_7$
+\end{enumerate}
+
+\textbf{השאלה:} מה הקשר בין $\varepsilon_1, \ldots, \varepsilon_7$ לבין הספקטרום האמיתי $E_0, E_1, \ldots$?
+\end{notebox}
+
+\subsubsection*{משפט מינימקס (\LR{Courant-Fischer})}
+
+\begin{theorembox}{משפט הווריאציה המוכלל}
+יהי $H$ המילטוניאן הפועל על מרחב הילברט $V$, עם ספקטרום:
+\[
+E_0 \leq E_1 \leq E_2 \leq \cdots
+\]
+
+תהי $V_k \subset V$ תת-מרחב $k$-ממדי, ויהיו:
+\[
+\varepsilon_1 \leq \varepsilon_2 \leq \cdots \leq \varepsilon_k
+\]
+הערכים העצמיים של $H$ מוגבל ל-$V_k$ (כלומר, הספקטרום של מטריצת $H_{V_k}$).
+
+\textbf{אזי מתקיים:}
+\[
+\boxed{
+\begin{array}{rcl}
+E_0 &\leq& \varepsilon_1 \\
+E_1 &\leq& \varepsilon_2 \\
+E_2 &\leq& \varepsilon_3 \\
+&\vdots& \\
+E_{k-1} &\leq& \varepsilon_k
+\end{array}
+}
+\]
+
+כלומר: \textbf{כל} ערך עצמי של $H$ בתת-המרחב הוא חסם עליון לערך העצמי המתאים במרחב המלא!
+\end{theorembox}
+
+\subsubsection*{הוכחת המשפט}
+
+\begin{proof}[הוכחה (רעיון)]
+\textbf{שלב 1 — הוכחה עבור $E_0 \leq \varepsilon_1$:}
+
+זוהי תוצאה ישירה של משפט הווריאציה הפשוט!
+
+כל פונקציה $\psi \in V_k$ גם שייכת ל-$V$, לכן:
+\[
+\frac{\braket{\psi|H|\psi}}{\braket{\psi|\psi}} \geq E_0
+\]
+
+המינימום על כל $\psi \in V_k$ הוא $\varepsilon_1$, לכן:
+\[
+\varepsilon_1 = \min_{\psi \in V_k} \frac{\braket{\psi|H|\psi}}{\braket{\psi|\psi}} \geq E_0
+\]
+
+\textbf{שלב 2 — הוכחה עבור $E_1 \leq \varepsilon_2$:}
+
+\textbf{רעיון מפתח:} נשתמש בעובדה שהמצב השני בתת-המרחב אורתוגונלי למצב הראשון.
+
+יהי $\ket{\phi_0}$ מצב היסוד האמיתי (במרחב המלא), ויהי $\ket{\tilde{\phi}_1}$ המצב השני בתת-המרחב $V_k$.
+
+מכיוון ש-$\ket{\tilde{\phi}_1} \perp \ket{\tilde{\phi}_0}$ (המצב הראשון בתת-המרחב), נוכל לפרק:
+\[
+\ket{\tilde{\phi}_1} = \sum_{n=0}^{\infty} c_n \ket{\phi_n}
+\]
+
+כאשר $\ket{\phi_n}$ הם המצבים העצמיים האמיתיים.
+
+\textbf{אורתוגונליות:} $\braket{\tilde{\phi}_0|\tilde{\phi}_1} = 0$ גוררת שיכולה להיות תרומה משמעותית רק מ-$\ket{\phi_1}, \ket{\phi_2}, \ldots$ (לא מ-$\ket{\phi_0}$).
+
+לכן:
+\[
+\varepsilon_2 = \frac{\braket{\tilde{\phi}_1|H|\tilde{\phi}_1}}{\braket{\tilde{\phi}_1|\tilde{\phi}_1}} = \frac{\sum_{n=1}^{\infty} |c_n|^2 E_n}{\sum_{n=1}^{\infty} |c_n|^2} \geq E_1
+\]
+
+\textbf{שלב 3 — הכללה:}
+
+באותו אופן, המצב ה-$k$ בתת-המרחב אורתוגונלי לכל המצבים הקודמים, ולכן:
+\[
+\varepsilon_k \geq E_{k-1}
+\]
+\end{proof}
+
+\subsubsection*{משמעות פיזיקלית}
+
+\begin{importantbox}{חשיבות המשפט}
+\textbf{1. קירוב רמות מעוררות:}
+\begin{itemize}
+    \item ניתן להעריך לא רק את רמת היסוד, אלא גם רמות מעוררות!
+    \item אם בוחרים תת-מרחב $k$-ממדי, מקבלים חסמים עליונים ל-$k$ הרמות הנמוכות ביותר
+    \item ככל שתת-המרחב גדול יותר, החסמים טובים יותר
+\end{itemize}
+
+\textbf{2. פיזיקה חישובית:}
+\begin{itemize}
+    \item בפועל, לא ניתן ללכסן המילטוניאן במרחב אינסופי-ממדי
+    \item בוחרים בסיס סופי (למשל: 1000 פונקציות בסיס)
+    \item מלכסנים מטריצה $1000 \times 1000$ $\Rightarrow$ מקבלים 1000 ערכי עצמיים
+    \item המשפט מבטיח: כל ערך עצמי שמצאנו הוא חסם עליון לערך העצמי האמיתי!
+\end{itemize}
+
+\textbf{3. בחירה חכמה של בסיס:}
+\begin{itemize}
+    \item אם הבסיס מותאם היטב לפיזיקה של הבעיה, הקירוב טוב
+    \item אם הבסיס "רחוק" מהמצבים האמיתיים, הקירוב גרוע
+    \item דוגמה: עבור אטום מימן, פונקציות גאוסיות לא אידיאליות — עדיף פונקציות אקספוננציאליות
+\end{itemize}
+\end{importantbox}
+
+\subsubsection*{תנאי לגיטימיות פיזיקלית — $s < 2$}
+
+עד כה למדנו שיטות לקירוב אנרגיות. כעת נשאל שאלה פיזיקלית עמוקה יותר:
+
+\begin{importantbox}{השאלה המרכזית}
+עבור פוטנציאל מושך $V(r) = -\alpha/r^s$ עם $\alpha > 0$:
+
+\textbf{מתי קיים מצב יסוד?} מתי המערכת יציבה?
+\end{importantbox}
+
+\textbf{חשש פיזיקלי:} אם הפוטנציאל "עמוק מדי" ליד $r = 0$, החלקיק עלול "ליפול" אל המרכז ללא עצירה!
+
+במקרה כזה, אין מצב יסוד — לכל אנרגיה שלילית, ניתן למצוא מצב באנרגיה נמוכה יותר.
+
+\begin{theorembox}{תנאי קיום מצב יסוד}
+עבור פוטנציאל $V(r) = -\alpha/r^s$ ($\alpha > 0$), מצב יסוד קיים אם ורק אם:
+\[
+\boxed{s < 2}
+\]
+
+\textbf{פרשנות:}
+\begin{itemize}
+    \item $s = 1$ (קולון) — מצב יסוד קיים ✓ (אטום מימן)
+    \item $s = 2$ — \textbf{מקרה קריטי} — בעייתי!
+    \item $s > 2$ — \textbf{אין מצב יסוד} — החלקיק "נופל" למרכז ✗
+\end{itemize}
+\end{theorembox}
+
+\textbf{הוכחה באמצעות העיקרון הווריאציוני}
+\textbf{שלב 1 — בחירת פונקציית ניסוי:}
+
+נבחר גאוסיאן:
+\[
+\psi(r) = N e^{-\frac{r^2}{2r_0^2}}
+\]
+
+כאשר $r_0$ הוא פרמטר ווריאציוני חופשי.
+
+\textbf{שלב 2 — הערכת האנרגיה הקינטית:}
+
+מניתוח ממדים (או חישוב מפורש):
+\[
+\braket{T} = \frac{\braket{p^2}}{2m} \sim \frac{\hbar^2}{2m r_0^2}
+\]
+
+\textbf{לוגיקה:} הרוחב של הגאוסיאן הוא $\sim r_0$, לכן $\Delta x \sim r_0$ ומעקרון אי-וודאות:
+\[
+\Delta p \sim \frac{\hbar}{\Delta x} \sim \frac{\hbar}{r_0} \quad \Rightarrow \quad \braket{p^2} \sim \frac{\hbar^2}{r_0^2}
+\]
+
+\textbf{שלב 3 — הערכת האנרגיה הפוטנציאלית:}
+
+\begin{align*}
+\braket{V} &= \braket{\psi\left|-\frac{\alpha}{r^s}\right|\psi} \\
+&= -\alpha \int_0^{\infty} |\psi(r)|^2 \frac{1}{r^s} 4\pi r^2 dr
+\end{align*}
+
+החלפת משתנים $x = r/r_0$:
+\begin{align*}
+\braket{V} &= -\alpha \int_0^{\infty} N^2 e^{-x^2} \frac{1}{(r_0 x)^s} 4\pi (r_0 x)^2 r_0 dx \\
+&= -\alpha N^2 4\pi r_0^{3-s} \underbrace{\int_0^{\infty} e^{-x^2} x^{2-s} dx}_{\text{מספר (תלוי רק ב-}s\text{)}}
+\end{align*}
+
+מכיוון שהנורמליזציה $N^2 \sim 1/r_0^3$, נקבל:
+\[
+\braket{V} \sim -\frac{\alpha}{r_0^s}
+\]
+
+\textbf{שלב 4 — האנרגיה הכוללת:}
+\[
+E(r_0) = \braket{H} \sim \frac{\hbar^2}{2m r_0^2} - \frac{\alpha}{r_0^s}
+\]
+
+\textbf{שלב 5 — ניתוח התנהגות:}
+
+\textbf{כאשר $r_0 \to 0$} (החלקיק מתקרב למרכז):
+\begin{itemize}
+    \item אנרגיה קינטית: $\sim 1/r_0^2 \to +\infty$ (עולה!)
+    \item אנרגיה פוטנציאלית: $\sim -1/r_0^s \to -\infty$ (יורדת!)
+\end{itemize}
+
+\textbf{התחרות:}
+\begin{itemize}
+    \item אם $s < 2$: האנרגיה הקינטית $\sim 1/r_0^2$ עולה \textbf{מהר יותר} מאשר הפוטנציאלית יורדת $\to$ יש מינימום!
+    \item אם $s > 2$: הפוטנציאל יורד \textbf{מהר יותר} $\to$ אין מינימום, $E(r_0) \to -\infty$ כאשר $r_0 \to 0$
+\end{itemize}
+
+\textbf{מסקנה:}
+\[
+\boxed{s \geq 2 \quad \Rightarrow \quad \text{אין מצב יסוד פיזיקלי!}}
+\]
+
+
+\subsubsection*{המקרה הקריטי: $s = 2$}
+
+המקרה $s = 2$ הוא מיוחד ומעניין במיוחד!
+
+\begin{theorembox}{סימטריית סקייל (Scale Invariance) עבור $s = 2$}
+עבור $V(r) = -\alpha/r^2$, ההמילטוניאן הוא:
+\[
+H = -\frac{\hbar^2}{2m}\nabla^2 - \frac{\alpha}{r^2}
+\]
+
+\textbf{טרנספורמציית סקייל:} $r \to \lambda r$ (שינוי סקאלה)
+
+אז:
+\[
+H \to H' = \frac{1}{\lambda^2} H
+\]
+
+\textbf{משמעות:} אם $\psi(r)$ מצב עצמי עם אנרגיה $E$:
+\[
+H\psi(r) = E\psi(r)
+\]
+
+אז $\psi(\lambda r)$ הוא מצב עצמי עם אנרגיה $E/\lambda^2$:
+\[
+H\psi(\lambda r) = \frac{E}{\lambda^2}\psi(\lambda r)
+\]
+
+\textbf{בעיה:} אם יש מצב קשור אחד באנרגיה $E < 0$, אז על-ידי שינוי סקאלה $\lambda \to \infty$ ניתן ליצור מצבים באנרגיות שרירותיות נמוכות:
+\[
+E, \; \frac{E}{\lambda^2}, \; \frac{E}{\lambda^4}, \; \ldots \to -\infty
+\]
+
+\textbf{מסקנה:} גם המקרה $s = 2$ אינו פיזיקלי כחוק טבע יסודי!
+\end{theorembox}
+
+\begin{notebox}{חריגה מהכלל — אפקט אפימוב}
+בפיזיקה של מערכות תלת-גופיות, קיים \textbf{אפקט אפימוב} (Efimov effect):
+
+במערכת של 3 חלקיקים עם אינטראקציה מסוג $\sim 1/r^2$ (אפקטיבית), אך עם \textbf{קיר} (cutoff) במרחק קטן, מתקבלת סדרה של מצבים קשורים:
+\[
+E_n = E_0 \cdot \lambda^{-2n}, \quad n = 0, 1, 2, \ldots
+\]
+
+עם $\lambda \approx 22.7$ (קבוע אוניברסלי).
+
+זה \textbf{נצפה בניסויים} עם אטומים קרים! אך זה דורש קיר פיזיקלי — לא חוק טבע יסודי.
+\end{notebox}
+
+\subsubsection*{תנאי נוסף: אינסוף מצבים קשורים עבור $s < 2$}
+
+\begin{theorembox}{אינסוף מצבים קשורים}
+עבור פוטנציאל מושך $V(r) = -\alpha/r^s$ עם $0 < s < 2$:
+
+\textbf{קיימים אינסוף מצבים קשורים!}
+
+כלומר: הספקטרום הדיסקרטי הוא:
+\[
+E_0 < E_1 < E_2 < \cdots < 0
+\]
+
+עם $E_n \to 0^-$ כאשר $n \to \infty$.
+\end{theorembox}
+
+\textbf{הוכחה באמצעות פונקציות מקומיות}
+\textbf{רעיון:} נבנה סדרה של פונקציות ניסוי "מקומיות" סביב $r = R_0, 10R_0, 100R_0, \ldots$
+
+\textbf{פונקציית ניסוי:}
+\[
+\psi_n(r) = N_n \exp\left(-\frac{(r - R_n)^2}{2\beta^2 R_n^2}\right)
+\]
+
+כאשר:
+\begin{itemize}
+    \item $R_n = R_0 \cdot 10^n$ — מרכז הגאוסיאן (גדל אקספוננציאלית)
+    \item $\beta = 0.1$ — רוחב יחסי קטן
+\end{itemize}
+
+\textbf{תכונות:}
+\begin{enumerate}
+    \item הפונקציות ממוקמות סביב $R_n$ עם רוחב $\sim \beta R_n = 0.1 R_n$
+    \item הפונקציות כמעט \textbf{לא חופפות}:
+    \[
+    \braket{\psi_n|\psi_m} \approx \delta_{nm} \quad \text{(אורתוגונליות מעשית)}
+    \]
+\end{enumerate}
+
+\textbf{חישוב אנרגיה:}
+
+עבור הפונקציה הממוקמת סביב $r = R_n$:
+\begin{align*}
+E_n &\sim \frac{\hbar^2}{2m (\beta R_n)^2} - \frac{\alpha}{R_n^s} \\
+&= \frac{\hbar^2}{2m \beta^2 R_n^2} - \frac{\alpha}{R_n^s}
+\end{align*}
+
+\textbf{כאשר $R_n \to \infty$:}
+\begin{itemize}
+    \item אנרגיה קינטית: $\sim 1/R_n^2 \to 0$
+    \item אנרגיה פוטנציאלית: $\sim -1/R_n^s \to 0$
+\end{itemize}
+
+\textbf{אבל:} מכיוון ש-$s < 2$, הפוטנציאל דועך \textbf{לאט יותר} מהקינטיקה!
+
+לכן, עבור $R_n$ גדול מספיק:
+\[
+\left|\frac{\alpha}{R_n^s}\right| > \frac{\hbar^2}{2m\beta^2 R_n^2} \quad \Rightarrow \quad E_n < 0
+\]
+
+\textbf{מסקנה:} ניתן למצוא מצבים קשורים ($E_n < 0$) עם $R_n$ שרירותי גדול!
+
+זה מוכיח שיש \textbf{אינסוף מצבים קשורים}.
+
+
+\begin{importantbox}{סיכום פיזיקלי}
+\textbf{עבור $V(r) = -\alpha/r^s$:}
+
+\begin{center}
+\begin{tabular}{|c|c|l|}
+\hline
+\textbf{ערך $s$} & \textbf{מצב יסוד?} & \textbf{מספר מצבים קשורים} \\
+\hline
+$s < 2$ & כן ✓ & אינסוף \\
+\hline
+$s = 2$ & לא ✗ & סימטריית סקייל — קריסה \\
+\hline
+$s > 2$ & לא ✗ & אפס — החלקיק נופל \\
+\hline
+\end{tabular}
+\end{center}
+
+\textbf{דוגמאות:}
+\begin{itemize}
+    \item \textbf{$s = 1$ (קולון):} מצב יסוד קיים, אינסוף מצבים קשורים (אטום מימן: $n = 1, 2, 3, \ldots$)
+    \item \textbf{$s = 2$:} לא קיים בטבע כחוק יסודי (אלא רק כקירוב עם cutoff)
+    \item \textbf{$s = 6$ (לנרד-ג'ונס):} אין מצבים קשורים כלל!
+\end{itemize}
+\end{importantbox}
+
+\subsection{סיכום כללי — שיעור 05}
+
+\begin{summarybox}{}
+\textbf{1. משפט הווריאציה (\LR{Variational Theorem}):}
+\begin{itemize}
+    \item $E[\psi] = \frac{\braket{\psi|H|\psi}}{\braket{\psi|\psi}} \geq E_0$ לכל $\psi$
+    \item נותן חסם עליון לאנרגיית היסוד
+    \item שוויון מתקיים אם ורק אם $\psi$ היא מצב היסוד
+    \item שיטה: בוחרים פונקציית ניסוי $\psi(\alpha)$, ממזערים $E(\alpha)$
+\end{itemize}
+
+\textbf{2. משפט ריץ (\LR{Ritz Theorem}):}
+\begin{itemize}
+    \item אם $\psi$ קרובה למצב עצמי בסדר $\varepsilon$, אז האנרגיה שונה בסדר $\varepsilon^2$
+    \item ערך התצפית של האנרגיה סטציונארי בסביבת מצבים עצמיים
+    \item שגיאה קטנה בפונקציית הגל $\Rightarrow$ שגיאה קטנה בריבוע באנרגיה
+\end{itemize}
+
+\textbf{3. משפט השונות (\LR{Variance Theorem}):}
+\begin{itemize}
+    \item $\sigma^2 = \braket{(H - E)^2}$ — שונות האנרגיה
+    \item לפחות ערך עצמי אחד נמצא בתחום $[E - \sigma, E + \sigma]$
+    \item נותן הערכה דו-צדדית לערכים עצמיים
+    \item $\sigma$ קטן $\Rightarrow$ קירוב טוב
+\end{itemize}
+
+\textbf{4. עקרון מינימקס (\LR{Minimax Principle}):}
+\begin{itemize}
+    \item הכללה למציאת רמות מעוררות, לא רק רמת היסוד
+    \item בחירת תת-מרחב $k$-ממדי $\Rightarrow$ חסמים עליונים ל-$k$ הרמות הנמוכות
+    \item יישום: פיזיקה חישובית — ללכסן מטריצה סופית במקום אינסופית
+    \item חשוב: הערכים $\varepsilon_i$ אינם בהכרח חלק מהספקטרום — רק חסמים עליונים!
+\end{itemize}
+
+\textbf{5. יישום: חלקיק בפוטנציאל $V(r) = -\alpha/r^s$}
+\begin{itemize}
+    \item פונקציית ניסוי גאוסית: $\psi(r) = Ne^{-r^2/(2r_0^2)}$
+    \item מניתוח ממדים: $\braket{T} \sim \hbar^2/(2mr_0^2)$, $\braket{V} \sim -\alpha/r_0^s$
+    \item מזעור: $r_0 \sim (\hbar^2/(ms\alpha))^{1/(s-2)}$
+    \item $s = 1$ (קולון): $E_0 \sim -m\alpha^2/\hbar^2$ — אנרגיית ריידברג!
+    \item $s = 2$: אין מצב קשור יציב
+\end{itemize}
+
+\textbf{6. תנאי לגיטימיות פיזיקלית — $V(r) = -\alpha/r^s$:}
+\begin{itemize}
+    \item $s < 2$: מצב יסוד קיים, אינסוף מצבים קשורים ✓
+    \item $s = 2$: סימטריית סקייל — קריסה (אפקט אפימוב עם cutoff)
+    \item $s > 2$: אין מצב יסוד — החלקיק נופל למרכז ✗
+    \item $s = 1$ (קולון): הדוגמה הפיזיקלית החשובה ביותר!
+\end{itemize}
+
+\textbf{7. קשר לעקרון אי-וודאות:}
+\begin{itemize}
+    \item תחרות בין אנרגיה קינטית ($\sim 1/r_0^2$) לפוטנציאלית ($\sim -1/r_0^s$)
+    \item $r_0$ אופטימלי נקבע מאיזון בין התרומות
+    \item אי-וודאות מונעת קריסה למרכז (עבור $s < 2$)
+    \item כאשר $r_0 \to 0$: קינטיקה עולה מהר יותר מאשר פוטנציאל יורד (עבור $s < 2$)
+\end{itemize}
+\end{summarybox}
+\newpage

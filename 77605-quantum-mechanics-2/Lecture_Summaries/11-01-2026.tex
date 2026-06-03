@@ -1,0 +1,268 @@
+\section{בליעת פוטון וינון אטום המימן בתורת הפרעות תלויה בזמן}
+
+בסיכום זה נמשיך את הדיון בתורת הפרעות תלויה בזמן (\LR{Time-Dependent Perturbation Theory}) ונתמקד בתהליך של בליעת פוטון (\LR{Photo-absorption}) על ידי מערכת קוונטית, ובפרט בינון (\LR{Photo-ionization}) של אטום המימן.
+
+\subsection{חתך פעולה לבליעת פוטון}
+
+\begin{definitionbox}{חתך פעולה לבליעה}
+חתך הפעולה $\sigma_{i\to f}$ לתהליך שבו מערכת קוונטית עוברת ממצב התחלתי $|i\rangle$ למצב סופי $|f\rangle$ בעקבות בליעת פוטון נתון על ידי
+\[
+\sigma_{i\to f}
+=
+\frac{4\pi^2}{m^2}\,
+\frac{\hbar \alpha}{\omega}
+\,
+\left|
+\langle f | 
+e^{i\mathbf{k}_\gamma\cdot\mathbf{x}}
+\,\boldsymbol{\varepsilon}\cdot\mathbf{p}
+| i \rangle
+\right|^2
+\,
+\delta(E_f - E_i - \hbar\omega),
+\]
+כאשר $m$ היא מסת האלקטרון, $\alpha$ הוא קבוע המבנה הדק (\LR{Fine Structure Constant}),
+$\boldsymbol{\varepsilon}$ הוא וקטור הקיטוב של הפוטון,
+$\mathbf{k}_\gamma$ מספר הגל של הפוטון,
+ו-$\hbar\omega$ היא אנרגיית הפוטון.
+\end{definitionbox}
+
+\begin{notebox}{משמעות פיזיקלית}
+חתך הפעולה הוא תכונה פנימית של המערכת הקוונטית. כל התלות בשטף הפוטונים מתקזזת,
+והגודל $\sigma$ מתאר שטח אפקטיבי שבו האטום ``מציג את עצמו'' לפוטון.
+\end{notebox}
+
+\subsection{ינון אטום המימן וסקלות אורך}
+
+נבחן ינון של אטום המימן:  
+המצב ההתחלתי $|i\rangle$ הוא מצב קשור של האלקטרון,
+והמצב הסופי $|f\rangle$ הוא מצב רציף (אלקטרון חופשי).
+
+כדי שינון יתרחש נדרש
+\[
+\hbar\omega \gtrsim E_{\text{bind}},
+\]
+כאשר אנרגיית הקשר היא מסדר גודל
+\[
+E_{\text{bind}} \sim \frac{\alpha\hbar c}{a_0},
+\]
+ו-$a_0$ הוא רדיוס בוהר.
+
+מכאן מתקבל
+\[
+k_\gamma a_0 \sim \alpha \ll 1,
+\]
+ולכן אורך הגל של הפוטון גדול בהרבה מרדיוס האטום.
+
+\begin{resultbox}{קירוב הדיפול}
+כאשר $k_\gamma a_0 \ll 1$ ניתן לפתח
+\[
+e^{i\mathbf{k}_\gamma\cdot\mathbf{x}}
+\simeq
+1 + i\mathbf{k}_\gamma\cdot\mathbf{x} + \cdots,
+\]
+והאיבר המוביל הוא האיבר הקבוע. זהו קירוב הדיפול החשמלי (\LR{Electric Dipole Approximation}).
+\end{resultbox}
+
+\subsection{אופרטור הדיפול והצגה שקולה}
+
+נשתמש בזהות
+\[
+\mathbf{p} = \frac{m}{i\hbar}[\mathbf{x},H_0],
+\]
+כאשר
+\[
+H_0=\frac{\mathbf{p}^2}{2m}+V(r).
+\]
+
+\begin{definitionbox}{אופרטור הדיפול}
+אופרטור הדיפול החשמלי מוגדר כ
+\[
+\mathbf{d}=\mathbf{x}
+\quad
+(\text{בהתעלמות מהמטען }-e).
+\]
+\end{definitionbox}
+
+שימוש ביחס החילוף נותן
+\[
+\langle f|\boldsymbol{\varepsilon}\cdot\mathbf{p}|i\rangle
+=
+\frac{m}{i\hbar}
+(E_f-E_i)
+\,
+\boldsymbol{\varepsilon}\cdot
+\langle f|\mathbf{d}|i\rangle.
+\]
+
+בעזרת פונקציית הדלתא $E_f-E_i=\hbar\omega$ מתקבל
+
+\begin{resultbox}{נוסחת חתך הפעולה בדיפול}
+\[
+\sigma_{i\to f}
+=
+4\pi^2
+\,\hbar\alpha\,\omega\,
+\left|
+\boldsymbol{\varepsilon}\cdot
+\langle f|\mathbf{d}|i\rangle
+\right|^2
+\,
+\delta(E_f-E_i-\hbar\omega).
+\]
+\end{resultbox}
+
+\subsection{כללי ברירה}
+
+נכתוב את מצבי אטום המימן כ-$|n\ell m\sigma\rangle$.
+
+\begin{theorembox}{כללי ברירה לדיפול חשמלי}
+אלמנט המטריצה
+$\langle n'\ell' m'\sigma'| \mathbf{d} |n\ell m\sigma\rangle$
+שונה מאפס רק אם:
+\begin{itemize}
+\item $\Delta \ell = \pm 1$
+\item $\Delta m = 0,\pm 1$ (בהתאם לקיטוב)
+\item $\sigma'=\sigma$ (הספין אינו משתנה)
+\item הזוגיות מתחלפת.
+\end{itemize}
+\end{theorembox}
+
+\subsection{ינון באנרגיות גבוהות}
+
+כאשר אנרגיית הפוטון גדולה בהרבה מאנרגיית הקשר,
+המצב הסופי של האלקטרון ניתן בקירוב כגל חופשי:
+\[
+\psi_f(\mathbf{x})
+=
+\frac{1}{L^{3/2}}
+e^{i\mathbf{k}_f\cdot\mathbf{x}}
+\chi_\sigma,
+\]
+כאשר $L^3$ הוא נפח נירמול.
+
+מצב היסוד של המימן הוא
+\[
+\psi_{1s}(\mathbf{x})
+=
+\frac{1}{\sqrt{\pi a_0^3}}
+e^{-r/a_0}.
+\]
+
+חישוב מפורש של אלמנט המטריצה נותן אינטגרל מהצורה
+\[
+\int d^3x\,
+e^{i\mathbf{q}\cdot\mathbf{x}}
+e^{-r/a_0}
+=
+\frac{8\pi a_0^3}{(1+q^2a_0^2)^2}.
+\]
+
+\subsection{חתך פעולה דיפרנציאלי}
+
+לאחר חיבור צפיפות המצבים מתקבל חתך פעולה דיפרנציאלי
+\[
+\frac{d\sigma}{d\Omega}
+\propto
+(\boldsymbol{\varepsilon}\cdot\hat{\mathbf{p}}_f)^2
+\,
+\frac{p_f^3}{(p_f^2 + 1/a_0^2)^4}.
+\]
+
+\begin{notebox}{התפלגות זוויתית}
+האלקטרונים נפלטים בעיקר בכיוון הקיטוב של השדה החשמלי.
+בכיוון הניצב לקיטוב ההסתברות מתאפסת.
+\end{notebox}
+
+\subsection{התנהגות אסימפטוטית}
+
+באנרגיות גבוהות מתקבל
+\[
+\sigma(\omega)\sim \omega^{-7/2}.
+\]
+
+\begin{resultbox}{משמעות פיזיקלית}
+ככל שאנרגיית הפוטון עולה,
+חתך הפעולה לינון קטן,
+והחומר נעשה שקוף יותר לקרינה עתירת אנרגיה.
+\end{resultbox}
+
+\subsection{הערה פיזיקלית כללית}
+
+באנרגיות גבוהות מאוד נכנסות פיזיקות נוספות:
+פיזור קומפטון (\LR{Compton Scattering})
+ויצירת זוג אלקטרון–פוזיטרון,
+אך אלו מעבר להיקף הדיון הנוכחי.
+
+\section{חלקיקים זהים (\LR{Identical Particles})}
+
+\subsection{מבוא ועקרון אי-ההבחנה}
+
+בטבע קיימים סוגים מעטים של חלקיקי יסוד (אלקטרונים, קווארקים, פוטונים וכו'). במערכות רב-גופיות רבות, אנו עוסקים בצוסף של חלקיקים מאותו סוג. בניגוד למכניקה הקלאסית, שבה ניתן "לצבוע" חלקיק ולעקוב אחר מסלולו, במכניקה הקוונטית חלקיקים מאותו סוג הם \textbf{בלתי ניתנים להבחנה} (\LR{Indistinguishable}).
+
+נניח מערכת של $n$ חלקיקים זהים המתוארת על ידי פונקציית גל $\psi(\vec{r}_1, \vec{r}_2, \dots, \vec{r}_n)$. בשל אי-ההבחנה, החלפת מיקומיהם (או דרגות החופש שלהם) של שני חלקיקים $i$ ו-$j$ אינה יכולה לשנות את המציאות הפיזיקלית, כלומר את צפיפות ההסתברות $|\psi|^2$.
+
+\begin{definitionbox}{אופרטור ההחלפה (\LR{Exchange Operator})}
+נגדיר את אופרטור ההחלפה $P_{ij}$ כפועל על פונקציית הגל ומחליף בין החלקיק ה-$i$ לחלקיק ה-$j$:
+\[ P_{ij} \psi(\dots, \vec{r}_i, \dots, \vec{r}_j, \dots) = \psi(\dots, \vec{r}_j, \dots, \vec{r}_i, \dots) \]
+מכיוון שהחלפה כפולה מחזירה את המערכת למצבה המקורי ($P_{ij}^2 = I$), הערכים העצמיים של $P_{ij}$ חייבים להיות $\alpha = \pm 1$.
+\end{definitionbox}
+
+\subsection{בוזונים, פרמיונים וקשר לספין}
+
+הטבע מחלק את כל החלקיקים לשתי משפחות על פי התנהגותם תחת החלפה. חלוקה זו נקבעת באופן חד-חד-ערכי על ידי הספין של החלקיק (\LR{Spin-Statistics Theorem}).
+
+\begin{theorembox}{קשר הספין והסטטיסטיקה}
+\begin{itemize}
+    \item \textbf{בוזונים (\LR{Bosons}):} חלקיקים בעלי ספין שלם ($s=0, 1, 2 \dots$). פונקציית הגל שלהם \textbf{סימטרית} להחלפה:
+    \[ P_{ij} \psi = +\psi \]
+    \item \textbf{פרמיונים (\LR{Fermions}):} חלקיקים בעלי ספין חצי-שלם ($s=1/2, 3/2 \dots$). פונקציית הגל שלהם \textbf{אנטי-סימטרית} להחלפה:
+    \[ P_{ij} \psi = -\psi \]
+\end{itemize}
+\end{theorembox}
+
+\begin{notebox}{חלקיקים מורכבים}
+ניתן להתייחס למערכת קשורה של חלקיקים כאל "חלקיק" אחד. לדוגמה, אטום מימן (פרוטון + אלקטרון, שניהם פרמיונים) מתנהג כבוזון במרחקים גדולים, שכן החלפת שני אטומי מימן שקולה להחלפת שני זוגות של פרמיונים, המייצרת פעמיים סימן מינוס ($(-1)^2 = 1$).
+\end{notebox}
+
+\subsection{פורמליזם מתמטי: אופרטורי סימטריזציה}
+
+כדי לבנות פונקציית גל חוקית עבור $n$ חלקיקים זהים מתוך פונקציות של חלקיק יחיד $\phi_a(\vec{r})$, עלינו להפעיל אופרטורים שיבטיחו את הסימטריה הנדרשת.
+
+\begin{definitionbox}{אופרטורי ההטלה $S$ ו-$A$}
+עבור $n$ חלקיקים, נגדיר את אופרטור הסימטריזציה ($S$) ואופרטור האנטי-סימטריזציה ($A$):
+\[ S = \frac{1}{n!} \sum_{P \in S_n} P, \quad A = \frac{1}{n!} \sum_{P \in S_n} \text{sgn}(P) P \]
+כאשר $\text{sgn}(P)$ הוא סימן התמורה ($+1$ לתמורה זוגית, $-1$ לאי-זוגית).
+\end{definitionbox}
+
+\begin{examplebox}{שני חלקיקים}
+עבור שני חלקיקים במצבים $\phi_a$ ו-$\phi_b$:
+\begin{itemize}
+    \item \textbf{מצב בוזוני:} $\psi_S \propto \phi_a(1)\phi_b(2) + \phi_b(1)\phi_a(2)$
+    \item \textbf{מצב פרמיוני:} $\psi_A \propto \phi_a(1)\phi_b(2) - \phi_b(1)\phi_a(2)$
+\end{itemize}
+\end{examplebox}
+
+\subsection{עקרון האיסור של פאולי}
+
+אחת התוצאות הדרמטיות ביותר של האנטי-סימטריה של פרמיונים היא חוסר היכולת של שני פרמיונים לאכלס את אותו המצב הקוונטי.
+
+\begin{resultbox}{עקרון האיסור של פאולי (\LR{Pauli Exclusion Principle})}
+אם ננסה להושיב שני פרמיונים באותו מצב קוונטי ($\phi_a = \phi_b$), נקבל פונקציית גל מתאפסת זהותית:
+\[ \psi_A \propto \phi_a(1)\phi_a(2) - \phi_a(1)\phi_a(2) = 0 \]
+מכאן נובע ששני פרמיונים זהים אינם יכולים להימצא באותו מצב קוונטי (כולל ספין).
+\end{resultbox}
+
+\begin{center}
+\begin{tikzpicture}
+    % Illustration of Exchange Symmetry
+    \draw[thick, blue, ->] (0,0) node[left] {$\vec{r}_1$} .. controls (1,1) .. (2,0) node[right] {$\vec{r}_2$};
+    \draw[thick, red, ->] (2,0) .. controls (1,-1) .. (0,0);
+    \node at (1,1.3) {$P_{12}$};
+    \node[below] at (1,-1.2) {\LR{Exchange of coordinates}};
+    
+    % Wavefunction sign
+    \node at (5,0.5) {$\psi(\vec{r}_2, \vec{r}_1) = \pm \psi(\vec{r}_1, \vec{r}_2)$};
+    \draw [decorate,decoration={brace,amplitude=5pt}] (6.5,-0.2) -- (6.5,1.2) node [black,midway,xshift=1.5cm] {\footnotesize $+ \text{ \LR{Bosons}}$ \\ \footnotesize $- \text{ \LR{Fermions}}$};}
+\end{tikzpicture}
+\end{center}

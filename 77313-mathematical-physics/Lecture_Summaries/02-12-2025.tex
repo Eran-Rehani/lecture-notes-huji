@@ -1,0 +1,173 @@
+\section{משוואות דיפרנציאליות חלקיות מסדר שני: סיווג וצורות קנוניות}
+
+\begin{mainbox}{נושאי ההרצאה}
+    \begin{itemize}
+        \item ניסוח הבעיה הכללית למשוואות חלקיות מסדר שני (בדו-ממד).
+        \item בעיית קושי (\LR{Cauchy Problem}) והגדרת תנאי שפה.
+        \item גזירת משוואת האופיינים (\LR{Characteristics}) והקשר לדטרמיננטה של מערכת המשוואות.
+        \item סיווג משוואות: היפרבוליות, פרבוליות ואליפטיות.
+        \item מעבר לצורה קנונית (\LR{Canonical Form}) ופתרון דוגמה מספרית.
+    \end{itemize}
+\end{mainbox}
+
+\subsection{המשוואה הכללית ובעיית קושי}
+
+אנו עוסקים במשוואה דיפרנציאלית חלקית ליניארית מסדר שני עבור פונקציה $u(x,y)$. הצורה הכללית ביותר בה נדון היא:
+
+\begin{definitionbox}{המשוואה הכללית}
+    \begin{equation}
+        A u_{xx} + 2B u_{xy} + C u_{yy} = \Phi(x, y, u, u_x, u_y)
+        \label{eq:general_pde}
+    \end{equation}
+    כאשר $A, B, C$ עשויים להיות פונקציות של $x, y$. שימו לב לשימוש במקדם $2B$ בנוסחה, שנועד לפשט את חישובי הדיסקרימיננטה בהמשך. הסימון המקובל לנגזרות החלקיות הוא:
+    \[ u_{xx} \equiv \frac{\partial^2 u}{\partial x^2}, \quad u_{xy} \equiv \frac{\partial^2 u}{\partial x \partial y}, \quad u_{yy} \equiv \frac{\partial^2 u}{\partial y^2} \]
+\end{definitionbox}
+
+\subsubsection{סוגי תנאי שפה}
+פתרון המשוואה דורש הגדרת תחום ותנאי שפה על שפת התחום (עקומה $\Gamma$). קיימים שלושה סוגים עיקריים של בעיות:
+
+\begin{enumerate}
+    \item \textbf{בעיית דיריכלה (\LR{Dirichlet Problem}):} נתונה הפונקציה $u$ על השפה $\Gamma$. (מקביל לפוטנציאל נתון על שפה בבעיות אלקטרוסטטיקה).
+    \item \textbf{בעיית נוימן (\LR{Neumann Problem}):} נתונה הנגזרת הנורמלית $\frac{\partial u}{\partial n}$ על השפה $\Gamma$.
+    \item \textbf{בעיית קושי (\LR{Cauchy Problem}):} נתונים גם $u$ וגם הנגזרת הנורמלית $\frac{\partial u}{\partial n}$ על השפה.
+\end{enumerate}
+
+\begin{notebox}{הערה לגבי בעיית קושי}
+    בעיית קושי מספקת מידע "עודף" (גם פונקציה וגם נגזרת). עבור משוואות מסוימות (כגון משוואת לפלס), תנאי כזה עלול להוביל לסתירה או לאי-קיום פתרון יציב ("בעיה לא מוצגת היטב" - \LR{Ill-posed}). לעומת זאת, עבור משוואות גלים (היפרבוליות), זהו התנאי הטבעי.
+\end{notebox}
+
+\subsection{האופיינים (\LR{Characteristics})}
+
+נניח שאנו מנסים לפתור את בעיית קושי. המטרה היא "להרחיב" את המידע מהשפה $\Gamma$ אל תוך התחום באמצעות טור טיילור. לשם כך, עלינו להיות מסוגלים לחשב את כל הנגזרות הגבוהות על גבי העקומה.
+
+נתונה עקומה $\Gamma$ עם פרמטריזציה $(x(s), y(s))$. הנגזרות הראשונות $u_x, u_y$ ידועות על העקומה מתוך תנאי קושי. כדי למצוא את הנגזרות השניות $u_{xx}, u_{xy}, u_{yy}$, אנו בונים מערכת משוואות ליניארית:
+
+1. המשוואה המקורית:
+\[ A u_{xx} + 2B u_{xy} + C u_{yy} = \Phi \]
+2. שינוי הנגזרת $u_x$ לאורך העקומה (כלל השרשרת):
+\[ \frac{d}{ds}(u_x) = u_{xx} \frac{dx}{ds} + u_{xy} \frac{dy}{ds} \]
+3. שינוי הנגזרת $u_y$ לאורך העקומה:
+\[ \frac{d}{ds}(u_y) = u_{xy} \frac{dx}{ds} + u_{yy} \frac{dy}{ds} \]
+
+בכתיב מטריציוני עבור הנעלמים $(u_{xx}, u_{xy}, u_{yy})$:
+\[
+\begin{pmatrix}
+A & 2B & C \\
+\frac{dx}{ds} & \frac{dy}{ds} & 0 \\
+0 & \frac{dx}{ds} & \frac{dy}{ds}
+\end{pmatrix}
+\begin{pmatrix}
+u_{xx} \\ u_{xy} \\ u_{yy}
+\end{pmatrix}
+=
+\begin{pmatrix}
+\Phi \\ \frac{d}{ds}u_x \\ \frac{d}{ds}u_y
+\end{pmatrix}
+\]
+
+כדי שנוכל לחשב את הנגזרות באופן יחיד, הדטרמיננטה של המטריצה חייבת להיות שונה מאפס.
+
+\begin{theorembox}{המשוואה האופיינית}
+    אם הדטרמיננטה מתאפסת, לא ניתן (באופן כללי) לפתור את בעיית קושי על העקומה. עקומות המקיימות תנאי זה נקראות \textbf{עקומות אופייניות} (\LR{Characteristics}).
+    
+    חישוב הדטרמיננטה מוביל למשוואה (לאחר חלוקה ב-$(dx/ds)^2$):
+    \[ A \left(\frac{dy}{dx}\right)^2 - 2B \left(\frac{dy}{dx}\right) + C = 0 \]
+    זוהי משוואה ריבועית עבור השיפוע $y' = \frac{dy}{dx}$ של העקומות האופייניות.
+\end{theorembox}
+
+\subsection{סיווג משוואות}
+
+פתרונות המשוואה הריבועית עבור $y'$ תלויים בסימן הדיסקרימיננטה $\Delta = (2B)^2 - 4AC \propto B^2 - AC$.
+הסיווג נקבע לפי הסימן של $B^2 - AC$:
+
+\begin{definitionbox}{סיווג לפי הדיסקרימיננטה}
+    \begin{enumerate}
+        \item \textbf{היפרבולי (\LR{Hyperbolic}):} $B^2 - AC > 0$.
+        \begin{itemize}
+            \item ישנם שני פתרונות ממשיים שונים ל-$y'$.
+            \item קיימות שתי משפחות של עקומות אופייניות.
+            \item דוגמה: משוואת הגלים $u_{tt} - c^2 u_{xx} = 0$.
+        \end{itemize}
+        
+        \item \textbf{פרבולי (\LR{Parabolic}):} $B^2 - AC = 0$.
+        \begin{itemize}
+            \item פתרון ממשי יחיד ל-$y'$.
+            \item משפחה אחת של אופיינים.
+            \item דוגמה: משוואת הדיפוזיה/חום $u_t - D u_{xx} = 0$.
+        \end{itemize}
+        
+        \item \textbf{אליפטי (\LR{Elliptic}):} $B^2 - AC < 0$.
+        \begin{itemize}
+            \item אין פתרונות ממשיים (האופיינים מרוכבים).
+            \item אין עקומות אופייניות במישור הממשי.
+            \item דוגמה: משוואת לפלס $u_{xx} + u_{yy} = 0$.
+        \end{itemize}
+    \end{enumerate}
+\end{definitionbox}
+
+\subsection{מעבר לצורה קנונית (\LR{Canonical Form})}
+
+הרעיון המרכזי בפתרון משוואות אלו הוא מעבר למערכת קואורדינטות חדשה $(\xi, \eta)$ המבוססת על העקומות האופייניות, שתפשט את המשוואה לצורה קנונית.
+
+\subsubsection{תהליך המעבר (עבור המקרה ההיפרבולי)}
+1. מצא את שורשי המשוואה האופיינית: $y'_{1,2} = \frac{B \pm \sqrt{B^2-AC}}{A}$.
+2. פתור את המשוואות הדיפרנציאליות $\frac{dy}{dx} = y'_1$ ו-$\frac{dy}{dx} = y'_2$ כדי לקבל פתרונות בצורה:
+   \[ \phi(x,y) = c_1, \quad \psi(x,y) = c_2 \]
+3. הגדר משתנים חדשים: $\xi = \phi(x,y)$ ו-$\eta = \psi(x,y)$.
+4. הצב את הנגזרות החדשות במשוואה המקורית באמצעות כלל השרשרת.
+
+\begin{resultbox}{צורות קנוניות}
+    \begin{itemize}
+        \item \textbf{היפרבולי:} $u_{\xi\eta} = F(\dots)$ (או $u_{\xi\xi} - u_{\eta\eta} = F$).
+        \item \textbf{פרבולי:} $u_{\eta\eta} = F(\dots)$ (נגזרת שנייה אחת נעלמת).
+        \item \textbf{אליפטי:} $u_{\xi\xi} + u_{\eta\eta} = F(\dots)$ (כמו לפלס).
+    \end{itemize}
+\end{resultbox}
+
+\subsection{דוגמה פתורה: מעבר לצורה קנונית}
+
+\begin{examplebox}{דוגמה מספרית מההרצאה}
+    נתונה המשוואה:
+    \[ u_{xx} + 2u_{xy} - 3u_{yy} + 2u_x + 6u_y = 0 \]
+    
+    \textbf{שלב 1: סיווג}
+    המקדמים הם $A=1, B=1, C=-3$.
+    הדיסקרימיננטה:
+    \[ \Delta = B^2 - AC = 1^2 - 1(-3) = 4 > 0 \]
+    המשוואה היא \textbf{היפרבולית}.
+
+    \textbf{שלב 2: מציאת האופיינים}
+    נפתור את המשוואה האופיינית:
+    \[ (y')^2 - 2y' - 3 = 0 \]
+    השורשים הם:
+    \[ y'_{1,2} = \frac{2 \pm \sqrt{4 - 4(1)(-3)}}{2} = \frac{2 \pm 4}{2} \Rightarrow y'_1 = 3, \quad y'_2 = -1 \]
+    
+    נמצא את העקומות:
+    1. $\frac{dy}{dx} = 3 \Rightarrow y = 3x + c_1 \Rightarrow y - 3x = c_1$
+    2. $\frac{dy}{dx} = -1 \Rightarrow y = -x + c_2 \Rightarrow y + x = c_2$
+
+    \textbf{שלב 3: החלפת משתנים}
+    נגדיר את המשתנים החדשים (הערה: הבחירה המדויקת של הסימן אינה קריטית):
+    \[ \eta = 3x - y, \quad \xi = x + y \]
+    
+    \textbf{שלב 4: חישוב הנגזרות (כלל השרשרת)}
+    נחשב את הנגזרות הראשונות:
+    \[ u_x = u_\xi \xi_x + u_\eta \eta_x = u_\xi(1) + u_\eta(3) = u_\xi + 3u_\eta \]
+    \[ u_y = u_\xi \xi_y + u_\eta \eta_y = u_\xi(1) + u_\eta(-1) = u_\xi - u_\eta \]
+    
+    נחשב את הנגזרות השניות (למשל $u_{xx}$):
+    \[ u_{xx} = \frac{\partial}{\partial x}(u_\xi + 3u_\eta) = (u_{\xi\xi}\xi_x + u_{\xi\eta}\eta_x) + 3(u_{\eta\xi}\xi_x + u_{\eta\eta}\eta_x) \]
+    \[ = (u_{\xi\xi} + 3u_{\xi\eta}) + 3(u_{\eta\xi} + 3u_{\eta\eta}) = u_{\xi\xi} + 6u_{\xi\eta} + 9u_{\eta\eta} \]
+    
+    באופן דומה מחשבים את $u_{yy}, u_{xy}$. לאחר הצבה במשוואה המקורית וצמצום איברים (תהליך אלגברי ארוך), רוב הנגזרות השניות מצטמצמות ומתקבלת המשוואה הקנונית הפשוטה:
+    
+    \[ 16 u_{\xi\eta} + 8 u_\xi = 0 \quad \Rightarrow \quad u_{\xi\eta} + \frac{1}{2}u_\xi = 0 \]
+    
+    \textbf{שלב 5: פתרון המשוואה הקנונית}
+    זוהי משוואה שניתן לפתור. נסמן $v = u_\xi$, אזי $v_\eta + \frac{1}{2}v = 0$.
+    הפתרון הוא $v = f(\xi)e^{-\eta/2}$.
+    כעת מבצעים אינטגרציה לפי $\xi$ למציאת $u$:
+    \[ u(\xi, \eta) = e^{-\eta/2} \int f(\xi) d\xi + G(\eta) = F(\xi)e^{-\eta/2} + G(\eta) \]
+    
+    חזרה למשתנים מקוריים נותנת את הפתרון הכללי למשוואה המסובכת המקורית.
+\end{examplebox}

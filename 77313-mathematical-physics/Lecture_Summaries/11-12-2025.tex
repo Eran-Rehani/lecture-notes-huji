@@ -1,0 +1,226 @@
+\section{משוואת הגלים בדו-ממד: הממברנה ומערכות כלליות}
+
+\begin{mainbox}{מידע כללי}
+\textbf{נושא:} משוואת הגלים בדו-ממד (ממברנה מלבנית), ניוון (Degeneracy), גאומטריה כללית והרמיטיות של הלפלסיאן.
+\end{mainbox}
+
+\subsection{הממברנה המלבנית: ניסוח ופתרון}
+
+נדון בממברנה דו-ממדית (כגון דף או תוף מלבני) המתוחה במישור $xy$. הממברנה מקובעת בכל קצותיה.
+
+\begin{definitionbox}{משוואת הגלים הדו-ממדית}
+המשוואה המתארת את ההעתק $u(x,y,t)$ של הממברנה היא:
+\begin{equation}
+\frac{\partial^2 u}{\partial t^2} = c^2 \nabla^2 u = c^2 \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} \right)
+\end{equation}
+כאשר $c = \sqrt{T/\sigma}$ היא מהירות הגל (כתלות במתיחות $T$ וצפיפות המסה המשטחית $\sigma$).
+\end{definitionbox}
+
+\subsubsection{תנאי שפה והתחלה}
+הממברנה מוגדרת בתחום $0 \le x \le L_x$ ו-$0 \le y \le L_y$. הקצוות מקובעים (תנאי דיריכלה הומוגניים):
+\begin{itemize}
+    \item $u(0, y, t) = u(L_x, y, t) = 0$
+    \item $u(x, 0, t) = u(x, L_y, t) = 0$
+\end{itemize}
+תנאי ההתחלה נתונים על ידי פונקציית הצורה ההתחלתית $f(x,y)$ והמהירות ההתחלתית $g(x,y)$.
+
+\subsubsection{הפרדת משתנים}
+נחפש פתרון בצורה של הפרדת משתנים מלאה:
+\begin{equation}
+u(x,y,t) = X(x)Y(y)T(t)
+\end{equation}
+הצבה במשוואה וחלוקה ב-$XYT$ מובילה ל:
+\begin{equation}
+\frac{1}{c^2} \frac{\ddot{T}}{T} = \frac{X''}{X} + \frac{Y''}{Y} = -k^2
+\end{equation}
+מכיוון שצד שמאל תלוי בזמן בלבד וצד ימין במרחב בלבד, שניהם שווים לקבוע משותף אותו נסמן $-k^2$. בנוסף, מכיוון ש-$X$ ו-$Y$ הם משתנים בלתי תלויים, כל אחד מהאיברים המרחביים חייב להיות קבוע בפני עצמו:
+\begin{equation}
+\frac{X''}{X} = -\lambda^2, \quad \frac{Y''}{Y} = -\mu^2
+\end{equation}
+כך שמתקיים הקשר (יחס הדיספרסיה):
+\begin{equation}
+k^2 = \lambda^2 + \mu^2
+\end{equation}
+
+\begin{resultbox}{הפונקציות העצמיות והערכים העצמיים}
+פתרון המשוואות המרחביות עם תנאי השפה נותן:
+\begin{equation}
+X_n(x) = \sin\left( \frac{n\pi x}{L_x} \right), \quad n=1,2,3,\dots
+\end{equation}
+\begin{equation}
+Y_m(y) = \sin\left( \frac{m\pi y}{L_y} \right), \quad m=1,2,3,\dots
+\end{equation}
+הפונקציה המרחבית המלאה (המוד, \LR{Mode}) היא:
+\begin{equation}
+\phi_{nm}(x,y) = \sin\left( \frac{n\pi x}{L_x} \right) \sin\left( \frac{m\pi y}{L_y} \right)
+\end{equation}
+\end{resultbox}
+
+התדרים העצמיים של המערכת מתקבלים מהקשר $k_{nm}^2 = \lambda_n^2 + \mu_m^2$:
+\begin{equation}
+\omega_{nm} = c k_{nm} = c \sqrt{\left(\frac{n\pi}{L_x}\right)^2 + \left(\frac{m\pi}{L_y}\right)^2}
+\end{equation}
+
+החלק הזמני הוא פתרון של מתנד הרמוני:
+\begin{equation}
+T_{nm}(t) = A_{nm} \cos(\omega_{nm} t) + B_{nm} \sin(\omega_{nm} t)
+\end{equation}
+
+\subsection{ניוון (\LR{Degeneracy})}
+
+במערכות רב-ממדיות, ייתכן מצב שבו לשתי פונקציות עצמיות שונות (צורות מרחביות שונות) יש את אותו ערך עצמי (אותו תדר). תופעה זו נקראת \textbf{ניוון}.
+
+\begin{examplebox}{דוגמה: הממברנה הריבועית}
+נניח כי הממברנה היא ריבוע, $L_x = L_y = L$. התדרים נתונים על ידי:
+\begin{equation}
+\omega_{nm} = \frac{c\pi}{L} \sqrt{n^2 + m^2}
+\end{equation}
+נתבונן במודים המעורבים:
+\begin{itemize}
+    \item עבור $(n,m) = (1,2)$: התדר הוא פרופורציונלי ל-$\sqrt{1^2+2^2} = \sqrt{5}$.
+    \item עבור $(n,m) = (2,1)$: התדר הוא פרופורציונלי ל-$\sqrt{2^2+1^2} = \sqrt{5}$.
+\end{itemize}
+קיבלנו $\omega_{12} = \omega_{21}$, אך הפונקציות המרחביות שונות:
+\[ \phi_{12} = \sin\left(\frac{\pi x}{L}\right)\sin\left(\frac{2\pi y}{L}\right) \neq \phi_{21} = \sin\left(\frac{2\pi x}{L}\right)\sin\left(\frac{\pi y}{L}\right) \]
+\end{examplebox}
+
+\begin{notebox}{קווי צומת (\LR{Nodal Lines})}
+כאשר קיים ניוון, כל צירוף ליניארי של המודים המנוונים הוא גם פתרון עם אותו תדר.
+\begin{equation}
+u = A \phi_{12} + B \phi_{21}
+\end{equation}
+על ידי בחירת יחסים שונים בין $A$ ל-$B$, ניתן לייצר קווי צומת (האזורים בהם הממברנה לא זזה) בצורות גאומטריות מגוונות (אלכסונים, מעגלים משוערים וכו'), ולא רק קווים המקבילים לצירים.
+\end{notebox}
+
+\subsection{הפתרון הכללי ומציאת המקדמים}
+
+מכיוון שמשוואת הגלים ליניארית, הפתרון הכללי הוא סופרפוזיציה של כל המודים האפשריים:
+\begin{equation}
+u(x,y,t) = \sum_{n=1}^{\infty} \sum_{m=1}^{\infty} \left[ A_{nm} \cos(\omega_{nm} t) + B_{nm} \sin(\omega_{nm} t) \right] \sin\left( \frac{n\pi x}{L_x} \right) \sin\left( \frac{m\pi y}{L_y} \right)
+\end{equation}
+
+כדי למצוא את המקדמים $A_{nm}$ ו-$B_{nm}$, נשתמש בתכונת האורתוגונליות של הפונקציות העצמיות בדו-ממד.
+הפונקציות $\phi_{nm}(x,y)$ מהוות בסיס שלם ואורתוגונלי במלבן.
+
+\begin{formulabox}{חישוב מקדמים (אינטגרל כפול)}
+עבור תנאי ההתחלה $u(x,y,0) = f(x,y)$:
+\begin{equation}
+A_{nm} = \frac{4}{L_x L_y} \int_{0}^{L_x} \int_{0}^{L_y} f(x,y) \sin\left( \frac{n\pi x}{L_x} \right) \sin\left( \frac{m\pi y}{L_y} \right) \, dx \, dy
+\end{equation}
+עבור המהירות ההתחלתית $\dot{u}(x,y,0) = g(x,y)$:
+\begin{equation}
+B_{nm} = \frac{4}{L_x L_y \omega_{nm}} \int_{0}^{L_x} \int_{0}^{L_y} g(x,y) \sin\left( \frac{n\pi x}{L_x} \right) \sin\left( \frac{m\pi y}{L_y} \right) \, dx \, dy
+\end{equation}
+\end{formulabox}
+
+\subsection{גאומטריה כללית והלפלסיאן}
+
+כאשר צורת הממברנה אינה מלבנית, לא ניתן בהכרח להפריד משתנים בין הקואורדינטות המרחביות ($x$ ו-$y$). עם זאת, תמיד ניתן להפריד בין הזמן למרחב.
+
+נניח פתרון מהצורה $u(\vec{r},t) = \psi(\vec{r})T(t)$. הצבה במשוואת הגלים מובילה ל:
+\begin{itemize}
+    \item משוואה זמנית (תמיד הרמונית): $\ddot{T} + \omega^2 T = 0$.
+    \item משוואה מרחבית (\textbf{משוואת הלמהולץ}):
+    \begin{equation}
+    \nabla^2 \psi(\vec{r}) + k^2 \psi(\vec{r}) = 0
+    \end{equation}
+    כאשר $k = \omega/c$.
+\end{itemize}
+עלינו לפתור את משוואת הערכים העצמיים
+\[
+\nabla^2 \psi = -\lambda \psi \qquad (\lambda = k^2)
+\]
+בתחום $\Omega$ עם תנאי שפה על השפה $\Gamma$
+(למשל תנאי דיריכלה $\psi|_{\Gamma} = 0$).
+
+\subsubsection{הרמיטיות של הלפלסיאן}
+
+כדי להבטיח שהפונקציות העצמיות $\psi_n$ פורשות את המרחב (סט שלם)
+ושהערכים העצמיים $\lambda_n$ ממשיים, עלינו להוכיח שאופרטור הלפלסיאן
+הוא אופרטור הרמיטי (צמוד לעצמו) תחת מכפלה פנימית המוגדרת על־ידי
+אינטגרל:
+
+\[
+\langle f, g \rangle
+=
+\iint_{\Omega} f(\vec{r})\, g(\vec{r}) \, dS .
+\]
+
+\begin{theorembox}{משפט: הרמיטיות של $\nabla^2$ בתחום חסום}
+בהינתן שתי פונקציות $u, v$ המקיימות תנאי שפה הומוגניים
+(דיריכלה $u=0$ או נוימן $\frac{\partial u}{\partial n}=0$ על השפה),
+מתקיים:
+\begin{equation}
+\iint_{\Omega} u \, (\nabla^2 v) \, dS
+=
+\iint_{\Omega} v \, (\nabla^2 u) \, dS .
+\end{equation}
+\end{theorembox}
+
+
+נשתמש בזהות וקטורית עבור הדיברגנץ של שדה מהצורה $u \nabla v$:
+\[
+\nabla \cdot (u \nabla v)
+=
+\nabla u \cdot \nabla v
++
+u \nabla^2 v .
+\]
+נבצע אינטגרציה על התחום $\Omega$ ונשתמש ב\textbf{משפט הדיברגנץ (גאוס)}
+בדו־ממד:
+\[
+\iint_{\Omega}
+\left(
+u \nabla^2 v + \nabla u \cdot \nabla v
+\right)
+\, dS
+=
+\oint_{\Gamma}
+(u \nabla v) \cdot \hat{n} \, dl
+=
+\oint_{\Gamma}
+u \frac{\partial v}{\partial n} \, dl .
+\]
+נחליף את התפקידים של $u$ ו־$v$ ונחסר את שתי המשוואות
+(הזהות השנייה של גרין):
+\begin{equation}
+\iint_{\Omega}
+\left(
+u \nabla^2 v - v \nabla^2 u
+\right)
+\, dS
+=
+\oint_{\Gamma}
+\left(
+u \frac{\partial v}{\partial n}
+-
+v \frac{\partial u}{\partial n}
+\right)
+\, dl .
+\end{equation}
+מאחר ש־$u$ ו־$v$ מקיימות תנאי שפה הומוגניים,
+האינטגרל השפתי (אגף ימין) מתאפס.
+לדוגמה, בתנאי דיריכלה:
+\[
+u|_{\Gamma} = v|_{\Gamma} = 0 ,
+\]
+ולכן האגף הימני שווה לאפס.
+מכאן נובע שוויון בין האינטגרלים המרחביים,
+ולפיכך אופרטור הלפלסיאן הוא אופרטור הרמיטי.
+\begin{summarybox}{מסקנות למערכות כלליות}
+\begin{enumerate}
+    \item הערכים העצמיים $k_n^2$ הם ממשיים
+    (ובדרך כלל חיוביים עבור משוואת הגלים).
+    \item הפונקציות העצמיות
+    $\psi_n(\vec{r})$
+    המתאימות לערכים עצמיים שונים הן
+    \textbf{אורתוגונליות}.
+    \item אוסף הפונקציות העצמיות מהווה
+    \textbf{בסיס שלם},
+    המאפשר לפרוס כל פונקציה (ובפרט את תנאי ההתחלה)
+    כטור:
+    \[
+    f(\vec{r}) = \sum_n A_n \psi_n(\vec{r}) .
+    \]
+\end{enumerate}
+\end{summarybox}

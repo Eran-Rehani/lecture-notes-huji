@@ -1,0 +1,287 @@
+
+\subsection*{מטרות השיעור}
+\begin{itemize}
+    \item חזרה על סימונים ומושגי יסוד ממכניקה קוונטית 1
+    \item הבנת אופרטורים נורמליים ותכונותיהם
+    \item למידת ייצוג סימטריות באמצעות אופרטורים אוניטריים ואנטי-אוניטריים
+    \item היכרות עם משפט ויגנר והשלכותיו הפיזיקליות
+\end{itemize}
+
+\subsection*{תזכורת: סימונים בסיסיים}
+נזכיר תחילה את הסימונים המרכזיים שנשתמש בהם לאורך הקורס:
+\begin{itemize}
+    \item \textbf{מצבים קוונטיים:} $\ket{\psi}, \ket{\phi}$ — וקטורי מצב במרחב הילברט
+    \item \textbf{מכפלה פנימית:} $\braket{\phi|\psi}$ — מכפלה סקלרית של מצבים
+    \item \textbf{אופרטורים:} $\hat{A}, \hat{H}, \hat{p}$ — טרנספורמציות לינאריות על מרחב המצבים
+    \item \textbf{אופרטור צמוד:} $\hat{A}^\dagger$ — מקיים $\bra{\phi}\hat{A}\ket{\psi} = \braket{\hat{A}^\dagger\phi|\psi}$
+    \item \textbf{קומוטטור:} $[\hat{A},\hat{B}] = \hat{A}\hat{B} - \hat{B}\hat{A}$
+\end{itemize}
+
+\subsection{אופרטורים נורמליים}
+
+\subsubsection*{הגדרה מרכזית}
+
+\begin{definitionbox}{אופרטור נורמלי}
+אופרטור $\hat{X}$ נקרא \textbf{נורמלי} אם הוא מתחלף עם הצמוד שלו:
+\[
+[\hat{X},\hat{X}^{\dagger}]=0 \quad \iff \quad \hat{X}^{\dagger}\hat{X} = \hat{X}\hat{X}^{\dagger}
+\]
+\end{definitionbox}
+
+\subsubsection*{דוגמאות לאופרטורים נורמליים}
+
+\begin{examplebox}{מקרים פרטיים חשובים}
+\begin{enumerate}
+    \item \textbf{אופרטור הזהות} $\hat{I}$ ו\textbf{אופרטור האפס} $\hat{0}$ — נורמליים באופן טריוויאלי
+    
+    \item \textbf{אופרטור הרמיטי} (צמוד עצמי): $\hat{H} = \hat{H}^\dagger$
+    \begin{align*}
+    [\hat{H},\hat{H}^\dagger] = [\hat{H},\hat{H}] = \hat{H}\hat{H} - \hat{H}\hat{H} = 0
+    \end{align*}
+    דוגמאות: המילטוניאן $\hat{H}$, אופרטור המיקום $\hat{x}$, אופרטור התנע $\hat{p}$
+    
+    \item \textbf{אופרטור אוניטרי}: $\hat{U}^{-1} = \hat{U}^\dagger$ (צמוד שווה להופכי)
+    \begin{align*}
+    [\hat{U},\hat{U}^\dagger] &= \hat{U}\hat{U}^\dagger - \hat{U}^\dagger\hat{U} \\
+    &= \hat{U}\hat{U}^{-1} - \hat{U}^{-1}\hat{U} = \hat{I} - \hat{I} = 0
+    \end{align*}
+    דוגמאות: אופרטורי סיבוב, אופרטורי הזזה במרחב
+\end{enumerate}
+\end{examplebox}
+
+\subsubsection*{תכונה מרכזית: לכסינות}
+
+\begin{theorembox}{משפט הלכסון הספקטרלי}
+כל אופרטור נורמלי $\hat{X}$ ניתן ללכסון על ידי בסיס אורתונורמלי של וקטורים עצמיים.
+
+כלומר, קיים בסיס $\{\ket{\varphi_n}\}$ כך שלכל $n$:
+\[
+\hat{X}\ket{\varphi_n}=\lambda_n\ket{\varphi_n}
+\]
+כאשר $\lambda_n$ הם הערכים העצמיים (יכולים להיות מרוכבים), והוקטורים העצמיים מקיימים:
+\[
+\braket{\varphi_m|\varphi_n} = \delta_{mn}
+\]
+\end{theorembox}
+
+\begin{notebox}{הערה חשובה}
+עבור אופרטורים הרמיטיים, הערכים העצמיים $\lambda_n$ חייבים להיות \textbf{ממשיים}, והווקטורים העצמיים השייכים לערכים עצמיים שונים הם \textbf{אורתוגונליים}. זו תוצאה ישירה מכך שאופרטורים הרמיטיים הם מקרה פרטי של אופרטורים נורמליים.
+\end{notebox}
+
+\subsection{סימטריות במכניקה הקוונטית}
+
+\subsubsection*{מושג הסימטריה}
+
+\begin{definitionbox}{סימטריה קוונטית}
+נאמר שמערכת קוונטית היא \textbf{סימטרית} תחת טרנספורמציה $T$ אם לכל שני מצבים $\ket{\psi}$ ו-$\ket{\phi}$ מתקיים:
+\[
+\left|\braket{\phi|\psi}\right|^{2}=\left|\braket{\phi'|\psi'}\right|^2
+\]
+כאשר $\ket{\psi'} = T\ket{\psi}$ ו-$\ket{\phi'} = T\ket{\phi}$ הם המצבים המותמרים.
+\end{definitionbox}
+
+\begin{notebox}{פרשנות פיזיקלית}
+תנאי זה אומר ש\textbf{הסתברויות המעבר} בין מצבים נשמרות תחת הטרנספורמציה. 
+
+אם $P_\phi = \ket{\phi}\bra{\phi}$ הוא אופרטור ההיטל על המצב $\ket{\phi}$, אז ההסתברות למצוא את המערכת במצב $\ket{\phi}$ כאשר היא נמצאת במצב $\ket{\psi}$ היא:
+\[
+P(\phi|\psi) = |\braket{\phi|\psi}|^2
+\]
+סימטריה דורשת ש-$P(\phi'|\psi') = P(\phi|\psi)$ — כלומר, הפיזיקה לא משתנה תחת הטרנספורמציה.
+\end{notebox}
+
+\subsubsection*{סימטריה חלקית \LR{vs.} סימטריה מלאה}
+
+\begin{itemize}
+    \item \textbf{סימטריה מלאה:} כל מצבי המערכת והמדידות נשארים בעלי אותה פיזיקה תחת הטרנספורמציה
+    \item \textbf{סימטריה חלקית:} חלק מהמצבים משמרים הסתברויות ואחרים לא — במקרה זה לא נאמר שהמערכת כולה סימטרית
+\end{itemize}
+
+\subsubsection*{ייצוג סימטריות באמצעות אופרטורים}
+
+כל סימטריה פיזיקלית $T$ מיוצגת על ידי אופרטור $\hat{U}_T$ הפועל על מרחב המצבים:
+\[
+\ket{\psi'} = \hat{U}_T\ket{\psi}
+\]
+
+\begin{examplebox}{דוגמאות לסימטריות}
+\begin{enumerate}
+    \item \textbf{סיבוב במרחב:} אם למערכת יש סימטריה ספרית (כמו אטום המימן), סיבוב הקואורדינטות לא משנה את הפיזיקה
+    \[
+    \ket{\psi'} = \hat{R}(\theta, \mathbf{n})\ket{\psi}
+    \]
+    כאשר $\hat{R}(\theta, \mathbf{n})$ הוא אופרטור סיבוב בזווית $\theta$ סביב ציר $\mathbf{n}$
+    
+    \item \textbf{הזזה במרחב:} אם המערכת הומוגנית, הזזה לא משנה את הפיזיקה
+    \[
+    \ket{\psi'} = \hat{T}(\mathbf{a})\ket{\psi}
+    \]
+    
+    \item \textbf{שיקוף:} שיקוף מרחבי (\LR{parity}) $\hat{P}$ — מחליף $\mathbf{r} \to -\mathbf{r}$
+\end{enumerate}
+\end{examplebox}
+
+\subsubsection*{קשר בין סימטריות לאופרטורים אוניטריים}
+
+\begin{theorembox}{אופרטורי סימטריה}
+כמעט כל סימטריה פיזיקלית מיוצגת על ידי אופרטור \textbf{אוניטרי} $\hat{U}$ המקיים:
+\[
+\hat{U}^\dagger \hat{U} = \hat{U} \hat{U}^\dagger = \hat{I}
+\]
+
+תכונה זו מבטיחה שמירת נורמות:
+\[
+\braket{\psi'|\psi'} = \bra{\psi}\hat{U}^\dagger\hat{U}\ket{\psi} = \braket{\psi|\psi}
+\]
+\end{theorembox}
+
+\begin{notebox}{חריגה חשובה}
+קיימת דוגמה חשובה אחת לסימטריה שאינה אוניטרית: \textbf{היפוך זמן} (\LR{Time Reversal}). 
+
+כפי שנראה בהמשך, סימטריה זו מיוצגת על ידי אופרטור \textbf{אנטי-אוניטרי}.
+\end{notebox}
+
+\subsection{אופרטורים אנטי-לינאריים ואנטי-אוניטריים}
+
+לפני שנציג את משפט ויגנר, עלינו להכיר סוג חדש של אופרטורים.
+
+\subsubsection*{הגדרות}
+
+\begin{definitionbox}{אופרטור אנטי-לינארי}
+אופרטור $\hat{A}$ נקרא \textbf{אנטי-לינארי} אם הוא מקיים:
+\[
+\hat{A}(c_1\ket{\psi_1} + c_2\ket{\psi_2}) = c_1^*\hat{A}\ket{\psi_1} + c_2^*\hat{A}\ket{\psi_2}
+\]
+כלומר, הוא לינארי ביחס למצבים, אבל \textbf{מצמיד} את הסקלרים המרוכבים.
+\end{definitionbox}
+
+\begin{examplebox}{דוגמה: אופרטור הצימוד המרוכב}
+נגדיר אופרטור $\hat{K}$ על ידי פעולתו על בסיס אורתונורמלי $\{\ket{n}\}$:
+\[
+\hat{K}\left(\sum_{n} c_n\ket{n}\right) = \sum_{n} c_n^*\ket{n}
+\]
+
+אופרטור זה הוא אנטי-לינארי. נבדוק:
+\begin{align*}
+\hat{K}(c_1\ket{\psi_1} + c_2\ket{\psi_2}) &= \hat{K}\left(\sum_n (c_1 a_n^{(1)} + c_2 a_n^{(2)})\ket{n}\right) \\
+&= \sum_n (c_1 a_n^{(1)} + c_2 a_n^{(2)})^*\ket{n} \\
+&= \sum_n (c_1^* a_n^{(1)*} + c_2^* a_n^{(2)*})\ket{n} \\
+&= c_1^* \hat{K}\ket{\psi_1} + c_2^* \hat{K}\ket{\psi_2}
+\end{align*}
+\end{examplebox}
+
+\begin{definitionbox}{אופרטור אוניטרי (תזכורת)}
+אופרטור $\hat{U}$ הוא \textbf{אוניטרי} אם הוא ליניארי, הפיך, ומקיים:
+\[
+\braket{\hat{U}\psi|\hat{U}\phi} = \braket{\psi|\phi}
+\]
+כלומר, הוא שומר על המכפלה הפנימית (ועל הנורמה).
+\end{definitionbox}
+
+\begin{definitionbox}{אופרטור אנטי-אוניטרי}
+אופרטור $\hat{A}$ הוא \textbf{אנטי-אוניטרי} אם הוא אנטי-לינארי, הפיך, ומקיים:
+\[
+\braket{\hat{A}\psi|\hat{A}\phi} = \braket{\phi|\psi}^*
+\]
+שימו לב להיפוך הסדר והצימוד המרוכב בצד ימין!
+\end{definitionbox}
+
+\subsubsection*{תכונות של אופרטורים אנטי-אוניטריים}
+
+\begin{itemize}
+    \item \textbf{שימור נורמות:} 
+    \[
+    \|\hat{A}\ket{\psi}\|^2 = \braket{\hat{A}\psi|\hat{A}\psi} = \braket{\psi|\psi}^* = \braket{\psi|\psi} = \|\ket{\psi}\|^2
+    \]
+    
+    \item \textbf{הרכבה של שני אופרטורים אנטי-אוניטריים:}
+    \[
+    \hat{A}_1\hat{A}_2 \text{ הוא אופרטור לינארי ואוניטרי}
+    \]
+    הסיבה: הצימוד המרוכב מופעל פעמיים ומבטל את עצמו.
+    
+    \item \textbf{פירוק לאוניטרי וצימוד:} כל אופרטור אנטי-אוניטרי $\hat{A}$ ניתן לכתוב בצורה:
+    \[
+    \hat{A} = \hat{U}\hat{K}
+    \]
+    כאשר $\hat{U}$ אוניטרי ו-$\hat{K}$ הוא אופרטור הצימוד המרוכב.
+\end{itemize}
+
+\begin{notebox}{למה אנחנו צריכים את זה?}
+אופרטורים אנטי-אוניטריים אינם מופיעים לעיתים קרובות בפיזיקה, אבל הם \textbf{הכרחיים} לתיאור \textbf{היפוך זמן}. 
+
+הסיבה: היפוך זמן הופך $t \to -t$, ולכן צריך להפוך גם את $i \to -i$ במשוואת שרדינגר, מה שדורש אופרטור אנטי-לינארי.
+\end{notebox}
+
+\subsection*{עקרון ויגנר (\LR{Wigner's theorem})}
+
+כל סימטריה במכניקה קוונטית — כלומר טרנספורמציה $T$ 
+
+המשמרת הסתברויות מעבר בין מצבים — ניתנת למימוש על־ידי אופרטור אוניטרי
+או אנטי־אוניטרי במרחב הילברט.
+
+אם $T$ פועל על קרני המרחב כך ש-
+\[
+|\langle\psi|\phi\rangle|=|\langle T\psi|T\phi\rangle|,
+\]
+ אז קיימת טרנספורמציה $U_{T}$ שהיא אוניטרית או אנטי-אוניטרית, כך
+ש-
+\[
+T|\psi\rangle=e^{i\alpha(\psi)}U_{T}|\psi\rangle
+\]
+
+\section*{דוגמות לסימטריות פיזיקליות}
+
+\begin{center}
+\begin{tabular}{|c|c|p{8cm}|}
+\hline
+\textbf{סימטריה} & \textbf{סוג האופרטור} & \textbf{תיאור} \\
+\hline
+סיבוב, הזזה, שיקוף במרחב & אוניטרי &
+שומרים את מבנה המכפלה הפנימית באופן ליניארי. \\
+\hline
+היפוך זמן $T$ & אנטי־אוניטרי &
+הופך את $i \mapsto -i$, ולכן חייב להיות אנטי־ליניארי. \\
+\hline
+הצמדת מטען $C$ ושיקוף פריטי $P$ & לרוב אוניטריים &
+אך בצירופים מסוימים עם $T$ נוצרת אנטי־אוניטריות. \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection*{דוגמה: היפוך זמן עבור מצב תנע}
+
+אם $T$ הוא אופרטור היפוך זמן, אז:
+\[
+T\, i \, T^{-1} = -i, \qquad
+T\, \hat{p} \, T^{-1} = -\hat{p}, \qquad
+T\, \hat{x} \, T^{-1} = \hat{x}.
+\]
+כדי ש-$i$ ישתנה ל-$-i$, על $T$ להיות אנטי־ליניארי.
+
+\section*{סיכום עיקרי}
+
+\begin{center}
+\begin{tabular}{|c|c|c|c|p{5cm}|}
+\hline
+\textbf{מושג} & \textbf{ליניאריות} & \textbf{שימור סקלרים} & \textbf{שימור מכפלה פנימית} & \textbf{שימוש פיזיקלי} \\
+\hline
+אוניטרי $U$ & ליניארי & $a \to a$ &
+$\langle U\psi, U\phi \rangle = \langle \psi, \phi \rangle$ &
+סיבובים, הזזות, סימטריות מרחביות. \\
+\hline
+אנטי־אוניטרי $A$ & אנטי־ליניארי & $a \to a^*$ &
+$\langle A\psi, A\phi \rangle = \langle \phi, \psi \rangle$ &
+היפוך זמן, הפרות $CP$, וכו׳. \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection*{\LR{Takeaways}}
+
+\begin{enumerate}
+    \item אנטי־ליניאריות פירושה צימוד של הסקלרים — מנגנון מתמטי הכרחי לייצוג היפוך כיווניות בזמן.
+    \item אנטי־אוניטריות משמרת נורמות אך הופכת את כיווניות הפאזה.
+    \item משפט ויגנר הוא הגשר בין סימטריות פיזיקליות לאופרטורים אוניטריים או אנטי־אוניטריים.
+    \item כל סימטריה קוונטית אמיתית מיוצגת באחד משני האופנים הללו — אין אחרים עקב הדרישה לשימור הסתברויות.
+\end{enumerate}

@@ -1,0 +1,193 @@
+\subsection{גדלים אופייניים ותיקונים באטום המימן}
+\begin{summarybox}
+    {חזרה על גדלים יסודיים}בדיון על אטומים דמויי מימן (גרעין עם מטען $Ze$ ואלקטרון
+    יחיד), הגדרנו שני גדלים סקלאריים מרכזיים:
+    \begin{itemize}
+        \item \textbf{רדיוס בוהר ($a_{0}$):} סקאלת האורך האופיינית.
+            \begin{equation}
+                a_{0} = \frac{4\pi\epsilon_{0} \hbar^{2}}{m_{e} e^{2}}\approx \SI
+                {0.53}{\text{Å}}
+            \end{equation}
+
+        \item \textbf{אנרגיית רידברג ($Ry$):} סקאלת האנרגיה האופיינית.
+            \begin{equation}
+                Ry = \frac{m_{e} e^{4}}{32\pi^{2}\epsilon_{0}^{2} \hbar^{2}}\approx
+                \SI{13.6}{eV}
+            \end{equation}
+    \end{itemize}ספקטרום האנרגיה נתון על ידי:
+    \begin{equation}
+        E_{n} = -\frac{Z^{2}}{n^{2}}Ry
+    \end{equation}
+\end{summarybox}
+\subsubsection{תלות ב-$Z$ ורדיוס אופייני (תיקון טעות)}
+בשיעור הקודם הוצג קשר שגוי לגבי הרדיוס הממוצע. הקשר הנכון הוא שככל שמטען הגרעין ($Z$)
+גדל, המשיכה החשמלית מתחזקת והאטום "מתכווץ".הרדיוס הממוצע של האלקטרון (עבור המצב $n
+=1$) הוא:
+\begin{equation}
+    \langle r \rangle \sim \frac{a_{0}}{Z}
+\end{equation}האנרגיה הפוטנציאלית מתנהגת כמו
+$\frac{Ze^{2}}{r}\sim \frac{Ze^{2}}{a_{0}/Z}\sim Z^{2}$, מה שמסביר את התלות הריבועית
+ב-$Z$ באנרגיה.
+\subsubsection{גבול הקירוב הלא-יחסותי}
+המודל של שרדינגר הוא מודל לא-יחסותי. נשאלת השאלה: באילו תנאים קירוב זה נשבר?נבחן
+דוגמה של אטום כבד מאוד, למשל אורניום ($Z=92$), עבור האלקטרון הפנימי ביותר ($n=1$).בדיקת
+תקפות הקירוב הלא-יחסותי באורניום\textbf{נתונים:}
+\begin{itemize}
+    \item מספר אטומי: $Z \approx 100$ (לצורך הערכה סדר גודל).
+
+    \item אנרגיית המנוחה של האלקטרון: $m_{e} c^{2} \approx \SI{511}{keV}$.
+\end{itemize}\textbf{חישוב אנרגיית הקשר:} לפי הנוסחה הלא-יחסותית:
+\begin{equation}
+    |E_{1}| = Z^{2} \times \SI{13.6}{eV}\approx 100^{2} \times 13.6 = 136,000 \text{
+    eV}= \SI{136}{keV}
+\end{equation}
+
+\textbf{מסקנה:} אנרגיית הקשר היא מסדר גודל של חמישית מאנרגיית המנוחה של האלקטרון
+($\frac{136}{511}\approx 0.26$). משמעות הדבר היא שהאנרגיה הקינטית היא בסדר גודל
+של אנרגיית המנוחה, ולכן המהירות האופיינית $v$ קרובה למהירות האור $c$. עבור
+אטומים כבדים, השימוש במשוואת שרדינגר נאיבית אינו מדויק, ויש להשתמש בתיקונים
+יחסותיים (משוואת דיראק).
+\subsubsection{תיקון למסה מצומצמת (\LR{Reduced Mass})}
+ההנחה שהגרעין נייח (מסה אינסופית) אינה מדויקת. עבור גרעין בעל מסה סופית
+$M_{nuc}$, הבעיה הדו-גופית שקולה לבעיה של חלקיק אחד בעל \textbf{מסה מצומצמת}
+$\mu$:
+\begin{equation}
+    \mu = \frac{m_{e} M_{nuc}}{m_{e} + M_{nuc}}
+\end{equation}המעבר מהפתרון האידיאלי לפתרון הפיזיקלי מתבצע על ידי החלפת $m_{e}$
+ב-$\mu$ בכל הנוסחאות:
+\begin{itemize}
+    \item $a_{0} \rightarrow a_{\mu}= a_{0} \frac{m_{e}}{\mu}$ (הרדיוס גדל מעט).
+
+    \item $Ry \rightarrow Ry_{\mu}= Ry \frac{\mu}{m_{e}}$ (האנרגיה קטנה מעט).
+\end{itemize}
+\subsection{אלמנטי מטריצה וזוגיות (\LR{Parity})}
+פונקציית הגל של אטום המימן נתונה על ידי:
+\begin{equation}
+    \psi_{nlm}(r, \theta, \phi) = R_{nl}(r) Y_{l}^{m}(\theta, \phi)
+\end{equation}כאשר $Y_{l}^{m}$ הן ההרמוניות הספריות. נבחן אלמנטי מטריצה של
+אופרטורים שונים.
+\subsubsection{אופרטור סקלרי $r^{2}$}
+האופרטור $r^{2}$ תלוי רק בקואורדינטה הרדיאלית ואינו משפיע על הזוויות. לכן, באלמנט
+המטריצה תהיה הפרדה (פקטוריזציה):
+\begin{align}
+\mel{n l m}{r^2}{n' l' m'} &= \int_0^\infty r^2 dr
+R_{nl}^*(r) r^2 R_{n'l'}(r) \times
+\underbrace{\int d\Omega Y_{l}^{m*}(\Omega) Y_{l'}^{m'}(\Omega)}_{\delta_{ll'} \delta_{mm'}} \\
+&= C(n,n',l) \delta_{ll'} \delta_{mm'}
+\end{align}
+האופרטור אינו משנה את המספרים הקוונטיים הזוויתיים.
+\subsubsection{אופרטור וקטורי $z$ וכללי ברירה}
+נבחן את אלמנט המטריצה של קואורדינטת הגובה $z = r\cos\theta$.
+\begin{equation}
+    \mel{n l m}{z}{n' l' m'}
+\end{equation}משיקולי סימטריה לסיבוב סביב ציר $z$ (תלות ב-$\phi$), ומכיוון ש-$z$
+אינו תלוי ב-$\phi$, נקבל מיד $\delta_{mm'}$.אולם, ניתן להסיק תובנה חזקה יותר משיקולי
+זוגיות (\LR{Parity}).
+\begin{definitionbox}
+    {אופרטור הזוגיות $\mathcal{P}$}אופרטור הזוגיות מבצע שיקוף של הקואורדינטות
+    דרך ראשית הצירים: $\vec{r}\rightarrow -\vec{r}$.תכונת ההרמוניות הספריות תחת זוגיות:
+    \begin{equation}
+        \mathcal{P}Y_{l}^{m}(\theta, \phi) = (-1)^{l} Y_{l}^{m}(\theta, \phi)
+    \end{equation}הקואורדינטה $z$ היא אי-זוגית:
+    $\mathcal{P}z \mathcal{P}^{\dagger} = -z$.
+\end{definitionbox}
+\begin{theorembox}
+    {כלל ברירה לזוגיות}נבחן את התנהגות אלמנט המטריצה תחת זוגיות. נחדיר פעמיים את
+    האופרטור ($\mathcal{P}^{\dagger} \mathcal{P}= \mathbb{I}$):
+    \begin{align}
+    \mel{nlm}{z}{n'l'm'}
+    &= \mel{nlm}{\mathcal{P}^\dagger \mathcal{P} z \mathcal{P}^\dagger \mathcal{P}}{n'l'm'} \notag \\
+    &= \mel{nlm}{\mathcal{P}^\dagger (-z) \mathcal{P}}{n'l'm'}
+    \end{align}
+    כאשר $\mathcal{P}$
+    פועל על המצבים, הוא מוציא ערכים עצמיים של זוגיות:
+    \begin{itemize}
+        \item $\mathcal{P}\ket{n'l'm'}= (-1)^{l'}\ket{n'l'm'}$
+
+        \item $\bra{nlm}\mathcal{P}^{\dagger} = \bra{nlm}(-1)^{l}$
+    \end{itemize}
+    נציב בחזרה:
+    \begin{align}
+    \mel{nlm}{z}{n'l'm'} &= (-1)^l (-1) (-1)^{l'} \mel{nlm}{z}{n'l'm'} \notag \\
+    &= (-1)^{l+l'+1} \mel{nlm}{z}{n'l'm'}
+    \end{align}
+    כדי שאלמנט המטריצה לא יתאפס, נדרש ש:
+    \begin{equation}
+        (-1)^{l+l'+1}= 1 \implies l+l'+1 = \text{even}\implies l+l' = \text{odd}
+    \end{equation}כלומר, המעבר מותר רק בין מצבים בעלי זוגיות הפוכה ($\Delta l$
+    אי-זוגי). עבור דיפול חשמלי, כלל הברירה החזק יותר הוא $\Delta l = \pm 1$.
+\end{theorembox}אותו טיעון תקף גם עבור $x$ ו-$y$, כיוון שגם הם משנים סימן תחת
+זוגיות.
+\subsection{סימטריות וחוקי שימור: ממשפט נתר הקלאסי לקוונטי}
+\subsubsection{משפט נתר במכניקה קלאסית (חזרה)}
+עבור מערכת המתוארת על ידי קואורדינטות $q_{a}$, משפט נתר קובע כי לכל סימטריה
+רציפה של הלגרנז'יאן $L(q, \dot{q}, t)$ קיים גודל שמור.נניח טרנספורמציה
+אינפיניטסימלית:
+\begin{equation}
+    q_{a} \rightarrow q_{a} + \epsilon f_{a}(q)
+\end{equation}אם הלגרנז'יאן אינו משתנה ($\delta L = 0$), הגודל השמור הוא:
+\begin{equation}
+    Q = \sum_{a} \frac{\partial L}{\partial \dot{q}_{a}}f_{a} = \sum_{a} p_{a} f_{a}
+\end{equation}
+\subsubsection{קוונטיזציה של הגודל השמור}
+במעבר למכניקה קוונטית, אנו הופכים את הגדלים לאופרטורים ($\hat{q}, \hat{p}$). כדי
+לשמור על הרמיטיות של האופרטור $\hat{Q}$ (מכיוון ש-$\hat{p}$ ו-$\hat{f}$ לא בהכרח
+חילופיים), נגדיר אותו באמצעות אנטי-קומוטטור (סימטריזציה):
+\begin{equation}
+    \hat{Q}= \frac{1}{2}\sum_{a} \left( \hat{p}_{a} \hat{f}_{a} + \hat{f}_{a} \hat
+    {p}_{a} \right)
+\end{equation}כעת נראה ש-$\hat{Q}$ הוא היוצר (\LR{Generator}) של הטרנספורמציה בתיאוריה
+הקוונטית. נחשב את השינוי באופרטור הקואורדינטה $\hat{q}_{b}$ תחת הטרנספורמציה
+האינפיניטסימלית המושרת על ידי $\hat{Q}$:
+\begin{equation}
+    \delta \hat{q}_{b} = \frac{i}{\hbar}\epsilon [\hat{Q}, \hat{q}_{b}]
+\end{equation}
+\begin{align}
+[\hat{Q}, \hat{q}_b] &= \frac{1}{2} \sum_a [ \hat{p}_a \hat{f}_a +
+\hat{f}_a \hat{p}_a , \hat{q}_b ] \notag \\
+&= \frac{1}{2} \sum_a \left( [\hat{p}_a \hat{f}_a,
+\hat{q}_b] + [\hat{f}_a \hat{p}_a, \hat{q}_b] \right)
+\end{align}
+נשתמש בזהות $[AB, C] = A[B,C
+] + [A,C]B$. מכיוון ש-$\hat{f}_{a}$ היא פונקציה של הקואורדינטות בלבד, היא חילופית
+עם $\hat{q}_{b}$ ($[\hat{f}_{a}, \hat{q}_{b}] = 0$). נותרנו רק עם הקומוטטורים של
+התנע:
+\begin{equation}
+[\hat{p}_a, \hat{q}_b] = -i\hbar \delta_{ab}
+\end{equation}
+נציב זאת:
+\begin{align}
+[\hat{p}_a \hat{f}_a,
+\hat{q}_b] &= \hat{p}_a [\hat{f}_a, \hat{q}_b] + [\hat{p}_a, \hat{q}_b] \hat{f}_a \notag \\
+&= 0 + (-i\hbar \delta_{ab}) \hat{f}_a \\
+[\hat{f}_{a} \hat{p}_{a}, \hat{q}_{b}] &= \hat{f}_{a} [\hat{p}_{a}, \hat{q}_{b}
+    ] + [\hat{f}_{a}, \hat{q}_{b}] \hat{p}_{a} \notag \\
+    &= \hat{f}_a (-i\hbar \delta_{ab}) + 0
+\end{align}
+בסכום הכולל:
+\begin{equation}
+[\hat{Q}, \hat{q}_b] = \frac{1}{2} \sum_a (-i\hbar \delta_{ab} \hat{f}_a
+- i\hbar \delta_{ab} \hat{f}_a) = -i\hbar \hat{f}_b
+\end{equation}
+ולכן השינוי הוא:
+\begin{equation}
+    \delta \hat{q}_{b} = \frac{i\epsilon}{\hbar}(-i\hbar \hat{f}_{b}) = \epsilon
+    \hat{f}_{b}
+\end{equation}
+\begin{resultbox}
+    {מסקנה}האופרטור הקוונטי $\hat{Q}$, שנבנה מתוך הגודל השמור הקלאסי, מייצר
+    בדיוק את הטרנספורמציה הצפויה על האופרטורים:
+    \begin{equation}
+        \hat{q}_{b} \rightarrow \hat{q}_{b} + \epsilon \hat{f}_{b}
+    \end{equation}זהו קשר עמוק בין גדלים שמורים קלאסיים לבין יוצרים של סימטריות
+    במכניקה הקוונטית (למשל: תנע הוא יוצר הזזה, המילטוניאן הוא יוצר קידום בזמן).
+\end{resultbox}
+\subsection*{בירורים נדרשים}
+\begin{itemize}
+    \item בשיעור נשאלה שאלה לגבי המקרה שבו $f_{a}$ תלוי ב-$\dot{q}$. המרצה ציין
+        שהדבר אפשרי אך הדיון הוגבל לפונקציות של הקואורדינטות בלבד לצורך פשטות
+        הקוונטיזציה (שכן $\dot{q}$ אינו מוגדר היטב כאופרטור בלתי תלוי).
+
+    \item הייתה אי-בהירות מסוימת לגבי הסימון של הטרנספורמציה ההפוכה בחישוב הקומוטטורים,
+        אך התוצאה הסופית $\epsilon \hat{f}_{b}$ עקבית עם התיאוריה.
+\end{itemize}

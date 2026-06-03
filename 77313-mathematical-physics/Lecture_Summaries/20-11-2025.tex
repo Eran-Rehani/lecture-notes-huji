@@ -1,0 +1,144 @@
+\section{פונקציית גרין - סיכום והשוואת הצגות}
+
+בשיעור זה סיימנו את הדיון בפונקציות גרין על ידי השוואה בין שתי ההצגות המרכזיות שפיתחנו, ופתרון דוגמאות קונקרטיות (אוסילטור הרמוני ומיתר סטטי). לאחר מכן, התחלנו את המבוא למשוואות דיפרנציאליות חלקיות (PDE).
+
+\subsection{תזכורת: שתי ההצגות של פונקציית גרין}
+
+אנו עוסקים בפתרון המשוואה הדיפרנציאלית מהצורה:
+\begin{equation}
+    Lu - \lambda u = f(x)
+\end{equation}
+עבור אופרטור הרמיטי $L$. קיימות שתי דרכים לייצג את פונקציית גרין $G(x,x')$:
+
+\begin{definitionbox}{הצגה ראשונה: פריסה ספקטרלית (Spectral Decomposition)}
+הצגה זו מתבססת על הפונקציות העצמיות $u_n(x)$ והערכים העצמיים $\lambda_n$ של האופרטור $L$ (כך ש-$Lu_n = \lambda_n u_n$):
+\begin{equation}
+    G(x,x') = \sum_{n} \frac{u_n(x)u_n^*(x')}{\lambda_n - \lambda}
+\end{equation}
+שיטה זו דורשת ידע מוקדם של מערכת הפונקציות העצמיות השלמה.
+\end{definitionbox}
+
+\begin{definitionbox}{הצגה שניה: צורה סגורה (Closed Form)}
+הצגה זו אינה דורשת את הפונקציות העצמיות, אלא מבוססת על פתרון המשוואה ההומוגנית בשני תחומים ותפירה ביניהם:
+\begin{equation}
+    G(x,x') = \frac{1}{p(x')W(x')} \begin{cases} 
+        y_1(x)y_2(x') & x < x' \\
+        y_1(x')y_2(x) & x > x'
+    \end{cases}
+\end{equation}
+כאשר $y_1, y_2$ הם פתרונות של המשוואה ההומוגנית המקיימים את תנאי השפה השמאלי והימני בהתאמה, ו-$W$ הוא הוורונסקיאן (\LR{Wronskian}).
+\end{definitionbox}
+
+\subsection{שקילות ההצגות}
+האקוויוולנטיות בין ההצגות נובעת מתכונת השלמות של הפונקציות העצמיות. ניתן להראות כי הצבה של ההצגה הספקטרלית בתוך המשוואה הדיפרנציאלית משחזרת את פונקציית הדלתא, בזכות הזהות:
+\begin{equation}
+    \delta(x-x') = \sum_{n} u_n(x)u_n^*(x')
+\end{equation}
+זאת אומרת, שתי ההצגות הן דרכים שונות לכתוב את אותו אובייקט מתמטי, אך לעיתים אחת מהן נוחה יותר לחישוב (למשל, כאשר לא ניתן למצוא פונקציות עצמיות בביטוי סגור).
+
+\section{דוגמה 1: אוסילטור הרמוני מאולץ}
+
+נפתור את המשוואה:
+\begin{equation}
+    u''(x) + k^2 u(x) = f(x), \quad 0 < x < L
+\end{equation}
+עם תנאי שפה $u(0) = u(L) = 0$.
+\begin{notebox}{זיהוי הפרמטרים}
+    במשוואה הכללית $Lu - \lambda u = f$, האופרטור הוא $L = \frac{d^2}{dx^2}$. המשוואה שלנו היא $u'' + k^2 u = f$, כלומר $\lambda = -k^2$.
+\end{notebox}
+
+\subsection{פתרון בשיטה הראשונה (פונקציות עצמיות)}
+הבעיה ההומוגנית היא $u_n'' = \lambda_n u_n$. הפתרונות המקיימים את תנאי השפה הם:
+\begin{equation}
+    u_n(x) = \sqrt{\frac{2}{L}} \sin\left(\frac{n\pi x}{L}\right), \quad \lambda_n = -\left(\frac{n\pi}{L}\right)^2
+\end{equation}
+הצבה בנוסחת הסכום נותנת:
+\begin{equation}
+    G(x,x') = \frac{2}{L} \sum_{n=1}^{\infty} \frac{\sin(\frac{n\pi x}{L})\sin(\frac{n\pi x'}{L})}{-\left(\frac{n\pi}{L}\right)^2 - (-k^2)} = \frac{2}{L} \sum_{n=1}^{\infty} \frac{\sin(\frac{n\pi x}{L})\sin(\frac{n\pi x'}{L})}{k^2 - (\frac{n\pi}{L})^2}
+\end{equation}
+פתרון זה תקף כל עוד $k \neq \frac{n\pi}{L}$ (למניעת רזוננס והתבדרות המכנה).
+
+\subsection{פתרון בשיטה השנייה (ורונסקיאן)}
+נפתור את המשוואה ההומוגנית $y'' + k^2 y = 0$:
+\begin{itemize}
+    \item \textbf{תחום 1 ($0 \le x < x'$):} נדרש $y_1(0)=0$. הפתרון הוא $y_1(x) = \sin(kx)$.
+    \item \textbf{תחום 2 ($x' < x \le L$):} נדרש $y_2(L)=0$. הפתרון הוא $y_2(x) = \sin(k(L-x))$ (או $\sin(k(x-L))$ עד כדי סימן).
+\end{itemize}
+נחשב את הוורונסקיאן $W = y_1 y_2' - y_1' y_2$ בנקודה $x=L$ (או כל נקודה אחרת, שכן הוא קבוע עבור $p(x)=1$):
+\begin{equation}
+    W = -k\sin(kL)
+\end{equation}
+(הערה: הסימן תלוי בכיוון הגדרת $y_2$, אך התוצאה הסופית ל-$G$ תהיה זהה).
+התוצאה הסופית לפונקציית גרין:
+\begin{resultbox}{פונקציית גרין לאוסילטור הרמוני}
+    \begin{equation}
+        G(x,x') = \frac{1}{k\sin(kL)} \begin{cases} 
+            \sin(kx)\sin(k(L-x')) & x < x' \\
+            \sin(kx')\sin(k(L-x)) & x > x'
+        \end{cases}
+    \end{equation}
+\end{resultbox}
+ניתן לראות שגם כאן יש התבדרות כאשר $\sin(kL)=0$, כלומר $kL = n\pi$, בהתאמה לשיטה הראשונה.
+
+\section{דוגמה 2: מיתר סטטי}
+
+נתבונן במשוואה הפשוטה:
+\begin{equation}
+    u''(x) = f(x), \quad u(0)=0, u(L)=0
+\end{equation}
+זוהי משוואה המתארת את צורת המיתר תחת עומס (ללא תלות בזמן).
+נשתמש בשיטה השנייה למציאת $G$:
+\begin{itemize}
+    \item $y_1(x) = x$ (מקיים $y_1(0)=0$).
+    \item $y_2(x) = L-x$ (מקיים $y_2(L)=0$).
+    \item ורונסקיאן: $W = x(-1) - 1(L-x) = -L$.
+\end{itemize}
+לכן:
+\begin{equation}
+    G(x,x') = -\frac{1}{L} \begin{cases} x(L-x') & x < x' \\ x'(L-x) & x > x' \end{cases}
+\end{equation}
+
+\begin{examplebox}{משמעות פיזיקלית וויזואליזציה}
+    פונקציית גרין מתארת את תגובת המערכת לכוח נקודתי (דלתא). במקרה של מיתר, הפעלת כוח בנקודה $x'$ תגרום למיתר לקבל צורת "משולש" עם השיא בנקודה $x'$.
+    
+    \begin{center}
+    \begin{tikzpicture}
+        \begin{axis}[
+            width=8cm, height=5cm,
+            axis lines=middle,
+            xlabel={$x$}, ylabel={$G(x,x')$},
+            xtick={0, 3, 5}, xticklabels={0, $x'$, $L$},
+            ytick=\empty,
+            ymin=0, ymax=1.2,
+            xmin=0, xmax=5.5,
+            title={צורת פונקציית גרין (מיתר מתוח)}
+        ]
+        % Triangle shape (schematic, ignoring negative sign for shape visualization)
+        \addplot[blue, thick] coordinates {(0,0) (3,1) (5,0)};
+        \node at (axis cs: 3, 1.1) {נקודת הפעלת הכוח};
+        \end{axis}
+    \end{tikzpicture}
+    \end{center}
+\end{examplebox}
+
+\section{מבוא למשוואות דיפרנציאליות חלקיות (PDE)}
+
+בסוף השיעור התחלנו את הנושא של משוואות דיפרנציאליות חלקיות, בדגש על משוואות מסדר ראשון. זהו נושא שאינו נלמד בקורסי בסיס אחרים אך הוא קריטי (למשל בהידרודינמיקה).
+
+\subsection{שרירותיות הפתרון: ODE מול PDE}
+ההבדל המהותי ביותר הוא בדרגות החופש של הפתרון הכללי:
+\begin{itemize}
+    \item \textbf{במד"ר (ODE):} הפתרון הכללי מכיל \textbf{קבועים} שרירותיים (מספר הקבועים כסדר המשוואה).
+    \item \textbf{במד"ח (PDE):} הפתרון הכללי מכיל \textbf{פונקציות} שרירותיות.
+\end{itemize}
+
+\begin{examplebox}{דוגמה: משוואת ההסעה (Advection)}
+    נתבונן במשוואה:
+    \begin{equation}
+        \frac{\partial u}{\partial x} - \frac{\partial u}{\partial y} = 0
+    \end{equation}
+    נבדוק פתרון מהצורה $u(x,y) = f(x+y)$. נגדיר $\xi = x+y$:
+    $$ \frac{\partial u}{\partial x} = f'(\xi), \quad \frac{\partial u}{\partial y} = f'(\xi) $$
+    ההפרש ביניהם הוא $f' - f' = 0$.
+    \textbf{מסקנה:} כל פונקציה $f$ של הסכום $x+y$ (למשל $\sin(x+y), e^{x+y}, (x+y)^2$) היא פתרון חוקי. השרירותיות היא בבחירת הפונקציה $f$.
+\end{examplebox}

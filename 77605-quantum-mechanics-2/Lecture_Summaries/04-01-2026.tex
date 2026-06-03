@@ -1,0 +1,149 @@
+
+ \section{שיעור 04-01-2026: המבנה הדק ותורת ההפרעות התלויה בזמן}
+
+\subsection*{מטרות השיעור}
+\begin{itemize}
+    \item השלמת הדיון על המבנה הדק באטום המימן (\LR{Fine Structure}).
+    \item הבנת השימוש בתורת ההפרעות המנוונת להסרת הניוון ברמות האנרגיה.
+    \item פיתוח תורת ההפרעות התלויה בזמן (\LR{Time-Dependent Perturbation Theory}).
+    \item גזירת "כלל הזהב של פרמי" (\LR{Fermi's Golden Rule}) למעברים בין רמות.
+\end{itemize}
+
+\section{\texorpdfstring{המבנה הדק באטום המימן (\LR{Fine Structure})}{המבנה הדק באטום המימן (Fine Structure)}}
+
+במודל בור-שרדינגר הסטנדרטי, ההמילטוניאן של אטום המימן הוא $H_0 = \frac{\mathbf{p}^2}{2m} - \frac{e^2}{r}$. מודל זה מנבא ניוון באנרגיה התלוי רק במספר הקוונטי הראשי $n$.
+בפועל, קיימים תיקונים יחסותיים ותיקוני ספין המכונים "המבנה הדק", המפצלים את רמות האנרגיה.
+
+ההמילטוניאן המלא הוא:
+\[ H = H_0 + H_{FS} \]
+כאשר הפרעת המבנה הדק $H_{FS}$ מורכבת משלושה איברים:
+\begin{definitionbox}{רכיבי המבנה הדק}
+\[ H_{FS} = H_{rel} + H_{SO} + H_{Darwin} \]
+\begin{enumerate}
+    \item \textbf{תיקון יחסותי לאנרגיה הקינטית ($H_{rel}$)}: נובע מהמסה המשתנה יחסותית.
+    \item \textbf{צימוד ספין-מסילה ($H_{SO}$)}: אינטראקציה בין המומנט המגנטי של האלקטרון לשדה המגנטי של הגרעין (במערכת האלקטרון).
+    \item \textbf{איבר דרווין ($H_{Darwin}$)}: תיקון קוונטי הנובע מ"מריחת" מיקום האלקטרון (\LR{Zitterbewegung}).
+\end{enumerate}
+\end{definitionbox}
+
+\subsection{מקור האיברים הפיזיקליים}
+
+\subsubsection{1. התיקון הקינטי היחסותי ($H_{rel}$)}
+האנרגיה היחסותית הכוללת היא $E = \sqrt{p^2c^2 + m^2c^4}$. עבור מהירויות נמוכות ($p \ll mc$), נפתח לטור טיילור:
+\[ E \approx mc^2 + \frac{p^2}{2m} - \frac{p^4}{8m^3c^2} + \dots \]
+האיבר הראשון הוא אנרגיית המנוחה, השני הוא האנרגיה הקינטית הקלאסית ($H_0$), והשלישי הוא התיקון הראשון:
+\[ H_{rel} = -\frac{p^4}{8m^3c^2} \]
+
+תיקון זה הוא סקלר ואינו משפיע על הספין.
+
+\subsubsection{2. צימוד ספין-מסילה ($H_{SO}$)}
+במערכת המנוחה של האלקטרון, הגרעין (פרוטון) נע סביבו ויוצר לולאת זרם, המשרה שדה מגנטי $\vec{B}$.
+המומנט המגנטי של האלקטרון הוא $\vec{\mu}_s = -g \frac{e}{2m} \vec{S}$ (כאשר $g \approx 2$).
+האנרגיה הפוטנציאלית היא $U = -\vec{\mu}_s \cdot \vec{B}$.
+חישוב השדה המגנטי והוספת \textbf{נקיפת תומאס} (\LR{Thomas Precession}) – אפקט קינמטי יחסותי המוסיף פקטור $1/2$ – מובילים לביטוי:
+
+\[ H_{SO} = \frac{e^2}{8\pi\epsilon_0 m^2 c^2 r^3} \vec{L} \cdot \vec{S} \]
+
+איבר זה תלוי במכפלה הסקלרית של התנע הזוויתי והספין, ולכן אינו אלכסוני בבסיס הסטנדרטי.
+
+\subsubsection{3. איבר דרווין ($H_{Darwin}$)}
+תיקון זה נובע מכך שהאלקטרון אינו ממוקם נקודתית אלא "מרוח" על סקאלה של אורך גל קומפטון $\lambda_C = \frac{\hbar}{mc}$. האלקטרון חש את הפוטנציאל הממוצע בסביבתו:
+\[ \langle V(\vec{r} + \delta\vec{r}) \rangle \approx V(\vec{r}) + \text{const} \cdot \lambda_C^2 \nabla^2 V \]
+עבור פוטנציאל קולומבי, $\nabla^2(1/r) \propto \delta(\vec{r})$. לכן התיקון רלוונטי רק כאשר פונקציית הגל אינה מתאפסת בראשית, כלומר למצבי $s$ ($l=0$).
+
+\[ H_{Darwin} = \frac{\hbar^2}{8m^2c^2} \nabla^2 V \propto \delta^3(\vec{r}) \]
+
+\subsection{חישוב התיקון לאנרגיה (עבור $n=2$)}
+
+עבור רמת האנרגיה $n=2$, הניוון הכולל הוא $D=8$ (מצבי $2s$ ו-$2p$, כולל ספין).
+כדי לחשב את תיקוני האנרגיה מסדר ראשון, עלינו ללכסן את מטריצת ההפרעה $H_{FS}$ בתת-המרחב המנוון.
+
+\subsubsection{בחירת הבסיס: מצומד מול לא-מצומד}
+בבסיס הלא-מצומד $|n, l, m_l, m_s\rangle$, האופרטורים $H_{rel}$ ו-$H_{Darwin}$ אלכסוניים (תלויים ב-$l$ אך לא ב-$m$).
+אולם, האיבר $H_{SO} \propto \vec{L} \cdot \vec{S}$ \textbf{אינו אלכסוני}, כיוון שהוא מערבב מצבי $m_l, m_s$ שונים (מכיל אופרטורי העלאה והורדה).
+
+הפתרון הוא מעבר ל\textbf{בסיס המצומד} $|n, l, s, j, m_j\rangle$, המוגדר על ידי התנע הזוויתי הכולל $\vec{J} = \vec{L} + \vec{S}$.
+\begin{notebox}{זהות המפתח ללכסון}
+\[ \vec{L} \cdot \vec{S} = \frac{1}{2} \left( \vec{J}^2 - \vec{L}^2 - \vec{S}^2 \right) \]
+בבסיס המצומד, האופרטורים $\vec{J}^2, \vec{L}^2, \vec{S}^2$ כולם אלכסוניים עם ערכים עצמיים $\hbar^2 j(j+1)$, $\hbar^2 l(l+1)$, $\hbar^2 s(s+1)$.
+לכן, $H_{FS}$ מלוכסן אוטומטית בבסיס זה.
+\end{notebox}
+
+\subsubsection{\texorpdfstring{שימור זוגיות (\LR{Parity})}{שימור זוגיות (Parity)}}
+האם ההפרעה מערבבת מצבים עם $l$ שונים (למשל $2s$ ו-$2p$)?
+התשובה היא \textbf{לא}. ההמילטוניאן $H_{FS}$ הוא סקלר ומשמר זוגיות ($[\hat{H}, \hat{\pi}] = 0$).
+הזוגיות של מצב מימני היא $(-1)^l$.
+\begin{itemize}
+    \item מצב $2s$ ($l=0$): זוגיות חיובית (+).
+    \item מצב $2p$ ($l=1$): זוגיות שלילית (-).
+\end{itemize}
+לכן, אלמנט המטריצה של ההפרעה בין $l=0$ ל-$l=1$ מתאפס. $l$ נותר "מספר קוונטי טוב" לצורך חישוב האנרגיה.
+
+\subsubsection{התוצאה הסופית}
+לאחר חישוב ערכי התצפית של שלושת האיברים וסכימתם, מתקבלת נוסחת המבנה הדק:
+\begin{resultbox}{תיקון המבנה הדק לאנרגיה}
+\[ E_{nj}^{(1)} = E_n^{(0)} \frac{\alpha^2}{n^2} \left( \frac{n}{j+1/2} - \frac{3}{4} \right) \]
+או באופן מפורש:
+\[ \Delta E_{FS} = -\frac{1}{2}mc^2\alpha^4 \frac{1}{n^3} \left( \frac{1}{j+1/2} - \frac{3}{4n} \right) \]
+\end{resultbox}
+\textbf{מסקנה פיזיקלית:} הסרת הניוון תלויה ב-$j$ בלבד.
+עבור $n=2$:
+\begin{itemize}
+    \item רמות $2s_{1/2}$ ($l=0, j=1/2$) ו-$2p_{1/2}$ ($l=1, j=1/2$) נותרות מנוונות (אותו $j$).
+    \item רמת $2p_{3/2}$ ($l=1, j=3/2$) מוזזת לאנרגיה גבוהה יותר.
+\end{itemize}
+
+\section{תורת ההפרעות התלויה בזמן}
+
+אנו עוברים לטיפול במערכות בהן ההמילטוניאן תלוי מפורשות בזמן, $H(t) = H_0 + V(t)$, כאשר $V(t)$ היא הפרעה קטנה.
+מטרתנו היא לחשב את ההסתברות למעבר בין המצבים העצמיים של $H_0$.
+
+\subsection{פיתוח המקדמים (תמונת האינטראקציה)}
+נניח שהפתרונות של $H_0$ ידועים: $H_0 |n\rangle = E_n |n\rangle$.
+נכתוב את פונקציית הגל כסופרפוזיציה עם מקדמים תלויים בזמן:
+\[ |\psi(t)\rangle = \sum_n c_n(t) e^{-i E_n t / \hbar} |n\rangle \]
+הצבה במשוואת שרדינגר $i\hbar \frac{\partial}{\partial t} |\psi\rangle = (H_0 + V(t)) |\psi\rangle$ והטלה על המצב $\langle m|$ נותנת את משוואת התנועה למקדמים:
+
+\begin{definitionbox}{משוואת המקדמים}
+\[ i\hbar \dot{c}_m(t) = \sum_n V_{mn}(t) e^{i \omega_{mn} t} c_n(t) \]
+כאשר $\omega_{mn} = \frac{E_m - E_n}{\hbar}$ היא תדירות המעבר, ו-$V_{mn}(t) = \langle m | V(t) | n \rangle$.
+\end{definitionbox}
+
+\subsection{\texorpdfstring{פתרון בטור הפרעות (\LR{Dyson Series})}{פתרון בטור הפרעות (Dyson Series)}}
+נמיר את המשוואה הדיפרנציאלית למשוואה אינטגרלית:
+\[ c_m(t) = c_m(t_0) - \frac{i}{\hbar} \sum_n \int_{t_0}^t dt' V_{mn}(t') e^{i \omega_{mn} t'} c_n(t') \]
+נפתור בשיטת הקירובים העוקבים (\LR{Successive Approximation}):
+\begin{enumerate}
+    \item \textbf{סדר אפס:} אין הפרעה. המערכת נשארת במצב ההתחלתי $|i\rangle$.
+    \[ c_n^{(0)}(t) = \delta_{ni} \]
+    \item \textbf{סדר ראשון:} מציבים את פתרון סדר האפס בתוך האינטגרל.
+    \[ c_f^{(1)}(t) = -\frac{i}{\hbar} \int_{t_0}^t dt' V_{fi}(t') e^{i \omega_{fi} t'} \]
+\end{enumerate}
+ההסתברות למעבר ממצב $i$ למצב $f$ ($f \neq i$) בזמן $t$ היא $P_{i \to f}(t) = |c_f^{(1)}(t)|^2$.
+
+\section{הפרעה הרמונית וכלל הזהב של פרמי}
+
+נבחן מקרה חשוב של הפרעה מחזורית (כמו גל אלקטרומגנטי):
+\[ V(t) = \hat{U} e^{i\omega t} + \hat{U}^\dagger e^{-i\omega t} \]
+נציב בביטוי לסדר ראשון (עם $t_0=0$):
+\[ c_f^{(1)}(t) = -\frac{i}{\hbar} \int_0^t dt' \left( U_{fi} e^{i(\omega_{fi} + \omega)t'} + U^\dagger_{fi} e^{i(\omega_{fi} - \omega)t'} \right) \]
+
+\subsection{\texorpdfstring{קירוב הרזוננס (\LR{Rotating Wave Approximation})}{קירוב הרזוננס (Rotating Wave Approximation)}}
+לאחר האינטגרציה מתקבלים שני איברים.
+\begin{itemize}
+    \item האיבר עם $\omega_{fi} - \omega$ דומיננטי כאשר $E_f \approx E_i + \hbar\omega$ (תהליך \textbf{בליעה}).
+    \item האיבר עם $\omega_{fi} + \omega$ דומיננטי כאשר $E_f \approx E_i - \hbar\omega$ (תהליך \textbf{פליטה מאולצת}).
+\end{itemize}
+נניח תהליך בליעה ($\omega \approx \omega_{fi}$). נזניח את האיבר השני (המתנודד מהר).
+הסתברות המעבר היא:
+\[ P_{i \to f}(t) = \frac{|U_{fi}^\dagger|^2}{\hbar^2} \frac{\sin^2\left(\frac{(\omega_{fi} - \omega)t}{2}\right)}{\left(\frac{\omega_{fi} - \omega}{2}\right)^2} \]
+
+\subsection{כלל הזהב של פרמי}
+בגבול של זמנים ארוכים ($t \to \infty$), הפונקציה $\frac{\sin^2(xt)}{x^2}$ שואפת לפונקציית דלתא:
+\[ \lim_{t \to \infty} \frac{\sin^2(xt/2)}{x^2} = \frac{\pi t}{2} \delta(x/2) = \pi t \delta(x) \]
+ההסתברות גדלה לינארית עם הזמן, ולכן נגדיר \textbf{קצב מעבר} (\LR{Transition Rate}) $\Gamma = \frac{dP}{dt}$:
+
+\begin{theorembox}{כלל הזהב של פרמי (\LR{Fermi's Golden Rule})}
+\[ \Gamma_{i \to f} = \frac{2\pi}{\hbar} |V_{fi}|^2 \delta(E_f - E_i \mp \hbar\omega) \]
+\end{theorembox}
+משמעות: המעבר מתרחש רק אם נשמרת האנרגיה (בגבול זמנים ארוכים), וקצב המעבר פרופורציונלי לריבוע אלמנט המטריצה של הצימוד.

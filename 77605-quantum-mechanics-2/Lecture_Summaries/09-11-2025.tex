@@ -1,0 +1,588 @@
+\subsection*{מטרות השיעור}
+
+\begin{enumerate}
+    \item פתרון המשוואה הרדיאלית לחלקיק בפוטנציאל קולוני $V(r) = -\frac{Ze^2}{4\pi\epsilon_0 r}$
+    \item הפרדה מלאה למשתנים: חלק רדיאלי $R(r)$ וחלק זוויתי $Y_{lm}(\theta,\phi)$
+    \item תנאי שפה על הפונקציה הרדיאלית והרמיטיות אופרטור התנע $\hat{p}_r$
+    \item קוונטיזציה: מציאת ספקטרום האנרגיה של אטום המימן
+    \item פולינומי לאגר והפונקציות העצמיות המלאות
+    \item הבנת הניוון $n^2$ וקשר לסימטריה נסתרת (וקטור \LR{Runge-Lenz})
+    \item סקלות אופייניות: רדיוס בוהר, קבוע המבנה הדק, אנרגיית ריידברג
+    \item משמעות פיזיקלית: קווים ספקטרליים, מעברים מותרים ואסורים
+\end{enumerate}
+
+\subsection*{תזכורת — הבעיה הדו-גופית והמילטוניאן}
+
+\begin{summarybox}{מה הגענו עד כה}
+\textbf{בשיעור הקודם:}
+\begin{itemize}
+    \item הפרדנו את הבעיה הדו-גופית למרכז מסה + תנועה יחסית
+    \item המסה המצומצמת: $\mu = \frac{M_1 M_2}{M_1 + M_2} \approx m_e$ (עבור אטום מימן)
+    \item המילטוניאן: $\hat{H} = -\frac{\hbar^2}{2\mu}\nabla^2 + V(r)$
+    \item בפוטנציאל מרכזי: $\hat{H} = -\frac{\hbar^2}{2\mu r^2}\frac{d}{dr}\left(r^2\frac{d}{dr}\right) + \frac{\hat{L}^2}{2\mu r^2} + V(r)$
+\end{itemize}
+
+\textbf{היום:} נפתור את המשוואה הרדיאלית במפורש עבור פוטנציאל קולוני!
+\end{summarybox}
+
+\subsection{המשוואה הרדיאלית והפרדת משתנים}
+
+\subsubsection{ההמילטוניאן בקואורדינטות כדוריות}
+
+עבור פוטנציאל מרכזי $V(r)$, ההמילטוניאן:
+\[
+\hat{H} = -\frac{\hbar^2}{2\mu}\left[\frac{\partial^2}{\partial r^2} + \frac{2}{r}\frac{\partial}{\partial r}\right] + \frac{\hat{L}^2}{2\mu r^2} + V(r)
+\]
+
+\begin{importantbox}{הפרדת משתנים}
+מחפשים פתרון מהצורה:
+\[
+\psi(r,\theta,\phi) = R(r) \cdot Y_{lm}(\theta,\phi)
+\]
+
+כאשר $Y_{lm}$ הן הרמוניות ספריות המקיימות:
+\begin{align*}
+\hat{L}^2 Y_{lm} &= \hbar^2 l(l+1) Y_{lm} \\
+\hat{L}_z Y_{lm} &= \hbar m Y_{lm}
+\end{align*}
+
+הצבה ב-$\hat{H}\psi = E\psi$ נותנת משוואה רדיאלית עבור $R(r)$!
+\end{importantbox}
+
+\subsection{תנאי שפה והרמיטיות אופרטור התנע הרדיאלי}
+
+\subsubsection{הגדרת אופרטור התנע הרדיאלי}
+
+\begin{definitionbox}{אופרטור התנע הרדיאלי $\hat{p}_r$}
+האופרטור הנאיבי $\hat{p}_r = -i\hbar \frac{\partial}{\partial r}$ **אינו הרמיטי**!
+
+האופרטור ההרמיטי הנכון:
+\[
+\hat{p}_r = -i\hbar\left(\frac{\partial}{\partial r} + \frac{1}{r}\right)
+\]
+
+\textbf{למה?} כדי לשמור על הרמיטיות בקואורדינטות כדוריות עם יעקוביאן $r^2$.
+\end{definitionbox}
+
+\textbf{דרישת הרמיטיות ותנאי שפה}
+אופרטור $\hat{A}$ הרמיטי אם: $\braket{\psi|\hat{A}|\phi} = \braket{\hat{A}\psi|\phi}^*$
+
+עבור $\hat{p}_r$, דרישת הרמיטיות:
+\[
+0 = \int_0^\infty dr \, r^2 \left[\psi^*\hat{p}_r\phi - (\hat{p}_r\psi)^*\phi\right]
+\]
+
+\textbf{שלב 1:} אינטגרציה בחלקים:
+\[
+= -i\hbar \int_0^\infty dr \left[\frac{d}{dr}(r^2\psi^*\psi)\right] = -i\hbar \left[r^2\psi^*\psi\right]_0^\infty
+\]
+
+\textbf{שלב 2:} תנאי שפה:
+\begin{itemize}
+    \item ב-$r \to \infty$: $\psi \to 0$ (מצב קשור)
+    \item ב-$r \to 0$: $r\psi \to 0$
+\end{itemize}
+
+\textbf{מסקנה:} $R(r)$ חייבת לקיים $\lim_{r \to 0} r \cdot R(r) = 0$
+
+\subsubsection{$\hat{p}_r^2$ והקשר ללפלסיאן}
+
+\begin{theorembox}{קשר בין $\hat{p}_r^2$ ללפלסיאן}
+\[
+\hat{p}_r^2 = -\hbar^2\left(\frac{\partial^2}{\partial r^2} + \frac{2}{r}\frac{\partial}{\partial r}\right)
+\]
+
+לכן:
+\[
+\hat{H} = \frac{\hat{p}_r^2}{2\mu} + \frac{\hat{L}^2}{2\mu r^2} + V(r)
+\]
+
+זהו בדיוק המילטוניאן של בעיה חד-ממדית רדיאלית עם "פוטנציאל אפקטיבי"!
+\end{theorembox}
+
+\begin{notebox}
+\textbf{הערה חשובה:} למרות ש-$\hat{p}_r$ הרמיטי, **אין לו ערכי תצפית** (ספקטרום)!
+
+הסיבה: אף פונקציה לא מקיימת בו-זמנית $r\psi(0) = 0$ ו-$\psi(\infty) = 0$ ותהיה פונקציה עצמית של $\hat{p}_r$.
+
+זו "חיה מוזרה" — אופרטור הרמיטי שאין לו ספקטרום פיזיקלי!
+\end{notebox}
+
+\textbf{ההחלפה $u(r) = r \cdot R(r)$}
+
+\begin{importantbox}{טריק מתמטי חשוב}
+נגדיר: $u(r) = r \cdot R(r)$
+
+\textbf{יתרונות:}
+\begin{enumerate}
+    \item תנאי השפה: $u(0) = 0$ ו-$u(\infty) = 0$
+    \item המשוואה מתפשטת: $\frac{d^2u}{dr^2} + \frac{2}{r}\frac{du}{dr} = \frac{1}{r}\frac{d^2(ru)}{dr^2}$
+\end{enumerate}
+
+\textbf{המשוואה הרדיאלית עבור $u(r)$:}
+\[
+-\frac{\hbar^2}{2\mu}\frac{d^2u}{dr^2} + \left[\frac{\hbar^2 l(l+1)}{2\mu r^2} + V(r)\right]u = E u
+\]
+
+זו משוואת שרדינגר חד-ממדית עם פוטנציאל אפקטיבי:
+\[
+V_{\text{eff}}(r) = V(r) + \frac{\hbar^2 l(l+1)}{2\mu r^2}
+\]
+\end{importantbox}
+
+\subsection{פוטנציאל קולוני ואטום המימן}
+
+\subsubsection{הפוטנציאל ויחידות}
+
+\begin{definitionbox}{פוטנציאל קולוני}
+\[
+V(r) = -\frac{Ze^2}{4\pi\epsilon_0 r}
+\]
+
+כאשר:
+\begin{itemize}
+    \item $Z$ — מספר פרוטונים בגרעין ($Z=1$ למימן, $Z=2$ להליום, וכו')
+    \item $e$ — מטען האלקטרון
+    \item עבור מימן: $\mu \approx m_e$ (מסת האלקטרון)
+\end{itemize}
+\end{definitionbox}
+
+\subsubsection{סקלות אופייניות}
+
+\begin{theorembox}{סקלות האופייניות לאטום מימן}
+
+\textbf{1. רדיוס בוהר $a_0$:}
+\[
+a_0 = \frac{4\pi\epsilon_0\hbar^2}{\mu e^2} \approx 0.529 \times 10^{-10} \text{ m} = 0.529 \, \text{\AA}
+\]
+
+זהו סדר הגודל של אטום המימן!
+
+\textbf{2. קבוע המבנה הדק $\alpha$:}
+\[
+\alpha = \frac{e^2}{4\pi\epsilon_0\hbar c} \approx \frac{1}{137.036}
+\]
+
+פרמטר חסר ממדים שקובע את עוצמת האינטראקציה האלקטרומגנטית.
+
+\textbf{3. אנרגיית ריידברג $R_\infty$:}
+\[
+R_\infty = \frac{\alpha^2 m_e c^2}{2} = \frac{e^2}{8\pi\epsilon_0 a_0} \approx 13.6 \, \text{eV}
+\]
+
+אנרגיית הקישור של אלקטרון ברמת היסוד של מימן!
+\end{theorembox}
+
+\begin{examplebox}{השוואת סקלות}
+\textbf{גודל האטום \LR{vs.} גודל הגרעין:}
+\begin{itemize}
+    \item רדיוס בוהר: $a_0 \sim 10^{-10}$ m
+    \item רדיוס הגרעין: $r_{\text{nucleus}} \sim 10^{-15}$ m
+    \item יחס: $\frac{a_0}{r_{\text{nucleus}}} \sim 10^5$
+\end{itemize}
+
+\textbf{מסקנה:} הגרעין נראה כמעט כנקודתי מנקודת מבטו של האלקטרון!
+
+\textbf{מסה מצומצמת:}
+\[
+\mu = \frac{m_e M}{m_e + M} \approx m_e\left(1 - \frac{m_e}{M}\right) \approx m_e \cdot (1 - 5\times10^{-4})
+\]
+
+התיקון קטן מאוד אבל ניתן למדידה בספקטרוסקופיה דיוק גבוה!
+\end{examplebox}
+
+\subsection{עבור למשתנים חסרי ממד}
+
+\textbf{נרמול המשוואה}
+\textbf{משתנים חדשים:}
+\begin{align*}
+x &= \frac{r}{a_0} \quad \text{(אורך חסר ממד)} \\
+\varepsilon &= \frac{E}{\alpha^2 m_e c^2} \quad \text{(אנרגיה חסרת ממד)}
+\end{align*}
+
+\textbf{המשוואה הרדיאלית הופכת ל:}
+\[
+-\frac{1}{2}\frac{d^2u}{dx^2} + \left[\frac{l(l+1)}{2x^2} - \frac{Z}{x}\right]u = \varepsilon u
+\]
+
+נקייה ופשוטה — אין פרמטרים עם ממדים!
+
+\subsection{ניתוח אסימפטוטי והצבה}
+
+\subsubsection{גבול $x \to 0$}
+
+\textbf{התנהגות ליד הראשית}
+כאשר $x \to 0$, האיבר הדומיננטי:
+\[
+-\frac{1}{2}\frac{d^2u}{dx^2} + \frac{l(l+1)}{2x^2}u \approx 0
+\]
+
+\textbf{פתרון:} $u(x) \sim x^\lambda$
+
+הצבה: $\lambda(\lambda-1) = l(l+1)$
+
+\textbf{פתרונות:}
+\begin{itemize}
+    \item $\lambda = l+1$ ✓ (רגולרי)
+    \item $\lambda = -l$ ✗ (סינגולרי ב-$x=0$)
+\end{itemize}
+
+\textbf{מסקנה:} $u(x) \sim x^{l+1}$ כאשר $x \to 0$
+
+
+\subsubsection{x שואף לאינסוף}
+
+\textbf{התנהגות באינסוף}
+עבור מצבים קשורים ($\varepsilon < 0$), נגדיר:
+\[
+\kappa = \sqrt{-2\varepsilon} > 0
+\]
+
+באינסוף:
+\[
+-\frac{1}{2}\frac{d^2u}{dx^2} \approx \varepsilon u = -\frac{\kappa^2}{2}u
+\]
+
+\textbf{פתרון:} $u(x) \sim e^{-\kappa x}$ (דעיכה אקספוננציאלית)
+
+
+\subsubsection{ההצבה הכללית}
+
+\begin{importantbox}{אנזץ (\LR{Ansatz}) לפתרון}
+\[
+u(x) = x^{l+1} e^{-\kappa x} P(x)
+\]
+
+כאשר $P(x)$ פולינום שיש לקבוע.
+
+\textbf{הרעיון:}
+\begin{itemize}
+    \item $x^{l+1}$ מטפל בהתנהגות ליד $x=0$
+    \item $e^{-\kappa x}$ מטפל בהתנהגות ב-$x \to \infty$
+    \item $P(x)$ מטפל ב"אמצע"
+\end{itemize}
+\end{importantbox}
+
+\subsection{מעבר למשתנה ומשוואת לאגר}
+
+\textbf{משתנה חדש $\rho$}
+נגדיר:
+\begin{align*}
+n &= \frac{Z}{\kappa} = \frac{Z}{\sqrt{-2\varepsilon}} \\
+\rho &= \frac{2Z}{n}x = 2\kappa x
+\end{align*}
+
+\textbf{הצבה:} $u(\rho) = \rho^{l+1} e^{-\rho/2} F(\rho)$
+
+המשוואה ל-$F(\rho)$:
+\[
+\rho F'' + (2l+2-\rho)F' + (n-l-1)F = 0
+\]
+
+זוהי **משוואת לאגר המוכללת**!
+
+
+\subsection{פולינומי לאגר וקוונטיזציה}
+
+\subsubsection{פיתוח בטור}
+
+\begin{definitionbox}{פיתוח טורים}
+\[
+F(\rho) = \sum_{q=0}^\infty a_q \rho^q
+\]
+
+הצבה במשוואה נותנת יחס רקורסיה:
+\[
+a_{q+1} = \frac{q+l+1-n}{(q+1)(2l+2+q)} a_q
+\]
+\end{definitionbox}
+
+\begin{importantbox}{תנאי הקוונטיזציה}
+\textbf{בעיה:} כאשר $q \to \infty$, $a_{q+1}/a_q \to 1/q$
+
+זה אומר $F(\rho) \sim e^\rho$ — מתפוצץ באינסוף! \xmark
+
+\textbf{פתרון:} הטור חייב להסתיים!
+
+\textbf{דרישה:} קיים $q_{\max}$ כך ש:
+\[
+n = q_{\max} + l + 1
+\]
+
+\textbf{מכאן:}
+\begin{itemize}
+    \item $n \in \mathbb{N}$, $n \geq 1$ — **המספר הקוונטי הראשי**
+    \item $l = 0, 1, 2, \ldots, n-1$ — **תנע זוויתי מקסימלי**
+    \item $m = -l, \ldots, +l$
+\end{itemize}
+\end{importantbox}
+
+\subsection{ספקטרום האנרגיה של אטום המימן}
+
+\begin{theorembox}{נוסחת בוהר לאנרגיה}
+מהקוונטיזציה $n = Z/\kappa$:
+\[
+\kappa = \frac{Z}{n} \quad \Rightarrow \quad \varepsilon = -\frac{\kappa^2}{2} = -\frac{Z^2}{2n^2}
+\]
+
+\textbf{האנרגיה עם יחידות:}
+\[
+E_n = -\frac{Z^2}{n^2} \cdot \frac{\alpha^2 m_e c^2}{2} = -\frac{Z^2}{n^2} R_\infty
+\]
+
+עבור מימן ($Z=1$):
+\[
+\boxed{E_n = -\frac{13.6 \, \text{eV}}{n^2}, \quad n = 1, 2, 3, \ldots}
+\]
+
+זוהי **נוסחת בוהר** — התוצאה ההיסטורית המפורסמת!
+\end{theorembox}
+
+\begin{examplebox}{רמות האנרגיה הראשונות}
+\begin{align*}
+E_1 &= -13.6 \, \text{eV} \quad \text{(רמת יסוד)} \\
+E_2 &= -3.4 \, \text{eV} \\
+E_3 &= -1.51 \, \text{eV} \\
+E_\infty &= 0 \quad \text{(סף יינון)}
+\end{align*}
+
+ההפרש $E_\infty - E_1 = 13.6$ eV הוא אנרגיית היינון של אטום מימן.
+\end{examplebox}
+
+\subsection{הפונקציות העצמיות והניוון}
+
+\subsubsection{הפונקציה הרדיאלית}
+
+\begin{definitionbox}{פולינומי לאגר המוכללים}
+\[
+R_{nl}(r) = \sqrt{\left(\frac{2Z}{na_0}\right)^3 \frac{(n-l-1)!}{2n[(n+l)!]}} \cdot e^{-Zr/na_0} \left(\frac{2Zr}{na_0}\right)^l L_{n-l-1}^{2l+1}\left(\frac{2Zr}{na_0}\right)
+\]
+
+כאשר $L_q^{2l+1}(\rho)$ הם פולינומי לאגר המוכללים.
+\end{definitionbox}
+
+\subsubsection{הפונקציה המלאה}
+
+\begin{importantbox}{פונקציות עצמיות של אטום המימן}
+\[
+\psi_{nlm}(r,\theta,\phi) = R_{nl}(r) \cdot Y_{lm}(\theta,\phi)
+\]
+
+\textbf{מספרים קוונטיים:}
+\begin{itemize}
+    \item $n = 1, 2, 3, \ldots$ — מספר קוונטי ראשי (קובע אנרגיה)
+    \item $l = 0, 1, \ldots, n-1$ — תנע זוויתי אורביטלי
+    \item $m = -l, -l+1, \ldots, l$ — הקרנה על ציר $z$
+\end{itemize}
+\end{importantbox}
+
+\subsection{הניוון והסימטריה הנסתרת}
+
+\subsubsection{ספירת מצבים}
+
+\begin{examplebox}{ניוון רמות האנרגיה}
+
+\textbf{רמת יסוד ($n=1$):}
+\begin{itemize}
+    \item $l=0$, $m=0$ $\Rightarrow$ 1 מצב
+\end{itemize}
+
+\textbf{רמה ראשונה מעוררת ($n=2$):}
+\begin{itemize}
+    \item $l=0$, $m=0$ $\Rightarrow$ 1 מצב
+    \item $l=1$, $m=-1,0,+1$ $\Rightarrow$ 3 מצבים
+    \item סה"כ: 4 מצבים
+\end{itemize}
+
+\textbf{רמה שנייה מעוררת ($n=3$):}
+\begin{itemize}
+    \item $l=0$: 1 מצב
+    \item $l=1$: 3 מצבים
+    \item $l=2$, $m=-2,-1,0,+1,+2$: 5 מצבים
+    \item סה"כ: 9 מצבים
+\end{itemize}
+
+\textbf{כלל כללי:}
+\[
+\text{ניוון רמה } n = \sum_{l=0}^{n-1} (2l+1) = n^2
+\]
+\end{examplebox}
+
+\begin{theorembox}{ניוון $n^2$ וסימטריה נסתרת}
+
+\textbf{תצפית מפתיעה:} האנרגיה תלויה רק ב-$n$, **לא** ב-$l$!
+
+\textbf{ניוון "צפוי":} $(2l+1)$ — מסימטריה ספירית ($SO(3)$)
+
+\textbf{ניוון "מפתיע":} $n^2$ — גדול בהרבה!
+
+\textbf{מסקנה:} יש **סימטריה נסתרת** שאינה סימטריית סיבוב רגילה.
+
+\textbf{הסבר:} וקטור **\LR{Runge-Lenz}**:
+\[
+\vec{A} = \frac{1}{2\mu}\left(\vec{p} \times \vec{L} - \vec{L} \times \vec{p}\right) - \frac{Ze^2}{4\pi\epsilon_0}\frac{\vec{r}}{r}
+\]
+
+מקיים: $[\hat{H}, \vec{A}] = 0$ (גודל שמור!)
+
+הסימטריה המלאה: $SO(4)$ במרחב המומנטום — חבורה גדולה יותר!
+
+זו תוצאה עמוקה שמסבירה את הניוון הגדול.
+\end{theorembox}
+
+\begin{notebox}
+\textbf{הערה היסטורית:}
+
+ניוון $n^2$ היה ידוע כבר ל-\LR{Niels Bohr (1913)} ממודל האטום שלו.
+
+\LR{Pauli (1926)} הראה שהסיבה היא וקטור \LR{Runge-Lenz}.
+
+זוהי דוגמה מרתקת לכך ש"מקרה" מתמטי (ניוון גדול) מגלה סימטריה פיזיקלית עמוקה!
+\end{notebox}
+
+\subsection{משמעות פיזיקלית: ספקטרוסקופיה}
+
+\subsubsection{מעברים וקווים ספקטרליים}
+
+\begin{importantbox}{מעברים בין רמות}
+אלקטרון יכול לקפוץ מרמה $n'$ לרמה $n$ ולפלוט/לספוג פוטון:
+\[
+h\nu = E_{n'} - E_n = R_\infty Z^2\left(\frac{1}{n^2} - \frac{1}{n'^2}\right)
+\]
+
+\textbf{סדרות ספקטרליות:}
+\begin{itemize}
+    \item **סדרת ליימן** (\LR{Lyman}): $n=1 \leftarrow n'=2,3,4,\ldots$ (\LR{UV})
+    \item **סדרת בלמר** (\LR{Balmer}): $n=2 \leftarrow n'=3,4,5,\ldots$ (נראה)
+    \item **סדרת פשן** (\LR{Paschen}): $n=3 \leftarrow n'=4,5,6,\ldots$ (\LR{IR})
+\end{itemize}
+\end{importantbox}
+
+\begin{examplebox}{קו \LR{H-$\alpha$}}
+המעבר $3 \to 2$ (\LR{H-$\alpha$}) במימן:
+\[
+E_\gamma = E_3 - E_2 = 13.6 \, \text{eV} \left(\frac{1}{4} - \frac{1}{9}\right) = 1.89 \, \text{eV}
+\]
+
+אורך גל:
+\[
+\lambda = \frac{hc}{E_\gamma} = 656.3 \, \text{nm} \quad \text{(אדום)}
+\]
+
+זהו הקו האדום המפורסם של מימן — נצפה באסטרופיזיקה!
+\end{examplebox}
+
+\subsubsection{רוחב הקו ומעברים מותרים}
+
+\begin{notebox}
+\textbf{שאלות פתוחות להמשך:}
+\begin{enumerate}
+    \item האם כל המעברים מותרים? (לא! **כללי ברירה**)
+    \item מהו קצב המעבר? (תורת ההפרעות תלויית-זמן)
+    \item למה לקווים יש רוחב? (**עקרון אי-וודאות**: $\Delta E \cdot \Delta t \sim \hbar$)
+\end{enumerate}
+
+נלמד את כל אלה בהמשך הקורס!
+\end{notebox}
+
+\subsection{תיקונים יחסותיים (רמז לעתיד)}
+
+\begin{importantbox}{מבנה דק (\LR{Fine Structure})}
+הנוסחה $E_n = -\frac{Z^2}{n^2}R_\infty$ היא **קירוב לא-יחסותי**.
+
+\textbf{תיקונים רלטיביסטיים:}
+\begin{itemize}
+    \item תיקון קינטי: $\frac{p^4}{8m^3c^2}$
+    \item צימוד ספין-מסלול
+    \item אפקט דרווין (\LR{Darwin})
+\end{itemize}
+
+\textbf{תוצאה:} הניוון ב-$l$ מתבטל חלקית!
+\[
+E_{nj} = E_n \left[1 + \frac{\alpha^2 Z^2}{n^2}\left(\frac{n}{j+1/2} - \frac{3}{4}\right)\right]
+\]
+
+כאשר $j = l \pm 1/2$ (תנע זוויתי כולל).
+
+פרמטר קטן: $\alpha^2 \approx (1/137)^2 \approx 5 \times 10^{-5}$ — אפקט עדין!
+\end{importantbox}
+
+\subsection{סיכום כללי — שיעור 07}
+
+\begin{summarybox}
+
+\textbf{1. המשוואה הרדיאלית:}
+\begin{itemize}
+    \item הפרדנו משתנים: $\psi = R_{nl}(r) Y_{lm}(\theta,\phi)$
+    \item תנאי שפה: $r \cdot R(r) \to 0$ כאשר $r \to 0$ (מהרמיטיות $\hat{p}_r$)
+    \item החלפה $u = rR$ מפשטת את המשוואה
+\end{itemize}
+
+\textbf{2. סקלות אופייניות:}
+\begin{itemize}
+    \item רדיוס בוהר: $a_0 = \frac{4\pi\epsilon_0\hbar^2}{m_e e^2} \approx 0.529 \, \text{\AA}$
+    \item קבוע מבנה דק: $\alpha = \frac{e^2}{4\pi\epsilon_0\hbar c} \approx \frac{1}{137}$
+    \item אנרגיית ריידברג: $R_\infty = \frac{\alpha^2 m_e c^2}{2} \approx 13.6 \, \text{eV}$
+\end{itemize}
+
+\textbf{3. קוונטיזציה:}
+\begin{itemize}
+    \item מספר קוונטי ראשי: $n = 1, 2, 3, \ldots$
+    \item תנע זוויתי: $l = 0, 1, \ldots, n-1$
+    \item הקרנה: $m = -l, \ldots, +l$
+\end{itemize}
+
+\textbf{4. ספקטרום האנרגיה:}
+\[
+E_n = -\frac{Z^2}{n^2} R_\infty = -\frac{13.6 Z^2}{n^2} \, \text{eV}
+\]
+
+\textbf{5. ניוון $n^2$:}
+\begin{itemize}
+    \item רמת $n$ מנוונת $n^2$ פעמים
+    \item נובע מסימטריה נסתרת — וקטור Runge-Lenz
+    \item חבורת הסימטריה המלאה: $SO(4)$ (לא רק $SO(3)$!)
+\end{itemize}
+
+\textbf{6. פיזיקה:}
+\begin{itemize}
+    \item קווים ספקטרליים: סדרות ליימן, בלמר, פשן
+    \item H-$\alpha$: $656.3$ nm (קו אדום של מימן)
+    \item תיקונים יחסותיים: מבנה דק $\sim \alpha^2$
+\end{itemize}
+
+\end{summarybox}
+
+\subsection*{נקודות למחשבה ובדיקת הבנה}
+
+\begin{enumerate}
+    \item הסבירו מדוע $\hat{p}_r = -i\hbar\partial_r$ אינו הרמיטי, ומה צריך להוסיף כדי להפוך אותו להרמיטי.
+    
+    \item הראו במפורש ש-$\hat{p}_r^2 = -\hbar^2(\partial_r^2 + \frac{2}{r}\partial_r)$ עבור $\hat{p}_r = -i\hbar(\partial_r + \frac{1}{r})$.
+    
+    \item מדוע תנאי השפה $r \cdot R(r) \to 0$ ב-$r \to 0$ הוא הכרחי? מה יקרה אם לא נדרוש את זה?
+    
+    \item הסבירו את היתרון בהחלפה $u(r) = r \cdot R(r)$. איך זה משנה את תנאי השפה?
+    
+    \item חשבו את רדיוס בוהר עבור פוזיטרוניום (אלקטרון+פוזיטרון). למה הוא גדול פי 2 מ-$a_0$?
+    
+    \item מה המשמעות הפיזיקלית של $\alpha \approx 1/137$? למה קוראים לו "קבוע מבנה דק"?
+    
+    \item הסבירו מדוע הטור $F(\rho) = \sum a_q \rho^q$ חייב להסתיים. מה היה קורה אם לא?
+    
+    \item חשבו את אנרגיית היינון של He$^+$ (הליום עם אלקטרון אחד, $Z=2$).
+    
+    \item מדוע ניוון $(2l+1)$ "מובן" אבל ניוון $n^2$ "מפתיע"? מה זה אומר על הסימטריה?
+    
+    \item הסבירו מדוע פוטנציאל $V(r) = -\alpha/r^s$ עם $s \neq 1$ לא היה נותן ניוון $n^2$.
+    
+    \item חשבו את אורך הגל של קו ליימן-$\alpha$ (מעבר $2 \to 1$). באיזו תחום ספקטרלי הוא?
+    
+    \item מה ההבדל בין ספקטרום הפליטה לספקטרום הבליעה של מימן בטמפרטורת חדר?
+    
+    \item הסבירו איך ניתן למדוד את $\alpha$ באמצעות ספקטרוסקופיה של אטום מימן.
+    
+    \item מדוע רמות עם $l$ גדול יותר "יושבות יותר רחוק" מהגרעין? (רמז: פוטנציאל צנטריפוגלי)
+    
+    \item האם הניוון $n^2$ נשמר כאשר מוסיפים שדה חשמלי חיצוני? (רמז: אפקט שטרק)
+\end{enumerate}

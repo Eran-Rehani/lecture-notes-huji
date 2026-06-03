@@ -1,0 +1,152 @@
+\section{תנע זוויתי, סיבובים וקוונטיזציה בשדה אלקטרומגנטי}
+
+סיכום זה מכסה שני נושאים מרכזיים: השלמת הדיון הפורמלי באלגברת התנע הזוויתי (כולל מטריצות סיבוב ופונקציות ויגנר), ומעבר לטיפול בחלקיק טעון בשדה אלקטרומגנטי באמצעות הפורמליזם הלגרנז'יאני וההמילטוניאני לקראת קוונטיזציה.
+
+\subsection{אלגברת התנע הזוויתי והצגות בלתי פריקות}
+
+בשיעורים הקודמים פיתחנו את הקשר בין חבורת הסיבובים \LR{$SO(3)$} לבין האלגברה שלה. ראינו שכל סיבוב $R$ ניתן לכתיבה באמצעות האקספוננט של היוצרים (\LR{generators}) של החבורה:
+\begin{equation}
+    R(\vec{\theta}) = \exp\left(-\frac{i}{\hbar} \vec{\theta} \cdot \vec{J}\right)
+\end{equation}
+כאשר האופרטורים $J_i$ מקיימים את יחסי החילוף של האלגברה:
+\begin{equation}
+    [J_i, J_j] = i\hbar \epsilon_{ijk} J_k
+\end{equation}
+(ביחידות שבהן $\hbar=1$, כפי שהופיעו בהרצאה, הפקטור הוא $i$).
+
+\subsubsection{סולם המצבים ופעולת אופרטורי הסולם}
+הגדרנו את האופרטורים המועילים:
+\begin{itemize}
+    \item $J^2 = J_x^2 + J_y^2 + J_z^2$ (אופרטור קזימיר, חילופי עם כל יוצרי האלגברה).
+    \item $J_\pm = J_x \pm i J_y$ (אופרטורי סולם - העלאה והורדה).
+\end{itemize}
+
+הבסיס הסטנדרטי למרחב ההילברט (או לתת-המרחב האינווריאנטי) מוגדר על ידי הוקטורים העצמיים המשותפים של $J^2$ ו-$J_z$:
+\begin{equation}
+    J^2 |j,m\rangle = j(j+1) |j,m\rangle, \quad J_z |j,m\rangle = m |j,m\rangle
+\end{equation}
+
+כדי לחשב אלמנטי מטריצה של סיבובים כלליים, עלינו לדעת כיצד פועלים אופרטורי הסולם על המצבים. נשתמש בזהות הבאה:
+\begin{equation}
+    J_- J_+ = J^2 - J_z^2 - \hbar J_z
+\end{equation}
+(ובאופן דומה עבור $J_+ J_-$ עם סימן הפוך באיבר האחרון).
+
+נניח פעולה מהצורה $J_+ |j,m\rangle = c_+ |j,m+1\rangle$. מתוך חישוב הנורמה $\langle \psi | \psi \rangle$ עבור $|\psi\rangle = J_+ |j,m\rangle$:
+\begin{equation}
+    |c_+|^2 = \langle j,m | J_- J_+ | j,m \rangle = \langle j,m | (J^2 - J_z^2 - J_z) | j,m \rangle
+\end{equation}
+התוצאה היא $j(j+1) - m(m+1)$.
+
+\begin{definitionbox}{בחירת הפאזה (\LR{Condon-Shortley Phase})}
+נהוג לבחור את המקדמים $c_\pm$ כרכיבים \textbf{ממשיים וחיוביים}. בחירה זו נקראת \LR{Condon-Shortley convention}. תחת בחירה זו, פעולת אופרטורי הסולם היא:
+\begin{align}
+    J_+ |j,m\rangle &= \sqrt{j(j+1) - m(m+1)} |j,m+1\rangle \\
+    J_- |j,m\rangle &= \sqrt{j(j+1) - m(m-1)} |j,m-1\rangle
+\end{align}
+\end{definitionbox}
+
+\subsubsection{סיבובים סופיים: זוויות אוילר ופונקציות $D$ של ויגנר}
+סיבוב כללי במרחב התלת-ממדי מתואר על ידי שלוש זוויות אוילר $(\alpha, \beta, \gamma)$. הקונבנציה המקובלת במכניקת הקוונטים (סיבוב $z-y-z$) מגדירה את אופרטור הסיבוב כך:
+\begin{equation}
+    D(\alpha, \beta, \gamma) = e^{-i J_z \alpha / \hbar} e^{-i J_y \beta / \hbar} e^{-i J_z \gamma / \hbar}
+\end{equation}
+משמעות הסיבוב (בגישה האקטיבית על המערכת):
+\begin{enumerate}
+    \item סיבוב סביב ציר $z$ בזווית $\gamma$.
+    \item סיבוב סביב ציר $y$ (החדש) בזווית $\beta$.
+    \item סיבוב סביב ציר $z$ (החדש) בזווית $\alpha$.
+\end{enumerate}
+
+
+
+אלמנטי המטריצה של אופרטור הסיבוב בבסיס $|j,m\rangle$ נקראים \textbf{מטריצות ויגנר} (\LR{Wigner D-matrices}):
+\begin{equation}
+    D^j_{m'm}(\alpha, \beta, \gamma) = \langle j,m' | e^{-i J_z \alpha} e^{-i J_y \beta} e^{-i J_z \gamma} | j,m \rangle
+\end{equation}
+מכיוון שהמצבים הם עצמיים ל-$J_z$, ניתן להוציא את התלות ב-$\alpha$ ו-$\gamma$ החוצה כפאזות:
+
+\begin{resultbox}{פונקציות ויגנר}
+\begin{equation}
+    D^j_{m'm}(\alpha, \beta, \gamma) = e^{-i(m'\alpha + m\gamma)} d^j_{m'm}(\beta)
+\end{equation}
+כאשר $d^j_{m'm}(\beta)$ היא "מטריצת ויגנר הקטנה" המממשת סיבוב סביב ציר $y$:
+\begin{equation}
+    d^j_{m'm}(\beta) = \langle j,m' | e^{-i J_y \beta} | j,m \rangle
+\end{equation}
+\end{resultbox}
+
+הפונקציות $d^j_{m'm}(\beta)$ ניתנות לחישוב באמצעות טור סופי (נוסחת ויגנר), והן קשורות לפולינומי יעקובי ולפונקציות הרמוניות ספריות. בפרט, עבור המקרה $j=l$ שלם ו-$m=0$, מקבלים קשר ישיר להרמוניות הספריות $Y_{lm}$.
+
+\subsection{דינמיקה של חלקיק בשדה אלקטרומגנטי}
+
+כדי לבצע קוונטיזציה נכונה למערכת הכוללת שדות אלקטרומגנטיים, עלינו להתחיל מהתיאור הקלאסי (לגרנז'יאן) ולעבור בצורה קנונית להמילטוניאן.
+
+\subsubsection{הלגרנז'יאן האלקטרומגנטי}
+עבור חלקיק בעל מסה $m$ ומטען $q$ הנע בשדות הנוצרים על ידי פוטנציאל וקטורי $\vec{A}(\vec{x},t)$ ופוטנציאל סקלרי $\phi(\vec{x},t)$, הלגרנז'יאן הוא:
+\begin{definitionbox}{לגרנז'יאן של חלקיק בשדה א"מ}
+\begin{equation}
+    L(\vec{x}, \dot{\vec{x}}, t) = \frac{1}{2}m\dot{\vec{x}}^2 + q \dot{\vec{x}} \cdot \vec{A} - q\phi
+\end{equation}
+איבר האינטראקציה תלוי במהירות באופן ליניארי.
+\end{definitionbox}
+
+\subsubsection{משוואות התנועה (כוח לורנץ)}
+נפעיל את משוואת אוילר-לגרנז':
+\begin{equation}
+    \frac{d}{dt} \left( \frac{\partial L}{\partial \dot{x}_i} \right) - \frac{\partial L}{\partial x_i} = 0
+\end{equation}
+\begin{enumerate}
+    \item התנע הקנוני (נגזרת לפי מהירות):
+    \begin{equation}
+        \frac{\partial L}{\partial \dot{\vec{x}}} = m\dot{\vec{x}} + q\vec{A}
+    \end{equation}
+    \item הנגזרת השלמה בזמן:
+    \begin{equation}
+        \frac{d}{dt}(m\dot{x}_i + qA_i) = m\ddot{x}_i + q\left(\frac{\partial A_i}{\partial t} + (\vec{v}\cdot\nabla)A_i\right)
+    \end{equation}
+    \item נגזרת לפי מקום (גרדיאנט):
+    \begin{equation}
+        \frac{\partial L}{\partial x_i} = q \frac{\partial}{\partial x_i} (\vec{v}\cdot\vec{A}) - q \frac{\partial \phi}{\partial x_i}
+    \end{equation}
+\end{enumerate}
+בעזרת זהות וקטורית $\nabla(\vec{v}\cdot\vec{A}) = (\vec{v}\cdot\nabla)\vec{A} + \vec{v}\times(\nabla\times\vec{A})$ (כאשר $\vec{v}$ משתנה בלתי תלוי במקום בגזירה זו), ושימוש בהגדרות השדות:
+\begin{equation}
+    \vec{E} = -\nabla\phi - \frac{\partial \vec{A}}{\partial t}, \quad \vec{B} = \nabla \times \vec{A}
+\end{equation}
+מקבלים את כוח לורנץ:
+\begin{resultbox}{כוח לורנץ}
+\begin{equation}
+    m\ddot{\vec{x}} = q(\vec{E} + \vec{v} \times \vec{B})
+\end{equation}
+זה מוכיח שהלגרנז'יאן הנ"ל אכן מתאר את הדינמיקה הנכונה.
+\end{resultbox}
+
+\subsubsection{המעבר להמילטוניאן וקוונטיזציה}
+ההמילטוניאן מוגדר על ידי התמרת לז'נדר $H = \vec{p}\cdot\dot{\vec{x}} - L$.
+חשוב להבחין בין שני סוגי תנע:
+\begin{notebox}{תנע קנוני מול תנע קינטי}
+\begin{itemize}
+    \item \textbf{תנע קינטי (מכני):} $\vec{\pi} = m\vec{v}$. זהו הגודל הפיזיקלי המדיד (למשל $mv$).
+    \item \textbf{תנע קנוני:} $\vec{p} = \frac{\partial L}{\partial \dot{\vec{x}}} = m\vec{v} + q\vec{A}$. זהו הגודל הצמוד לקואורדינטה בפורמליזם ההמילטוני.
+\end{itemize}
+\end{notebox}
+
+נבודד את המהירות: $\vec{v} = \frac{1}{m}(\vec{p} - q\vec{A})$. נציב בהגדרת ההמילטוניאן:
+\begin{equation}
+    H = \frac{1}{2m}(\vec{p} - q\vec{A})^2 + q\phi
+\end{equation}
+
+\subsubsection{קוונטיזציה קנונית}
+כלל הקוונטיזציה הבסיסי קובע שעלינו להחליף את התנע ה\textbf{קנוני} $\vec{p}$ (ולא את הקינטי!) באופרטור הדיפרנציאלי:
+\begin{equation}
+    \vec{p} \to -i\hbar \nabla
+\end{equation}
+לכן, משוואת שרדינגר לחלקיק בשדה אלקטרומגנטי היא:
+\begin{resultbox}{משוואת שרדינגר בשדה א"מ}
+\begin{equation}
+    i\hbar \frac{\partial \psi}{\partial t} = \left[ \frac{1}{2m} \left( -i\hbar\nabla - q\vec{A} \right)^2 + q\phi \right] \psi
+\end{equation}
+\end{resultbox}
+
+\textbf{נקודה חשובה:} בניגוד למכניקה הקלאסית, שבה הפוטנציאלים $\vec{A}, \phi$ הם כלי עזר מתמטי והגדלים הפיזיקליים הם השדות $\vec{E}, \vec{B}$, במכניקת הקוונטים הפוטנציאלים מופיעים ישירות במשוואת התנועה (בהמילטוניאן). הדבר מוביל לאפקטים קוונטיים ייחודיים כגון אפקט אהרונוב-בוהם (\LR{Aharonov-Bohm Effect}), שבהם הפוטנציאל משפיע גם באזורים שבהם השדות מתאפסים, דרך הפאזה של פונקציית הגל.

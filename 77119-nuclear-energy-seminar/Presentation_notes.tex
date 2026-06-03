@@ -1,0 +1,630 @@
+%% LyX 2.6.0~devel created this file.  For more info, see https://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass{article}
+\usepackage{fontspec}
+\setlength{\parindent}{0bp}
+\usepackage{xcolor}
+\definecolor{lyxboxbgcolor}{rgb}{0.800781, 0.800781, 0.800781}
+\usepackage{float}
+\usepackage{geometry}
+\geometry{verbose,tmargin=2.7cm,bmargin=2cm,lmargin=2cm,rmargin=2cm,headheight=2cm,headsep=0cm,footskip=0cm}
+\usepackage{setspace}
+\usepackage{microtype}
+\onehalfspacing
+\usepackage[pdfusetitle,
+ bookmarks=true,bookmarksnumbered=true,bookmarksopen=true,bookmarksopenlevel=2,
+ breaklinks=true,pdfborder={0 0 0},pdfborderstyle={},backref=section,colorlinks=true]
+ {hyperref}
+\hypersetup{
+ linkcolor=black, citecolor=black}
+
+\makeatletter
+\@ifundefined{date}{}{\date{}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+% Engine guard: use XeLaTeX/LuaLaTeX
+\usepackage{iftex}
+\ifPDFTeX
+  \PackageError{template}{Please compile with XeLaTeX or LuaLaTeX}{}
+\fi
+
+% ======== ADVANCED HEBREW ACADEMIC TEMPLATE ========
+% Packages (trimmed to avoid conflicts)
+% \usepackage{autobreak}  % REMOVE: can conflict with amsmath; use \allowdisplaybreaks
+% \usepackage[T1]{fontenc}  % REMOVE: not needed with fontspec
+\usepackage{relsize}
+\usepackage{xcolor}
+\usepackage{amssymb}
+\usepackage{titlesec}
+\usepackage{polyglossia}
+\usepackage{fancyhdr}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{geometry}
+\usepackage{microtype}
+\usepackage{fontspec}
+\usepackage{physics}
+\usepackage{siunitx}
+\usepackage{mathtools}
+\usepackage{empheq}
+\usepackage{mdframed}
+
+% Colors (deduplicated)
+\definecolor{primaryblue}{RGB}{33,150,243}
+\definecolor{secondaryblue}{RGB}{63,81,181}
+\definecolor{accentgreen}{RGB}{76,175,80}
+\definecolor{warningcolor}{RGB}{255,152,0}
+\definecolor{errorcolor}{RGB}{244,67,54}
+\definecolor{infocolor}{RGB}{3,169,244}
+\definecolor{notecolor}{RGB}{255,193,7}
+\definecolor{theoremcolor}{RGB}{156,39,176}
+\definecolor{definitioncolor}{RGB}{255,87,34}
+\definecolor{examplecolor}{RGB}{0,150,136}
+\definecolor{lightgray}{RGB}{245,245,245}
+\definecolor{darkgray}{RGB}{66,66,66}
+% Add aliases for colors referenced in layout to avoid missing-color errors
+\colorlet{successcolor}{accentgreen}
+\colorlet{warningred}{errorcolor}
+\colorlet{purple}{theoremcolor}
+\colorlet{green}{accentgreen}
+\colorlet{blue}{primaryblue}
+\colorlet{orange}{warningcolor}
+\definecolor{brown}{RGB}{121,85,72}
+
+% Language + fonts (polyglossia)
+\setdefaultlanguage{hebrew}
+\setotherlanguage{english}
+
+% Robust font selection with fallbacks (fixes Times New Roman not loadable)
+% Hebrew serif
+\IfFontExistsTF{David CLM}
+  {\newfontfamily\hebrewfont[Script=Hebrew]{David CLM}}
+  {\IfFontExistsTF{Noto Serif Hebrew}
+     {\newfontfamily\hebrewfont[Script=Hebrew]{Noto Serif Hebrew}}
+     {\newfontfamily\hebrewfont[Script=Hebrew]{Noto Sans Hebrew}}}
+
+% Hebrew sans
+\IfFontExistsTF{Nachlieli CLM}
+  {\newfontfamily\hebrewfontsf[Script=Hebrew]{Nachlieli CLM}}
+  {\IfFontExistsTF{Noto Sans Hebrew}
+     {\newfontfamily\hebrewfontsf[Script=Hebrew]{Noto Sans Hebrew}}
+     {\newfontfamily\hebrewfontsf[Script=Hebrew]{David CLM}}}
+    % ===== TEXT FONT OPTIONS (choose ONE set; default is Libertinus) =====
+    % Tip: If sizes feel mismatched between Hebrew and Latin, tweak Scale=1.03–1.08
+    % on the Hebrew families, or use Scale=MatchLowercase on the mono font.
+    %
+    % 1) Libertinus (balanced, open source) — DEFAULT
+    \setmainfont{Libertinus Serif}[Ligatures=TeX]
+    \setsansfont{Libertinus Sans}[Ligatures=TeX]
+    \setmonofont{Libertinus Mono}[Ligatures=TeX]
+    \newfontfamily\hebrewfont{Libertinus Serif}[Script=Hebrew,Scale=1.0]
+    \newfontfamily\hebrewfontsf{Libertinus Sans}[Script=Hebrew,Scale=1.0]
+    \newfontfamily\englishfont{Libertinus Serif}[Script=Latin,Scale=1.0]
+    %
+    % 2) Noto (broad coverage, great Hebrew support)
+    % \setmainfont{Noto Serif}[Ligatures=TeX]
+    % \setsansfont{Noto Sans}[Ligatures=TeX]
+    % \setmonofont{Noto Sans Mono}[Ligatures=TeX]
+    % \newfontfamily\hebrewfont{Noto Serif Hebrew}[Script=Hebrew,Scale=1.02]
+    % \newfontfamily\hebrewfontsf{Noto Sans Hebrew}[Script=Hebrew,Scale=1.02]
+    % \newfontfamily\englishfont{Noto Serif}[Script=Latin,Scale=1.0]
+    %
+    % 3) TeX Gyre Pagella (Palatino-like) + Noto Hebrew
+    % \setmainfont{TeX Gyre Pagella}[Ligatures=TeX]
+    % \setsansfont{TeX Gyre Heros}[Ligatures=TeX]
+    % \setmonofont{Inconsolata}[Ligatures=TeX,Scale=MatchLowercase]
+    % \newfontfamily\hebrewfont{Noto Serif Hebrew}[Script=Hebrew,Scale=1.04]
+    % \newfontfamily\hebrewfontsf{Noto Sans Hebrew}[Script=Hebrew,Scale=1.04]
+    % \newfontfamily\englishfont{TeX Gyre Pagella}[Script=Latin,Scale=1.0]
+    %
+    % 4) Culmus David CLM (classic Hebrew) + Libertinus Latin
+    %    Requires culmus fonts (e.g., package: culmus)
+    % \setmainfont{Libertinus Serif}[Ligatures=TeX]
+    % \setsansfont{Libertinus Sans}[Ligatures=TeX]
+    % \setmonofont{Libertinus Mono}[Ligatures=TeX]
+    % \newfontfamily\hebrewfont{David CLM}[Script=Hebrew,Scale=1.03]
+    % \newfontfamily\hebrewfontsf{David CLM}[Script=Hebrew,Scale=1.03]
+    % \newfontfamily\englishfont{Libertinus Serif}[Script=Latin,Scale=1.0]
+    %
+    % 5) IBM Plex (modern look) + Noto Hebrew
+    % \setmainfont{IBM Plex Serif}[Ligatures=TeX]
+    % \setsansfont{IBM Plex Sans}[Ligatures=TeX]
+    % \setmonofont{IBM Plex Mono}[Ligatures=TeX]
+    % \newfontfamily\hebrewfont{Noto Serif Hebrew}[Script=Hebrew,Scale=1.04]
+    % \newfontfamily\hebrewfontsf{Noto Sans Hebrew}[Script=Hebrew,Scale=1.04]
+    % \newfontfamily\englishfont{IBM Plex Serif}[Script=Latin,Scale=1.0]
+    %
+    % 6) Rubik (Hebrew+Latin; variable font family)
+    %    Works well for notes; sans look. Keep a separate mono.
+    %    a) Simple name-based selection
+    % \setmainfont{Rubik}[Ligatures=TeX]
+    % \setsansfont{Rubik}[Ligatures=TeX]
+    % \setmonofont{Noto Sans Mono}[Ligatures=TeX]
+    % \newfontfamily\hebrewfont{Rubik}[Script=Hebrew,Scale=1.02]
+    % \newfontfamily\hebrewfontsf{Rubik}[Script=Hebrew,Scale=1.02]
+    % \newfontfamily\englishfont{Rubik}[Script=Latin,Scale=1.0]
+    %    b) Explicit variable font mapping (if name lookup is flaky)
+    % \setmainfont[
+    %   Ligatures=TeX,
+    %   UprightFont=Rubik-VariableFont_wght.ttf,
+    %   ItalicFont=Rubik-Italic-VariableFont_wght.ttf,
+    %   Path=/home/eran/.local/share/fonts/Rubik/
+    % ]{Rubik}
+    % \setsansfont[
+    %   Ligatures=TeX,
+    %   UprightFont=Rubik-VariableFont_wght.ttf,
+    %   ItalicFont=Rubik-Italic-VariableFont_wght.ttf,
+    %   Path=/home/eran/.local/share/fonts/Rubik/
+    % ]{Rubik}
+    % \setmonofont{Noto Sans Mono}[Ligatures=TeX]
+    % \newfontfamily\hebrewfont[
+    %   Script=Hebrew,Scale=1.02,
+    %   UprightFont=Rubik-VariableFont_wght.ttf,
+    %   ItalicFont=Rubik-Italic-VariableFont_wght.ttf,
+    %   Path=/home/eran/.local/share/fonts/Rubik/
+    % ]{Rubik}
+    % \newfontfamily\hebrewfontsf[
+    %   Script=Hebrew,Scale=1.02,
+    %   UprightFont=Rubik-VariableFont_wght.ttf,
+    %   ItalicFont=Rubik-Italic-VariableFont_wght.ttf,
+    %   Path=/home/eran/.local/share/fonts/Rubik/
+    % ]{Rubik}
+    % \newfontfamily\englishfont{Rubik}[Script=Latin,Scale=1.0]
+    %
+    % 7) Ploni (Hebrew only) + Libertinus (Latin) — requires local Ploni OTFs
+    %    Name-based mapping using font names reported by fc-list
+    % \setmainfont{Libertinus Serif}[Ligatures=TeX]
+    % \setsansfont{Libertinus Sans}[Ligatures=TeX]
+    % \setmonofont{Libertinus Mono}[Ligatures=TeX]
+    % \newfontfamily\hebrewfont{PloniMLv2AAA-Regular}[Script=Hebrew,Scale=1.04,BoldFont=PloniMLv2AAA-Bold]
+    % \newfontfamily\hebrewfontsf{PloniMLv2AAA-Regular}[Script=Hebrew,Scale=1.04,BoldFont=PloniMLv2AAA-Bold]
+    % \newfontfamily\englishfont{Libertinus Serif}[Script=Latin,Scale=1.0]
+    %    If name lookup fails, use explicit file paths
+    % \newfontfamily\hebrewfont[
+    %   Script=Hebrew,Scale=1.04,
+    %   Path=/home/eran/.local/share/fonts/Ploni/,
+    %   UprightFont=PloniRegular.otf,
+    %   BoldFont=PloniBold.otf
+    % ]{Ploni}
+    % \newfontfamily\hebrewfontsf[
+    %   Script=Hebrew,Scale=1.04,
+    %   Path=/home/eran/.local/share/fonts/Ploni/,
+    %   UprightFont=PloniRegular.otf,
+    %   BoldFont=PloniBold.otf
+    % ]{Ploni}
+% Latin main font (fallbacks for missing Times New Roman)
+\IfFontExistsTF{Times New Roman}
+  {\setmainfont{Times New Roman}}
+  {\IfFontExistsTF{TeX Gyre Termes}
+     {\setmainfont{TeX Gyre Termes}}
+     {\IfFontExistsTF{Liberation Serif}
+        {\setmainfont{Liberation Serif}}
+        {\IfFontExistsTF{FreeSerif}
+           {\setmainfont{FreeSerif}}
+           {\setmainfont{Latin Modern Roman}}}}}
+
+
+% Math font (unchanged)
+% Use Unicode math with Libertinus as default; several alternatives available.
+\usepackage{unicode-math}
+\setmathfont{Libertinus Math} % default math font
+% MATH FONT OPTIONS (uncomment one to switch)
+% \setmathfont{XITS Math}            % Times-like, excellent coverage
+% \setmathfont{STIX Two Math}        % STIX Two, high-quality glyphs
+% \setmathfont{TeX Gyre Pagella Math}% Palatino-like, pairs with TG Pagella
+% \setmathfont{Asana Math}           % Friendly style, wide coverage
+% \setmathfont{New Computer Modern Math} % Modern CM look
+% siunitx
+\sisetup{
+  output-decimal-marker = {.},
+  group-separator = {,},
+  group-minimum-digits = 4,
+  per-mode = symbol
+}
+
+% Geometry (avoid overriding in LyX header)
+\geometry{
+  a4paper,
+  left=2cm, right=2cm, top=2.7cm, bottom=2cm,
+  headheight=16pt, headsep=0.5cm, footskip=1cm
+}
+
+% Display math spacing (fix duplicates)
+\AtBeginDocument{\setlength\abovedisplayskip{6pt}}
+\AtBeginDocument{\setlength\abovedisplayshortskip{6pt}}
+\AtBeginDocument{\setlength\belowdisplayskip{6pt}}
+\AtBeginDocument{\setlength\belowdisplayshortskip{6pt}}
+
+% Headers
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[R]{\nouppercase{\leftmark}}
+\renewcommand{\headrulewidth}{0.5pt}
+
+% Footnote rule (single definition)
+\AtBeginDocument{
+  \renewcommand\footnoterule{%
+    \kern 3pt
+    \hbox to \textwidth{\hfill\vrule height 0.5pt width 0.4\textwidth}
+    \kern 4pt
+  }%
+}
+
+% Word spacing
+\spaceskip=1.3\fontdimen2\font plus 1\fontdimen3\font minus 1.5\fontdimen4\font
+
+% Colors (deduplicated)
+\definecolor{primaryblue}{RGB}{33,150,243}
+\definecolor{secondaryblue}{RGB}{63,81,181}
+\definecolor{accentgreen}{RGB}{76,175,80}
+\definecolor{warningcolor}{RGB}{255,152,0}
+\definecolor{errorcolor}{RGB}{244,67,54}
+\definecolor{infocolor}{RGB}{3,169,244}
+\definecolor{notecolor}{RGB}{255,193,7}
+\definecolor{theoremcolor}{RGB}{156,39,176}
+\definecolor{definitioncolor}{RGB}{255,87,34}
+\definecolor{examplecolor}{RGB}{0,150,136}
+\definecolor{lightgray}{RGB}{245,245,245}
+\definecolor{darkgray}{RGB}{66,66,66}
+
+% QED symbol
+%\renewcommand{\qedsymbol}{$\blacksquare$}
+
+% Section formatting (wrap \@ macro with makeatletter)
+\makeatletter
+\renewcommand*{\@seccntformat}[1]{\hspace{0.5cm}\csname the#1\endcsname\hspace{0.5cm}}
+\makeatother
+\titleformat{\section}{\fontsize{20}{20}\bfseries}{\thesection}{10pt}{}
+\titleformat{\subsection}{\fontsize{15}{15}\bfseries}{\thesubsection}{10pt}{}
+\titleformat{\subsubsection}{\bfseries}{\thesubsubsection}{10pt}{}
+
+% RTL equation tag direction
+\makeatletter
+\def\maketag@@@#1{\hbox{\m@th\normalfont\LRE{#1}}}
+\def\tagform@#1{\maketag@@@{(\ignorespaces#1\unskip)}}
+\makeatother
+
+% Disjoint union, large logical and
+\makeatletter
+\def\moverlay{\mathpalette\mov@rlay}
+\def\mov@rlay#1#2{\leavevmode\vtop{%
+   \baselineskip\z@skip \lineskiplimit-\maxdimen
+   \ialign{\hfil$\m@th#1##$\hfil\cr#2\crcr}}}
+\newcommand{\charfusion}[3][\mathord]{#1{\ifx#1\mathop\vphantom{#2}\fi\mathpalette\mov@rlay{#2\cr#3}}\ifx#1\mathop\expandafter\displaylimits\fi}
+\makeatother
+\newcommand{\cupdot}{\charfusion[\mathbin]{\cup}{\cdot}}
+\newcommand{\bigcupdot}{\charfusion[\mathop]{\bigcup}{\cdot}}
+\newcommand{\kaliLargeLand}{\mathop{\mathlarger{\mathlarger{\mathlarger{\land}}}}}
+
+% Hebrew text helper (fix)
+\newcommand{\hebtext}[1]{\texthebrew{#1}}
+
+% Define theorem-like environments
+\newtheorem{theorem}{משפט}[section]
+\newtheorem{lemma}[theorem]{למה}
+\newtheorem{proposition}[theorem]{הצעה}
+\newtheorem{corollary}[theorem]{מסקנה}
+\newtheorem{definition}[theorem]{הגדרה}
+\newtheorem{example}[theorem]{דוגמה}
+\newtheorem{exercise}[theorem]{תרגיל}
+\newtheorem{problem}[theorem]{בעיה}
+\newtheorem{remark}[theorem]{הערה}
+\newtheorem{notation}[theorem]{סימון}
+\newtheorem{formula}[theorem]{נוסחה}
+\newtheorem{result}[theorem]{תוצאה}
+\newtheorem{experiment}[theorem]{ניסוי}
+\newtheorem{physicslaw}[theorem]{חוק פיזיקלי}
+
+% Define additional physics environments
+\newenvironment{physicsnote}{\begin{notebox}{}}{\end{notebox}}
+\newenvironment{physicsconstant}{\begin{mainbox}{קבוע פיזיקלי}}{\end{mainbox}}
+\newenvironment{physicsunits}{\begin{mainbox}{יחידות}}{\end{mainbox}}
+\newenvironment{physicsapplication}{\begin{examplebox}{יישום}}{\end{examplebox}}
+\newenvironment{important}{\begin{importantbox}{}}{\end{importantbox}}
+\newenvironment{summary}{\begin{summarybox}{}}{\end{summarybox}}
+
+% Define proof environment
+\newenvironment{solution}{\begin{proof}[פתרון]}{\end{proof}}
+
+% ======== TCOLORBOX CONFIGURATIONS ========
+\tcbuselibrary{breakable,skins,theorems,fitting,xparse}
+
+% Main content box
+\newtcolorbox{mainbox}[2][]{
+    enhanced,
+    breakable,
+    colback=lightgray!20,
+    colframe=primaryblue,
+    fonttitle=\bfseries\large,
+    title={#2},
+    attach boxed title to top center={yshift=-2mm},
+    boxed title style={size=small, colback=primaryblue, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Theorem box
+\newtcolorbox{theorembox}[2][]{
+    enhanced,
+    breakable,
+    colback=theoremcolor!10,
+    colframe=theoremcolor,
+    fonttitle=\bfseries\large,
+    title={משפט: #2},
+    attach boxed title to top left={yshift=-2mm, xshift=5mm},
+    boxed title style={size=small, colback=theoremcolor, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Definition box
+\newtcolorbox{definitionbox}[2][]{
+    enhanced,
+    breakable,
+    colback=definitioncolor!10,
+    colframe=definitioncolor,
+    fonttitle=\bfseries\large,
+    title={הגדרה: #2},
+    attach boxed title to top left={yshift=-2mm, xshift=5mm},
+    boxed title style={size=small, colback=definitioncolor, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Example box
+\newtcolorbox{examplebox}[2][]{
+    enhanced,
+    breakable,
+    colback=examplecolor!10,
+    colframe=examplecolor,
+    fonttitle=\bfseries\large,
+    title={דוגמה: #2},
+    attach boxed title to top right={yshift=-2mm, xshift=-5mm},
+    boxed title style={size=small, colback=examplecolor, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Problem box
+\newtcolorbox{problembox}[2][]{
+    enhanced,
+    breakable,
+    colback=primaryblue!10,
+    colframe=primaryblue,
+    fonttitle=\bfseries\large,
+    title={בעיה: #2},
+    attach boxed title to top right={yshift=-2mm, xshift=-5mm},
+    boxed title style={size=small, colback=primaryblue, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Solution box
+\newtcolorbox{solutionbox}[1][]{
+    enhanced,
+    breakable,
+    colback=successcolor!10,
+    colframe=successcolor,
+    fonttitle=\bfseries\large,
+    title=פתרון,
+    attach boxed title to top right={yshift=-2mm, xshift=-5mm},
+    boxed title style={size=small, colback=successcolor, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Note box
+\newtcolorbox{notebox}[2][]{
+    enhanced,
+    breakable,
+    colback=notecolor!15,
+    colframe=notecolor,
+    fonttitle=\bfseries,
+    title={הערה: #2},
+    attach boxed title to top left={yshift=-2mm, xshift=5mm},
+    boxed title style={size=small, colback=notecolor, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Warning box
+\newtcolorbox{warningbox}[2][]{
+    enhanced,
+    breakable,
+    colback=warningcolor!15,
+    colframe=warningcolor,
+    fonttitle=\bfseries,
+    title={אזהרה: #2},
+    attach boxed title to top center={yshift=-2mm},
+    boxed title style={size=small, colback=warningcolor, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Important box
+\newtcolorbox{importantbox}[2][]{
+    enhanced,
+    breakable,
+    colback=errorcolor!10,
+    colframe=errorcolor,
+    fonttitle=\bfseries,
+    title={חשוב: #2},
+    attach boxed title to top center={yshift=-2mm},
+    boxed title style={size=small, colback=errorcolor, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Summary box
+\newtcolorbox{summarybox}[2][]{
+    enhanced,
+    breakable,
+    colback=infocolor!10,
+    colframe=infocolor,
+    fonttitle=\bfseries\large,
+    title={סיכום: #2},
+    attach boxed title to top center={yshift=-2mm},
+    boxed title style={size=small, colback=infocolor, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Formula box
+\newtcolorbox{formulabox}[2][]{
+    enhanced,
+    breakable,
+    colback=purple!10,
+    colframe=purple,
+    fonttitle=\bfseries\large,
+    title={נוסחה: #2},
+    attach boxed title to top center={yshift=-2mm},
+    boxed title style={size=small, colback=purple, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Result box
+\newtcolorbox{resultbox}[2][]{
+    enhanced,
+    breakable,
+    colback=accentgreen!15,
+    colframe=accentgreen,
+    fonttitle=\bfseries\large,
+    title={תוצאה: #2},
+    attach boxed title to top center={yshift=-2mm},
+    boxed title style={size=small, colback=accentgreen, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Enhanced mathematical environments
+\newenvironment{calculation}
+  {\begin{align}}
+  {\end{align}}
+
+\newenvironment{steps}
+  {\begin{enumerate}[label=שלב \arabic*:, rightmargin=1cm]}
+  {\end{enumerate}}
+
+% Custom commands for common elements
+\newcommand{\highlight}[1]{\textcolor{primaryblue}{\textbf{#1}}}
+% CHANGED: avoid clash with the 'important' environment
+\newcommand{\imptext}[1]{\textcolor{errorcolor}{\textbf{#1}}}
+\newcommand{\note}[1]{\textcolor{notecolor}{\textit{#1}}}
+
+% Enhanced equation highlighting
+\newcommand{\boxedeq}[1]{\boxed{\displaystyle #1}}
+\newcommand{\redeq}[1]{\textcolor{errorcolor}{\boxed{\displaystyle #1}}}
+\newcommand{\blueeq}[1]{\textcolor{primaryblue}{\boxed{\displaystyle #1}}}
+
+\makeatother
+
+\begin{document}
+\title{כורים גרעיניים דורות 2 ו-3 }
+\maketitle
+\begin{center}
+כותב: ערן ריחני
+\par\end{center}
+
+\begin{center}
+סמסטר א' תשפ\textquotedblright ו, האוניברסיטה העברית
+\par\end{center}
+
+\newpage{}
+
+\tableofcontents{}
+\begin{center}
+\vfill{}
+\par\end{center}
+
+\begin{center}
+\par\end{center}
+
+\newpage{}
+
+\section{פתיחה - \foreignlanguage{english}{Introduction} }
+
+הצגה - שלום קוראים לי \_ אני ככה וככה .
+
+היום נדבר על כורים גרעיניים מדור 2 ו-3 .
+
+אז למה בכלל אנרגיה גרעינית? (מראה דיאגרמת אנרגיה פר נוקלאון)
+
+בצד הימני של הגרף יש את הגרעינים הכבדים שניתן לבקע ולקבל אנרגיה (ההפרש
+מהערכים בגרף) ובצד שמאל יש את הגרעינים הקלים שאפשר להתיך לגרעינים
+כבדים יותר ולקבל אנרגיה גם כן.
+
+הנוסחה העיקרית היא שקילות מסה אנרגיה 
+\[
+E=mc^{2}
+\]
+
+דיאגרמה של אנרגיית נו
+\end{document}

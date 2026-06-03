@@ -1,0 +1,216 @@
+\documentclass[a4paper,9pt]{article}
+
+% Geometry
+\usepackage[margin=10mm, top=8mm, bottom=8mm]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{mathtools,amssymb}
+\usepackage{enumitem}
+\usepackage{titlesec}
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage[hidelinks]{hyperref}
+
+% Colors
+\definecolor{secblue}{RGB}{25,55,100}
+\definecolor{subsecgray}{RGB}{60,60,60}
+\definecolor{rulecolor}{RGB}{120,120,120}
+
+% Compact sections
+\titleformat{\section}{\bfseries\normalsize\color{secblue}}{\thesection.}{0.4em}{}[\vspace{-2pt}\textcolor{rulecolor}{\hrule}]
+\titleformat{\subsection}{\bfseries\small\color{subsecgray}}{\thesubsection.}{0.4em}{}
+\titlespacing*{\section}{0pt}{6pt}{3pt}
+\titlespacing*{\subsection}{0pt}{4pt}{2pt}
+
+% List compression
+\setlist[enumerate]{leftmargin=1.4em, labelsep=0.4em, nosep, topsep=1pt, itemsep=1pt}
+\setlist[itemize]{leftmargin=1.2em, labelsep=0.3em, nosep, topsep=1pt, itemsep=1pt}
+
+% Spacing
+\setlength{\parskip}{2pt plus 1pt}
+\setlength{\parindent}{0pt}
+\setlength{\columnsep}{5mm}
+
+\AtBeginDocument{
+  \setlength{\abovedisplayskip}{3pt}
+  \setlength{\belowdisplayskip}{3pt}
+  \setlength{\abovedisplayshortskip}{1pt}
+  \setlength{\belowdisplayshortskip}{1pt}
+}
+
+\begin{document}
+
+\begin{center}
+{\Large\bfseries\color{secblue} Problem-Solving Procedures Guide}\\[2pt]
+{\small Equations of Mathematical Physics}
+\end{center}
+
+\vspace{-2pt}
+
+\begin{multicols}{2}
+
+% =====================================================================
+\section{First-Order PDEs (Method of Characteristics)}
+
+\textbf{Overview.} First-order PDEs of the form $P\,u_x + Q\,u_y = R$ are solved by the \emph{method of characteristics}, which converts the PDE into a system of ODEs along special curves in the $(x,y)$-plane.
+
+\begin{enumerate}
+\item \textbf{Write the Lagrange--Charpit equations:}
+$\dfrac{dx}{P} = \dfrac{dy}{Q} = \dfrac{du}{R}.$
+\item \textbf{Extract two independent invariants.} Pair ratios to obtain ODEs. Integrate each to find constants $C_1 = \phi(x,y)$ and $C_2 = \psi(x,y,u)$.
+\item \textbf{Form the general solution.} Set $C_2 = f(C_1)$, i.e.\ $\psi = f(\phi)$, with $f$ arbitrary.
+\item \textbf{Apply the boundary/initial condition.} Substitute the given curve data to determine $f$, then replace its argument to obtain $u(x,y)$.
+\item \textbf{Verify.} Check that the solution satisfies both the PDE and the initial curve.
+\end{enumerate}
+
+% =====================================================================
+\section{Classification \& Canonical Forms of 2nd-Order PDEs}
+
+\textbf{Overview.} For $Au_{xx}+2Bu_{xy}+Cu_{yy}+\cdots=0$, the type is determined by the discriminant $\Delta = B^2-AC$.
+
+\begin{enumerate}
+\item \textbf{Compute $\Delta$.} $\Delta>0$: Hyperbolic; $\Delta=0$: Parabolic; $\Delta<0$: Elliptic.
+\item \textbf{Find characteristic curves.} Solve $A\lambda^2 - 2B\lambda + C = 0$ where $\lambda = dy/dx$. Integrate to get families $\xi(x,y)=c_1$, $\eta(x,y)=c_2$.
+\item \textbf{Transform to new coordinates} $(\xi,\eta)$. Compute all partial derivatives ($u_x, u_{xx}, u_{xy}, u_{yy}$) via the chain rule.
+\item \textbf{Substitute} into the PDE. The mixed/leading terms simplify to the canonical form (e.g.\ $u_{\xi\eta}=0$ for hyperbolic, $u_{\xi\xi}=0$ for parabolic).
+\item \textbf{Integrate the canonical form} to obtain the general solution in $(\xi,\eta)$, then convert back to $(x,y)$.
+\item \textbf{Apply Cauchy data.} Use $u(x,0)$ and $u_y(x,0)$ (or similar) to pin down the arbitrary functions.
+\end{enumerate}
+
+% =====================================================================
+\section{Heat Equation}
+
+\textbf{Overview.} Problems of the form $u_t = k\,u_{xx} + \text{(lower-order terms/source)}$ on bounded or unbounded domains. Strategy depends on the domain and boundary type.
+
+\subsection{Bounded Domain (Separation of Variables)}
+\begin{enumerate}
+\item \textbf{Decompose} $u = v(x) + w(x,t)$, where $v$ is the steady state ($v_t=0$) satisfying the non-homogeneous BCs/source.
+\item \textbf{Solve for $v$:} $v'' + \cdots = 0$ with the original BCs.
+\item \textbf{Formulate the transient problem} for $w$: homogeneous BCs, modified IC $w(x,0)=u(x,0)-v(x)$.
+\item \textbf{Separate variables} $w = X(x)T(t)$. Solve the spatial eigenvalue problem $X''+\lambda X = 0$ with BCs to get eigenfunctions and eigenvalues.
+\item \textbf{Solve the temporal ODE} $T'+\lambda_n k\,T = q_n(t)$ for each mode.
+\item \textbf{Expand the IC} in eigenfunctions to determine Fourier coefficients.
+\item \textbf{Assemble} $u = v + \sum_n T_n(t)X_n(x)$.
+\end{enumerate}
+
+\subsection{Semi-Infinite / Infinite Domain}
+\begin{enumerate}
+\item \textbf{Reduce to homogeneous IC} via a substitution (e.g.\ $\theta = u - T_0$).
+\item \textbf{Apply Laplace transform} in $t$ (or Fourier transform in $x$) to reduce the PDE to an ODE.
+\item \textbf{Solve the ODE}, enforce boundedness/decay at infinity.
+\item \textbf{Invert the transform} using known pairs (e.g.\ $\operatorname{erfc}$ for Laplace).
+\end{enumerate}
+
+\textbf{Special substitutions:}
+Advection $v_d u_x$: Galilean frame $\xi=x-v_d t$.
+Reaction $bu$: set $u=e^{bt}w$.
+
+% =====================================================================
+\section{Wave Equation}
+
+\textbf{Overview.} $u_{tt}=c^2 u_{xx}$ (+ possible forcing). The approach depends on the domain and whether forcing is present.
+
+\subsection{Bounded Domain (Separation of Variables)}
+\begin{enumerate}
+\item \textbf{Ansatz} $u=X(x)T(t)$ with separation constant $-\lambda$.
+\item \textbf{Spatial problem:} $X''+\lambda X=0$ with BCs $\to$ eigenvalues $\lambda_n=(n\pi/L)^2$, eigenfunctions $\sin(n\pi x/L)$.
+\item \textbf{Temporal ODE:} $T_n''+\omega_n^2 T_n = 0$ with $\omega_n = n\pi c/L$.
+\item \textbf{Superpose:} $u = \sum [A_n\cos(\omega_n t)+B_n\sin(\omega_n t)]\sin(n\pi x/L)$.
+\item \textbf{Determine $A_n$, $B_n$} from IC $u(x,0)=f(x)$ and $u_t(x,0)=g(x)$ via Fourier sine integrals.
+\end{enumerate}
+
+\subsection{Forced Wave Equation}
+\begin{enumerate}
+\item \textbf{Expand} $u$ and source in eigenfunctions: $u=\sum T_n(t)\sin(n\pi x/L)$.
+\item \textbf{Project} the source onto modes by orthogonality $\to$ decoupled ODEs for each $T_n$.
+\item \textbf{Non-resonant} ($\Omega\ne\omega_n$): bounded ``beats'' solution.
+\item \textbf{Resonant} ($\Omega=\omega_n$): secular growth $\propto t\sin(\omega_n t)$.
+\end{enumerate}
+
+\subsection{Unbounded Domain (d'Alembert)}
+Apply d'Alembert's formula directly:
+$u = \frac{\phi(x+ct)+\phi(x-ct)}{2}+\frac{1}{2c}\int_{x-ct}^{x+ct}\psi(s)\,ds.$
+
+% =====================================================================
+\section{Laplace \& Poisson Equations}
+
+\textbf{Overview.} $\nabla^2 u = 0$ (Laplace) or $\nabla^2 u = S$ (Poisson) in various geometries. The procedure adapts to the coordinate system and domain shape.
+
+\subsection{General Procedure}
+\begin{enumerate}
+\item \textbf{Choose coordinates} matching the domain (Cartesian for rectangles, polar for disks/annuli/sectors).
+\item \textbf{For Poisson:} decompose $u = u_p + u_h$, where $\nabla^2 u_p = S$ (often radial) and $\nabla^2 u_h = 0$ with modified BCs.
+\item \textbf{Separate variables.} In polar: $u=R(r)\Theta(\theta)$. The angular part gives eigenfunctions ($\sin,\cos$); the radial part is Euler--Cauchy ($r^{\pm n}$ or $\ln r$).
+\item \textbf{Enforce boundedness/regularity} (exclude $r^{-n}$ at origin, $\ln r$ at origin, etc.).
+\item \textbf{Apply BCs.} Match the remaining boundary data by expanding in the eigenfunctions and equating Fourier coefficients.
+\end{enumerate}
+
+\textbf{Key domain types:}
+\begin{itemize}
+\item \textbf{Disk/sector:} $R_n = r^n$ (bounded at origin); expand BC at $r=R$ in $\sin/\cos$.
+\item \textbf{Annulus:} $R_n = A_n r^n + B_n r^{-n}$; two radial BCs determine both constants.
+\item \textbf{Rectangle:} eigenfunctions in one variable ($\sin$), $\sinh/\cosh$ in the other.
+\end{itemize}
+
+% =====================================================================
+\section{Calculus of Variations}
+
+\textbf{Overview.} Find a function $y(x)$ that extremizes $I[y]=\int_a^b L(x,y,y')\,dx$ subject to BCs and possibly constraints.
+
+\begin{enumerate}
+\item \textbf{Write the Euler--Lagrange (E-L) equation:}
+$\dfrac{\partial L}{\partial y} - \dfrac{d}{dx}\dfrac{\partial L}{\partial y'} = 0.$
+\item \textbf{If $L$ is independent of $x$}, use the \emph{Beltrami identity}: $L - y'\dfrac{\partial L}{\partial y'} = C$.
+\item \textbf{If there is an integral constraint} $J[y]=\text{const}$, form the augmented Lagrangian $H = L + \lambda\, G$ (isoperimetric method) and apply E-L to $H$.
+\item \textbf{Solve the resulting ODE.} Apply boundary conditions to determine constants.
+\item \textbf{Determine the Lagrange multiplier $\lambda$} (if present) using the constraint equation.
+\item \textbf{Verify:} check BCs, constraint, and optionally compute $I$ along the extremal.
+\end{enumerate}
+
+% =====================================================================
+\section{Green's Functions \& Sturm--Liouville}
+
+\textbf{Overview.} Construct $G(x,x')$ satisfying $\hat{L}\,G = \delta(x-x')$ for a self-adjoint operator $\hat{L} = -\frac{d}{dx}(p\frac{d}{dx})+q$ with given BCs.
+
+\begin{enumerate}
+\item \textbf{Solve the homogeneous equation} $\hat{L}y=0$ to find two linearly independent solutions.
+\item \textbf{Select basis functions:} $y_1(x)$ satisfies the \emph{left} BC; $y_2(x)$ satisfies the \emph{right} BC.
+\item \textbf{Form the piecewise Green's function:}
+$G = A\begin{cases} y_1(x)\,y_2(x') & x<x' \\ y_1(x')\,y_2(x) & x>x' \end{cases}$
+\item \textbf{Apply the jump condition} on the derivative:
+$\left[\frac{\partial G}{\partial x}\right]_{x'^-}^{x'^+} = -\frac{1}{p(x')},$
+to determine the constant $A$.
+\item \textbf{Write the solution} to $\hat{L}u=f$ as $u(x)=\int G(x,x')\,f(x')\,dx'$.
+\end{enumerate}
+
+\textbf{Verify:} Symmetry $G(x,x')=G(x',x)$; BCs; continuity; correct jump.
+
+% =====================================================================
+\section{Integral Equations \& Generalized Functions}
+
+\subsection{Fredholm Equations (Separable Kernel)}
+\begin{enumerate}
+\item \textbf{Identify the separable kernel:} $K(x,t)=\sum_i \phi_i(x)\psi_i(t)$.
+\item \textbf{Define scalar unknowns} $C_i = \int \psi_i(t)\,\varphi(t)\,dt$.
+\item \textbf{Express $\varphi(x)$} in terms of the $C_i$ and the $\phi_i$.
+\item \textbf{Substitute back} to obtain a linear system in the $C_i$.
+\item \textbf{Eigenvalues:} $\det(M)=0$ gives the values of $\lambda$ for which no unique solution exists.
+\end{enumerate}
+
+\subsection{Volterra Equations (Convolution Kernel)}
+\begin{enumerate}
+\item \textbf{Simplify} by multiplying out the convolution kernel (e.g.\ multiply by $e^{\alpha x}$).
+\item \textbf{Differentiate} both sides to convert the integral equation into an ODE.
+\item \textbf{Solve the ODE} (integrating factor or standard methods).
+\item \textbf{Verify} by substituting back into the original integral equation.
+\end{enumerate}
+
+\subsection{Dirac Delta Computations}
+\begin{itemize}
+\item \textbf{Composition rule:} $\delta(g(x))=\sum_i \frac{\delta(x-x_i)}{|g'(x_i)|}$ where $x_i$ are simple roots of $g$.
+\item \textbf{Sifting property:} $\int f(x)\,\delta(x-a)\,dx = f(a)$.
+\item \textbf{Distributional derivatives:} At a jump discontinuity of magnitude $J$ in $f^{(n-1)}$, the $n$-th derivative acquires a term $J\,\delta(x-x_0)$.
+\end{itemize}
+
+\end{multicols}
+\end{document}

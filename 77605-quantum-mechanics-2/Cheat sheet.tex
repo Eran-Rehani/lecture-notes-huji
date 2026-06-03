@@ -1,0 +1,2883 @@
+% ============================================================
+%  Quantum Mechanics II — Mathematical Formalism Summary
+
+% ============================================================
+\documentclass[9pt,a4paper]{article} % Landscape is usually better for cheat sheets
+
+% ---------- Page Layout ----------
+\usepackage[
+  a4paper,     
+  margin=6mm,    % 7mm is the safe minimum for laser printers (5mm risks cropping)
+  includehead,   % Includes header in the calculation of the margin
+  includefoot,   % Includes footer in the calculation of the margin
+  headheight=6pt,
+  headsep=4pt,
+  footskip=5pt
+]{geometry}
+
+\usepackage{multicol}
+\setlength{\columnsep}{0.5cm}
+\setlength{\columnseprule}{0.1pt} % Thin vertical line between columns
+
+% ---------- Fonts & Language ----------
+\usepackage{fontspec}
+\usepackage{unicode-math}
+\setmainfont{XITS} % Or XITS
+\setmathfont{XITS Math}           % Or 
+\usepackage{pifont} % For symbols like checkmarks/crosses
+
+\usepackage{polyglossia}
+\setdefaultlanguage[variant=american]{english}
+\setotherlanguage{hebrew}
+% Ensure standard fonts support Hebrew if needed, or define \newfontfamily\hebrewfont{...}
+
+% ---------- Math & Physics ----------
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{physics}  % \ket, \bra, \comm, \pdv
+% \renewcommand{\boldsymbol}[1]{\symbf{#1}} % Disabled: breaks amsmath/physics internals; use \bs{} instead
+\newcommand{\bs}[1]{\symbf{#1}}\usepackage{empheq}   % Boxed equations
+\usepackage{cancel}   % For canceling terms in derivations
+
+% ---------- Visuals & Colors ----------
+\usepackage[svgnames,dvipsnames]{xcolor}
+\usepackage{microtype}
+%\usepackage[colorlinks=true, linkcolor=MidnightBlue, urlcolor=MidnightBlue]{hyperref}
+\usepackage{enumitem}
+\setlist{nosep,leftmargin=1.2em} % Tight lists
+
+% ---------- Section Formatting (Compact) ----------
+\usepackage{titlesec}
+
+% Section: Blue, Bold, Line Under
+\titleformat{\section}
+  {\large\bfseries\color{MidnightBlue}}
+  {\thesection}{1em}
+  {}
+  [\vspace{-2pt}{\color{MidnightBlue}\hrule height 0.5pt}\vspace{2pt}]
+
+% Subsection: Lighter Blue
+\titleformat{\subsection}
+  {\normalsize\bfseries\color{RoyalBlue}}
+  {\thesubsection}{0.8em}
+  {}
+
+% Spacing adjustments
+\titlespacing{\section}{0pt}{6pt}{2pt}
+\titlespacing{\subsection}{0pt}{4pt}{1pt}
+\titlespacing{\subsubsection}{0pt}{2pt}{1pt}
+
+% ---------- Headers & Footers ----------
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhf{} % Clear defaults
+
+% Header Logic
+\fancyhead[L]{\footnotesize\bfseries\thepage} % Page # Left
+\fancyhead[R]{\footnotesize\sffamily\color{MidnightBlue}\nouppercase{\leftmark}} % Section Name Right
+\renewcommand{\headrulewidth}{0pt} % No horizontal rule in header (cleaner)
+
+% Fix \sectionmark to only show Title (no "Section 1")
+\renewcommand{\sectionmark}[1]{\markboth{#1}{}}
+
+% ---------- Paragraph & Math Spacing ----------
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\setlength{\abovedisplayskip}{2pt}
+\setlength{\belowdisplayskip}{2pt}
+\allowdisplaybreaks
+
+% ---------- Custom Macros (User Preference) ----------
+% Operators
+\newcommand{\Hhat}{\hat{H}}
+\newcommand{\phat}{\hat{p}}
+\newcommand{\xhat}{\hat{x}}
+\newcommand{\aop}{\hat{a}}
+\newcommand{\adop}{\hat{a}^\dagger}
+\newcommand{\Jop}{\hat{\mathbf{J}}}
+\newcommand{\Lop}{\hat{\mathbf{L}}}
+\newcommand{\Sop}{\hat{\mathbf{S}}}
+\newcommand{\Id}{\mathbb{I}}
+\newcommand{\CC}{\mathbb{C}}
+\newcommand{\RR}{\mathbb{R}}
+\newcommand{\HH}{\mathcal{H}}
+\newcommand{\defined}{\equiv}
+\newcommand{\half}{\tfrac{1}{2}}
+
+% Visuals
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\xmark}{\ding{55}}
+\newcommand{\cmark}{\ding{51}}
+
+% Box for Key Results (Motivation -> Result)
+\newcommand{\keybox}[1]{%
+  \noindent\fcolorbox{RoyalBlue!50}{RoyalBlue!5}{%
+    \parbox{\dimexpr\linewidth-2\fboxsep-2\fboxrule}{#1}%
+  }%
+}
+
+% ---------- Section Numbering ----------
+\setcounter{secnumdepth}{2}  % Number sections (1) and subsections (2) automatically
+
+\usepackage{titletoc}
+
+% Configure the compact TOC
+\titlecontents*{section}
+  [0pt]                             % Left indentation
+  {\small\bfseries}                 % Formatting for the text (Small & Bold)
+  {}                                % Formatting for numbered sections (not used here)
+  {}                                % Formatting for numberless sections
+  {, \thecontentspage}              % Separator between title and page number
+  [ \textbullet\ ]                  % Separator between sections (Bullet point)
+% Document Start
+% ========================================================================================================================
+\begin{document}
+
+% ===== Quick Reference =====
+\begingroup
+\setcounter{tocdepth}{1}%
+\scriptsize
+\setlength{\parskip}{0pt}%
+\setlength{\parindent}{0pt}%
+\setlength{\columnsep}{0.4cm}%
+\contentsmargin{0pt}%
+\titlecontents{section}[0pt]{}%
+  {\bfseries}{\bfseries}%
+  {\,\dotfill\,\thecontentspage}%
+\begin{multicols}{3}
+\makeatletter\@starttoc{toc}\makeatother
+\end{multicols}%
+\noindent{\color{MidnightBlue}\hrule height 0.4pt}\vspace{2pt}%
+\endgroup
+\setcounter{tocdepth}{2}%
+
+\begin{multicols}{2}
+\raggedcolumns
+
+% ============================================================
+% ============================================================
+
+% ---------- Sanity Check Corner ----------
+
+
+\subsection{Hilbert Space}
+\begin{itemize}\itemsep0em
+   \item $\braket{\phi|\psi}=\braket{\psi|\phi}^{*}$.
+   \item $\braket{\psi|\psi}\ge 0$; equality iff $\ket{\psi}=0$.
+   \item $\braket{\phi|\alpha\psi_1+\beta\psi_2}=\alpha\braket{\phi|\psi_1}+\beta\braket{\phi|\psi_2}$.
+\end{itemize}
+\textbf{Completeness:} $\sum_{n}\ket{n}\bra{n}=\Id$
+
+\textbf{Schwarz inequality:} $|\braket{\phi|\psi}|^2\le\braket{\phi|\phi}\braket{\psi|\psi}$
+
+\subsection{Operators}
+    \textbf{Hermitian (self-adjoint):} $\hat{A}=\hat{A}^\dagger$; real eigenvalues, orthogonal eigenstates.  Observables are Hermitian.
+
+    \textbf{Unitary:} $\hat{U}^\dagger\hat{U}=\hat{U}\hat{U}^\dagger=\Id$; preserves inner products.  Time-evolution operator $U(t)=e^{-i\Hhat t/\hbar}$ is unitary.\\
+    \textbf{Wigner's theorem:} Symmetry preserving transition probabilities $|\braket{\phi|\psi}|$ is unitary or anti-unitary.
+
+    \textbf{Projection:} $\hat{P}_n=\ket{n}\bra{n}$, $\hat{P}_n^2=\hat{P}_n$, $\hat{P}_n^\dagger=\hat{P}_n$.
+
+    \textbf{Trace:} $\tr(\hat{A})=\sum_{n}\bra{n}\hat{A}\ket{n}$; cyclic: $\tr(\hat{A}\hat{B}\hat{C})=\tr(\hat{C}\hat{A}\hat{B})$.
+
+    \textbf{Operator equality from expectations:}
+$\bra{a}A\ket{a}=\bra{a}B\ket{a}\;\forall\ket{a}\Rightarrow A=B$.
+    \textit{Proof:} Use $\ket{\psi}=\ket{a}+\ket{b}$ and $\ket{\psi}=\ket{a}+i\ket{b}$ to isolate off-diagonal matrix elements.
+
+\subsection{Operator Identities}
+\textbf{Translation:} $e^{-i\hat{p}a/\hbar} f(\hat{x}) e^{i\hat{p}a/\hbar} = f(\hat{x}-a\Id)$.
+\textbf{Scaling:} If $U_\lambda \psi(x) = \lambda^{1/2}\psi(\lambda x)$, then $U_\lambda \hat{x} U_\lambda^\dagger = \hat{x}/\lambda$, $U_\lambda \hat{p} U_\lambda^\dagger = \lambda\hat{p}$.
+
+\subsection{Commutators}
+Properties:
+\begin{align*}
+&[\hat{A},\hat{B}]=-[\hat{B},\hat{A}],\quad
+[\hat{A},\hat{B}\hat{C}]=[\hat{A},\hat{B}]\hat{C}+\hat{B}[\hat{A},\hat{C}],\\
+&[\hat{A}\hat{B},\hat{C}]=\hat{A}[\hat{B},\hat{C}]+[\hat{A},\hat{C}]\hat{B},\\
+&[\hat{A},[\hat{B},\hat{C}]]+[\hat{B},[\hat{C},\hat{A}]]+[\hat{C},[\hat{A},\hat{B}]]=0 \quad\text{(Jacobi)},\\
+&[\hat{A},\hat{A}]=0,\qquad [\hat{A},e^{c\hat{A}}]=0,\qquad [f(\hat{A}),\hat{A}]=0,\\
+&\text{If }[[\hat{A},\hat{B}],\hat{B}]=0\text{ then }[\hat{A},f(\hat{B})]=[\hat{A},\hat{B}]\,f'(\hat{B}),\\
+&[\phat,F(\xhat)]=-i\hbar\,F'(\xhat),\qquad [\xhat,G(\phat)]=i\hbar\,G'(\phat),\\
+&\text{Example: }[\Lop_i,\Lop_j]=i\hbar\varepsilon_{ijk}\Lop_k,\qquad [\Hhat,\Lop]=0.
+\end{align*}
+
+\subsection{Canonical Quantization}
+\[
+[\xhat,\phat]=i\hbar, \qquad [\xhat_i,\phat_j]=i\hbar\delta_{ij}
+\]
+Generalised uncertainty: $\sigma_A^2\,\sigma_B^2\ge\frac{1}{4}\left|\ev{[\hat{A},\hat{B}]}\right|^{2}$
+
+\subsection{Useful Identities \& Integrals}
+
+\textbf{Levi-Civita contraction:}
+$\varepsilon_{ijk}\varepsilon_{imn}=\delta_{jm}\delta_{kn}-\delta_{jn}\delta_{km}$.
+
+\textbf{Baker--Campbell--Hausdorff (Hadamard):}
+\[
+e^{\hat{A}}\hat{B}\,e^{-\hat{A}}=\hat{B}+[\hat{A},\hat{B}]+\tfrac{1}{2!}[\hat{A},[\hat{A},\hat{B}]]+\cdots
+\]
+If $[\hat{A},[\hat{A},\hat{B}]]=0$: $e^{\hat{A}}\hat{B}\,e^{-\hat{A}}=\hat{B}+[\hat{A},\hat{B}]$.
+
+\textbf{Commutator with functions:}
+$[\hat{p}_i,f(r)]=-i\hbar\,\frac{x_i}{r}\,f'(r)$.
+
+\textbf{Operator splitting:}
+$\hat{A}\hat{B}=\tfrac{1}{2}[\hat{A},\hat{B}]+\tfrac{1}{2}\{\hat{A},\hat{B}\}$.
+
+% ============================================================
+\section{Quantum Dynamics}
+% ============================================================
+
+\subsection{Schr\"odinger Equation}
+\textbf{Time-dependent:}
+\[
+i\hbar\pdv{}{t}\ket{\Psi(t)}=\Hhat\ket{\Psi(t)}
+\]
+\textbf{Time-independent:} $\Hhat\ket{E_n}=E_n\ket{E_n}$. General solution:
+\[
+\ket{\Psi(t)}=\sum_n c_n\,e^{-iE_n t/\hbar}\ket{E_n}
+\]
+
+\subsection{Pictures of Quantum Mechanics}
+\textbf{Schr\"odinger picture:} states evolve, operators fixed.
+\[
+\ket{\Psi_S(t)}=\hat{U}(t)\ket{\Psi_S(0)}, \quad \hat{U}(t)=e^{-i\Hhat t/\hbar}
+\]
+
+\textbf{Heisenberg picture:} operators evolve, states fixed.
+\[
+\hat{A}_H(t)=\hat{U}^\dagger(t)\,\hat{A}_S\,\hat{U}(t), \qquad
+i\hbar\dv{\hat{A}_H}{t}=[\hat{A}_H,\Hhat]+i\hbar\pdv{\hat{A}_S}{t}
+\]
+\textbf{Key examples} (free particle \& HO, $\partial_t A_S=0$):
+\begin{align*}
+  \dot{\xhat}_H &= \frac{\phat_H}{m}
+  &\dot{\phat}_H &= -\left.\frac{\partial V}{\partial x}\right|_{x=\xhat_H}
+\\
+  \dot{\aop}_H &= -i\omega\,\aop_H
+  &\Rightarrow\quad \aop_H(t) &= \aop_H(0)\,e^{-i\omega t}
+\end{align*}
+{\footnotesize The last result means the HO in the Heisenberg picture is a classical oscillator for the ladder operators. A coherent state $|\alpha\rangle$ with $\aop|\alpha\rangle=\alpha|\alpha\rangle$ evolves as $|\alpha(t)\rangle = |e^{-i\omega t}\alpha\rangle$ — a fact that follows directly from $\aop_H(t)=\aop e^{-i\omega t}$.}
+
+\textbf{Interaction picture:} $\Hhat=\Hhat_0+V(t)$.
+\[
+\ket{\Psi_I(t)}=e^{i\Hhat_0 t/\hbar}\ket{\Psi_S(t)}, \quad
+\hat{A}_I(t)=e^{i\Hhat_0 t/\hbar}\hat{A}_S\,e^{-i\Hhat_0 t/\hbar}
+\]
+\[
+i\hbar\pdv{}{t}\ket{\Psi_I(t)}=V_I(t)\ket{\Psi_I(t)}
+\]
+
+\subsection{Ehrenfest Theorem}
+\[
+\dv{}{t}\ev{\hat{A}}=\frac{1}{i\hbar}\ev{[\hat{A},\Hhat]}+\ev{\pdv{\hat{A}}{t}}
+\]
+$m\dv{}{t}\ev{\xhat}=\ev{\phat},\qquad \dv{}{t}\ev{\phat}=-\ev{\pdv{V}{x}}$
+
+\subsection{Virial Theorem}
+\[
+2\ev{T}=\ev{\mathbf{r}\cdot\nabla V}
+\]
+\begin{itemize}
+  \item $V\propto r^n$: $2\ev{T}=n\ev{V}$.
+  \item Harmonic Osc ($n=2$): $\ev{T}=\ev{V}=E/2$.
+  \item Coulomb ($n=-1$): $2\ev{T}=-\ev{V}$, so $E=-\ev{T}=\ev{V}/2$.
+\end{itemize}
+
+\subsection{Probability Current \& Continuity}
+\[
+\rho=|\Psi|^2,\qquad \mathbf{j}=\frac{-i\hbar}{2m}\bigl(\Psi^*\nabla\Psi-\Psi\nabla\Psi^*\bigr)=\frac{\hbar}{m}\Im(\psi^*\nabla\psi)
+\]
+With EM field $\mathbf{A}$: $\mathbf{j}=(\hbar/m)\Im(\psi^*\nabla\psi)-\frac{q}{mc}\,\mathbf{A}|\psi|^2$.
+\[
+\pdv{\rho}{t}+\nabla\cdot\mathbf{j}=0
+\]
+
+% ============================================================
+\section{One-Dimensional Systems}
+% ============================================================
+
+\subsection{Position \& Momentum Bases}
+\[
+\braket{x|x'}=\delta(x-x'),\quad \braket{p|p'}=2\pi\hbar\,\delta(p-p')
+\]
+\[
+\braket{x|p}=\frac{1}{\sqrt{2\pi\hbar}}\,e^{ipx/\hbar}
+\]
+\[
+\psi(\mathbf{x},t) = \frac{1}{L^{3/2}} \exp\!\left( \frac{i \mathbf{p} \cdot \mathbf{x}}{\hbar} - \frac{iEt}{\hbar} \right)
+\]
+
+\subsection{Free Particle}
+$\nabla^2\psi(x)=-\frac{2m}{\hbar^2}\psi(x),\quad  \mathbf{k}^2=\frac{2mE}{\hbar^2}=\frac{\mathbf{p}^2}{2m},\quad k_i=\frac{2\pi}{L}n_i$
+\[
+\Psi(x,t)=\frac{1}{\sqrt{2\pi\hbar}}\int\tilde{\psi}(p)\,e^{i(px-p^2 t/2m)/\hbar}\dd{p}
+\]
+$ \psi(x)=\frac{1}{L^{\frac{3}{2}}}e^{i\mathbf{k}\cdot \mathbf{x}} , E=\frac{\mathbf{p}^2}{2m}=\frac{\hbar^2 \mathbf{k}^2 }{2m}, \tilde{\psi}(p)=\frac{1}{\sqrt{2\pi\hbar}}\int e^{-ipx/\hbar}\psi(x)\dd{x} $
+
+\subsection{Infinite Square Well}
+$V=0$ for $0<x<L$, $V=\infty$ otherwise.
+\[
+E_n=\frac{n^2\pi^2\hbar^2}{2mL^2},\qquad \psi_n(x)=\sqrt{\frac{2}{L}}\sin\!\left(\frac{n\pi x}{L}\right),\quad n=1,2,\ldots
+\]
+
+\subsection{Delta-Function Potential}
+$V(x)=-\alpha\,\delta(x)$, $\alpha>0$.
+
+\textbf{Bound state} ($E<0$, unique):
+$E=-\frac{m\alpha^2}{2\hbar^2}$,\; $\psi(x)=\frac{\sqrt{m\alpha}}{\hbar}\,e^{-m\alpha|x|/\hbar^2}$.
+
+\textbf{Scattering:} Matching conditions: $\psi$ continuous, $\psi'$ discontinuity $\Delta\psi'=-\frac{2m\alpha}{\hbar^2}\psi(0)$.
+
+% ============================================================
+\section{Harmonic Oscillator}
+% ============================================================
+
+\subsection{Algebraic (Ladder Operator) Solution}
+$- \frac{\hbar^2}{2m} \frac{d^2}{dx^2} u_E(x)
++ \frac{1}{2} m \omega^2 x^2 u_E(x)
+= E u_E(x)$
+
+\subsubsection{Ladder operator definitions}
+\[
+\\ \hat{a}=\sqrt{\frac{m\omega}{2\hbar}}\!\left(\xhat+\frac{i\phat}{m\omega}\right),\qquad
+\adop=\sqrt{\frac{m\omega}{2\hbar}}\!\left(\xhat-\frac{i\phat}{m\omega}\right)
+\]
+Inverse:
+\[
+\xhat=\sqrt{\frac{\hbar}{2m\omega}}\bigl(\aop+\adop\bigr),\qquad
+\phat=i\sqrt{\frac{m\omega\hbar}{2}}\bigl(\adop-\aop\bigr)
+\]
+\[
+[\aop,\adop]=1,\qquad \Hhat=\hbar\omega\!\left(\adop\aop+\tfrac{1}{2}\right)
+\]
+\textbf{Action on Fock states:}
+\[
+\aop\ket{n}=\sqrt{n}\,\ket{n-1},\quad \adop\ket{n}=\sqrt{n+1}\,\ket{n+1}
+\]
+\[
+E_n=\hbar\omega\!\left(n+\tfrac{1}{2}\right),\quad n=0,1,2,\ldots
+\]
+
+\subsection{Ground State}
+$\aop\ket{0}=0$ gives $\psi_0(x)=\bigl(\frac{m\omega}{\pi\hbar}\bigr)^{1/4}e^{-m\omega x^2/2\hbar}$.
+
+General: $\ket{n}=\frac{(\adop)^n}{\sqrt{n!}}\ket{0}$.
+
+\subsection{Ladder Operator Calculation Tricks}
+{\footnotesize
+Express powers of $\xhat$ via $\aop,\adop$ with $\ell_0=\sqrt{\hbar/(2m\omega)}$:
+\[
+\xhat=\ell_0(\aop+\adop),\quad \xhat^2=\ell_0^2(\aop+\adop)^2
+\]
+\[
+\xhat^2 =\ell_0^2(\aop^2+(\adop)^2+2\hat{n}+1)
+\]
+Hence $\ev{\xhat^2}{n}=\ell_0^2(2n+1)=\frac{\hbar}{2m\omega}(2n+1)$.
+
+$\xhat^4=\ell_0^4(\aop+\adop)^4$: only keep terms with equal $\aop,\adop$ count for diagonal:
+\[
+\ev{\xhat^4}{n}=\ell_0^4(6n^2+6n+3)
+\]
+\textbf{Normal-ordering trick:} Expand, commute all $\aop$ to the right using $[\aop,\adop]=1$.
+}
+
+\section{Symmetry}
+% ============================================================
+
+\subsection{Parity}
+$|\Psi_{\text{total}}\rangle = |\psi_{\text{space}}\rangle \otimes |\chi_{\text{spin}}\rangle$,\quad
+$\hat{\Pi}\ket{\mathbf{r}}=\ket{-\mathbf{r}}$, $\hat{\Pi}^2=\Id$; eigenvalues $\pm 1$.
+If $[\Hhat,\hat{\Pi}]=0$, eigenstates can be chosen with definite parity.
+
+$\hat{\Pi}\xhat\hat{\Pi}=-\xhat$, $\hat{\Pi}\phat\hat{\Pi}=-\phat$, $\hat{\Pi}\Lop\hat{\Pi}=+\Lop$.
+
+% Hydrogen parity (formatted)
+Hydrogen:
+\begin{gather*}
+\Pi\psi(\mathbf r)=\psi(-\mathbf r),\qquad (r,\theta,\phi)\mapsto(r,\pi-\theta,\phi+\pi),\\
+\Pi[R_{n\ell}Y_{\ell m}]=R_{n\ell}\,\Pi Y_{\ell m},\qquad e^{im(\phi+\pi)}=(-1)^m e^{im\phi},\\
+P_{\ell}^m(\cos(\pi-\theta))=(-1)^{\ell-m}P_{\ell}^m(\cos\theta)
+\end{gather*}
+\[\Pi Y_{\ell m}=(-1)^{\ell-m}(-1)^m Y_{\ell m}=(-1)^\ell Y_{\ell m}\quad\Rightarrow\quad
+\Pi\psi_{n\ell m}=(-1)^\ell\psi_{n\ell m}\]
+E1 selection rule: $\Delta\ell=\pm 1$.
+\\
+States with odd $\ell$ (p, f, h, \dots) have odd parity $(-1)$.
+
+States with even $\ell$ (s, d, g, \dots) have even parity $(+1)$.
+
+\subsection{Time Reversal}
+$\hat{\Theta}$ is \emph{anti-unitary} (antilinear + unitary): $\hat{\Theta}(c\ket{\psi})=c^*\hat{\Theta}\ket{\psi}$, preserves inner products up to complex conjugation.
+
+\[
+\hat{\Theta}^2 =
+\begin{cases}
++1 & \text{for integer spin (bosons)}, \\
+-1 & \text{for half-integer spin (fermions)}.
+\end{cases}
+\]
+
+
+For spin-0 particles: $(\hat{\Theta} \Psi)(x) = \Psi^*(x)$.
+
+For spin-$\frac{1}{2}$ particles: $(\hat{\Theta} \Psi)(x) = \begin{pmatrix} -\psi_\downarrow^*(x) \\ \psi_\uparrow^*(x) \end{pmatrix}$, or $\hat{\Theta} = -i \sigma_y \mathcal{K}$, where $\mathcal{K}$ is complex conjugation.
+
+
+Transformations under time reversal:
+\[
+\hat{\Theta} \xhat \hat{\Theta}^{-1} = \xhat, \quad \hat{\Theta} \phat \hat{\Theta}^{-1} = -\phat, \quad \hat{\Theta} \Jop \hat{\Theta}^{-1} = -\Jop, \quad \hat{\Theta} \Sop \hat{\Theta}^{-1} = -\Sop
+\]
+\[
+\hat{\Theta} \mathbf{B} \hat{\Theta}^{-1} = -\mathbf{B}, \quad \hat{\Theta} i \hat{\Theta}^{-1} = -i
+\]
+
+For half-integer spin with $[\Hhat,\hat{\Theta}]=0$, every energy level is at least doubly degenerate.
+\textbf{Composite Systems:} Parity is a multiplicative quantum number. For an $N$-particle system with relative orbital angular momenta $l_i$ and intrinsic particle parities $\eta_i$:
+\begin{equation*}
+    \pi_{\text{total}} = \prod_{i=1}^N \eta_i (-1)^{l_i}
+\end{equation*}
+\textit{Note:} Fermion-antifermion pairs inherently carry a relative intrinsic parity of $\eta_f \eta_{\bar{f}} = -1$.
+
+\textbf{Matrix Elements \& Selection Rules:} 
+For an operator $\hat{O}$ with definite parity $\pi_O$ (where $\hat{\Pi}^\dagger \hat{O} \hat{\Pi} = \pi_O \hat{O}$), the expectation value or transition matrix element dictates Laporte's rule:
+\begin{equation*}
+    \langle \psi_f | \hat{O} | \psi_i \rangle \neq 0 \implies \pi_f \cdot \pi_O \cdot \pi_i = +1
+\end{equation*}
+\textit{Example:} The electric dipole operator $\hat{\mathbf{d}} = e\hat{\mathbf{r}}$ has odd parity ($\pi_O = -1$), necessitating $\pi_f = -\pi_i$ (e.g., $\Delta l = \pm 1$).
+\subsection{Translation}
+\[
+\hat{T}(\mathbf{a})=e^{-i\phat\cdot\mathbf{a}/\hbar},\qquad
+\hat{T}(\mathbf{a})\ket{\mathbf{r}}=\ket{\mathbf{r}+\mathbf{a}}
+\]
+$\phat$ generates translations: $[\phat,\hat{T}(\mathbf{a})]=0$.
+
+\subsection{Rotation}
+\[
+\hat{R}(\hat{n},\theta)=e^{-i\Jop\cdot\hat{n}\,\theta/\hbar}
+\]
+$SO(3)$: group of $3\times 3$ real orthogonal matrices with $\det=+1$.
+
+$SU(2)$: group of $2\times 2$ unitary matrices with $\det=1$; double covers $SO(3)$.
+
+Wigner $D$-matrices:\\ $D^{(j)}_{m'm}(\alpha,\beta,\gamma)=\bra{j,m'}e^{-i\alpha\hat{J}_z/\hbar}e^{-i\beta\hat{J}_y/\hbar}e^{-i\gamma\hat{J}_z/\hbar}\ket{j,m}$.
+
+{\footnotesize
+\textbf{Explicit $\ell=1$ matrices} (basis $m=+1,0,-1$):
+\[
+L_x=\frac{\hbar}{\sqrt{2}}\!\begin{pmatrix}0\!&\!1\!&\!0\\1\!&\!0\!&\!1\\0\!&\!1\!&\!0\end{pmatrix},\;
+L_y=\frac{\hbar}{\sqrt{2}}\!\begin{pmatrix}0\!&\!-i\!&\!0\\i\!&\!0\!&\!-i\\0\!&\!i\!&\!0\end{pmatrix}
+\]
+\textbf{Cayley--Hamilton for $j=1$:} $(J_y/\hbar)^3=J_y/\hbar$, so:
+\[
+e^{-i\beta J_y/\hbar}=\Id-(J_y/\hbar)^2(1-\cos\beta)-i(J_y/\hbar)\sin\beta
+\]
+\textbf{Ladder operator trick:}
+$L_x^2-L_y^2=\tfrac{1}{2}(L_+^2+L_-^2)$\; (shifts $m$ by $\pm 2$).
+}
+% ============================================================
+\section{Angular Momentum}
+% ============================================================
+
+\subsection{General Angular Momentum Algebra}
+Commutation relations (defining relation of $\mathfrak{su}(2)$):
+\[
+\boxed{[\hat{J}_i,\hat{J}_j]=i\hbar\,\epsilon_{ijk}\hat{J}_k}
+\]
+$\hat{J}^2=\hat{J}_x^2+\hat{J}_y^2+\hat{J}_z^2$ commutes with all $\hat{J}_i$: $[\hat{J}^2,\hat{J}_i]=0$.
+
+\subsubsection{Ladder operators for angular momentum}
+\[
+\boxed{\hat{J}_{\pm}=\hat{J}_x\pm i\hat{J}_y}\qquad\Leftrightarrow\qquad
+\hat{J}_x=\frac{\hat{J}_++\hat{J}_-}{2},\;\;\hat{J}_y=\frac{\hat{J}_+-\hat{J}_-}{2i}
+\]
+Key commutators:
+\[
+[\hat{J}_z,\hat{J}_{\pm}]=\pm\hbar\hat{J}_{\pm},\qquad [\hat{J}_+,\hat{J}_-]=2\hbar\hat{J}_z
+\]
+\[
+\hat{J}^2=\hat{J}_-\hat{J}_++\hat{J}_z^2+\hbar\hat{J}_z=\hat{J}_+\hat{J}_-+\hat{J}_z^2-\hbar\hat{J}_z
+\]
+\textbf{Key identity (spin--orbit):}
+\[
+\boxed{\vec{L}\cdot\vec{S}=\tfrac{1}{2}\bigl(\hat{J}^2-\hat{L}^2-\hat{S}^2\bigr)}
+\]
+with $\hat{\mathbf{J}}=\Lop+\Sop$.  In the coupled basis $\ket{n,\ell,s,j,m_j}$ this is diagonal:
+$\ev{\vec{L}\cdot\vec{S}}=\frac{\hbar^2}{2}[j(j+1)-\ell(\ell+1)-s(s+1)]$.
+
+\textbf{Ladder decomposition:}
+\[
+\vec{L}\cdot\vec{S}=\hat{L}_z\hat{S}_z+\tfrac{1}{2}\!\left(\hat{L}_+\hat{S}_-+\hat{L}_-\hat{S}_+\right)
+\]
+
+\textbf{Spectrum:}
+\[
+\boxed{\hat{J}^2\ket{j,m}=\hbar^2 j(j+1)\ket{j,m},\qquad \hat{J}_z\ket{j,m}=\hbar m\ket{j,m}}
+\]
+\[
+\boxed{\hat{J}_{\pm}\ket{j,m}=\hbar\sqrt{j(j+1)-m(m\pm 1)}\,\ket{j,m\pm 1}}
+\]
+$j=0,\frac{1}{2},1,\frac{3}{2},\ldots$;\; $m=-j,-j+1,\ldots,j$.\;
+Derived from $\hat{J}_x^2+\hat{J}_y^2\ge 0$ (bounds $m$) and ladder truncation ($\hat{J}_+\ket{j,j}=0$).
+
+\subsection{Orbital Angular Momentum \& Spherical Harmonics}
+$\Lop=\mathbf{r}\times\phat$; integer $\ell$ only ($\ell=0,1,2,\ldots$).
+\[
+\hat{L}^2 Y_\ell^m=\hbar^2\ell(\ell+1)Y_\ell^m,\qquad \hat{L}_z Y_\ell^m=\hbar m\,Y_\ell^m
+\]
+
+\section{Central Potentials \& Hydrogen Atom}
+
+
+\textbf{Separation:} $\psi_{n\ell m} = R_{n\ell}(r)\,Y_\ell^m(\theta,\phi)$\\
+$Y_\ell^m=(-1)^m\sqrt{\frac{2\ell+1}{4\pi}\frac{(\ell-m)!}{(\ell+m)!}}P_\ell^m(\cos\theta)\,e^{im\phi}$\\
+$R_{n\ell}(r) = \sqrt{\left(\frac{2}{na_0}\right)^3 \frac{(n-\ell-1)!}{2n(n+\ell)!}} e^{-r/na_0} \left(\frac{2r}{na_0}\right)^\ell L_{n-\ell-1}^{2\ell+1}\left(\frac{2r}{na_0}\right)$
+
+\textbf{Radial equation} ($u\equiv rR$, $u(0)=0$, $\int_0^\infty|u|^2dr=1$):
+\[
+-\frac{\hbar^2}{2m}\frac{d^2u}{dr^2}+\left[V(r)+\frac{\hbar^2\ell(\ell+1)}{2mr^2}\right]u=Eu
+\]
+
+\subsection{Spherical Bessel Functions ($V=0$, $k^2=2mE/\hbar^2$)}
+$R_\ell(r)=A\,j_\ell(kr)+B\,n_\ell(kr)$;\quad $j_\ell\sim r^\ell$ (regular), $n_\ell\sim r^{-(\ell+1)}$ (singular).
+
+
+\textbf{Infinite spherical well} ($V=0,\;r<a$; $V=\infty,\;r\ge a$):\\
+B.C.: $j_\ell(k_{n\ell}a)=0$;\; let $z_{n\ell}$ be the $n$-th positive zero of $j_\ell$:
+\[
+E_{n\ell}=\frac{\hbar^2 z_{n\ell}^2}{2ma^2},\quad z_{10}\approx\pi,\;z_{11}\approx 4.49,\;z_{20}\approx 2\pi
+\]
+
+\subsection{Hydrogen Atom ($V=-e^2/4\pi\epsilon_0 r$,\; $a_0=4\pi\epsilon_0\hbar^2/me^2$)}
+$\displaystyle
+\boxed{E_n=-\frac{13.6\;\text{eV}}{n^2}=-\frac{e^2}{8\pi\epsilon_0 a_0 n^2}}$, $n=1,2,\ldots;\;\ell=0,\ldots,n{-}1;$
+$m=-\ell,\ldots,\ell$\\
+Degeneracy: $n^2$ (no spin), $2n^2$ (with spin).\quad Virial: $E_n = -\ev{T}_n = \tfrac{1}{2}\ev{V}_n$.
+
+\textbf{At origin:} $|\psi_{n\ell m}(0)|^2=0\;(\ell\ge1)$;\quad $|\psi_{n00}(0)|^2=\dfrac{1}{\pi n^3 a_0^3}$.
+
+\textbf{E1 selection rules:} $\Delta\ell=\pm1$;\;$\Delta m=0,\pm1$;\;$\Delta n$ unrestricted.\\
+\textbf{Dipole element:} \\
+$\bra{2,1,0}z\ket{1,0,0}=\dfrac{128\sqrt{2}}{243}a_0$.\quad $\bra{2,1,\pm1}(x{\pm}iy)\ket{1,0,0}=\mp\dfrac{128\sqrt{2}}{243}a_0$.
+
+\subsection{Hydrogen Basis \& Angular Momentum}
+
+\textbf{Hamiltonian Components:}
+\begin{align*}
+    H_0 &= \frac{p^2}{2m} - \frac{e^2}{4\pi\epsilon_0 r}\rightarrow{\displaystyle \left(-{\frac {\hbar ^{2}}{2\mu }}\nabla ^{2}-{\frac {e^{2}}{4\pi \varepsilon _{0}r}}\right)\psi (r,\theta ,\varphi )=E\psi (r,\theta ,\varphi )}\\
+    H_{FS} &\approx \xi(r) \mathbf{L} \cdot \mathbf{S} = \frac{\xi(r)}{2}(J^2 - L^2 - S^2) \\
+    H_Z &= \frac{\mu_B}{\hbar}(L_z + 2S_z)B_{ext} \quad (\mathbf{B} = B_{ext}\hat{z})
+\end{align*}
+
+\textbf{1. Uncoupled Basis} (Product Space): $\ket{n,\ell, m_\ell, m_s}$
+\begin{itemize} \itemsep0em
+    \item \textbf{CSCO:} $\{H_0, L^2, S^2, L_z, S_z\}$
+    \item \textbf{Good Q.N.:} $n,\ell, s=\tfrac{1}{2}, m_\ell, m_s$
+\end{itemize}
+
+\textbf{2. Coupled Basis} (Total Ang. Mom.): $\ket{n,\ell, j, m_j}$
+\begin{itemize} \itemsep0em
+    \item \textbf{CSCO:} $\{H_0, L^2, S^2, J^2, J_z\}$ where $\mathbf{J} = \mathbf{L} + \mathbf{S}$
+    \item \textbf{Good Q.N.:} $n,\ell, s=\tfrac{1}{2}, j, m_j$
+    \item \textbf{Allowed $j$:} $|\ell-s| \leq j \leq \ell+s$
+    \item \textbf{Relation:} $[\mathbf{L}\cdot\mathbf{S}, \mathbf{J}] = 0$.
+\end{itemize}
+
+\textbf{Basis Transformation (Clebsch--Gordan):}
+\[ \ket{j, m_j} = \sum_{m_\ell, m_s} C^{j m_j}_{\ell m_\ell s m_s} \ket{\ell, m_\ell; s, m_s} \]
+\textit{Selection Rules:} $m_j = m_\ell + m_s$, triangle rule for $(\ell,s,j)$. 
+
+\textbf{Perturbation Strategy:}
+\begin{itemize} \itemsep0em
+    \item If $B_{ext} \to 0$: Use \textbf{Coupled}. $E_{FS}^{(1)} = \langle j m_j | H_{FS} | j m_j \rangle$.
+    \item If $B_{ext} \to \infty$: Use \textbf{Uncoupled}. $E_{Z}^{(1)} = \mu_B B (m_\ell + 2m_s)$.
+    \item If $B_{ext} \sim H_{FS}$: Diagonalize matrix of $H_{FS} + H_Z$ in Coupled basis (usually).
+\end{itemize}
+
+\subsection{Hydrogen-like Atoms ($Z>1$)}
+Replace $e^2\to Ze^2$:\; $a_0\to a_0/Z$, $E_n\to -Z^2\cdot13.6\,\text{eV}/n^2$.
+
+$\langle r\rangle_{n=1}\sim a_0/Z$.
+
+\textbf{Rydberg constant form:}
+$E_n=-R_\infty h c \frac{Z^2}{n^2}$
+
+\textbf{Reduced mass:} $m_e\to\mu=\frac{m_e M_{\rm nuc}}{m_e+M_{\rm nuc}}$; $a_0\to a_\mu=a_0\frac{m_e}{\mu}$, $Ry\to Ry\frac{\mu}{m_e}$.
+
+\textbf{Fine-structure constant:}
+$\alpha=\frac{e^2}{4\pi\epsilon_0\hbar c}\approx\frac{1}{137}$.
+Non-relativistic regime valid when $Z\alpha\ll 1$.
+\subsection{Radial Equation}
+$V(r) = -e^2/(4\pi\epsilon_0 r)$. With $u = rR$, $\rho = r/(na_0)$:
+\[
+\frac{d^2 u}{d\rho^2} = \left[1 - \frac{2n}{\rho} + \frac{\ell(\ell+1)}{\rho^2}\right]u
+\]
+Solution: $u_{n\ell}(\rho) = \rho^{\ell+1} e^{-\rho} L_{n-\ell-1}^{2\ell+1}(2\rho)$.
+{\footnotesize
+\begin{align*}
+\psi_{100} &= \frac{1}{\sqrt{\pi}}\left(\frac{1}{a_0}\right)^{3/2} e^{-r/a_0},\quad 
+\psi_{200} = \frac{1}{4\sqrt{2\pi}}\left(\frac{1}{a_0}\right)^{3/2}\left(2 - \frac{r}{a_0}\right)e^{-r/2a_0} \\
+\psi_{210} &= \frac{1}{4\sqrt{2\pi}}\left(\frac{1}{a_0}\right)^{3/2}\frac{r}{a_0}e^{-r/2a_0}\cos\theta, \quad
+\psi_{211} = -\frac{1}{8\sqrt{\pi}}\left(\frac{1}{a_0}\right)^{3/2}\frac{r}{a_0}e^{-r/2a_0}\sin\theta\,e^{i\phi}
+\end{align*}
+}
+
+\subsection{Expectation Values}
+\[
+\ev{r^k}_{n\ell} \text{ for hydrogen:}
+\]
+{\footnotesize
+\begin{align*}
+\ev{r} &= \frac{a_0}{2}\bigl[3n^2 - \ell(\ell+1)\bigr] ,\quad
+\ev{r^2} = \frac{a_0^2 n^2}{2}\bigl[5n^2 + 1 - 3\ell(\ell+1)\bigr] \\
+\ev{1/r} &= \frac{1}{n^2 a_0},\quad
+\ev{1/r^2} = \frac{1}{n^3 a_0^2 (\ell+\frac{1}{2})} ,\quad
+\ev{1/r^3} = \frac{1}{n^3 a_0^3 \ell(\ell+\frac{1}{2})(\ell+1)} \quad (\ell \ge 1)
+\end{align*}
+}
+
+\section{Addition of Angular Momentum}
+% ============================================================
+
+\subsection{Tensor Products \& CSCO}
+$\HH=\HH_1\otimes\HH_2$;\; $\dim=(2j_1+1)(2j_2+1)$.
+
+\textbf{Uncoupled basis} $\ket{j_1,m_1;j_2,m_2}$: eigenstates of $\{\hat{J}_1^2,\hat{J}_{1z},\hat{J}_2^2,\hat{J}_{2z}\}$.
+
+\textbf{Total:} $\hat{\mathbf{J}}=\hat{\mathbf{J}}_1\otimes\Id_2+\Id_1\otimes\hat{\mathbf{J}}_2$;\; $J$ ranges $|j_1-j_2|\le J\le j_1+j_2$.
+	\textbf{Decomposition:}
+\[
+j_1\otimes j_2=\bigoplus_{J=|j_1-j_2|}^{j_1+j_2} J \quad (\text{integer steps})
+\]
+	\textbf{Dimension check:}\; $(2j_1+1)(2j_2+1)=\sum_{J=|j_1-j_2|}^{j_1+j_2}(2J+1)$.
+
+\textbf{Coupled basis} $\ket{J,M;j_1,j_2}$: eigenstates of $\{\hat{J}^2,\hat{J}_z,\hat{J}_1^2,\hat{J}_2^2\}$, with $M = m_1 + m_2$.
+
+\textbf{Highest weight:}
+\[
+\ket{J_{\max}, M_{\max}} = \ket{j_1, j_1} \ket{j_2, j_2}, \quad J_{\max} = j_1 + j_2.
+\]
+
+\textbf{Lowering:}
+\[
+J_- = J_{1-} + J_{2-}
+\]
+
+generates the $J_{\max}$ multiplet.
+
+\textbf{Orthogonal remainder:}
+
+The highest state of $J_{\max} - 1$ is the $M = J_{\max} - 1$ state orthogonal to the $J_{\max}$ ladder.
+
+\textbf{Examples:}
+$
+\tfrac{1}{2} \otimes 1 = \tfrac{1}{2} \oplus \tfrac{3}{2},
+\quad
+1 \otimes 1 = 0 \oplus 1 \oplus 2.
+$
+
+Moreover, $\hat{J}^2$ is \emph{not} diagonal in the uncoupled basis because
+$\hat{J}^2 = (\hat{\mathbf{J}}_1 + \hat{\mathbf{J}}_2)^2$
+
+contains the term $2 \, \hat{\mathbf{J}}_1 \cdot \hat{\mathbf{J}}_2$. 
+Rotation in product space: $U(R)=U_1(R)\otimes U_2(R)$.
+
+\subsection{Clebsch--Gordan Coefficients}
+\small{\[
+\ket{J,M}=\sum_{m_1+m_2=M}\braket{j_1,m_1;j_2,m_2|J,M}\;\ket{j_1,m_1;j_2,m_2}
+\]}
+nonzero if $|j_1-j_2|\le J\le j_1+j_2$ and $M=m_1+m_2$.
+
+{\footnotesize
+\textbf{Symmetry:}
+\[
+\braket{j_1 m_1;j_2 m_2|JM}=(-1)^{j_1+j_2-J}\braket{j_2 m_2;j_1 m_1|JM}
+\]
+
+For $j_1=j_2$ and $m_1=m_2$, this vanishes if $J$ is odd.
+}
+\subsection{General Relation}
+For identical angular momenta:
+\[
+\langle j_0 j_0 m_1 m_2 | J M \rangle = (-1)^{2j_0 - J} \langle j_0 j_0 m_2 m_1 | J M \rangle
+\]
+\[\hat{P}_{12} |J, M\rangle = (-1)^{2j - J} |J, M\rangle\]
+\subsection{Properties}
+\begin{itemize}
+    \item \textbf{Symmetry Condition:} The state is Symmetric if $(2j_0 - J)$ is even, and Antisymmetric if odd.
+    \item \textbf{Alternating Pattern:} 
+    \begin{itemize}
+        \item $J = 2j_0$ (Max): Symmetric ($+1$)
+        \item $J = 2j_0 - 1$: Antisymmetric ($-1$)
+    \end{itemize}
+\end{itemize}
+\textbf{Exchange Symmetry ($\hat{P}_{12}$) for Identical Particles} ($j_1=j_2\equiv j, \mathbf{J}=\mathbf{j}_1+\mathbf{j}_2$): \\
+Eigenvalue: $\hat{P}_{12}|J,M\rangle = (-1)^{2j-J}|J,M\rangle$. Max $J$ ($2j$) is always symmetric.
+\begin{align*}
+\text{Fermions } (j \in \mathbb{Z}+\tfrac{1}{2}) &\implies \text{Symmetric: odd } J, \quad \text{Antisymmetric: even } J \\
+\text{Bosons } (j \in \mathbb{Z}) &\implies \text{Symmetric: even } J, \quad \text{Antisymmetric: odd } J \\
+\text{Spin-1/2 } (j=\tfrac{1}{2}) &\implies \text{Singlet } S=0 \text{ (Anti)}, \quad \text{Triplet } S=1 \text{ (Sym)}
+\end{align*}
+\subsection{Spherical Tensors}
+A \textbf{spherical tensor operator} of rank $k$ is a set of $2k+1$ operators $T^{(k)}_q$ ($q=-k,\dots,k$) satisfying:
+\[
+[J_z, T^{(k)}_q] = \hbar q \, T^{(k)}_q, \quad
+[J_\pm, T^{(k)}_q] = \hbar \sqrt{k(k+1)-q(q\pm1)} \, T^{(k)}_{q\pm1}
+\]
+They transform under rotations as angular momentum states of spin $k$.
+$U(R) \, T^{(k)}_q \, U(R)^\dagger = \sum_{q' = -k}^{k} D^{(k)}_{q q'}(R) \, T^{(k)}_{q'}$
+\\ Under parity: $\hat{P}^\dagger \, T^{(k)}_q \, \hat{P} = (-1)^k \, T^{(k)}_q$
+{\footnotesize
+\[
+\begin{aligned}
+\text{Rank 0:} \quad & T^{(0)}_0 = -\frac{1}{\sqrt{3}} \mathbf{u} \cdot \mathbf{v} \quad \text{(Ex: } H, \mathbf{r} \cdot \mathbf{p}, \mathbf{S} \cdot \mathbf{L}\text{)} \\
+\hline
+\text{Rank 1:} \quad & V^{(1)}_{\pm 1} = \mp\frac{1}{\sqrt{2}}(V_x \pm iV_y), \; V^{(1)}_{0} = V_z \quad \text{(Op: } \mathbf{L}, \mathbf{S}, \mathbf{J}, \mathbf{p}, \mathbf{r}\text{)} \\
+& \mathbf{r}: \; r^{(1)}_{\pm 1} = \mp\frac{1}{\sqrt{2}}(x \pm iy) = \mp r\sqrt{\frac{4\pi}{3}} Y_1^{\pm 1}, \; r^{(1)}_{0} = z = r\sqrt{\frac{4\pi}{3}} Y_1^0 \\
+& \mathbf{J} \; J^{(1)}_{\pm 1} = \mp\frac{1}{\sqrt{2}}J_{\pm}, \; J^{(1)}_{0} = J_z, \quad \mathbf{p}:p^{(1)}_{\pm 1} = \mp\frac{1}{\sqrt{2}}(p_x \pm ip_y), \; p^{(1)}_{0} = p_z \\
+\hline
+\text{Rank 2:} \quad & T^{(2)}_q = \sum_{m_1, m_2} \langle 1, m_1; 1, m_2 | 2, q \rangle u^{(1)}_{m_1} v^{(1)}_{m_2} \quad \text{(Op: } Q_{ij}, \sigma_{ij}\text{)} \\
+& Q: \; Q^{(2)}_{\pm 2} = \sqrt{\frac{3}{8}}(x \pm iy)^2, \; Q^{(2)}_{\pm 1} = \mp\sqrt{\frac{3}{2}}z(x \pm iy), \; Q^{(2)}_{0} = \frac{1}{2}(3z^2 - r^2)
+\end{aligned}
+\]}
+
+
+\subsubsection{Wigner-Eckart Theorem}
+For a \textbf{spherical tensor operator} $\hat{T}^{(k)}_q$:
+\[
+\boxed{\langle j', m' | T^{(k)}_q | j, m \rangle = \frac{ \langle j' \| T^{(k)} \| j \rangle }{ \sqrt{2j' + 1} } \, \langle j, m ; k, q | j', m' \rangle}
+\]
+
+All $m$-dependence is in the Clebsch--Gordan coefficient; the \emph{reduced matrix element} $\bra{j'}\|\hat{T}^{(k)}\|\ket{j}$ is independent of $m,m',q$.
+
+For a spherical tensor operator $T_q^{(k)}$, the matrix element satisfies:
+\begin{equation*}
+    \mel{\alpha', j'm'}{T_q^{(k)}}{\alpha, jm} = 0, \quad \text{unless} \quad m' = q + m
+\end{equation*}
+\begin{itemize}
+    \item The $z$-component of angular momentum is conserved; the operator changes $m$ by $q\hbar$.
+    \item A transition to $j'$ is forbidden if $T^{(k)}$ does not supply the required angular momentum.
+    \item For states of definite parity, the transition is allowed only if
+    \[
+    \pi_{final} = \pi_{op} \times \pi_{initial}
+    \]
+    \item Magnetic dipole (M1) transitions: the operator is a pseudovector ($\mathbf{L}$, parity $+1$); parity must remain unchanged.
+    \item Scalar operators ($k=0$) cannot change $j$ or $m$; they connect only states with identical angular momentum quantum numbers.
+\end{itemize}
+
+\subsection{The Projection Theorem}
+For matrix elements diagonal in $j$ ($j=j'$), the Wigner-Eckart theorem simplifies to:
+\begin{equation*}
+    \mel{\alpha', j m'}{V_q}{\alpha, j m} = \frac{\mel{\alpha', j m}{\mathbf{J} \cdot \mathbf{V}}{\alpha, j m}}{\hbar^2 j(j+1)} \mel{j m'}{J_q}{j m}
+\end{equation*}
+where the spherical components of angular momentum are defined as:
+\begin{equation*}
+    J_{\pm 1} = \mp \frac{1}{\sqrt{2}}(J_x \pm i J_y), \quad J_0 = J_z
+\end{equation*}
+{\footnotesize
+\textbf{Decomposition $1\otimes 1=0\oplus 1\oplus 2$:}\;
+scalar $T^{(0)}_0=-\frac{1}{\sqrt{3}}(\mathbf{W}\cdot\mathbf{V})$,
+vector $\propto \mathbf{W}\times\mathbf{V}$, rank-2 $=$ traceless symmetric.
+}
+\[r_{1i}r_{2j} = \left( \frac{\bs{r}_1 \cdot \bs{r}_2}{3} \delta_{ij} \right) + \left( \frac{r_{1i}r_{2j} - r_{1j}r_{2i}}{2} \right) + \left( \frac{r_{1i}r_{2j} + r_{1j}r_{2i}}{2} - \frac{\bs{r}_1 \cdot \bs{r}_2}{3} \delta_{ij} \right)\]
+
+\section{Selection Rules}
+% ============================================================
+
+\subsection{Parity Selection Rule}
+Parity of hydrogen state: $(-1)^\ell$.  For any parity-odd operator $\hat{O}$ (e.g.\ $\hat{x},\hat{y},\hat{z}$):
+\[
+\bra{n\ell m}\hat{O}\ket{n'\ell' m'}=0 \quad\text{unless }\ell+\ell'\text{ is odd}
+\]
+
+\textbf{Proof sketch.} Insert $\hat{\Pi}^\dagger\hat{\Pi}=\Id$ on both sides; $\hat{\Pi}\hat{O}\hat{\Pi}^\dagger=-\hat{O}$ $\Rightarrow$ factor $(-1)^{\ell+\ell'+1}$.
+The integrand $\psi_{nlm}^* \hat{O} \psi_{n'l'm'}$ must be even over all space.
+
+\subsection{Electric Dipole Selection Rules}
+For transitions driven by the operator $\hat{\mathbf{r}}$ (or $\bs{\epsilon}\cdot\hat{\mathbf{p}}$ in the dipole approx.):
+\[
+\boxed{\Delta\ell=\pm 1,\qquad \Delta m=0,\pm 1}
+\]
+$\Delta m=0$ for $\hat{z}$-polarisation; $\Delta m=\pm 1$ for $\hat{x}\pm i\hat{y}$ (circular).
+
+From Wigner-Eckart: the dipole operator is a rank-1 spherical tensor ($k=1$), hence $|\ell-1|\le\ell'\le\ell+1$ and $\Delta m=q\in\{0,\pm 1\}$; parity forbids $\Delta\ell=0$.
+\textbf{General Selection Rules} (Non-vanishing of the reduced matix element ):
+\begin{enumerate}
+    \item \textbf{$m$-Conservation:} $m' = m + q$
+    \item \textbf{Triangle Inequality:} $|j - k| \le j' \le j + k$ (Vector addition $\vec{j} + \vec{k} = \vec{j'}$)
+    \item \textbf{Parity:} $\pi_f = \pi_{op} \cdot \pi_i$. If $\pi_{op}$ has parity $(-1)^k$ (e.g., Electric), $\pi_f = (-1)^k \pi_i$.
+\end{enumerate}
+
+\textbf{EM Transitions (Single Electron $n\ell \to n'\ell'$)}
+\begin{itemize}
+    \item \textbf{Parity of EM Operators:} Electric $E(k) \to (-1)^k$, Magnetic $M(k) \to (-1)^{k+1}$.
+    \item \textbf{Photon Spin:} $S_{\gamma}=1 \implies \Delta J \neq 0$ for $0 \to 0$ transitions.
+\end{itemize}
+
+\begin{center}
+{\renewcommand{\arraystretch}{1.2}
+\resizebox{\columnwidth}{!}{%
+\begin{tabular}{|l|c|c|c|c|}
+\hline
+\textbf{Type} & \textbf{Operator} & \textbf{Parity} & \textbf{Exact Rules ($\Delta J$)} & \textbf{LS Rules ($\Delta S=0$)} \\ \hline
+\textbf{E1} (Dipole) & $\vec{r}$ ($k=1$) & Flip (-) & $0, \pm 1$ (No $0 \to 0$) & $\Delta \ell = \pm 1$ \\ \hline
+\textbf{M1} (Dipole) & $\vec{L} + 2\vec{S}$ ($k=1$) & Same (+) & $0, \pm 1$ (No $0 \to 0$) & $\Delta \ell = 0$ \\ \hline
+\textbf{E2} (Quad.) & $x_i x_j$ ($k=2$) & Same (+) & $0, \pm 1, \pm 2$ & $\Delta \ell = 0, \pm 2$ \\ \hline
+\end{tabular}%
+}}
+\end{center}
+% ============================================================
+\section{Spin}
+% ============================================================
+\textbf{Total Ladder Operators:}
+\[
+\hat{S}_{\pm} = \hat{S}_{1\pm} + \hat{S}_{2\pm} = (\hat{S}_{1x} \pm i\hat{S}_{1y}) + (\hat{S}_{2x} \pm i\hat{S}_{2y})
+\]
+\textbf{Action on Tensor Products:}
+Individual operators act only on their respective subspaces:
+\[
+\hat{S}_{1-}\ket{m_1, m_2} = (\hat{S}_{1-}\ket{m_1})\ket{m_2}, \quad \hat{S}_{2-}\ket{m_1, m_2} = \ket{m_1}(\hat{S}_{2-}\ket{m_2})
+\]
+This allows shifting the total $M$ while preserving the $J$ multiplet.
+\subsubsection{Two Spin-$\frac{1}{2}$ Addition (Singlet \& Triplet)}
+Total spin $\mathbf{S}=\mathbf{S}_1+\mathbf{S}_2$. Eigenvalues: $\mathbf{S}^2\to s(s+1)\hbar^2$, $S_z\to m\hbar$.
+
+\textbf{1.\;Triplet ($s=1$):} Symmetric under particle exchange.
+\begin{align*}
+\ket{1,1} &= \ket{\uparrow\uparrow} \quad (or\; \ket{++}) \\
+\ket{1,0} &= \tfrac{1}{\sqrt{2}}(\ket{\uparrow\downarrow}+\ket{\downarrow\uparrow}) \\
+\ket{1,-1} &= \ket{\downarrow\downarrow} \quad (or\; \ket{--})
+\end{align*}
+
+\textbf{2.\;Singlet ($s=0$):} Antisymmetric under particle exchange.
+\[
+\ket{0,0} = \tfrac{1}{\sqrt{2}}(\ket{\uparrow\downarrow}-\ket{\downarrow\uparrow})
+\]
+\textit{Note:} $S=1$ states are symmetric; $S=0$ is antisymmetric. This dictates spatial symmetry for identical fermions (Pauli principle).
+\subsection{Spin-$\frac{1}{2}$ \& Pauli Matrices}
+$\Sop=\frac{\hbar}{2}\bs{\sigma}$ with
+\[
+\sigma_x=\begin{pmatrix}0&1\\1&0\end{pmatrix},\quad
+\sigma_y=\begin{pmatrix}0&-i\\i&0\end{pmatrix},\quad
+\sigma_z=\begin{pmatrix}1&0\\0&-1\end{pmatrix}
+\]
+$\sigma_i\sigma_j=\delta_{ij}\Id+i\epsilon_{ijk}\sigma_k$;\quad $\{\sigma_i,\sigma_j\}=2\delta_{ij}\Id$.
+
+\textbf{Eigenvalues for spin-$\frac{1}{2}$:}
+\[
+\hat{S}^2\ket{\uparrow}=\frac{3\hbar^2}{4}\ket{\uparrow},\quad \hat{S}^2\ket{\downarrow}=\frac{3\hbar^2}{4}\ket{\downarrow}
+\]
+\[
+\hat{S}_z\ket{\uparrow}=+\frac{\hbar}{2}\ket{\uparrow},\quad \hat{S}_z\ket{\downarrow}=-\frac{\hbar}{2}\ket{\downarrow}
+\]
+
+$e^{-i\theta\hat{n}\cdot\bs{\sigma}/2}=\cos(\theta/2)\,\Id-i\sin(\theta/2)\,\hat{n}\cdot\bs{\sigma}$.
+
+\textbf{Pauli vector identity}:
+\[
+\boxed{(\vec{\sigma}\cdot\mathbf{a})(\vec{\sigma}\cdot\mathbf{b})=(\mathbf{a}\cdot\mathbf{b})\,\Id+i\,\vec{\sigma}\cdot(\mathbf{a}\times\mathbf{b})}
+\]
+Special case: $(\hat{n}\cdot\vec{\sigma})^2=\Id$;\; eigenvalues of $\hat{n}\cdot\vec{\sigma}$ are $\pm 1$.
+
+Spin-$\frac{1}{2}$ state: $\ket{\hat{n},+}=\cos(\theta/2)\ket{\!\uparrow}+e^{i\phi}\sin(\theta/2)\ket{\!\downarrow}$.
+
+$\ev{\Sop}_{\hat{n},+}=\frac{\hbar}{2}\hat{n}$;\; measurement along $\hat{n}'$: $P(+)=\cos^2(\gamma/2)$ where $\gamma=\angle(\hat{n},\hat{n}')$.
+
+\subsection{Spin Dynamics}
+$\Hhat=-\bs{\mu}\cdot\mathbf{B}=-\gamma\Sop\cdot\mathbf{B}$.
+
+\textbf{Larmor precession:} Constant $\mathbf{B}=B_0\hat{z}$: $\omega_L=\gamma B_0$; spin precesses about $\hat{z}$.
+
+\textbf{Rabi oscillations:} $\mathbf{B}=B_0\hat{z}+B_1[\cos(\omega t)\hat{x}+\sin(\omega t)\hat{y}]$.
+
+Transition probability (resonance at $\omega=\omega_0$):
+\[
+P_{\uparrow\to\downarrow}(t)=\frac{\Omega_R^2}{\Omega_R^2+\delta^2}\sin^2\!\left(\frac{\sqrt{\Omega_R^2+\delta^2}}{2}\,t\right)
+\]
+where $\Omega_R=\gamma B_1$ (Rabi frequency), $\delta=\omega-\omega_0$ (detuning).
+
+
+% ============================================================
+\section{Electromagnetic Interactions}
+% ============================================================
+
+\subsection{Gauge Invariance}
+Minimal coupling: $\phat\to\bs{\Pi}=\phat-q\mathbf{A}/c$.
+\[
+H = \frac{\mathbf{p}^2}{2m}
+- \frac{q}{2m} \left( \mathbf{p}\cdot\mathbf{A} + \mathbf{A}\cdot\mathbf{p} \right)
++ \frac{q^2}{2m} \mathbf{A}^2
++ q \phi
+\]
+Gauge transformation $\mathbf{A}\to\mathbf{A}+\nabla\chi$, $\Phi\to\Phi-\frac{1}{c}\pdv{\chi}{t}$ compensated by $\ket{\psi}\to e^{iq\chi/\hbar c}\ket{\psi}$.  Physics (probabilities, spectra) unchanged.
+
+\subsection{Landau Levels}
+$\mathbf{B}=B\hat{z}$; \quad $\mathbf{A}_{\text{Landau}}=(-By,0,0),\quad A_{\text{sym}}= \frac{B}{2}(-y,\, x,\, 0)$
+\[
+E_{n}=\hbar\omega_c\!\left(n+\tfrac{1}{2}\right),\quad n=0,1,2,\ldots,\qquad \omega_c=\frac{|q|B}{mc}
+\]
+Each level is macroscopically degenerate ($\propto B\cdot\text{Area}$).\\
+$\textbf{p}$ is gauge dependent while $\Pi$ is gauge invariant.
+\subsection{Aharonov-Bohm Effect}
+Charged particle encircles a flux $\Phi_B$ (where $\mathbf{B}=0$ locally).
+\begin{itemize}
+    \item \textbf{Scattering (Open Path):} Wavefunction picks up a path-dependent phase:
+    \[\oint \mathbf{A}\cdot d\mathbf{l}
+=
+\int (\nabla \times \mathbf{A})\cdot d\mathbf{S}
+=
+\int \mathbf{B}\cdot d\mathbf{S}
+=
+\Phi_B,\quad
+\Delta \varphi
+=
+\frac{q}{\hbar c}\,\Phi_B
+\]
+    \[
+    \psi = \psi_0 e^{i\varphi}, \quad \Delta\varphi = \frac{q}{\hbar c} \oint \mathbf{A} \cdot d\bs{\ell} = 2\pi \frac{\Phi_B}{(hc/q)}
+    \]
+    Observable interference depends on $\Phi_B \pmod{\Phi_0}$.
+
+    \item \textbf{Bound State (Ring Radius $R$):} Rotational symmetry ($[\hat{H}, \hat{L}_z]=0$) but broken time-reversal.
+    \[
+    H = \frac{1}{2mR^2}\left(\hat{L}_z - \frac{q\Phi_B}{2\pi c}\right)^2, \quad \psi_n \propto e^{in\phi}
+    \]
+    \textbf{Spectrum:}
+    \[
+    E_n = \frac{\hbar^2}{2mR^2}\left(n - \frac{q \Phi_B}{h c}\right)^2
+    \]
+    (For uniform field $B$ inside ring: $\Phi_B = \pi R^2 B$).
+
+    \item \textbf{Flux Quantum:} $\Phi_0 = hc/q$. If $\Phi_B = k\Phi_0$ ($k\in\mathbb{Z}$), spectrum is unchanged.
+    \item \textbf{Persistent Current:} $J = -c \frac{\partial E_n}{\partial \Phi_B}$ (non-zero even in ground state).
+\end{itemize}
+
+{\footnotesize
+\textbf{Mechanical Momentum:} $\bs{\Pi}=\mathbf{p}-\frac{q}{c}\mathbf{A}$. Commutator $[\Pi_i,\Pi_j]=i\hbar \frac{q}{c} \varepsilon_{ijk}B_k$.
+\\
+\textbf{Drift Velocity:} $\mathbf{v}_D = c \frac{\mathbf{E} \times \mathbf{B}}{B^2}$ (independent of $q, m$).
+
+$\nabla \times \mathbf{A}(\mathbf{r}) = \mathbf{B}(\mathbf{r})$.
+}
+\subsection{Zeeman Effect}
+$\Hhat'=-\frac{e}{2m_e c}(\Lop+2\Sop)\cdot\mathbf{B}$.
+
+\textbf{Normal Zeeman (spin ignored):} $\Delta E=m_\ell\,\mu_B B$.
+
+\textbf{Anomalous Zeeman (with spin):}
+\[
+\Delta E=g_J\,m_J\,\mu_B B,\qquad g_J=1+\frac{j(j+1)+s(s+1)-\ell(\ell+1)}{2j(j+1)}
+\]
+
+\textbf{Paschen--Back (strong field):} $L$--$S$ coupling broken; $\Delta E=(m_\ell+2m_s)\mu_B B$.
+
+{\footnotesize
+\textbf{Diamagnetic correction} (ground-state H, $1s$):
+$E^{(1)}_{\rm dia}=\frac{e^2 B^2}{4m_e}\ev{r^2}_{1s}=\frac{e^2B^2 a_0^2}{4m_e Z^2}$.
+
+\textbf{Quadratic Stark} on H ($n=2$, $V=\lambda(x^2-y^2)$):
+Only $\ket{2,1,\pm 1}$ mix; $E^{(1)}=\pm 12\lambda a_0^2$,\;
+$\ket{\psi_\pm}=\frac{1}{\sqrt{2}}(\ket{2,1,1}\mp\ket{2,1,-1})$.\;
+$2s$ and $2p_0$ get zero first-order correction.
+}
+
+
+% ============================================================
+\section{Perturbation Theory}
+% ============================================================
+
+\textbf{Validity condition:} \(\left| \frac{\langle k^{(0)} | H' | n^{(0)} \rangle}{E_n^{(0)} - E_k^{(0)}} \right| \ll 1\)
+
+\subsection{Time-Independent — Non-Degenerate}
+$\Hhat=\Hhat^{(0)}+\lambda V$.  $\Hhat^{(0)}\ket{n^{(0)}}=E_n^{(0)}\ket{n^{(0)}}$.
+
+Expand the exact eigenstates and eigenvalues in powers of $\lambda$:
+\[
+\ket{n}=\sum_{k=0}^\infty\lambda^k\ket{n^{(k)}},\quad E_n=\sum_{k=0}^\infty\lambda^k E_n^{(k)}
+\]
+The perturbation equation:
+\[
+(\Hhat_0 + \lambda H') \left( \sum_{k=0}^\infty \lambda^k |n^{(k)}\rangle \right) = \left( \sum_{k=0}^\infty \lambda^k E_n^{(k)} \right) \left( \sum_{j=0}^\infty \lambda^j |n^{(j)}\rangle \right)
+\]
+
+\textbf{First order:}
+\[
+E_n^{(1)}=\bra{n^{(0)}}V\ket{n^{(0)}},\qquad
+\ket{n^{(1)}}=\sum_{k\ne n}\frac{\bra{k^{(0)}}V\ket{n^{(0)}}}{E_n^{(0)}-E_k^{(0)}}\ket{k^{(0)}}
+\]
+
+\textbf{Second order (energy):}
+\[
+E_n^{(2)}=\sum_{k\ne n}\frac{|\bra{k^{(0)}}V\ket{n^{(0)}}|^2}{E_n^{(0)}-E_k^{(0)}}
+\]
+{\footnotesize \textit{Substitution:} Identify which $k$ states produce a non-zero integral. These are the only terms you keep in the sum.}
+\[ V_{kn} = \langle k^{(0)} | H' | n^{(0)} \rangle = \int \psi_k^{(0)*}(x) H'(x) \psi_n^{(0)}(x) \, dx \]
+{\footnotesize In most physics problems, this integral is zero for many values of $k$ due to symmetry (parity, orthogonality, angular momentum conservation).}\\
+
+\textbf{Closure approximation} (when excitation energies $\sim\overline{\Delta E}$):
+\[
+  E_n^{(2)} \approx \frac{\ev{V^2}{n^{(0)}} - |V_{nn}|^2}{\overline{\Delta E}}
+  = \frac{\sigma_V^2}{\overline{\Delta E}}
+\]
+\textbf{Variance sum rule:}
+$\displaystyle\sum_{k\neq n}|V_{kn}|^2 = \ev{V^2}{n^{(0)}} - |\ev{V}{n^{(0)}}|^2 \equiv \sigma_V^2$
+(useful sanity check; follows from completeness $\sum_k\ket{k}\bra{k}=\Id$).
+
+\textbf{Example:} For harmonic oscillator ground state with $V = \lambda x^4$, $E_0^{(1)} = \frac{3\lambda \hbar^2}{4 m^2 \omega^2}$.
+
+
+\subsection{Time-Independent — Degenerate}
+If $E_n^{(0)}$ is $g$-fold degenerate with states $\{\ket{n^{(0)}_\alpha}\}_{\alpha=1}^{g}$, diagonalize the $g\times g$ matrix:
+\[
+W_{\alpha\beta}=\bra{n^{(0)}_\alpha}V\ket{n^{(0)}_\beta}
+\]
+Eigenvalues of $W$ give the first-order corrections $E_n^{(1)}$; solve the secular equation $\det(W - E^{(1)} I) = 0$.
+
+\subsubsection{Second-order degenerate correction}
+If degeneracy persists after first order ($W_{\alpha\alpha}=W_{\beta\beta}$), define the effective second-order matrix in the still-degenerate subspace:
+\[
+M_{\alpha\beta}=\sum_{k\notin D}\frac{\bra{n_\alpha^{(0)}}V\ket{k^{(0)}}\bra{k^{(0)}}V\ket{n_\beta^{(0)}}}{E_n^{(0)}-E_k^{(0)}}
+\]
+Diagonalise $M$ to lift remaining degeneracy; eigenvalues give $E_n^{(2)}$.  \emph{Hierarchical}: repeat until degeneracy is fully removed.
+
+\textbf{Wave-function correction (outside degenerate subspace):}
+\[
+\braket{k^{(0)}|n,s^{(1)}}=\frac{\bra{k^{(0)}}V\ket{n,s^{(0)}}}{E_n^{(0)}-E_k^{(0)}} \qquad(k\notin D)
+\]
+
+\subsection{Time-Dependent Perturbation Theory}
+$\Hhat=\Hhat^{(0)}+V(t)$, with $V(t)$ turned on at $t=0$. Transition amplitude:
+\[
+c_{i\rightarrow f}^{(1)}(t)=\frac{-i}{\hbar}\int_0^t \bra{f}V(t')\ket{i}\,e^{i\omega_{fi}t'}\dd{t'},\quad \omega_{fi}=\frac{E_f-E_i}{\hbar}
+\]
+\[P_{n \to m}^{(1)}(t) = |c_m^{(1)}(t)|^2 = \frac{1}{\hbar^2} \left| \int_{0}^{t} \langle m | V(t') | n \rangle e^{i \omega_{mn} t'} dt' \right|^2\]
+
+\textbf{Constant perturbation:}
+\[
+P_{i\to f}(t) = \frac{2|V_{fi}|^2}{\hbar^2} \frac{1 - \cos(\omega_{fi} t)}{\omega_{fi}^2} = \frac{|V_{fi}|^2}{\hbar^2} t^2 \operatorname{sinc}^2\left(\frac{\omega_{fi} t}{2}\right)
+\]
+
+{\footnotesize
+\textbf{Sudden \& adiabatic limits:}
+Pulse with decay $e^{-t/\tau}$: $P_{fi}\propto |V_{fi}|^2/(\hbar^2(\omega_{fi}^2+1/\tau^2))$.
+$\tau\to 0$ (sudden): $P\propto\tau^2\to 0$;\;
+$\tau\to\infty$ (adiabatic): $P\to |V_{fi}|^2/(\hbar\omega_{fi})^2$.
+
+\textbf{HO impulse} ($V=F_0\xhat$ for $0<t<T$): with $\lambda=\frac{F_0}{\sqrt{2m\hbar\omega^3}}$:
+$P_{0\to 1}=4\lambda^2\sin^2\frac{\omega T}{2}$,\;
+$P_{0\to 2}=8\lambda^4\sin^4\frac{\omega T}{2}$.
+}
+\subsubsection{Exact Dynamics}
+Let $H(t) = H_0 + V(t)$. The state is $|\psi(t)\rangle = \sum_n c_n(t) e^{-iE_n t / \hbar} |\psi_n\rangle$.
+Exact coupled equations:
+\begin{equation*}
+    \dot{c}_n(t) = -\frac{i}{\hbar} \sum_m e^{i\omega_{nm}t} V_{nm}(t) c_m(t), \quad \omega_{nm} \equiv \frac{E_n - E_m}{\hbar}
+\end{equation*}
+\textbf{Second-order Dyson} ($V$ small, system starts in $\ket{i}$ at $t\to-\infty$):
+\begin{equation*}
+    c_f^{(2)}(t) = -\frac{1}{\hbar^2} \sum_m \int_{-\infty}^{t}\!\!dt' \int_{-\infty}^{t'}\!\!dt''\, e^{i\omega_{fm}t'} V_{fm}(t')\, e^{i\omega_{mi}t''} V_{mi}(t'')
+\end{equation*}
+\textbf{Quantum Quench} (smooth ramp $V(-\infty)=0$):
+\begin{equation*}
+    P(i \to f) = \frac{1}{(E_f - E_i)^2} \left| \int_{-\infty}^{\infty}\!\! dt'\, \dot{V}_{fi}(t')\, e^{i\omega_{fi}t'} \right|^2
+\end{equation*}
+\subsection{Fermi's Golden Rule}
+\textbf{Periodic perturbation} $V(t)=Ue^{-i\omega t}+U^\dagger e^{i\omega t}$:
+\begin{itemize}
+\item \textbf{Absorption} ($E_f=E_i+\hbar\omega$):
+$\Gamma=\frac{2\pi}{\hbar}|U_{fi}|^2\delta(E_f-E_i-\hbar\omega)$.
+\item \textbf{Stimulated emission} ($E_f=E_i-\hbar\omega$):
+$\Gamma=\frac{2\pi}{\hbar}|U_{if}|^2\delta(E_f-E_i+\hbar\omega)$.
+\end{itemize}
+With a continuum of final states (density $\rho$):
+\[
+\boxed{\Gamma_{i\to f}=\frac{2\pi}{\hbar}|U_{fi}|^2\,\rho(E_f)}
+\]
+
+The density of states $\rho(E) = \frac{L^3}{2\pi^2} \left( \frac{2m}{\hbar^2} \right)^{3/2} \sqrt{E}$.
+
+\textbf{Level width \& lifetime:}
+$P_i(t)=e^{-\Gamma t}$, $\tau=1/\Gamma$, natural linewidth $\Delta E\approx\hbar\Gamma$.
+
+Formal: $E_i\to E_i-i\hbar\Gamma/2$ gives Lorentzian lineshape.
+
+\subsection{Scattering and Born Approximation}
+In scattering theory, the T-matrix operator satisfies the Lippmann-Schwinger equation:
+\[
+T = V + V \frac{1}{E - H_0 + i\epsilon} T
+\]
+The scattering amplitude is:
+\[
+f(\theta) = -\frac{m}{2\pi \hbar^2} \langle \mathbf{k}_f | T | \mathbf{k}_i \rangle
+\]
+In the Born approximation (first order), $T \approx V$
+% ============================================================
+\section{Identical Particles}
+% ============================================================
+
+\textbf{Symmetrization postulate:} The state of $N$ identical particles must be
+\begin{itemize}
+  \item \textbf{Symmetric} under exchange $\Rightarrow$ \textbf{Bosons} (integer spin).
+  \item \textbf{Antisymmetric} under exchange $\Rightarrow$ \textbf{Fermions} (half-integer spin).
+\end{itemize}
+
+\textbf{Two particles:}
+\[
+\ket{\psi}_{S/A}=\frac{1}{\sqrt{2}}\bigl(\ket{a}\ket{b}\pm\ket{b}\ket{a}\bigr)
+\]
+\subsection{Derivation: Pauli Exclusion Principle}
+Indistinguishability requires $|\Psi|^2$ invariance under particle exchange. Define exchange operator $\hat{P}_{ij}$:
+$ \hat{P}_{ij}\Psi = \lambda \Psi $. Since $\hat{P}^2 = \mathbb{I} \implies \lambda = \pm 1$. 
+Fermions are defined by the antisymmetric sector ($\lambda = -1$): $\Psi(x_j, x_i) = - \Psi(x_i, x_j)$.
+\begin{equation}
+    \Psi(x_1, \dots, x_N) = \frac{1}{\sqrt{N!}} \det 
+    \begin{pmatrix} 
+    \phi_{\alpha_1}(x_1) & \cdots & \phi_{\alpha_1}(x_N) \\[-1ex]
+    \vdots & \ddots & \vdots \\[-1ex]
+    \phi_{\alpha_N}(x_1) & \cdots & \phi_{\alpha_N}(x_N)
+    \end{pmatrix}
+\end{equation}
+Exchange of particles $i \leftrightarrow j$ corresponds to swapping columns $i, j$, introducing a factor of $(-1)$, satisfying the fermion condition.
+
+\textbf{3. Interpretation (Coincidence Limit):}
+Assume two fermions occupy the same state $\alpha_k = \alpha_m$ (for $k \neq m$). This implies Row $k$ and Row $m$ are identical:
+\[ \phi_{\alpha_k}(x) = \phi_{\alpha_m}(x) \quad \forall x \implies \det(\mathbf{M}) = 0 \]
+\textbf{Conclusion:} $\Psi \equiv 0$ everywhere. The probability density vanishes, proving two fermions cannot occupy the same quantum state.
+
+\textbf{Exchange interaction:} For two electrons in states $a,b$:
+\[
+E=E_{\text{direct}}\pm E_{\text{exchange}}
+\]
+\[
+E_{\text{ex}}=\int\phi_a^*(\mathbf{r}_1)\phi_b^*(\mathbf{r}_2)\,V(\mathbf{r}_1,\mathbf{r}_2)\,\phi_b(\mathbf{r}_1)\phi_a(\mathbf{r}_2)\,d^3r_1\,d^3r_2
+\]
+
+{\footnotesize
+\textbf{Antisymmetry constraint} (two identical fermions):
+$(-1)^L\cdot(-1)^{S+1}=-1\;\Leftrightarrow\;L+S$ even.
+
+E.g.\ $S=0\;\Rightarrow$ even $L$;\; $S=1\;\Rightarrow$ odd $L$.
+
+\textbf{Addition of three spins $\frac{1}{2}$:}
+$\frac{1}{2}\otimes\frac{1}{2}\otimes\frac{1}{2}=\frac{3}{2}\oplus\frac{1}{2}\oplus\frac{1}{2}$\;
+(dim $4+2+2=8$).
+
+\textbf{Spin--orbit time evolution} ($H=\frac{\alpha}{\hbar}\vec{L}\cdot\vec{S}$, $\ell=1$, $s=\frac{1}{2}$):
+
+$E_{j=3/2}=\frac{\alpha\hbar}{2}$,\;
+$E_{j=1/2}=-\alpha\hbar$.
+
+Transition probability ($m_j=-\frac{1}{2}$ subspace):
+$P_{(0,\downarrow)\to(-1,\uparrow)}(t)=\frac{8}{9}\sin^2\!\bigl(\frac{3\alpha t}{4}\bigr)$.
+}
+\section{Variational Methods — Theorems \& Proofs}
+
+\subsection{The Variational Theorem}
+\textbf{Theorem.} For any normalizable trial state $\ket{\psi}$ in the domain of $\Hhat$:
+\[
+\boxed{E[\psi]\equiv\frac{\bra{\psi}\Hhat\ket{\psi}}{\braket{\psi|\psi}}\;\ge\; E_0}
+\]
+
+\textbf{Assumptions.} $\Hhat$ is Hermitian with discrete spectrum bounded below: $E_0\le E_1\le\cdots$\;. The eigenstates $\{\ket{n}\}$ form a complete orthonormal basis: $\Hhat\ket{n}=E_n\ket{n}$, $\braket{m|n}=\delta_{mn}$.
+
+\textbf{Proof.} Expand the trial state in the \emph{exact} eigenbasis to convert the expectation value into a weighted average of eigenvalues, then bound from below.
+
+\emph{Step 1 — Expand:} $\ket{\psi}=\sum_n c_n\ket{n}$, with $c_n=\braket{n|\psi}$.
+By orthonormality:
+\begin{align*}
+\braket{\psi|\psi}&=\sum_n|c_n|^2,\\
+\bra{\psi}\Hhat\ket{\psi}&=\sum_{n,m}c_m^* c_n\bra{m}\Hhat\ket{n}=\sum_n|c_n|^2 E_n.
+\end{align*}
+
+\emph{Step 2 — Bound:} Since every eigenvalue satisfies $E_n\ge E_0$, replace $E_n\to E_0$ in the numerator:
+\[
+E[\psi]=\frac{\sum_n|c_n|^2 E_n}{\sum_n|c_n|^2}
+\;\ge\;\frac{E_0\cancel{\sum_n|c_n|^2}}{\cancel{\sum_n|c_n|^2}}=E_0.
+\]
+Equality iff $c_n=0\;\forall\,n\neq 0$, i.e.\ $\ket{\psi}\propto\ket{0}$ (assuming $E_0$ non-degenerate).\hfill$\blacksquare$
+
+\textbf{Stationarity (Generalized Ritz).} $\delta E[\psi]=0\;\Leftrightarrow\;\Hhat\ket{\psi}=E\ket{\psi}$.\\
+\textit{Proof sketch:} Write $E\braket{\psi|\psi}=\bra{\psi}\Hhat\ket{\psi}$; vary $\bra{\psi}\to\bra{\psi}+\bra{\delta\psi}$ independently $\Rightarrow (\Hhat-E)\ket{\psi}=0$.
+
+\subsection{The Ritz Linear Method (Ritz--Galerkin)}
+\textbf{Ansatz.} Restrict the trial state to an $N$-dim subspace $\{\ket{\phi_i}\}_{i=1}^{N}$ (linearly independent, \emph{not} necessarily orthogonal):
+\[
+\ket{\psi}=\sum_{i=1}^{N}c_i\ket{\phi_i}.
+\]
+Define the Hamiltonian and overlap matrices: $H_{ij}=\bra{\phi_i}\Hhat\ket{\phi_j}$,\; $S_{ij}=\braket{\phi_i|\phi_j}$.
+
+\textbf{Derivation.} enforce $\partial E/\partial c_k^*=0$ to reduce the variational condition to a matrix eigenvalue problem.
+
+\emph{Step 1 — Rewrite the functional:}
+$E[\mathbf{c}]={\mathbf{c}^\dagger\mathbf{H}\mathbf{c}}\big/{\mathbf{c}^\dagger\mathbf{S}\mathbf{c}}$, equivalently
+\[
+\sum_{ij}c_i^*\bigl(H_{ij}-E\,S_{ij}\bigr)c_j=0.
+\]
+
+\emph{Step 2 — Differentiate} w.r.t.\ each $c_k^*$ (treating $c_k$ and $c_k^*$ as independent):
+\[
+\frac{\partial}{\partial c_k^*}\sum_{ij}c_i^*(H_{ij}-ES_{ij})c_j
+=\sum_{j}\bigl(H_{kj}-ES_{kj}\bigr)c_j=0,\quad k=1,\dots,N.
+\]
+
+\emph{Step 3 — Matrix form:} This is the generalized eigenvalue problem
+$\mathbf{H}\mathbf{c}=E\,\mathbf{S}\mathbf{c}$.
+Non-trivial $\mathbf{c}\neq\mathbf{0}$ exists iff:
+\[
+\boxed{\det\!\bigl(\mathbf{H}-E\,\mathbf{S}\bigr)=0 \quad\text{(Secular equation)}}
+\]
+The $N$ roots $E^{(1)}\le\cdots\le E^{(N)}$ are upper bounds to the first $N$ exact eigenvalues: $E^{(k)}\ge E_k^{\text{exact}}$ (interleaving theorem).
+
+\subsection{The Variance Theorem}
+\textbf{Theorem.} For any $\ket{\psi}$ with $E=\ev{\Hhat}{\psi}$ and variance $\sigma^2=\ev{\Hhat^2}{\psi}-E^2$, at least one exact eigenvalue $E_n$ satisfies:
+\[
+\boxed{|E-E_n|\le\sigma}
+\]
+
+\textbf{Proof} (by contradiction). \emph{Key idea:} if every eigenvalue were far from $E$, the variance sum would exceed itself.
+
+\emph{Step 1 — Expand variance:} Using $\ket{\psi}=\sum_n c_n\ket{n}$ and orthonormality:
+\[
+\sigma^2=\bra{\psi}(\Hhat-E)^2\ket{\psi}=\sum_n|c_n|^2(E_n-E)^2.
+\]
+
+\emph{Step 2 — Assume the contrary:} Suppose $|E_n-E|>\sigma$ for \emph{all} $n$.
+Then $(E_n-E)^2>\sigma^2$ for every term, so
+\[
+\sigma^2=\sum_n|c_n|^2(E_n-E)^2>\sigma^2\!\sum_n|c_n|^2=\sigma^2.
+\]
+
+\emph{Step 3:} $\sigma^2>\sigma^2$ is a contradiction.
+Hence $\exists\,E_n$ with $|E-E_n|\le\sigma$.\hfill$\blacksquare$
+
+{\footnotesize\emph{Physical use:} a small variance $\sigma$ guarantees the trial energy $E$ is close to a true eigenvalue; combines with the variational bound to bracket $E_0$.}
+
+\subsection{The Min-Max Theorem (Courant--Fischer)}
+Characterizes $E_k$ \emph{without} requiring explicit orthogonality to lower states.
+\[
+\boxed{E_k=\min_{\dim\mathcal{V}=k+1}\!\left(\max_{\ket{\psi}\in\mathcal{V}\setminus\{0\}}\frac{\bra{\psi}\Hhat\ket{\psi}}{\braket{\psi|\psi}}\right)}
+\]
+
+\textbf{Proof sketch.} \emph{Key idea:} any $(k{+}1)$-dim subspace must ``touch'' the $k$-th eigenstate by a dimension-counting argument.
+
+\emph{Step 1 — Lower bound:} Let $\mathcal{W}$ be \emph{any} $(k{+}1)$-dim subspace.
+The space orthogonal to $\{\ket{0},\dots,\ket{k{-}1}\}$ has codimension $k$, so $\mathcal{W}$ intersects it non-trivially: $\exists\,\ket{\phi}\in\mathcal{W}$ with $\braket{n|\phi}=0$ for $n<k$.
+
+\emph{Step 2:} Expand $\ket{\phi}=\sum_{n\ge k}c_n\ket{n}$.
+Since $E_n\ge E_k$ for all $n\ge k$:
+\[
+\frac{\bra{\phi}\Hhat\ket{\phi}}{\braket{\phi|\phi}}=\frac{\sum_{n\ge k}|c_n|^2 E_n}{\sum_{n\ge k}|c_n|^2}\ge E_k.
+\]
+Because $\ket{\phi}\in\mathcal{W}$, the maximum Rayleigh quotient over $\mathcal{W}$ is $\ge E_k$.
+
+\emph{Step 3 — Achievability:} Choose $\mathcal{W}^*=\operatorname{span}\{\ket{0},\dots,\ket{k}\}$. The highest eigenvalue in $\mathcal{W}^*$ is exactly $E_k$, so the minimum over all subspaces equals $E_k$.\hfill$\blacksquare$
+% ============================================================
+\section{Quantum Information Basics}
+% ============================================================
+
+A \textbf{qubit} is a two-level quantum system, represented as $\ket{\psi} = \alpha\ket{0} + \beta\ket{1}$, with $|\alpha|^2 + |\beta|^2 = 1$.
+
+The \textbf{Bloch sphere} visualizes the qubit state: $\ket{\psi} = \cos(\theta/2)\ket{0} + e^{i\phi}\sin(\theta/2)\ket{1}$, with $\mathbf{n} = (\sin\theta\cos\phi, \sin\theta\sin\phi, \cos\theta)$.
+
+\textbf{Basic gates:} Pauli matrices as rotations: $X = \sigma_x$ (bit flip), $Y = \sigma_y$, $Z = \sigma_z$ (phase flip), $H = \frac{1}{\sqrt{2}}\begin{pmatrix}1&1\\1&-1\end{pmatrix}$ (Hadamard).
+
+% ============================================================
+\section{Fine Structure of Hydrogen}
+% ============================================================
+
+$\Hhat=\Hhat_0+H_{\rm FS}$, where $\Hhat_0=\frac{p^2}{2m}-\frac{e^2}{4\pi\epsilon_0 r}$.
+\[
+H_{\rm FS}=H_{\rm rel}+H_{\rm SO}+H_{\rm Darwin}
+\]
+
+\subsection{The Three Corrections}
+\textbf{1.\;Relativistic kinetic:}
+\[
+H_{\rm rel}=-\frac{p^4}{8m^3c^2}
+\]
+(from Taylor-expanding $E=\sqrt{p^2c^2+m^2c^4}$).
+
+\textbf{2.\;Spin--orbit coupling:}
+\[
+H_{\rm SO}=\frac{e^2}{8\pi\epsilon_0\,m^2c^2\,r^3}\,\vec{L}\cdot\vec{S}
+\]
+(includes Thomas precession factor $\frac{1}{2}$).
+
+Use $\vec{L}\cdot\vec{S}=\tfrac{1}{2}(\hat{J}^2-\hat{L}^2-\hat{S}^2)$ to diagonalise in the \textbf{coupled basis} $\ket{n,\ell,s,j,m_j}$.
+
+\textbf{3.\;Darwin term} (affects only $\ell=0$):
+\[
+H_{\rm Darwin}=\frac{\hbar^2}{8m^2c^2}\,4\pi\frac{e^2}{4\pi\epsilon_0}\,\delta^{(3)}(\mathbf{r})
+\]
+
+All three are $\mathcal{O}(\alpha^2 E_n^{(0)})\sim\alpha^4 mc^2/n^3$.
+
+\subsection{Energy Correction}
+\[
+\boxed{E_{nj}^{(1)}=\frac{E_n^{(0)}\,\alpha^2}{n^2}\!\left(\frac{n}{j+\frac{1}{2}}-\frac{3}{4}\right)}
+\]
+or equivalently
+\[
+\Delta E_{\rm FS}=-\frac{mc^2\alpha^4}{2n^3}\!\left(\frac{1}{j+\frac{1}{2}}-\frac{3}{4n}\right)
+\]
+Depends on $n$ and $j$ only (not $\ell$ alone).  States with same $j$ but different $\ell$ remain degenerate (e.g.\ $2s_{1/2}$ and $2p_{1/2}$).
+
+\textbf{Good quantum numbers:} $n,\ell,s,j,m_j$.
+
+% ============================================================
+\section{Scattering Theory}
+% ============================================================
+
+\subsection{Setup \& Cross-Section}
+Scattering state: $\psi(\mathbf{r})\xrightarrow{r\to\infty} e^{ikz}+f(\theta,\phi)\frac{e^{ikr}}{r}$.
+
+\textbf{Differential cross-section:}
+\[
+\frac{d\sigma}{d\Omega}=|f(\theta)|^2
+\]
+\textbf{Total:} $\sigma=\int|f(\theta)|^2\,d\Omega$.
+
+\subsection{Born Approximation (1st order)}
+\[
+\boxed{f(\theta)=-\frac{m}{2\pi\hbar^2}\int V(\mathbf{r}')\,e^{i\mathbf{q}\cdot\mathbf{r}'}\,d^3r'}
+\]
+momentum transfer: $\mathbf{q}=\mathbf{k}_i-\mathbf{k}_f$, $|\mathbf{q}|=2k\sin(\theta/2)$, $k = \sqrt{2\mu E}/\hbar=\frac{\bs p}{\hbar}$.
+{\footnotesize\textbf{Note:} $q=|\mathbf{q}|$ is the momentum transfer; $k=|\mathbf{k}_i|$ is the incident wave number. Do not confuse them in the Born formula.}
+
+\textbf{Validity condition} ($V$ must be a weak perturbation on the free wave):
+\[
+  \frac{m}{\hbar^2}\left|\int \frac{e^{ikr}}{r}\,V(r)\,d^3r\right| \ll 1
+\]
+For Yukawa $V=V_0 e^{-\mu r}/r$ this gives two limits:
+\begin{align*}
+  \text{Low energy }(k\mu^{-1}\ll 1)&:\quad \frac{2mV_0}{\hbar^2\mu^2}\ll 1\\
+  \text{High energy }(k\mu^{-1}\gg 1)&:\quad \frac{2mV_0}{\hbar^2\mu k}\ll 1
+\end{align*}
+{\footnotesize Born improves at high energy; always breaks down for strong/long-range potentials.}
+
+For a \textbf{spherically symmetric} potential:
+\[
+f(\theta) = -\frac{2m}{\hbar^2 q} \int_0^\infty r V(r) \sin(qr) \, dr
+\]
+
+{\footnotesize
+\textbf{Born for spherical well} ($V=-V_0$ for $r\le R$, else $0$):
+\[
+f(\theta)=\frac{2mV_0}{\hbar^2 q^3}[\sin(qR)-qR\cos(qR)]
+\]
+\textbf{Form factor:} Extended charge $\rho(r)$ vs.\ point charge:
+$f=F(q^2)\,f^{\text{point}}$,\;
+$F(q^2)=1-\frac{q^2\ev{r^2}}{6}+\cdots$
+
+$R_{\rm RMS}=\sqrt{-6\,dF/dq^2|_{q=0}}$.
+
+\textbf{3D delta} $V=\lambda\delta^{(3)}(\mathbf{r})$: no scattering for $\ell\ge 1$ since $R_\ell(0)=0$.
+If the scattering matrix is independent of the angle than $\sigma_t = \int \frac{d\sigma}{d\Omega} d\Omega = \int |f|^2 d\Omega = 4\pi |f|^2$
+}
+
+\subsection{Yukawa Potential Scattering}
+Yukawa potential: $V(r)=-\dfrac{g^2}{r}\,e^{-r/a}$;\quad $q=2k\sin(\theta/2)$.
+
+\textbf{Born approximation:}
+\[
+f(\theta)=-\frac{2mg^2/\hbar^2}{q^2+1/a^2},\quad q=2k\sin(\theta/2)
+\]
+{\footnotesize Signs: attractive potential ($g^2>0$, $V<0$) gives $f>0$ in the convention $V=-g^2/r$ with the $-$ already absorbed.}
+\textbf{Coulomb limit} ($a\to\infty$, $\mu=1/a\to0$):
+\[
+f(\theta)=-\frac{2mg^2}{\hbar^2 q^2},\quad \frac{d\sigma}{d\Omega}=\left(\frac{2mg^2}{\hbar^2 q^2}\right)^2
+\]
+\subsection{Photoabsorption Cross-Section}
+For EM radiation (dipole approx.~$e^{i\mathbf{k}\cdot\mathbf{r}}\approx 1$):
+\[
+\sigma=\frac{\Gamma}{F},\quad F=\frac{2c\epsilon_0\omega A_0^2}{\hbar}
+\]
+Using Fermi's Golden Rule:
+\[
+\sigma_{i\to f}=\frac{4\pi^2\alpha\hbar}{m^2\omega}\bigl|\bra{f}\bs{\epsilon}\cdot\hat{\mathbf{p}}\ket{i}\bigr|^2\rho(E_f)
+\]
+
+\subsection{Lippmann-Schwinger Equation}
+
+The Lippmann-Schwinger equation for the scattering wave function:
+
+\[
+\boxed{\psi^{(+)}(\mathbf{r}) = e^{i\mathbf{k}\cdot\mathbf{r}} + \int d^3 r' \, G_0^{(+)}(\mathbf{r},\mathbf{r}') V(\mathbf{r}') \psi^{(+)}(\mathbf{r}')}
+\]
+
+Where the free Green's function is $G_0^{(+)}(\mathbf{r},\mathbf{r}') = -\frac{m}{2\pi\hbar^2} \frac{e^{ik|\mathbf{r}-\mathbf{r}'|}}{|\mathbf{r}-\mathbf{r}'|}$.
+
+The Born approximation is the first iteration: $\psi^{(+)} \approx e^{i\mathbf{k}\cdot\mathbf{r}} + \int G_0^{(+)} V e^{i\mathbf{k}\cdot\mathbf{r}'}$.
+
+The T-matrix satisfies $T = V + V G_0^{(+)} T$, and the scattering amplitude is $f(\theta) = -\frac{m}{2\pi\hbar^2} \langle \mathbf{k}' | T | \mathbf{k} \rangle$.
+
+For high-energy scattering, the eikonal approximation approximates the phase shift as $\chi(b) = -\frac{m}{2\pi\hbar^2 k} \int_{-\infty}^{\infty} V(\sqrt{b^2 + z^2}) dz$.
+
+% ============================================================
+% CHANGE: 2026-02-11 — Gap-fill from reference sheet
+% ============================================================
+
+\section{Finite Potential Well (Bound States)}
+% ============================================================
+
+$V=\begin{cases}-U_0 & |x|\le L/2\\0 & \text{otherwise}\end{cases}$;\;
+$k=\sqrt{2m(E+U_0)/\hbar^2}$,\;$\kappa=\sqrt{-2mE/\hbar^2}$,\;$k_0^2=k^2+\kappa^2$.
+
+\textbf{Even (symmetric):} $\psi\propto\cos(kx)$ inside;\; $e^{-\kappa|x|}$ outside.
+\[
+\boxed{\kappa=k\tan\!\bigl(\tfrac{kL}{2}\bigr) \quad\Leftrightarrow\quad \sqrt{(k_0/k)^2-1}=\tan\!\bigl(\tfrac{kL}{2}\bigr)}
+\]
+
+\textbf{Odd (antisymmetric):} $\psi\propto\sin(kx)$ inside;\; $\sgn(x)\,e^{-\kappa|x|}$ outside.
+\[
+\boxed{\kappa=-k\cot\!\bigl(\tfrac{kL}{2}\bigr) \quad\Leftrightarrow\quad \sqrt{(k_0/k)^2-1}=-\cot\!\bigl(\tfrac{kL}{2}\bigr)}
+\]
+
+Solve graphically: at least one bound state always exists.
+
+% ============================================================
+\section{Wave Packet Dynamics}
+% ============================================================
+
+\subsection{Free Gaussian Wave Packet}
+Initial: $\psi(x,0)=(2\pi\sigma_0^2)^{-1/4}\,e^{ip_0 x/\hbar}\,e^{-x^2/4\sigma_0^2}$.
+
+Width at time $t$:
+\[
+\boxed{\sigma(t)=\sigma_0\sqrt{1+\bigl(\tfrac{\hbar t}{2m\sigma_0^2}\bigr)^{2}}}
+\]
+Disperses: $\sigma\to\infty$ as $t\to\infty$.\;
+$|\psi(x,t)|^2$ remains Gaussian centred at $x=v_0 t$ ($v_0=p_0/m$).
+
+{\footnotesize
+\textbf{Momentum-space:}
+$\tilde{\psi}(p,t)=\tilde{\psi}(p,0)\,e^{-ip^2 t/(2m\hbar)}$;\;
+$\tilde{\psi}(p,0)=(2\sigma_0^2/\pi\hbar^2)^{1/4}\,e^{-\sigma_0^2(p-p_0)^2/\hbar^2}$.
+
+$\ev{\phat}=p_0$,\; $\sigma_p=\hbar/(2\sigma_0)$ (constant in time);\; $\sigma_x\sigma_p=\hbar/2$ only at $t=0$.
+}
+
+\subsection{Probability Current via Phase}
+Write $\psi=\sqrt{\rho}\,e^{iS/\hbar}$.\; Then:
+\[
+\mathbf{j}=\frac{\rho\,\nabla S}{m},\qquad \mathbf{v}=\frac{\nabla S}{m}
+\]
+Plane wave $\psi\propto e^{ipx/\hbar}$: $S=px$, $v=p/m$.
+
+% ============================================================
+\section{Isotropic Harmonic Oscillators (2D \& 3D)}
+% ============================================================
+
+\subsection{3D Isotropic HO}
+$\Hhat=\frac{p^2}{2m}+\frac{1}{2}m\omega^2 r^2$.\quad $[\Hhat,\hat{L}_i]=0$, so $[\Hhat,\hat{L}^2]=[\Hhat,\hat{L}_z]=0$.
+
+Eigenstates $\ket{n_r,\ell,m}$ ($n_r$ = radial quantum number):
+\[
+\boxed{E=\hbar\omega\!\bigl(2n_r+\ell+\tfrac{3}{2}\bigr),\quad n_r\ge 0,\;\ell\ge 0}
+\]
+With $N=2n_r+\ell$: $E_N=\hbar\omega(N+\frac{3}{2})$.\quad
+Degeneracy: $g_N=\frac{(N+1)(N+2)}{2}$.
+
+\subsection{2D Isotropic HO}
+$\Hhat=\hbar\omega(\adop_x\aop_x+\adop_y\aop_y+1)$.
+
+\textbf{Circular ladder operators:}
+\[
+\aop_R=\frac{\aop_x-i\aop_y}{\sqrt{2}},\quad \aop_L=\frac{\aop_x+i\aop_y}{\sqrt{2}}
+\]
+$[\aop_L,\adop_L]=[\aop_R,\adop_R]=1$; cross-commutators vanish.
+\[
+\Hhat=\hbar\omega(\hat{n}_R+\hat{n}_L+1),\qquad \hat{L}_z=\hbar(\hat{n}_R-\hat{n}_L)
+\]
+$[\Hhat,\hat{L}_z]=0$; joint eigenstates $\ket{n_R,n_L}$.
+
+Energy: $E_N=\hbar\omega(N+1)$ with $N=n_R+n_L$.\;
+Degeneracy: $g_N=N+1$.
+
+% ============================================================
+\section{Coupled Oscillators}
+% ============================================================
+
+Two particles coupled by spring $\lambda$:
+\[
+\Hhat=\frac{p_1^2+p_2^2}{2m}+\frac{m\omega^2}{2}\bigl[(x_1-a)^2+(x_2+a)^2\bigr]+\lambda m\omega^2(x_1-x_2)^2
+\]
+\textbf{Normal-mode coordinates:}
+$x_{\rm cm}=\frac{x_1+x_2}{2}$,\; $x_R=x_1-x_2$;\quad
+$p_{\rm cm}=p_1+p_2$,\; $p_R=\frac{p_1-p_2}{2}$.
+
+Decouples: $\Hhat=\Hhat_{\rm cm}+\Hhat_R+C$;\quad
+$\omega_{\rm cm}=\omega$,\; $\omega_R=\omega\sqrt{1+4\lambda}$.
+
+Effective masses: $2m$ (cm), $m/2$ (relative).
+\[
+\boxed{E_{n_{\rm cm},n_R}=\hbar\omega\!\bigl(n_{\rm cm}+\tfrac{1}{2}\bigr)+\hbar\omega_R\!\bigl(n_R+\tfrac{1}{2}\bigr)+C}
+\]
+$C=m\omega^2 a^2\frac{4\lambda}{4\lambda+1}$.\quad
+Wave function: $\psi(x_{\rm cm},x_R)=\psi_{\rm cm}(x_{\rm cm})\,\psi_R(x_R)$.
+
+% ============================================================
+\section{Noether's Theorem \& Symmetry--Conservation}
+% ============================================================
+
+Infinitesimal change: $\delta\hat{q}_i=-i\varepsilon[\hat{Q},\hat{q}_i]=\varepsilon F_i(\hat{\mathbf{q}})$.
+
+\textbf{Symmetry $\Leftrightarrow$ conservation:}
+$[\Hhat,\hat{X}]=0$ $\Leftrightarrow$ $\hat{X}$ conserved $\Leftrightarrow$ $e^{i\theta\hat{X}}$ is a symmetry.
+
+Infinitesimal operator transformation:
+$\delta\hat{O}=i\varepsilon[\hat{X},\hat{O}]$.
+
+% ============================================================
+
+% ============================================================
+
+
+
+\subsection{Constraints on Attractive Potentials}
+$\Hhat=-\frac{\hbar^2}{2m}\nabla^2-\frac{\alpha}{r^s}$, $\alpha>0$:
+\begin{itemize}
+  \item $s>2$: spectrum unbounded below (non-physical).
+  \item $s<2$: infinitely many bound states.\; ($s=2$ is marginal.)
+\end{itemize}
+{\footnotesize
+	\textbf{Proof idea ($s>2$):} Try $\Psi(\mathbf{r})=N e^{-r^2/r_0^2}$. Then
+$\langle T\rangle\sim \hbar^2/(2mr_0^2)$, $\langle V\rangle\sim-\alpha/r_0^s$,
+so $E(r_0)\approx \alpha_1/r_0^2-\alpha_2/r_0^s\to-\infty$ as $r_0\to 0$.
+}
+
+% ============================================================
+\section{Group Theory \& Representations}
+% ============================================================
+
+\subsection{Definitions}
+A \textbf{representation} $D$ of group $G$ maps $g \in G$ to operators $D(g)$ on $\HH$ preserving group structure:
+\[
+D(g_1)D(g_2) = D(g_1 g_2),\quad D(g^{-1}) = D(g)^{-1}
+\]
+Unitary rep: $D(g)^\dagger = D(g)^{-1}$.
+\textbf{Reducible:} Can be decomposed into subspace actions.
+\textbf{Irreducible (Irrep):} No invariant subspaces (except $\{0\}, \HH$).
+
+\subsection{24.2 Schur's Lemmas}
+\textbf{Lemma 1:} If an operator $\hat{A}$ commutes with all matrices of an irreducible representation $D(g)$ (i.e.\ $[\hat{A}, D(g)] = 0 \;\forall g$), then $\hat{A}$ is a scalar multiple of the identity:
+\[
+\hat{A} = \lambda \Id
+\]
+\textbf{Consequence:} In an irrep subspace, any constant of motion (symmetry) is trivial.
+	\textit{Proof (Hermitian case):} $\hat{A}$ has an eigenvector $v$ with $\hat{A}v=\lambda v$.
+The span of $\{D(g)v\}$ is invariant and nonzero; by irreducibility it is all of $\HH$.
+Thus $\hat{A}=\lambda\Id$ on the whole space.
+
+\textbf{Lemma 2 (Orthogonality):} For two unitary irreps $D^{(\mu)}$ and $D^{(\nu)}$ of dimensions $d_\mu, d_\nu$:
+\[
+\sum_{g \in G} D^{(\mu)}_{ij}(g)^* D^{(\nu)}_{k\ell}(g) = \frac{|G|}{d_\mu} \delta_{\mu\nu} \delta_{ik} \delta_{j\ell}
+\]
+% ============================================================
+\section{Solved Problem: Linear Rigid Rotor}
+% ============================================================
+
+\subsection{Setup}
+A diatomic molecule with reduced mass $\mu$ and fixed bond length $r_0$.
+The particle moves on the surface of a sphere of radius $r_0$.
+\[
+\Hhat = \frac{\hat{L}^2}{2I}, \qquad I = \mu r_0^2
+\]
+
+\subsection{Exact Solution}
+Eigenstates are spherical harmonics $Y_\ell^m(\theta,\phi)$:
+\[
+\boxed{E_\ell = \frac{\hbar^2 \ell(\ell+1)}{2I}, \qquad \ell = 0,1,2,\ldots}
+\]
+Each level has degeneracy $g_\ell = 2\ell+1$ (from $m = -\ell,\ldots,\ell$).
+
+\textbf{Rotational constant:} $B = \frac{\hbar^2}{2I}$;\quad $E_\ell = B\,\ell(\ell+1)$.
+
+\textbf{Transition frequencies} (dipole selection rule $\Delta\ell = \pm 1$):
+\[
+\nu_{\ell \to \ell+1} = \frac{2B(\ell+1)}{h}, \qquad \text{equally spaced by } 2B/h
+\]
+
+\subsection{Rigid Rotor in Electric Field (Perturbation)}
+$V = -\bs{d} \cdot \mathbf{E} = -dE\cos\theta$ where $d$ is the dipole moment.
+
+\textbf{First-order:} $E_\ell^{(1)} = \bra{\ell,m}(-dE\cos\theta)\ket{\ell,m} = 0$.
+Zero because $|Y_\ell^m|^2$ is even (parity $+1$), $\cos\theta$ is odd (parity $-1$).
+
+\textbf{Second-order} (using $\cos\theta = \sqrt{\frac{4\pi}{3}}Y_1^0$):
+Sum covers $J = \ell \pm 1$ ($J=\ell$ forbidden by parity):
+\[
+E_\ell^{(2)} = \sum_{J\ne \ell} \frac{|\bra{J,m}(-dE\cos\theta)\ket{\ell,m}|^2}{E_\ell - E_J}
+\]
+\[
+E_\ell^{(2)} = -\frac{d^2 E^2}{2B} \cdot \frac{\ell(\ell+1) - 3m^2}{(2\ell+3)(2\ell-1)\ell(\ell+1)}
+\]
+For $\ell = 0$: $E_0^{(2)} = -\frac{d^2 E^2}{6B}$.
+\subsection{Particle on a Ring \& Torsional Hindrance (Ethane)}
+
+\textbf{Unperturbed:} $H_0 = L_z^2/2I$, $I=ma^2$;\quad $\psi_n=e^{in\phi}/\sqrt{2\pi}$;\quad $E_n^{(0)}=\hbar^2 n^2/2I$.
+$n=0$ non-degenerate; $|n|\ge 1$ doubly degenerate ($\pm n$).
+
+\textbf{Key matrix element:}
+\[
+\bra{m}e^{ik\phi}\ket{n}=\delta_{m,n+k} \implies \bra{m}\cos(k\phi)\ket{n}=\tfrac{1}{2}(\delta_{m,n+k}+\delta_{m,n-k})
+\]
+\textbf{Selection rule:} $H'=f(\phi)$ with Fourier mode $e^{ik\phi}$ $\Rightarrow$ $\Delta n=\pm k$.
+$E_n^{(1)}=0$ if $f$ has no DC component ($k\ne0$). Denominator: $E_n^{(0)}-E_m^{(0)}=\hbar^2(n^2-m^2)/2I$.
+
+\textbf{Electric field} $H'=-\mu\mathcal{E}\cos\phi$ ($k=1$, gap $= -\hbar^2/2I$):
+\[
+\ket{\Psi_0^{(1)}}=\ket{0}+\frac{\mu\mathcal{E}I}{\hbar^2}(\ket{1}+\ket{-1})
+\]
+\textbf{Polarizability:} $\langle\mu\cos\phi\rangle = \frac{2\mu^2 I}{\hbar^2}\mathcal{E}$ $\implies$ $\boxed{\alpha=\frac{2\mu^2 I}{\hbar^2}}$ ($\alpha\propto I$: larger $I$ $\Rightarrow$ smaller gap).
+
+\textbf{Torsional hindrance} $H'=W\cos(3\phi)$ ($k=3$, gap $= -9\hbar^2/2I$):
+\[
+\ket{\Psi_0^{(1)}}=\ket{0}-\frac{WI}{9\hbar^2}(\ket{3}+\ket{-3})
+\]
+{\footnotesize\textbf{Degenerate PT for $n=\pm3$:} these states are coupled by $H'$ since $\bra{+3}\cos(3\phi)\ket{-3}=\tfrac{1}{2}$. Diagonalize $\bigl(\begin{smallmatrix}0&W/2\\W/2&0\end{smallmatrix}\bigr)$ $\Rightarrow$ $E_{\pm3}^{(0)}\pm W/2$; eigenstates $\propto\cos(3\phi),\sin(3\phi)$.}
+% ============================================================
+\section{Solved Problem: Stark Effect}
+% ============================================================
+
+External electric field $\mathbf{E} = \mathcal{E}\hat{z}$; perturbation $H' = e\mathcal{E}z = e\mathcal{E}r\cos\theta$.
+
+\subsection{Ground State ($n=1$) — Quadratic Stark}
+$\ket{1,0,0}$ is non-degenerate. Parity $\Rightarrow E^{(1)}_1 = 0$.
+
+\textbf{Second-order:}
+\[
+\boxed{E_1^{(2)} = -\frac{9}{4}a_0^3 \mathcal{E}^2 \cdot \frac{4\pi\epsilon_0}{e^2} = -\frac{9}{4}\frac{a_0^3 \mathcal{E}^2}{E_1}}
+\]
+\textbf{Polarisability:} $\alpha = \frac{9}{2}(4\pi\epsilon_0)a_0^3$;\quad $\Delta E = -\frac{1}{2}\alpha\mathcal{E}^2$.
+
+\subsection{$n=2$ — Linear Stark Effect}
+The $n=2$ level is 4-fold degenerate: $\ket{2,0,0}$, $\ket{2,1,0}$, $\ket{2,1,\pm 1}$.
+
+Parity ($\ell \leftrightarrow \ell \pm 1$) and $\Delta m = 0$ selection rules enforce zeros.
+Only $s$-$p$ mixing with $m=0$ survives:
+\[
+  \bra{2,0,0}e\mathcal{E}z\ket{2,1,0}
+  = \int_0^\infty R_{20}\,r\,R_{21}\,r^2\,dr\
+    \int Y_0^0\cos\theta\,Y_1^0\,d\Omega = \frac{-3\sqrt{3}\,a_0}{\sqrt{3}}
+\]
+{\footnotesize Angular part: $\cos\theta = \sqrt{4\pi/3}\,Y_1^0$,
+so $\int Y_0^0\cos\theta\, Y_1^0\,d\Omega = \sqrt{4\pi/3}\int|Y_1^0|^2 d\Omega/\sqrt{4\pi} = 1/\sqrt{3}$.
+Radial part evaluated using $\int_0^\infty r^n e^{-\alpha r}dr = n!/\alpha^{n+1}$.}
+States $\ket{2,1,\pm 1}$ ($m \ne 0$) have no partner to mix with ($\Delta m=0$).
+
+The $W$ matrix in the $\{\ket{2,0,0},\ket{2,1,0}\}$ subspace:
+\[
+W = \begin{pmatrix} 0 & -3e\mathcal{E}a_0 \\ -3e\mathcal{E}a_0 & 0 \end{pmatrix}
+\]
+\[
+\boxed{E_{n=2}^{(1)} = \pm 3e\mathcal{E}a_0}
+\]
+Good states: $\ket{\pm} = \frac{1}{\sqrt{2}}\bigl(\ket{2,0,0} \mp \ket{2,1,0}\bigr)$.
+
+\subsection{27.3 General $n$ — Linear Stark}
+For level $n$, the first-order Stark splitting is:
+\[
+\Delta E^{(1)} = \frac{3}{2} n(n_1 - n_2)\, e\mathcal{E}a_0
+\]
+where $n_1, n_2$ are parabolic quantum numbers ($n_1 + n_2 + |m| + 1 = n$).
+
+% ============================================================
+\section{Solved Problem: Zeeman Effect}
+% ============================================================
+
+\subsection{Weak-Field Zeeman ($H_Z \ll H_{\rm FS}$)}
+$H' = -\frac{e}{2m_e c}(\hat{L}_z + 2\hat{S}_z)B$.
+
+In the coupled basis $\ket{n,\ell,j,m_j}$ (formula in \S9.4):
+{\footnotesize
+\textbf{Example values:}
+$s_{1/2}$: $g_J = 2$;\quad
+$p_{1/2}$: $g_J = 2/3$;\quad
+$p_{3/2}$: $g_J = 4/3$;\quad
+$d_{3/2}$: $g_J = 4/5$;\quad
+$d_{5/2}$: $g_J = 6/5$.
+}
+
+\subsection{Strong-Field (Paschen--Back)}
+$H_Z \gg H_{\rm FS}$; use uncoupled basis $\ket{n,\ell,m_\ell,m_s}$:
+\[
+\boxed{\Delta E = (m_\ell + 2m_s)\mu_B B + E_{\rm FS}(m_\ell, m_s)}
+\]
+where the residual fine-structure correction ($\ell\ne 0$) is:
+\[
+\boxed{E_{\rm FS} = \frac{\alpha^4 m_e c^2}{2n^3}\!\left[\frac{3}{4n} - \frac{\ell(\ell+1)-m_\ell m_s}{\ell(\ell+\tfrac{1}{2})(\ell+1)}\right]}
+\]
+The SO piece alone is $\propto \dfrac{m_\ell m_s}{\ell(\ell+\frac{1}{2})(\ell+1)}$; consistent with $\langle1/r^3\rangle=\frac{1}{n^3a_0^3\,\ell(\ell+\frac{1}{2})(\ell+1)}$.
+
+\subsection{Intermediate Field}
+Diagonalise $H_{\rm FS} + H_Z$ in the coupled $\ket{j,m_j}$ basis. $H_{Z} \propto L_z+2S_z$ connects $j$ with $j\pm 1$.
+
+{\footnotesize
+\textbf{Example: $n=2$, $\ell=1$.}
+In the $m_j = \frac{1}{2}$ subspace ($\ket{\frac{3}{2},\frac{1}{2}}, \ket{\frac{1}{2},\frac{1}{2}}$):
+Diagonal $H_{FS}$: $E_{3/2}^{(0)}$ and $E_{1/2}^{(0)}$.
+Off-diagonal $H_Z$: $\bra{3/2}L_z+2S_z\ket{1/2} \ne 0$.
+\[
+H = \begin{pmatrix} E_{3/2}^{(0)} + \frac{2}{3}\beta & \frac{\sqrt{2}}{3}\beta \\[4pt] \frac{\sqrt{2}}{3}\beta & E_{1/2}^{(0)} + \frac{1}{3}\beta \end{pmatrix}
+\]
+where $\beta = \mu_B B$. Eigenvalues from characteristic equation.
+}
+
+% ============================================================
+\section{Perturbation: Anharmonic Oscillator}
+% ============================================================
+
+\subsection{Quartic Perturbation: $H' = \lambda x^4$}
+$\Hhat_0 = \frac{p^2}{2m} + \frac{1}{2}m\omega^2 x^2$;\; $H' = \lambda x^4$.
+
+Using $x = \ell_0(\aop + \adop)$ with $\ell_0 = \sqrt{\hbar/(2m\omega)}$:
+\[
+x^4 = \ell_0^4 (\aop + \adop)^4
+\]
+\textbf{First-order correction:}\\
+Keep only terms with equal numbers of $\aop$ and $\adop$ (diagonal):
+\[
+\ev{x^4}{n} = \ell_0^4(6n^2 + 6n + 3)
+\]
+\[
+\boxed{E_n^{(1)} = \lambda\ell_0^4(6n^2 + 6n + 3) = \frac{3\lambda\hbar^2}{4m^2\omega^2}(2n^2 + 2n + 1)}
+\]
+
+\textbf{Ground state:}
+$E_0^{(1)} = \frac{3\lambda\hbar^2}{4m^2\omega^2}$.
+
+\textbf{Second-order correction (ground state):}
+\[
+E_0^{(2)} = -\frac{21\lambda^2\hbar^3}{8m^4\omega^5}
+\]
+Only $\ket{2}$ and $\ket{4}$ contribute via non-zero matrix elements:
+{\footnotesize(\textit{Use normal-ordering trick from \S4.3: expand $(\aop+\adop)^4$, commute all $\aop$ right via $[\aop,\adop]=1$, keep only terms connecting $\ket{0}$ to $\ket{2}$ or $\ket{4}$.})}
+\[
+\bra{0}x^4\ket{2} = 3\sqrt{2}\,\ell_0^4,\quad \bra{0}x^4\ket{4} = \sqrt{24}\,\ell_0^4
+\]
+
+\subsection{Cubic Perturbation: $H' = \lambda x^3$}
+$x^3 = \ell_0^3(\aop + \adop)^3$.
+\[
+\ev{x^3}{n} = 0 \quad\forall\,n \qquad\Rightarrow\qquad E_n^{(1)} = 0
+\]
+
+\textbf{Second-order (ground state):}
+Only $\Delta n = \pm 1, \pm 3$ allowed by $x^3$.
+\[
+E_0^{(2)} = \sum_{k} \frac{|\bra{k}x^3\ket{0}|^2}{E_0 - E_k} = \frac{|\bra{1}x^3\ket{0}|^2}{-\hbar\omega} + \frac{|\bra{3}x^3\ket{0}|^2}{-3\hbar\omega}
+\]
+Substituting matrix elements ($3\ell_0^3$ and $\sqrt{6}\ell_0^3$):
+\[
+E_0^{(2)} = \lambda^2 \ell_0^6 \left[ \frac{9}{-\hbar\omega} + \frac{6}{-3\hbar\omega} \right] = -\frac{11\lambda^2\hbar^2}{8m^3\omega^4}
+\]
+\[
+\boxed{E_0^{(2)} = -\frac{11\lambda^2\hbar}{8m^3\omega^4} \cdot \frac{\hbar}{1}}
+\]
+
+\textbf{General $n$:}
+\[
+E_n^{(2)} = -\frac{\lambda^2 \ell_0^6}{\hbar\omega}\bigl[30n^2 + 30n + 11\bigr] \cdot \frac{1}{4}
+\]
+
+\subsection{Linear Perturbation: $H' = \lambda x$}
+$E_n^{(1)} = \lambda\ev{x}{n} = 0$ (parity).
+
+\textbf{Exact:} Completing the square in $\Hhat$:
+\[
+\Hhat = \frac{p^2}{2m} + \frac{m\omega^2}{2}\!\left(x + \frac{\lambda}{m\omega^2}\right)^2 - \frac{\lambda^2}{2m\omega^2}
+\]
+\[
+\boxed{E_n = \hbar\omega(n + \tfrac{1}{2}) - \frac{\lambda^2}{2m\omega^2}}
+\]
+Perturbation theory: $E_n^{(2)} = -\frac{\lambda^2}{2m\omega^2}$ (exact to all orders!).
+
+% ============================================================
+\section{Perturbation: Perturbed Harmonic Oscillator}
+% ============================================================
+
+\subsection{Shifted Frequency: $H' = \frac{1}{2}m\epsilon\omega^2 x^2$}
+Exact: new frequency $\omega' = \omega\sqrt{1+\epsilon}$.
+\[
+E_n = \hbar\omega\sqrt{1+\epsilon}\,(n+\tfrac{1}{2})
+\]
+\textbf{Perturbative:}
+$E_n^{(1)} = \frac{\epsilon}{2}m\omega^2\ev{x^2}{n} = \frac{\epsilon\hbar\omega}{4}(2n+1)$.
+
+Check: Taylor $\omega\sqrt{1+\epsilon} \approx \omega(1+\frac{\epsilon}{2})$ $\Rightarrow$ agrees.
+
+\subsection{Electric Field on Charged HO: $H' = -qEx$}
+This is a constant force (linear perturbation). Exact solution via completing the square:
+\[
+\boxed{E_n = \hbar\omega(n+\tfrac{1}{2}) - \frac{q^2 E^2}{2m\omega^2}}
+\]
+$E_n^{(1)} = 0$;\quad $E_n^{(2)} = -\frac{q^2 E^2}{2m\omega^2}$ (exact).
+
+\subsection{Coupled Oscillators as Perturbation}
+$H_0 = \hbar\omega(n_1 + n_2 + 1)$;\; $H' = \lambda\, x_1 x_2$.
+
+Using $x_i = \ell_0(\aop_i + \adop_i)$:
+\[
+H' = \lambda\ell_0^2(\aop_1 + \adop_1)(\aop_2 + \adop_2)
+\]
+\textbf{First-order:} $E_{n_1,n_2}^{(1)} = 0$ (all matrix elements off-diagonal).
+
+\textbf{Second-order} (ground state $\ket{0,0}$):
+\[
+E_{0,0}^{(2)} = \frac{|\bra{1,1}H'\ket{0,0}|^2}{-2\hbar\omega} = -\frac{\lambda^2\hbar}{8m^2\omega^3}
+\]
+\textbf{Exact:} Normal mode frequencies $\omega_\pm = \sqrt{\omega^2 \pm \lambda/m}$.
+
+\subsection{Momentum Perturbation: $H' = \gamma p$}
+$E_n^{(1)} = \gamma\ev{p}{n} = 0$.
+
+Exact (boost frame): $E_n = \hbar\omega(n+\frac{1}{2}) - \frac{\gamma^2 m}{2}$ (completing the square in $p$).
+
+% ============================================================
+\section{More Perturbation Problems}
+% ============================================================
+
+\subsection{Infinite Square Well: $H' = V_0$ (half-well)}
+$H' = V_0$ for $0<x<L/2$.
+\[
+E_n^{(1)} = \frac{2}{L}\int_0^{L/2} V_0 \sin^2\!\left(\frac{n\pi x}{L}\right) dx
+\]
+Evaluate using $\sin^2\theta = \frac{1-\cos 2\theta}{2}$:
+\[
+E_n^{(1)} = \frac{V_0}{2} - \frac{V_0}{\pi n}\sin\!\left(\frac{n\pi}{2}\right)\cdot\begin{cases} 0 & n\text{ even} \\ (-1)^{(n-1)/2} & n\text{ odd}\end{cases}
+\]
+For even $n$: $E_n^{(1)} = V_0/2$.\;
+For $n=1$: $E_1^{(1)} = \frac{V_0}{2} - \frac{V_0}{n\pi}$.
+
+\subsection{Infinite Square Well: $H' = \alpha\,\delta(x - L/2)$}
+\[
+E_n^{(1)} = \alpha\,|\psi_n(L/2)|^2 = \frac{2\alpha}{L}\sin^2\!\left(\frac{n\pi}{2}\right)
+= \begin{cases} 2\alpha/L & n\text{ odd} \\ 0 & n\text{ even}\end{cases}
+\]
+Even-$n$ states have a node at $L/2$ and are unaffected.
+
+\subsection{2D HO: $H' = \lambda\, xy$}
+Ground state ($n_x=n_y=0$) is non-degenerate: $E_0^{(1)} = \bra{0,0}xy\ket{0,0}=0$ (integrand $xe^{-x^2} \cdot y e^{-y^2}$ is odd).
+
+First excited level ($N=1$): Degenerate states $\ket{1,0}, \ket{0,1}$.
+Diagonal terms zero (odd parity). Off-diagonal:
+\[
+V_{12} = \lambda\bra{1,0}x y\ket{0,1} = \lambda\bra{1}x\ket{0}\bra{0}y\ket{1} = \frac{\lambda\hbar}{2m\omega}
+\]
+\[
+W = \frac{\lambda\hbar}{2m\omega}\begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix} \quad\Rightarrow\quad E^{(1)} = \pm\frac{\lambda\hbar}{2m\omega}
+\]
+Good states: $\ket{\pm} = \frac{1}{\sqrt{2}}(\ket{1,0} \pm \ket{0,1})$.
+
+\textbf{Exact:} Rotate $45°$: $x' = (x+y)/\sqrt{2}$, $y' = (x-y)/\sqrt{2}$:
+$\omega_\pm = \sqrt{\omega^2 \pm \lambda/m}$.
+
+\subsection{Spin in Magnetic Field: $H' = \alpha S_x$}
+$H_0 = \omega_0 S_z$;\; $H' = \alpha S_x = \frac{\alpha\hbar}{2}\sigma_x$.
+
+Full Hamiltonian:
+$H = \frac{\hbar}{2}\begin{pmatrix}\omega_0 & \alpha \\ \alpha & -\omega_0\end{pmatrix}$.
+
+\textbf{Exact eigenvalues:}
+$E_\pm = \pm\frac{\hbar}{2}\sqrt{\omega_0^2 + \alpha^2}$.
+
+\textbf{Perturbative} ($\alpha \ll \omega_0$):
+$E_+^{(2)} = \frac{\alpha^2\hbar}{4\omega_0}$;\;
+$E_-^{(2)} = -\frac{\alpha^2\hbar}{4\omega_0}$.
+
+\subsection{Hydrogen: $H' = \alpha r^2$ (Isotropic Perturbation)}
+\[
+E_n^{(1)} = \alpha\ev{r^2}_{n\ell} = \alpha\frac{a_0^2 n^2}{2}\bigl[5n^2+1-3\ell(\ell+1)\bigr]
+\]
+Lifts the $\ell$-degeneracy of hydrogen (states with different $\ell$ get different shifts).
+
+\subsection{Gravitational Perturbation on HO: $H'=mgx$}
+Same as linear perturbation ($\lambda=mg$). Exact:
+\[
+E_n = \hbar\omega\!\left(n + \frac{1}{2}\right) - \frac{m g^2}{2\omega^2}
+\]
+{\footnotesize\textbf{Convention note:} $H'=mgx$ suits a vertical HO where $x$ is the vertical displacement. For a horizontal HO in gravity, the relevant axis may be $y$ or $z$. The physics (shifted equilibrium, same energy gaps) is identical regardless of axis label.}
+
+% ============================================================
+\section{Hooke's Atom (Two-Electron Harmonic Trap)}
+
+By defining the center-of-mass and relative coordinates as $\mathbf{R} = \frac{1}{2}(\mathbf{r}_1 + \mathbf{r}_2)$ and $\mathbf{u} = \mathbf{r}_2 - \mathbf{r}_1$, we invoke $\nabla_1^2 + \nabla_2^2 = \frac{1}{2}\nabla_R^2 + 2\nabla_u^2$ and $r_1^2 + r_2^2 = 2R^2 + \frac{1}{2}u^2$. The Hamiltonian separates exactly: $\hat{H} = \hat{H}_{CM} + \hat{H}_{rel}$.
+
+\begin{equation*}
+\begin{aligned}
+\hat{H} &= \sum_{i=1}^2 \left(-\frac{1}{2}\nabla_i^2 + \frac{1}{2}kr_i^2\right) + \frac{1}{|\mathbf{r}_1 - \mathbf{r}_2|} \\[8pt]
+\hat{H}_{CM} &= -\frac{1}{4}\nabla_R^2 + kR^2 \implies E_R = \frac{3}{2}\sqrt{k}, \quad \chi(\mathbf{R}) \propto e^{-\sqrt{k}R^2} \\[8pt]
+\hat{H}_{rel} &= -\nabla_u^2 + \frac{k}{4}u^2 + \frac{1}{u} \implies E_\ell = \frac{2\ell + 5}{4(\ell+1)} \quad \text{for } k = \frac{1}{2(\ell+1)}
+\end{aligned}
+\end{equation*}
+
+\textbf{Exact Ground State Solution ($k = 1/4, \ell = 0$):}
+
+Analytic solutions for $\hat{H}_{rel}$ exist for discrete values of $k$ where the Frobenius series terminates. For $k=1/4$, the relative energy is $E_u = 5/4$, yielding a total ground-state energy $E_{tot} = E_R + E_u = 3/4 + 5/4 = 2$. The exact, fully normalized two-electron wavefunction is:
+
+\begin{equation*}
+\Psi(\mathbf{r}_1,\mathbf{r}_2) = \frac{1}{\sqrt{28\pi^{5/2} + 5\pi^3}}\left(1 + \frac{|\mathbf{r}_1 - \mathbf{r}_2|}{2}\right) e^{-\frac{1}{4}(r_1^2 + r_2^2)}
+\end{equation*}
+\subsection{Quadratic Perturbation on Hydrogen: $V = \lambda z^2$}
+
+\textbf{Ground State ($n=1$):} Isotropic symmetry ($l=0$) implies $\langle z^2 \rangle = \frac{1}{3}\langle r^2 \rangle$. With $\langle r^2 \rangle_{100} = 3a_0^2$:
+\[ E_1^{(1)} = \langle 100 | \lambda z^2 | 100 \rangle = \frac{\lambda}{3}(3a_0^2) = \lambda a_0^2 \]
+
+\textbf{Excited States ($n=2$):} The operator $z^2$ has \textbf{even parity}, meaning $\langle 200 | z^2 | 21m \rangle = 0$ (no $2s$-$2p$ mixing). Since $\Delta m = 0$, the $4\times 4$ perturbation matrix is completely diagonal. 
+Using $\langle r^2 \rangle_{nl} = \frac{a_0^2 n^2}{2} [5n^2 + 1 - 3l(l+1)]$, we have $\langle r^2 \rangle_{20} = 42a_0^2$ and $\langle r^2 \rangle_{21} = 30a_0^2$.
+
+    $2s$ ($l=0, m=0$):Spherically symmetric. 
+    $E_{200}^{(1)} = \frac{\lambda}{3} \langle r^2 \rangle_{20} = 14 \lambda a_0^2$
+    
+     $2p_z$ ($l=1, m=0$): Aligned with $z$-axis. 
+    $E_{210}^{(1)} = \lambda \langle r^2 \rangle_{21} \int |Y_1^0|^2 \cos^2\theta \, d\Omega = 30\lambda a_0^2 \left(\frac{3}{5}\right) = 18 \lambda a_0^2$
+    
+     \textbf{$2p_{x,y}$ ($l=1, m=\pm 1$):} Equatorial concentration. 
+    $E_{21\pm 1}^{(1)} = \lambda \langle r^2 \rangle_{21} \int |Y_1^{\pm 1}|^2 \cos^2\theta \, d\Omega = 30\lambda a_0^2 \left(\frac{1}{5}\right) = 6 \lambda a_0^2$
+
+\textbf{Splitting Summary:}
+\[ \boxed{ E_{210}^{(1)} = 18\lambda a_0^2 \quad > \quad E_{200}^{(1)} = 14\lambda a_0^2 \quad > \quad E_{21\pm 1}^{(1)} = 6\lambda a_0^2 } \]
+% ============================================================
+\section{Summary of Perturbation Matrix Elements (HO)}
+% ============================================================
+
+{\scriptsize
+Key matrix elements for harmonic oscillator perturbations ($\ell_0 = \sqrt{\hbar/2m\omega}$):
+
+\textbf{$\bra{m}x\ket{n}$:} $\ell_0(\sqrt{n}\,\delta_{m,n-1} + \sqrt{n+1}\,\delta_{m,n+1})$.
+
+\textbf{$\bra{m}x^2\ket{n}$:} $\ell_0^2\bigl(\sqrt{n(n-1)}\,\delta_{m,n-2} + (2n+1)\delta_{mn} + \sqrt{(n+1)(n+2)}\,\delta_{m,n+2}\bigr)$.
+
+\textbf{$\bra{m}x^3\ket{n}$:}
+\begin{align*}
+\ell_0^3\bigl[&\sqrt{n(n-1)(n-2)}\,\delta_{m,n-3}+3n^{3/2}\delta_{m,n-1} 
++3(n+1)^{3/2}\delta_{m,n+1}+\sqrt{(n+1)(n+2)(n+3)}\,\delta_{m,n+3}\bigr]
+\end{align*}
+
+\textbf{$\bra{n}x^4\ket{n}$:} $\ell_0^4(6n^2+6n+3)$.
+
+\textbf{$\bra{n}p^2\ket{n}$:} $\frac{m\hbar\omega}{2}(2n+1)$.
+
+\textbf{$\bra{n}p^4\ket{n}$:} $\frac{3m^2\hbar^2\omega^2}{4}(2n^2+2n+1)$.
+}
+% ============================================================
+\section{Exam Archetype Problems (by Topic)}
+% ============================================================
+
+% ---- A. SYMMETRY & DEGENERACY ----
+\subsection{A.\ Symmetry \& Degeneracy Proofs}
+
+\subsubsection{A1.\ Spin-Rotation Symmetry $\Rightarrow$ Degeneracy}
+\textbf{Problem.} $S=\tfrac{1}{2}$, $[H,S_a]=0\;\forall a$. Show all levels $\ge 2$-fold degenerate.
+
+\textbf{Solution.}
+Let $\ket{v,\downarrow}$ be eigenstate with energy $E$. Since $[H,S_+]=0$:
+$H(S_+\ket{v,\downarrow})=E\,(S_+\ket{v,\downarrow})$.
+For $S=\tfrac{1}{2}$: $S_+\ket{v,\downarrow}\propto\ket{v,\uparrow}\ne 0$ and $\perp\ket{v,\downarrow}$.
+$\implies$ Every level has $\ge 2$ states. \checkmark
+
+\subsubsection{A2.\ Kramers Degeneracy ($[H,T]=0$, half-integer spin)}
+\textbf{Problem.} $S=\tfrac{1}{2}$, $[H,T]=0$. Show all levels $\ge 2$-fold degenerate.
+
+\textbf{Solution.}
+$T\ket{v}$ is eigenstate with same $E$.
+Assume $T\ket{v}=c\ket{v}$. Apply $T$ again:
+$T^2\ket{v}=|c|^2\ket{v}$. But $T^2=-1$ for half-integer spin $\implies |c|^2=-1$. \textbf{Contradiction.}
+$\implies \ket{v}$ and $T\ket{v}$ are linearly independent (in fact orthogonal). \checkmark
+
+\textbf{Key:} $T^2=(-1)^{2S}$. Integer spin: $T^2=+1$, no forced degeneracy. Half-integer: $T^2=-1$, Kramers pairs.
+
+\subsubsection{A3.\ Non-degenerate $+\;[H,P]=0$ $\Rightarrow$ Parity Eigenstate}
+\textbf{Solution.} $P\ket{\Psi_n}$ has energy $E_n$. Non-degenerate $\implies P\ket{\Psi_n}=\lambda\ket{\Psi_n}$.
+$P^2=\Id\implies\lambda^2=1\implies\lambda=\pm 1$. \checkmark
+
+\subsubsection{A4.\ Non-degenerate $+\;[H,T]=0$ $\Rightarrow$ Real Wavefunction}
+\textbf{Solution.} $T\ket{\Psi_n}=c\ket{\Psi_n}$, $|c|=1$. In position space ($T\psi=\psi^*$):
+$\psi^*(x)=c\psi(x)$. Write $\psi=|\psi|e^{i\theta}$:
+$e^{-2i\theta(x)}=c\implies\theta=$const. Define $\tilde\psi=e^{-i\theta}\psi\implies\tilde\psi\in\RR$. \checkmark
+
+\subsubsection{A5.\ Time Reversal of Quadratic Spin Hamiltonian}
+$H=\alpha J_z^2+\beta(J_x^2-J_y^2)$. Is $[H,T]=0$?
+$T\vec{J}T^{-1}=-\vec{J}\implies TJ_i^2 T^{-1}=J_i^2$. All terms even $\implies$ \textbf{Yes.}
+Integer $J$: eigenstates map to themselves (up to phase); no forced degeneracy.
+
+% ---- B. ANGULAR MOMENTUM ----
+\subsection{B.\ Angular Momentum \& $J=1$ Matrix Problems}
+
+\subsubsection{B1.\ $\langle J_x\rangle$ and $\langle J_x^2\rangle$ in $\ket{j,m}$}
+$J_x=\frac{1}{2}(J_++J_-)$. Since $J_\pm\ket{j,m}\propto\ket{j,m\pm 1}\perp\ket{j,m}$:
+$\boxed{\langle J_x\rangle=0}$.
+
+$J_x^2=\frac{1}{4}(J_+^2+J_-^2+J_+J_-+J_-J_+)$. $J_\pm^2$ terms $\to 0$ (shift $m$ by 2).
+Use $J_+J_-+J_-J_+=2(J^2-J_z^2)$:
+$\boxed{\langle J_x^2\rangle=\frac{\hbar^2}{2}[j(j+1)-m^2]}$.
+
+\subsubsection{B2.\ Diagonalise $H=\alpha J_z^2+\beta(J_x^2-J_y^2)$ for $J=1$}
+\textbf{Key identity:} $J_x^2-J_y^2=\frac{1}{2}(J_+^2+J_-^2)$ (shifts $m$ by $\pm 2$).
+
+Basis $\{\ket{1},\ket{0},\ket{-1}\}$. $J_z^2=\hbar^2\diag(1,0,1)$.
+$J_+^2\ket{-1}=2\hbar^2\ket{1}$, $J_-^2\ket{1}=2\hbar^2\ket{-1}$.
+
+Matrix (units $\hbar=1$):
+$H=\begin{pmatrix}\alpha&0&\beta\\0&0&0\\\beta&0&\alpha\end{pmatrix}$.
+
+\textbf{Eigenvalues:} $E=0$\; ($\ket{0}$),\; $\alpha+\beta$\; ($\frac{1}{\sqrt{2}}(\ket{1}+\ket{-1})$),\; $\alpha-\beta$\; ($\frac{1}{\sqrt{2}}(\ket{1}-\ket{-1})$).
+
+\textbf{Template:} Any $H$ quadratic in $J_i$ for $J=1$ reduces to at most $3\times 3$ matrix; $\ket{0}$ often decouples.
+
+\subsubsection{B3.\ Particle Decay \& Angular Momentum Addition}
+\textbf{Problem.} $A\to B+C$ with $A$ at rest. (a) conservation law; (b) allowed $L$; (c) can $n\to p+e^-$? 
+(d) Given $S_B=\frac12,S_C=0$, $A$ maximally polarised ($m_A=S_A$); if $P(m_B=\frac12)=1/5$, $P(m_B=-1/2)=4/5$, find $L,S_A$.
+
+\textbf{(a)} $\vec S_A=\vec L+\vec S_B+\vec S_C$ (total AM). 
+\textbf{(b)} $S_{BC}=S_B+S_C$, so $|S_A-S_{BC}|\\le L\le S_A+S_{BC}$.  
+\textbf{(c)} No: $S_n=1/2$; $S_p=S_e=1/2\implies S_{BC}\in\{0,1\}$; $L\in\mathbb Z$ so final $J=L+S_{BC}$ integer, cannot equal half-integer $S_A$. 
+\textbf{(d)} Here $S_{BC}=1/2$, so $J=S_A= L\pm1/2$. Max polarisation implies $S_A=L-1/2$ (otherwise $P(m_B=1/5)$ impossible). Write
+\[\ket{S_A,S_A}=\alpha\ket{L{-}1,1/2}+\beta\ket{L,-1/2},
+\quad\beta=-\sqrt{2L}\,\alpha,\,\alpha^2(1+2L)=1.\] 
+Then $P(m_B=1/2)=\alpha^2=1/(2L+1)=1/5\implies L=2$, hence $S_A=3/2$.
+{\scriptsize If given spin measurement probabilities in this coupled state, use $2L = P_{\downarrow}/P_{\uparrow}$ to find $L$ directly.}
+
+% ---- C. HYDROGEN-LIKE / SHELL FILLING ----
+\subsection{C.\ Hydrogen-like Atoms \& Shell Filling}
+
+\subsubsection{C1.\ Spin-$3/2$ Particle (``Omicron'') with Spin--Orbit}
+$H=\frac{p^2}{2m}-\frac{Ze^2}{r}+\frac{\alpha\,Ry}{\hbar^2}\vec{L}\cdot\vec{S}$,\; $s=3/2$.
+
+\textbf{Recipe:} $E_n^{(0)}=-Z^2/n^2$\,Ry.\;
+$\Delta E_{LS}=\frac{\alpha}{2}[j(j+1)-l(l+1)-\frac{15}{4}]$\,Ry.
+
+For $l=0$: $j=3/2$ only, $\Delta E=0$. Degen $=4$.
+
+For $l=1$: $j\in\{\frac{1}{2},\frac{3}{2},\frac{5}{2}\}$.
+$j=\frac{1}{2}$: $\lambda=-2.5$, deg $2$.\;
+$j=\frac{3}{2}$: $\lambda=-1$, deg $4$.\;
+$j=\frac{5}{2}$: $\lambda=+1.5$, deg $6$.
+
+\textbf{Shell filling (Aufbau):} Each $j$-subshell holds $2j+1$ particles.
+Order by energy (lowest first). Example for $Z=10$, 10 particles:
+$1s_{3/2}$ (4) $+$ $2s_{3/2}$ (4) $+$ $2p_{1/2}$ (2) $=10$.
+$E_{tot}=4(-Z^2)+4(-Z^2/4)+2(-Z^2/4-2.5\alpha)=\boxed{-550-5\alpha}$\,Ry.
+
+% ---- D. IDENTICAL PARTICLES ----
+\subsection{D.\ Identical Particles}
+
+\subsubsection{D1.\ Two Fermions in Same Shell ($j_1=j_2=j$)}
+Spatial symmetric (same orbital) $\implies$ spin must be \textbf{antisymmetric}.
+$j\otimes j$: CG symmetry $\langle jj\,m_1 m_2|JM\rangle=(-1)^{2j-J}\langle jj\,m_2 m_1|JM\rangle$.
+Antisymmetric $\iff 2j-J$ odd $\iff J$ even (for half-integer $j$).
+
+\textbf{Example:} $j=3/2$: allowed $J\in\{0,2\}$ (antisym).\;
+$\ket{J=2,M=2}=\frac{1}{\sqrt{2}}(\ket{\frac{3}{2},\frac{1}{2}}-\ket{\frac{1}{2},\frac{3}{2}})$.
+
+\subsubsection{D2.\ Delta Baryons ($uuu$, $S=3/2$)}
+3 quarks, color singlet (antisym). Spatial $L=0$ (sym).
+$\implies$ Spin$\times$Isospin must be symmetric.
+$\Delta$: $I=3/2$ (sym) $\times$ $S=3/2$ (sym) $=$ sym. \checkmark
+
+Wavefunctions ($S_z=3/2$, all spins up):
+$\Delta^{++}=\ket{uuu}\ket{\uparrow\uparrow\uparrow}$,\;
+$\Delta^+=\frac{1}{\sqrt{3}}(\ket{uud}+\ket{udu}+\ket{duu})\ket{\uparrow\uparrow\uparrow}$.
+
+\textbf{Magnetic moments:} $\mu=\sum_i\mu_i$.\; $\mu_u=-2\mu_d$.
+$\Delta^{++}:3\mu_u$,\; $\Delta^+:\frac{3}{2}\mu_u$,\; $\Delta^0:0$,\; $\Delta^-:-\frac{3}{2}\mu_u$.
+Ratios: $1:\frac{1}{2}:0:-\frac{1}{2}$.
+
+\textbf{Can $\Delta^{++}$ have $S=1/2$?} No.
+$uuu$ flavor is totally symmetric. $L=0$ symmetric. Need spin symmetric.
+For 3 spins-$\frac{1}{2}$: $\frac{1}{2}\otimes\frac{1}{2}\otimes\frac{1}{2}=\frac{3}{2}\oplus\frac{1}{2}\oplus\frac{1}{2}$.
+Only $S=3/2$ is totally symmetric; $S=1/2$ states have mixed symmetry. \textbf{Impossible.}
+
+\subsubsection{D3.\ Scattering of Identical Bosons ($S=1$)}
+$1\otimes 1=2_S\oplus 1_A\oplus 0_S$. Total wf must be symmetric (bosons).
+
+$S=0,2$ (sym spin) $\implies$ sym spatial:
+$\psi_S\sim [f(\theta)+f(\pi-\theta)]\frac{e^{ikr}}{r}$.
+
+$S=1$ (antisym spin) $\implies$ antisym spatial:
+$\psi_A\sim [f(\theta)-f(\pi-\theta)]\frac{e^{ikr}}{r}$.
+
+$\frac{d\sigma}{d\Omega}\Big|_{S=0,2}=|f(\theta)+f(\pi-\theta)|^2$,\quad
+$\frac{d\sigma}{d\Omega}\Big|_{S=1}=|f(\theta)-f(\pi-\theta)|^2$.
+
+At $\theta=90°$: $f(\pi/2)=f(\pi/2)\implies$ antisym $\to 0$. $S=1$ forbidden at $90°$.
+
+\textbf{Unpolarized:}
+$\frac{d\sigma}{d\Omega}=\frac{1}{9}(6\sigma_{\rm sym}+3\sigma_{\rm anti})=\frac{2}{3}|f+f'|^2+\frac{1}{3}|f-f'|^2$
+where $f'=f(\pi-\theta)$.
+
+% ---- E. PERTURBATION THEORY ----
+\subsection{Perturbation Theory Archetypes}
+
+\subsubsection{E1.\ Contact Interaction $W=w_0[\delta^{(3)}\!p_z+p_z\delta^{(3)}]\frac{\hbar}{2}$}
+\textbf{Selection rules:} $\delta(r)$ needs $\psi(0)\ne 0$ ($l=0$). $p_z\sim Y_{1,0}$ needs $l=1$, $\Delta m=0$.
+Combined: $\boxed{l+l'=1,\; m=m'=0}$ (one state $s$, other $p$).
+
+\textbf{$n=1$:} $E^{(1)}=\bra{100}W\ket{100}=0$ (need $l+l'=1$, but $0+0=0$).
+
+\textbf{$n=2$:} Degenerate PT in $\{|200\rangle,|210\rangle,|211\rangle,|21{-}1\rangle\}$.
+Only $|200\rangle\leftrightarrow|210\rangle$ couples (both others have $m\ne 0$).
+$W=\begin{pmatrix}0&V&0&0\\V^*&0&0&0\\0&0&0&0\\0&0&0&0\end{pmatrix}$
+with $V=-i\frac{\hbar^2 w_0}{32\pi a_0^4}$.
+
+$E^{(1)}=\pm|V|=\pm\frac{\hbar^2 w_0}{32\pi a_0^4}$.\;
+Good states: $\frac{1}{\sqrt{2}}(|2s\rangle\mp i|2p_0\rangle)$.
+$|21\pm 1\rangle$: correction $=0$.
+
+\subsubsection{E2.\ Quantum Top in $\vec{B}$ (2nd-order)}
+$H_0=\frac{L^2}{2I}-\gamma B_0 L_z$.\; $E_{lm}=\frac{\hbar^2 l(l+1)}{2I}-\gamma B_0\hbar m$.
+
+Perturbation $V=-\gamma B_1 L_x=-\frac{\gamma B_1}{2}(L_++L_-)$.
+$E^{(1)}=\langle m|L_x|m\rangle=0$.
+
+$E^{(2)}$: $L_x$ connects $m\to m\pm 1$. Energy gaps $=\mp\gamma B_0\hbar$.
+$|V_{m,m+1}|^2=\frac{\gamma^2 B_1^2\hbar^2}{4}[l(l+1)-m(m+1)]$.
+
+$\Delta E=\frac{\gamma^2 B_1^2\hbar}{4\gamma B_0\hbar}[C_+^2-C_-^2]$ where $C_+^2-C_-^2=-2m$.
+$\boxed{\Delta E^{(2)}=-\frac{\gamma B_1^2\hbar m}{2B_0}}$.
+
+\textbf{Check:} Exact $E=-\gamma\sqrt{B_0^2+B_1^2}\,\hbar m\approx -\gamma B_0\hbar m(1+\frac{B_1^2}{2B_0^2})$.\; Matches.
+
+\subsubsection{E3.\ Spin-1 in Well with Perturbation}
+$V=h(r)\hat{n}\cdot\vec{S}$, $r\le R$, $\infty$ outside. Choose $\hat{n}=\hat{z}$.
+\\
+\textbf{Symmetries:}
+$E$\,\checkmark,
+$\vec{p}$\,\xmark,
+$\vec{L}$\,\checkmark,
+$\vec{J}$\,\xmark,
+$P$\,\checkmark,
+$T$\,\xmark\; ($\vec{S}\to -\vec{S}$).
+
+
+\textbf{Spectrum} ($h=1$): $H=\frac{p^2}{2m}+S_z+V_{\rm well}$. Separates:
+$E_{n,\mu}=\frac{\hbar^2\pi^2 n^2}{2mR^2}+\mu\hbar$,\; $\mu\in\{-1,0,1\}$.
+
+\textbf{Perturbation} $h=1+\lambda\cos(\pi r/R)$:
+$E^{(1)}\propto\int_0^R\sin^2(\pi r/R)\cos(\pi r/R)dr=0$ (odd power integral).
+$E^{(2)}$: Only $n=2$ contributes (use $\sin x\cos x=\frac{1}{2}\sin 2x$).
+$\boxed{\Delta E=-\frac{\mu^2\lambda^2}{12 E_0}}$ where $E_0=\frac{\hbar^2\pi^2}{2mR^2}$.
+
+% ---- F. TIME-DEPENDENT PT ----
+\subsection{F.\ Time-Dependent Perturbation Theory}
+
+\subsubsection{F1.\ Exponentially Decaying Field on H Atom}
+$\vec{E}=\frac{\phi_0}{a_0}\hat{z}\,e^{-t/\tau}$ for $t\ge 0$.\; Initial state $\ket{1,0,0}$.
+
+\textbf{Selection rules:} $V\propto z=r\cos\theta\propto Y_{1,0}$.\;
+$\Delta l=\pm 1$, $\Delta m=0$.\;
+From $l=0,m=0$: allowed $\to \ket{n,1,0}$.
+
+\textbf{Amplitude} ($\ket{i}\to\ket{f}=\ket{2,1,0}$):
+$c_f=\frac{-i\mathcal{M}}{\hbar}\int_0^t e^{(i\omega_{fi}-1/\tau)t'}dt'$.
+
+As $t\to\infty$: $c_f=\frac{\mathcal{M}}{\hbar}\frac{1}{\omega_{fi}+i/\tau}$.\;
+$\boxed{P_{210}=\frac{|\mathcal{M}|^2}{\hbar^2(\omega_{fi}^2+1/\tau^2)}}$,\; $P_{21\pm 1}=0$.
+
+\textbf{Limits:}
+$\tau\to 0$ (sudden): $P\propto\tau^2\to 0$ (pulse too fast).
+$\tau\to\infty$: $P\to|\mathcal{M}|^2/(\hbar\omega_{fi})^2$ (quasi-static mixing $\sim |V/\Delta E|^2$).
+
+\textbf{If initial $\ket{2,0,0}$:} Target $\ket{2,1,0}$ is degenerate ($\omega_{fi}=0$).
+Denominator $\to 1/\tau$ only. $P\propto\tau^2\to\infty$.\;
+Must use \textbf{degenerate PT} (linear Stark effect).
+Stark eigenstates: $\ket{\pm}=\frac{1}{\sqrt{2}}(\ket{200}\mp\ket{210})$.
+
+% ---- G. 3D POTENTIALS & BOUND STATES ----
+\subsection{G.\ 3D Potentials \& Bound States}
+
+\subsubsection{G1.\ 3D Finite Spherical Well ($\ell=0$)}
+\textbf{Problem.} $V(r)=-V_0$ for $r\le a$, else $0$. Find ground state and min $V_0$.
+
+\textbf{Solve.} With $u=r\psi$: 
+$-\frac{\hbar^2}{2m}u''+V(r)u=Eu$, $u(0)=u(\infty)=0$. 
+For $r>a$: $u''=-\frac{2mE}{\hbar^2}u$;
+$E>0:\,u=A\sin kr+B\cos kr$, $E<0:\,u=Ce^{-\kappa r}+De^{\kappa r}$.
+
+Ground state ($E<0$): 
+$u_{in}=A\sin qr$ with $q=\frac{\sqrt{2m(V_0-|E|)}}{\hbar}$; 
+$u_{out}=Ce^{-\kappa r}$ ($D=0$). 
+$$\psi=\begin{cases}A\sin(qr)/r,&r\le a\\C e^{-\kappa r}/r,&r>a\end{cases}$$
+
+Match at $r=a$: $\frac{u'}{u}=q\cot qa=-\kappa$.
+
+Threshold $E\to0^-\,(\kappa\to0)$ gives $qa=\pi/2$, hence
+$$V_0^{\min}={\pi^2\hbar^2\over8ma^2}$$ 
+\textit{\footnotesize(A 3D well needs a minimum depth/size to bind, unlike 1D.)}
+
+% ---- G. SUDDEN & ADIABATIC ----
+\subsection{G.\ Sudden \& Adiabatic Approximation}
+The Sudden Approximation applies when the perturbation occurs much faster than the system’s characteristic response time (wavefunction period).
+\\$\tau \ll T_{char} \approx \frac{1}{|\omega_{ni}|} = \frac{\hbar}{|E_n - E_i|}$
+\subsubsection{G1.\ Spherical Well $R\to 2R$}
+\textbf{Energies ($L=0$):}
+$u(r)=rR(r)$, $u''=-k^2 u$, BCs $u(0)=u(R)=0$.
+$E_n=\frac{\hbar^2\pi^2 n^2}{2mR^2}$,\; $u_n=\sqrt{\frac{2}{R}}\sin\frac{n\pi r}{R}$.
+
+\textbf{Sudden ($R\to 2R$):}
+$P=|\langle\psi_1^{(2R)}|\phi_1^{(R)}\rangle|^2$.
+$\langle\cdot|\cdot\rangle=\frac{\sqrt{2}}{R}\int_0^R\sin(\frac{\pi r}{2R})\sin(\frac{\pi r}{R})dr$.
+Substitution $x=\pi r/2R$, use $\sin(2x)=2\sin x\cos x$:
+$=\frac{2\sqrt{2}}{\pi}\cdot 2\int_0^{\pi/2}\sin^2 x\cos x\,dx=\frac{4\sqrt{2}}{\pi}\cdot\frac{1}{3}=\frac{4\sqrt{2}}{3\pi}$.
+$\boxed{P=\frac{32}{9\pi^2}\approx 0.36}$.
+
+\textbf{Adiabatic:} System stays in $n=1$.\; $P=1$.
+
+\textbf{Criterion:} $\tau_{\rm exp}\gg\hbar/\Delta E$ (adiabatic);\; $\tau_{\rm exp}\ll\hbar/\Delta E$ (sudden).
+$\Delta E=E_2-E_1=\frac{3\hbar^2\pi^2}{2mR^2}$.
+
+\subsubsection{G2.\ Tritium $\beta$-Decay ($Z{=}1\to Z{=}2$)}
+Sudden change of nuclear charge. Electron stays in $\psi_{1s}^{Z=1}$.
+Project onto $\psi_{nlm}^{Z=2}$ basis:
+\textbf{General overlap formula} (both states are $1s$ with different $Z$):
+\[
+  \langle 1s,Z'|1s,Z\rangle = \frac{8(ZZ')^{3/2}}{(Z+Z')^3}
+\]
+\textit{Derivation}: $\langle 1s,Z'|1s,Z\rangle = \int \psi_{1s}^{Z'*}\psi_{1s}^Z\,d^3r$; both are $\propto e^{-Zr/a_0}$; use $\int_0^\infty r^2 e^{-\alpha r}dr = 2/\alpha^3$.
+For $Z=1$, $Z'=2$: overlap $= 16\sqrt{2}/27$,
+$P=\frac{512}{729}\approx 0.70$.
+Selection: $\Delta l=0$ (scalar perturbation $\implies$ only $s$-states populated).
+
+% ---- H. SCATTERING ----
+\subsection{H.\ Scattering Archetypes}
+
+\subsubsection{H1.\ Separable Potential $V=\lambda\ket{\chi}\bra{\chi}$}
+$\langle\mathbf{r}|\chi\rangle\propto e^{-r^2/2R^2}$ (Gaussian).
+
+\textbf{Born:} $T_{fi}=\lambda\langle\mathbf{k}'|\chi\rangle\langle\chi|\mathbf{k}\rangle$.
+FT of Gaussian $=$ Gaussian: $\langle\mathbf{k}|\chi\rangle\propto e^{-k^2 R^2/2}$.
+$\implies T_{fi}\propto\lambda e^{-(k^2+k'^2)R^2/2}$.
+Elastic ($k=k'$): $f\propto\lambda e^{-k^2 R^2}$. \textbf{Isotropic} ($\theta$-independent).
+
+$\sigma=4\pi|f|^2\propto\lambda^2 e^{-2k^2 R^2}$.
+
+\subsubsection{H2.\ Two-Center Scattering}
+Target at $\mathbf{0}$ and $\mathbf{a}$: $V_{\rm tot}=V(\mathbf{r})+V(\mathbf{r}-\mathbf{a})$.
+Shift theorem: $f_{\rm tot}=f_1(\theta)[1+e^{i\mathbf{q}\cdot\mathbf{a}}]$.
+
+Interference zeros: $\mathbf{q}\cdot\mathbf{a}=(2n+1)\pi$.
+For $\mathbf{a}=a\hat{z}$: $ka(1-\cos\theta)=(2n+1)\pi$.
+Form-factor zeros: $\tan(qR)=qR$.
+\subsubsection{ Born Approx \& Structure Factor (Yukawa)}
+\textbf{Problem:} $V(r)=\beta e^{-\mu r}/r$, two centers at $\mathbf{0}$ and $\mathbf{x}$, and a molecule with $N$ particles distributed via Gaussian $n(\mathbf{r}) \propto e^{-r^2/(2a^2)}$.\\
+$f_0(\mathbf{q}) = -\frac{2m}{\hbar^2 q}\int_0^\infty r V(r)\sin(qr)dr$.
+For Yukawa: $\int_0^\infty e^{-\mu r}\sin(qr)dr = \frac{q}{\mu^2+q^2} \implies f_0(\mathbf{q}) = -\frac{2m\beta}{\hbar^2(\mu^2+q^2)}$.
+$d\sigma_0/d\Omega = |f_0|^2 = \frac{4m^2\beta^2}{\hbar^4(\mu^2+q^2)^2}$.
+
+\textbf{Two-Center Scattering:}
+$V_{\rm tot} = V(\mathbf{r}) + V(\mathbf{r}-\mathbf{x})$.
+Shift theorem: $f_{\rm tot}(\mathbf{q}) = f_0(\mathbf{q})S(\mathbf{q})$ where $S(\mathbf{q}) = 1 + e^{-i\mathbf{q}\cdot\mathbf{x}}$.
+ expanding the squared structure factor:
+$|S(\mathbf{q})|^2 = |1 + e^{-i\mathbf{q}\cdot\mathbf{x}}|^2 = (1+e^{-i\mathbf{q}\cdot\mathbf{x}})(1+e^{i\mathbf{q}\cdot\mathbf{x}}) = 4\cos^2\left(\frac{\mathbf{q}\cdot\mathbf{x}}{2}\right)$.
+$\implies d\sigma/d\Omega = 4\frac{d\sigma_0}{d\Omega}\cos^2(\frac{\mathbf{q}\cdot\mathbf{x}}{2})$.
+
+\textbf{Continuous density}  
+The molecular potential is the convolution of single-particle potential with density:  
+$V_{\rm mol}(\mathbf{r}) = N\,(n * V)(\mathbf{r})$.
+
+By the convolution theorem the Born amplitude factorizes as  
+$f_{\rm mol}(\mathbf{q}) = N\, f_0(\mathbf{q})\, F_n(\mathbf{q})$,  
+with form factor $F_n(\mathbf{q}) = \int n(\mathbf{r})\,e^{-i\mathbf{q}\cdot\mathbf{r}}\,d^3r$.
+
+For Gaussian $n(\mathbf{r}) = (2\pi a^2)^{-3/2}\exp(-r^2/2a^2)$ one has  
+$F_n(\mathbf{q}) = \exp(-q^2 a^2/2)$.
+
+Thus  
+$\dfrac{d\sigma_{\rm mol}}{d\Omega} = N^2 |f_0(\mathbf{q})|^2 \exp(-q^2 a^2) = N^2 \dfrac{d\sigma_0}{d\Omega}\, e^{-q^2 a^2}$.
+% ---- I. AHARONOV-BOHM ----
+\subsection{IV. Particle on Ring ($R$) in Field $\mathbf{B}=\beta\hat{z}$ (Symmetric Gauge)}
+Gauge $\mathbf{A} = -\frac{1}{2}\beta(y\hat{x}-x\hat{y}) \implies \mathbf{B}=\beta\hat{z}$. Ham: $H=\frac{1}{2mR^2}\left(L_z - \frac{1}{2}q\beta R^2\right)^2$.
+\textbf{States:} $\psi_n(\phi) = \frac{e^{in\phi}}{\sqrt{2\pi R}}$ ($n\in\mathbb{Z}$).
+\textbf{Spectrum:} $E_n(\beta) = \frac{1}{2mR^2}(\hbar n - \frac{1}{2}q\beta R^2)^2$. Coincides with free spectrum if $\beta = \frac{2\hbar k}{q R^2}$ ($k\in\mathbb{Z}$).
+\textbf{Dynamics:} Since $[H(t), L_z]=0$, transitions are forbidden ($P_{i\to f}=0$). State $n$ is conserved.
+\textbf{Work/Energy:} For G.S. ($n=0$) ramped $0\to\beta_T$: $\Delta E = \frac{q^2\beta_T^2 R^2}{8m}$.
+\textbf{Work derivation:} $\mathbf{E} = -\dot{\mathbf{A}}$; $\langle\mathbf{v}\rangle_{0} \approx -q\mathbf{A}/m$. $W = \int q\mathbf{E}\cdot\langle\mathbf{v}\rangle dt = \frac{q^2}{2m}\Delta(A^2) = \frac{q^2}{2m}(\frac{\beta_T R}{2})^2 = \Delta E$.
+% ---- J. TIME-DEP SPIN ----
+\subsection{J.\ Two-Spin Time Evolution}
+$H(t)=g(t)\,\vec{S}_1\cdot\vec{S}_2$.\;
+$\vec{S}_1\cdot\vec{S}_2=\frac{1}{2}(S^2-S_1^2-S_2^2)$.
+
+Coupled basis $\ket{S,M}$ diagonalises $H$:
+Triplet $S=1$: $\ev{\vec{S}_1\cdot\vec{S}_2}=+\frac{\hbar^2}{4}$.
+Singlet $S=0$: $\ev{\vec{S}_1\cdot\vec{S}_2}=-\frac{3\hbar^2}{4}$.
+
+Initial $\ket{\uparrow\downarrow}=\frac{1}{\sqrt{2}}(\ket{T_0}+\ket{S_0})$.
+Evolve: each component picks up phase $e^{-\frac{i}{\hbar}\int_0^t E_S(t')dt'}$.
+Phase difference $\Delta\phi=\frac{1}{\hbar}\int g(t')\,dt'\cdot\hbar^2$.
+Transition probability $P_{\uparrow\downarrow\to\downarrow\uparrow}=\sin^2(\Delta\phi/2)$.
+
+% ---- K. LINEAR STARK EFFECT ----
+\subsection{K.\ Linear Stark Effect on Hydrogen ($n=2$)}
+$H'=-eE_0 z$.\; \textbf{Selection rules} (Wigner--Eckart):
+$z\propto Y_{1,0}$ (rank-1 spherical tensor, $q=0$, odd parity).
+$\implies\Delta m=0$,\; $\Delta l=\pm 1$ (parity: $l'\ne l$; triangle: $|l-1|\le l'\le l+1$).
+
+From $\ket{100}$: first-order vanishes ($l'=l\pm 1$ forces $l'=1$, no $n=1,l=1$ state to mix).
+$E_1^{(1)}=0$.\; Second-order: $E_1^{(2)}<0$ (polarisability).
+
+\textbf{Degenerate subspace $n=2$:}
+$\ket{211},\ket{21{-}1}$: no coupling (need $\Delta m=0$, no $l=0$ partner). $E^{(1)}=0$.
+
+$\ket{200}\leftrightarrow\ket{210}$ couple.
+$\bra{200}z\ket{210}=\bra{200}r\cos\theta\ket{210}=-3a_0$.
+
+\textit{Derivation:} $z=r\sqrt{\frac{4\pi}{3}}Y_{1,0}$. Radial: $\int_0^\infty R_{20}R_{21}r^3\,dr = -\frac{1}{4a_0}(2a_0)^2\cdot 3\cdot 2!\cdot\frac{a_0}{\sqrt{3}}=-3\sqrt{3}\,a_0^2/\sqrt{3}$.\;
+Angular: $\int Y_{0,0}^*Y_{1,0}Y_{1,0}\,d\Omega=\frac{1}{\sqrt{4\pi}}\cdot\frac{1}{\sqrt{3}}$ (3j-symbol). Combined: $-3a_0$.
+
+$W=\begin{pmatrix}0&\lambda\\\lambda&0\end{pmatrix}$,\; $\lambda=3eE_0 a_0$.
+$\boxed{E^{(1)}=\pm 3eE_0 a_0}$.\;
+Good states: $\ket{\pm}=\frac{1}{\sqrt{2}}(\ket{200}\mp\ket{210})$.
+
+% ---- L. THREE SPIN-1 PARTICLES ----
+\subsection{L.\ Three Spin-1 Particles}
+$H=\frac{\Delta}{\hbar^2}(\vec{S}_1\!\cdot\!\vec{S}_2+\vec{S}_2\!\cdot\!\vec{S}_3+\vec{S}_3\!\cdot\!\vec{S}_1)$,\; $S_i=1$.
+
+\textbf{Trick:} $\vec{S}_1\!\cdot\!\vec{S}_2+\text{cyc}=\frac{1}{2}(S^2-S_1^2-S_2^2-S_3^2)$, where $\vec{S}=\vec{S}_1+\vec{S}_2+\vec{S}_3$.
+Each $S_i^2=1(2)\hbar^2=2\hbar^2$, so $H=\frac{\Delta}{2}[S(S+1)-6]$.
+
+\textbf{Spectrum} ($1\otimes1\otimes1$): $S=0,1,2,3$.
+$E_S=\frac{\Delta}{2}[S(S+1)-6]$: $E_0=-3\Delta$, $E_1=-2\Delta$, $E_2=0$, $E_3=3\Delta$.
+
+\textbf{Degeneracy:}
+Couple $S_{12}=0,1,2$; add $S_3=1$.
+$S=3$: $S_{12}=2$ only $\to 7$.
+$S=2$: $S_{12}=1,2$ $\to 2\times 5=10$.
+$S=1$: $S_{12}=0,1,2$ $\to 3\times 3=9$.
+$S=0$: $S_{12}=1$ only $\to 1$.\;
+Total: $7+10+9+1=27=3^3$.\;\checkmark
+
+\textbf{Antisymmetric states:}
+Only $\ket{S=0,M=0}$ is totally antisymmetric (unique).
+Proof: For $M=0$ the only candidate is antisymmetrisation of $\ket{1,0,-1}$:
+$\ket{A}=\frac{1}{\sqrt{6}}\sum_{\sigma\in S_3}\text{sgn}(\sigma)\,\sigma\ket{1,0,-1}$.
+Any other $M$ requires repeated indices $\implies$ antisymmetrisation vanishes.
+Since $\vec{S}$ is symmetric, the antisymmetric irrep must have $S=0$.
+
+% ---- M. PASCHEN-BACK EFFECT ----
+\subsection{M.\ Paschen--Back Effect}
+$V=A\,\vec{L}\!\cdot\!\vec{S}+\mu(\vec{L}+2\vec{S})\cdot\vec{B}$.\;
+Basis $\ket{m_\ell,m_s}$ with $m=m_\ell+m_s$ fixed.
+
+\textbf{(i) $A=0$:} Choose $\vec{B}=B\hat{z}$. $V=\mu B(m_\ell+2m_s)$.\;
+$\Delta E=\mu B(m+m_s)$.
+
+\textbf{(ii) Matrix elements of $\vec{L}\!\cdot\!\vec{S}$:}
+$\vec{L}\!\cdot\!\vec{S}=L_zS_z+\frac{1}{2}(L_+S_-+L_-S_+)$.\;
+Diagonal: $\bra{m_\ell,m_s}L_zS_z\ket{m_\ell,m_s}=\hbar^2 m_\ell m_s$.
+Off-diagonal ($s=\frac{1}{2}$): $\bra{m{+}\frac{1}{2},-\frac{1}{2}}L_+S_-\ket{m{-}\frac{1}{2},+\frac{1}{2}}=\hbar^2\sqrt{(\ell-m+\tfrac{1}{2})(\ell+m+\tfrac{1}{2})}$.
+
+\textbf{(iii) Stretched state} $\ket{\ell,+\frac{1}{2}}$: no off-diagonal partner.
+$\Delta E=\frac{A\hbar^2\ell}{2}+\mu B(\ell+1)$.
+
+\textbf{(iv) General $m$:} Diagonalise $2\times 2$ in $\{\ket{m-\frac{1}{2},+\frac{1}{2}},\ket{m+\frac{1}{2},-\frac{1}{2}}\}$:
+\[
+V_m=\begin{pmatrix}a&b\\b&c\end{pmatrix},\;\;
+\begin{aligned}
+a&=\tfrac{A\hbar^2}{2}(m{-}\tfrac{1}{2})+\mu B(m{+}\tfrac{1}{2}),\\
+c&=-\tfrac{A\hbar^2}{2}(m{+}\tfrac{1}{2})+\mu B(m{-}\tfrac{1}{2}),\\
+b&=\tfrac{A\hbar^2}{2}\sqrt{(\ell-m+\tfrac{1}{2})(\ell+m+\tfrac{1}{2})}.
+\end{aligned}
+\]
+$\boxed{\Delta E_\pm=\tfrac{1}{2}\bigl[(a+c)\pm\sqrt{(a-c)^2+4b^2}\bigr]}$.
+
+% ---- N. LOW-ENERGY BORN & N SCATTERERS ----
+\subsection{N.\ Low-Energy Born \& Coherent Scatterers}
+\textbf{Born ($k\to 0$):} $e^{i\mathbf{q}\cdot\mathbf{r}}\to 1$.\;
+$f(k\to 0)=-\frac{m}{2\pi\hbar^2}\int V(\mathbf{r})\,d^3r$ (isotropic, angle-independent).
+
+\textbf{Soft sphere} ($V=V_0$, $r\le a$): 
+$f=-\frac{m}{2\pi\hbar^2}\cdot\frac{4\pi a^3}{3}V_0$.\;
+$\sigma=4\pi|f|^2=\frac{16m^2 a^6 V_0^2}{9\hbar^4}$.
+
+\textbf{$N$ scatterers at $\mathbf{r}_i$ in box $L$:}
+$V_{\rm tot}=\sum_{i=1}^N V(\mathbf{r}-\mathbf{r}_i)$.\;
+Born: $f_{\rm tot}=f_0\sum_i e^{i\mathbf{q}\cdot\mathbf{r}_i}$.
+At $k\to 0$: $\mathbf{q}\to 0$ so $e^{i\mathbf{q}\cdot\mathbf{r}_i}\to 1$.\;
+$f_{\rm tot}=N\,f_0$.\;
+$\boxed{\sigma=N^2\sigma_0}$ (coherent addition of amplitudes).
+
+\textbf{Validity:} $ka\ll 1$ (single scatterer); $kL\ll 1$ ($N$-scatterer ensemble).
+Physics: $\lambda\gg L$ so wave cannot resolve positions $\implies$ amplitudes add in phase.
+
+% ---- O. WIGNER-ECKART PROPORTIONALITY ----
+\subsection{O.\ Wigner--Eckart Proportionality \& Scalar Operator}
+\textbf{Problem.} Two rank-$\lambda$ ITO's $A^{(\lambda)}_\mu$, $B^{(\lambda)}_\mu$. Show $\bra{jm}A\ket{jm'}\propto\bra{jm}B\ket{jm'}$ within a fixed irrep $V(j)$.
+
+\textbf{Proof.} Wigner--Eckart:
+$\bra{jm}A^{(\lambda)}_\mu\ket{jm'}=(-)^{\lambda-2j}\frac{\langle j||A^{(\lambda)}||j\rangle}{\sqrt{2j+1}}\langle jm\,\lambda\mu|jm'\rangle$.
+Same CG factor appears for $B$. Ratio $=\langle j||A||j\rangle/\langle j||B||j\rangle$ is $\mu,m,m'$-independent. \checkmark
+
+\textbf{Scalar construction.} $S=\sum_\mu (-)^\mu A^{(\lambda)}_\mu B^{(\lambda)}_{-\mu}$.
+Under rotation $R$: $A'^{(\lambda)}_\mu=\sum_{\mu'}D^{(\lambda)}_{\mu'\mu}A^{(\lambda)}_{\mu'}$, same for $B$.
+\[
+S'=\sum_{\mu,\mu',\mu''}(-)^\mu D^{(\lambda)}_{\mu'\mu}D^{(\lambda)}_{\mu''\!,-\mu}A_{\mu'}B_{\mu''}.
+\]
+Use $D^{(\lambda)}_{\mu'',-\mu}=(-)^{\mu''-\mu}D^{(\lambda)*}_{-\mu'';\mu}$ and unitarity $\sum_\mu D^{(\lambda)}_{\mu'\mu}D^{(\lambda)*}_{-\mu'',\mu}=\delta_{\mu',-\mu''}$:
+$S'=\sum_{\mu'}(-)^{\mu'} A_{\mu'}B_{-\mu'}=S$.\; $\boxed{[S,R]=0\;\forall\,R}$.\; \checkmark
+
+% ---- P. PARTICLE ON RING + ELECTRIC FIELD ----
+\subsection{P.\ Particle on Ring $+$ Electric Field / Molecular Rotation}
+$H_0=\frac{L_z^2}{2I}$,\; $I=ma^2$.\; States: $\ket{m}=\frac{e^{im\phi}}{\sqrt{2\pi}}$,\; $E_m^{(0)}=\frac{\hbar^2 m^2}{2I}$.
+All levels doubly degenerate ($\pm m$) except $m=0$.
+
+\textbf{Selection rule:} $\bra{m'}e^{i\mu\phi}\ket{m}=\delta_{m',m+\mu}$.\;
+Perturbation $V=\alpha\cos(n\phi)=\frac{\alpha}{2}(e^{in\phi}+e^{-in\phi})$ $\implies\Delta m=\pm n$.
+
+\textbf{E-field ($n=1$):} $H_1=-qU a\cos\phi$.\; $\Delta m=\pm 1$.
+G.S. ($m=0$): $E^{(1)}_0=\bra{0}\cos\phi\ket{0}=0$.
+Dipole $D_x=qa\bra{\Psi}{\cos\phi}\ket{\Psi}=0$ for any $\ket{m}$ (off-diagonal).
+With PT: $\ket{\Psi_0}=\ket{0}+2\pi IqUa[\ket{1}+\ket{-1}]$;
+1st-excited ($m=\pm 1$): degenerate $\implies$ diag $2\times 2$:
+$V=\frac{-qUa}{2}\begin{pmatrix}0&1\\1&0\end{pmatrix}$;\;
+$E_\pm^{(1)}=\mp\frac{qUa}{2}$;\;good states $\frac{1}{\sqrt{2}}(\ket{1}\pm\ket{-1})$.
+
+\textbf{Ethane ($n=3$):} $H_1=W\cos 3\phi$.\; $\Delta m=\pm 3$.
+G.S.: $E^{(1)}_0=0$.\; $\ket{\Psi_0}=\ket{0}-\frac{2\pi IW}{9\hbar^2}[\ket{3}+\ket{-3}]$.
+(Only $m=\pm 3$ couple to $m=0$; gap $\propto 9$.)
+
+% ---- Q. J=2j SYMMETRY & He SHELL ----
+\subsection{Q.\ Symmetry of $J{=}2j$ Multiplet ($j\otimes j$)}
+\textbf{Claim:} In $j\otimes j$, the $J=2j$ multiplet is symmetric and $J=2j-1$ is antisymmetric under particle exchange.
+
+\textbf{Proof.}
+\textit{Symmetric:} $\ket{J{=}2j,M{=}2j}=\ket{j,j}\otimes\ket{j,j}$ is manifestly symmetric.
+$J_-=J_{1-}+J_{2-}$ is symmetric $\implies$ all $\ket{2j,M}$ symmetric.
+
+\textit{Antisymmetric:} $\ket{2j{-}1,2j{-}1}=\alpha\ket{j,j{-}1;j,j}+\beta\ket{j,j;j,j{-}1}$.
+Apply $J_+$: $J_+\ket{2j{-}1,2j{-}1}=0 \implies (\alpha+\beta)\sqrt{2j}\ket{j,j;j,j}=0 \implies \beta=-\alpha$.
+$\therefore$ state $\propto\ket{j,j{-}1;j,j}-\ket{j,j;j,j{-}1}$: antisymmetric. Symmetric $J_-$ preserves this.
+
+\textbf{General rule (CG symmetry):} $\bra{j\,m_1\,j\,m_2}{J\,M}=(-)^{2j-J}\bra{j\,m_2\,j\,m_1}{J\,M}$.\;
+Symmetric iff $2j-J$ even; antisymmetric iff $2j-J$ odd.
+
+\textbf{Application (He, $n{=}2,\,l{=}1$):}
+$l_1{=}l_2{=}1$: $L=0$ (sym), $L=1$ (antisym), $L=2$ (sym).
+Fermions need total antisymmetry $\implies$ spin antisym for sym $L$ and vice versa.
+$L{=}1$ (antisym spatial) needs $S{=}1$ (sym spin). OK.
+$L{=}0$ (sym) needs $S{=}0$ (antisym). $J=0$ only.
+$L{=}0,S{=}1$: both symmetric $\implies$ \textbf{forbidden} for fermions.
+
+% ---- R. TWO-LEVEL EXACT RABI (DELTA PULSE) ----
+\subsection{R.\ Two-Level System: Exact Rabi (Delta Pulse)}
+$H_0\ket{a}=E_a\ket{a}$,\; $H_0\ket{b}=E_b\ket{b}$.\;
+$V(t)=[\ket{b}\alpha\bra{a}+\ket{a}\alpha^*\bra{b}]\,\delta_\Delta(t)$,\;
+$\delta_\Delta=1/\Delta$ for $0\le t\le\Delta$, else $0$.
+
+\textbf{1st-order PT} ($\delta_\Delta\to\delta$): $c_b=-\frac{i\alpha}{\hbar}$,\; $P_b=|\alpha/\hbar|^2$.
+\textbf{2nd-order:} $c_b^{(2)}=0$ (no intermediate path back).
+
+\textbf{Exact} ($|\omega_{ba}\Delta|\ll 1$):
+Coupled eqs for $0<t<\Delta$:\;
+$\dot c_a=-\frac{i\alpha^*}{\hbar\Delta}c_b$,\; $\dot c_b=-\frac{i\alpha}{\hbar\Delta}c_a$.
+$\ddot c_a=-\frac{|\alpha|^2}{\hbar^2\Delta^2}c_a$.\; Solution with $c_a(0)=1$:
+\[
+c_a(t)=\cos\!\frac{|\alpha|t}{\hbar\Delta},\qquad
+c_b(t)=-\frac{i\alpha}{|\alpha|}\sin\!\frac{|\alpha|t}{\hbar\Delta}.
+\]
+At $t=\Delta$:
+$\boxed{P_a=\cos^2\!\frac{|\alpha|}{\hbar},\qquad P_b=\sin^2\!\frac{|\alpha|}{\hbar}}$.
+
+For $|\alpha|\ll\hbar$: $\sin^2(|\alpha|/\hbar)\approx|\alpha|^2/\hbar^2$ recovers 1st-order PT.\;
+Full Rabi oscillation when $|\alpha|=\pi\hbar/2$ ($\pi$-pulse).
+
+% ---- S. DETAILED BALANCE (TDPT) ----
+\subsection{S.\ Detailed Balance in TDPT}
+\textbf{Claim:} $P^{(1)}_{m\to n}(t)=P^{(1)}_{n\to m}(t)$.
+
+\textbf{Proof.}
+\[
+P^{(1)}_{m\to n}=\frac{1}{\hbar^2}\left|\int_{t_0}^t V_{nm}(t')e^{i\omega_{nm}t'}dt'\right|^2
+=\frac{1}{\hbar^2}\left|\int_{t_0}^t V_{mn}^*(t')e^{-i\omega_{mn}t'}dt'\right|^2.
+\]
+Taking the complex conjugate of the integral:
+$\left|\int V_{mn}^* e^{-i\omega_{mn}t'}dt'\right|^2=\left|\int V_{mn} e^{i\omega_{mn}t'}dt'\right|^2=P^{(1)}_{n\to m}$.\;\checkmark
+
+Key: uses $V_{nm}=V_{mn}^*$ (Hermiticity) and $\omega_{nm}=-\omega_{mn}$.
+$|z|^2=|z^*|^2$ does the rest.
+
+% ============================================================
+% ============================================================
+% ============================================================
+\section{ Solved: Variational Method}
+% ============================================================
+
+\subsection{ 1D Linear Potential ($V = \lambda |x|$)}
+\textbf{Trial:} Gaussian $\psi(x) = (\frac{\alpha}{\pi})^{1/4} e^{-\alpha x^2/2}$.
+\textbf{Kinetic:} $\langle T \rangle = \frac{\hbar^2 \alpha}{4m}$ (Standard Gaussian result).
+\textbf{Potential:} $\langle V \rangle = \lambda \sqrt{\frac{\alpha}{\pi}} \int_{-\infty}^\infty |x| e^{-\alpha x^2} dx = 2\lambda \sqrt{\frac{\alpha}{\pi}} \int_0^\infty x e^{-\alpha x^2} dx$.
+Using $\int_0^\infty x e^{-\alpha x^2} dx = \frac{1}{2\alpha}$:
+\[ \langle V \rangle = \frac{\lambda}{\sqrt{\pi \alpha}} \]
+\textbf{Total Energy:} $E(\alpha) = \frac{\hbar^2 \alpha}{4m} + \frac{\lambda}{\sqrt{\pi \alpha}}$.
+\textbf{Minimize:} $\frac{dE}{d\alpha} = \frac{\hbar^2}{4m} - \frac{\lambda}{2\sqrt{\pi}}\alpha^{-3/2} = 0$.
+\[ \alpha^{3/2} = \frac{2m\lambda}{\hbar^2\sqrt{\pi}} \implies \alpha_0 = \left( \frac{2m\lambda}{\hbar^2\sqrt{\pi}} \right)^{2/3} \]
+Substitute back for $E_{min}$.
+
+\subsection{Helium Atom (Screening)}
+$H = -\frac{1}{2}\nabla_1^2 - \frac{1}{2}\nabla_2^2 - \frac{Z}{r_1} - \frac{Z}{r_2} + \frac{1}{|\mathbf{r}_1 - \mathbf{r}_2|}$.
+\textbf{Trial:} $\Psi = \psi_{1s}(Z^*, r_1)\psi_{1s}(Z^*, r_2)$ (Uncorrelated product).
+\textbf{Virial Scaling:} For hydrogenic state with $Z^*$:
+$\langle T \rangle = (Z^*)^2$, $\langle V_{nuc} \rangle = -2Z Z^*$.
+\textbf{Interaction:} $\langle \frac{1}{r_{12}} \rangle = \frac{5}{8}Z^*$ (Standard Integral).
+\textbf{Total:} $E(Z^*) = 2(Z^*)^2 - 4Z Z^* + \frac{5}{8}Z^*$.
+\textbf{Minimize:} $\frac{dE}{dZ^*} = 4Z^* - 4Z + \frac{5}{8} = 0 \implies Z^* = Z - \frac{5}{16}$.
+\textbf{Result:} $E_{var} = -2(Z - \frac{5}{16})^2$ Ry.
+\textit{Physics:} The other electron screens $5/16$ of the nuclear charge.
+
+\subsection{ Deuteron (Square Well)}
+Trial $\psi(r) = e^{-\alpha r}$ for attractive well $V=-V_0$ ($r<a$).
+$\langle H \rangle = \frac{\hbar^2 \alpha^2}{2\mu} - V_0 [1 - e^{-2\alpha a}(1+2\alpha a)]$.
+Minimizing gives bound on $V_0$ for bound state existence.
+\section{ Identical Particles in HO}
+% ============================================================
+
+Two electrons in 1D HO. $V_{int} = \lambda \delta(x_1 - x_2)$. Perturbation theory.
+\textbf{Basis:} Unperturbed states $\ket{n_1, n_2}$.
+Ground state ($n_1=0, n_2=0$): Spatial part $\psi_0(x_1)\psi_0(x_2)$ is symmetric.
+Spin must be Antisymmetric (Singlet $S=0$).
+Shift: $\Delta E = \lambda \int |\psi_0(x_1)|^2 |\psi_0(x_2)|^2 \delta(x_1-x_2) dx_1 dx_2$.
+$\Delta E = \lambda \int |\psi_0(x)|^4 dx = \lambda (\frac{m\omega}{\pi\hbar}) \int e^{-2m\omega x^2/\hbar} dx$.
+\textbf{Result (Singlet):} $\Delta E = \lambda \sqrt{\frac{m\omega}{2\pi\hbar}}$.
+
+\textbf{Excited State ($n_1=0, n_2=1$):}
+1. \textbf{Triplet ($S=1$):} Spatial Antisym $\psi_A = \frac{1}{\sqrt{2}}(\psi_0(1)\psi_1(2) - \psi_1(1)\psi_0(2))$.
+$\psi_A(x,x) = 0$ (Pauli exclusion).
+\textbf{Result:} $\Delta E_{trip} = \langle \psi_A | \delta | \psi_A \rangle = 0$.
+
+2. \textbf{Singlet ($S=0$):} Spatial Sym $\psi_S = \frac{1}{\sqrt{2}}(\psi_0(1)\psi_1(2) + \psi_1(1)\psi_0(2))$.
+$\Delta E_{sing} = \lambda \int |\psi_S(x,x)|^2 dx = \lambda \cdot 2 \int |\psi_0(x)\psi_1(x)|^2 dx$.
+% ============================================================
+\section{ Solved: Identical Particles}
+% ============================================================
+
+\subsection{ Exchange Energy (He excited states)}
+Two electrons in states $\psi_a, \psi_b$. Interaction $V(r_1, r_2)$.
+\textbf{Direct Integral:} $J = \int |\psi_a(1)|^2 |\psi_b(2)|^2 V d\tau$.
+\textbf{Exchange Integral:} $K = \int \psi_a^*(1)\psi_b^*(2) V \psi_a(2)\psi_b(1) d\tau$.
+\textbf{Energies:}
+\begin{itemize}
+    \item \textbf{Singlet ($S=0$):} Spatial Sym $\implies E_S = E_a + E_b + J + K$.
+    \item \textbf{Triplet ($S=1$):} Spatial Anti $\implies E_T = E_a + E_b + J - K$.
+\end{itemize}
+Since $K > 0$ usually (Coulomb repulsion), $E_T < E_S$ (Hund's Rule).
+\textbf{Physical reason:} Triplet spatial wavefunction vanishes at $r_1=r_2$, reducing repulsion.
+
+\subsection{ Interacting Bosons}
+Two Bosons in 1D HO. $V = \lambda \delta(x_1-x_2)$.
+States $\ket{n_1, n_2}$.
+\textbf{Case 1: Ground State} $\ket{0,0}$.
+$\Delta E = \lambda \int |\psi_0(x)|^4 dx = \lambda \sqrt{\frac{m\omega}{2\pi\hbar}}$.
+\textbf{Case 2: First Excited} $\ket{1,0}$.
+Symmetrized state: $\Psi = \frac{1}{\sqrt{2}}[\psi_0(1)\psi_1(2) + \psi_1(1)\psi_0(2)]$.
+$\Delta E = \lambda \int |\Psi(x,x)|^2 dx = \lambda \cdot 2 \int |\psi_0(x)|^2 |\psi_1(x)|^2 dx$.
+$\Delta E = \lambda \sqrt{\frac{m\omega}{2\pi\hbar}}$. (Same as GS! due to Gaussian properties).
+\textit{Note:} If Fermions, $\Psi_A \propto [\psi_0(1)\psi_1(2) - \dots]$. $\Psi(x,x)=0 \implies \Delta E = 0$.
+\section{Gaussian Pulse}
+% ============================================================
+
+1D HO in ground state $\ket{0}$. Perturbation $H'(t) = -q E x e^{-t^2/\tau^2}$.
+Find prob to transition to $\ket{1}$ at $t \to \infty$.
+$c_1(t) = -\frac{i}{\hbar} \int_{-\infty}^{\infty} e^{i\omega_{10}t'} V_{10}(t') dt'$.
+$V_{10} = -qE \bra{1}x\ket{0} e^{-t^2/\tau^2} = -qE \ell_0 e^{-t^2/\tau^2}$.
+integral $I = \int_{-\infty}^{\infty} e^{-t^2/\tau^2 + i\omega t} dt = \sqrt{\pi}\tau e^{-\omega^2\tau^2/4}$.
+$c_1(\infty) = -\frac{i}{\hbar}(-qE\ell_0) \sqrt{\pi}\tau e^{-\omega^2\tau^2/4}$.
+\textbf{Result:} $P_{0\to 1} = \frac{\pi q^2 E^2 \ell_0^2 \tau^2}{\hbar^2} e^{-\omega^2\tau^2/2}$.
+\textit{Note: If pulse is very slow ($\tau \to \infty$), $P \to 0$ (Adiabatic).}
+
+% ============================================================
+\section{ Solved: Time-Dependent Dynamics}
+% ============================================================
+
+\subsection{ Driven Two-Level System (Resonance)}
+$H_0 = \begin{pmatrix} E_a & 0 \\ 0 & E_b \end{pmatrix}$, $V(t) = \gamma \cos(\omega t) \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}$.
+Let $\omega_0 = (E_b - E_a)/\hbar$. Detuning $\Delta = \omega - \omega_0$.
+\textbf{Perturbation Limit:} If $\gamma \ll \hbar\Delta$ (Weak/Far detuned):
+$P(t) \approx \frac{\gamma^2}{\hbar^2 \Delta^2} \sin^2(\Delta t / 2)$.
+(Matches 1st order TDPT result).
+
+% ============================================================
+% ============================================================
+\section{ Solved: Spin Archetypes}
+% ============================================================
+
+\subsection{ Hyperfine Splitting (H-Ground State)}
+$H_{hf} = A \mathbf{S}_e \cdot \mathbf{S}_p$. ($e$ and $p$ are spin-1/2).
+Total spin $\mathbf{F} = \mathbf{S}_e + \mathbf{S}_p$.
+Identity: $\mathbf{S}_e \cdot \mathbf{S}_p = \frac{1}{2}(\mathbf{F}^2 - \mathbf{S}_e^2 - \mathbf{S}_p^2)$.
+Eigenvalues: $\frac{\hbar^2}{2}[F(F+1) - 3/4 - 3/4]$.
+\textbf{Triplet ($F=1$):} $E_T = \frac{\hbar^2 A}{2}[2 - 3/2] = \frac{\hbar^2 A}{4}$.
+\textbf{Singlet ($F=0$):} $E_S = \frac{\hbar^2 A}{2}[0 - 3/2] = -\frac{3\hbar^2 A}{4}$.
+\textbf{Splitting:} $\Delta E = \hbar^2 A$ (21 cm line).
+Degeneracy: Triplet (3), Singlet (1).
+
+\subsection{ Spin Precession (Exact)}
+$H = -\gamma B S_z$. Initial state $\ket{+}_x = \frac{1}{\sqrt{2}}(\ket{\uparrow} + \ket{\downarrow})$.
+Time evolution:
+$\ket{\psi(t)} = \frac{1}{\sqrt{2}}(e^{-iE_\uparrow t/\hbar}\ket{\uparrow} + e^{-iE_\downarrow t/\hbar}\ket{\downarrow})$.
+$E_{\uparrow/\downarrow} = \mp \hbar\omega_L/2$.
+$\ket{\psi(t)} = \frac{1}{\sqrt{2}}(e^{i\omega_L t/2}\ket{\uparrow} + e^{-i\omega_L t/2}\ket{\downarrow})$.
+Spin vector $\langle \mathbf{S} \rangle(t)$:
+$\langle S_x \rangle = \frac{\hbar}{2} \cos(\omega_L t)$, $\langle S_y \rangle = \frac{\hbar}{2} \sin(\omega_L t)$.
+Precesses about $z$ with Larmor freq $\omega_L = \gamma B$. 
+
+% ============================================================
+\section{ Solved: Virial Theorem Tricks}
+% ============================================================
+
+\textbf{Theorem:} $2\langle T \rangle = \langle \mathbf{r} \cdot \nabla V \rangle$.
+For potentials $V(r) = \alpha r^n$: $\boxed{2\langle T \rangle = n \langle V \rangle}$.
+
+\subsection{ Harmonic Oscillator ($n=2$)}
+$2\langle T \rangle = 2\langle V \rangle \implies \langle T \rangle = \langle V \rangle = E_n/2$.
+Useful for perturbations like $H' = \lambda x^2$.
+$E^{(1)} = \lambda \langle x^2 \rangle = \lambda \frac{2\langle V_0 \rangle}{m\omega^2} = \lambda \frac{E_n}{m\omega^2}$.
+
+\subsection{ Hydrogen / Coulomb ($n=-1$)}
+$2\langle T \rangle = -\langle V \rangle$.
+Total $E = \langle T \rangle + \langle V \rangle = -\langle T \rangle = \frac{1}{2}\langle V \rangle$.
+Allows instant calculation of $\langle 1/r \rangle$:
+$\langle \frac{1}{r} \rangle = -\frac{1}{e^2}\langle V \rangle = -\frac{2E_n}{e^2} = \frac{2}{e^2}\frac{13.6 Z^2}{n^2}$.
+
+
+
+\newpage
+\section{Mathematical Tools}
+% ============================================================
+\subsection{Cylindrical}
+\[\nabla f =
+\hat{\bs{\rho}} \frac{\partial f}{\partial \rho}
++
+\hat{\bs{\phi}} \frac{1}{\rho} \frac{\partial f}{\partial \phi}
++
+\hat{\mathbf{z}} \frac{\partial f}{\partial z}
+\]
+\[
+\nabla \cdot \mathbf{A}
+=
+\frac{1}{\rho}\frac{\partial}{\partial \rho}\!\left(\rho A_\rho\right)
++
+\frac{1}{\rho}\frac{\partial A_\phi}{\partial \phi}
++
+\frac{\partial A_z}{\partial z}
+\]
+\[
+\nabla \times \mathbf{A}
+=
+\left(
+\frac{1}{\rho}\frac{\partial A_z}{\partial \phi}
+-
+\frac{\partial A_\phi}{\partial z}
+\right)\hat{\bs{\rho}}
++
+\left(
+\frac{\partial A_\rho}{\partial z}
+-
+\frac{\partial A_z}{\partial \rho}
+\right)\hat{\bs{\phi}}
++
+\frac{1}{\rho}
+\left(
+\frac{\partial}{\partial \rho}(\rho A_\phi)
+-
+\frac{\partial A_\rho}{\partial \phi}
+\right)\hat{\mathbf{z}}
+\]
+\[\nabla^2 f = \frac{\partial^2 f}{\partial \rho^2} + \frac{1}{\rho} \frac{\partial f}{\partial \rho} + \frac{1}{\rho^2} \frac{\partial^2 f}{\partial \phi^2} + \frac{\partial^2 f}{\partial z^2}\]
+    \[
+        dV = \rho \, d\rho \, d\phi \, dz
+    \]
+
+\subsection{Spherical}
+\[\nabla f =
+\hat{\mathbf{r}} \frac{\partial f}{\partial r}
++
+\hat{\bs{\theta}} \frac{1}{r} \frac{\partial f}{\partial \theta}
++
+\hat{\bs{\phi}} \frac{1}{r \sin\theta} \frac{\partial f}{\partial \phi}
+\]
+\[
+\nabla \cdot \mathbf{A}
+=
+\frac{1}{r^2}\frac{\partial}{\partial r}\!\left(r^2 A_r\right)
++
+\frac{1}{r\sin\theta}
+\frac{\partial}{\partial \theta}\!\left(\sin\theta\, A_\theta\right)
++
+\frac{1}{r\sin\theta}
+\frac{\partial A_\phi}{\partial \phi}
+\]
+{\scriptsize\[
+\nabla \times \mathbf{A}
+=
+\frac{1}{r\sin\theta}
+\left(
+\frac{\partial}{\partial \theta}(\sin\theta\, A_\phi)
+-
+\frac{\partial A_\theta}{\partial \phi}
+\right)\hat{\mathbf{r}}
++
+\frac{1}{r}
+\left(
+\frac{1}{\sin\theta}\frac{\partial A_r}{\partial \phi}
+-
+\frac{\partial}{\partial r}(r A_\phi)
+\right)\hat{\bs{\theta}}
++
+\frac{1}{r}
+\left(
+\frac{\partial}{\partial r}(r A_\theta)
+-
+\frac{\partial A_r}{\partial \theta}
+\right)\hat{\bs{\phi}}
+\]
+}
+\[\nabla^2 f = \frac{1}{r^2} \frac{\partial}{\partial r} \left( r^2 \frac{\partial f}{\partial r} \right) + \frac{1}{r^2 \sin\theta} \frac{\partial}{\partial \theta} \left( \sin\theta \frac{\partial f}{\partial \theta} \right) + \frac{1}{r^2 \sin^2\theta} \frac{\partial^2 f}{\partial \phi^2}\]
+\[\nabla^2 f = \frac{1}{r^2} \frac{\partial}{\partial r} \left( r^2 \frac{\partial f}{\partial r} \right) - \frac{L^2}{\hbar^2 r^2} f\]
+\[L^2 = -\hbar^2 \left[ \frac{1}{\sin\theta} \frac{\partial}{\partial \theta} \left( \sin\theta \frac{\partial}{\partial \theta} \right) + \frac{1}{\sin^2\theta} \frac{\partial^2}{\partial \phi^2} \right]\]
+    \[
+        dV = r^2 \sin\theta \, dr \, d\theta \, d\phi
+    \]
+
+\subsection{Vector Identities}
+\[
+\mathbf{A} \cdot (\mathbf{B} \times \mathbf{C}) = \mathbf{B} \cdot (\mathbf{C} \times \mathbf{A}) = \mathbf{C} \cdot (\mathbf{A} \times \mathbf{B})
+\]
+\[
+(\mathbf{A} \times \mathbf{B}) \times \mathbf{C} = (\mathbf{A} \cdot \mathbf{C}) \mathbf{B} - (\mathbf{B} \cdot \mathbf{C}) \mathbf{A}
+\]
+\begin{align*}
+    \begin{aligned}
+\cos a \cos b &= \tfrac{1}{2}[\cos(a-b)+\cos(a+b)] \\
+\sin a \sin b &= \tfrac{1}{2}[\cos(a-b)-\cos(a+b)] \\
+\sin a \cos b &= \tfrac{1}{2}[\sin(a-b)+\sin(a+b)]
+\end{aligned}
+\end{align*}
+\subsection{Spherical harmonics in $x,y,z$}
+\begin{align*}
+    x &= \sqrt{\frac{2\pi}{3}}\, r \left( Y_1^{1} + Y_1^{-1} \right), \quad
+    y = i \sqrt{\frac{2\pi}{3}}\, r \left( Y_1^{1} - Y_1^{-1} \right), \\
+    z &= 2r \sqrt{\frac{3}{4\pi}}\, Y_1^{0}, \
+    x^2 - y^2 = 2 \sqrt{\frac{2\pi}{15}}\, r^2 \left( Y_2^{2} + Y_2^{-2} \right), \\
+    x^2 + y^2 &= \frac{4\sqrt{\pi}}{3}\, r^2 \left( Y_0^{0} - \frac{1}{\sqrt{5}} Y_2^{0} \right), \quad
+    z^2 = \frac{2\sqrt{\pi}}{3}\, r^2 \left( Y_0^{0} + \frac{2}{\sqrt{5}} Y_2^{0} \right).
+\end{align*}
+\textbf{Angular Momentum Commutators}
+\begin{align*}
+    [J_i, J_j] &= i\hbar \epsilon_{ijk} J_k & [J^2, J_i] &= 0 & [L_i, S_j] &= 0 \\
+    [J_z, J_\pm] &= \pm\hbar J_\pm & [J_+, J_-] &= 2\hbar J_z & [J^2, J_\pm] &= 0 \\
+    J_\mp J_\pm &= J^2 - J_z^2 \mp \hbar J_z & \mathbf{L}\times\mathbf{L} &= i\hbar\mathbf{L} & \mathbf{J} &= \mathbf{L}+\mathbf{S}
+\end{align*}
+\begin{center}
+\begin{tabular}{lcc}
+\hline
+Operator          & Action on $|j,m\rangle$                          & $\Delta j$? \\
+\hline
+$j_z$             & $m\hbar |j,m\rangle$                             & no \\
+$j_\pm$           & $\hbar\sqrt{j(j+1)-m(m\pm1)} |j,m\pm1\rangle$    & no \\
+$j^2$             & $j(j+1)\hbar^2 |j,m\rangle$                      & no \\
+\hline
+E1 (electric dipole)  & mixes $j\to j,j\pm1$ (no $0\to0$)            & yes \\
+M1 (magnetic dipole)  & mixes $j\to j,j\pm1$ (no $0\to0$)            & yes \\
+E2 (quadrupole)       & mixes $j\to j,j\pm1,\pm2$ (restricted)       & yes \\
+\hline
+\end{tabular}
+\end{center}
+\textbf{Spin-Orbit \& Conservation} ($H_{SO} \propto \mathbf{L}\cdot\mathbf{S}$)
+\begin{align*}
+    [\mathbf{L}\cdot\mathbf{S}, \mathbf{J}] &= 0 & [\mathbf{L}\cdot\mathbf{S}, L^2] &= 0 & [\mathbf{L}\cdot\mathbf{S}, S^2] &= 0 \\
+    [\mathbf{L}\cdot\mathbf{S}, L_z] &\neq 0 & [\mathbf{L}\cdot\mathbf{S}, S_z] &\neq 0 & \mathbf{L}\cdot\mathbf{S} &= \tfrac{1}{2}(J^2 - L^2 - S^2)
+\end{align*}
+\section{Integrals}  
+\[\int_0^\infty r^n e^{-ar} dr = \frac{n!}{a^{n+1}}\]
+ $\int_0^\infty e^{-\mu r} \sin(qr)\, dr = \frac{q}{\mu^2 + q^2}$
+$\int_{-\infty}^{\infty}e^{-ax^2+bx}\dd{x}=\sqrt{\frac{\pi}{a}}\,e^{b^2/4a}$.\quad
+$\int_0^L x\sin\!\bigl(\frac{n\pi x}{L}\bigr)\dd{x}=\frac{(-1)^{n+1}L^2}{n\pi}$.
+
+$\int_0^L x^2\sin^2\!\bigl(\frac{n\pi x}{L}\bigr)\dd{x}=L^3\!\bigl(\frac{1}{3}-\frac{1}{2n^2\pi^2}\bigr)$.
+
+$\int_0^L x\cos\!\bigl(\frac{n\pi x}{L}\bigr)\dd{x}=\frac{L^2}{n^2\pi^2}[(-1)^n-1]$.
+
+$\int \frac{dx}{a^2-x^2}=\frac{1}{2a}\ln\!\left|\frac{x+a}{x-a}\right|+C$.
+$\int_{-\infty}^{\infty}x^{2}e^{-ax^2}dx=\frac{1}{2}\sqrt{\frac{\pi}{a^3}}$
+\\
+$\int \frac{e^{-\mu r}}{r} e^{i\mathbf{q}\cdot\mathbf{r}} d^3r = \frac{4\pi}{q^2 + \mu^2} \quad (\text{Coulomb: } \mu \to 0 \implies 4\pi/q^2)$\\
+For a scalar function $u(r, \theta, \varphi)$ that depends exclusively on the radial coordinate $r$:
+\begin{align*}
+    \int_V u(r) \, dV &= \int_{0}^{2\pi} d\varphi \int_{0}^{\pi} \sin\theta \, d\theta \int r^2 u(r) \, dr \\
+    &= 4\pi \int r^2 u(r) \, dr
+\end{align*}
+{ \noindent \textbf{Useful Taylor Series} ($|x| \ll 1$): \\
+$e^x \approx 1 + x + \frac{x^2}{2!} + \dots$ \quad
+$\sin x \approx x - \frac{x^3}{3!} + \dots$ \quad
+$\cos x \approx 1 - \frac{x^2}{2!} + \dots$ \\
+$(1+x)^n \approx 1 + nx + \frac{n(n-1)}{2}x^2$ \quad
+$\ln(1+x) \approx x - \frac{x^2}{2} + \dots$ \quad
+$\frac{1}{1 \mp x} \approx 1 \pm x + x^2$
+}
+\subsection{22.2 Delta Function}
+\[
+\delta(x)=\frac{1}{2\pi}\!\int_{-\infty}^{\infty}\!e^{ikx}\dd{k}=\lim_{\epsilon\to 0}\frac{1}{\pi}\frac{\epsilon}{\epsilon^2+x^2}=\lim_{a\to 0}\frac{e^{-x^2/a^2}}{a\sqrt{\pi}}
+\]
+$\delta(ax)=\frac{1}{|a|}\delta(x)$.\quad
+$\delta(g(x))=\sum_i\frac{\delta(x-x_i)}{|g'(x_i)|}$ ($g(x_i)=0$).
+
+$\int\!\delta(x-a)f(x)\dd{x}=f(a)$
+
+\[Y_1^0 = \sqrt{\frac{3}{4\pi}} \frac{z}{r}, \quad Y_1^{\pm 1} = \mp \sqrt{\frac{3}{8\pi}} \frac{x \pm iy}{r}\]
+\subsection{CG Coefficients: $\tfrac{1}{2}\otimes\tfrac{1}{2}$}
+
+$\ket{l_1, l_2; m_1 m_2} \leftrightarrow \ket{l, m}$.
+
+From product to coupled states:
+\[
+\begin{pmatrix}
+\ket{0,0} \\
+\ket{1,1} \\
+\ket{1,0} \\
+\ket{1,-1}
+\end{pmatrix}
+=
+\frac{1}{\sqrt{2}}
+\begin{pmatrix}
+0 & 1 & -1 & 0 \\
+\sqrt{2} & 0 & 0 & 0 \\
+0 & 1 & 1 & 0 \\
+0 & 0 & 0 & \sqrt{2}
+\end{pmatrix}
+\begin{pmatrix}
+\ket{\uparrow\uparrow} \\
+\ket{\uparrow\downarrow} \\
+\ket{\downarrow\uparrow} \\
+\ket{\downarrow\downarrow}
+\end{pmatrix}.
+\]
+
+From coupled to product states:
+\[
+\begin{pmatrix}
+\ket{\uparrow\uparrow} \\
+\ket{\uparrow\downarrow} \\
+\ket{\downarrow\uparrow} \\
+\ket{\downarrow\downarrow}
+\end{pmatrix}
+=
+\frac{1}{\sqrt{2}}
+\begin{pmatrix}
+0 & \sqrt{2} & 0 & 0 \\
+1 & 0 & 1 & 0 \\
+-1 & 0 & 1 & 0 \\
+0 & 0 & 0 & \sqrt{2}
+\end{pmatrix}
+\begin{pmatrix}
+\ket{0,0} \\
+\ket{1,1} \\
+\ket{1,0} \\
+\ket{1,-1}
+\end{pmatrix}.
+\]
+\end{multicols}
+%\footnotesize
+\newpage
+\input{integral_table}
+
+\end{document}

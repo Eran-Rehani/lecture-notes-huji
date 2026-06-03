@@ -1,0 +1,2051 @@
+\documentclass[a4paper,11pt]{article} % Reduced to 11pt for significant space saving
+
+% ==========================================
+% CORE PACKAGES & GEOMETRY
+\usepackage[margin=9mm, top=4mm, bottom=4mm, includeheadfoot, headheight=4pt]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+% ==========================================
+% MATH & FONTS
+% ==========================================
+\usepackage{mathtools,amssymb} % mathtools loads amsmath internally
+\allowdisplaybreaks % Allows multi-line derivations to break across pages
+
+% ==========================================
+% COLORS & GRAPHICS (B&W Optimized)
+% ==========================================
+\usepackage{xcolor,microtype}
+% Redefined colors to grayscale for B&W printing
+\definecolor{primaryblue}{gray}{0.2}
+\definecolor{warningcolor}{gray}{0.4}
+\definecolor{errorcolor}{gray}{0.3}
+\definecolor{infocolor}{gray}{0.2}
+\definecolor{notecolor}{gray}{0.5}
+
+% ==========================================
+% SECTION & PAGE FORMATTING
+% ==========================================
+\usepackage{titlesec,fancyhdr,enumitem}
+
+% Default heading spacing
+\titleformat{\section}{\bfseries\Large}{\thesection.}{0.4em}{}
+\titleformat{\subsection}{\bfseries\large}{\thesubsection.}{0.4em}{}
+\titleformat{\subsubsection}{\bfseries\normalsize}{\thesubsubsection.}{0.4em}{}
+
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[R]{\leftmark}
+\renewcommand{\headrulewidth}{0.1pt}
+\setlength{\headsep}{10pt}
+
+% Aggressive list compression
+\setlist[itemize]{label=\textbullet,leftmargin=1.5em,nosep, topsep=2pt, partopsep=0pt}
+\setlist[enumerate]{leftmargin=1.5em,labelsep=0.5em,nosep, topsep=2pt, partopsep=0pt}
+
+% ==========================================
+% COLOR BOXES (Optimized Padding & B&W)
+% ==========================================
+\usepackage{tcolorbox}
+\tcbuselibrary{breakable,skins}
+
+% Reduced internal padding (left/right to 3mm, top/bottom to 2mm)
+\newtcolorbox{custombox}[3][]{
+  enhanced, breakable, rounded corners, left=3mm, right=3mm, top=2mm, bottom=2mm,
+  colframe=#2, colback=white, fonttitle=\bfseries,
+  title={#3}, attach boxed title to top center={yshift=-2mm},
+  boxed title style={size=small, colback=#2, colframe=#2, sharp corners}, #1
+}
+
+\newenvironment{important}{\begin{custombox}{errorcolor}{Important}}{\end{custombox}}
+\newenvironment{notebox}[1][]{\begin{custombox}[#1]{notecolor}{Note}}{\end{custombox}}
+\newenvironment{warningbox}[1][]{\begin{custombox}[#1]{warningcolor}{Warning}}{\end{custombox}}
+\newenvironment{summary}{\begin{custombox}{infocolor}{Summary}}{\end{custombox}}
+\newenvironment{summarybox}[1][]{\begin{custombox}[#1]{infocolor}{Final answer}}{\end{custombox}}
+
+% Compact problem statement box
+\newtcolorbox{problembox}[1][]{
+  enhanced, breakable, left=3mm, right=3mm, top=1.5mm, bottom=1.5mm,
+  colframe=black, colback=gray!5, fonttitle=\bfseries,
+  title={Problem}, boxrule=0.5pt, #1
+}
+
+% ==========================================
+% HYPERLINKS & REFERENCES
+% ==========================================
+\usepackage[hidelinks]{hyperref}
+\usepackage{cleveref}
+
+% ==========================================
+% GLOBAL MATH SPACING COMPRESSION
+% ==========================================
+\AtBeginDocument{
+  \setlength{\abovedisplayskip}{4pt plus 2pt minus 2pt}
+  \setlength{\belowdisplayskip}{4pt plus 2pt minus 2pt}
+  \setlength{\abovedisplayshortskip}{2pt plus 1pt minus 1pt}
+  \setlength{\belowdisplayshortskip}{2pt plus 1pt minus 1pt}
+}
+\setlength{\parskip}{3pt plus 1pt minus 1pt} % Added slight paragraph spacing for readability
+\setlength{\parindent}{0pt} % Removed indent to save horizontal space
+
+
+\begin{document}
+
+\makeatletter
+\@starttoc{toc}
+\makeatother
+
+
+% ---------------------------------------------------------------------
+% PROBLEM 1
+% ---------------------------------------------------------------------
+\section{First-Order PDEs and Classification}
+
+\begin{notebox}[title={General Procedure: Method of Characteristics}]
+First-order PDEs of the form $P(x,y,u)\,u_x + Q(x,y,u)\,u_y = R(x,y,u)$ are solved using the \textbf{method of characteristics}, which reduces the PDE to a system of ODEs along characteristic curves.
+\begin{enumerate}
+    \item \textbf{Write the Lagrange--Charpit (auxiliary) equations:} $\displaystyle\frac{dx}{P} = \frac{dy}{Q} = \frac{du}{R}.$
+    \item \textbf{Extract two independent invariants.} Pair ratios to form integrable ODEs. Integrate each to obtain constants $C_1 = \phi(x,y)$ and $C_2 = \psi(x,y,u)$.
+    \item \textbf{Form the general solution.} Set $C_2 = f(C_1)$, i.e.\ $\psi = f(\phi)$, where $f$ is an arbitrary function.
+    \item \textbf{Apply the initial/boundary condition.} Substitute the given curve data to determine $f$ explicitly, then replace its argument to obtain the particular solution $u(x,y)$.
+    \item \textbf{Verify.} Check that the solution satisfies both the PDE and the initial/boundary curve.
+\end{enumerate}
+\textbf{For classification of 2nd-order PDEs} $Au_{xx}+2Bu_{xy}+Cu_{yy}+\cdots=0$:
+\begin{enumerate}
+    \item Compute the discriminant $\Delta = B^2-AC$. If $\Delta>0$: Hyperbolic; $\Delta=0$: Parabolic; $\Delta<0$: Elliptic.
+    \item Find characteristic curves by solving $A\lambda^2 - 2B\lambda + C = 0$ where $\lambda = dy/dx$; integrate to get new coordinates $(\xi,\eta)$.
+    \item Transform the PDE to $(\xi,\eta)$ via chain rule; the equation reduces to its canonical form (e.g.\ $u_{\xi\eta}=0$ for hyperbolic).
+    \item Integrate the canonical form and apply Cauchy data to determine the arbitrary functions.
+\end{enumerate}
+\end{notebox}
+
+\subsection{\texorpdfstring{$x u_x + y u_y = 2u$; $u(x,1)=x^2+x$}{Solve x u_x + y u_y = 2u by characteristics; particular solution satisfying u(x,1)=x^2+x}}
+
+\begin{problembox}
+Consider the quasilinear equation:
+$$x \frac{\partial u}{\partial x} + y \frac{\partial u}{\partial y} = 2u$$
+
+(a) Find the general solution $u(x, y)$ using the method of characteristics.
+
+(b) Find the particular solution satisfying the curve:
+$$u(x, 1) = x^2 + x$$
+\end{problembox}
+
+
+\textbf{(a) General Solution.}
+The auxiliary equations $\frac{dx}{x} = \frac{dy}{y} = \frac{du}{2u}$ give two invariants:
+\begin{itemize}
+    \item $\frac{dx}{x}=\frac{dy}{y} \Rightarrow C_1 = y/x$
+    \item $\frac{dx}{x}=\frac{du}{2u} \Rightarrow C_2 = u/x^2$
+\end{itemize}
+Setting $C_2=f(C_1)$: $\displaystyle\boxed{u(x,y)=x^2 f\!\left(\tfrac{y}{x}\right)}$.
+
+\textbf{(b) Particular Solution}
+
+We apply the condition $u(x, 1) = x^2 + x$. Substituting $y=1$ and $u = x^2+x$ into the general solution:
+$$ x^2 + x = x^2 f\left(\frac{1}{x}\right) $$
+Dividing by $x^2$ (assuming $x \neq 0$):
+$$ 1 + \frac{1}{x} = f\left(\frac{1}{x}\right) $$
+To determine the structure of $f$, let $t = \frac{1}{x}$, giving $f(t) = 1 + t$.
+Substituting $t = \frac{y}{x}$ back: $u(x, y) = x^2 + xy$.
+
+\newpage
+\subsection{\texorpdfstring{$xz\,z_x + yz\,z_y = xe^{x+y}$; $z^2=2e^{x+1}$ on $y=1$}{Solve quasilinear PDE xz z_x + yz z_y = xe^{x+y} with BC z^2=2e^{x+1} at y=1}}
+
+
+\begin{problembox}
+
+   $$ xz \frac{\partial z}{\partial x} + yz \frac{\partial z}{\partial y} = x e^{x+y}$$
+ boundary condition:
+    $z^2 = 2e^{x+1} \quad \text{on the curve} \quad y = 1$
+\end{problembox}
+With $P=xz$, $Q=yz$, $R=xe^{x+y}$, the Lagrange equations are $\frac{dx}{xz}=\frac{dy}{yz}=\frac{dz}{xe^{x+y}}$.
+
+\textbf{First invariant:} $\frac{dx}{xz}=\frac{dy}{yz}\Rightarrow \frac{dx}{x}=\frac{dy}{y}\Rightarrow u=\tfrac{x}{y}=c_1$.
+
+\textbf{Second Characteristic ($v$):} From the first and third ratios, $e^{x+y}\,dx = z\,dz$.
+Using $c_1=x/y$ to write $y=x/c_1$:
+\begin{equation}
+    e^{x + \frac{x}{c_1}} dx = z dz \implies e^{x\left(1 + \frac{1}{c_1}\right)} dx = z dz
+\end{equation}
+Integrating:
+\begin{equation}
+    \int e^{x\left(\frac{c_1+1}{c_1}\right)} dx = \int z dz
+\end{equation}
+\begin{equation}
+    \frac{c_1}{c_1+1} e^{x\left(\frac{c_1+1}{c_1}\right)} = \frac{1}{2}z^2 + C_2
+\end{equation}
+Substituting $c_1 = x/y$:
+\begin{equation}
+    \frac{x/y}{(x/y)+1} = \frac{x}{x+y}, \quad x\left(\frac{x/y+1}{x/y}\right) = x+y
+\end{equation}
+The equation becomes:
+\begin{equation}
+    \frac{x}{x+y} e^{x+y} - \frac{1}{2}z^2 = -C_2
+\end{equation}
+The general solution $v=f(u)$ is:
+\begin{equation} \label{eq:general_sol}
+    z^2 = \frac{2x e^{x+y}}{x+y} + f\left(\frac{x}{y}\right)
+\end{equation}
+
+\textbf{Part B: Particular Solution.}
+Apply B.C.\ $y=1$, $z^2=2e^{x+1}$ in \eqref{eq:general_sol}:
+\begin{equation}
+    2e^{x+1} = \frac{2x e^{x+1}}{x+1} + f\left(\frac{x}{1}\right)
+\end{equation}
+Solving for $f$:
+\begin{equation}
+    f(\xi) = \frac{2e^{\xi+1}}{\xi+1}
+\end{equation}
+With $\xi=x/y$:
+\begin{equation}
+    f\left(\frac{x}{y}\right) = \frac{2y e^{\frac{x+y}{y}}}{x+y}
+\end{equation}
+Substituting into \eqref{eq:general_sol}:
+\begin{equation}
+    z^2 = \frac{2x e^{x+y}}{x+y} + \frac{2y e^{\frac{x+y}{y}}}{x+y}
+\end{equation}
+
+\textbf{Final Result:}
+The unique integral surface through $\Gamma$:
+\begin{equation}
+    \boxed{ z^2 = \frac{2}{x+y} \left( x e^{x+y} + y e^{\frac{x}{y} + 1} \right) }
+\end{equation}
+
+\textbf{Checks.} At $y=1$:
+\begin{align*}
+    z^2 \big|_{y=1} &= \frac{2}{x+1} \left( x e^{x+1} + 1 \cdot e^{x + 1} \right) \\
+    &= \frac{2}{x+1} e^{x+1} (x+1) \\
+    &= 2e^{x+1} \checkmark
+\end{align*}
+\textbf{Singularity:} undefined on $x=-y$.
+% ---------------------------------------------------------------------
+% PROBLEM 2
+% ---------------------------------------------------------------------
+\newpage
+\subsection{\texorpdfstring{$u_{xx} - 4u_{xy} + 3u_{yy} = 0$; classify, reduce to canonical form, solve with $u(x,0)=\sin x$, $u_y(x,0)=\cos x$}{Classify hyperbolic PDE, find characteristic coords, solve Cauchy problem}}
+
+\begin{problembox}
+(a) Classify the equation and reduce it to its canonical form:
+$$u_{xx} - 4u_{xy} + 3u_{yy} = 0$$
+
+(b) Find the general solution $u(x,y)$.
+
+(c) Determine the solution given: $u(x, 0) = \sin x, \quad u_y(x, 0) = \cos x$.
+\end{problembox}
+
+
+\textbf{(a) Classification and Reduction}
+
+\textbf{Step 1: Classify the equation.}
+The discriminant is $\Delta = B^2 - 4AC = (-4)^2 - 4(1)(3) = 16 - 12 = 4$. Since $\Delta > 0$, the equation is \textbf{Hyperbolic}.
+
+\textbf{Step 2: Find characteristic curves.}
+The characteristic slopes $\lambda = \frac{dy}{dx}$ satisfy $\lambda^2 - 4\lambda + 3 = 0 \implies (\lambda-3)(\lambda-1)=0$.
+The characteristics are $\frac{dy}{dx} = 3$ and $\frac{dy}{dx} = 1$.
+Integrating yields the characteristic families: $y - 3x = c_1$ and $y - x = c_2$.
+
+\textbf{Step 3: Characteristic coordinates} $\xi = 3x+y$, $\eta = x+y$:
+$$u_x = 3u_\xi + u_\eta, \quad u_y = u_\xi + u_\eta$$
+$$u_{xx} = 9u_{\xi\xi} + 6u_{\xi\eta} + u_{\eta\eta}$$
+$$u_{xy} = 3u_{\xi\xi} + 4u_{\xi\eta} + u_{\eta\eta}$$
+$$u_{yy} = u_{\xi\xi} + 2u_{\xi\eta} + u_{\eta\eta}$$
+
+\textbf{Step 4: Substitute:}
+$$ (9 - 12 + 3)u_{\xi\xi} + (6 - 16 + 6)u_{\xi\eta} + (1 - 4 + 3)u_{\eta\eta} = 0 $$
+$$ 0 \cdot u_{\xi\xi} - 4u_{\xi\eta} + 0 \cdot u_{\eta\eta} = 0 \implies u_{\xi\eta} = 0 $$
+Canonical form: $u_{\xi\eta} = 0$.
+
+\textbf{(b) General Solution.}
+Integrating $u_{\xi\eta}=0$: $u(x,y)=F(3x+y)+G(x+y)$.
+
+\textbf{(c) Specific Solution}
+Using initial data at $y=0$:
+1. $u(x,0) = F(3x) + G(x) = \sin x$
+2. $u_y(x,0) = F'(3x)\cdot 1 + G'(x)\cdot 1 = \cos x$
+
+Differentiating (1) w.r.t $x$:
+3. $3F'(3x) + G'(x) = \cos x$
+
+Subtracting (2) from (3):
+$$ 2F'(3x) = 0 \implies F(3x) = C_1 \text{ (constant)} $$
+Since $F$ is constant, from (1): $C_1 + G(x) = \sin x \implies G(x) = \sin x - C_1$.
+Substituting back into the general solution:
+$$ u(x,y) = \sin(x+y) $$
+
+\newpage
+% ---------------------------------------------------------------------
+% NEW PROBLEM (Section 1)
+% ---------------------------------------------------------------------
+\subsection{\texorpdfstring{$u_{xx} + 2u_{xy} + u_{yy} = 0$; classify, reduce to canonical form, solve with $u(x,0)=\sin x$, $u_y(x,0)=0$}{Classify parabolic PDE; single repeated characteristic; canonical form $u_{\xi\xi}=0$; general solution $xF(y-x)+G(y-x)$}}
+
+\begin{problembox}
+(a) Classify the PDE and reduce it to its canonical form:
+$$u_{xx} + 2u_{xy} + u_{yy} = 0$$
+
+(b) Find the general solution $u(x,y)$.
+
+(c) Determine the particular solution satisfying the Cauchy data:
+$$u(x, 0) = \sin x, \quad u_y(x, 0) = 0.$$
+\end{problembox}
+
+\textbf{(a) Classification and Canonical Form.} $A=1$, $B=2$, $C=1$: $\Delta = B^2-4AC = 0$, so the equation is \textbf{Parabolic}. The characteristic ODE $(dy-dx)^2=0$ gives $dy/dx=1$, i.e.\ the single repeated family $y-x=c$.
+
+\textbf{(b) General Solution.}
+Integrating twice: $u(\xi,\eta)=\xi F(\eta)+G(\eta)$, i.e.\
+$$ u(x,y) = x\,F(y-x) + G(y-x). $$
+
+\textbf{(c) Particular Solution.}
+(1) $u(x,0)=xF(-x)+G(-x)=\sin x$; \quad (2) $u_y(x,0)=xF'(-x)+G'(-x)=0$.
+Differentiating (1): $F(-x)-xF'(-x)-G'(-x)=\cos x$. Adding to (2): $F(-x)=\cos x$, so $F(s)=\cos s$.
+Then $G(-x)=\sin x-x\cos x$, so $G(s)=-\sin s+s\cos s$.
+\begin{align*}
+u(x,y)&=x\cos(y-x)+(y-x)\cos(y-x)-\sin(y-x)=y\cos(y-x)-\sin(y-x).
+\end{align*}
+
+\begin{summarybox}
+$u(x,y)=y\cos(y-x)-\sin(y-x)$
+\end{summarybox}
+
+\textbf{Verification:}
+\begin{itemize}
+    \item $u(x,0)=-\sin(-x)=\sin x$. \checkmark
+    \item $u_y(x,0)=\cos(-x)+0\cdot(-\sin(-x))-\cos(-x)=0$. \checkmark
+\end{itemize}
+
+\newpage
+
+% ---------------------------------------------------------------------
+% PROBLEM 3
+% ---------------------------------------------------------------------
+\section{Heat Equation}
+\vspace{-1cm}
+\begin{notebox}[title={General Procedure: Solving the Heat Equation}]
+The heat equation $u_t = k\,u_{xx}$ (possibly with lower-order terms or source terms) is solved differently depending on the domain.
+
+\textbf{Bounded Domain --- Separation of Variables:}
+\begin{enumerate}
+    \item \textbf{Steady-state decomposition.} Write $u = v(x) + w(x,t)$, where $v$ satisfies $v_t=0$ with the non-homogeneous BCs and/or source.
+    \item \textbf{Solve for the steady state $v(x)$:} an ODE boundary-value problem.
+    \item \textbf{Formulate the transient problem} for $w$: now with homogeneous BCs and modified IC $w(x,0)=u(x,0)-v(x)$.
+    \item \textbf{Separate variables} $w = X(x)T(t)$. Solve the spatial eigenvalue problem $X''+\lambda X = 0$ with BCs to obtain eigenfunctions $X_n$ and eigenvalues $\lambda_n$.
+    \item \textbf{Solve the temporal ODE} $T_n' + k\lambda_n T_n = q_n(t)$ for each mode (with forcing if a source is present).
+    \item \textbf{Expand the IC} in eigenfunctions to determine Fourier coefficients. Assemble $u = v + \sum_n T_n(t)X_n(x)$.
+\end{enumerate}
+\textbf{Semi-Infinite / Infinite Domain:}
+\begin{enumerate}
+    \item Reduce to a homogeneous IC via substitution (e.g.\ $\theta = u - T_0$).
+    \item Apply a \textbf{Laplace transform} in $t$ (or Fourier transform in $x$) to reduce the PDE to an ODE.
+    \item Solve the ODE, enforce boundedness/decay at infinity.
+    \item Invert the transform using known pairs (e.g.\ $\operatorname{erfc}$ for the Laplace approach).
+\end{enumerate}
+\textbf{Useful substitutions:} Advection term $v_d u_x$: use Galilean frame $\xi=x-v_d t$.  Reaction term $bu$: set $u=e^{bt}w$.
+\end{notebox}
+
+\subsection{\texorpdfstring{$u_t = u_{xx} - 2u + x$ on $0<x<\pi$; $u(0,t)=0$, $u(\pi,t)=\tfrac{\pi}{2}$, $u(x,0)=\tfrac{x}{2}+\sin(3x)$}{Solve heat-reaction PDE via steady-state decomposition; exponential decay transient}}
+
+\begin{problembox}
+Solve on $0 < x < \pi$:
+$$\frac{\partial u}{\partial t} = \frac{\partial^2 u}{\partial x^2} - 2u + x$$
+BCs: $u(0, t) = 0, \quad u(\pi, t) = \frac{\pi}{2}$.
+ICs: $u(x, 0) = \frac{x}{2} + \sin(3x)$.
+\end{problembox}
+
+
+Decompose $u=v(x)+w(x,t)$ where $v$ is the steady state.
+
+\textbf{Step 1: Steady state.} $v''-2v+x=0$, $v(0)=0$, $v(\pi)=\pi/2$.
+Try $v_p=Ax+B$: $-2(Ax+B)+x=0\Rightarrow A=1/2$, $B=0$. Then $v_p=x/2$ satisfies both BCs, so $v(x)=x/2$.
+
+\textbf{Step 2: Transient.} Substituting $u=v+w$: $w_t=w_{xx}-2w$ with $w(0,t)=w(\pi,t)=0$ and $w(x,0)=\sin(3x)$.
+
+\textbf{Step 3: Separation.} $w=X(x)T(t)$: $X''+(\lambda-2)X=0$, $X(0)=X(\pi)=0$. Eigenfunctions $\sin(nx)$ with $\lambda_n=n^2+2$, so $T_n(t)=e^{-(n^2+2)t}$.
+From IC $w(x,0)=\sin(3x)$: only $n=3$, $b_3=1$.
+
+\begin{summarybox}
+$$ u(x,t) = \frac{x}{2} + e^{-11t}\sin(3x) $$
+\end{summarybox}
+\hrule
+\subsection{\texorpdfstring{(A) Solve $n_t + v_d n_x = a^2 n_{xx}$ (advection-diffusion); (B) solve $n_t = a^2 n_{xx} + bn$ (reaction-diffusion); $n(x,0)=f(x)$}{(A) Galilean transform removes drift; (B) exponential substitution removes reaction term}}
+
+We derive both solutions using $G(x,y;t)=\frac{1}{2a\sqrt{\pi t}}e^{-(x-y)^2/(4a^2t)}$.
+
+\textbf{(A) Advection-Diffusion.} Use the Galilean frame $\xi=x-v_d t$, $\tau=t$. Then $\partial_t\to\partial_\tau-v_d\partial_\xi$ and the equation reduces to $n_\tau=a^2 n_{\xi\xi}$. Solving and transforming back:
+\begin{equation}
+    \boxed{ n(x,t) = \int_{-\infty}^{\infty} G(x-v_d t,\,y;\,t)\,f(y)\,dy }
+\end{equation}
+
+\textbf{(B) Reaction-Diffusion.} Substitute $n=e^{bt}u$. Then $n_t=e^{bt}(u_t+bu)$ and $n_{xx}=e^{bt}u_{xx}$, so the $bn$ terms cancel giving $u_t=a^2u_{xx}$ with $u(x,0)=f(x)$. Hence:
+\begin{equation}
+    \boxed{ n(x,t) = e^{bt}\int_{-\infty}^{\infty} G(x,y;t)\,f(y)\,dy }
+\end{equation}
+
+
+\newpage
+\subsection{\texorpdfstring{$n_t = a^2 n_{xx} + \sin(t)\cos^2(x)$ on $0<x<\pi$; $n_x(0,t)=n_x(\pi,t)=0$, $n(x,0)=\cos x$}{Heat eq with oscillating source; Neumann BCs; three active modes k=0,1,2}}
+
+\begin{problembox}
+    $$\frac{\partial n}{\partial t} = a^2 \frac{\partial^2 n}{\partial x^2} + \sin(t)\cos^2(x),\quad \left. \frac{\partial n}{\partial x} \right|_{x=0} = \left. \frac{\partial n}{\partial x} \right|_{x=\pi} = 0,\quad n(x, t=0) = \cos(x)$$
+\end{problembox}
+
+\textbf{Step 1: Find the eigenfunctions.}
+The spatial part of the homogeneous equation with Neumann BCs gives:
+$$X''(x) + \lambda X(x) = 0,\quad X'(0) = X'(\pi) = 0 \implies X_k(x) = \cos(kx), \quad k = 0, 1, 2, \dots$$
+with eigenvalues $\lambda_k = k^2$.
+
+\textbf{Step 2: Expand in eigenfunctions.}
+We seek a solution of the form:
+$$n(x,t) = \sum_{k=0}^{\infty} T_k(t) \cos(kx)$$
+
+\textbf{Step 3: Expand the source term.}
+Using the identity $\cos^2(x) = \tfrac{1}{2} + \tfrac{1}{2}\cos(2x)$:
+\[S(x,t) = \sin(t)\cos^2(x) = \tfrac{1}{2}\sin(t) + \tfrac{1}{2}\sin(t)\cos(2x)\]
+So the source excites only the $k=0$ and $k=2$ modes.
+
+\textbf{Step 4: Determine initial conditions for each mode.}
+From $n(x,0) = \cos(x)$, only the $k=1$ mode is initially present: $T_1(0) = 1$ and $T_k(0) = 0$ for all $k \neq 1$.
+
+\textbf{Step 5: Solve the ODEs.}
+Substituting the series into the PDE yields, for each $k$:
+\[T_k'(t) + a^2 k^2 T_k(t) = q_k(t)\]
+Case 1: \(k=0\)
+
+ODE: \(T_0'(t) = \tfrac12\sin t\), IC: \(T_0(0) = 0\).
+
+\[
+T_0(t) = \int_0^t \tfrac12 \sin\tau\,d\tau 
+= \tfrac12[-\cos\tau]_0^t 
+= \tfrac12(1-\cos t).
+\]
+
+Case 2: \(k=1\)
+
+ODE: \(T_1'(t) + a^2 T_1(t) = 0\), IC: \(T_1(0) = 1\).
+
+\[
+T_1(t) = e^{-a^2 t}.
+\]
+
+Case 3: \(k=2\)
+
+ODE: \(T_2'(t) + 4a^2 T_2(t) = \tfrac12\sin t\), IC: \(T_2(0) = 0\).
+
+General solution: \(T_2 = C e^{-4a^2 t} + A\sin t + B\cos t\).
+
+Solving for \(A,B,C\) with \(T_2(0)=0\) gives
+\[
+T_2(t) = \frac{e^{-4a^2 t} + 4a^2\sin t - \cos t}{2(16a^4+1)}.
+\]
+
+Case 4: \(k>2\)
+
+ODE: \(T_k' + a^2 k^2 T_k = 0\), IC: \(T_k(0)=0\) \(\Rightarrow T_k(t)=0\).
+
+Final solution (using nonzero modes \(k=0,1,2\)):
+
+\begin{summarybox}
+$  n(x,t) = \frac12(1-\cos t)
++ e^{-a^2 t}\cos x
++ \frac{e^{-4a^2 t} + 4a^2\sin t - \cos t}{2(16a^4+1)}\cos(2x).
+$
+  
+\end{summarybox}
+
+
+\newpage
+\subsection{\texorpdfstring{Solve $u_t = k\nabla^2 u$ in sphere $0<r<R$; $u(R,t)=0$, $u(r,0)=f(r)$}{Spherical heat equation: substitute v=ru to reduce to 1D heat eq; Fourier-sine series coefficients}}
+
+\begin{problembox}
+Solve the heat equation in a sphere of radius $R$:
+$$u_t = k\nabla^2 u, \quad 0<r<R, \quad u(R,t)=0, \quad u(r,0)=f(r)$$
+\end{problembox}
+
+\textbf{Step 1: Substitution to reduce dimension.}
+Let $v(r,t)=ru(r,t)$; then
+\[
+    \nabla^2 u = \frac{1}{r}v_{rr}, \quad \text{so } v_t = k\,v_{rr}, \quad 0<r<R.
+\]
+
+\textbf{Conditions for $v$:} $v(0,t)=v(R,t)=0$ (finiteness/BC), $v(r,0)=rf(r)$.
+
+\textbf{Separation of Variables.} With $v=\Phi(r)T(t)$:
+\begin{equation}
+    \frac{T'(t)}{k T(t)} = \frac{\Phi''(r)}{\Phi(r)} = -\lambda^2
+\end{equation}
+This gives $T(t)\propto e^{-k\lambda^2 t}$ and $\Phi''+\lambda^2\Phi=0$ with $\Phi(0)=\Phi(R)=0$, so $\Phi(r)=\sin(\lambda r)$ and $\lambda_n=n\pi/R$.
+
+\begin{summarybox}[title={General Solution}]
+Superposing and using $u=v/r$:
+$$ u(r,t) = \frac{1}{r} \sum_{n=1}^{\infty} A_n \sin\!\left(\frac{n\pi r}{R}\right) e^{-k \left(\frac{n\pi}{R}\right)^2 t} $$
+where the Fourier sine coefficients of $rf(r)$ are:
+$$ A_n = \frac{2}{R} \int_0^R r f(r) \sin\left(\frac{n\pi r}{R}\right) \, dr $$
+\end{summarybox}
+
+\newpage
+% ---------------------------------------------------------------------
+% NEW PROBLEM (Section 2)
+% ---------------------------------------------------------------------
+\subsection{\texorpdfstring{$u_t = k\,u_{xx}$ for $x>0$; $u(0,t)=T_s$, $u(x,0)=T_0$, $u\to T_0$ as $x\to\infty$}{Semi-infinite heat equation: Laplace transform in time reduces to ODE; inverse gives error-function solution}}
+
+\begin{problembox}
+Solve the heat equation on the semi-infinite domain $x > 0$:
+$$\frac{\partial u}{\partial t} = k\,\frac{\partial^2 u}{\partial x^2}, \quad x > 0,\; t > 0$$
+subject to:
+\begin{itemize}
+    \item Boundary condition: $u(0, t) = T_s$ (constant surface temperature)
+    \item Initial condition: $u(x, 0) = T_0$ (uniform initial temperature)
+    \item Far-field condition: $u(x, t) \to T_0$ as $x \to \infty$
+\end{itemize}
+\end{problembox}
+
+\textbf{Step 1: Reduce to a homogeneous IC.}
+Let $\theta(x,t) = u(x,t) - T_0$. Then $\theta$ satisfies:
+\[
+    \theta_t = k\,\theta_{xx}, \quad \theta(0,t) = \Delta T \equiv T_s - T_0, \quad \theta(x,0)=0, \quad \theta\to 0 \text{ as } x\to\infty.
+\]
+
+\textbf{Step 2: Laplace transform.} Taking $\hat\theta=\mathcal{L}\{\theta\}$ with $\theta(x,0)=0$:
+\[
+    s\hat\theta = k\hat\theta_{xx} \implies \hat\theta_{xx} - \tfrac{s}{k}\hat\theta = 0.
+\]
+General solution: $\hat\theta = A(s)e^{-\sqrt{s/k}\,x} + B(s)e^{+\sqrt{s/k}\,x}$. The far-field condition forces $B=0$, and $\hat\theta(0,s)=\Delta T/s$ gives $A=\Delta T/s$, so
+\[
+    \hat\theta(x,s) = \frac{\Delta T}{s}\,e^{-\frac{x}{\sqrt{k}}\sqrt{s}}.
+\]
+
+\textbf{Step 3: Invert via a known transform pair.}
+We use the Laplace transform pair:
+\[
+    \mathcal{L}^{-1}\!\left\{\frac{1}{s}\,e^{-a\sqrt{s}}\right\} = \mathrm{erfc}\!\left(\frac{a}{2\sqrt{t}}\right),
+\]
+with $a = x/\sqrt{k}$. This gives:
+\[
+    \theta(x,t) = \Delta T\,\mathrm{erfc}\!\left(\frac{x}{2\sqrt{kt}}\right).
+\]
+
+\textbf{Step 4: Return to original variable.}
+
+\begin{summarybox}
+$$u(x,t) = T_0 + (T_s - T_0)\,\mathrm{erfc}\!\left(\frac{x}{2\sqrt{kt}}\right)$$
+\end{summarybox}
+
+where $\mathrm{erfc}(\zeta) = \frac{2}{\sqrt{\pi}}\int_\zeta^\infty e^{-\eta^2}\,d\eta$ is the complementary error function.
+
+\textbf{Checks:}
+\begin{itemize}
+    \item At $x=0$: $\mathrm{erfc}(0) = 1$, so $u(0,t) = T_0 + (T_s-T_0)\cdot 1 = T_s$. \checkmark
+    \item At $t=0^+$: for $x>0$, the argument $\to\infty$ so $\mathrm{erfc}(\infty)=0$, hence $u(x,0^+)=T_0$. \checkmark
+    \item As $x\to\infty$: $u \to T_0$. \checkmark
+\end{itemize}
+
+% PROBLEM 4
+% ---------------------------------------------------------------------
+\newpage
+\section{Wave Equation}
+
+\begin{notebox}[title={General Procedure: Solving the Wave Equation}]
+The wave equation $u_{tt}=c^2 u_{xx}$ (with possible forcing) is approached according to the domain type.
+
+\textbf{Bounded Domain --- Separation of Variables:}
+\begin{enumerate}
+    \item \textbf{Ansatz} $u = X(x)T(t)$ with separation constant $-\lambda$.
+    \item \textbf{Spatial eigenvalue problem:} Solve $X''+\lambda X = 0$ with BCs to get eigenvalues $\lambda_n = (n\pi/L)^2$ and eigenfunctions $X_n = \sin(n\pi x/L)$.
+    \item \textbf{Temporal ODE:} $T_n'' + \omega_n^2 T_n = 0$ with $\omega_n = n\pi c/L$ gives $T_n = A_n\cos(\omega_n t)+B_n\sin(\omega_n t)$.
+    \item \textbf{Superpose:} $u = \sum_n [A_n\cos(\omega_n t)+B_n\sin(\omega_n t)]\sin(n\pi x/L)$.
+    \item \textbf{Determine $A_n$, $B_n$} from ICs $u(x,0)=f(x)$ and $u_t(x,0)=g(x)$ via Fourier sine integrals.
+\end{enumerate}
+\textbf{Forced Wave Equation:}
+\begin{enumerate}
+    \item Expand $u$ and the source in eigenfunctions; project by orthogonality to get decoupled ODEs for each mode $T_n$.
+    \item \textbf{Non-resonant} ($\Omega\ne\omega_n$): bounded beats solution.
+    \item \textbf{Resonant} ($\Omega=\omega_n$): secular growth $\propto t\sin(\omega_n t)$.
+\end{enumerate}
+\textbf{Unbounded Domain --- d'Alembert's Formula:}
+$$u(x,t) = \frac{\phi(x+ct)+\phi(x-ct)}{2}+\frac{1}{2c}\int_{x-ct}^{x+ct}\psi(s)\,ds$$
+Derived by transforming to characteristic coordinates $\xi=x+ct$, $\eta=x-ct$, which reduces the PDE to $u_{\xi\eta}=0$.
+\end{notebox}
+
+\subsection{\texorpdfstring{ $u_{tt}=c^2 u_{xx}$ on $(0,L)$; $u(0,t)=u(L,t)=0$; $u(x,0)=f(x)$, $u_t(x,0)=g(x)$}{Reference: 1D wave equation IBVP via separation of variables; Fourier sine series}}
+
+\begin{problembox}
+Consider a homogeneous string of length $L$ with fixed ends:
+\begin{align*}
+    \text{PDE:} & \quad \frac{\partial^2 u}{\partial t^2} = c^2 \frac{\partial^2 u}{\partial x^2}, \quad x \in (0, L), \ t > 0 \\
+    \text{BCs:} & \quad u(0,t) = 0, \quad u(L,t) = 0, \quad \forall t \geq 0 \\
+    \text{ICs:} & \quad u(x,0) = f(x), \quad \frac{\partial u}{\partial t}(x,0) = g(x)
+\end{align*}
+Find the solution $u(x,t)$ by separation of variables.
+\end{problembox}
+
+\textbf{Assumptions:} Small amplitude ($|u_x| \ll 1$), constant tension $T$ and density $\mu$ ($c = \sqrt{T/\mu}$), ideal flexibility, no external forces or damping.
+
+\textbf{Separation of Variables}
+Ansatz $u(x,t) = X(x)T(t)$ yields the coupled ODEs via separation constant $-\lambda$:
+\begin{equation}
+    \frac{X''}{X} = \frac{1}{c^2}\frac{T''}{T} = -\lambda
+\end{equation}
+
+\textbf{Spatial Eigenvalue Problem}
+Solving $X'' + \lambda X = 0$ subject to $X(0)=X(L)=0$ imposes $\lambda > 0$.
+\begin{itemize}
+    \item \textbf{Eigenvalues:} $\lambda_n = \left(\frac{n\pi}{L}\right)^2, \quad n \in \mathbb{N}$
+    \item \textbf{Eigenfunctions:} $X_n(x) = \sin\left(\frac{n\pi x}{L}\right)$
+\end{itemize}
+
+\textbf{Temporal Evolution}
+Solving $T_n'' + \omega_n^2 T_n = 0$ with angular frequency $\omega_n = c\sqrt{\lambda_n} = \frac{n\pi c}{L}$:
+\begin{equation}
+    T_n(t) = A_n \cos(\omega_n t) + B_n \sin(\omega_n t)
+\end{equation}
+
+\begin{summarybox}[title={General Solution}]
+By linearity, the general solution is the superposition of normal modes:
+$$ u(x,t) = \sum_{n=1}^{\infty} \sin\left(\frac{n\pi x}{L}\right) \left[ A_n \cos\left(\frac{n\pi c t}{L}\right) + B_n \sin\left(\frac{n\pi c t}{L}\right) \right] $$
+The Fourier coefficients are determined by orthogonality of sines:
+\begin{align*}
+    A_n &= \frac{2}{L} \int_0^L f(x) \sin\left(\frac{n\pi x}{L}\right) \, dx \\
+    B_n &= \frac{2}{n\pi c} \int_0^L g(x) \sin\left(\frac{n\pi x}{L}\right) \, dx
+\end{align*}
+\end{summarybox}
+
+
+\newpage
+\subsection{\texorpdfstring{$u_{tt} - c^2 u_{xx} = A\sin\!\left(\frac{3\pi x}{L}\right)\cos(\Omega t)$ on $(0,L)$; $u(0,t)=u(L,t)=0$; zero ICs; resonant ($\Omega=\omega_3$) and non-resonant cases}{Forced wave equation: bounded beats when non-resonant; secular growth when resonant}}
+
+\begin{problembox}
+$$u_{tt} - c^2 u_{xx} = A \sin\left(\frac{3\pi x}{L}\right)\cos(\Omega t)$$
+BCs: $u(0, t) = u(L, t) = 0$. ICs: $u(x, 0) = 0, u_t(x, 0) = 0$.
+\end{problembox}
+
+
+We use the method of eigenfunction expansion. The eigenfunctions of the homogeneous operator with zero BCs are $\sin\left(\frac{n\pi x}{L}\right)$.
+Ansatz:
+$$ u(x,t) = \sum_{n=1}^{\infty} T_n(t) \sin\left(\frac{n\pi x}{L}\right) $$
+Substituting into the PDE:
+$$ \sum_{n=1}^{\infty} \left[ T_n''(t) + \left(\frac{n\pi c}{L}\right)^2 T_n(t) \right] \sin\left(\frac{n\pi x}{L}\right) = A \sin\left(\frac{3\pi x}{L}\right)\cos(\Omega t) $$
+By orthogonality, with natural frequency $\omega_n = \tfrac{n\pi c}{L}$, we equate coefficients for each $n$.
+For $n \neq 3$:
+$$ T_n'' + \omega_n^2 T_n = 0, \quad T_n(0)=0, T_n'(0)=0 \implies T_n(t) = 0 $$
+For $n = 3$: $T_3'' + \omega_3^2 T_3 = A\cos(\Omega t)$, with $T_3(0)=0$, $T_3'(0)=0$.
+
+\textbf{Case 1: Non-Resonant ($\Omega \neq \omega_3$)}
+The general solution is $T_3(t) = c_1 \cos(\omega_3 t) + c_2 \sin(\omega_3 t) + \frac{A}{\omega_3^2 - \Omega^2}\cos(\Omega t)$.
+$T_3'(0) = \omega_3 c_2 = 0 \implies c_2 = 0$.
+$T_3(0) = c_1 + \frac{A}{\omega_3^2 - \Omega^2} = 0 \implies c_1 = - \frac{A}{\omega_3^2 - \Omega^2}$.
+$$ T_3(t) = \frac{A}{\omega_3^2 - \Omega^2} (\cos(\Omega t) - \cos(\omega_3 t)) $$
+
+\textbf{Case 2: Resonant ($\Omega = \omega_3$)}
+The particular solution form is $t(a \sin \Omega t + b \cos \Omega t)$.
+Solving $T_3'' + \Omega^2 T_3 = A \cos(\Omega t)$ yields particular solution $T_p = \frac{A}{2\Omega} t \sin(\Omega t)$.
+Homogeneous part satisfies initial conditions (starts at 0 with 0 slope).
+$$ T_3(t) = \frac{A}{2\omega_3} t \sin(\omega_3 t) $$
+
+\begin{summarybox}
+Solution: $u(x,t) = T_3(t) \sin\left(\frac{3\pi x}{L}\right)$.
+\begin{itemize}
+    \item If $\Omega \neq \frac{3\pi c}{L}$: $T_3(t) = \frac{A}{\omega_3^2 - \Omega^2} (\cos(\Omega t) - \cos(\omega_3 t))$
+    \item If $\Omega = \frac{3\pi c}{L}$: $T_3(t) = \frac{A L}{6\pi c} t \sin\left(\frac{3\pi c t}{L}\right)$
+\end{itemize}
+\end{summarybox}
+
+\newpage
+\subsection{$\frac{\partial^2 u}{\partial t^2}-\frac{\partial^2 u}{\partial x^2}=0,\quad u(x,0)=f(x),\quad u_t(x,0)=g(x)$}
+\begin{problembox}
+$$\frac{\partial^2 u}{\partial t^2}-\frac{\partial^2 u}{\partial x^2}=0, \quad x\in[0,\pi],\; t>0$$
+BCs: $u(0,t)=0,\quad u(\pi,t)=0$.
+
+(a) Find the solution with ICs: $u(x,0)=f(x),\quad u_t(x,0)=g(x)$.
+
+(b) Replace the second IC with $u(x,t_0) = h(x)$ for some $t_0 > 0$. Under what condition on $t_0$ does a unique solution exist?
+\end{problembox}
+
+\textbf{(a) Solution by separation of variables.}
+
+Assume $u(x,t)=X(x)T(t)$. Substituting into the PDE and separating:
+$$\frac{T''(t)}{T(t)}=\frac{X''(x)}{X(x)}=-\lambda$$
+This yields the spatial ODE $X''(x)+\lambda X(x)=0$ and the temporal ODE $T''(t)+\lambda T(t)=0$.
+
+Nontrivial solutions of the spatial problem exist only for
+\[
+\lambda=n^2, \qquad n\in\mathbb{N},
+\]
+with eigenfunctions
+\[
+X_n(x)=\sin(nx).
+\]
+
+For each $n$,
+\[
+T_n(t)=A_n\cos(nt)+B_n\sin(nt).
+\]
+
+By superposition,
+\[
+u(x,t)=\sum_{n=1}^{\infty}
+\left[A_n\cos(nt)+B_n\sin(nt)\right]\sin(nx).
+\]
+
+Imposing $u(x,0)=f(x)$ gives
+\[
+f(x)=\sum_{n=1}^{\infty}A_n\sin(nx),
+\qquad
+A_n=\frac{2}{\pi}\int_0^{\pi}f(x)\sin(nx)\,dx.
+\]
+
+Imposing $u_t(x,0)=g(x)$ gives
+\[
+g(x)=\sum_{n=1}^{\infty}nB_n\sin(nx),
+\qquad
+B_n=\frac{2}{n\pi}\int_0^{\pi}g(x)\sin(nx)\,dx.
+\]
+
+Thus
+\[
+u(x,t)=\sum_{n=1}^{\infty}
+\left[
+\left(\frac{2}{\pi}\int_0^{\pi}f(x)\sin(nx)\,dx\right)\cos(nt)
++
+\left(\frac{2}{n\pi}\int_0^{\pi}g(x)\sin(nx)\,dx\right)\sin(nt)
+\right]\sin(nx).
+\]
+
+\textbf{(b) Modified initial condition.}
+
+The general form remains
+\[
+u(x,t)=\sum_{n=1}^{\infty}
+\left[A_n\cos(nt)+B_n\sin(nt)\right]\sin(nx),
+\]
+\[
+A_n=\frac{2}{\pi}\int_0^{\pi}f(x)\sin(nx)\,dx.
+\]
+
+Define the sine coefficients of $h(x)$:
+\[
+H_n=\frac{2}{\pi}\int_0^{\pi}h(x)\sin(nx)\,dx.
+\]
+
+The condition $u(x,t_0)=h(x)$ yields
+\[
+A_n\cos(nt_0)+B_n\sin(nt_0)=H_n,
+\]
+hence
+\[
+B_n=\frac{H_n-A_n\cos(nt_0)}{\sin(nt_0)}.
+\]
+
+A unique solution exists if and only if
+\[
+\sin(nt_0)\neq0
+\quad \forall n\in\mathbb{N},
+\]
+equivalently
+\[
+t_0\neq\frac{m}{n}\pi
+\quad\Longleftrightarrow\quad
+\frac{t_0}{\pi}\notin\mathbb{Q}.
+\]
+
+The solution is therefore
+\[
+u(x,t)=\sum_{n=1}^{\infty}
+\left[
+A_n\cos(nt)
++
+\frac{H_n-A_n\cos(nt_0)}{\sin(nt_0)}\,\sin(nt)
+\right]\sin(nx).
+\]
+
+\newpage
+% ---------------------------------------------------------------------
+% NEW PROBLEM (Section 3)
+% ---------------------------------------------------------------------
+\subsection{\texorpdfstring{$u_{tt}=c^2 u_{xx}$ on $(-\infty,\infty)$; derive d'Alembert's formula; apply to $u(x,0)=e^{-x^2}$, $u_t(x,0)=0$}{D'Alembert's formula via characteristic coordinates; splitting into two traveling Gaussian pulses}}
+
+\begin{problembox}
+Consider the wave equation on the full real line:
+$$u_{tt} = c^2 u_{xx}, \quad -\infty < x < \infty, \; t > 0$$
+
+(a) Derive d'Alembert's formula for the Cauchy problem with initial data $u(x,0) = \phi(x)$ and $u_t(x,0) = \psi(x)$.
+
+(b) Find the explicit solution when $\phi(x) = e^{-x^2}$ and $\psi(x) = 0$. Describe the physical behaviour for large $t$.
+\end{problembox}
+
+\textbf{(a) Derivation of d'Alembert's Formula}
+
+\textbf{Step 1: Change to characteristic coordinates.}
+Introduce $\xi = x + ct$ and $\eta = x - ct$. Then:
+\[
+    u_t = c\,(u_\xi - u_\eta), \quad
+    u_{tt} = c^2(u_{\xi\xi} - 2u_{\xi\eta} + u_{\eta\eta}),
+\]
+\[
+    u_x = u_\xi + u_\eta, \quad
+    u_{xx} = u_{\xi\xi} + 2u_{\xi\eta} + u_{\eta\eta}.
+\]
+Substituting into the PDE:
+\[
+    c^2(u_{\xi\xi} - 2u_{\xi\eta} + u_{\eta\eta}) = c^2(u_{\xi\xi} + 2u_{\xi\eta} + u_{\eta\eta})
+    \implies u_{\xi\eta} = 0.
+\]
+
+\textbf{Step 2: Integrate the canonical form.}
+$u_{\xi\eta} = 0$ integrates immediately to:
+\[
+    u(\xi,\eta) = F(\xi) + G(\eta) \implies u(x,t) = F(x+ct) + G(x-ct),
+\]
+for arbitrary $C^1$ functions $F$ and $G$.
+
+\textbf{Step 3: Apply initial conditions.}
+At $t=0$:
+\begin{align*}
+    u(x,0) &= F(x) + G(x) = \phi(x), \tag{i}\\
+    u_t(x,0) &= c\big[F'(x) - G'(x)\big] = \psi(x). \tag{ii}
+\end{align*}
+Integrating (ii):
+\[
+    F(x) - G(x) = \frac{1}{c}\int_0^x \psi(s)\,ds + K. \tag{iii}
+\]
+Adding (i) and (iii) and subtracting (i) from (iii):
+\[
+    F(x) = \frac{1}{2}\phi(x) + \frac{1}{2c}\int_0^x\psi(s)\,ds + \frac{K}{2}, \qquad
+    G(x) = \frac{1}{2}\phi(x) - \frac{1}{2c}\int_0^x\psi(s)\,ds - \frac{K}{2}.
+\]
+Substituting back and noting the constants $\pm K/2$ cancel:
+
+\begin{summarybox}[title={D'Alembert's Formula}]
+$$u(x,t) = \frac{\phi(x+ct) + \phi(x-ct)}{2} + \frac{1}{2c}\int_{x-ct}^{x+ct}\psi(s)\,ds$$
+\end{summarybox}
+
+\textbf{(b) Gaussian Initial Displacement}
+
+With $\phi(x) = e^{-x^2}$ and $\psi(x) = 0$, d'Alembert's formula gives directly:
+
+\begin{summarybox}
+$$u(x,t) = \frac{1}{2}e^{-(x+ct)^2} + \frac{1}{2}e^{-(x-ct)^2}$$
+\end{summarybox}
+
+\textbf{Physical interpretation.}
+The initial Gaussian pulse at $x=0$ splits at $t=0^+$ into two identical pulses of half amplitude:
+\begin{itemize}
+    \item A right-travelling pulse centred at $x = ct$: $\frac{1}{2}e^{-(x-ct)^2}$.
+    \item A left-travelling pulse centred at $x = -ct$: $\frac{1}{2}e^{-(x+ct)^2}$.
+\end{itemize}
+For large $t$, the two pulses are well separated (centres at $\pm ct$), and the region between them ($|x| \ll ct$) is quiescent ($u \approx 0$). The shape of each pulse is preserved identically since the wave equation is non-dispersive.
+
+\newpage
+
+% ---------------------------------------------------------------------
+% PROBLEM 5
+% ---------------------------------------------------------------------
+\section{Laplace and Poisson Equations}
+
+\begin{notebox}[title={General Procedure: Laplace \& Poisson Equations}]
+For $\nabla^2 u = 0$ (Laplace) or $\nabla^2 u = S$ (Poisson) in a given domain, the procedure depends on the geometry.
+
+\textbf{General Steps:}
+\begin{enumerate}
+    \item \textbf{Choose coordinates} matching the domain: Cartesian for rectangles, polar $(r,\theta)$ for disks, annuli, and sectors.
+    \item \textbf{For Poisson equations:} decompose $u = u_p + u_h$, where $\nabla^2 u_p = S$ (find a particular solution, often radial) and $\nabla^2 u_h = 0$ with modified BCs $u_h|_{\text{boundary}} = u|_{\text{boundary}} - u_p|_{\text{boundary}}$.
+    \item \textbf{For non-homogeneous BCs on straight edges:} split $u = v + w$, where $v$ absorbs the non-homogeneous data (often a linear/polynomial function satisfying Laplace) and $w$ has homogeneous BCs on those edges.
+    \item \textbf{Separate variables.} In polar: $u=R(r)\Theta(\theta)$. The angular part produces eigenfunctions ($\sin, \cos$); the radial part satisfies an Euler--Cauchy equation with solutions $r^{\pm n}$ (or $\ln r$ for $n=0$).
+    \item \textbf{Enforce regularity/boundedness:} exclude $r^{-n}$ at the origin, $\ln r$ at the origin, etc.
+    \item \textbf{Apply remaining BCs.} Match the boundary data by expanding in eigenfunctions and equating Fourier coefficients.
+\end{enumerate}
+\textbf{Key domain types:}
+\begin{itemize}
+    \item \textbf{Disk / sector:} $R_n = r^n$ (bounded at origin); expand the BC at $r=R$ in $\sin/\cos$.
+    \item \textbf{Annulus:} $R_n = A_n r^n + B_n r^{-n}$; two radial BCs determine both constants.
+    \item \textbf{Rectangle:} Eigenfunctions in one variable ($\sin$), $\sinh/\cosh$ in the other; use the three homogeneous BCs to constrain the form, then match the non-homogeneous BC.
+\end{itemize}
+\end{notebox}
+
+\subsection{\texorpdfstring{$\nabla^2 u = 0$ in a circular sector of radius $R$ and angle $\alpha$}{Laplace in sector}}
+
+\begin{problembox}
+Solve $\nabla^2 u=0$ in $0<r<R$, $0<\theta<\alpha$ with
+\[
+u(r,0)=u_0,\quad
+u(r,\alpha)=0,\quad
+u(R,\theta)=0,
+\]
+where $u_0\neq0$ is constant. Require boundedness as $r\to0$.
+BCs: Dirichlet on $\theta=0,\alpha$ and $r=R$.
+\end{problembox}
+
+In polar coordinates,
+\[
+\nabla^2 u=u_{rr}+\frac1r u_r+\frac1{r^2}u_{\theta\theta}.
+\]
+
+Since $u(r,0)\neq0$, write $u=v(\theta)+w(r,\theta)$ with $v''(\theta)=0$, hence
+$v(\theta)=A\theta+B$. From $v(0)=u_0$, $v(\alpha)=0$ we obtain
+$B=u_0$, $A=-u_0/\alpha$, so
+\[
+v(\theta)=u_0\!\left(1-\frac{\theta}{\alpha}\right).
+\]
+
+Then $w$ satisfies $\nabla^2 w=0$ with
+$w(r,0)=w(r,\alpha)=0$ and
+$w(R,\theta)=-u_0(1-\theta/\alpha)$.
+
+Seek $w=\mathcal R(r)\Theta(\theta)$. Substitution gives
+$r^2\mathcal R''+r\mathcal R'-\lambda\mathcal R=0$ and
+$\Theta''+\lambda\Theta=0$.
+
+From $\Theta(0)=\Theta(\alpha)=0$ we need
+$\lambda_n=(n\pi/\alpha)^2$ and
+$\Theta_n(\theta)=\sin(n\pi\theta/\alpha)$.
+
+For the radial part, try $\mathcal R=r^p$:
+$p(p-1)+p-\lambda_n=0 \Rightarrow p^2-\lambda_n=0$,
+so $p=\pm n\pi/\alpha$.
+Boundedness at $r\to0$ excludes the negative power, hence
+$\mathcal R_n(r)=r^{n\pi/\alpha}$.
+
+Thus
+\[
+w(r,\theta)=\sum_{n=1}^\infty
+A_n r^{n\pi/\alpha}
+\sin\!\left(\frac{n\pi\theta}{\alpha}\right).
+\]
+
+Imposing $r=R$ gives
+\[
+\sum_{n=1}^\infty
+A_n R^{n\pi/\alpha}
+\sin\!\left(\frac{n\pi\theta}{\alpha}\right)
+=
+-\,u_0\!\left(1-\frac{\theta}{\alpha}\right).
+\]
+
+Expand the right-hand side in a sine series on $[0,\alpha]$:
+\[
+C_n=\frac{2}{\alpha}\int_0^\alpha
+\!\left[-u_0\!\left(1-\frac{\theta}{\alpha}\right)\right]
+\sin\!\left(\frac{n\pi\theta}{\alpha}\right)d\theta.
+\]
+
+Compute
+\[
+I_n=\int_0^\alpha
+\left(1-\frac{\theta}{\alpha}\right)
+\sin\!\left(\frac{n\pi\theta}{\alpha}\right)d\theta.
+\]
+Let $x=\frac{\pi\theta}{\alpha}$ so
+$I_n=\frac{\alpha}{\pi}\int_0^\pi(1-x/\pi)\sin(nx)\,dx$.
+Using
+$\int_0^\pi\sin(nx)\,dx=\frac{2}{n}(1-(-1)^n)$ and
+$\int_0^\pi x\sin(nx)\,dx=\frac{\pi(-1)^{n+1}}{n}$,
+one finds $I_n=\alpha/(n\pi)$.
+Hence $C_n=-2u_0/(n\pi)$.
+
+Since $C_n=A_n R^{n\pi/\alpha}$,
+$A_n=-\frac{2u_0}{n\pi}R^{-n\pi/\alpha}$.
+
+Therefore
+\[
+w(r,\theta)=
+-\frac{2u_0}{\pi}
+\sum_{n=1}^\infty
+\frac1n
+\left(\frac{r}{R}\right)^{n\pi/\alpha}
+\sin\!\left(\frac{n\pi\theta}{\alpha}\right).
+\]
+
+\begin{summarybox}
+\[
+u(r,\theta)=
+u_0\!\left(1-\frac{\theta}{\alpha}\right)
+-
+\frac{2u_0}{\pi}
+\sum_{n=1}^\infty
+\frac1n
+\left(\frac{r}{R}\right)^{n\pi/\alpha}
+\sin\!\left(\frac{n\pi\theta}{\alpha}\right).
+\]
+\end{summarybox}
+\subsection{\texorpdfstring{$\nabla^2 u = 0$ in semi-annulus $1<r<2$, $0<\theta<\pi$; $u(r,0)=u(r,\pi)=0$, $u(1,\theta)=0$, $u(2,\theta)=5\sin 2\theta-\sin 4\theta$}{Laplace in semi-annulus: zero on straight edges and inner arc, sine data on outer arc}}
+
+\begin{problembox}
+Solve $\nabla^2 u = 0$ in the semi-annulus $1 < r < 2, 0 < \theta < \pi$.
+BCs: $u(r, 0) = u(r, \pi) = 0$, $u(1, \theta) = 0$,
+$u(2, \theta) = 5\sin(2\theta) - \sin(4\theta)$.
+\end{problembox}
+
+In polar coordinates, $\nabla^2 u = u_{rr} + \frac{1}{r}u_r + \frac{1}{r^2}u_{\theta\theta} = 0$.
+Separation of variables $u(r,\theta) = R(r)\Theta(\theta)$ with homogeneous angular BCs $\Theta(0)=\Theta(\pi)=0$ leads to:
+$$ \Theta_n(\theta) = \sin(n\theta), \quad n = 1, 2, 3, \dots $$
+The radial equation is Euler-Cauchy: $r^2 R'' + r R' - n^2 R = 0$.
+Solution: $R_n(r) = A_n r^n + B_n r^{-n}$.
+General solution:
+$$ u(r, \theta) = \sum_{n=1}^{\infty} (A_n r^n + B_n r^{-n}) \sin(n\theta) $$
+
+\textbf{Apply Radial BCs:}
+
+\textbf{1. Inner BC:} $u(1, \theta) = 0$:
+$$ \sum_{n=1}^{\infty} (A_n + B_n) \sin(n\theta) = 0 \implies B_n = -A_n $$
+So $R_n(r) = A_n(r^n - r^{-n})$, and:
+$$ u(r, \theta) = \sum_{n=1}^{\infty} A_n (r^n - r^{-n}) \sin(n\theta) $$
+
+\textbf{2. Outer BC:} $u(2, \theta) = 5\sin(2\theta) - \sin(4\theta)$:
+$$ \sum_{n=1}^{\infty} A_n (2^n - 2^{-n}) \sin(n\theta) = 5\sin(2\theta) - \sin(4\theta) $$
+Matching coefficients for each mode:
+
+\textbf{For $n=2$:} $A_2(2^2 - 2^{-2}) = A_2 \cdot \tfrac{15}{4} = 5 \implies A_2 = \tfrac{4}{3}$.
+
+\textbf{For $n=4$:} $A_4(2^4 - 2^{-4}) = A_4 \cdot \tfrac{255}{16} = -1 \implies A_4 = -\tfrac{16}{255}$.
+
+All other $A_n = 0$.
+
+\begin{summarybox}
+$$ u(r, \theta) = \frac{4}{3}\left(r^2 - \frac{1}{r^2}\right)\sin(2\theta) - \frac{16}{255}\left(r^4 - \frac{1}{r^4}\right)\sin(4\theta) $$
+\end{summarybox}
+
+\newpage
+\subsection{\texorpdfstring{$\nabla^2 u = 0$ in annulus $1<r<2$; (A) $u(1)=A\sin\theta$, $u(2)=B\sin 2\theta$; (B) $u(1)=0$, $u_r(2)=2\cos\theta$}{Laplace in full annulus: (A) two-mode Dirichlet BCs; (B) mixed Dirichlet--Neumann BCs}}
+
+\begin{problembox}
+Solve the Laplace equation $\nabla^2 u = 0$ in the annular domain $D = \{ (r, \theta) \mid 1 < r < 2, \ 0 \le \theta < 2\pi \}$.
+
+(A) Dirichlet BCs: $u(1, \theta) = A\sin\theta$, \quad $u(2, \theta) = B\sin(2\theta)$.
+
+(B) Mixed BCs: $u(1,\theta) = 0$, $\quad \left. \dfrac{\partial u}{\partial r} \right|_{r=2} = 2\cos\theta$
+\end{problembox}
+In polar coordinates, $\nabla^2 u = u_{rr} + \frac{1}{r}u_r + \frac{1}{r^2}u_{\theta\theta} = 0$.
+Separation of variables $u(r,\theta) = R(r)\Theta(\theta)$ leads to $\Theta_n(\theta) = A_n\cos(n\theta) + B_n\sin(n\theta)$, $n = 0,1,2,\dots$
+
+The radial equation is Euler-Cauchy: $r^2 R'' + r R' - n^2 R = 0$.
+For $n \neq 0$, the solution is $R_n(r) = c_n r^n + d_n r^{-n}$.
+For $n = 0$, the solution is $R_0(r) = c_0 + d_0 \ln r$.
+
+The general solution in an annulus is:
+$$ u(r, \theta) = c_0 + d_0 \ln r + \sum_{n=1}^{\infty} \left( c_n r^n + d_n r^{-n} \right) (A_n \cos(n\theta) + B_n \sin(n\theta)) $$
+
+\textbf{(A) Dirichlet Boundary Conditions}
+
+Given BCs: $u(1, \theta) = A\sin\theta$ and $u(2, \theta) = B\sin(2\theta)$.
+
+Since the boundary data contains only $\sin\theta$ and $\sin(2\theta)$ modes, we take $u(r, \theta) = R_1(r)\sin\theta + R_2(r)\sin(2\theta)$.
+
+\textbf{Step 1: The $n=1$ mode.}
+Let $R_1(r) = a_1 r + b_1 r^{-1}$. The boundary conditions require:
+\begin{align*}
+    R_1(1) &= a_1 + b_1 = A \\
+    R_1(2) &= 2a_1 + \frac{b_1}{2} = 0
+\end{align*}
+From the second equation: $b_1 = -4a_1$. Substituting into the first:
+$$ a_1 - 4a_1 = A \implies a_1 = -\frac{A}{3}, \quad b_1 = \frac{4A}{3} $$
+
+\textbf{Step 2: The $n=2$ mode.}
+Let $R_2(r) = a_2 r^2 + b_2 r^{-2}$. The boundary conditions require:
+\begin{align*}
+    R_2(1) &= a_2 + b_2 = 0 \implies b_2 = -a_2 \\
+    R_2(2) &= 4a_2 + \frac{b_2}{4} = B
+\end{align*}
+Substituting $b_2 = -a_2$ into the second equation:
+$$ 4a_2 - \frac{a_2}{4} = \frac{15}{4}a_2 = B \implies a_2 = \frac{4B}{15}, \quad b_2 = -\frac{4B}{15} $$
+
+\begin{summarybox}[title={Part A Answer}]
+$$ u(r, \theta) = \frac{A}{3} \left( \frac{4}{r} - r \right) \sin\theta + \frac{4B}{15} \left( r^2 - \frac{1}{r^2} \right) \sin(2\theta) $$
+\end{summarybox}
+
+\textbf{(B) Mixed Boundary Conditions}
+
+Given BCs: $u(1, \theta) = 0$ and $\left.\frac{\partial u}{\partial r}\right|_{r=2} = 2\cos\theta$.
+
+Since the Neumann data at $r=2$ contains only a $\cos\theta$ mode, the solution involves only the $n=1$ cosine mode:
+$$ u(r, \theta) = R(r) \cos\theta, \quad \text{with } R(r) = c_1 r + c_2 r^{-1} $$
+
+\textbf{Step 1: Apply inner Dirichlet BC ($r=1$).}
+$$ R(1) = c_1 + c_2 = 0 \implies c_2 = -c_1 $$
+Thus $R(r) = c_1(r - r^{-1})$ and $R'(r) = c_1(1 + r^{-2})$.
+
+\textbf{Step 2: Apply outer Neumann BC ($r=2$).}
+$$ R'(2) = c_1 \left( 1 + \frac{1}{4} \right) = \frac{5c_1}{4} = 2 \implies c_1 = \frac{8}{5} $$
+
+\begin{summarybox}[title={Part B Answer}]
+$$ u(r, \theta) = \frac{8}{5} \left( r - \frac{1}{r} \right) \cos\theta $$
+\end{summarybox}
+\subsection{\texorpdfstring{$\nabla^2 u = 0$ in sector $0\le\theta\le\pi$, $r\le R$; $u(r,0)=u(r,\pi)=0$, $u(R,\theta)=2\sin\theta+4\sin 3\theta$}{Laplace in half-disk: Dirichlet on straight edges, two-mode sine data on arc}}
+
+\begin{problembox}
+Find a harmonic function $u(r,\theta)$ in the sector $0 \le \theta \le \pi$ with boundary conditions:
+\begin{itemize}
+    \item $u(R, \theta) = 2\sin\theta + 4\sin 3\theta$ on the circular arc
+    \item $u(r, 0) = u(r, \pi) = 0$ on the straight edges
+\end{itemize}
+\end{problembox}
+
+\textbf{Solution:}
+
+Separation of variables $u(r,\theta) = R(r)\Theta(\theta)$ with $\Theta(0)=\Theta(\pi)=0$ yields eigenfunctions:
+$$ \Theta_n(\theta) = \sin(n\theta), \quad n=1,2,\dots $$
+The corresponding radial solutions bounded at origin are $R_n(r) = r^n$.
+Thus, the general solution is:
+$$ u(r,\theta) = \sum_{n=1}^{\infty} A_n r^n \sin(n\theta) $$
+
+Boundary condition at $r=R$:
+$$ u(R,\theta) = \sum_{n=1}^{\infty} A_n R^n \sin(n\theta) = 2\sin\theta + 4\sin 3\theta $$
+
+Comparing coefficients of $\sin(n\theta)$:
+\begin{itemize}
+    \item For $n=1$: $A_1 R^1 = 2 \implies A_1 = \frac{2}{R}$
+    \item For $n=3$: $A_3 R^3 = 4 \implies A_3 = \frac{4}{R^3}$
+    \item For all other $n$: $A_n = 0$
+\end{itemize}
+
+Substituting these back into the general solution:
+
+\begin{summarybox}
+$$ u(r, \theta) = \frac{2r}{R}\sin\theta + \frac{4r^3}{R^3}\sin 3\theta $$
+\end{summarybox}
+
+\newpage
+
+% ---------------------------------------------------------------------
+% PROBLEM 13
+% ---------------------------------------------------------------------
+\subsection{\texorpdfstring{$\nabla^2 u = r$ inside unit circle $r<1$; $u(1,\theta)=0$}{Poisson with radial source: radially symmetric ODE, regularity at origin forces $C_1=0$}}
+
+\begin{problembox}
+Solve the Poisson equation $\nabla^2 u = r$ inside the unit circle $r < 1$ with boundary condition $u(1, \theta) = 0$.
+\end{problembox}
+
+\textbf{Solution:}
+
+Since the source term $r$ and the boundary condition (zero on circle) are rotationally invariant (independent of $\theta$), we seek a solution $u(r)$ depending only on $r$.
+The Laplacian in polar coordinates for radial functions is:
+$$ \frac{1}{r} \frac{d}{dr}\left(r \frac{du}{dr}\right) = r $$
+
+Integrate w.r.t $r$:
+$$ \frac{d}{dr}\left(r \frac{du}{dr}\right) = r^2 $$
+$$ r \frac{du}{dr} = \frac{r^3}{3} + C_1 $$
+$$ \frac{du}{dr} = \frac{r^2}{3} + \frac{C_1}{r} $$
+
+Integrate again:
+$$ u(r) = \frac{r^3}{9} + C_1 \ln r + C_2 $$
+
+\textbf{Boundary Conditions:}
+1. \textbf{Regularity at origin:} $u(0)$ must be finite. Since $\ln r \to -\infty$, we must set $C_1 = 0$.
+2. \textbf{Boundary Value:} $u(1) = \tfrac{1}{9} + C_2 = 0 \implies C_2 = -\tfrac{1}{9}$.
+
+\begin{summarybox}
+$$ u(r) = \frac{1}{9}(r^3 - 1) $$
+\end{summarybox}
+\newpage
+\subsection{\texorpdfstring{$\nabla^2 u = 16r^2$ in annulus $1<r<2$; $u|_{r=1}=3\sin\theta$, $u|_{r=2}=12\cos\theta$}{Poisson in annulus: particular radial solution $u_p=r^4$ plus homogeneous Laplace for boundary residuals}}
+
+\begin{problembox}
+Solve the Poisson equation $\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} = 16(x^2 + y^2)$ in the annular domain $D = \{ (r, \theta) \mid 1 < r < 2, \ 0 \le \theta < 2\pi \}$, subject to the boundary conditions:
+$$ u|_{r=2} = 6x, \quad u|_{r=1} = 3y $$
+Hint: The general solution of the Poisson equation can be written as the sum of a particular solution and the general solution of the Laplace equation.
+\end{problembox}
+
+The problem is defined on an annulus with a radially symmetric source term. We switch to polar coordinates where $x = r\cos\theta$, $y = r\sin\theta$, and $x^2+y^2 = r^2$.
+The equation becomes:
+$$ \nabla^2 u = \frac{1}{r} \frac{\partial}{\partial r} \left( r \frac{\partial u}{\partial r} \right) + \frac{1}{r^2} \frac{\partial^2 u}{\partial \theta^2} = 16r^2 $$
+
+We decompose $u(r,\theta) = u_p(r) + u_h(r,\theta)$ where $\nabla^2 u_p = 16r^2$ and $\nabla^2 u_h = 0$.
+
+\textbf{Step 1: The Particular Solution ($u_p$)}
+
+Since the source term $S(r) = 16r^2$ is independent of $\theta$, we assume a radial particular solution $u_p = u_p(r)$. The Laplacian reduces to the radial part:
+$$ \frac{1}{r} \frac{d}{dr} \left( r \frac{du_p}{dr} \right) = 16r^2 $$
+Multiply by $r$ and integrate:
+$$ \frac{d}{dr} \left( r \frac{du_p}{dr} \right) = 16r^3 \implies r \frac{du_p}{dr} = 4r^4 + C_1 $$
+Divide by $r$ and integrate again:
+$$ \frac{du_p}{dr} = 4r^3 + \frac{C_1}{r} \implies u_p(r) = r^4 + C_1 \ln r + C_2 $$
+Since $C_1 \ln r + C_2$ satisfies the homogeneous Laplace equation, we set $C_1=C_2=0$, giving $u_p(r) = r^4$.
+
+\textbf{Step 2: The Homogeneous Solution ($u_h$)}
+
+The homogeneous function $u_h$ must satisfy $\nabla^2 u_h = 0$ with modified boundary conditions.
+The total solution is $u = r^4 + u_h$.
+We convert the given BCs to polar coordinates and subtract $u_p$:
+\begin{align*}
+    \text{At } r=1: \quad & u(1, \theta) = 3(1)\sin\theta = 3\sin\theta \\
+    & u_h(1, \theta) = u(1, \theta) - u_p(1) = 3\sin\theta - 1^4 = 3\sin\theta - 1 \\
+    \text{At } r=2: \quad & u(2, \theta) = 6(2)\cos\theta = 12\cos\theta \\
+    & u_h(2, \theta) = u(2, \theta) - u_p(2) = 12\cos\theta - 2^4 = 12\cos\theta - 16
+\end{align*}
+
+The general solution for the Laplacian in an annulus is:
+$$ u_h(r, \theta) = A_0 + B_0 \ln r + \sum_{n=1}^{\infty} (A_n r^n + B_n r^{-n})\cos(n\theta) + (C_n r^n + D_n r^{-n})\sin(n\theta) $$
+By inspection of the boundary terms ($1, \sin\theta, \cos\theta$), we only need the isotropic ($n=0$) and $n=1$ modes.
+
+\textbf{2a. Isotropic Mode ($n=0$)}
+Let $H_0(r) = A_0 + B_0 \ln r$. Matching the constant terms on the boundaries:
+\begin{align*}
+    H_0(1) &= A_0 = -1 \\
+    H_0(2) &= A_0 + B_0 \ln 2 = -16
+\end{align*}
+Substituting $A_0 = -1$ into the second equation:
+$$ -1 + B_0 \ln 2 = -16 \implies B_0 \ln 2 = -15 \implies B_0 = -\frac{15}{\ln 2} $$
+
+\textbf{2b. Cosine Mode ($n=1$)}
+Let $H_{\cos}(r) = \left( A_1 r + B_1 r^{-1} \right) \cos\theta$. Matching the $\cos\theta$ terms:
+\begin{align*}
+    r=1: \quad & A_1 + B_1 = 0 \implies B_1 = -A_1 \\
+    r=2: \quad & 2A_1 + \frac{B_1}{2} = 12
+\end{align*}
+Substituting $B_1 = -A_1$:
+$$ 2A_1 - \frac{A_1}{2} = \frac{3}{2}A_1 = 12 \implies A_1 = 8, \quad B_1 = -8 $$
+
+\textbf{2c. Sine Mode ($n=1$)}
+Let $H_{\sin}(r) = \left( C_1 r + D_1 r^{-1} \right) \sin\theta$. Matching the $\sin\theta$ terms:
+\begin{align*}
+    r=1: \quad & C_1 + D_1 = 3 \\
+    r=2: \quad & 2C_1 + \frac{D_1}{2} = 0 \implies D_1 = -4C_1
+\end{align*}
+Substituting into the first equation:
+$$ C_1 - 4C_1 = -3C_1 = 3 \implies C_1 = -1, \quad D_1 = 4 $$
+
+\begin{summarybox}[title={Final Solution}]
+Combining the particular solution and the calculated homogeneous modes:
+$$ u(r, \theta) = r^4 - 1 - \frac{15}{\ln 2} \ln r + 8\left(r - \frac{1}{r}\right) \cos\theta - \left(r - \frac{4}{r}\right) \sin\theta $$
+\end{summarybox}
+
+% ---------------------------------------------------------------------
+% NEW PROBLEM (Section 4)
+% ---------------------------------------------------------------------
+\newpage
+\subsection{\texorpdfstring{$\nabla^2 u=0$ on rectangle $0<x<\pi,\,0<y<\pi$; zero on three sides, $u(x,\pi)=\sin x+3\sin 2x$}{Laplace on rectangle: eigenfunction expansion in $x$; sinh solution in $y$ satisfying zero bottom BC}}
+
+\begin{problembox}
+Solve $\nabla^2 u = 0$ on the rectangle $\{0 < x < \pi,\; 0 < y < \pi\}$ subject to:
+$$u(0,y) = 0, \quad u(\pi,y) = 0, \quad u(x,0) = 0, \quad u(x,\pi) = \sin x + 3\sin 2x.$$
+\end{problembox}
+
+\textbf{Step 1: Separation of variables.}
+Writing $u(x,y) = X(x)Y(y)$ and substituting into $u_{xx} + u_{yy} = 0$:
+\[
+    \frac{X''}{X} = -\frac{Y''}{Y} = -\lambda.
+\]
+The homogeneous BCs in $x$ give the Sturm-Liouville problem:
+\[
+    X'' + \lambda X = 0, \quad X(0) = X(\pi) = 0
+    \implies \lambda_n = n^2, \quad X_n(x) = \sin(nx), \quad n = 1,2,3,\dots
+\]
+
+\textbf{Step 2: Solve the $y$-equation.}
+For each $n$: $Y'' - n^2 Y = 0$, with general solution $Y_n(y) = A_n \sinh(ny) + B_n \cosh(ny)$.
+The BC $u(x,0)=0$ requires $Y_n(0) = 0$:
+\[
+    B_n \cosh(0) = B_n = 0.
+\]
+Hence $Y_n(y) = A_n \sinh(ny)$, and the general solution is:
+\[
+    u(x,y) = \sum_{n=1}^{\infty} C_n \sinh(ny)\sin(nx).
+\]
+
+\textbf{Step 3: Apply the non-homogeneous BC at $y = \pi$.}
+\[
+    u(x,\pi) = \sum_{n=1}^{\infty} C_n \sinh(n\pi)\sin(nx) = \sin x + 3\sin 2x.
+\]
+Comparing coefficients of $\sin(nx)$:
+\begin{itemize}
+    \item $n=1$: $C_1 \sinh(\pi) = 1 \implies C_1 = \dfrac{1}{\sinh\pi}$
+    \item $n=2$: $C_2 \sinh(2\pi) = 3 \implies C_2 = \dfrac{3}{\sinh 2\pi}$
+    \item $n \ge 3$: $C_n = 0$
+\end{itemize}
+
+\begin{summarybox}
+$$u(x,y) = \frac{\sinh y}{\sinh\pi}\sin x + \frac{3\sinh 2y}{\sinh 2\pi}\sin 2x$$
+\end{summarybox}
+
+\textbf{Verification:}
+\begin{itemize}
+    \item $u(x,0) = 0$ (since $\sinh 0 = 0$). \checkmark
+    \item $u(0,y) = u(\pi,y) = 0$ (since $\sin 0 = \sin(n\pi) = 0$). \checkmark
+    \item $u(x,\pi) = \frac{\sinh\pi}{\sinh\pi}\sin x + \frac{3\sinh2\pi}{\sinh2\pi}\sin 2x = \sin x + 3\sin 2x$. \checkmark
+    \item $\nabla^2 u = 0$: each term $\frac{\sinh(ny)}{\sinh(n\pi)}\sin(nx)$ satisfies Laplace since $(-n^2)\sin(nx)\cdot\frac{\sinh(ny)}{\sinh n\pi} + n^2\sin(nx)\cdot\frac{\sinh(ny)}{\sinh n\pi} = 0$. \checkmark
+\end{itemize}
+
+\newpage
+% ---------------------------------------------------------------------
+% PROBLEM 6
+% ---------------------------------------------------------------------
+\section{Calculus of Variations}
+
+\begin{notebox}[title={General Procedure: Calculus of Variations}]
+Given a functional $I[y]=\int_a^b L(x,y,y')\,dx$ to extremize, subject to boundary conditions $y(a)=\alpha$, $y(b)=\beta$ and possibly integral constraints:
+\begin{enumerate}
+    \item \textbf{Write the Euler--Lagrange (E-L) equation:}
+    $\displaystyle\frac{\partial L}{\partial y} - \frac{d}{dx}\frac{\partial L}{\partial y'} = 0.$
+    \item \textbf{If $L$ is independent of $x$}, use the \textbf{Beltrami identity} instead: $L - y'\,\dfrac{\partial L}{\partial y'} = C$ (first integral).
+    \item \textbf{If there is an integral constraint} $J[y]=\int_a^b G\,dx = \text{const}$, form the augmented Lagrangian $H = L + \lambda G$ (isoperimetric method) and apply the E-L equation to $H$.
+    \item \textbf{Solve the resulting ODE.} Apply the boundary conditions to determine integration constants.
+    \item \textbf{Determine the Lagrange multiplier $\lambda$} (if present) by substituting into the constraint equation.
+    \item \textbf{Verify:} confirm BCs, constraint satisfaction, and optionally compute $I$ along the extremal.
+\end{enumerate}
+\end{notebox}
+
+\subsection{\texorpdfstring{Minimize $I[y]=\int_0^1(y')^2\,dx$ with $\int_0^1 y\,dx=2$; $y(0)=0$, $y(1)=1$}{Isoperimetric problem: augment functional with Lagrange multiplier; E-L gives parabola}}
+
+\begin{problembox}
+Minimize $I[y] = \int_0^1 (y')^2 \, dx$ subject to $J[y] = \int_0^1 y \, dx = 2$
+and $y(0) = 0, y(1) = 1$.
+\end{problembox}
+
+We form the augmented functional $H[y] = I[y] + \lambda J[y] = \int_0^1 ((y')^2 + \lambda y) \, dx$.
+The Lagrangian is $L(x, y, y') = (y')^2 + \lambda y$.
+The Euler-Lagrange equation is:
+$$ \frac{\partial L}{\partial y} - \frac{d}{dx}\left(\frac{\partial L}{\partial y'}\right) = 0 $$
+$$ \lambda - \frac{d}{dx}(2y') = 0 \implies 2y'' = \lambda \implies y'' = \frac{\lambda}{2} $$
+Integrating twice with respect to $x$:
+$$ y'(x) = \frac{\lambda}{2}x + C_1 $$
+$$ y(x) = \frac{\lambda}{4}x^2 + C_1 x + C_2 $$
+
+\textbf{Apply Boundary Conditions:}
+1. $y(0) = 0 \implies C_2 = 0$.
+2. $y(1) = 1 \implies \frac{\lambda}{4}(1)^2 + C_1(1) = 1 \implies C_1 = 1 - \frac{\lambda}{4}$.
+So, $y(x) = \frac{\lambda}{4}x^2 + \left(1-\frac{\lambda}{4}\right)x$.
+
+\textbf{Apply Integral Constraint:}
+$$ \int_0^1 \left[\frac{\lambda}{4}x^2 + \left(1-\frac{\lambda}{4}\right)x\right] \, dx = 2 $$
+$$ \left[ \frac{\lambda x^3}{12} + \frac{(1-\lambda/4)x^2}{2} \right]_0^1 = 2 $$
+$$ \lambda\left(\frac{1}{12} - \frac{1}{8}\right) = 2 - \frac{1}{2} = \frac{3}{2} $$
+$$ \lambda\left(\frac{2-3}{24}\right) = \frac{3}{2} $$
+$$ \lambda\left(-\frac{1}{24}\right) = \frac{3}{2} \implies \lambda = -36 $$
+
+Substituting $\lambda = -36$ back:
+$$ y(x) = \frac{-36}{4}x^2 + \left(1 - \frac{-36}{4}\right)x = -9x^2 + 10x $$
+
+\begin{summarybox}
+The minimizing curve is:
+$$ y(x) = -9x^2 + 10x $$
+\end{summarybox}
+
+\newpage
+\subsection{\texorpdfstring{Extremize $I[y]=\int_0^2\!\left(y-\sqrt{1+y'^2}\,\right)dx$; $y(0)=y(2)=8$}{Apply Beltrami identity; ODE solves to circular arc $(x-1)^2+(y-8)^2=1$}}
+
+\begin{problembox}
+Extremize:
+$$I[y]=\int_{0}^{2}\Big( y-\sqrt{1+y'^2}\Big)\,dx, \quad y(0)=y(2)=8$$
+\end{problembox}
+
+The Lagrangian is $F(y, y') = y - \sqrt{1+y'^2}$, which does not depend explicitly on $x$.
+
+\textbf{Apply Beltrami Identity:}
+$$F - y'\frac{\partial F}{\partial y'} = C$$
+
+Compute $\displaystyle\frac{\partial F}{\partial y'} = -\frac{y'}{\sqrt{1+y'^2}}$. Substituting:
+$$y - \sqrt{1+y'^2} + \frac{y'^2}{\sqrt{1+y'^2}} = C$$
+$$y - \frac{1}{\sqrt{1+y'^2}} = C$$
+
+\textbf{Solve the ODE:}
+Rearrange: $\displaystyle\sqrt{1+y'^2} = \frac{1}{y-C}$
+
+Squaring: $\displaystyle y'^2 = \frac{1-(y-C)^2}{(y-C)^2}$
+
+Separating variables with substitution $y - C = \sin\theta$:
+$$\sin\theta \, d\theta = \pm dx \implies \cos\theta = A \mp x$$
+
+Thus: $\displaystyle(x-A)^2 + (y-C)^2 = 1$ (circle of radius 1)
+
+\textbf{Apply Boundary Conditions:}
+At $x=0$ and $x=2$: $y = 8$ gives
+$$\sqrt{1-A^2} = \sqrt{1-(A-2)^2} \implies A = 1$$
+$$8 = C + 0 \implies C = 8$$
+
+\begin{summarybox}
+$$(x-1)^2 + (y-8)^2 = 1$$
+$$y(x) = 8 \pm \sqrt{1-(x-1)^2}$$
+
+Upper arc: $y = 8 + \sqrt{1-(x-1)^2}$
+
+Lower arc: $y = 8 - \sqrt{1-(x-1)^2}$
+\end{summarybox}
+
+\newpage
+% ---------------------------------------------------------------------
+% NEW PROBLEM (Section 5)
+% ---------------------------------------------------------------------
+\subsection{\texorpdfstring{Find extremal of $I[y]=\int_0^{\pi/2}(y'^2-y^2)\,dx$; $y(0)=0$, $y(\pi/2)=1$}{CoV: Euler-Lagrange gives $y''+y=0$; general solution is trigonometric; unique extremal $y=\sin x$}}
+
+\begin{problembox}
+Find the extremal of the functional:
+$$I[y] = \int_0^{\pi/2}\!\left(y'^2 - y^2\right)dx$$
+subject to the boundary conditions $y(0) = 0$, $y\!\left(\dfrac{\pi}{2}\right) = 1$.
+
+Also compute the value of $I$ along the extremal.
+\end{problembox}
+
+\textbf{Step 1: Write down the Euler-Lagrange equation.}
+The Lagrangian is $L(x, y, y') = y'^2 - y^2$. The Euler-Lagrange equation is:
+\[
+    \frac{\partial L}{\partial y} - \frac{d}{dx}\frac{\partial L}{\partial y'} = 0.
+\]
+Computing each term:
+\[
+    \frac{\partial L}{\partial y} = -2y, \qquad \frac{\partial L}{\partial y'} = 2y', \qquad \frac{d}{dx}(2y') = 2y''.
+\]
+The Euler-Lagrange equation becomes:
+\[
+    -2y - 2y'' = 0 \implies y'' + y = 0.
+\]
+
+\textbf{Step 2: Solve the ODE.}
+The characteristic equation $r^2 + 1 = 0$ has roots $r = \pm i$, giving the general solution:
+\[
+    y(x) = A\cos x + B\sin x.
+\]
+
+\textbf{Step 3: Apply boundary conditions.}
+\begin{align*}
+    y(0) = 0: &\quad A\cos 0 + B\sin 0 = A = 0. \\
+    y\!\left(\tfrac{\pi}{2}\right) = 1: &\quad B\sin\!\tfrac{\pi}{2} = B = 1.
+\end{align*}
+
+\begin{summarybox}
+The unique extremal is:
+$$y(x) = \sin x$$
+\end{summarybox}
+
+\textbf{Step 4: Compute the value of $I$ along the extremal.}
+With $y = \sin x$ and $y' = \cos x$:
+\[
+    I[\sin x] = \int_0^{\pi/2}\!\left(\cos^2 x - \sin^2 x\right)dx = \int_0^{\pi/2}\cos(2x)\,dx = \left[\frac{\sin(2x)}{2}\right]_0^{\pi/2} = 0.
+\]
+
+\textbf{Remark:} The value $I = 0$ is consistent with $y = \sin x$ being a stationary point; however, competitors such as $\tilde y = \sin x + \epsilon\sin(3x)$ (which also vanish at $0$ and $\frac{\pi}{2}$, but with $\tilde y(\pi/2) = \sin(\pi/2) + \epsilon\sin(3\pi/2) = 1 - \epsilon$) show the extremal is a saddle point of the functional rather than a minimum.
+
+\newpage
+% ---------------------------------------------------------------------
+% PROBLEM 7
+% ---------------------------------------------------------------------
+\section{Green's Functions and Sturm-Liouville Theory}
+
+\begin{notebox}[title={General Procedure: Constructing Green's Functions}]
+To construct the Green's function $G(x,x')$ satisfying $\hat{L}\,G = \delta(x-x')$ for a self-adjoint Sturm--Liouville operator $\hat{L} = -\frac{d}{dx}\!\left(p(x)\frac{d}{dx}\right)+q(x)$ with given BCs:
+\begin{enumerate}
+    \item \textbf{Solve the homogeneous equation} $\hat{L}y = 0$ for two linearly independent solutions.
+    \item \textbf{Select basis functions:} Choose $y_1(x)$ to satisfy the \emph{left} BC and $y_2(x)$ to satisfy the \emph{right} BC.
+    \item \textbf{Form the piecewise Green's function} (symmetric for self-adjoint operators):
+    $G(x,x') = A\begin{cases} y_1(x)\,y_2(x') & x < x' \\ y_1(x')\,y_2(x) & x > x' \end{cases}$
+    \item \textbf{Apply the jump condition} on the derivative at $x = x'$:
+    $\left[\frac{\partial G}{\partial x}\right]_{x'^-}^{x'^+} = -\frac{1}{p(x')}$
+    to determine the constant $A$.
+    \item \textbf{Write the solution} to $\hat{L}u = f$ as $u(x) = \int G(x,x')\,f(x')\,dx'$.
+    \item \textbf{Verify:} symmetry $G(x,x')=G(x',x)$; boundary conditions; continuity at $x=x'$; correct derivative jump.
+\end{enumerate}
+\end{notebox}
+
+\subsection{\texorpdfstring{Construct $G(x,x')$ for $\hat{L}y=-\tfrac{d}{dx}\!\left((1+x)y'\right)$ on $(0,1)$; $y(0)=0$, $y'(1)=0$}{Green's function for SL operator: left/right basis solutions, jump condition gives $A=1$}}
+
+\begin{problembox}
+Construct $G(x, x')$ for $\hat{L}y = -\frac{d}{dx}\left( (1+x) \frac{dy}{dx} \right)$ on $0 < x < 1$.
+BCs: $y(0) = 0, \quad y'(1) = 0$.
+\end{problembox}
+
+The Green's function satisfies $\hat{L}G(x, x') = \delta(x-x')$.
+First, solve the homogeneous equation $((1+x)y')' = 0$:
+$$ (1+x)y' = C \implies y' = \frac{C}{1+x} \implies y(x) = C \ln(1+x) + D $$
+
+\textbf{Step 1: Construct Basis Functions}
+Find $y_1(x)$ satisfying the left BC $y(0)=0$:
+$C \ln(1) + D = 0 \implies D = 0$.
+$$ y_1(x) = \ln(1+x) $$
+
+Find $y_2(x)$ satisfying the right BC $y'(1)=0$:
+$y'(x) = \frac{C}{1+x}$. At $x=1$, $\frac{C}{2} = 0 \implies C=0$.
+So $y_2(x) = \text{constant}$. We choose:
+$$ y_2(x) = 1 $$
+
+\textbf{Step 2: Construct G}
+$$ G(x, x') = \begin{cases} A y_1(x)y_2(x') & 0 \le x < x' \\ A y_1(x')y_2(x) & x' < x \le 1 \end{cases} $$
+Note: Since the Sturm-Liouville operator $\hat{L}$ is self-adjoint (it can be written in the form $-\frac{d}{dx}(p\frac{d}{dx})$ with appropriate boundary conditions), the Green's function must be symmetric: $G(x,x') = G(x',x)$.
+$G(x, x') = \begin{cases} A \ln(1+x) & x < x' \\ A \ln(1+x') & x > x' \end{cases}$
+
+\textbf{Step 3: Jump Condition}
+For operator $L = -\frac{d}{dx}(p(x) \frac{d}{dx})$, the jump in the derivative is:
+$$ \left. \frac{\partial G}{\partial x} \right|_{x'+\epsilon} - \left. \frac{\partial G}{\partial x} \right|_{x'-\epsilon} = -\frac{1}{p(x')} $$
+Here $p(x) = 1+x$.
+Derivative for $x > x'$: $\frac{\partial}{\partial x}(A \ln(1+x')) = 0$.
+Derivative for $x < x'$: $\frac{\partial}{\partial x}(A \ln(1+x)) = \frac{A}{1+x}$.
+Jump at $x=x'$:
+$$ 0 - \frac{A}{1+x'} = -\frac{1}{1+x'} \implies A = 1 $$
+
+\begin{summarybox}
+Let $x_<$ be the smaller of $x, x'$ and $x_>$ be the larger.
+$$ G(x, x') = \ln(1 + x_<) $$
+\end{summarybox}
+
+\newpage
+
+\subsection{\texorpdfstring{$G'' + k^2 G = \delta(x-x_0)$ on $\mathbb{R}$; outgoing-wave BCs $G\sim e^{\pm ikx}$ as $x\to\pm\infty$}{Green's function for 1D Helmholtz on real line; continuity and jump condition give $G=\frac{e^{ik|x-x_0|}}{2ik}$}}
+
+\begin{problembox}
+Consider the Sturm-Liouville operator $L = \frac{d^2}{dx^2} + k^2$ on $-\infty < x < \infty$.
+
+ Find the Green's function satisfying $LG(x, x_0) = \delta(x - x_0)$ with outgoing boundary conditions ($G \sim e^{\pm ikx}$ as $x \to \pm\infty$).
+
+\end{problembox}
+We solve the differential equation:
+$$ \left( \frac{d^2}{dx^2} + k^2 \right) G(x, x_0) = \delta(x - x_0) $$
+
+For $x \neq x_0$, the homogeneous equation $u'' + k^2 u = 0$ admits solutions $e^{\pm ikx}$.
+
+Applying radiation boundary conditions (outgoing waves from source $x_0$):
+$$ G(x, x_0) = \begin{cases} A e^{-ikx} & x < x_0 \\ B e^{ikx} & x > x_0 \end{cases} $$
+
+\textbf{Step 1: Continuity at $x = x_0$.}
+$$ A e^{-ikx_0} = B e^{ikx_0} \implies A = B e^{2ikx_0} $$
+
+\textbf{Step 2: Jump condition (integrate ODE across $x_0$).}
+$$ \left.\frac{dG}{dx}\right|_{x_0^+} - \left.\frac{dG}{dx}\right|_{x_0^-} = 1 $$
+Substituting the derivatives:
+$$ (ik B e^{ikx_0}) - (-ik A e^{-ikx_0}) = 1 $$
+Using $A = B e^{2ikx_0}$:
+$$ 2ik B e^{ikx_0} = 1 \implies B = \frac{1}{2ik} e^{-ikx_0} $$
+
+Consequently, $A = \frac{1}{2ik} e^{ikx_0}$.
+
+\begin{summarybox}[title={Part A Answer}]
+$$ G(x, x_0) = \frac{1}{2ik} e^{ik|x - x_0|} $$
+\end{summarybox}
+
+
+
+\newpage
+
+\subsection{\texorpdfstring{$\hat{L}u=\tfrac{d}{dx}(e^{-x}u')$ on $(0,\ln 2)$: (A) find $G(x,x_0)$ with $G(0)=G(\ln 2)=0$; (B) solve $\hat{L}u=-\lambda u$, $u(0)=1$, $u(\ln 2)=2$ to first order in $\lambda$}{(A) Green's function for exponential-weight SL operator; (B) perturbation expansion: zeroth order $u_0=e^x$}}
+
+\begin{problembox}
+Given the Sturm-Liouville operator $\hat{L}u = \frac{d}{dx} \left( e^{-x} \frac{du}{dx} \right)$ on $0 < x < \ln 2$.
+
+(A) Find the Green's function $G(x, x_0)$ satisfying $\hat{L}G = -\delta(x-x_0)$ with Dirichlet BCs $G(0)=G(\ln 2)=0$.
+
+(B) Solve $\hat{L}u = -\lambda u$ with $u(0)=1, u(\ln 2)=2$ to first order in $\lambda$.
+\end{problembox}
+
+\textbf{(A) Green's Function Construction}
+
+The homogeneous equation $(e^{-x}u')' = 0$ yields solutions of the form $u(x) = C_1 e^x + C_2$.
+We construct solutions satisfying the boundary conditions:
+\begin{itemize}
+    \item \textbf{Left ($x < x_0$):} Satisfies $u(0)=0$.
+    $$ u_L(x) = e^x - 1 $$
+    \item \textbf{Right ($x > x_0$):} Satisfies $u(\ln 2)=0$.
+    $$ u_R(x) = e^x - 2 $$
+\end{itemize}
+
+The Green's function is continuous at $x_0$:
+$$ G(x, x_0) = A \begin{cases} (e^x - 1)(e^{x_0} - 2) & 0 \le x \le x_0 \\ (e^{x_0} - 1)(e^x - 2) & x_0 \le x \le \ln 2 \end{cases} $$
+
+Apply the jump condition on the derivative: $[e^{-x} G']_{x_0^-}^{x_0^+} = -1$.
+$$ e^{-x_0} \left[ G'(x_0^+) - G'(x_0^-) \right] = -1 $$
+$$ e^{-x_0} \left[ A(e^{x_0}-1)e^{x_0} - A(e^{x_0}-2)e^{x_0} \right] = -1 $$
+$$ A [ (e^{x_0}-1) - (e^{x_0}-2) ] = -1 \implies A(1) = -1 \implies A = -1 $$
+
+\begin{summarybox}[title={Part A Answer}]
+$$ G(x, x_0) = \begin{cases} (e^x - 1)(2 - e^{x_0}) & 0 \le x \le x_0 \\ (e^{x_0} - 1)(2 - e^x) & x_0 \le x \le \ln 2 \end{cases} $$
+\end{summarybox}
+
+\textbf{(B) Perturbation Expansion}
+
+We seek a solution $u(x) \approx u_0(x) + \lambda u_1(x)$.
+Substituting into $\hat{L}u = -\lambda u$:
+$$ \hat{L}(u_0 + \lambda u_1) = -\lambda(u_0 + \lambda u_1) \approx -\lambda u_0 $$
+
+\textbf{Order $\lambda^0$ (Zeroth Order):}
+$\hat{L}u_0 = 0$ with $u_0(0)=1, u_0(\ln 2)=2$.
+$$ u_0(x) = C_1 e^x + C_2 $$
+Using BCs: $C_1 + C_2 = 1$ and $2C_1 + C_2 = 2 \implies C_1 = 1, C_2 = 0$.
+$$ u_0(x) = e^x $$
+
+\textbf{Order $\lambda^1$ (First Order):}
+$\hat{L}u_1 = -u_0 = -e^x$ with homogeneous BCs $u_1(0)=0, u_1(\ln 2)=0$.
+$$ (e^{-x} u_1')' = -e^x \implies e^{-x} u_1' = -e^x + A \implies u_1' = -e^{2x} + Ae^x $$
+Integrating again:
+$$ u_1(x) = -\frac{1}{2}e^{2x} + Ae^x + B $$
+Apply BCs:
+\begin{align*}
+    u_1(0) &= -0.5 + A + B = 0 \\
+    u_1(\ln 2) &= -0.5(4) + 2A + B = 0 \implies 2A + B = 2
+\end{align*}
+Subtracting the first from the second: $(2A+B) - (A+B) = 2 - 0.5 \implies A = 1.5$.
+Then $B = 0.5 - 1.5 = -1$.
+
+$$ u_1(x) = -\frac{1}{2}e^{2x} + \frac{3}{2}e^x - 1 $$
+
+\begin{summarybox}[title={Part B Answer}]
+$$ u(x) \approx e^x + \lambda \left( -\frac{1}{2}e^{2x} + \frac{3}{2}e^x - 1 \right) $$
+\end{summarybox}
+
+\newpage
+% ---------------------------------------------------------------------
+% NEW PROBLEM (Section 6)
+% ---------------------------------------------------------------------
+\subsection{\texorpdfstring{Construct $G(x,x')$ for $-y''=f$ on $(0,1)$; $y(0)=y(1)=0$}{Standard 1D Green's function: piecewise linear; $G(x,x')=x_<(1-x_>)$}}
+
+\begin{problembox}
+Construct the Green's function $G(x, x')$ for the boundary-value problem:
+$$-y''(x) = f(x), \quad 0 < x < 1, \qquad y(0) = 0, \quad y(1) = 0.$$
+That is, find $G(x,x')$ satisfying $-G_{xx} = \delta(x-x')$ with the same boundary conditions.
+Use $G$ to write the formal solution for general $f$.
+\end{problembox}
+
+\textbf{Step 1: Homogeneous solutions satisfying each BC.}
+
+The homogeneous equation $y'' = 0$ has general solution $y = Ax + B$.
+
+\begin{itemize}
+    \item \textbf{Left solution $y_1$} (satisfies $y_1(0)=0$): $B=0$, so $y_1(x) = x$.
+    \item \textbf{Right solution $y_2$} (satisfies $y_2(1)=0$): $A + B = 0 \Rightarrow B = -A$, so $y_2(x) = 1-x$ (choosing $A=-1$).
+\end{itemize}
+
+\textbf{Step 2: Write the piecewise Green's function.}
+
+The standard form for a self-adjoint operator $Ly = -y''$ is:
+\[
+    G(x,x') = \frac{1}{p(x') W(x')} \begin{cases} y_1(x)\,y_2(x') & x < x' \\ y_1(x')\,y_2(x) & x > x' \end{cases}
+\]
+where $p(x) = 1$ (coefficient of $y''$) and $W(x') = y_1 y_2' - y_1' y_2$.
+
+\textbf{Step 3: Compute the Wronskian.}
+\[
+    W(x') = y_1(x') y_2'(x') - y_1'(x') y_2(x')
+    = x'(-1) - (1)(1-x') = -x' - 1 + x' = -1.
+\]
+
+\textbf{Step 4: Determine prefactor from jump condition.}
+For operator $L = -\frac{d^2}{dx^2}$, the jump condition is:
+\[
+    G'(x'^+,x') - G'(x'^-,x') = -\frac{1}{p(x')} = -1.
+\]
+With the Wronskian $W = -1$ and $p = 1$:
+\[
+    \frac{1}{p\,W} = \frac{1}{1\cdot(-1)} = -1,
+\]
+so:
+\[
+    G(x,x') = (-1)\begin{cases} x(1-x') & x < x' \\ x'(1-x) & x > x' \end{cases}
+    = \begin{cases} x(1-x') & x < x' \\ x'(1-x) & x > x' \end{cases}.
+\]
+(The sign works out correctly since $W = -1$ and the operator is $-\partial_{xx}$.)
+
+\begin{summarybox}
+$$G(x, x') = x_<\,(1 - x_>)$$
+where $x_< = \min(x,x')$ and $x_> = \max(x,x')$.
+
+The solution of $-y'' = f$ with $y(0)=y(1)=0$ is:
+$$y(x) = \int_0^1 G(x, x') f(x')\,dx' = (1-x)\int_0^x x' f(x')\,dx' + x\int_x^1 (1-x') f(x')\,dx'$$
+\end{summarybox}
+
+\textbf{Verification.}
+\begin{itemize}
+    \item \textbf{Symmetry:} $G(x,x') = G(x',x)$ (self-adjoint operator). \checkmark
+    \item \textbf{BCs:} $G(0,x') = 0 \cdot (1-x') = 0$ and $G(1,x') = x'(1-1) = 0$. \checkmark
+    \item \textbf{Continuity at $x=x'$:} $x'(1-x') = x'(1-x')$. \checkmark
+    \item \textbf{Jump in derivative:} For $x < x'$, $\partial_x G = 1-x'$; for $x > x'$, $\partial_x G = -x'$. Jump $= -x' - (1-x') = -1 = -1/p(x')$. \checkmark
+\end{itemize}
+
+\newpage
+% ---------------------------------------------------------------------
+% PROBLEM 8
+% ---------------------------------------------------------------------
+\section{Integral Equations and Generalized Functions}
+\vspace{-0.5cm}
+\begin{notebox}[title={General Procedure: Integral Equations \& Dirac Delta}]
+\textbf{Fredholm Equations with Separable Kernel} $K(x,t)=\sum_i \phi_i(x)\psi_i(t)$:
+\begin{enumerate}
+    \item Define scalar unknowns $C_i = \int \psi_i(t)\,\varphi(t)\,dt$.
+    \item Express $\varphi(x)$ in terms of the $C_i$ and $\phi_i(x)$.
+    \item Substitute back into the definitions of $C_i$ to obtain a linear system $M\mathbf{c} = \mathbf{b}$.
+    \item Solve for $C_i$; a unique solution exists when $\det(M)\ne 0$.
+    \item \textbf{Eigenvalues:} set $\det(M)=0$ to find the values of $\lambda$ where no unique solution exists.
+\end{enumerate}
+\textbf{Volterra Equations with Convolution Kernel:}
+\begin{enumerate}
+    \item Simplify by multiplying out the convolution factor (e.g.\ multiply both sides by $e^{\alpha x}$).
+    \item Differentiate both sides to convert the integral equation into an ODE.
+    \item Solve the ODE using standard methods (integrating factor, etc.).
+    \item Verify by substituting back into the original integral equation.
+\end{enumerate}
+\textbf{Dirac Delta Computations:}
+\begin{itemize}
+    \item \textbf{Composition rule:} If $g(x)$ has simple roots $x_i$, then $\delta(g(x))=\sum_i \frac{\delta(x-x_i)}{|g'(x_i)|}$.
+    \item \textbf{Sifting property:} $\int f(x)\,\delta(x-a)\,dx = f(a)$.
+    \item \textbf{Distributional derivatives:} A jump $J$ in $f^{(n-1)}$ at $x_0$ produces a term $J\,\delta(x-x_0)$ in $f^{(n)}$.
+\end{itemize}
+\end{notebox}
+
+\subsection{\texorpdfstring{Solve $\varphi(x)=x+\lambda\int_0^1(xt^2+x^2t)\varphi(t)\,dt$; find eigenvalues $\lambda$}{Fredholm IE with separable kernel; reduce to $2\times 2$ linear system; eigenvalues from $\det M=0$}}
+
+\begin{problembox}
+Solve for $\varphi(x)$:
+$$\varphi(x) = x + \lambda \int_0^1 (x t^2 + x^2 t) \varphi(t) \, dt$$
+Determine eigenvalues $\lambda$.
+\end{problembox}
+
+This is a Fredholm equation with a separable kernel $K(x,t) = x t^2 + x^2 t$.
+We can rewrite the equation as:
+$$ \varphi(x) = x + \lambda x \int_0^1 t^2 \varphi(t) \, dt + \lambda x^2 \int_0^1 t \varphi(t) \, dt $$
+Define the constants:
+$$ C_1 = \int_0^1 t^2 \varphi(t) \, dt, \quad C_2 = \int_0^1 t \varphi(t) \, dt $$
+Then the solution form is:
+$$ \varphi(x) = x + \lambda C_1 x + \lambda C_2 x^2 = x(1+\lambda C_1) + \lambda C_2 x^2 $$
+Substitute this back into the definitions of $C_1$ and $C_2$:
+
+$$ C_1 = \int_0^1 t^2 [t(1+\lambda C_1) + \lambda C_2 t^2] \, dt = \int_0^1 [(1+\lambda C_1)t^3 + \lambda C_2 t^4] \, dt $$
+$$ C_1 = (1+\lambda C_1)\frac{1}{4} + \lambda C_2 \frac{1}{5} $$
+$$ C_1 \left(1 - \frac{\lambda}{4}\right) - \frac{\lambda}{5}C_2 = \frac{1}{4} \quad \dots (1) $$
+
+$$ C_2 = \int_0^1 t [t(1+\lambda C_1) + \lambda C_2 t^2] \, dt = \int_0^1 [(1+\lambda C_1)t^2 + \lambda C_2 t^3] \, dt $$
+$$ C_2 = (1+\lambda C_1)\frac{1}{3} + \lambda C_2 \frac{1}{4} $$
+$$ - \frac{\lambda}{3}C_1 + C_2 \left(1 - \frac{\lambda}{4}\right) = \frac{1}{3} \quad \dots (2) $$
+
+This is a linear system $M \mathbf{c} = \mathbf{b}$. A unique solution exists if $\det(M) \neq 0$.
+$$ D(\lambda) = \left(1 - \frac{\lambda}{4}\right)^2 - \left(-\frac{\lambda}{5}\right)\left(-\frac{\lambda}{3}\right) = 1 - \frac{\lambda}{2} + \frac{\lambda^2}{16} - \frac{\lambda^2}{15} $$
+$$ D(\lambda) = 1 - \frac{\lambda}{2} + \lambda^2 \frac{15-16}{240} = 1 - \frac{\lambda}{2} - \frac{\lambda^2}{240} $$
+
+The equation has a unique solution when $D(\lambda) \neq 0$. Setting $D(\lambda) = 0$ gives the eigenvalues:
+$$ 1 - \frac{\lambda}{2} - \frac{\lambda^2}{240} = 0 \implies \lambda = -60 \pm 4\sqrt{60}$$
+
+
+For $\lambda$ not equal to these eigenvalues, we can solve the linear system (1)-(2) for $C_1, C_2$ using Cramer's rule:
+$$ C_1 = \frac{\frac{1}{4}(1-\frac{\lambda}{4}) - \frac{1}{3}(-\frac{\lambda}{5})}{D(\lambda)}, \quad C_2 = \frac{(1-\frac{\lambda}{4})\frac{1}{3} - \frac{1}{4}(-\frac{\lambda}{3})}{D(\lambda)} $$
+
+The general solution is then:
+$$ \varphi(x) = (1+\lambda C_1)x + \lambda C_2 x^2 $$
+
+\newpage
+
+% ---------------------------------------------------------------------
+% PROBLEM 9
+% ---------------------------------------------------------------------
+\subsection{\texorpdfstring{Evaluate $I=\int_{-\infty}^{\infty}(x^3+2x)\,\delta(x^2-3x+2)\,dx$}{Apply delta composition rule $\delta(g(x))=\sum_i\delta(x-x_i)/|g'(x_i)|$; roots at $x=1,2$; $I=15$}}
+
+\begin{problembox}
+Evaluate the integral:
+$$I = \int_{-\infty}^{\infty} (x^3 + 2x) \, \delta(x^2 - 3x + 2) \, dx$$
+\end{problembox}
+
+
+We use the composition rule for the Dirac delta function. If $g(x)$ has simple roots $x_i$, then:
+$$ \delta(g(x)) = \sum_i \frac{\delta(x - x_i)}{|g'(x_i)|} $$
+
+\textbf{Step 1: Find roots of the argument}
+Let $g(x) = x^2 - 3x + 2$.
+Roots: $(x-1)(x-2) = 0 \implies x_1 = 1, x_2 = 2$.
+
+\textbf{Step 2: Evaluate derivative at roots}
+$g'(x) = 2x - 3$.
+At $x_1 = 1$: $g'(1) = 2(1) - 3 = -1 \implies |g'(1)| = 1$.
+At $x_2 = 2$: $g'(2) = 2(2) - 3 = 1 \implies |g'(2)| = 1$.
+
+\textbf{Step 3: Expand the Delta Function}
+$$ \delta(x^2 - 3x + 2) = \frac{\delta(x-1)}{1} + \frac{\delta(x-2)}{1} = \delta(x-1) + \delta(x-2) $$
+
+\textbf{Step 4: Evaluate the Integral}
+Let $f(x) = x^3 + 2x$.
+$$ I = \int_{-\infty}^{\infty} f(x) [\delta(x-1) + \delta(x-2)] \, dx $$
+Using the sifting property $\int f(x)\delta(x-a)dx = f(a)$:
+$$ I = f(1) + f(2) $$
+Calculate $f(1)$:
+$$ f(1) = 1^3 + 2(1) = 3 $$
+Calculate $f(2)$:
+$$ f(2) = 2^3 + 2(2) = 8 + 4 = 12 $$
+
+$$ I = 3 + 12 = 15 $$
+
+\begin{summarybox}
+$$ I = 15 $$
+\end{summarybox}
+
+\newpage
+
+% ---------------------------------------------------------------------
+% PROBLEM 10
+% ---------------------------------------------------------------------
+\subsection{\texorpdfstring{(A) Evaluate $\int_{-\infty}^{\infty}\delta(e^{|x|}\sin x)\,dx$; (B) distributional derivatives of $f(x)=1+e^{-|x|}$}{(A) Roots at $x=n\pi$; geometric series gives $\coth(\pi/2)$; (B) $f''=e^{-|x|}-2\delta(x)$}}
+
+\begin{problembox}
+\textbf{Part A:} Calculate the integral:
+$\int_{-\infty}^{\infty} \delta(e^{|x|} \sin x) \, dx$
+
+\textbf{Part B:} Calculate the distributional derivative of the function $f(x) = 1 + e^{-|x|}$.
+\end{problembox}
+
+\textbf{Part A: Delta Function with Composite Argument}
+
+We use the composition rule for the Dirac delta function. Let $g(x) = e^{|x|} \sin x$.
+The support of the delta function $\delta(g(x))$ is the set of roots $x_n$ where $g(x_n) = 0$.
+Since $e^{|x|} > 0$, the roots are determined by $\sin x = 0$:
+$$ x_n = n\pi, \quad n \in \mathbb{Z} $$
+
+The derivative is $g'(x) = \text{sgn}(x) e^{|x|} \sin x + e^{|x|} \cos x$.
+At the roots $x_n = n\pi$, the sine term vanishes:
+$$ g'(n\pi) = e^{|n\pi|} \cos(n\pi) = (-1)^n e^{|n|\pi} $$
+$$ |g'(n\pi)| = e^{|n|\pi} $$
+
+Using the expansion $\delta(g(x)) = \sum_n \frac{\delta(x - x_n)}{|g'(x_n)|}$:
+$$ \delta(e^{|x|} \sin x) = \sum_{n=-\infty}^{\infty} \frac{\delta(x - n\pi)}{e^{|n|\pi}} $$
+
+The integral is the sum of the weights:
+$$ I = \sum_{n=-\infty}^{\infty} e^{-|n|\pi} = 1 + 2\sum_{n=1}^{\infty} (e^{-\pi})^n $$
+
+This is a geometric series with $r = e^{-\pi} < 1$:
+$$ \sum_{n=1}^{\infty} r^n = \frac{r}{1-r} = \frac{e^{-\pi}}{1 - e^{-\pi}} = \frac{1}{e^{\pi} - 1} $$
+$$ I = 1 + \frac{2}{e^{\pi} - 1} = \frac{e^{\pi} - 1 + 2}{e^{\pi} - 1} = \frac{e^{\pi} + 1}{e^{\pi} - 1} $$
+
+Recalling that $\coth(x) = \frac{e^{2x} + 1}{e^{2x} - 1}$, we can verify:
+$$ \coth\left(\frac{\pi}{2}\right) = \frac{e^{\pi} + 1}{e^{\pi} - 1} $$
+
+Therefore, $I = \coth\left(\frac{\pi}{2}\right)$.
+
+\begin{summarybox}[title={Part A Answer}]
+$$ \int_{-\infty}^{\infty} \delta(e^{|x|} \sin x) \, dx = \coth\left(\frac{\pi}{2}\right) $$
+\end{summarybox}
+
+\textbf{Part B: Distributional Derivative}
+
+Given $f(x) = 1 + e^{-|x|}$:
+$$ f(x) = \begin{cases} 1 + e^x & x < 0 \\ 1 + e^{-x} & x > 0 \end{cases} $$
+
+1. \textbf{First Derivative:}
+The function $f(x)$ is continuous at $x=0$ since $\lim_{x\to 0^-} f(x) = 2$ and $\lim_{x\to 0^+} f(x) = 2$.
+Therefore, the distributional derivative involves no delta functions and equals the classical derivative defined piecewise:
+$$ f'(x) = \begin{cases} e^x & x < 0 \\ -e^{-x} & x > 0 \end{cases} $$
+
+This can be written compactly as $f'(x) = -\text{sgn}(x)e^{-|x|}$ for $x \neq 0$, where $\text{sgn}(x)$ is the sign function.
+
+2. \textbf{Second Derivative:}
+Check for discontinuity in $f'(x)$ at $x=0$:
+$$ \lim_{x\to 0^-} f'(x) = 1, \quad \lim_{x\to 0^+} f'(x) = -1 $$
+Jump $J = -1 - 1 = -2$.
+The second derivative contains a delta function proportional to the jump:
+$$ f''(x) = \{f''(x)\}_{classical} + J\delta(x) $$
+$$ \{f''(x)\}_{classical} = \begin{cases} e^x & x < 0 \\ e^{-x} & x > 0 \end{cases} = e^{-|x|} $$
+$$ f''(x) = e^{-|x|} - 2\delta(x) $$
+
+\begin{summarybox}[title={Part B Answer}]
+$$ f'(x) = -\text{sgn}(x) e^{-|x|} $$
+(Standard distributions; no delta part)
+\end{summarybox}
+
+\newpage
+
+% ---------------------------------------------------------------------
+% PROBLEM 11
+% ---------------------------------------------------------------------
+\subsection{\texorpdfstring{Find eigenvalue $\lambda$ for $f(\mathbf{x})=\lambda\iint_{|\mathbf{x}'|<R}\frac{f(\mathbf{x}')}{1+3|\mathbf{x}'|}\,d\mathbf{x}'$ in disk $|\mathbf{x}'|<R$}{Kernel independent of $\mathbf{x}$ implies $f=\mathrm{const}$; eigenvalue from 2D polar integral over disk}}
+
+\begin{problembox}
+Find the eigenvalue $\lambda$ and eigenfunction $f(\mathbf{x})$ for the integral equation:
+$$f(\mathbf{x}) = \lambda \iint_{|\mathbf{x}'|<R} \frac{f(\mathbf{x}')}{1+3|\mathbf{x}'|} d\mathbf{x}'$$
+\end{problembox}
+
+\textbf{Solution:}
+
+The kernel $K(\mathbf{x}, \mathbf{x}') = \frac{1}{1+3|\mathbf{x}'|}$ is independent of $\mathbf{x}$. Therefore, the right-hand side is a constant (independent of $\mathbf{x}$).
+This implies that the eigenfunction must be a constant:
+$$ f(\mathbf{x}) = C $$
+
+Substituting $f(\mathbf{x}) = C$ into the equation:
+$$ C = \lambda \iint_{|\mathbf{x}'|<R} \frac{C}{1+3|\mathbf{x}'|} d\mathbf{x}' $$
+Assuming $C \neq 0$, we divide by $C$:
+$$ 1 = \lambda \iint_{|\mathbf{x}'|<R} \frac{1}{1+3|\mathbf{x}'|} d\mathbf{x}' $$
+
+We evaluate the integral over the disk $|\mathbf{x}'|<R$ using 2D polar coordinates. Setting $\mathbf{x}' = (r\cos\theta, r\sin\theta)$ with $|\mathbf{x}'| = r$ and area element $d\mathbf{x}' = r\, dr\, d\theta$:
+$$ I = \int_0^{2\pi} d\theta \int_0^R \frac{r}{1+3r} dr = 2\pi \int_0^R \frac{r}{1+3r} dr $$
+
+Use substitution $u = 1+3r \implies r = \frac{u-1}{3}, \, dr = \frac{du}{3}$.
+Limits: $r=0 \to u=1$; $r=R \to u=1+3R$.
+$$ \int_0^R \frac{r}{1+3r} dr = \int_1^{1+3R} \frac{u-1}{3u} \frac{du}{3} = \frac{1}{9} \int_1^{1+3R} \left(1 - \frac{1}{u}\right) du $$
+$$ = \frac{1}{9} \Big[ u - \ln|u| \Big]_1^{1+3R} $$
+$$ = \frac{1}{9} (3R - \ln(1+3R)) $$
+
+So the condition for $\lambda$ is:
+$$ 1 = \lambda \cdot 2\pi \cdot \frac{1}{9} (3R - \ln(1+3R)) $$
+
+\begin{summarybox}
+\textbf{Eigenfunction:} $f(\mathbf{x}) = \text{const}$
+
+\textbf{Eigenvalue:}
+$$ \lambda = \frac{9}{2\pi (3R - \ln(1+3R))} $$
+\end{summarybox}
+
+\newpage
+
+% ---------------------------------------------------------------------
+% PROBLEM 12
+% ---------------------------------------------------------------------
+
+\newpage
+
+% ---------------------------------------------------------------------
+% PROBLEM 12
+% ---------------------------------------------------------------------
+\subsection{\texorpdfstring{Solve $f(x)=\theta(x)e^{-\alpha x}+\lambda\int_{-\infty}^{x}e^{-\alpha(x-y)}f(y)\,dy$, $\alpha>\lambda>0$}{Volterra convolution IE: multiply by $e^{\alpha x}$, differentiate to get $f'+( \alpha-\lambda)f=\delta(x)$}}
+
+\begin{problembox}
+Solve the Volterra integral equation:
+$$f(x) = \theta(x)e^{-\alpha x} + \lambda \int_{-\infty}^{x} e^{-\alpha(x-y)} f(y) dy$$
+where $\theta(x)$ is the Heaviside step function and $\alpha > \lambda > 0$.
+\end{problembox}
+
+\textbf{Strategy:} This is a Volterra integral equation of the second kind with a convolution-type kernel. The key insight is to convert it to an Ordinary Differential Equation (ODE) by differentiation.
+
+\textbf{Step 1: Simplify using exponential properties}
+
+Multiply both sides by $e^{\alpha x}$ to factor the exponential term in the kernel:
+\begin{equation}
+    e^{\alpha x} f(x) = \theta(x) + \lambda \int_{-\infty}^{x} e^{\alpha y} f(y) dy
+\end{equation}
+
+The right-hand side now has a simpler structure: a Heaviside function plus an integral with variable upper limit.
+
+\textbf{Step 2: Differentiate to obtain an ODE}
+
+Apply $\frac{d}{dx}$ to both sides. For the left side, use the product rule. For the right side, use:
+\begin{itemize}
+    \item Distributional derivative: $\theta'(x) = \delta(x)$
+    \item Leibniz rule for differentiation under the integral: $\frac{d}{dx}\int_{-\infty}^{x} g(y) dy = g(x)$
+\end{itemize}
+
+\begin{align}
+    \frac{d}{dx} \left( e^{\alpha x} f(x) \right) &= \delta(x) + \lambda e^{\alpha x} f(x) \\
+    \alpha e^{\alpha x} f(x) + e^{\alpha x} f'(x) &= \delta(x) + \lambda e^{\alpha x} f(x)
+\end{align}
+
+Dividing through by $e^{\alpha x}$ (noting $e^{-\alpha x}\delta(x) = \delta(x)$ for $x=0$):
+\begin{equation}
+    f'(x) + (\alpha - \lambda)f(x) = \delta(x)
+    \label{eq:volterra_ode}
+\end{equation}
+
+\begin{notebox}
+Equation (\ref{eq:volterra_ode}) is a first-order inhomogeneous linear ODE with a Dirac delta forcing term. This is equivalent to finding the Green's function for the operator $\mathcal{L} = \frac{d}{dx} + (\alpha - \lambda)$.
+\end{notebox}
+
+\textbf{Step 3: Solve using integrating factor}
+
+The integrating factor is $I(x) = e^{(\alpha-\lambda)x}$. Multiply both sides by $I(x)$:
+\begin{equation}
+    e^{(\alpha-\lambda)x} f'(x) + (\alpha-\lambda) e^{(\alpha-\lambda)x} f(x) = e^{(\alpha-\lambda)x} \delta(x) = \delta(x)
+\end{equation}
+
+The left side is an exact differential:
+\begin{equation}
+    \frac{d}{dx} \left[ f(x) e^{(\alpha-\lambda)x} \right] = \delta(x)
+\end{equation}
+
+\textbf{Step 4: Integrate both sides}
+
+Integrate from $-\infty$ to $x$. The integral of $\delta(y)$ over this interval is the Heaviside function:
+\begin{equation}
+    \int_{-\infty}^{x} \delta(y) dy = \theta(x)
+\end{equation}
+
+Since $f(x)$ must vanish as $x \to -\infty$ (from the original equation), the boundary term at $-\infty$ is zero:
+\begin{equation}
+    f(x) e^{(\alpha-\lambda)x} \Big|_{-\infty}^{x} = \theta(x)
+\end{equation}
+
+Therefore:
+\begin{equation}
+    f(x) e^{(\alpha-\lambda)x} = \theta(x)
+\end{equation}
+
+\textbf{Step 5: Solve for $f(x)$}
+
+Multiply both sides by $e^{-(\alpha-\lambda)x}$:
+
+\begin{summarybox}
+$$ f(x) = \theta(x) e^{-(\alpha - \lambda)x} $$
+\end{summarybox}
+
+\textbf{Verification:}
+
+\textbf{1. Boundary behavior:} For $x < 0$, both $\theta(x)=0$ and the integral limit make $f(x)=0$. \checkmark
+
+\textbf{2. Exponential decay:} Since $\alpha > \lambda$, the exponent $-(\alpha-\lambda) < 0$, ensuring $f(x) \to 0$ as $x \to +\infty$. \checkmark
+
+\textbf{3. Substitution check:} Substitute $f(x) = \theta(x) e^{-(\alpha-\lambda)x}$ into the original equation:
+\begin{align*}
+    \text{RHS} &= \theta(x)e^{-\alpha x} + \lambda \int_{-\infty}^{x} e^{-\alpha(x-y)} \theta(y) e^{-(\alpha-\lambda)y} dy \\
+    &= \theta(x)e^{-\alpha x} + \lambda e^{-\alpha x} \int_{0}^{x} e^{(\alpha-\lambda)y} e^{-(\alpha-\lambda)y} dy \\
+    &= \theta(x)e^{-\alpha x} + \lambda e^{-\alpha x} \cdot x = \theta(x)e^{-\alpha x} \left(1 + \lambda x\right) \quad \text{(for $x>0$)}
+\end{align*}
+
+Actually, let me recalculate. For $x>0$:
+\begin{align*}
+    \int_{0}^{x} e^{\alpha y} e^{-(\alpha-\lambda)y} dy &= \int_{0}^{x} e^{\lambda y} dy = \frac{1}{\lambda}(e^{\lambda x} - 1)
+\end{align*}
+This gives $f(x) = \theta(x)e^{-\alpha x}(1 + e^{\lambda x} - 1) = \theta(x)e^{-(\alpha-\lambda)x}$. \checkmark
+
+\newpage
+% ---------------------------------------------------------------------
+% NEW PROBLEM (Section 7)
+% ---------------------------------------------------------------------
+\subsection{\texorpdfstring{Solve $\varphi(x)=\cos(\pi x)+\lambda\int_0^1\cos(\pi x)\cos(\pi t)\,\varphi(t)\,dt$; find eigenvalue $\lambda=2$}{Fredholm IE with rank-1 kernel; unique solution $\frac{2}{2-\lambda}\cos(\pi x)$ for $\lambda\ne 2$; $\lambda=2$ is eigenvalue with eigenfunction $\cos(\pi x)$}}
+
+\begin{problembox}
+Solve the Fredholm integral equation of the second kind:
+$$\varphi(x) = \cos(\pi x) + \lambda \int_0^1 \cos(\pi x)\cos(\pi t)\,\varphi(t)\,dt$$
+
+(a) Find the solution for $\lambda \neq 2$.
+
+(b) Identify the eigenvalue and corresponding eigenfunction of the integral operator.
+\end{problembox}
+
+\textbf{Step 1: Exploit the separable (rank-1) kernel.}
+
+The kernel $K(x,t) = \cos(\pi x)\cos(\pi t)$ factors as a product $\phi(x)\psi(t)$ with $\phi = \psi = \cos(\pi\cdot)$.
+Define the scalar:
+\[
+    C = \int_0^1 \cos(\pi t)\,\varphi(t)\,dt.
+\]
+The integral equation becomes:
+\[
+    \varphi(x) = \cos(\pi x) + \lambda C \cos(\pi x) = (1 + \lambda C)\cos(\pi x).
+\]
+
+\textbf{Step 2: Self-consistent equation for $C$.}
+
+Substitute $\varphi(t) = (1+\lambda C)\cos(\pi t)$ into the definition of $C$:
+\[
+    C = \int_0^1 \cos(\pi t)\cdot(1+\lambda C)\cos(\pi t)\,dt = (1+\lambda C)\int_0^1\cos^2(\pi t)\,dt.
+\]
+Evaluate the integral:
+\[
+    \int_0^1\cos^2(\pi t)\,dt = \frac{1}{2} + \frac{1}{2}\underbrace{\int_0^1\cos(2\pi t)\,dt}_{=0} = \frac{1}{2}.
+\]
+Therefore:
+\[
+    C = \frac{1+\lambda C}{2} \implies 2C = 1 + \lambda C \implies C(2-\lambda) = 1.
+\]
+
+\textbf{Step 3: Resolve the two cases.}
+
+\textbf{(a) $\lambda \neq 2$:}
+\[
+    C = \frac{1}{2-\lambda}, \qquad
+    \varphi(x) = \left(1 + \frac{\lambda}{2-\lambda}\right)\cos(\pi x) = \frac{2}{2-\lambda}\cos(\pi x).
+\]
+
+\textbf{(b) $\lambda = 2$:}
+The equation $C(2-2) = 1$ reduces to $0 = 1$, a contradiction. Hence no solution exists. This means $\lambda = 2$ is an eigenvalue: the homogeneous equation
+\[
+    \psi(x) = 2\int_0^1\cos(\pi x)\cos(\pi t)\,\psi(t)\,dt
+\]
+is satisfied by $\psi(x) = \cos(\pi x)$.
+
+\begin{summarybox}
+\textbf{(a)} For $\lambda \neq 2$:
+$$\varphi(x) = \frac{2}{2-\lambda}\cos(\pi x)$$
+\textbf{(b)} The eigenvalue of the kernel $K(x,t) = \cos(\pi x)\cos(\pi t)$ on $[0,1]$ is $\lambda = 2$, with eigenfunction $\cos(\pi x)$.
+\end{summarybox}
+
+\textbf{Verification:} For $\lambda \neq 2$, substitute into the RHS:
+\begin{align*}
+    \text{RHS} &= \cos(\pi x) + \lambda\cos(\pi x)\int_0^1\cos(\pi t)\cdot\frac{2}{2-\lambda}\cos(\pi t)\,dt \\
+    &= \cos(\pi x)\!\left(1 + \frac{2\lambda}{2-\lambda}\cdot\frac{1}{2}\right)
+     = \cos(\pi x)\cdot\frac{2-\lambda+\lambda}{2-\lambda} = \frac{2}{2-\lambda}\cos(\pi x) = \varphi(x). \;\checkmark
+\end{align*}
+
+\end{document}

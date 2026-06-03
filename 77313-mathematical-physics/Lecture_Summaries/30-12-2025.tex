@@ -1,0 +1,453 @@
+\section{שיעור: דיפוזיה בתווך סופי ומשוואת ריאקציה-דיפוזיה (30.12.2025)}
+
+\section{דיפוזיה במוט סופי (1D)}
+בניגוד לבעיה בתווך אינסופי (שבה השתמשנו בהתמרת פורייה), בבעיה בתווך סופי עלינו להתחשב בתנאי השפה המכתיבים את התנהגות המערכת בקצוות. נתבונן במוט באורך $L$.
+
+\begin{definitionbox}{\LR{Boundary Conditions} (תנאי שפה)}
+קיימות שתי אפשרויות פיזיקליות מרכזיות עבור קצוות המוט:
+\begin{enumerate}
+    \item \textbf{קצוות מבודדים (\LR{Isolated/Neumann BC}):} אין שטף חום/מסה דרך הקצוות.
+    \[ \left. \frac{\partial u}{\partial x} \right|_{x=0} = 0, \quad \left. \frac{\partial u}{\partial x} \right|_{x=L} = 0 \]
+    \item \textbf{קצוות מצומדים לאמבט (\LR{Dirichlet BC}):} הטמפרטורה בקצוות קבועה (בדרך כלל מאופסת).
+    \[ u(0, t) = 0, \quad u(L, t) = 0 \]
+\end{enumerate}
+\end{definitionbox}
+
+\subsection{שימור מסה והמצב הסטציונרי}
+עבור מערכת מבודדת, המסה הכוללת $M = \int_0^L u(x,t) dx$ נשמרת. נגזור לפי הזמן:
+\[ \dot{M} = \int_0^L \frac{\partial u}{\partial t} dx = \int_0^L D \frac{\partial^2 u}{\partial x^2} dx = D \left[ \frac{\partial u}{\partial x}(L,t) - \frac{\partial u}{\partial x}(0,t) \right] \]
+כאשר הקצוות מבודדים, הנגזרות מתאפסות ו-$\dot{M}=0$. 
+
+בזמן $t \to \infty$, המערכת שואפת למצב סטציונרי (\LR{Stationary State}) שבו $\frac{\partial u}{\partial t} = 0$. ממשוואת הדיפוזיה נקבל $u_{xx} = 0$, שפתרונה הוא $u(x) = Ax + B$. עבור קצוות מבודדים ($u_x=0$), נקבל $A=0$, כלומר הפרופיל הוא קבוע $u(x) = u_0$.
+
+\begin{resultbox}{חישוב הריכוז הסטציונרי}
+משימור המסה, הריכוז הסופי $u_0$ חייב להיות הממוצע של תנאי ההתחלה $f(x)$:
+\[ u_0 \cdot L = \int_0^L f(x) dx \implies u_0 = \frac{1}{L} \int_0^L f(x) dx \]
+\end{resultbox}
+
+\section{פתרון באמצעות הפרדת משתנים (\LR{Separation of Variables})}
+נפתור את המשוואה $u_t = D u_{xx}$ עם תנאי שפה מבודדים. נניח $u(x,t) = X(x)T(t)$:
+\[ \frac{\dot{T}}{DT} = \frac{X''}{X} = -\lambda^2 \]
+
+\subsection{הבעיה המרחבית (שטרום-ליוביל)}
+\[ X'' + \lambda^2 X = 0, \quad X'(0) = X'(L) = 0 \]
+הפתרון הוא $X_n(x) = \cos(\lambda_n x)$ כאשר $\lambda_n = \frac{n\pi}{L}$ עבור $n=0, 1, 2, \dots$. 
+\textbf{חשוב:} עבור קוסינוסים, האינדקס מתחיל מ-$n=0$ (מייצג את המצב הקבוע).
+
+\subsection{הבעיה הזמנית}
+\[ \dot{T} + D\lambda_n^2 T = 0 \implies T_n(t) = e^{-D \left(\frac{n\pi}{L}\right)^2 t} \]
+
+\begin{resultbox}{הפתרון הכללי לדיפוזיה במוט מבודד}
+\[ u(x,t) = C_0 + \sum_{n=1}^\infty C_n e^{-D \left(\frac{n\pi}{L}\right)^2 t} \cos\left(\frac{n\pi x}{L}\right) \]
+כאשר $C_0$ הוא הממוצע של תנאי ההתחלה, וכל שאר המודים דועכים אקספוננציאלית.
+\end{resultbox}
+
+\begin{notebox}{זמני דעיכה אופייניים}
+המודים דועכים מהר יותר ככל ש-$n$ גדל. הזמן האופייני לדעיכת המוד הראשון ($n=1$) הוא:
+\[ \tau \approx \frac{L^2}{D \pi^2} \]
+זהו הזמן שלוקח למערכת להפוך ל"חלקה" וקרובה למצב הסטציונרי.
+\end{notebox}
+
+\section{דיפוזיה בדו-ממד (לוח מלבני)}
+עבור לוח במידות $L_x \times L_y$ עם תנאי שפה $u=0$ (מצומד לאמבט חום ב-$0^\circ C$):
+\[ \frac{\partial u}{\partial t} = D \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} \right) \]
+הפרדת משתנים $u = X(x)Y(y)T(t)$ מובילה לפתרון:
+\[ u(x,y,t) = \sum_{n=1}^\infty \sum_{m=1}^\infty C_{nm} e^{-D \left[ \left(\frac{n\pi}{L_x}\right)^2 + \left(\frac{m\pi}{L_y}\right)^2 \right] t} \sin\left(\frac{n\pi x}{L_x}\right) \sin\left(\frac{m\pi y}{L_y}\right) \]
+במקרה זה, כיוון שהחום "בורח" מהקצוות, המצב הסטציונרי הוא $u(x,y, \infty) = 0$.
+
+\section{משוואת ריאקציה-דיפוזיה (\LR{Reaction-Diffusion})}
+נבחן מערכת שבה בנוסף לדיפוזיה קיים ריבוי טבעי (למשל אוכלוסיית חיידקים או ניוטרונים בכור):
+\[ \frac{\partial n}{\partial t} = D \frac{\partial^2 n}{\partial x^2} + \alpha n \]
+כאשר $\alpha > 0$ הוא מקדם הריבוי. נניח תנאי שפה $n(0,t)=n(L,t)=0$.
+
+\begin{theorembox}{התחרות בין דיפוזיה לריבוי}
+במערכת זו מתקיימת תחרות:
+\begin{itemize}
+    \item \textbf{הדיפוזיה} שואפת להוציא חלקיקים דרך הקצוות (דילול).
+    \item \textbf{הריבוי} שואף להגדיל את הצפיפות אקספוננציאלית.
+\end{itemize}
+הפתרון הזמני למוד ה-$m$ הוא $T_m(t) \propto e^{(\alpha - D \lambda_m^2) t}$.
+כדי שיהיה "פיצוץ אוכלוסייה", לפחות המוד הראשון ($m=1$) חייב לגדול.
+\end{theorembox}
+
+\begin{resultbox}{האורך הקריטי (\LR{Critical Length})}
+התנאי לגידול הוא $\alpha - D \left(\frac{\pi}{L}\right)^2 > 0$. מכאן נגדיר את האורך הקריטי $L_c$:
+\[ L > L_c = \pi \sqrt{\frac{D}{\alpha}} \]
+אם $L < L_c$, הדיפוזיה דומיננטית והאוכלוסייה תיכחד. אם $L > L_c$, הריבוי מנצח ונקבל גידול אקספוננציאלי.
+\end{resultbox}
+
+\section{דיפוזיה שלילית (\LR{Negative Diffusion})}
+מבחינה מתמטית, ניתן לבחון את המשוואה $u_t = -D u_{xx}$.
+\begin{itemize}
+    \item משוואה זו שקולה להרצת הזמן אחורה.
+    \item במקום החלקה של הפרופיל, כל בליטה גדלה והופכת לסינגולריות (\LR{Instability}).
+    \item פתרון פורייה מראה כי המודים גדלים כ-$e^{D k^2 t}$. ככל שאורך הגל קטן יותר ($k$ גדול), המוד גדל מהר יותר.
+    \item \textbf{היבט פיזיקלי:} מצב זה אינו פיזיקלי כיוון שהוא מפר את החוק השני של התרמודינמיקה (הקטנת אנטרופיה).
+\end{itemize}
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    axis lines = left,
+    xlabel = $x$,
+    ylabel = {$u(x,t)$},
+    ymin=0, ymax=1.2,
+    domain=0:pi,
+    samples=100,
+    title={דעיכת מודים בדיפוזיה (קצוות מאופסים)},
+    legend pos=north east
+]
+\addplot [blue, thick] {sin(deg(x))} ; 
+\addlegendentry{$t=0$}
+\addplot [red, thick, dashed] {0.6*sin(deg(x))} ;
+\addlegendentry{$t=t_1$}
+\addplot [black, thick, dotted] {0.2*sin(deg(x))} ;
+\addlegendentry{$t=t_2$}
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+\textbf{המשך בשיעור הבא:} משוואת לפלס (\LR{Laplace Equation}) כמצב עמיד של דיפוזיה.
+
+
+
+
+% =========================
+% הרצאה 30.12.2025 — דיפוזיה בתווך סופי, דו־ממד, ריאקציה–דיפוזיה ודיפוזיה הפוכה
+% =========================
+
+\section{משוואת הדיפוזיה והקשר הפיזיקלי}
+נעסוק במשוואת הדיפוזיה (\LR{Diffusion equation}) בחד־ממד ובדו־ממד:
+\[
+\partial_t u(x,t)=a^2\,\partial_{xx}u(x,t),
+\qquad
+\partial_t u(x,y,t)=a^2\left(\partial_{xx}u+\partial_{yy}u\right),
+\]
+כאשר \(u\) מייצגת צפיפות (מסה/אנרגיה/טמפרטורה) ו-\(a^2>0\) הוא מקדם הדיפוזיה (למשל \(\mathrm{m}^2/\mathrm{s}\)).
+פיזיקלית, דיפוזיה ``מחליקה'' אי־אחידויות מרחביות: בליטות יורדות ושקעים עולים עד התקרבות לפרופיל חלק.
+
+\begin{notebox}
+בכל ההרצאה הבעיה \emph{הומוגנית}: \(u\equiv 0\) הוא פתרון, ולכן מותר לסכום פתרונות (סופרפוזיציה).
+בבעיות אי־הומוגניות (מקורות/אילוצים שאינם תלויים ב-\(u\)) נדרשים כלים נוספים.
+\end{notebox}
+
+\section{מוט סופי: תנאי שפה ושימור מסה}
+נתבונן במוט \(x\in[0,L]\). הזרימה לסביבה זניחה לאורך המוט, אך בקצוות ייתכנו שני סוגי תנאי שפה מרכזיים:
+
+\begin{definitionbox}{תנאי שפה במוט}
+\begin{itemize}
+\item \textbf{קצוות מבודדים} (\LR{Neumann / insulated}): שטף אפס בקצוות.
+אם מגדירים שטף \(\,J=-a^2\,u_x\), אז
+\[
+J(0,t)=J(L,t)=0
+\quad\Longleftrightarrow\quad
+u_x(0,t)=u_x(L,t)=0.
+\]
+\item \textbf{קצוות מצומדים לאמבט חום} (\LR{Dirichlet / clamped}): הטמפרטורה/צפיפות נקבעת בקצוות,
+ובפרט המקרה ההומוגני:
+\[
+u(0,t)=u(L,t)=0.
+\]
+\end{itemize}
+\end{definitionbox}
+
+\subsection{שימור המסה ותנאים כלליים}
+נגדיר ``מסה כוללת''
+\[
+M(t)=\int_0^L u(x,t)\,dx.
+\]
+נגזור בזמן ונשתמש במשוואת הדיפוזיה:
+\[
+\dot M(t)=\int_0^L \partial_t u\,dx
+=a^2\int_0^L u_{xx}\,dx
+=a^2\bigl[u_x(L,t)-u_x(0,t)\bigr]
+= -\bigl[J(L,t)-J(0,t)\bigr].
+\]
+לכן
+\[
+\dot M(t)=0
+\quad\Longleftrightarrow\quad
+J(L,t)=J(0,t),
+\]
+כלומר \emph{שימור מסה אינו מחייב בהכרח} שטף אפס בשני הקצוות; מספיק שהשטף הנכנס שווה לשטף היוצא.
+מקרה חשוב נוסף הוא תנאי שפה מחזוריים (\LR{periodic}):
+\[
+u(0,t)=u(L,t),\qquad u_x(0,t)=u_x(L,t)
+\;\Rightarrow\; \dot M=0.
+\]
+
+\section{תחזית לזמן ארוך במוט מבודד}
+נפתור תחילה את המקרה המבודד \(u_x(0,t)=u_x(L,t)=0\) עם תנאי התחלה
+\[
+u(x,0)=f(x).
+\]
+בזמן ארוך מצפים למצב סטציונרי (אין תלות בזמן), ולכן \(\partial_t u=0\) ומתקבלת משוואה אליפטית:
+\[
+u_{xx}=0 \;\Rightarrow\; u_{\mathrm{st}}(x)=Ax+B.
+\]
+מהתנאים \(u_x(0)=u_x(L)=0\) נקבל \(A=0\), ולכן הפתרון הסטציונרי הוא \emph{קבוע}:
+\[
+u_{\mathrm{st}}(x)\equiv u_\infty.
+\]
+כדי למצוא את \(u_\infty\) בלי לפתור את הבעיה המלאה נשתמש בשימור מסה:
+\[
+\int_0^L f(x)\,dx = M(0)=M(\infty)=\int_0^L u_\infty\,dx=u_\infty L,
+\]
+ולכן
+\[
+\boxed{
+u_\infty=\frac{1}{L}\int_0^L f(x)\,dx
+}
+\]
+כלומר זמן־ארוך מתקבל ממוצע מרחבי של תנאי ההתחלה.
+
+\begin{resultbox}{מסקנה פיזיקלית}
+במוט מבודד הדיפוזיה לא ``מעלימה'' מסה אלא רק מחלקת אותה מחדש:
+אי־אחידויות דועכות, אך הערך הסופי נשאר הערך הממוצע ההתחלתי.
+\end{resultbox}
+
+\section{פתרון מלא במוט מבודד באמצעות הפרדת משתנים}
+נפתור את בעיית ההתחלה–שפה:
+\[
+\partial_t u=a^2 u_{xx},\qquad x\in(0,L),\ t>0,
+\]
+\[
+u_x(0,t)=u_x(L,t)=0,\qquad u(x,0)=f(x).
+\]
+
+\subsection{הפרדת משתנים ובעיית \LR{Sturm--Liouville}}
+נניח פתרון פריק \(u(x,t)=X(x)T(t)\). הצבה נותנת
+\[
+X T' = a^2 X'' T
+\quad\Rightarrow\quad
+\frac{T'}{a^2 T}=\frac{X''}{X}=-\lambda^2.
+\]
+הבחירה בקבוע \(-\lambda^2\le 0\) נובעת מהדרישה לקיום פתרונות לא־טריוויאליים המקיימים תנאי שפה (אם ניקח קבוע חיובי נקבל אקספוננטים מרחביים שלא יתאימו לתנאי נוימן אלא במקרה האפסי).
+
+נקבל את הבעיה המרחבית:
+\[
+X''+\lambda^2 X=0,\qquad X'(0)=X'(L)=0,
+\]
+שהיא בעיית \LR{Sturm--Liouville}.
+פתרון כללי: \(X=A\cos(\lambda x)+B\sin(\lambda x)\).
+מהתנאי \(X'(0)=0\) מתקבל \(B=0\), ומהתנאי \(X'(L)=0\) מתקבל
+\[
+-\lambda \sin(\lambda L)=0 \;\Rightarrow\; \lambda L=n\pi,\quad n=0,1,2,\dots
+\]
+ולכן
+\[
+\lambda_n=\frac{n\pi}{L},\qquad X_n(x)=\cos\!\Bigl(\frac{n\pi x}{L}\Bigr).
+\]
+
+\begin{notebox}
+המוד \(n=0\) הוא \(\cos(0)=1\), כלומר מצב קבוע במרחב.
+הוא \emph{לא דועך בזמן} ולכן קובע את הגבול בזמן־ארוך.
+\end{notebox}
+
+המשוואה הזמנית היא
+\[
+T'+a^2\lambda^2 T=0
+\quad\Rightarrow\quad
+T_n(t)=e^{-a^2\lambda_n^2 t}.
+\]
+
+\subsection{הפתרון הכללי וקביעת המקדמים}
+מקבלים פירוק:
+\[
+u(x,t)=\sum_{n=0}^\infty C_n\,e^{-a^2\left(\frac{n\pi}{L}\right)^2 t}\,
+\cos\!\Bigl(\frac{n\pi x}{L}\Bigr).
+\]
+מתנאי ההתחלה \(u(x,0)=f(x)\):
+\[
+f(x)=\sum_{n=0}^\infty C_n\cos\!\Bigl(\frac{n\pi x}{L}\Bigr),
+\]
+כלומר \(C_n\) הם מקדמי טור קוסינוסים (\LR{Fourier cosine series}):
+
+\begin{resultbox}{מקדמים}
+\[
+C_0=\frac{1}{L}\int_0^L f(x)\,dx,
+\qquad
+C_n=\frac{2}{L}\int_0^L f(x)\cos\!\Bigl(\frac{n\pi x}{L}\Bigr)\,dx
+\quad (n\ge 1).
+\]
+שימו לב להבדל הנורמליזציוני בין \(n=0\) לבין \(n\ge 1\).
+\end{resultbox}
+
+מתקבל שוב ש-\(u(x,t)\to C_0\) כאשר \(t\to\infty\), בהתאם לנימוק שימור המסה.
+
+\subsection{התנהגות לזמנים ארוכים וזמן אופייני}
+לזמנים ארוכים המוד האיטי ביותר הוא \(n=1\), ולכן
+\[
+u(x,t)=C_0 + C_1 e^{-a^2(\pi/L)^2 t}\cos\!\Bigl(\frac{\pi x}{L}\Bigr)+\cdots
+\]
+ומקובל להגדיר זמן אופייני:
+\[
+\tau_{\mathrm{diff}}\sim \frac{1}{a^2(\pi/L)^2}=\frac{L^2}{a^2\pi^2}.
+\]
+בזמנים \(t\gg \tau_{\mathrm{diff}}\) כל המודים \(n\ge 1\) דועכים משמעותית והפרופיל כמעט קבוע.
+
+\section{דיפוזיה דו־ממדית במלבן עם תנאי שפה מצומדים}
+נבחן לוח מלבני \((x,y)\in(0,L_x)\times(0,L_y)\) עם תנאי שפה
+\[
+u(0,y,t)=u(L_x,y,t)=u(x,0,t)=u(x,L_y,t)=0,
+\qquad
+u(x,y,0)=f(x,y).
+\]
+כאן המסה \emph{אינה נשמרת}: החום ``בורח'' דרך השפות, ולכן אינטואיטיבית
+\[
+u(x,y,t)\xrightarrow[t\to\infty]{}0.
+\]
+
+\subsection{הפרדת משתנים}
+נחפש \(u=X(x)Y(y)T(t)\). מתקבל
+\[
+\frac{T'}{a^2 T}=\frac{X''}{X}+\frac{Y''}{Y}=-k^2.
+\]
+כיוון שסכום פונקציה של \(x\) ופונקציה של \(y\) הוא קבוע, נפריד שוב:
+\[
+\frac{X''}{X}=-\lambda^2,\qquad \frac{Y''}{Y}=-\mu^2,\qquad k^2=\lambda^2+\mu^2.
+\]
+עם תנאי שפה דיריכלה מתקבלות שתי בעיות \LR{Sturm--Liouville} בלתי־תלויות:
+\[
+X(0)=X(L_x)=0 \Rightarrow X_n(x)=\sin\!\Bigl(\frac{n\pi x}{L_x}\Bigr),\quad
+\lambda_n=\frac{n\pi}{L_x},\quad n\ge 1,
+\]
+\[
+Y(0)=Y(L_y)=0 \Rightarrow Y_m(y)=\sin\!\Bigl(\frac{m\pi y}{L_y}\Bigr),\quad
+\mu_m=\frac{m\pi}{L_y},\quad m\ge 1.
+\]
+המשוואה הזמנית:
+\[
+T_{nm}' + a^2(\lambda_n^2+\mu_m^2)T_{nm}=0
+\Rightarrow
+T_{nm}(t)=e^{-a^2(\lambda_n^2+\mu_m^2)t}.
+\]
+
+\subsection{פתרון כללי ומקדמים}
+לכן
+\[
+u(x,y,t)=\sum_{n=1}^\infty\sum_{m=1}^\infty
+C_{nm}\,
+e^{-a^2\left[\left(\frac{n\pi}{L_x}\right)^2+\left(\frac{m\pi}{L_y}\right)^2\right]t}\,
+\sin\!\Bigl(\frac{n\pi x}{L_x}\Bigr)\sin\!\Bigl(\frac{m\pi y}{L_y}\Bigr).
+\]
+המקדמים נקבעים מההטלה (\LR{inner product}) על בסיס אורתוגונלי:
+\[
+C_{nm}=\frac{4}{L_xL_y}\int_0^{L_x}\!\!\int_0^{L_y}
+f(x,y)\sin\!\Bigl(\frac{n\pi x}{L_x}\Bigr)\sin\!\Bigl(\frac{m\pi y}{L_y}\Bigr)\,dy\,dx.
+\]
+כאן אין ``מוד אפס'' כי סינוס מתאפס בקצוות; לכן כל המודים דועכים והגבול הוא \(0\).
+
+\subsection{הערה על גאומטריות כלליות}
+בגאומטריה שאינה ניתנת להפרדה (למשל שפות עגולות/תנאי שפה שמערבבים \(x,y\)) הפתרון הכללי נכתב כסכום על פונקציות עצמיות דו־ממדיות \(\phi_n(x,y)\) של הלפלסיאן עם תנאי שפה נתונים:
+\[
+u(x,y,t)=\sum_{n} C_n e^{-a^2\lambda_n t}\,\phi_n(x,y),
+\]
+כאשר \(\phi_n\) ו-\(\lambda_n\) מתקבלים מבעיה ספקטרלית \(-\Delta \phi_n=\lambda_n \phi_n\).
+לעיתים אין פתרון אנליטי ונדרש חישוב נומרי.
+
+\section{משוואת ריאקציה–דיפוזיה: תחרות בין דיפוזיה לגידול}
+נוסיף ``ריאקציה'' (ריבוי/דעיכה פרופורציוניים לצפיפות) ונבחן
+\[
+\partial_t N(x,t)=D\,\partial_{xx}N(x,t)+\alpha N(x,t),
+\qquad \alpha>0,
+\]
+על קטע \(x\in(0,L)\) עם תנאי שפה מצומדים (כחדה בקצוות):
+\[
+N(0,t)=N(L,t)=0,\qquad N(x,0)=f(x).
+\]
+אינטואיטיבית:
+דיפוזיה מנסה ``לזרוק'' אוכלוסייה לקצוות ולהעלים אותה, בעוד שהאיבר \(\alpha N\) מגדיל אותה מקומית.
+צפויה \emph{תלות קריטית באורך} \(L\): במערכת קצרה אוכלוסייה תדעך, ובארוכה תגדל.
+
+\subsection{פתרון בהפרדת משתנים וקצב גידול של מודים}
+ניקח \(N=X(x)T(t)\). מתקבל
+\[
+\frac{T'}{T}-\alpha = D\frac{X''}{X}=-D\lambda^2.
+\]
+תנאי השפה דיריכלה נותנים
+\[
+X_n(x)=\sin\!\Bigl(\frac{n\pi x}{L}\Bigr),\qquad \lambda_n=\frac{n\pi}{L},\quad n\ge 1.
+\]
+והזמן:
+\[
+T_n'=\bigl(\alpha-D\lambda_n^2\bigr)T_n
+\Rightarrow
+T_n(t)=\exp\!\left[\left(\alpha-D\left(\frac{n\pi}{L}\right)^2\right)t\right].
+\]
+לכן
+\[
+N(x,t)=\sum_{n=1}^\infty C_n
+\exp\!\left[\left(\alpha-D\left(\frac{n\pi}{L}\right)^2\right)t\right]
+\sin\!\Bigl(\frac{n\pi x}{L}\Bigr),
+\]
+כאשר \(C_n\) נקבעים מטור סינוסים של \(f\).
+
+\subsection{אורך קריטי לגידול}
+כדי שתהיה צמיחה בלתי־חסומה מספיק שמוד אחד יגדל.
+המוד ``הקל'' ביותר לצמיחה הוא \(n=1\) (כי איבר הדיפוזיה גדל כמו \(n^2\)).
+נדרוש:
+\[
+\alpha-D\left(\frac{\pi}{L}\right)^2>0
+\quad\Longleftrightarrow\quad
+L>\pi\sqrt{\frac{D}{\alpha}}.
+\]
+כלומר,
+\[
+\boxed{
+L_c=\pi\sqrt{\frac{D}{\alpha}}
+}
+\]
+הוא האורך הקריטי: אם \(L>L_c\) המוד הראשון גדל אקספוננציאלית, ואם \(L<L_c\) כל המודים דועכים.
+
+\begin{notebox}
+אם תנאי ההתחלה \(f\) מאונך למוד הראשון (כלומר \(C_1=0\)) אז המוד הדומיננטי יהיה הבא בתור,
+והסף האפקטיבי ייקבע ע"י \(n\) המינימלי שעבורו \(C_n\neq 0\).
+עם זאת, ``ברוב'' תנאי ההתחלה הכלליים \(C_1\neq 0\).
+\end{notebox}
+
+\subsection{בדיקת ממדים ואינטואיציה}
+\[
+[D]=\frac{\mathrm{length}^2}{\mathrm{time}},\qquad [\alpha]=\frac{1}{\mathrm{time}}
+\Rightarrow
+\left[\sqrt{\frac{D}{\alpha}}\right]=\mathrm{length}.
+\]
+לכן מבנה התשובה \(\sqrt{D/\alpha}\) ניתן לניחוש ממדי, בעוד שהקבוע \(\pi\) מתקבל מהפתרון הספקטרלי (הערך העצמי הראשון בקטע).
+
+\section{דיפוזיה ``הפוכה'': מקדם דיפוזיה שלילי ואי־יציבות}
+נבחן פורמלית את המשוואה
+\[
+\partial_t u = -a^2\,\partial_{xx}u,
+\]
+כלומר מקדם דיפוזיה שלילי.
+מתמטית זה שקול לבעיה שבה הזמן ``רץ אחורה'' ביחס למשוואת החום, ולכן צפויה תופעה הפוכה מהחלקה: \emph{אי־יציבות והגדלת בליטות}.
+
+\subsection{ניתוח במרחב פורייה: התפוצצות של תדירויות גבוהות}
+במרחב פורייה (\LR{Fourier transform}) לכל מספר גל \(k\) מתקבל מקדם דמוי־מוד:
+\[
+\widehat{u}(k,t)=\widehat{u}(k,0)\,e^{+a^2 k^2 t}.
+\]
+כלומר, במקום דעיכה \(e^{-a^2k^2t}\) מתקבלת גדילה \(e^{+a^2k^2t}\).
+מכאן:
+\begin{itemize}
+\item \textbf{אורכי גל קצרים} (כלומר \(k\) גדול) גדלים \emph{הרבה יותר מהר}.
+\item כל ``רעש'' זעיר בתדירויות גבוהות מתפוצץ במהירות: הבעיה היא \LR{ill-posed} (לא יציבה ביחס לנתוני התחלה).
+\item במודלים רציפים אידיאליים, אם לנתון ההתחלתי יש רכיבים גבוהי־\(k\) שאינם אפסיים, צפוי פיצוץ בזמן סופי מבחינת נורמות מתאימות.
+\end{itemize}
+
+\begin{resultbox}{מסקנה מתמטית–פיזיקלית}
+משוואת החום הרגילה היא תהליך דיסיפטיבי שמגדיל אנטרופיה ומחליק.
+הסימן ההפוך דורש זרימה ``מצפיפות נמוכה לגבוהה'', כלומר הקטנת אנטרופיה, ולכן אינו מתאר דיפוזיה פיזיקלית רגילה.
+\end{resultbox}
+
+\section{מבט קדימה: משוואת לפלס כמצב סטציונרי}
+משוואת לפלס (\LR{Laplace equation})
+\[
+\Delta u=0
+\]
+אינה תלויה בזמן.
+אפשר לחשוב עליה כעל המשוואה המתארת את המצב הסטציונרי של דיפוזיה:
+בכל פעם ש-\(\partial_t u=0\) במשוואת הדיפוזיה מתקבל \(\Delta u=0\).
+בהמשך הקורס נלמד כיצד לפתור בעיות לפלס בגיאומטריות שונות ותנאי שפה מגוונים.
+
+% סוף

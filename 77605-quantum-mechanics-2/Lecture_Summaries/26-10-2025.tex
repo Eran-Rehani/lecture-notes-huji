@@ -1,0 +1,449 @@
+\section{שיעור 03 — הצגות בלתי פריקות וגנרטורים של חבורות רציפות (26.10.2025)}
+
+\subsection*{מטרות השיעור}
+\begin{itemize}
+    \item הבנת מושג הפריקות והצגות בלתי פריקות
+    \item למידת משפט הממדים לחבורות סופיות
+    \item היכרות עם למה של שור (גרסה מורחבת) והשלכותיה הפיזיקליות
+    \item הבנת הקשר בין סימטריות לניוון רמות אנרגיה
+    \item מבוא לחבורות רציפות וגנרטורים אינפיניטסימליים
+    \item גזירת ייצוג אקספוננציאלי של חבורות רציפות
+\end{itemize}
+
+\subsection{חזרה: סידור מחדש של איברי חבורה}
+
+\begin{theorembox}{סידור מחדש באיברי חבורה}
+בחבורה סופית $G$ עם $n$ איברים $\{g_1, g_2, \ldots, g_n\}$, מכפלת כל האיברים באיבר $g_k \in G$ מניבה סידור מחדש של אותם האיברים:
+\[
+\{g_k g_1, g_k g_2, \ldots, g_k g_n\} = \{g_1, g_2, \ldots, g_n\}
+\]
+\end{theorembox}
+
+\textbf{הוכחה:} נובע מקיום ההופכי ומייחודיות המכפלה. אם $g_k g_i = g_k g_j$, אז בכפל מימין ב-$g_k^{-1}$ מקבלים $g_i = g_j$.
+
+\subsection{מרחבים אינווריאנטיים ופריקות}
+
+\subsubsection{תזכורת: מרחב אינווריאנטי}
+
+\begin{definitionbox}{מרחב אינווריאנטי}
+תת-מרחב $V' \subseteq V$ נקרא \textbf{אינווריאנטי} תחת פעולת חבורה $G$ אם:
+\[
+T(g) V' \subseteq V' \quad \forall g \in G
+\]
+כלומר, פעולת החבורה לא מוציאה וקטורים מתוך $V'$.
+\end{definitionbox}
+
+\begin{theorembox}{יצירת מרחב אינווריאנטי}
+לכל וקטור $v \in V$, המרחב
+\[
+V' = \text{span}\{T(g)v \mid g \in G\}
+\]
+הוא מרחב אינווריאנטי תחת פעולת $G$.
+\end{theorembox}
+
+\subsubsection{הגדרת פריקות}
+
+\begin{definitionbox}{הצגה פריקה ובלתי פריקה}
+מרחב וקטורי $V$ עם הצגה $T$ של חבורה $G$ הוא:
+
+\textbf{פריק (\LR{reducible}):} אם קיים תת-מרחב אינווריאנטי לא-טריוויאלי $V' \subset V$ כך ש:
+\[
+V = V' \oplus V'^\perp
+\]
+ושני המרחבים $V'$ ו-$V'^\perp$ אינווריאנטיים תחת $G$.
+
+\textbf{בלתי פריק (\LR{irreducible, irrep}):} אם לא קיים פירוק כזה — כל תת-מרחב אינווריאנטי הוא טריוויאלי ($\{0\}$ או $V$).
+\end{definitionbox}
+
+\begin{notebox}{פרשנות פיזיקלית}
+הצגה בלתי פריקה מתארת "יחידה אלמנטרית" שלא ניתן לפרק אותה עוד. בפיזיקה, אלו מתאימים למצבים עם סימטריה מוגדרת היטב.
+\end{notebox}
+
+\subsection{דוגמה מפורטת: חבורת השיקוף}
+
+\begin{examplebox}{חבורת השיקוף $G = \{I, P\}$}
+חבורה עם שני איברים: $I$ (יחידה) ו-$P$ (שיקוף).
+
+\textbf{הצגה דו-ממדית טבעית:} במרחב $\mathbb{R}^2$ עם בסיס $\{(1,0), (0,1)\}$:
+\[
+I = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}, \quad
+P = \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}
+\]
+
+\textbf{האם ההצגה פריקה?} כן! 
+
+\textbf{פירוק להצגות בלתי פריקות:} נבחר בסיס חדש $\{(1,1), (1,-1)\}$ (עד כדי נירמול):
+\[
+I = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}, \quad
+P = \begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}
+\]
+
+שתי הצגות חד-ממדיות בלתי פריקות:
+\begin{itemize}
+    \item $T_1$: $I \to 1, \quad P \to 1$ (הצגה טריוויאלית)
+    \item $T_2$: $I \to 1, \quad P \to -1$ (הצגת הזוגיות)
+\end{itemize}
+\end{examplebox}
+
+\textbf{אנלוגיה פיזיקלית:} פונקציות זוגיות (קוסינוס) משתייכות ל-$T_1$, פונקציות אי-זוגיות (סינוס) משתייכות ל-$T_2$.
+
+\subsection{דוגמה: חבורת התמורות $S_3$}
+
+\subsubsection{מבנה החבורה}
+
+\begin{definitionbox}{חבורת התמורות $S_3$}
+$S_3$ היא חבורת כל התמורות של שלושה איברים.
+\begin{itemize}
+    \item \textbf{סדר החבורה:} $|S_3| = 3! = 6$
+    \item \textbf{איברים:}
+    \begin{align*}
+    &e = \begin{pmatrix} 1 & 2 & 3 \\ 1 & 2 & 3 \end{pmatrix}, \quad
+    (12) = \begin{pmatrix} 1 & 2 & 3 \\ 2 & 1 & 3 \end{pmatrix}, \quad
+    (13) = \begin{pmatrix} 1 & 2 & 3 \\ 3 & 2 & 1 \end{pmatrix} \\
+    &(23) = \begin{pmatrix} 1 & 2 & 3 \\ 1 & 3 & 2 \end{pmatrix}, \quad
+    (123) = \begin{pmatrix} 1 & 2 & 3 \\ 2 & 3 & 1 \end{pmatrix}, \quad
+    (132) = \begin{pmatrix} 1 & 2 & 3 \\ 3 & 1 & 2 \end{pmatrix}
+    \end{align*}
+\end{itemize}
+\end{definitionbox}
+
+\subsubsection{הצגה תלת-ממדית טבעית}
+
+בבסיס $\{e_1 = (1,0,0), e_2 = (0,1,0), e_3 = (0,0,1)\}$:
+
+\begin{examplebox}{הצגה טבעית של $S_3$}
+\[
+T\begin{pmatrix} 1 & 2 & 3 \\ 2 & 1 & 3 \end{pmatrix} = 
+\begin{pmatrix} 0 & 1 & 0 \\ 1 & 0 & 0 \\ 0 & 0 & 1 \end{pmatrix}, \quad
+T\begin{pmatrix} 1 & 2 & 3 \\ 3 & 1 & 2 \end{pmatrix} = 
+\begin{pmatrix} 0 & 0 & 1 \\ 1 & 0 & 0 \\ 0 & 1 & 0 \end{pmatrix}
+\]
+\end{examplebox}
+
+\textbf{האם הצגה זו פריקה?} \textbf{כן!}
+
+\subsubsection{פירוק להצגות בלתי פריקות — קואורדינטות יעקובי}
+
+\begin{importantbox}{פירוק ההצגה התלת-ממדית}
+נבחר בסיס חדש (קואורדינטות יעקובי):
+\begin{align*}
+E_1 &= \frac{1}{\sqrt{3}}(1, 1, 1) \quad \text{(מרכז מאסה)} \\
+E_2 &= \frac{1}{\sqrt{2}}(1, -1, 0) \quad \text{(קואורדינטה יחסית)} \\
+E_3 &= \frac{1}{\sqrt{6}}(1, 1, -2) \quad \text{(קואורדינטה יחסית)}
+\end{align*}
+
+$E_1$ אינווריאנטי: $T(g) E_1 = E_1$ לכל $g \in S_3$.
+
+המטריצות בבסיס זה מתפרקות לבלוקים:
+\[
+T(g) = \begin{pmatrix} 1 & \mid & 0 \\ \hline 0 & \mid & T^{(2)}(g) \end{pmatrix}
+\]
+כאשר $T^{(2)}(g)$ מטריצה $2 \times 2$.
+\end{importantbox}
+
+\textbf{דוגמה מפורשת:}
+\begin{align*}
+T'\begin{pmatrix} 1 & 2 & 3 \\ 2 & 1 & 3 \end{pmatrix} &= 
+\begin{pmatrix} 1 & 0 & 0 \\ 0 & -1 & 0 \\ 0 & 0 & 1 \end{pmatrix} \\
+T'\begin{pmatrix} 1 & 2 & 3 \\ 3 & 1 & 2 \end{pmatrix} &=
+\begin{pmatrix} 1 & 0 & 0 \\ 0 & -\frac{1}{2} & -\frac{\sqrt{3}}{2} \\ 0 & -\frac{\sqrt{3}}{2} & \frac{1}{2} \end{pmatrix}
+\end{align*}
+
+\subsection{משפט הממדים}
+
+\begin{theorembox}{משפט הממדים לחבורות סופיות}
+תהי $G$ חבורה סופית עם $|G| = n$, ותהיינה $T_\alpha$ ($\alpha = 1, 2, \ldots, k$) כל ההצגות הבלתי פריקות הלא-שקולות של $G$, עם ממדים $d_\alpha = \dim(T_\alpha)$. אזי:
+\[
+\boxed{|G| = \sum_{\alpha=1}^{k} d_\alpha^2}
+\]
+\end{theorembox}
+
+\textbf{משמעות:} מספר ההצגות הבלתי פריקות וממדיהן נקבעים באופן ייחודי על-ידי סדר החבורה!
+
+\begin{examplebox}{יישום משפט הממדים}
+\textbf{חבורת השיקוף:} $|G| = 2$
+\[
+2 = 1^2 + 1^2 \quad \Rightarrow \quad \text{שתי הצגות חד-ממדיות}
+\]
+
+\textbf{חבורת $S_3$:} $|G| = 6$
+\[
+6 = 1^2 + 2^2 + 1^2 \quad \Rightarrow \quad \text{שתי הצגות חד-ממדיות ואחת דו-ממדית}
+\]
+\end{examplebox}
+
+\subsubsection{שלוש ההצגות הבלתי פריקות של $S_3$}
+
+\begin{summarybox}{טבלת ההצגות של $S_3$}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+& $e$ & $(12)$ & $(13)$ & $(23)$ & $(123)$ & $(132)$ \\ \hline
+$T_1$ (טריוויאלית) & $1$ & $1$ & $1$ & $1$ & $1$ & $1$ \\ \hline
+$T_2$ (דו-ממדית) & $I_{2\times 2}$ & $\begin{pmatrix} -1 & 0 \\ 0 & 1 \end{pmatrix}$ & $\cdots$ & $\cdots$ & $\begin{pmatrix} -\frac{1}{2} & -\frac{\sqrt{3}}{2} \\ -\frac{\sqrt{3}}{2} & \frac{1}{2} \end{pmatrix}$ & $\cdots$ \\ \hline
+$T_3$ (זוגיות) & $1$ & $-1$ & $-1$ & $-1$ & $1$ & $1$ \\ \hline
+\end{tabular}
+\end{center}
+
+\textbf{$T_3$ - הצגת הזוגיות:} כל תמורה מקבלת $+1$ או $-1$ לפי זוגיות מספר ההחלפות:
+\begin{itemize}
+    \item תמורה \textbf{זוגית}: מספר זוגי של החלפות $\to +1$
+    \item תמורה \textbf{אי-זוגית}: מספר אי-זוגי של החלפות $\to -1$
+\end{itemize}
+\end{summarybox}
+
+\textbf{אימות משפט הממדים:}
+\[
+\dim(T_1)^2 + \dim(T_2)^2 + \dim(T_3)^2 = 1^2 + 2^2 + 1^2 = 6 = |S_3| \quad \checkmark
+\]
+
+\subsection{למה של שור (גרסה מורחבת)}
+
+\begin{theorembox}{למה של שור 2}
+תהי $G$ חבורה סופית, $T$ הצגה בלתי פריקה של $G$ במרחב $V$, ו-$C$ אופרטור הרמיטי ב-$V$.
+
+\textbf{הנחה:} לכל $g \in G$ מתקיים:
+\[
+[T(g), C] = 0 \quad \text{(}C\text{ מתחלף עם כל איברי ההצגה)}
+\]
+
+\textbf{מסקנה:} $C$ פרופורציונלי לאופרטור היחידה:
+\[
+\boxed{C = \lambda I \quad \text{עבור } \lambda \in \mathbb{R}}
+\]
+\end{theorembox}
+
+\subsubsection{הוכחת למה של שור}
+
+\textbf{שלב 1:} $C$ הרמיטי $\Rightarrow$ קיים וקטור עצמי:
+\[
+Cv = \lambda v
+\]
+
+\textbf{שלב 2:} נגדיר משפחת וקטורים:
+\[
+\alpha = \sum_{g \in G} \alpha_g \, T(g) v
+\]
+כאשר $\alpha_g$ מקדמים כלשהם.
+
+\textbf{שלב 3:} נפעיל $C$ על $\alpha$:
+\begin{align*}
+C \alpha &= C \sum_g \alpha_g T(g) v = \sum_g \alpha_g C T(g) v \\
+&\stackrel{[C,T(g)]=0}{=} \sum_g \alpha_g T(g) C v = \sum_g \alpha_g T(g) (\lambda v) \\
+&= \lambda \sum_g \alpha_g T(g) v = \lambda \alpha
+\end{align*}
+
+\textbf{מסקנה:} כל $\alpha$ מהצורה הזו הוא וקטור עצמי של $C$ עם אותו ערך עצמי $\lambda$!
+
+\textbf{שלב 4:} המרחב
+\[
+V' = \text{span}\{\alpha \mid \alpha_g \in \mathbb{C}\}
+\]
+הוא תת-מרחב אינווריאנטי תחת $G$, וכל הווקטורים בו הם וקטורים עצמיים של $C$ עם ערך עצמי $\lambda$.
+
+\textbf{שלב 5:} מכיוון ש-$T$ בלתי פריקה, $V'$ חייב להיות $\{0\}$ או $V$. אבל $v \in V'$, ולכן $V' \neq \{0\}$.
+
+\textbf{מסקנה:} $V' = V$, ולכן $C$ פועל כ-$\lambda I$ על כל $V$. $\qed$
+
+\subsection{משמעות פיזיקלית: ניוון אנרגיה}
+
+\begin{importantbox}{קשר לפיזיקה: ניוון רמות אנרגיה}
+תהי $G$ חבורת סימטריה של המילטוניאן: $[H, T(g)] = 0$ לכל $g \in G$.
+
+\textbf{למה של שור מלמד:} אם $T_\alpha$ היא הצגה בלתי פריקה של $G$ בממד $d_\alpha$, אזי \textbf{כל $d_\alpha$ המצבים} בהצגה זו חייבים להיות בעלי \textbf{אותה אנרגיה} $E_\alpha$.
+
+\textbf{משמעות:}
+\begin{itemize}
+    \item \textbf{ניוון סימטרי:} ממד ההצגה = ניוון רמת האנרגיה
+    \item \textbf{ניוון מקרי:} אם שתי רמות מהצגות שונות בעלות אותה אנרגיה בדיוק (עד דיוק גבוה מאוד), יש לחשוד בסימטריה נסתרת גדולה יותר!
+\end{itemize}
+\end{importantbox}
+
+\textbf{דוגמה פיזיקלית:} מולקולת מתאן (CH$_4$) בעלת סימטריית טטראדר. הספקטרום האנרגטי מראה ניוון של $1, 3, 3, 5$ — בהתאם להצגות הבלתי פריקות של חבורת הטטראדר!
+
+\subsection{חוקי טרנספורמציה של אופרטורים}
+
+\subsubsection{גזירת חוק הטרנספורמציה}
+
+\textbf{מצב מקורי:} $\ket{\psi}$, אופרטור $O$, ערך תצפית:
+\[
+\braket{\psi | O | \psi}
+\]
+
+\textbf{מצב לאחר טרנספורמציית סימטריה:}
+\[
+\ket{\psi'} = U \ket{\psi}, \quad O \to O'
+\]
+
+\textbf{דרישת שקילות:} ערך התצפית נשמר:
+\[
+\braket{\psi | O | \psi} = \braket{\psi' | O' | \psi'}
+\]
+
+\textbf{פיתוח:}
+\begin{align*}
+\braket{\psi | O | \psi} &= \braket{\psi' | O' | \psi'} \\
+&= \bra{\psi} U^\dagger O' U \ket{\psi}
+\end{align*}
+
+\textbf{מכיוון שזה נכון לכל $\ket{\psi}$:}
+\[
+\boxed{O = U^\dagger O' U \quad \Leftrightarrow \quad O' = U O U^\dagger}
+\]
+
+\textbf{פרשנות:} אופרטור עובר טרנספורמציה דמיון (conjugation) על-ידי אופרטור הסימטריה.
+
+\subsection{מבוא לחבורות רציפות}
+
+\subsubsection{הבדל בין חבורות דיסקרטיות לרציפות}
+
+עד כה עסקנו בחבורות \textbf{דיסקרטיות} (בעיקר סופיות). כעת נעבור לחבורות \textbf{רציפות} — חבורות שאיבריהן תלויים בפרמטרים רציפים.
+
+\begin{definitionbox}{חבורה רציפה}
+חבורה $G$ נקראת \textbf{חבורה רציפה} אם איבריה מאופיינים על-ידי פרמטרים רציפים:
+\[
+g = g(\theta_1, \theta_2, \ldots, \theta_r)
+\]
+כאשר $(\theta_1, \ldots, \theta_r)$ משתנים רציפים על \textbf{יריעה} (\LR{manifold}) חלקה $r$-ממדית.
+
+\textbf{דוגמאות פיזיקליות:}
+\begin{itemize}
+    \item \textbf{סיבובים במישור} $O(2)$: פרמטר אחד $\theta \in [0, 2\pi)$
+    \item \textbf{סיבובים במרחב} $SO(3)$: שלושה פרמטרים (זוויות אוילר)
+    \item \textbf{הזזות במרחב} $\mathbb{R}^3$: שלושה פרמטרים $(x, y, z)$
+\end{itemize}
+\end{definitionbox}
+
+\subsection{גנרטורים אינפיניטסימליים — מפתח להבנת חבורות רציפות}
+
+\subsubsection{דוגמה: סיבובים במישור}
+
+נסתכל על סיבוב בזווית $\varphi$ הפועל על פונקציה $f(\theta)$ על מעגל:
+\[
+[T(\varphi) f](\theta) = f(\theta - \varphi)
+\]
+
+\textbf{קירוב לינארי עבור $\varphi$ קטן:}
+\begin{align*}
+[T(\varphi) f](\theta) &= f(\theta - \varphi) \\
+&\approx f(\theta) - \varphi \frac{df}{d\theta} \\
+&= \left(1 - i\varphi \cdot i\frac{d}{d\theta}\right) f(\theta)
+\end{align*}
+
+\textbf{הגדרת הגנרטור:}
+\[
+X = i\frac{d}{d\theta}
+\]
+
+אז:
+\[
+T(\varphi) \approx 1 - i\varphi X \quad \text{(עבור } \varphi \text{ קטן)}
+\]
+
+\subsubsection{גזירת הייצוג האקספוננציאלי}
+
+\textbf{רעיון:} פירוק סיבוב גדול $\varphi$ ל-$n$ סיבובים קטנים:
+
+\textbf{שלב 1:} סיבוב קטן:
+\[
+T\left(\frac{\varphi}{n}\right) \approx 1 - i\frac{\varphi}{n} X
+\]
+
+\textbf{שלב 2:} ביצוע $n$ סיבובים:
+\[
+T(\varphi) = \left[T\left(\frac{\varphi}{n}\right)\right]^n \approx \left(1 - i\frac{\varphi}{n} X\right)^n
+\]
+
+\textbf{שלב 3:} גבול $n \to \infty$:
+\[
+T(\varphi) = \lim_{n\to\infty} \left(1 - i\frac{\varphi}{n} X\right)^n = \boxed{e^{-i\varphi X}}
+\]
+
+\begin{importantbox}{הנוסחה המרכזית — ייצוג אקספוננציאלי}
+\[
+\boxed{T(\varphi) = e^{-i\varphi X}}
+\]
+
+כאשר:
+\begin{itemize}
+    \item $X = i\frac{d}{d\theta}$ הוא \textbf{גנרטור} של חבורת הסיבובים במישור
+    \item $X$ הוא אופרטור הרמיטי
+    \item כל איבר בחבורה מתקבל מהגנרטור והפרמטר $\varphi$
+\end{itemize}
+\end{importantbox}
+
+\subsubsection{אימות באמצעות טור טיילור}
+
+\begin{align*}
+e^{-i\varphi X} f(\theta) &= e^{-i\varphi \cdot i\frac{d}{d\theta}} f(\theta) = e^{\varphi \frac{d}{d\theta}} f(\theta) \\
+&= \sum_{k=0}^\infty \frac{1}{k!} \left(\varphi \frac{d}{d\theta}\right)^k f(\theta) \\
+&= \sum_{k=0}^\infty \frac{\varphi^k}{k!} \frac{d^k f}{d\theta^k}(\theta) \\
+&= f(\theta + \varphi) \quad \checkmark
+\end{align*}
+
+זהו בדיוק טור טיילור של $f$ סביב $\theta$!
+
+\subsection{סיכום עיקרי הנקודות}
+
+\begin{summarybox}{}
+\textbf{הצגות בלתי פריקות:}
+\begin{itemize}
+    \item הצגה בלתי פריקה = "אבן בניין" יסודית שלא ניתנת לפירוק נוסף
+    \item כל הצגה מתפרקת לסכום ישר של הצגות בלתי פריקות
+    \item פירוק על-ידי מעבר לבסיס מתאים (לכסון בלוקים)
+\end{itemize}
+
+\textbf{משפט הממדים:}
+\[
+|G| = \sum_{\alpha} d_\alpha^2
+\]
+\begin{itemize}
+    \item סדר החבורה קובע את מספר וממדי ההצגות הבלתי פריקות
+    \item כלי חזק לזיהוי כל ההצגות האפשריות
+\end{itemize}
+
+\textbf{למה של שור 2:}
+\begin{itemize}
+    \item אם $C$ הרמיטי ומתחלף עם כל $T(g)$ בהצגה בלתי פריקה, אז $C = \lambda I$
+    \item שימוש פיזיקלי: $C = H$ (המילטוניאן) $\Rightarrow$ ניוון = ממד ההצגה
+\end{itemize}
+
+\textbf{משמעות פיזיקלית — ניוון אנרגיה:}
+\begin{itemize}
+    \item סימטריה של המילטוניאן $\Rightarrow$ ניוון רמות אנרגיה
+    \item ממד ההצגה הבלתי פריקה = ניוון רמת האנרגיה
+    \item ניוון מקרי (לא סימטרי) מצביע על סימטריה נסתרת
+\end{itemize}
+
+\textbf{חוקי טרנספורמציה:}
+\[
+O' = U O U^\dagger
+\]
+אופרטור עובר טרנספורמציה דמיון תחת סימטריה.
+
+\textbf{חבורות רציפות:}
+\begin{itemize}
+    \item איברים מאופיינים על-ידי פרמטרים רציפים על יריעה
+    \item גנרטורים אינפיניטסימליים $X$ "חיים" בשכונת איבר היחידה
+    \item ייצוג אקספוננציאלי: $T(\varphi) = e^{-i\varphi X}$
+    \item גנרטורים הם אופרטורים הרמיטיים
+\end{itemize}
+\end{summarybox}
+
+\subsection*{נקודות למחשבה ובדיקת הבנה}
+
+\begin{enumerate}
+    \item הסבירו את ההבדל בין הצגה פריקה להצגה בלתי פריקה. מדוע ההצגות הבלתי פריקות חשובות יותר?
+    
+    \item עבור חבורה בסדר $|G| = 12$, מהם הפירוקים האפשריים לפי משפט הממדים? (רמז: חפשו פתרונות ל-$12 = \sum d_\alpha^2$)
+    
+    \item הסבירו מדוע ניוון של רמת אנרגיה במערכת פיזיקלית קשור לממד ההצגה הבלתי פריקה של חבורת הסימטריה.
+    
+    \item מדוע הגנרטור $X = i\frac{d}{d\theta}$ של חבורת הסיבובים חייב להיות הרמיטי?
+    
+    \item הוכיחו ש-$e^{\alpha \frac{d}{dx}} f(x) = f(x + \alpha)$ באמצעות טור טיילור.
+    
+    \item תנו דוגמה פיזיקלית למערכת שבה ניוון האנרגיה נקבע על-ידי סימטריה. איזו חבורה רלוונטית?
+\end{enumerate}
+
+\newpage

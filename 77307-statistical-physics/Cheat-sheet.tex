@@ -1,0 +1,572 @@
+%% LyX 2.6.0~devel created this file.  For more info, see https://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\setlength{\parindent}{0pt}
+\usepackage{color}
+\definecolor{darkblue}{rgb}{0.101562, 0.101562, 0.398438}
+\usepackage{colortbl}
+\usepackage{booktabs}
+\usepackage{multicol}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{geometry}
+\geometry{verbose}
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+%% Because html converters don't know tabularnewline
+\providecommand{\tabularnewline}{\\}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Textclass specific LaTeX commands.
+\newlength{\lyxlabelwidth}      % auxiliary length 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+% Small margins
+\usepackage{multicol}% For multiple columns
+% For math symbols
+\usepackage{bm}% Bold math
+\usepackage{graphicx}% To insert small images
+\usepackage{array}
+\usepackage{placeins}
+% To make lists compact
+\usepackage{xcolor}% For colors
+\usepackage{titlesec}% For section formatting
+\setlength{\columnsep}{1pt} % Reduce space between columns
+\raggedcolumns{}
+\setlength{\columnseprule}{0.1pt}
+\scriptsize% Use a smaller font
+\abovedisplayskip=2pt
+\belowdisplayskip=2pt
+
+
+% Tight spacing
+
+\setlength{\parskip}{1pt}
+\titlespacing{\section}{0pt}{3pt}{1pt}
+\titlespacing{\subsection}{0pt}{2pt}{1pt}
+\titleformat{\section}{\small\bfseries\color{darkblue}}{\thesection}{3pt}{}
+\titleformat{\subsection}{\tiny\bfseries}{\thesubsection}{2pt}{}
+
+
+% Minimal list spacing
+\setlist{noitemsep,topsep=0pt,parsep=0pt}
+
+% Column separator line
+\setlength{\columnseprule}{0.4pt}
+\def\columnseprulecolor{\color{darkblue}}
+
+
+
+\makeatother
+
+\usepackage{amstext}
+\begin{document}
+\thispagestyle{empty} \setcounter{secnumdepth}{0} 
+
+\begin{multicols}{2}
+
+% PAGE 1: FOUNDATIONS & ENSEMBLES
+
+\textbf{Fundamental Assumption}: In equilibrium, all accessible microstates
+equally probable. 
+\[
+P(\text{microstate})=\frac{1}{\Omega}
+\]
+\rule{1\columnwidth}{0.4pt} 
+
+\section{Thermodynamic Relations}
+
+\textbf{First Law}: $dU=\delta Q-\delta W=TdS-PdV+\mu dN$
+
+\textbf{Second Law}: $dS=\delta Q_{\text{rev}}/T$ for reversible
+process.
+
+\textbf{Fundamental Relation (Open System)}: 
+\[
+\boxed{dU=TdS-PdV+\sum_{i}\mu_{i}dN_{i}}\quad\text{[J]}
+\]
+
+\textbf{Thermodynamic Potentials}: 
+\begin{align}
+F & =U-TS\quad dF=-SdT-PdV+\mu dN\\
+H & =U+PV\quad dH=TdS+VdP+\mu dN\\
+G & =H-TS=\mu N\quad dG=-SdT+VdP+\mu dN\\
+\Phi & =U-TS-\mu N=-PV\quad d\Phi=-SdT-PdV-Nd\mu
+\end{align}
+
+\textbf{Maxwell Relations}: 
+\[
+\left(\frac{\partial S}{\partial V}\right)_{T}=\left(\frac{\partial P}{\partial T}\right)_{V},\quad\left(\frac{\partial S}{\partial P}\right)_{T}=-\left(\frac{\partial V}{\partial T}\right)_{P}
+\]
+\[
+\left(\frac{\partial T}{\partial V}\right)_{S}=-\left(\frac{\partial P}{\partial S}\right)_{V},\quad\left(\frac{\partial T}{\partial P}\right)_{S}=\left(\frac{\partial V}{\partial S}\right)_{P}
+\]
+\rule{1\columnwidth}{0.4pt} 
+
+\section{Microcanonical Ensemble ($E,V,N$)}
+
+\textbf{Setup}: Isolated system, fixed $(U,V,N)$.
+
+\textbf{Multiplicity}: $\Omega(E,V,N)$ --- number of accessible
+microstates.
+
+\textbf{Entropy}: $\boxed{S=k_{B}\ln\Omega(U,V,N)}\quad\text{[J/K]}$
+
+\textbf{Temperature}: ${\displaystyle \frac{1}{T}=\left(\frac{\partial S}{\partial U}\right)_{V,N}}$
+
+\textbf{Pressure}: ${\displaystyle P=T\left(\frac{\partial S}{\partial V}\right)_{U}}$
+
+\textbf{Chemical Potential}: ${\displaystyle \mu=T\left(\frac{\partial S}{\partial N}\right)_{U}}$
+
+\subsection{Example: Paramagnet ($N$ spins in field $B$)}
+
+\textbf{Energy}: $U=-M\mu B$ where $M=N_{\uparrow}-N_{\downarrow}$,
+$N=N_{\uparrow}+N_{\downarrow}$
+
+\textbf{Multiplicity}: $\Omega(N,M)=\binom{N}{(N+M)/2}$
+
+\textbf{Entropy (Gibbs)}: 
+\[
+S=Nk_{B}\left[\ln2-\frac{1}{2}\ln(1-m^{2})-\frac{m}{2}\ln\left(\frac{1+m}{1-m}\right)\right]
+\]
+where $m=M/N\in[-1,1]$.
+
+\textbf{Temperature relation}: 
+\[
+\boxed{\frac{2\mu B}{k_{B}T}=\ln\left(\frac{1+m}{1-m}\right)}\Rightarrow m=\tanh\left(\frac{\mu B}{k_{B}T}\right)
+\]
+
+\textbf{Energy}: $U=-N\mu B\tanh(\mu B/k_{B}T)$\\
+
+\rule{1\columnwidth}{0.4pt} 
+
+\section{Canonical Ensemble ($T,V,N$)}
+
+\textbf{Setup}: System in thermal contact with heat bath at temperature
+$T$. Fixed $(T,V,N)$.
+
+\textbf{Partition Function}: 
+\[
+\boxed{Z_{N}=\sum_{i}g_{i}e^{-\beta E_{i}}}\quad\text{[dimensionless]}
+\]
+For $N$ indistinguishable particles: $Z_{N}=\frac{1}{N!}(Z_{1})^{N}$
+
+\textbf{Probability Distribution (Gibbs Factor)}: 
+\[
+\boxed{P_{i}=\frac{1}{Z_{N}}e^{-\beta E_{i}}}\quad\text{[dimensionless]}
+\]
+
+\textbf{Helmholtz Free Energy}: 
+\[
+\boxed{F=-k_{B}T\ln Z_{N}}\quad\text{[J]}
+\]
+
+\textbf{Thermodynamic Quantities}: 
+\begin{align}
+U & =\langle E\rangle=-\frac{\partial\ln Z_{N}}{\partial\beta}\quad\text{[J]}\\
+S & =k_{B}(\beta\langle E\rangle+\ln Z_{N})\quad\text{[J/K]}\\
+C_{V} & =\left(\frac{\partial U}{\partial T}\right)_{V}=k_{B}\beta^{2}\frac{\partial^{2}\ln Z_{N}}{\partial\beta^{2}}\quad\text{[J/K]}\\
+P & =k_{B}T\left(\frac{\partial\ln Z_{N}}{\partial V}\right)_{T}\quad\text{[Pa]}
+\end{align}
+\rule{1\columnwidth}{0.4pt} 
+
+\section{Grand Canonical Ensemble ($T,V,\mu$)}
+
+\textbf{Setup}: Open system, fixed $(T,V,\mu)$. Exchange energy and
+particles.
+
+\textbf{Grand Partition Function}: 
+\[
+\boxed{\mathcal{Z}=\sum^{\infty}_{N=0}e^{\beta\mu N}Z_{N}=\sum_{\text{all states}}e^{\beta(\mu N-E)}}
+\]
+
+\textbf{Grand Potential (Landau Free Energy)}: 
+\[
+\boxed{\Phi=-k_{B}T\ln\mathcal{Z}=-PV}\quad\text{[J]}
+\]
+
+\textbf{Thermodynamic Relations}: 
+\begin{align}
+\langle N\rangle & =-\left(\frac{\partial\Phi}{\partial\mu}\right)_{T,V}=k_{B}T\left(\frac{\partial\ln\mathcal{Z}}{\partial\mu}\right)_{T,V}\\
+\langle U\rangle & =-\left(\frac{\partial\ln\mathcal{Z}}{\partial\beta}\right)_{\mu,V}\\
+P & =-\left(\frac{\partial\Phi}{\partial V}\right)_{T,\mu}=\frac{k_{B}T\ln\mathcal{Z}}{V}
+\end{align}
+\rule{1\columnwidth}{0.4pt} 
+
+\section{Classical vs. Quantum}
+
+\textbf{Classical Partition Function}: 
+\[
+Z_{\text{cl}}=\frac{1}{N!h^{3N}}\int e^{-\beta H(p,q)}d^{3N}p\,d^{3N}q
+\]
+
+\textbf{Quantum}: Replace with sum over eigenstates with proper symmetrization.
+
+% PAGE 2: APPLICATIONS & QUANTUM STATISTICS
+
+\section{Ideal Classical Gas}
+
+\textbf{Hamiltonian}: $H=\sum_{i}\frac{p^{2}_{i}}{2m}$
+
+\textbf{Partition Function}: 
+\[
+Z=\frac{V^{N}}{N!\lambda^{3N}},\quad\lambda=\sqrt{\frac{2\pi\hbar^{2}}{mk_{B}T}}
+\]
+(thermal de Broglie wavelength) \rule{1\columnwidth}{0.4pt} \textbf{Thermodynamics}:
+\begin{align}
+U & =\frac{3}{2}Nk_{B}T\quad\text{[J]}\\
+C_{V} & =\frac{3}{2}Nk_{B}\quad\text{[J/K]}\\
+PV & =Nk_{B}T\quad\text{[J]}\\
+S & =Nk_{B}\left[\frac{5}{2}+\ln\left(\frac{V}{N\lambda^{3}}\right)\right]\quad\text{[J/K]}
+\end{align}
+\rule{1\columnwidth}{0.4pt} 
+
+\subsection{Einstein Solid}
+
+$N$ distinguishable oscillators, each with frequency $\omega$.
+
+\textbf{Single oscillator}: $Z_{1}=\frac{e^{-\beta\hbar\omega/2}}{1-e^{-\beta\hbar\omega}}$
+
+\textbf{N oscillators}: $Z=Z^{N}_{1}$
+
+\textbf{Energy}: 
+\[
+U=N\hbar\omega\left(\frac{1}{2}+\frac{1}{e^{\beta\hbar\omega}-1}\right)
+\]
+
+\textbf{Heat capacity}: 
+\[
+C_{V}=Nk_{B}\left(\frac{\beta\hbar\omega}{e^{\beta\hbar\omega}-1}\right)^{2}e^{\beta\hbar\omega}
+\]
+Limits: $T\to0$: $C_{V}\propto e^{-\hbar\omega/k_{B}T}$ (Debye);
+$T\to\infty$: $C_{V}\to Nk_{B}$ (Dulong-Petit). \\
+ \rule{1\columnwidth}{0.4pt} 
+
+\section{Density of States \& Phase Space}
+
+\textbf{Phase-Space Counting}: $N(\le p)\sim\frac{V}{(2\pi\hbar)^{d}}p^{d}\Rightarrow N(\le p)\propto p^{d}$
+
+\textbf{Massless Dispersion} ($E=pc$): 
+\begin{align}
+N(\le E) & \propto E^{d},\quad g(E)\propto E^{d-1}
+\end{align}
+
+\textbf{Massive Dispersion} ($E=p^{2}/2m$): 
+\begin{align}
+N(\le E) & \propto E^{d/2},\quad g(E)\propto E^{d/2-1}
+\end{align}
+
+\textbf{Summary} (3D): \\
+ %
+\begin{tabular}{ccc}
+\toprule 
+ & Massless ($E=pc$)  & Massive ($E=p^{2}/2m$)\tabularnewline
+\midrule 
+$g(E)$  & $\propto E^{2}$  & $\propto E^{1/2}$\tabularnewline
+$N(\le E)$  & $\propto E^{3}$  & $\propto E^{3/2}$\tabularnewline
+\bottomrule
+\end{tabular}
+
+\textbf{Spin Degeneracy}: $g(E)\to(2s+1)\times g(E)$\\
+\label{tab:DOS_scaling} %
+\begin{tabular}{cccccc}
+\toprule 
+Dimension  & \multicolumn{2}{c}{Massless $E=pc$} & \multicolumn{2}{c}{Massive $E=p^{2}/2m$} & $N(\le n)$\tabularnewline
+\cmidrule{1-1}\cmidrule(lr){2-3}\cmidrule(lr){4-5}\cmidrule{6-6}
+ & $N(\le E)$  & $g(E)$  & $N(\le E)$  & $g(E)$  & \tabularnewline
+\midrule 
+$3D$  & $E^{3}$  & $E^{2}$  & $E^{3/2}$  & $E^{1/2}$  & $n^{3}$\tabularnewline
+$2D$  & $E^{2}$  & $E$  & $E$  & $E^{0}$  & $n^{2}$\tabularnewline
+$1D$  & $E$  & $E^{0}$  & $E^{1/2}$  & $E^{-1/2}$  & $n$\tabularnewline
+\bottomrule
+\end{tabular} \rule{1\columnwidth}{0.4pt} 
+
+\section{Fermi-Dirac \& Bose-Einstein Statistics}
+
+\textbf{Occupation number}: 
+\[
+\boxed{\langle n_{\epsilon}\rangle=\frac{1}{e^{\beta(\epsilon-\mu)}+\xi}}\quad\text{[dimensionless, }0\leq n\leq1\text{]}
+\]
+where $\xi=+1$ (Fermi), $\xi=-1$ (Bose).
+
+\textbf{Fermi-Dirac}: ${\displaystyle f_{F}(\epsilon)=\frac{1}{e^{\beta(\epsilon-\mu)}+1}}$
+(antisymmetric wave functions, Pauli exclusion)
+
+\textbf{Bose-Einstein}: ${\displaystyle f_{B}(\epsilon)=\frac{1}{e^{\beta(\epsilon-\mu)}-1}}$
+(symmetric, $\mu<\epsilon_{0}$) \rule{1\columnwidth}{0.4pt} 
+
+\subsection{Density of States}
+
+For massive particles in $d$ dimensions: 
+\[
+g(\epsilon)\propto\epsilon^{d/2-1},\quad N(\le\epsilon)=\int^{\epsilon}_{0}g(\epsilon')\,d\epsilon'\propto\epsilon^{d/2}
+\]
+
+For photons (massless, $d=3$): $g(\omega)\propto\omega^{2}$
+
+\subsection{Degenerate Fermi Gas ($T\to0$)}
+
+All states filled up to Fermi energy: $\mu(T=0)=\epsilon_{F}$
+
+\textbf{Fermi Energy}: 
+\[
+\boxed{\epsilon_{F}=\frac{\hbar^{2}}{2m}(3\pi^{2}n)^{2/3}}\quad\text{[J]}
+\]
+
+\textbf{Fermi Temperature}: $T_{F}=\epsilon_{F}/k_{B}$
+
+\textbf{Sommerfeld Expansion} (Heat Capacity): 
+\[
+\boxed{C_{V}\approx\frac{\pi^{2}}{3}Nk_{B}\frac{T}{T_{F}}}\quad(T\ll T_{F})
+\]
+
+\textbf{Thermal Corrections}: 
+\begin{align}
+\mu(T) & \approx\epsilon_{F}\left[1-\frac{\pi^{2}}{12}\left(\frac{T}{T_{F}}\right)^{2}\right]\\
+U(T) & \approx\frac{3}{5}N\epsilon_{F}\left[1+\frac{5\pi^{2}}{12}\left(\frac{T}{T_{F}}\right)^{2}\right]
+\end{align}
+\rule{1\columnwidth}{0.4pt} 
+
+\section{Blackbody Radiation}
+
+\textbf{Photon gas}: bosons with $\mu=0$ (no constraint on photon
+number).
+
+\textbf{Energy density}: 
+\[
+u(\omega,T)=\frac{\hbar\omega^{3}}{\pi^{2}c^{3}}\frac{1}{e^{\beta\hbar\omega}-1}\quad\text{[J/Hz]}
+\]
+
+\textbf{Stefan-Boltzmann Law}: 
+\[
+U=\frac{\pi^{2}k^{4}_{B}T^{4}V}{15\hbar^{3}c^{3}}\quad\text{[J]},\quad P=\frac{U}{3V}\quad\text{[Pa]},\quad C_{V}=\frac{4\sigma VT^{3}}{c}\quad\text{[J/K]}
+\]
+
+\textbf{Wien displacement law}: $\lambda_{\max}T=2.898\times10^{-3}$
+m·K \rule{1\columnwidth}{0.4pt} 
+
+\section{Bose-Einstein Condensation}
+
+Below critical temperature $T_{c}$: 
+\[
+\boxed{k_{B}T_{c}=\frac{2\pi\hbar^{2}}{m}\left(\frac{n}{g\zeta(3/2)}\right)^{2/3}}\quad\text{[K]}
+\]
+where $\zeta(3/2)\approx2.612$, $g=2s+1$ is degeneracy.
+
+\textbf{Condensate Fraction}: 
+\[
+\boxed{\frac{N_{0}}{N}=1-\left(\frac{T}{T_{c}}\right)^{3/2}}\quad(T<T_{c})
+\]
+
+\textbf{Energy}: $U=\frac{3}{5}N_{\text{exc}}k_{B}T$, where $N_{\text{exc}}=N(T/T_{c})^{3/2}$
+
+\section{Debye Model}
+
+Phonon spectrum cutoff at $\omega_{D}$ (Debye frequency).
+
+\textbf{Debye temperature}: $\Theta_{D}=\hbar\omega_{D}/k_{B}$
+
+\textbf{Heat capacity}: 
+\[
+C_{V}=12\pi^{4}Nk_{B}\left(\frac{T}{\Theta_{D}}\right)^{3}\quad(T\ll\Theta_{D})
+\]
+\[
+C_{V}\to3Nk_{B}\quad(T\gg\Theta_{D})\text{ [Dulong-Petit]}
+\]
+
+% PAGE 3: INTERACTING SYSTEMS
+\rule{1\columnwidth}{0.5pt} 
+
+\section{Ising Model (Mean Field)}
+
+\textbf{Hamiltonian}: 
+\[
+H=-J\sum_{\langle i,j\rangle}s_{i}s_{j}-h\sum_{i}s_{i}
+\]
+($J$ = coupling, $h$ = external field, $s_{i}=\pm1$)
+
+\textbf{Self-Consistency Equation}: 
+\[
+\boxed{m=\tanh(\beta(zJm+h))}\quad\text{[\ensuremath{m} dimensionless]}
+\]
+where $z$ = coordination number, $m=\langle s\rangle$.
+
+\textbf{Critical Temperature}: 
+\[
+\boxed{k_{B}T_{c}=zJ}\quad\text{[K]}
+\]
+
+\textbf{Susceptibility}: 
+\[
+\chi\propto(T-T_{c})^{-1}\quad\text{(critical exponent }\gamma=1\text{)}
+\]
+
+\textbf{Order Parameter} (near $T_{c}$): 
+\[
+m\propto(T_{c}-T)^{1/2}\quad(T<T_{c},\text{ exponent }\beta=1/2)
+\]
+
+% PAGE 4: MATHEMATICAL REFERENCE & FORMULAS
+\rule{1\columnwidth}{0.5pt} 
+
+\section{Useful Mathematical Identities}
+
+\textbf{Gaussian integral}: $\int^{\infty}_{-\infty}e^{-\alpha x^{2}}\,dx=\sqrt{\pi/\alpha}$
+
+\textbf{Stirling}: $\ln N!\approx N\ln N-N+\frac{1}{2}\ln(2\pi N)$
+
+\textbf{Poisson summation}: $\sum_{n}e^{-\beta E_{n}}\approx\int g(E)e^{-\beta E}\,dE$
+(thermodynamic limit)
+
+\textbf{Geometric series}: $\sum^{\infty}_{n=0}x^{n}=1/(1-x)$ ($|x|<1$)
+\rule{1\columnwidth}{0.4pt} 
+
+\section{Thermodynamic Identities}
+
+\[
+\left(\frac{\partial U}{\partial V}\right)_{S}=T\left(\frac{\partial P}{\partial S}\right)_{V}-P
+\]
+
+\[
+\left(\frac{\partial U}{\partial V}\right)_{T}=T\left(\frac{\partial P}{\partial T}\right)_{V}-P
+\]
+
+\[
+\left(\frac{\partial H}{\partial P}\right)_{S}=T\left(\frac{\partial V}{\partial S}\right)_{P}+V
+\]
+\rule{1\columnwidth}{0.4pt} 
+
+\section{Asymptotic Behaviors}
+
+\[
+\tanh(x)\approx\begin{cases}
+x & x\ll1\\
+1 & x\gg1
+\end{cases}
+\]
+
+\[
+e^{-\beta E}\approx\begin{cases}
+1-\beta E & \beta E\ll1\\
+0 & \beta E\gg1
+\end{cases}
+\]
+
+\[
+\ln(1+x)\approx x-x^{2}/2+\cdots
+\]
+\rule{1\columnwidth}{0.4pt} 
+
+\section{Constants \& Conversions}
+
+\begin{align}
+k_{B} & =1.381\times10^{-23}\text{ J/K}=8.617\times10^{-5}\text{ eV/K}\\
+\hbar & =1.055\times10^{-34}\text{ J·s}\\
+k_{B}T\text{(eV)} & =0.0862\times T(\text{K})\quad\text{at }300\text{ K: }k_{B}T\approx0.026\text{ eV}
+\end{align}
+
+
+\section{Quick Reference: Partition Functions}
+
+\begin{align}
+\text{2-level system} & :Z=e^{-\beta E_{1}}+e^{-\beta E_{2}}\\
+\text{Harmonic osc.} & :Z=\frac{e^{-\beta\hbar\omega/2}}{1-e^{-\beta\hbar\omega}}\\
+\text{Ideal gas} & :Z=\frac{V^{N}}{N!\lambda^{3N}}\\
+\text{Paramagnet} & :Z=(2\cosh(\beta\mu B))^{N}\\
+\text{Photon gas} & :\ln\mathcal{Z}=-\sum_{k}\ln(1-e^{-\beta\hbar\omega_{k}})
+\end{align}
+\rule{1\columnwidth}{0.4pt} 
+
+\section{Order Parameters \& Susceptibilities}
+
+\textbf{Magnetic susceptibility}: 
+\[
+\chi=\left(\frac{\partial m}{\partial h}\right)_{T}=k^{-1}_{B}\left(\frac{\partial^{2}F}{\partial h^{2}}\right)
+\]
+
+\textbf{Compressibility}: 
+\[
+\kappa_{T}=-\frac{1}{V}\left(\frac{\partial V}{\partial P}\right)_{T}=\frac{1}{Vk_{B}T}\langle(\Delta N)^{2}\rangle/\langle N\rangle^{2}
+\]
+\rule{1\columnwidth}{0.4pt} 
+
+\section{Fluctuations}
+
+\[
+\langle(\Delta E)^{2}\rangle=k_{B}T^{2}C_{V}\quad\text{[J}^{2}\text{]}
+\]
+\[
+\langle(\Delta N)^{2}\rangle=k_{B}T\kappa_{T}\langle N\rangle^{2}/V\quad\text{[dimensionless]}
+\]
+\[
+\text{Relative}:\frac{\Delta E}{U}\sim\frac{1}{\sqrt{N}},\quad\frac{\Delta N}{N}\sim\frac{1}{\sqrt{N}}
+\]
+\rule{1\columnwidth}{0.4pt} 
+
+\section{Mathematical Functions}
+
+\textbf{Polylogarithm}: 
+\[
+\text{Li}_{n}(z)=\sum^{\infty}_{k=1}\frac{z^{k}}{k^{n}}=\frac{1}{\Gamma(n)}\int^{\infty}_{0}\frac{x^{n-1}}{z^{-1}e^{x}-1}dx
+\]
+
+\textbf{Riemann Zeta}: $\zeta(n)=\text{Li}_{n}(1)$ 
+\begin{align}
+\zeta(3/2) & \approx2.612\\
+\zeta(2) & =\pi^{2}/6\approx1.645\\
+\zeta(3) & \approx1.202
+\end{align}
+\rule{1\columnwidth}{0.4pt} 
+
+\section{Units \& Dimensions}
+
+\begin{tabular}{lll}
+\toprule 
+\textbf{Quantity}  & \textbf{Symbol}  & \textbf{SI Units}\tabularnewline
+\midrule 
+Energy  & $U,E,F$  & J (Joules)\tabularnewline
+Entropy  & $S$  & J/K\tabularnewline
+Temperature  & $T$  & K (Kelvin)\tabularnewline
+Partition function  & $Z,\mathcal{Z}$  & dimensionless\tabularnewline
+$\beta$  & $\beta=1/k_{B}T$  & K$^{-1}$\tabularnewline
+Helmholtz free energy  & $F$  & J\tabularnewline
+Heat capacity  & $C_{V},C_{P}$  & J/K\tabularnewline
+Chemical potential  & $\mu$  & J/particle = J/mol $\times1/N_{A}$\tabularnewline
+Pressure  & $P$  & Pa = N/m$^{2}$ = J/m$^{3}$\tabularnewline
+Volume  & $V$  & m$^{3}$\tabularnewline
+Density of states  & $g(E)$  & J$^{-1}$\tabularnewline
+Thermal wavelength  & $\lambda$  & m\tabularnewline
+Magnetic moment  & $m$  & A·m$^{2}$ (dimensionless when normalized)\tabularnewline
+Magnetic field  & $B$  & T (Tesla) = kg/(A·s$^{2}$)\tabularnewline
+Boltzmann constant  & $k_{B}$  & J/K = $1.381\times10^{-23}$\tabularnewline
+Planck constant  & $\hbar$  & J·s = $1.055\times10^{-34}$\tabularnewline
+\bottomrule
+\end{tabular}
+
+\rule{1\columnwidth}{0.4pt}
+
+\section{Dimensional Checks}
+
+\begin{tabular}{ll}
+\toprule 
+\textbf{Relation}  & \textbf{Dimensions}\tabularnewline
+\midrule 
+$S=k_{B}\ln\Omega$  & {[}J/K{]} = {[}J/K{]} $\times$ {[}dimensionless{]}\tabularnewline
+$F=U-TS$  & {[}J{]} = {[}J{]} $-$ {[}K{]} $\times$ {[}J/K{]}\tabularnewline
+$P=-(\partial F/\partial V)_{T}$  & {[}Pa{]} = {[}J{]}/{[}m$^{3}${]}\tabularnewline
+$\beta=1/k_{B}T$  & {[}K$^{-1}${]} = 1/({[}J/K{]} $\times$ {[}K{]})\tabularnewline
+$Z=\sum e^{-\beta E_{i}}$  & {[}1{]} = sum of dimensionless\tabularnewline
+$U=-\partial\ln Z/\partial\beta$  & {[}J{]} = {[}K{]}/{[}K$^{-1}${]}\tabularnewline
+$n(\epsilon)=1/(e^{\beta(\epsilon-\mu)}\pm1)$  & {[}1{]} = dimensionless fraction\tabularnewline
+$g(E)dE$  & {[}1{]} = {[}J$^{-1}${]} $\times$ {[}J{]}\tabularnewline
+$C_{V}=\partial U/\partial T$  & {[}J/K{]} = {[}J{]}/{[}K{]}\tabularnewline
+$\chi=\partial m/\partial h$  & {[}A$\cdot$m$^{2}$/T{]} or {[}dimensionless{]}\tabularnewline
+\bottomrule
+\end{tabular}
+\end{multicols}
+ 
+
+
+\end{document}

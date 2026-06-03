@@ -1,0 +1,477 @@
+
+\subsection*{מטרות השיעור}
+\begin{itemize}
+    \item חזרה וסיכום על סימטריות ואופרטורים מההרצאה הקודמת
+    \item הכרת שלוש הסימטריות הבסיסיות בפיזיקה: $T, C, P$
+    \item למידת מושגי יסוד בתורת החבורות (\LR{Groups})
+    \item הבנת הצגות (\LR{Representations}) של חבורות ויישומן בפיזיקה
+    \item היכרות עם למת שור (\LR{Schur's Lemma}) והשלכותיה
+\end{itemize}
+
+\subsection{חזרה וסיכום מהרצאה קודמת}
+
+\subsubsection*{סימטריות ואופרטורים}
+
+\begin{notebox}{תזכורת}
+סימטריות במכניקה קוונטית יכולות להיות מיוצגות על ידי:
+\begin{itemize}
+    \item \textbf{אופרטורים לינאריים ואוניטריים} — רוב הסימטריות (סיבובים, הזזות, שיקופים)
+    \item \textbf{אופרטורים אנטי-לינאריים ואנטי-אוניטריים} — היפוך זמן בלבד
+\end{itemize}
+\end{notebox}
+
+\begin{importantbox}{מסקנה חשובה}
+\textbf{כל הסימטריות שאינן כרוכות בהיפוך בזמן הן לינאריות}
+
+אופרטורים אנטי-לינאריים חייבים להיות מצומדים להיפוך בזמן כדי למנוע קריסה למצב מינימום אנרגיה.
+\end{importantbox}
+
+\subsection{שלוש סימטריות בסיסיות בפיזיקה}
+
+קיימות שלוש סימטריות בדידות יסודיות בפיזיקה החלקיקים:
+
+\subsubsection*{$T$ (\LR{Time Reversal}) — היפוך בזמן}
+
+\begin{definitionbox}{היפוך זמן}
+סימטריה בדידה של היפוך סימן הזמן:
+\[
+t \to -t
+\]
+
+תחת היפוך זמן:
+\begin{itemize}
+    \item מיקום: $\vec{r}(t) \to \vec{r}(-t)$
+    \item מהירות: $\vec{v}(t) \to -\vec{v}(-t)$
+    \item תנע: $\vec{p}(t) \to -\vec{p}(-t)$
+    \item תנע זוויתי: $\vec{L}(t) \to -\vec{L}(-t)$
+\end{itemize}
+\end{definitionbox}
+
+\subsubsection*{$C$ (\LR{Charge Conjugation}) — צימוד מטען}
+
+\begin{definitionbox}{צימוד מטען}
+סימטריה של היפוך כל המטענים החשמליים:
+\[
+q \to -q
+\]
+
+\textbf{משמעות פיזיקלית:} החלפת חומר באנטי-חומר (אלקטרון $\leftrightarrow$ פוזיטרון)
+
+על פי חוקי ניוטון ומשוואות מקסוול — החוקים הפיזיקליים זהים אם כל המטענים מתהפכים.
+\end{definitionbox}
+
+\subsubsection*{$P$ (\LR{Parity}) — שיקוף מרחבי}
+
+\begin{definitionbox}{שיקוף מרחבי (פריטי)}
+שיקוף במישור במרחב ("עולם המראה של אליס"):
+\[
+\vec{r} \to -\vec{r}
+\]
+\end{definitionbox}
+
+\begin{examplebox}{השפעת שיקוף על גדלים שונים}
+    \textbf{\LR{Vectors} (וקטורים רגילים):} מתהפכים בסימן
+\begin{itemize}
+    \item מיקום: $\pi \circ \vec{r} = -\vec{r}$
+    \item מהירות: $\pi \circ \vec{v} = -\vec{v}$
+    \item תנע: $\pi \circ \vec{p} = -\vec{p}$
+    \item שדה חשמלי: $\pi \circ \vec{E} = -\vec{E}$
+\end{itemize}
+
+    \textbf{\LR{Pseudo-vectors} (פסאודו-וקטורים):} נשארים קבועים
+\begin{itemize}
+    \item תנע זוויתי: $\pi \circ \vec{L} = \vec{L}$ (כי $\vec{L} = \vec{r} \times \vec{p}$)
+    \item שדה מגנטי: $\pi \circ \vec{B} = \vec{B}$
+\end{itemize}
+
+\textbf{סקלרים:} רוב נשארים קבועים
+\begin{itemize}
+    \item מסה, טמפרטורה, זמן — קבועים
+\end{itemize}
+
+\textbf{פסאודו-סקלרים:} מתהפכים בסימן
+\begin{itemize}
+    \item נובעים ממכפלה סקלרית של וקטור ופסאודו-וקטור
+    \item דוגמה: $\vec{E} \cdot \vec{B}$ (הליציטי)
+\end{itemize}
+\end{examplebox}
+
+\subsection{שימור סימטריות בכוחות שונים}
+
+
+\begin{importantbox}{גילוי מרעיש — הפרת הסימטריה}
+בשנות ה-50 התגלה כי \textbf{הכוח החלש} (האחראי על דעיכת בטא) \textbf{שובר את הסימטריה} בכל אחד מהצירים בנפרד!
+
+גילוי זה זכה בפרס נובל והפך את ההבנה שלנו על סימטריות בפיזיקה.
+
+\textbf{אבל:} הסימטריה המשולבת \textbf{$CPT$} כן נשמרת!
+
+כלומר: היפוך של זמן + מרחב + מטענים יחד $\Leftarrow$ כוחות מתנהגים זהה.
+\end{importantbox}
+
+\subsection{הגדרות בסיסיות בתורת החבורות}
+
+\begin{definitionbox}{חבורה (\LR{Group}) — הגדרה 2.1}
+\textbf{חבורה} $G$ היא קבוצה של איברים עם פעולת מכפלה $(\cdot)$ המקיימת ארבעה תנאים:
+
+\begin{enumerate}
+    \item \textbf{סגירות (\LR{Closure}):} לכל $a, b \in G$:
+    \[
+    a \cdot b \in G
+    \]
+    
+    \item \textbf{יחידה (\LR{Identity}):} קיים איבר $e \in G$ כך שלכל $a \in G$:
+    \[
+    e \cdot a = a = a \cdot e
+    \]
+    
+    \item \textbf{הופכי (\LR{Inverse}):} לכל $a \in G$ קיים $a^{-1} \in G$ כך ש:
+    \[
+    a \cdot a^{-1} = e = a^{-1} \cdot a
+    \]
+    
+    \item \textbf{אסוציאטיביות (\LR{Associativity}):} לכל $a, b, c \in G$:
+    \[
+    (a \cdot b) \cdot c = a \cdot (b \cdot c)
+    \]
+
+\end{enumerate}
+\end{definitionbox}
+
+\begin{notebox}{סימון}
+בדרך כלל נשמיט את סימן הפעולה $\cdot$ ונכתוב פשוט $ab$ במקום $a \cdot b$.
+\end{notebox}
+
+\subsubsection*{דוגמאות לחבורות}
+
+\begin{examplebox}{דוגמה 1: חבורת החיבור על $\mathbb{R}$}
+החבורה $(\mathbb{R}, +)$ — המספרים הממשיים עם פעולת החיבור:
+\begin{itemize}
+    \item איבר היחידה: $e = 0$
+    \item איבר הופכי למספר $a$: $a^{-1} = -a$
+    \item חבורה חילופית (אבלית)
+\end{itemize}
+\end{examplebox}
+
+\begin{examplebox}{דוגמה 2: חבורת סיבובים במישור}
+סיבוב בזווית $\theta$ במישור:
+\begin{itemize}
+    \item איבר היחידה: סיבוב באפס רדיאנים ($\theta = 0$)
+    \item איבר הופכי לסיבוב $\theta$: סיבוב $-\theta$
+    \item פעולה: $R(\theta_1) \cdot R(\theta_2) = R(\theta_1 + \theta_2)$
+    \item חבורה אבלית רציפה
+\end{itemize}
+\end{examplebox}
+
+\begin{examplebox}{דוגמה 3: חבורת השיקוף}
+החבורה $G = \{I, \pi\}$ עם שני איברים:
+\begin{itemize}
+    \item $I$ — אופרטור הזהות
+    \item $\pi$ — אופרטור שיקוף
+    \item פעולות: $\pi \circ \pi = I$, $I \circ \pi = \pi$
+    \item $\pi$ היא הופכית לעצמה: $\pi^{-1} = \pi$
+    \item חבורה בדידה עם 2 איברים
+\end{itemize}
+\end{examplebox}
+
+\begin{examplebox}{דוגמה 4: החבורה הטריוויאלית}
+החבורה $\{I\}$ עם איבר אחד בלבד — איבר היחידה.
+
+זוהי החבורה הפשוטה ביותר (ומשעממת...)
+\end{examplebox}
+
+\begin{examplebox}{דוגמה 5: חבורת התמורות $S_3$}
+חבורת התמורות של 3 אובייקטים (למשל: 3 כובעים עם 3 כדורים).
+
+\textbf{סימון:} תמורה נכתבת כמטריצה:
+\[
+\sigma = \begin{pmatrix} 1 & 2 & 3 \\ 2 & 3 & 1 \end{pmatrix}
+\]
+משמעות: $1 \to 2$, $2 \to 3$, $3 \to 1$
+
+\textbf{גודל החבורה:} $|S_3| = 3! = 6$ איברים
+
+\textbf{תכונה חשובה:} כל חבורה סופית היא תת-חבורה של $S_n$ (משפט קיילי)
+\end{examplebox}
+
+\subsection{הצגות של חבורות (\LR{Representations})}
+
+\begin{definitionbox}{הצגה (\LR{Representation}) — הגדרה 2.2}
+\textbf{הצגה} של חבורה $G$ היא העתקה (הומומורפיזם):
+\[
+T: G \to \text{GL}(V)
+\]
+כאשר $\text{GL}(V)$ היא קבוצת כל האופרטורים הלינאריים ההפיכים על מרחב וקטורי $V$.
+
+\textbf{דרישה:} ההעתקה משמרת את מבנה החבורה:
+\[
+T(a \cdot b) = T(a) \cdot T(b)
+\]
+לכל $a, b \in G$.
+\end{definitionbox}
+
+\begin{notebox}{פרשנות פיזיקלית}
+בפיזיקה קוונטית:
+\begin{itemize}
+    \item $G$ = חבורת סימטריה (סיבובים, הזזות, וכו')
+    \item $V$ = מרחב הילברט של המצבים הקוונטיים
+    \item $T(a)$ = אופרטור אוניטרי הפועל על המצבים
+\end{itemize}
+
+ההצגה מתארת \textbf{איך הסימטריה משנה את המצבים הקוונטיים}.
+\end{notebox}
+
+\subsubsection*{דוגמה: הצגה של $S_3$}
+
+\begin{examplebox}{הצגת חבורת התמורות}
+נייצג את $S_3$ על מרחב תלת-ממדי:
+\[
+\begin{array}{rcl}
+1 &\to& (1, 0, 0) \\
+2 &\to& (0, 1, 0) \\
+3 &\to& (0, 0, 1)
+\end{array}
+\]
+
+התמורה:
+\[
+\sigma = \begin{pmatrix} 1 & 2 & 3 \\ 2 & 1 & 3 \end{pmatrix}
+\]
+מתורגמת למטריצה:
+\[
+T(\sigma) = \begin{pmatrix} 
+0 & 1 & 0 \\ 
+1 & 0 & 0 \\ 
+0 & 0 & 1 
+\end{pmatrix}
+\]
+
+כלומר: $(1,0,0) \to (0,1,0)$, $(0,1,0) \to (1,0,0)$, $(0,0,1) \to (0,0,1)$
+\end{examplebox}
+
+\subsubsection*{הצגות נאמנות ולא נאמנות}
+
+\begin{examplebox}{הצגות שונות של חבורת השיקוף}
+עבור $G = \{I, \pi\}$:
+
+    \textbf{הצגה נאמנה (\LR{faithful}):}
+\[
+T(I) = 1, \quad T(\pi) = -1
+\]
+זו הצגה חד-חד ערכית — איברים שונים של החבורה מקבלים אופרטורים שונים.
+
+\textbf{הצגה לא נאמנה:}
+\[
+T(I) = 1, \quad T(\pi) = 1
+\]
+ההצגה הטריוויאלית — כל איברי החבורה מקבלים את אופרטור הזהות.
+\end{examplebox}
+
+\subsection{משפטים חשובים}
+
+\begin{theorembox}{משפט 2.3 — יוניטריות של הצגות}
+לכל חבורה סופית או קומפקטית, כל הצגה שקולה להצגה אוניטרית באמצעות אופרטורים לא סינגולריים.
+
+\textbf{הגדרות:}
+\begin{itemize}
+    \item \textbf{חבורה סופית:} מספר סופי של איברים
+    \item \textbf{חבורה קומפקטית:} "אפשר לשים בקופסא" (בז'רגון פיזיקאי)
+    \begin{itemize}
+        \item דוגמה: מעגל יחידה $U(1)$ ✓
+        \item נגד-דוגמה: הישר הממשי $\mathbb{R}$ ✗
+    \end{itemize}
+\end{itemize}
+\end{theorembox}
+
+\begin{definitionbox}{הצגות שקולות — הגדרה 2.4}
+שתי הצגות $T, T'$ של אותה חבורה $G$ נקראות \textbf{שקולות} אם קיימת מטריצה הפיכה $M$ כך ש:
+\[
+T'(a) = M \, T(a) \, M^{-1}
+\]
+לכל $a \in G$.
+
+\textbf{משמעות:} שתי הצגות שקולות מתארות את אותה פיזיקה בבסיסים שונים.
+\end{definitionbox}
+
+\subsection{דוגמה נגדית: חבורת ההזזות}
+
+\begin{examplebox}{חבורה שאינה קומפקטית}
+חבורת ההזזות $T(a): x \to x + a$ בייצוג מטריציוני:
+\[
+T(a) = \begin{pmatrix} 1 & 0 \\ a & 1 \end{pmatrix}, \quad 
+\begin{pmatrix} 1 \\ x \end{pmatrix} \to \begin{pmatrix} 1 \\ x+a \end{pmatrix}
+\]
+
+\textbf{בעיה:} המטריצה $T(a)$ \textbf{אינה נורמלית}!
+\[
+T(a) T(a)^\dagger \neq T(a)^\dagger T(a)
+\]
+
+\textbf{הסיבה:} זו חבורה \textbf{לא קומפקטית} ו\textbf{לא סופית} $\Rightarrow$ אינה עומדת בתנאי משפט 2.3
+\end{examplebox}
+
+\subsection{פעולה במרחב הפונקציות}
+
+כאשר רוצים להפעיל חבורה על פונקציה $\phi(\vec{x})$, חייבים להיזהר!
+
+\begin{definitionbox}{ההגדרה הנכונה — עם הופכי!}
+להפעיל אלמנט $a \in G$ על פונקציה $\phi$:
+\[
+(a \cdot \phi)(\vec{x}) = \phi(T(a^{-1})\vec{x})
+\]
+
+\textbf{שימו לב:} השתמשנו ב-$a^{-1}$ (הופכי) ולא ב-$a$!
+\end{definitionbox}
+
+\begin{notebox}{למה דווקא $a^{-1}$?}
+כדי לשמור על הפעולה:
+\[
+(a \cdot b) \cdot \phi = a \cdot (b \cdot \phi)
+\]
+
+נבדוק:
+\begin{align*}
+((a \cdot b) \cdot \phi)(\vec{x}) 
+&= \phi(T((ab)^{-1})\vec{x}) \\
+&= \phi(T(b^{-1}a^{-1})\vec{x}) \\
+&= \phi(T(b^{-1})T(a^{-1})\vec{x})
+\end{align*}
+
+מצד שני:
+\begin{align*}
+(a \cdot (b \cdot \phi))(\vec{x}) 
+&= (b \cdot \phi)(T(a^{-1})\vec{x}) \\
+&= \phi(T(b^{-1})T(a^{-1})\vec{x})
+\end{align*}
+
+זהה! 
+\end{notebox}
+
+\begin{warningbox}{ההגדרה השגויה}
+אם היינו מגדירים:
+\[
+(a \cdot \phi)(\vec{x}) = \phi(T(a)\vec{x}) \quad \text{(שגוי!)}
+\]
+
+אז:
+\[
+((a \cdot b) \cdot \phi)(\vec{x}) = \phi(T(ba)\vec{x}) \neq \phi(T(ab)\vec{x})
+\]
+
+זה עובד רק לחבורות \textbf{חילופיות} (אבליות)!
+
+לחבורות כלליות — חובה להשתמש בהופכי.
+\end{warningbox}
+
+\subsection{מרחב אינווריאנטי}
+
+\begin{definitionbox}{מרחב אינווריאנטי — הגדרה 2.5}
+מרחב וקטורי $V$ נקרא \textbf{אינווריאנטי} תחת פעולת חבורה $G$ אם הוא סגור תחת כל האופרטורים:
+\[
+\forall a \in G, \; \forall \vec{v} \in V: \quad T(a)\vec{v} \in V
+\]
+
+\textbf{משמעות:} פעולת החבורה לא "מוציאה" וקטורים מחוץ למרחב.
+\end{definitionbox}
+
+\begin{examplebox}{דוגמה}
+\textbf{המישור הדו-ממדי $xy$} הוא אינווריאנטי תחת סיבובים \textbf{במישור}, אך \textbf{לא} אינווריאנטי תחת סיבובים כלליים \textbf{במרחב}.
+\end{examplebox}
+
+\begin{theorembox}{טענה 2.6 — יצירת מרחב אינווריאנטי}
+לכל וקטור $\vec{v}$, המרחב:
+\[
+V = \text{\LR{Span}}\{T(a)\vec{v} \mid a \in G\}
+\]
+הוא מרחב אינווריאנטי תחת $G$.
+
+\textbf{הוכחה:} לכל $\vec{w} \in V$ ו-$b \in G$:
+\[
+\vec{w} = \sum_i c_i T(a_i)\vec{v}
+\]
+\[
+T(b)\vec{w} = \sum_i c_i T(b)T(a_i)\vec{v} = \sum_i c_i T(ba_i)\vec{v} \in V
+\]
+\end{theorembox}
+
+\subsection{חיבור לפיזיקה — למת שור}
+
+\begin{importantbox}{המשמעות הפיזיקלית}
+אם ההמילטוניאן $\hat{H}$ סימטרי תחת חבורה $G$ (כלומר: $[\hat{H}, T(a)] = 0$ לכל $a \in G$), אז:
+
+\textbf{יש ניוון ברמות האנרגיה שקשור להצגות החבורה.}
+
+כל מצב עצמי של האנרגיה שייך להצגה אי-פריקה אחת של החבורה, והניוון מתאים למימד ההצגה.
+\end{importantbox}
+
+\begin{notebox}{רקע היסטורי — ישעיהו שור}
+    \textbf{ישעיהו שור (\LR{Issai Schur, 1875-1941})} היה מתמטיקאי גרמני-יהודי, תלמיד של פרדינאנד פרוביניוס.
+
+היה פרופסור בברלין עד שגורש בשנת 1935 על פי חוקי הגזע הנאציים. 
+
+ברח לשווייץ ומשם עלה לארץ ישראל, התיישב בתל אביב.
+
+קבור בבית הקברות טרומפלדור בתל אביב.
+
+    \textbf{תרומתו:} למת שור (\LR{Schur's Lemma}) היא אחד הכלים המרכזיים בתורת ההצגות ובפיזיקה קוונטית.
+\end{notebox}
+
+\subsection{סיכום עיקרי הנקודות}
+
+\begin{summarybox}{}
+\textbf{חזרה על סימטריות:}
+\begin{itemize}
+    \item סימטריות לינאריות ואוניטריות — רוב הסימטריות הפיזיקליות
+    \item סימטריות אנטי-לינאריות — רק היפוך זמן
+\end{itemize}
+
+\textbf{שלוש הסימטריות הבסיסיות:}
+\begin{itemize}
+    \item $T$ — היפוך זמן
+    \item $C$ — צימוד מטען (חומר $\leftrightarrow$ אנטי-חומר)
+    \item $P$ — שיקוף מרחבי (פריטי)
+    \item הכוח החלש שובר כל אחת בנפרד, אך $CPT$ משולב נשמר
+\end{itemize}
+
+\textbf{חבורות:}
+\begin{itemize}
+    \item חבורה = קבוצה + פעולה המקיימת: סגירות, יחידה, הופכי, אסוציאטיביות
+    \item דוגמאות: חיבור, סיבובים, תמורות $S_n$
+    \item חבורה סופית/קומפקטית: ניתנת להצגה אוניטרית
+\end{itemize}
+
+\textbf{הצגות:}
+\begin{itemize}
+    \item הצגה = הומומורפיזם $T: G \to$ אופרטורים
+    \item הצגה נאמנה \LR{vs.} לא נאמנה (טריוויאלית)
+    \item פעולה על פונקציות: $(a \cdot \phi)(\vec{x}) = \phi(T(a^{-1})\vec{x})$ — עם הופכי!
+\end{itemize}
+
+\textbf{מרחבים אינווריאנטיים:}
+\begin{itemize}
+    \item מרחב $V$ אינווריאנטי אם $T(a)\vec{v} \in V$ לכל $a \in G$, $\vec{v} \in V$
+    \item למה זה חשוב? קשור לניוון ברמות אנרגיה
+\end{itemize}
+
+\textbf{קשר לפיזיקה:}
+\begin{itemize}
+    \item אם $[\hat{H}, T(a)] = 0$ $\Rightarrow$ ניוון שקשור להצגות
+    \item למת שור מסבירה את המבנה של מצבים עצמיים
+    \item משפט נתר: סימטריה רציפה $\Leftrightarrow$ גודל נשמר
+\end{itemize}
+\end{summarybox}
+
+\subsection*{נקודות למחשבה ובדיקת הבנה}
+
+\begin{enumerate}
+    \item הסבירו מדוע תנע זוויתי $\vec{L} = \vec{r} \times \vec{p}$ הוא פסאודו-וקטור ולא וקטור רגיל. מה קורה לו תחת שיקוף?
+    
+    \item מדוע הגדרנו את הפעולה על פונקציות עם הופכי: $(a \cdot \phi)(\vec{x}) = \phi(T(a^{-1})\vec{x})$? מה הבעיה אם לא נשתמש בהופכי?
+    
+    \item תנו דוגמה לחבורה סופית ולחבורה אינסופית קומפקטית. מדוע הישר הממשי $\mathbb{R}$ אינו קומפקטי?
+    
+    \item הסבירו את ההבדל בין הצגה נאמנה להצגה טריוויאלית. מה המשמעות הפיזיקלית?
+    
+    \item אם $\hat{H}$ סימטרי תחת חבורה $G$, מה ניתן ללמוד על המצבים העצמיים שלו?
+\end{enumerate}
+

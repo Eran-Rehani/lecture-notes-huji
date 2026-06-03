@@ -1,0 +1,783 @@
+%% LyX 2.4.4 created this file.  For more info, see https://www.lyx.org/.
+%% Do not edit unless you really know what you are doing.
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fontspec}
+\setlength{\parindent}{0bp}
+\usepackage{color}
+\usepackage{float}
+\usepackage{units}
+\usepackage{geometry}
+\geometry{verbose,tmargin=2.7cm,bmargin=2cm,lmargin=2cm,rmargin=2cm,headheight=2cm,headsep=0cm,footskip=0cm}
+\usepackage{setspace}
+\usepackage{esint}
+\usepackage{microtype}
+\onehalfspacing
+\usepackage[pdfusetitle,
+ bookmarks=true,bookmarksnumbered=true,bookmarksopen=true,bookmarksopenlevel=2,
+ breaklinks=true,pdfborder={0 0 0},pdfborderstyle={},backref=section,colorlinks=true]
+ {hyperref}
+\hypersetup{
+ linkcolor=black, citecolor=black}
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+\providecommand\textquotedblplain{%
+  \bgroup\addfontfeatures{Mapping=}\char34\egroup}
+
+\@ifundefined{date}{}{\date{}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+% Engine guard: use XeLaTeX/LuaLaTeX
+\usepackage{iftex}
+\ifPDFTeX
+  \PackageError{template}{Please compile with XeLaTeX or LuaLaTeX}{}
+\fi
+
+% ======== ADVANCED HEBREW ACADEMIC TEMPLATE ========
+% Packages (trimmed to avoid conflicts)
+% \usepackage{autobreak}  % REMOVE: can conflict with amsmath; use \allowdisplaybreaks
+% \usepackage[T1]{fontenc}  % REMOVE: not needed with fontspec
+\usepackage{relsize}
+\usepackage{xcolor}
+\usepackage{amssymb}
+\usepackage{titlesec}
+\usepackage{polyglossia}
+\usepackage{fancyhdr}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{geometry}
+\usepackage{microtype}
+\usepackage{fontspec}
+\usepackage{physics}
+\usepackage{siunitx}
+\usepackage{mathtools}
+\usepackage{empheq}
+\usepackage{mdframed}
+
+% Colors (deduplicated)
+\definecolor{primaryblue}{RGB}{33,150,243}
+\definecolor{secondaryblue}{RGB}{63,81,181}
+\definecolor{accentgreen}{RGB}{76,175,80}
+\definecolor{warningcolor}{RGB}{255,152,0}
+\definecolor{errorcolor}{RGB}{244,67,54}
+\definecolor{infocolor}{RGB}{3,169,244}
+\definecolor{notecolor}{RGB}{255,193,7}
+\definecolor{theoremcolor}{RGB}{156,39,176}
+\definecolor{definitioncolor}{RGB}{255,87,34}
+\definecolor{examplecolor}{RGB}{0,150,136}
+\definecolor{lightgray}{RGB}{245,245,245}
+\definecolor{darkgray}{RGB}{66,66,66}
+% Add aliases for colors referenced in layout to avoid missing-color errors
+\colorlet{successcolor}{accentgreen}
+\colorlet{warningred}{errorcolor}
+\colorlet{purple}{theoremcolor}
+\colorlet{green}{accentgreen}
+\colorlet{blue}{primaryblue}
+\colorlet{orange}{warningcolor}
+\definecolor{brown}{RGB}{121,85,72}
+
+% Language + fonts (polyglossia)
+\setdefaultlanguage{hebrew}
+\setotherlanguage{english}
+
+% Robust font selection with fallbacks (fixes Times New Roman not loadable)
+% Hebrew serif
+\IfFontExistsTF{David CLM}
+  {\newfontfamily\hebrewfont[Script=Hebrew]{David CLM}}
+  {\IfFontExistsTF{Noto Serif Hebrew}
+     {\newfontfamily\hebrewfont[Script=Hebrew]{Noto Serif Hebrew}}
+     {\newfontfamily\hebrewfont[Script=Hebrew]{Noto Sans Hebrew}}}
+
+% Hebrew sans
+\IfFontExistsTF{Nachlieli CLM}
+  {\newfontfamily\hebrewfontsf[Script=Hebrew]{Nachlieli CLM}}
+  {\IfFontExistsTF{Noto Sans Hebrew}
+     {\newfontfamily\hebrewfontsf[Script=Hebrew]{Noto Sans Hebrew}}
+     {\newfontfamily\hebrewfontsf[Script=Hebrew]{David CLM}}}
+
+% Latin main font (fallbacks for missing Times New Roman)
+
+\usepackage{unicode-math}
+\setmainfont{XITS}
+\setmathfont{XITSMath}
+
+
+% siunitx
+\sisetup{
+  output-decimal-marker = {.},
+  group-separator = {,},
+  group-minimum-digits = 4,
+  per-mode = symbol
+}
+
+% Geometry (avoid overriding in LyX header)
+\geometry{
+  a4paper,
+  left=2cm, right=2cm, top=2.7cm, bottom=2cm,
+  headheight=16pt, headsep=0.5cm, footskip=1cm
+}
+
+% Display math spacing (fix duplicates)
+\AtBeginDocument{\setlength\abovedisplayskip{6pt}}
+\AtBeginDocument{\setlength\abovedisplayshortskip{6pt}}
+\AtBeginDocument{\setlength\belowdisplayskip{6pt}}
+\AtBeginDocument{\setlength\belowdisplayshortskip{6pt}}
+
+% Headers
+\pagestyle{fancy}
+\fancyhead{}
+\fancyhead[R]{\nouppercase{\leftmark}}
+\renewcommand{\headrulewidth}{0.5pt}
+
+% Footnote rule (single definition)
+\AtBeginDocument{
+  \renewcommand\footnoterule{%
+    \kern 3pt
+    \hbox to \textwidth{\hfill\vrule height 0.5pt width 0.4\textwidth}
+    \kern 4pt
+  }%
+}
+
+% Word spacing
+\spaceskip=1.3\fontdimen2\font plus 1\fontdimen3\font minus 1.5\fontdimen4\font
+
+% Colors (deduplicated)
+\definecolor{primaryblue}{RGB}{33,150,243}
+\definecolor{secondaryblue}{RGB}{63,81,181}
+\definecolor{accentgreen}{RGB}{76,175,80}
+\definecolor{warningcolor}{RGB}{255,152,0}
+\definecolor{errorcolor}{RGB}{244,67,54}
+\definecolor{infocolor}{RGB}{3,169,244}
+\definecolor{notecolor}{RGB}{255,193,7}
+\definecolor{theoremcolor}{RGB}{156,39,176}
+\definecolor{definitioncolor}{RGB}{255,87,34}
+\definecolor{examplecolor}{RGB}{0,150,136}
+\definecolor{lightgray}{RGB}{245,245,245}
+\definecolor{darkgray}{RGB}{66,66,66}
+
+% QED symbol
+%\renewcommand{\qedsymbol}{$\blacksquare$}
+
+% Section formatting (wrap \@ macro with makeatletter)
+\makeatletter
+\renewcommand*{\@seccntformat}[1]{\hspace{0.5cm}\csname the#1\endcsname\hspace{0.5cm}}
+\makeatother
+\titleformat{\section}{\fontsize{20}{20}\bfseries}{\thesection}{10pt}{}
+\titleformat{\subsection}{\fontsize{15}{15}\bfseries}{\thesubsection}{10pt}{}
+\titleformat{\subsubsection}{\bfseries}{\thesubsubsection}{10pt}{}
+
+% RTL equation tag direction
+\makeatletter
+\def\maketag@@@#1{\hbox{\m@th\normalfont\LRE{#1}}}
+\def\tagform@#1{\maketag@@@{(\ignorespaces#1\unskip)}}
+\makeatother
+
+% Disjoint union, large logical and
+\makeatletter
+\def\moverlay{\mathpalette\mov@rlay}
+\def\mov@rlay#1#2{\leavevmode\vtop{%
+   \baselineskip\z@skip \lineskiplimit-\maxdimen
+   \ialign{\hfil$\m@th#1##$\hfil\cr#2\crcr}}}
+\newcommand{\charfusion}[3][\mathord]{#1{\ifx#1\mathop\vphantom{#2}\fi\mathpalette\mov@rlay{#2\cr#3}}\ifx#1\mathop\expandafter\displaylimits\fi}
+\makeatother
+\newcommand{\cupdot}{\charfusion[\mathbin]{\cup}{\cdot}}
+\newcommand{\bigcupdot}{\charfusion[\mathop]{\bigcup}{\cdot}}
+\newcommand{\kaliLargeLand}{\mathop{\mathlarger{\mathlarger{\mathlarger{\land}}}}}
+
+% Hebrew text helper (fix)
+\newcommand{\hebtext}[1]{\texthebrew{#1}}
+
+% Define theorem-like environments
+\newtheorem{theorem}{משפט}[section]
+\newtheorem{lemma}[theorem]{למה}
+\newtheorem{proposition}[theorem]{הצעה}
+\newtheorem{corollary}[theorem]{מסקנה}
+\newtheorem{definition}[theorem]{הגדרה}
+\newtheorem{example}[theorem]{דוגמה}
+\newtheorem{exercise}[theorem]{תרגיל}
+\newtheorem{problem}[theorem]{בעיה}
+\newtheorem{remark}[theorem]{הערה}
+\newtheorem{notation}[theorem]{סימון}
+\newtheorem{formula}[theorem]{נוסחה}
+\newtheorem{result}[theorem]{תוצאה}
+\newtheorem{experiment}[theorem]{ניסוי}
+\newtheorem{physicslaw}[theorem]{חוק פיזיקלי}
+
+% Define additional physics environments
+\newenvironment{physicsnote}{\begin{notebox}{}}{\end{notebox}}
+\newenvironment{physicsconstant}{\begin{mainbox}{קבוע פיזיקלי}}{\end{mainbox}}
+\newenvironment{physicsunits}{\begin{mainbox}{יחידות}}{\end{mainbox}}
+\newenvironment{physicsapplication}{\begin{examplebox}{יישום}}{\end{examplebox}}
+\newenvironment{important}{\begin{importantbox}{}}{\end{importantbox}}
+\newenvironment{summary}{\begin{summarybox}{}}{\end{summarybox}}
+
+% Define proof environment
+\newenvironment{solution}{\begin{proof}[פתרון]}{\end{proof}}
+
+% ======== TCOLORBOX CONFIGURATIONS ========
+\tcbuselibrary{breakable,skins,theorems,fitting,xparse}
+
+% Main content box
+\newtcolorbox{mainbox}[2][]{
+    enhanced,
+    breakable,
+    colback=lightgray!20,
+    colframe=primaryblue,
+    fonttitle=\bfseries\large,
+    title={#2},
+    attach boxed title to top center={yshift=-2mm},
+    boxed title style={size=small, colback=primaryblue, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Theorem box
+\newtcolorbox{theorembox}[2][]{
+    enhanced,
+    breakable,
+    colback=theoremcolor!10,
+    colframe=theoremcolor,
+    fonttitle=\bfseries\large,
+    title={משפט: #2},
+    attach boxed title to top left={yshift=-2mm, xshift=5mm},
+    boxed title style={size=small, colback=theoremcolor, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Definition box
+\newtcolorbox{definitionbox}[2][]{
+    enhanced,
+    breakable,
+    colback=definitioncolor!10,
+    colframe=definitioncolor,
+    fonttitle=\bfseries\large,
+    title={הגדרה: #2},
+    attach boxed title to top left={yshift=-2mm, xshift=5mm},
+    boxed title style={size=small, colback=definitioncolor, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Example box
+\newtcolorbox{examplebox}[2][]{
+    enhanced,
+    breakable,
+    colback=examplecolor!10,
+    colframe=examplecolor,
+    fonttitle=\bfseries\large,
+    title={דוגמה: #2},
+    attach boxed title to top right={yshift=-2mm, xshift=-5mm},
+    boxed title style={size=small, colback=examplecolor, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Problem box
+\newtcolorbox{problembox}[2][]{
+    enhanced,
+    breakable,
+    colback=primaryblue!10,
+    colframe=primaryblue,
+    fonttitle=\bfseries\large,
+    title={בעיה: #2},
+    attach boxed title to top right={yshift=-2mm, xshift=-5mm},
+    boxed title style={size=small, colback=primaryblue, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Solution box
+\newtcolorbox{solutionbox}[1][]{
+    enhanced,
+    breakable,
+    colback=successcolor!10,
+    colframe=successcolor,
+    fonttitle=\bfseries\large,
+    title=פתרון,
+    attach boxed title to top right={yshift=-2mm, xshift=-5mm},
+    boxed title style={size=small, colback=successcolor, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Note box
+\newtcolorbox{notebox}[2][]{
+    enhanced,
+    breakable,
+    colback=notecolor!15,
+    colframe=notecolor,
+    fonttitle=\bfseries,
+    title={הערה: #2},
+    attach boxed title to top left={yshift=-2mm, xshift=5mm},
+    boxed title style={size=small, colback=notecolor, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Warning box
+\newtcolorbox{warningbox}[2][]{
+    enhanced,
+    breakable,
+    colback=warningcolor!15,
+    colframe=warningcolor,
+    fonttitle=\bfseries,
+    title={אזהרה: #2},
+    attach boxed title to top center={yshift=-2mm},
+    boxed title style={size=small, colback=warningcolor, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Important box
+\newtcolorbox{importantbox}[2][]{
+    enhanced,
+    breakable,
+    colback=errorcolor!10,
+    colframe=errorcolor,
+    fonttitle=\bfseries,
+    title={חשוב: #2},
+    attach boxed title to top center={yshift=-2mm},
+    boxed title style={size=small, colback=errorcolor, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Summary box
+\newtcolorbox{summarybox}[2][]{
+    enhanced,
+    breakable,
+    colback=infocolor!10,
+    colframe=infocolor,
+    fonttitle=\bfseries\large,
+    title={סיכום: #2},
+    attach boxed title to top center={yshift=-2mm},
+    boxed title style={size=small, colback=infocolor, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Formula box
+\newtcolorbox{formulabox}[2][]{
+    enhanced,
+    breakable,
+    colback=purple!10,
+    colframe=purple,
+    fonttitle=\bfseries\large,
+    title={נוסחה: #2},
+    attach boxed title to top center={yshift=-2mm},
+    boxed title style={size=small, colback=purple, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Result box
+\newtcolorbox{resultbox}[2][]{
+    enhanced,
+    breakable,
+    colback=accentgreen!15,
+    colframe=accentgreen,
+    fonttitle=\bfseries\large,
+    title={תוצאה: #2},
+    attach boxed title to top center={yshift=-2mm},
+    boxed title style={size=small, colback=accentgreen, sharp corners},
+    rounded corners,
+    left=6mm,
+    right=6mm,
+    top=4mm,
+    bottom=4mm,
+    drop shadow,
+    #1
+}
+
+% Enhanced mathematical environments
+\newenvironment{calculation}
+  {\begin{align}}
+  {\end{align}}
+
+\newenvironment{steps}
+  {\begin{enumerate}[label=שלב \arabic*:, rightmargin=1cm]}
+  {\end{enumerate}}
+
+% Custom commands for common elements
+\newcommand{\highlight}[1]{\textcolor{primaryblue}{\textbf{#1}}}
+% CHANGED: avoid clash with the 'important' environment
+\newcommand{\imptext}[1]{\textcolor{errorcolor}{\textbf{#1}}}
+\newcommand{\note}[1]{\textcolor{notecolor}{\textit{#1}}}
+
+% Enhanced equation highlighting
+\newcommand{\boxedeq}[1]{\boxed{\displaystyle #1}}
+\newcommand{\redeq}[1]{\textcolor{errorcolor}{\boxed{\displaystyle #1}}}
+\newcommand{\blueeq}[1]{\textcolor{primaryblue}{\boxed{\displaystyle #1}}}
+
+\makeatother
+
+\begin{document}
+\title{סיכום - קוונטים (2)\\
+ (77605)}
+\maketitle
+\begin{center}
+כותב: ערן ריחני
+\par\end{center}
+
+\begin{center}
+סמסטר א' תשפ\textquotedblright ו, האוניברסיטה העברית
+\par\end{center}
+
+\newpage{}
+
+\tableofcontents{}
+\begin{center}
+\vfill{}
+\par\end{center}
+
+\begin{center}
+הערות
+\par\end{center}
+
+\[
+***
+\]
+
+\begin{center}
+\par\end{center}
+
+\[
+***
+\]
+
+\begin{center}
+\par\end{center}
+
+\newpage{}
+
+\section{הרצאה 4 - }
+
+\subsection*{חזרה על שיעור קודם}
+
+תכונות החבורה:
+
+סגירות,יחידה,הופכי וקיבוץ.
+
+חבורה היא רעיון אבסטרקטי וכדי לממש אותו בעולם האמיתי אנו צריכים הצגה
+של החבורה.
+
+בפרט יש את ההצגה של המרחב הוקטורי. 
+
+בקורס שלנו נעסוק בהפעלת איברי החבורה על מרחב וקטורי ונסמן את ההצגה
+כאופרטור $T\left(g\right)$ במרחב הוקטורי.
+
+מתוך כל ההצגות ישנן את אבני הבניין של החבורות שהן החבורות הבלתי-פריקות.
+
+מתוך החבורות הסופיות יש מספר סופי של חבורות בלתי פריקות.
+משפט האורתוגונליות
+
+\[
+\sum_{g\in G}T_{ik}^{\left(\alpha\right)^{\ast}}\left(g\right)T_{jl}^{\left(\beta\right)}\left(g\right)=\frac{\left|G\right|}{\ell_{\alpha}}\delta_{\alpha\beta}\delta_{ij}\delta_{kl}
+\]
+
+
+\subsection{חבורות רציפות }
+
+חבורת הסיבובים במישור $O\left(2\right)$ ניתנת לייצוג ע\textquotedbl י
+המטריצה:
+\[
+R\left(\alpha\right)=\begin{pmatrix}\cos\left(\alpha\right) & \sin\left(\alpha\right)\\
+-\sin\left(\alpha\right) & \cos\left(\alpha\right)
+\end{pmatrix}
+\]
+
+ניתן גם להסתכל על המספר המרוכב $z$ ולסובב אותו ע\textquotedbl י
+$e^{i\theta}$ , זה גם ייצוג של החבורה (חד מימדית).
+\[
+z\rightarrow ze^{i\theta}
+\]
+
+בנוסף יש עוד ייצוג במרחב הפונקציות של 
+\[
+f\left(\theta\right)\rightarrow f\left(\theta-\varphi\right)
+\]
+
+אלו שלוש הצגות שונות של אותה החבורה.
+
+\subsubsection*{סיבוב קטן מאוד }
+
+עבור סיבוב קטן מאוד: 
+
+\[
+\begin{pmatrix}\cos\left(\alpha\right) & \sin\left(\alpha\right)\\
+-\sin\left(\alpha\right) & \cos\left(\alpha\right)
+\end{pmatrix}\approx I+\begin{pmatrix} & \varphi\\
+-\varphi
+\end{pmatrix}=I+i\varphi\begin{pmatrix} & -i\varphi\\
+i\varphi
+\end{pmatrix}
+\]
+
+\[
+e^{i\varphi}z\approx\left(1+i\varphi\right)z
+\]
+\[
+f\left(\theta+\varphi\right)\approx\left(1+i\varphi\left(-i\frac{\partial~}{\partial\theta}\right)\right)f\left(\theta\right)
+\]
+
+באופן כללי 
+\[
+T\left(\varphi\right)=I+i\varphi X
+\]
+
+כאשר $X$ יכול להיות:
+\[
+X=\begin{pmatrix} & -i\\
+i
+\end{pmatrix},\quad X=1,\quad X=-i\frac{\partial~}{\partial\theta}
+\]
+\[
+T\left(\varphi\right)=-e^{i\varphi X}
+\]
+
+$X$ היוצר של החבורה
+
+באופן כללי: $T\left(\theta\right)=I+i\epsilon X$
+
+\[
+I=T^{\dag}T=\left(I-i\epsilon X^{\dagger}\right)\left(I+i\epsilon X\right)=I+i\epsilon\left(X-X^{\dagger}\right)+O\left(\epsilon^{2}\right)
+\]
+
+לכן $X$ הוא הרמיטי וליניארי ולכן הוא מועמד להיות אופרטור המייצג גודל
+מדיד.
+
+\[
+T\left(\epsilon\right)=I+i\sum_{a}\epsilon_{a}X_{a}
+\]
+\[
+\left[X_{a},X_{b}\right]=i\sum_{a}C_{b}X_{c}
+\]
+
+
+\subsubsection*{אופרטורים }
+
+$H$ - יוצר הזזה בזמן.
+
+$\beta$ - יוצר הזזה מרחבית.
+\[
+T\left(\Delta t\right)\simeq I-i\frac{\Delta t}{\hbar}H
+\]
+
+\[
+\vdots
+\]
+\[
+\mathcal{P}iH\mathcal{P^{\dagger}}=iH
+\]
+\[
+\mathcal{P}H\mathcal{P}^{-1}=H
+\]
+
+$\mathcal{P}$ הוא ליניארי הוא לא משנה את ההמילטוניאן אך כאשר הוא
+פועל על אופרטור התנע נקבל את התנע בסימן מינוס.
+\[
+Ti\mathcal{P}T=i\mathcal{P}
+\]
+
+$E$ לא יכול להיות שלילי (ליניארי) ולכן,
+
+מסקנה: $\mathbb{P}$ הוא אופרטור אנטי-ליניארי\newpage{}
+
+\section{שבוע 3 הרצאה 5 }
+\date{$\date{2.11.2025}$}
+
+\ 
+משפט הווריאציה - משפט ריץ
+
+עבור פונקציית גל אקראית $\psi$ במרחב הילברט, ערך התצפית של ההמילטוניאן
+מקיים את היחס:
+
+\[
+E\equiv\frac{\left<\psi|H|\psi\right>}{\left<\psi|\psi\right>}\geqslant E_{1}
+\]
+
+כאשר $E_{1}$ היא האנרגיה של רמת היסוד.
+
+היחס מתקיים אם ורק אם $\psi$ הוא פונקציית הגל של רמת היסוד.
+הוכחה:
+
+כיוון שהמצבים העצמיים של $H$ מהווים בסיס שלם של המרחב, ניתן לייצג
+את $\psi$ כך:
+
+\[
+\psi=\sum_{k}c_{k}\phi_{k}
+\]
+
+ולכן: 
+\[
+\frac{\left<\psi|H-E_{1}|\psi\right>}{\left<\psi|\psi\right>}=\frac{\sum_{k=1}^{\infty}\left(E_{k}-E_{1}\right)\left|c_{k}\right|^{2}}{\sum_{k=1}^{\infty}\left|c_{k}\right|^{2}}\geqslant0
+\]
+
+כאשר השוויון האחרון נובע מסדר רמות האנרגיה מגבוה לנמוך.
+
+$\blacksquare$
+
+השימוש של המשפט הוא לתת חסם עליון ל-$E_{0}$.
+משפט ריץ המוכלל -
+\[
+\left<k|\tilde{0}\right>\sim O\left(\varepsilon\right)\qquad k\neq0
+\]
+
+\[
+\bar{H}-E_{0}\sim O\left(\varepsilon^{2}\right)
+\]
+
+ערך התצפית של ההמילטוניאן הוא סטציונארי (הנקודה בה הנגזרת הראשונה
+מתאפסת) בסביבה של הערכים העצמיים.
+הוכחה: (סאקוראי עמ' 317 )
+
+כדי להוכיח את המשפט נשתמש בווריאציה קטנה בפונקציית הגל .
+
+אם מוסיפים ווריאציה קטנה לפונקציית הגל 
+\[
+\ket{\tilde{0}}\rightarrow\ket{\tilde{0}}+\delta\ket{\tilde{0}}
+\]
+
+ונחשב את האנרגיה הממוצעת אז נקבל שגיאה מסדר גודל של $\delta^{2}$.
+
+נניח $\psi=\phi_{n}+\delta\phi$ עם $\left<\phi|\delta\phi\right>=0$
+אז במקרה הזה:
+\[
+E=\ldots=E_{n}+O\left(\delta\phi^{2}\right)
+\]
+
+\ \foreignlanguage{english}{The variance thorem} 
+בהנתן השונות של ערך התצפית של האנרגיה
+\[
+\sigma^{2}\equiv\frac{\left<\psi|\left(H-E\right)^{2}|\psi\right>}{\left<\psi|\psi\right>}=\frac{\left<\psi|H^{2}|\psi\right>}{\left<\psi|\psi\right>}-E^{2}
+\]
+
+יש לפחות ערך-עצמי מדויק אחד של $H$ בתחום $\left[E-\sigma,E+\sigma\right]$.
+
+הוכחה:
+
+נפתח את $\psi$ באמצעות מצבים עצמיים מנורמלים של $H$. ניתן לכתוב
+את השונות כך:
+\[
+\sigma^{2}=\sum_{i=1}^{\infty}\left(E_{i}-E\right)^{2}\left|c_{i}\right|^{2}
+\]
+
+נסמן $E_{k}$ בתור הערכים העצמיים הקרובים ביותר של $E$. אז:
+\[
+\sum_{i=1}^{\infty}\left(E_{i}-E\right)^{2}\left|c_{i}\right|^{2}\geqslant\left(E_{k}-E\right)^{2}\sum_{i=1}^{\infty}\left|c_{i}\right|^{2}=\left(E_{k}-E\right)^{2}
+\]
+
+ולכן $\sigma^{2}\geqslant\left(E_{k}-E\right)^{2}$. $\blacksquare$
+
+\newpage{}
+
+חלקיק נע בפוטנציאל כדורי $V\left(r\right)$
+
+נסתכל על פוטנציאל מושך 
+\[
+V\left(r\right)=-\frac{\alpha}{r^{s}},\qquad\alpha>0
+\]
+ההמילטוניאן במקרה זה יהיה:
+\[
+\mathcal{H}=-\frac{\hbar^{2}}{2m}\nabla^{2}-\frac{\alpha}{r^{s}}
+\]
+ 
+\[
+\psi\left(r\right)=Ne^{-\nicefrac{r^{2}}{r_{0}^{2}}}
+\]
+
+כאשר 
+\[
+N=\left(\frac{2}{\pi}\right)^{\nicefrac{3}{4}}r_{0}^{-\nicefrac{3}{2}}
+\]
+
+הוא פקטור נורמליזציה.
+
+מתוך סימטריה נסיק:
+
+\[
+\left<x_{i}\right>=\left<p_{i}\right>=0,\quad i=1,2,3
+\]
+
+מצד שני עבור אי הוודאות נקבל:
+\[
+\Delta x_{i}=\sqrt{\left<x_{i}^{2}\right>-\left<x_{i}\right>^{2}}\sim r_{0}\Rightarrow\Delta p_{i}=\sqrt{\left<p_{i}^{2}\right>-\left<p_{i}\right>^{2}}=\sqrt{\left<p_{i}^{2}\right>}\sim\frac{\hbar}{r_{0}}
+\]
+
+משיקולי מימדים נכתוב
+\[
+\left<\psi|\frac{-\alpha}{r^{s}}|\psi\right>=\intop dr\psi^{\dag}\left(r\right)V\left(r\right)\psi\left(r\right)=
+\]
+
+נחליף משתנים $x=\frac{r}{r_{0}}$
+\[
+\left<\mathcal{H}\right>=\frac{\left<\boldsymbol{P}^{2}\right>}{2m}+\left<V\right>\sim\frac{\hbar^{2}}{2mr_{0}^{2}}-\frac{\alpha}{r_{0}^{2}}
+\]
+
+\end{document}

@@ -1,0 +1,136 @@
+\section*{סיכום הרצאה: ספין, סימטריות דיסקרטיות ומשוואת פאולי}
+
+בשיעור זה העמקנו בפורמליזם של הספין (\LR{Spin}), בחנו את התנהגותו תחת סימטריות דיסקרטיות (שיקוף והיפוך בזמן), וגזרנו את משוואת פאולי המתארת את האינטראקציה של אלקטרון בעל ספין עם שדה אלקטרומגנטי. לבסוף, הצגנו את המסגרת לחיבור תנע זוויתי של מספר חלקיקים.
+
+\section{פורמליזם הספין וחבורת \LR{SU(2)}}
+
+הספין הוא דרגת חופש פנימית, הנובעת מהצורך להסביר תופעות ניסויויות (כגון הניוון בספקטרום האטומי). מתמטית, אנו מתארים אותו באמצעות חבורת הסימטריה \LR{SU(2)}.
+
+\begin{definitionbox}{מטריצות פאולי (\LR{Pauli Matrices})}
+כל איבר $G \in SU(2)$ ניתן לכתיבה בצורה $G = e^{iX}$, כאשר $X$ היא מטריצה הרמיטית חסרת עקבה (\LR{Traceless Hermitian}). הבסיס למרחב המטריצות הללו ($2 \times 2$) הוא מטריצות פאולי:
+$$
+\sigma_x = \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}, \quad
+\sigma_y = \begin{pmatrix} 0 & -i \\ i & 0 \end{pmatrix}, \quad
+\sigma_z = \begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}
+$$
+\end{definitionbox}
+
+\subsection{אלגברה של מטריצות פאולי}
+המטריצות מקיימות את יחסי החילוף הבאים, המזכירים את יחסי החילוף של תנע זוויתי:
+\begin{equation}
+[\sigma_i, \sigma_j] = 2i\epsilon_{ijk}\sigma_k
+\end{equation}
+כמו כן, יחסי האנטי-חילוף (\LR{Anti-commutation relations}) הם:
+\begin{equation}
+\{\sigma_i, \sigma_j\} = 2\delta_{ij}I
+\end{equation}
+מתוך יחסים אלו ניתן להגיע לזהות השימושית הבאה עבור מכפלה של אופרטורים וקטוריים:
+\begin{resultbox}{זהות המכפלה של פאולי}
+לכל שני וקטורים $\vec{a}, \vec{b}$ (שיכולים להיות גם אופרטורים המתחלפים עם $\vec{\sigma}$):
+$$
+(\vec{\sigma} \cdot \vec{a})(\vec{\sigma} \cdot \vec{b}) = (\vec{a} \cdot \vec{b})I + i\vec{\sigma} \cdot (\vec{a} \times \vec{b})
+$$
+\end{resultbox}
+
+\subsection{אופרטור הספין והסיבוב}
+אופרטור הספין מוגדר על ידי נירמול היוצרים כך שיתאימו ליחסי החילוף הקנוניים של תנע זוויתי $[S_i, S_j] = i\hbar\epsilon_{ijk}S_k$:
+$$
+\vec{S} = \frac{\hbar}{2}\vec{\sigma}
+$$
+אופרטור הסיבוב במרחב הספין סביב ציר $\hat{n}$ בזווית $\phi$ נתון על ידי האקספוננציאציה של היוצרים:
+$$
+U(\hat{n}, \phi) = e^{-i \frac{\vec{S} \cdot \hat{n}}{\hbar} \phi} = e^{-i \frac{\vec{\sigma} \cdot \hat{n}}{2} \phi}
+$$
+על ידי שימוש בטור טיילור ובתכונה $(\vec{\sigma}\cdot\hat{n})^2 = I$, מקבלים:
+\begin{equation}
+U(\hat{n}, \phi) = \cos\left(\frac{\phi}{2}\right)I - i(\vec{\sigma} \cdot \hat{n})\sin\left(\frac{\phi}{2}\right)
+\end{equation}
+
+\begin{notebox}{התופעה של $4\pi$}
+שימו לב שכתוצאה מהחלוקה ב-2 בארגומנט הטריגונומטרי, סיבוב של $\phi = 2\pi$ נותן:
+$$ U(\hat{n}, 2\pi) = \cos(\pi)I = -I $$
+כלומר, המצב מקבל פאזה של מינוס ואינו חוזר לעצמו. נדרש סיבוב של $4\pi$ כדי לקבל $U=I$.
+\end{notebox}
+
+\section{סימטריות דיסקרטיות: שיקוף והיפוך בזמן}
+
+\subsection{שיקוף מרחבי (\LR{Parity})}
+אנו דורשים שהספין יתנהג כווקטור צירי (\LR{Axial Vector}), בדומה לתנע זוויתי מסילתי $\vec{L} = \vec{r} \times \vec{p}$.
+תחת שיקוף מרחבי $P$:
+$$ P\vec{S}P^\dagger = \vec{S} $$
+זאת מכיוון שגם $r$ וגם $p$ מחליפים סימן, ולכן המכפלה שלהם לא משתנה.
+
+\subsection{היפוך בזמן (\LR{Time Reversal})}
+אופרטור ההיפוך בזמן $T$ הוא אופרטור אנטי-אוניטרי (\LR{Anti-unitary}). בייצוג סטנדרטי הוא מורכב מאופרטור ההצמדה הקומפלקסית $K$ ומאופרטור אוניטרי נוסף.
+הדרישה הפיזיקלית היא שתנע זוויתי (שהוא "סיבוב") יהפוך כיוון תחת היפוך זמן (כמו להריץ סרט אחורה):
+$$ T\vec{S}T^\dagger = -\vec{S} $$
+
+אם ננסה לבחור $T=K$ (הצמדה בלבד), נקבל סתירה במטריצות פאולי:
+\begin{itemize}
+    \item $\sigma_x, \sigma_z$ הן מטריצות ממשיות $\to K\sigma_{x,z}K = \sigma_{x,z}$ (לא הופך סימן).
+    \item $\sigma_y$ היא מטריצה מדומה $\to K\sigma_y K = -\sigma_y$ (הופך סימן).
+\end{itemize}
+זה יוצר אסימטריה לא פיזיקלית (כיוון $y$ מועדף). הפתרון הוא להגדיר את $T$ כך שיבצע סיבוב של $\pi$ סביב ציר $y$ במרחב הספין, בנוסף להצמדה:
+\begin{resultbox}{אופרטור היפוך בזמן לספין 1/2}
+$$ T = e^{-i\pi S_y / \hbar} K = -i\sigma_y K $$
+\end{resultbox}
+הפעלה של אופרטור זה על מצב כללי $\ket{\psi} = \alpha\ket{\uparrow} + \beta\ket{\downarrow}$ נותנת תוצאה מעניינת כאשר מפעילים אותו פעמיים:
+\begin{theorembox}{משפט קרמרס (\LR{Kramers}) ו-$T^2$}
+עבור מערכת עם ספין חצי-שלם (כגון אלקטרון), מתקיים:
+$$ T^2 = -1 $$
+זה שונה ממערכות בוזוניות (ספין שלם) בהן $T^2 = 1$. עובדה זו מובילה לניוון קרמרס: בהיעדר שדה מגנטי חיצוני, לכל מצב אנרגיה במערכת עם מספר אי-זוגי של פרמיונים יש לפחות ניוון כפול.
+\end{theorembox}
+
+\section{משוואת פאולי (\LR{The Pauli Equation})}
+
+כדי להבין כיצד הספין משפיע על הדינמיקה, נתחיל מהמילטוניאן חופשי ונשתמש בזהות $(\vec{\sigma}\cdot\vec{p})^2 = p^2$:
+$$ H = \frac{(\vec{\sigma}\cdot\vec{p})^2}{2m} + V $$
+כאשר מכניסים שדה אלקטרומגנטי, מבצעים את הצימוד המינימלי (\LR{Minimal Coupling}):
+$$ \vec{p} \to \vec{\pi} = \vec{p} - q\vec{A} $$
+ההמילטוניאן החדש הוא:
+$$ H = \frac{1}{2m} (\vec{\sigma} \cdot (\vec{p} - q\vec{A}))^2 + q\phi $$
+נפתח את הריבוע באמצעות הזהות שהוכחנו קודם. כאן $\vec{a} = \vec{b} = \vec{\pi}$, אך יש להיזהר כי הרכיבים של $\vec{\pi}$ אינם מתחלפים זה עם זה (כי $\vec{p}$ ו-$\vec{A}$ אינם מתחלפים):
+$$ (\vec{\sigma}\cdot\vec{\pi})^2 = \vec{\pi}^2 + i\vec{\sigma}\cdot(\vec{\pi} \times \vec{\pi}) $$
+נחשב את המכפלה הווקטורית של התנע הקינטי:
+$$ \vec{\pi} \times \vec{\pi} = (\vec{p} - q\vec{A}) \times (\vec{p} - q\vec{A}) = -q(\vec{p}\times\vec{A} + \vec{A}\times\vec{p}) $$
+מונח זה פרופורציונלי לקרל (\LR{Curl}) של הפוטנציאל הווקטורי, כלומר לשדה המגנטי:
+$$ \vec{\pi} \times \vec{\pi} = i\hbar q (\nabla \times \vec{A}) = i\hbar q \vec{B} $$
+הצבת התוצאה חזרה להמילטוניאן נותנת:
+\begin{resultbox}{משוואת פאולי}
+$$ H = \frac{1}{2m}(\vec{p} - q\vec{A})^2 - \frac{q\hbar}{2m}\vec{\sigma}\cdot\vec{B} + q\phi $$
+\end{resultbox}
+האיבר החדש שקיבלנו, $H_{spin} = -\frac{q\hbar}{2m}\vec{\sigma}\cdot\vec{B}$, מייצג אינטראקציה בין המומנט המגנטי של הספין לשדה המגנטי.
+
+\begin{examplebox}{היחס הג'ירומגנטי ($g$-\LR{factor})}
+נהוג לכתוב את האינטראקציה בצורה $H_{int} = -\vec{\mu} \cdot \vec{B}$.
+עבור תנע זוויתי מסילתי, $\vec{\mu}_L = \frac{q}{2m}\vec{L}$.
+עבור ספין, קיבלנו $\vec{\mu}_S = \frac{q}{2m}(2\vec{S})$ (כי $\hbar\vec{\sigma} = 2\vec{S}$).
+הפקטור 2 המופיע כאן הוא ה-$g$-factor של האלקטרון (בקירוב, על פי משוואת דיראק/פאולי).
+המומנט המגנטי הכולל הוא:
+$$ \vec{\mu}_{total} = \frac{q}{2m}(\vec{L} + 2\vec{S}) $$
+\end{examplebox}
+
+% Visualization of Energy Splitting
+\begin{center}
+\begin{tikzpicture}[scale=1]
+    \draw[->] (0,0) -- (0,3) node[above] {$E$};
+    \draw[thick] (1,1.5) -- (3,1.5) node[right] {$E_0$ (ללא שדה)};
+    
+    \draw[thick] (5,1.5) -- (7,2.5) node[right] {$E_0 + \mu_B B$ ($\ket{\uparrow}$)};
+    \draw[thick] (5,1.5) -- (7,0.5) node[right] {$E_0 - \mu_B B$ ($\ket{\downarrow}$)};
+    \draw[dashed] (3,1.5) -- (5,1.5);
+    
+    \node at (4, 2.5) {פיצול זיימן};
+    \node at (4, 2.2) {(\LR{Zeeman Splitting})};
+\end{tikzpicture}
+\end{center}
+
+\section{חיבור תנע זוויתי (\LR{Addition of Angular Momentum})}
+
+כאשר יש לנו מערכת עם שני חלקיקים (או שתי דרגות חופש, כמו ספין ומסלול), המרחב המשותף מוגדר על ידי מכפלה טנזורית של המרחבים:
+$$ V = V_1 \otimes V_2 $$
+אם המימדים הם $2j_1+1$ ו-$2j_2+1$, מימד המרחב הכולל הוא המכפלה שלהם.
+היוצרים של הסיבוב במרחב המשותף פועלים על כל תת-מרחב בנפרד:
+$$ \vec{J}_{tot} = \vec{J}_1 \otimes I_2 + I_1 \otimes \vec{J}_2 $$
+באופן פשטני נרשום $\vec{J} = \vec{J}_1 + \vec{J}_2$.
+בשיעור הבא נראה כיצד עוברים מבסיס המכפלה ($\ket{j_1 m_1}\ket{j_2 m_2}$) לבסיס המצומד שבו $J^2$ ו-$J_z$ אלכסוניים (מקדמי קלבש-גורדן).

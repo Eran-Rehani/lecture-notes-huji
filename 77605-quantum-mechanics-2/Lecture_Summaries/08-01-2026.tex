@@ -1,0 +1,151 @@
+\section{כלל הזהב של פרמי וחתך פעולה}
+
+\subsection{כלל הזהב של פרמי (\LR{Fermi's Golden Rule})}
+
+בדיון הקודם עסקנו בתורת ההפרעות עבור הפרעה מונוכרומטית מהצורה:
+\[
+V(t) = U e^{-i\omega t} + U^\dagger e^{i\omega t}
+\]
+כאשר $U$ הוא אופרטור מרחבי. הגדרנו את קצב המעבר (\LR{Transition Rate}), $\Gamma_{i \to f}$, כהסתברות המעבר ליחידת זמן. עבור זמנים ארוכים, פונקציית ה-"\LR{Sinc}" בריבוע שואפת לפונקציית דלתא של דיראק, ומתקבלות שתי אפשרויות למעבר, בהתאם לשימור אנרגיה:
+
+\begin{theorembox}{כלל הזהב של פרמי}
+קצב המעבר ממצב התחלתי $|i\rangle$ למצב סופי $|f\rangle$ תחת הפרעה מחזורית נתון על ידי:
+\begin{enumerate}
+    \item \textbf{בליעה (\LR{Absorption}):} המערכת מקבלת אנרגיה מההפרעה ($E_f > E_i$):
+    \[
+    \Gamma_{i \to f} = \frac{2\pi}{\hbar} |U_{fi}|^2 \delta(E_f - E_i - \hbar\omega)
+    \]
+    \item \textbf{פליטה מאולצת (\LR{Stimulated Emission}):} המערכת מוסרת אנרגיה להפרעה ($E_f < E_i$):
+    \[
+    \Gamma_{i \to f} = \frac{2\pi}{\hbar} |U_{if}|^2 \delta(E_f - E_i + \hbar\omega)
+    \]
+\end{enumerate}
+כאשר $U_{fi} = \langle f | U | i \rangle$.
+\end{theorembox}
+
+הדרישה לפונקציית דלתא נובעת מהגבול $t \to \infty$, המייצג חוק שימור אנרגיה אבסולוטי. עבור זמנים סופיים, קיימת אי-ודאות באנרגיה המאפשרת חריגות רגעיות משימור האנרגיה המדויק.
+
+\subsection{מעבר לרצף: צפיפות מצבים (\LR{Density of States})}
+
+במערכות פיזיקליות רבות (כגון אטום המיינן לאלקטרון חופשי), הספקטרום הסופי אינו בדיד אלא רציף. במקרה זה, איננו שואלים מהי ההסתברות לעבור למצב סופי בודד, אלא מהי ההסתברות לעבור לקבוצת מצבים בטווח אנרגיה מסוים.
+נסמן ב-$\rho(E)$ את צפיפות המצבים ליחידת אנרגיה. קצב המעבר הכולל מתקבל על ידי אינטגרציה על המצבים הסופיים:
+\[
+\Gamma_{i \to \{f\}} = \int \Gamma_{i \to f} \, \rho(E_f) \, dE_f
+\]
+הצבת כלל הזהב עם פונקציית הדלתא מבצעת את האינטגרל באופן מיידי ("דוגמת" את צפיפות המצבים באנרגיה המתאימה):
+
+\begin{resultbox}{כלל הזהב עבור רצף מצבים}
+\[
+\Gamma_{i \to f} = \frac{2\pi}{\hbar} |U_{fi}|^2 \rho(E_f)
+\]
+כאשר צפיפות המצבים $\rho(E_f)$ מחושבת באנרגיה המקיימת את תנאי השימור ($E_f = E_i \pm \hbar\omega$).
+\end{resultbox}
+
+\begin{notebox}
+צפיפות המצבים $\rho(E)$ עשויה לכלול אינטגרציה על דרגות חופש נוספות שאינן האנרגיה (כגון כיוון התנע או ספין). במקרה הכללי, יש לסכום על כל המספרים הקוונטיים הנוספים:
+\[
+\Gamma_{i \to f} = \int d\Omega \frac{2\pi}{\hbar} |U_{fi}(\Omega)|^2 \rho(E_f, \Omega)
+\]
+\end{notebox}
+
+\subsection{רוחב רמה וזמן חיים}
+
+תורת ההפרעות תקפה כל עוד ההסתברות להישאר במצב ההתחלתי קרובה ל-1.
+אם נסמן את ההסתברות להישאר במצב $i$ כ-$P_i(t)$, אזי עבור זמן קצר $\Delta t$:
+\[
+P_i(t + \Delta t) = P_i(t) (1 - \Gamma \Delta t)
+\]
+משוואה זו מובילה למשוואה דיפרנציאלית $\frac{dP_i}{dt} = -\Gamma P_i$, שפתרונה הוא דעיכה מעריכית:
+\[
+P_i(t) = e^{-\Gamma t}
+\]
+\begin{definitionbox}{זמן חיים ורוחב רמה}
+זמן החיים (\LR{Lifetime}) של הרמה מוגדר כ-$\tau = 1/\Gamma$.
+לפי עקרון אי-הודאות זמן-אנרגיה, לרמה בעלת זמן חיים סופי יש "רוחב" אנרגטי טבעי:
+\[
+\Delta E \approx \hbar \Gamma
+\]
+\end{definitionbox}
+
+מבחינה פורמלית, דעיכה של מצב ניתנת לתיאור על ידי הוספת חלק מדומה לאנרגיה:
+\[
+E_i \to E_i - i\frac{\hbar\Gamma}{2}
+\]
+כך שפונקציית הגל מתנהגת כ:
+\[
+\psi(t) \sim e^{-i(E_i - i\hbar\Gamma/2)t/\hbar} = e^{-iE_i t/\hbar} e^{-\Gamma t/2}
+\]
+וההסתברות $|\psi|^2$ דועכת כ-$e^{-\Gamma t}$. טרנספורם פורייה של מצב דועך זה אינו נותן פונקציית דלתא חדה באנרגיה, אלא פרופיל לורנציאן (\LR{Lorentzian}) בעל רוחב סופי $\Gamma$.
+
+\section{אינטראקציה עם קרינה אלקטרומגנטית}
+
+\subsection{הגדרת חתך פעולה (\LR{Cross Section})}
+
+כדי לכמת תהליכי פיזור או אינטראקציה בין שטף חלקיקים למטרה, אנו מגדירים את חתך הפעולה.
+נגדיר:
+\begin{itemize}
+    \item $F$ - שטף החלקיקים הפוגעים (\LR{Flux}): מספר חלקיקים ליחידת שטח ליחידת זמן [$\text{m}^{-2}\text{s}^{-1}$].
+    \item $R$ - קצב האירועים (למשל, מספר בליעות בשנייה) עבור מטרה בודדת [$\text{s}^{-1}$].
+\end{itemize}
+
+הקשר ביניהם מוגדר על ידי שטח אפקטיבי המכונה חתך פעולה $\sigma$:
+\begin{definitionbox}{חתך פעולה $\sigma$}
+\[
+\sigma = \frac{R}{F} = \frac{\Gamma_{i \to f}}{F}
+\]
+יחידות: שטח ($\text{m}^2$).
+\end{definitionbox}
+המטרה שלנו היא לחשב את $\Gamma$ באמצעות כלל הזהב, לחשב את השטף $F$ של הגל האלקטרומגנטי, ומהם לגזור את $\sigma$.
+
+\subsection{ההמילטוניאן האלקטרומגנטי}
+
+ההמילטוניאן של חלקיק טעון בשדה אלקטרומגנטי (עם ספין) נתון על ידי:
+\[
+H = \frac{1}{2m}(\mathbf{P} - q\mathbf{A})^2 + q\phi - \frac{g q}{2m} \mathbf{S} \cdot \mathbf{B}
+\]
+כאשר $\mathbf{A}$ הפוטנציאל הווקטורי, $\phi$ הפוטנציאל הסקלרי, ו-$g$ הוא הפקטור הג'ירומגנטי (עבור אלקטרון $g \approx 2$).
+נניח כיול (\LR{Gauge}) בו $\phi=0$ (או סטטי) ו-$\nabla \cdot \mathbf{A} = 0$ (כיול קולומב), כך ש-$\mathbf{P} \cdot \mathbf{A} = \mathbf{A} \cdot \mathbf{P}$. נפתח את הסוגריים ונזניח את האיבר הריבועי $A^2$ (עבור שדות חלשים) ואת איבר הספין בשלב זה. נקבל את המילטוניאן ההפרעה:
+\[
+H' \approx -\frac{q}{m} \mathbf{A} \cdot \mathbf{P}
+\]
+נציג את הפוטנציאל הווקטורי של גל מישורי (מונוכרומטי) עם קיטוב $\boldsymbol{\epsilon}$:
+\[
+\mathbf{A}(\mathbf{r}, t) = A_0 \boldsymbol{\epsilon} \left( e^{i(\mathbf{k}\cdot\mathbf{r} - \omega t)} + e^{-i(\mathbf{k}\cdot\mathbf{r} - \omega t)} \right)
+\]
+כאשר האיבר הראשון ($e^{-i\omega t}$) מתאים לבליעה והשני לפליטה.
+נזהה את האופרטור המרחבי $U$ עבור תהליך בליעה:
+\[
+U = -\frac{q}{m} A_0 e^{i\mathbf{k}\cdot\mathbf{r}} (\boldsymbol{\epsilon} \cdot \mathbf{P})
+\]
+
+\subsection{חישוב השטף וחתך הפעולה}
+
+שטף האנרגיה של הגל נתון על ידי ממוצע וקטור פוינטינג $\langle \mathbf{S} \rangle$. עבור גל אלקטרומגנטי בריק:
+\[
+|\langle \mathbf{S} \rangle| = \frac{1}{2} c \epsilon_0 E_{max}^2
+\]
+הקשר בין השדה החשמלי לפוטנציאל הווקטורי הוא $\mathbf{E} = -\frac{\partial \mathbf{A}}{\partial t}$, ולכן האמפליטודה היא $E_{max} = \omega A_0$.
+נקבל:
+\[
+|\langle \mathbf{S} \rangle| = \frac{1}{2} c \epsilon_0 \omega^2 (2A_0)^2 = 2 c \epsilon_0 \omega^2 A_0^2
+\]
+(הערה: הפקטור $2A_0$ נובע מההגדרה שלנו של $\mathbf{A}$ כסכום של שני אקספוננטים).
+שטף הפוטונים $F$ הוא שטף האנרגיה מחולק באנרגיה של פוטון בודד $\hbar\omega$:
+\[
+F = \frac{|\langle \mathbf{S} \rangle|}{\hbar\omega} = \frac{2 c \epsilon_0 \omega A_0^2}{\hbar}
+\]
+
+כעת נציב את $U$ ואת $F$ לביטוי של חתך הפעולה (עבור רצף מצבים):
+\[
+\sigma = \frac{\Gamma}{F} = \frac{\frac{2\pi}{\hbar} |-\frac{q}{m} A_0 \langle f | e^{i\mathbf{k}\cdot\mathbf{r}} \boldsymbol{\epsilon}\cdot\mathbf{P} | i \rangle|^2 \rho(E_f)}{\frac{2 c \epsilon_0 \omega A_0^2}{\hbar}}
+\]
+לאחר צמצום $A_0^2$, $\hbar$ ושימוש בקבוע המבנה הדק $\alpha = \frac{e^2}{4\pi\epsilon_0 \hbar c}$ (בהנחה ש-$q=e$), מתקבל הביטוי הסופי עבור חתך הפעולה הדיפרנציאלי (לפני אינטגרציה זוויתית):
+
+\begin{resultbox}{חתך פעולה לבליעת קרינה (קירוב דיפולי)}
+\[
+\sigma_{i \to f} \approx \frac{4\pi^2 \hbar}{m^2 \omega} \alpha \left| \langle f | e^{i\mathbf{k}\cdot\mathbf{r}} \boldsymbol{\epsilon}\cdot\mathbf{P} | i \rangle \right|^2 \rho(E_f)
+\]
+\end{resultbox}
+הערה: אם אורך הגל גדול מממדי המערכת ($\lambda \gg a_0$), ניתן לקרב $e^{i\mathbf{k}\cdot\mathbf{r}} \approx 1$ (קירוב הדיפול החשמלי).
+
+

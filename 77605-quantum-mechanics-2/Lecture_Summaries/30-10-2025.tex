@@ -1,0 +1,975 @@
+\subsection*{מטרות השיעור}
+בשיעור זה נעבור מחבורות דיסקרטיות (סופיות) לחבורות רציפות, ונתחיל ללמוד את הכלים המתמטיים לתיאור סימטריות רציפות בפיזיקה קוונטית:
+\begin{itemize}
+    \item \textbf{חבורות רציפות:} מעבר מחבורות סופיות לחבורות עם פרמטרים רציפים
+    \item \textbf{גנרטורים אינפיניטסימליים:} כיצד לתאר חבורה רציפה באמצעות אופרטורים הרמיטיים
+    \item \textbf{ייצוג אקספוננציאלי:} $T(\theta) = e^{-i\theta X}$ — הקשר בין גנרטורים לאיברי החבורה
+    \item \textbf{יחסי קומוטציה:} אלגברת לי ומשמעותה הפיזיקלית
+    \item \textbf{גנרטורים פיזיקליים:} המילטוניאן, אופרטור התנע, אופרטור התנע הזוויתי
+    \item \textbf{אופרטורים אנטי-לינאריים:} הבנת ההבדל בין סימטריות לינאריות לאנטי-לינאריות
+\end{itemize}
+
+\subsection{סקירה: מרחבים אינווריאנטיים ופריקות}
+
+\subsubsection{סידור מחדש של איברי חבורה}
+
+\begin{theorembox}[label=thm:rearrangement]{סידור מחדש בחבורה}
+בחבורה $G$ סופית עם $n$ איברים $\{g_1, g_2, \ldots, g_n\}$, מכפלת כל האיברים באיבר $g_k \in G$ מניבה סידור מחדש של אותם האיברים:
+\[
+\{g_k g_1, g_k g_2, \ldots, g_k g_n\} = \{g_1, g_2, \ldots, g_n\}
+\]
+\end{theorembox}
+
+\textbf{הוכחה:} נובע מקיום ההופכי ומייחודיות המכפלה. אם $g_k g_i = g_k g_j$, אז בכפל מימין ב-$g_k^{-1}$ מקבלים $g_i = g_j$.
+
+\subsubsection{מרחבים אינווריאנטיים}
+
+\begin{definitionbox}[label=def:invariant_subspace]{מרחב אינווריאנטי}
+תהי $V$ מרחב וקטורי עם הצגה $T$ של חבורה $G$. \\
+תת-מרחב $V' \subseteq V$ הוא \textbf{אינווריאנטי} תחת פעולת $G$ אם:
+\[
+T(g) V' \subseteq V' \quad \forall g \in G
+\]
+כלומר, פעולת החבורה לא מוציאה וקטורים מ-$V'$.
+\end{definitionbox}
+
+\begin{notebox}
+אם $v \in V$ כלשהו, אז המרחב
+\[
+V' = \text{span}\{T(g)v \mid g \in G\}
+\]
+הוא בהכרח אינווריאנטי תחת פעולת $G$.
+\end{notebox}
+
+\begin{definitionbox}[label=def:reducible]{פריקות והצגות בלתי פריקות}
+מרחב וקטורי $V$ עם הצגה $T$ של חבורה $G$ הוא:
+\begin{itemize}
+    \item \textbf{פריק (\LR{reducible})}: אם קיים תת-מרחב אינווריאנטי לא-טריוויאלי $V' \subset V$ כך ש-$V = V' \oplus V'^\perp$ ושני המרחבים אינווריאנטיים.
+    \item \textbf{בלתי פריק (\LR{irreducible})}: אם לא קיים פירוק כזה - כל תת-מרחב אינווריאנטי הוא טריוויאלי ($\{0\}$ או $V$).
+\end{itemize}
+\end{definitionbox}
+
+\textbf{פרשנות פיזיקלית:} הצגה בלתי פריקה מתארת "יחידה אלמנטרית" שלא ניתן לפרק אותה עוד. בפיזיקה, אלו מתאימים למצבים עם סימטריה מוגדרת היטב.
+
+\subsection{דוגמה: חבורת השיקוף}
+
+\begin{examplebox}[label=ex:reflection_group]{חבורת השיקוף $\{I, P\}$}
+חבורה עם שני איברים: $I$ (יחידה) ו-$P$ (שיקוף).
+
+\textbf{הצגה דו-ממדית:} במרחב $\mathbb{R}^2$ עם בסיס $\{(1,0), (0,1)\}$:
+\[
+I = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}, \quad
+P = \begin{pmatrix} 0 & 1 \\ 1 & 0 \end{pmatrix}
+\]
+
+\textbf{פירוק להצגות בלתי פריקות:} בבסיס $\{(1,1), (1,-1)\}$ (עד כדי נירמול):
+\[
+I = \begin{pmatrix} 1 & 0 \\ 0 & 1 \end{pmatrix}, \quad
+P = \begin{pmatrix} 1 & 0 \\ 0 & -1 \end{pmatrix}
+\]
+
+שתי הצגות חד-ממדיות בלתי פריקות:
+\begin{itemize}
+    \item $T_1$: $I \to 1, \quad P \to 1$ (הצגה טריוויאלית)
+    \item $T_2$: $I \to 1, \quad P \to -1$ (הצגת הזוגיות)
+\end{itemize}
+\end{examplebox}
+
+\textbf{אנלוגיה פיזיקלית:} פונקציות זוגיות (קוסינוס) משתייכות ל-$T_1$, פונקציות אי-זוגיות (סינוס) משתייכות ל-$T_2$.
+
+\subsection{חבורת התמורות $S_3$}
+
+\subsubsection{מבנה החבורה}
+
+\begin{definitionbox}[label=def:S3]{חבורת התמורות $S_3$}
+$S_3$ היא חבורת כל התמורות (פרמוטציות) של שלושה איברים.
+\begin{itemize}
+    \item \textbf{סדר החבורה:} $|S_3| = 3! = 6$
+    \item \textbf{איברים:} 
+    \begin{align*}
+    &e = \begin{pmatrix} 1 & 2 & 3 \\ 1 & 2 & 3 \end{pmatrix}, \quad
+    (12) = \begin{pmatrix} 1 & 2 & 3 \\ 2 & 1 & 3 \end{pmatrix}, \quad
+    (13) = \begin{pmatrix} 1 & 2 & 3 \\ 3 & 2 & 1 \end{pmatrix} \\
+    &(23) = \begin{pmatrix} 1 & 2 & 3 \\ 1 & 3 & 2 \end{pmatrix}, \quad
+    (123) = \begin{pmatrix} 1 & 2 & 3 \\ 2 & 3 & 1 \end{pmatrix}, \quad
+    (132) = \begin{pmatrix} 1 & 2 & 3 \\ 3 & 1 & 2 \end{pmatrix}
+    \end{align*}
+\end{itemize}
+\end{definitionbox}
+
+\subsubsection{הצגה תלת-ממדית טבעית}
+
+בבסיס $\{e_1 = (1,0,0), e_2 = (0,1,0), e_3 = (0,0,1)\}$:
+
+\begin{examplebox}[label=ex:S3_natural]{הצגה טבעית של $S_3$}
+\[
+T\begin{pmatrix} 1 & 2 & 3 \\ 2 & 1 & 3 \end{pmatrix} = 
+\begin{pmatrix} 0 & 1 & 0 \\ 1 & 0 & 0 \\ 0 & 0 & 1 \end{pmatrix}, \quad
+T\begin{pmatrix} 1 & 2 & 3 \\ 3 & 1 & 2 \end{pmatrix} = 
+\begin{pmatrix} 0 & 0 & 1 \\ 1 & 0 & 0 \\ 0 & 1 & 0 \end{pmatrix}
+\]
+\end{examplebox}
+
+\textbf{האם הצגה זו פריקה?} \textbf{כן!} נמצא בסיס שבו היא מתפרקת.
+
+\subsubsection{פירוק להצגות בלתי פריקות}
+
+\begin{importantbox}[label=box:S3_decomposition]{פירוק ההצגה התלת-ממדית}
+נבחר בסיס חדש (קואורדינטות יעקובי):
+\begin{align*}
+E_1 &= \frac{1}{\sqrt{3}}(1, 1, 1) \quad \text{(מרכז מאסה)} \\
+E_2 &= \frac{1}{\sqrt{2}}(1, -1, 0) \quad \text{(קואורדינטה יחסית)} \\
+E_3 &= \frac{1}{\sqrt{6}}(1, 1, -2) \quad \text{(קואורדינטה יחסית)}
+\end{align*}
+
+$E_1$ אינווריאנטי: $T(g) E_1 = E_1$ לכל $g \in S_3$.
+
+המטריצות בבסיס זה מתפרקות לבלוקים:
+\[
+T(g) = \begin{pmatrix} 1 & \mid & 0 \\ \hline 0 & \mid & T^{(2)}(g) \end{pmatrix}
+\]
+כאשר $T^{(2)}(g)$ מטריצה $2 \times 2$.
+\end{importantbox}
+
+\textbf{דוגמה מפורשת:}
+\begin{align*}
+T'\begin{pmatrix} 1 & 2 & 3 \\ 2 & 1 & 3 \end{pmatrix} &= 
+\begin{pmatrix} 1 & 0 & 0 \\ 0 & -1 & 0 \\ 0 & 0 & 1 \end{pmatrix} \\
+T'\begin{pmatrix} 1 & 2 & 3 \\ 3 & 1 & 2 \end{pmatrix} &=
+\begin{pmatrix} 1 & 0 & 0 \\ 0 & -\frac{1}{2} & -\frac{\sqrt{3}}{2} \\ 0 & -\frac{\sqrt{3}}{2} & \frac{1}{2} \end{pmatrix}
+\end{align*}
+
+\subsection{משפט הממדים}
+
+\begin{theorembox}[label=thm:dimension]{משפט הממדים לחבורות סופיות}
+תהי $G$ חבורה סופית עם $|G| = n$, ותהיינה $T_\alpha$ ($\alpha = 1, 2, \ldots, k$) כל ההצגות הבלתי פריקות הלא-שקולות של $G$, עם ממדים $d_\alpha = \dim(T_\alpha)$. אזי:
+\[
+\boxed{|G| = \sum_{\alpha=1}^{k} d_\alpha^2}
+\]
+\end{theorembox}
+
+\textbf{משמעות:} מספר ההצגות הבלתי פריקות וממדיהן נקבעים באופן ייחודי על-ידי סדר החבורה!
+
+\begin{examplebox}[label=ex:dimension_theorem]{יישום משפט הממדים}
+\textbf{חבורת השיקוף:} $|G| = 2$
+\[
+2 = 1^2 + 1^2 \quad \Rightarrow \quad \text{שתי הצגות חד-ממדיות}
+\]
+
+\textbf{חבורת $S_3$:} $|G| = 6$
+\[
+6 = 1^2 + 2^2 + 1^2 \quad \Rightarrow \quad \text{שתי הצגות חד-ממדיות ואחת דו-ממדית}
+\]
+או
+\[
+6 = 1^2 + 1^2 + 1^2 + 1^2 + 1^2 + 1^2 \quad \Rightarrow \quad \text{שש הצגות חד-ממדיות}
+\]
+בפועל, $S_3$ מקיימת את האפשרות הראשונה.
+\end{examplebox}
+
+\subsubsection{שלוש ההצגות הבלתי פריקות של $S_3$}
+
+\begin{summarybox}[label=box:S3_irreps]{טבלת ההצגות של $S_3$}
+\begin{center}
+\begin{tabular}{|c|c|c|c|c|c|c|}
+\hline
+& $e$ & $(12)$ & $(13)$ & $(23)$ & $(123)$ & $(132)$ \\ \hline
+$T_1$ (טריוויאלית) & $1$ & $1$ & $1$ & $1$ & $1$ & $1$ \\ \hline
+$T_2$ (דו-ממדית) & $I_{2\times 2}$ & $\begin{pmatrix} -1 & 0 \\ 0 & 1 \end{pmatrix}$ & $\cdots$ & $\cdots$ & $\begin{pmatrix} -\frac{1}{2} & -\frac{\sqrt{3}}{2} \\ -\frac{\sqrt{3}}{2} & \frac{1}{2} \end{pmatrix}$ & $\cdots$ \\ \hline
+$T_3$ (זוגיות) & $1$ & $-1$ & $-1$ & $-1$ & $1$ & $1$ \\ \hline
+\end{tabular}
+\end{center}
+
+\textbf{$T_3$ - הצגת הזוגיות:} כל תמורה מקבלת $+1$ או $-1$ לפי זוגיות מספר ההחלפות הדרושות לייצורה.
+\begin{itemize}
+    \item תמורה \textbf{זוגית}: מספר זוגי של החלפות $\to +1$
+    \item תמורה \textbf{אי-זוגית}: מספר אי-זוגי של החלפות $\to -1$
+\end{itemize}
+\end{summarybox}
+
+\textbf{אימות משפט הממדים:}
+\[
+\dim(T_1)^2 + \dim(T_2)^2 + \dim(T_3)^2 = 1^2 + 2^2 + 1^2 = 6 = |S_3| \quad \checkmark
+\]
+
+\subsection{למה של שור (גרסה חזקה)}
+
+\begin{theorembox}[label=thm:schur2]{למה של שור 2}
+תהי $G$ חבורה סופית, $T$ הצגה בלתי פריקה של $G$ במרחב $V$, ו-$C$ אופרטור הרמיטי ב-$V$.
+
+\textbf{הנחה:} לכל $g \in G$ מתקיים:
+\[
+[T(g), C] = 0 \quad \text{(}C\text{ מתחלף עם כל איברי ההצגה  )}
+\]
+
+\textbf{מסקנה:} $C$ פרופורציונלי לאופרטור היחידה:
+\[
+\boxed{C = \lambda I \quad \text{עבור } \lambda \in \mathbb{R}}
+\]
+\end{theorembox}
+
+\subsubsection{הוכחת למה של שור}
+
+\textbf{שלב 1:} $C$ הרמיטי $\Leftarrow$ קיים וקטור עצמי:
+\[
+C v = \lambda v
+\]
+
+\textbf{שלב 2:} נגדיר משפחת וקטורים:
+\[
+\alpha = \sum_{g \in G} \alpha_g \, T(g) v
+\]
+כאשר $\alpha_g$ מקדמים כלשהם.
+
+\textbf{שלב 3:} נפעיל $C$ על $\alpha$:
+\begin{align*}
+C \alpha &= C \sum_g \alpha_g T(g) v = \sum_g \alpha_g C T(g) v \\
+&\stackrel{[C,T(g)]=0}{=} \sum_g \alpha_g T(g) C v = \sum_g \alpha_g T(g) (\lambda v) \\
+&= \lambda \sum_g \alpha_g T(g) v = \lambda \alpha
+\end{align*}
+
+\textbf{מסקנה:} כל $\alpha$ מהצורה הזו הוא וקטור עצמי של $C$ עם אותו ערך עצמי $\lambda$!
+
+\textbf{שלב 4:} המרחב
+\[
+V' = \text{span}\{\alpha \mid \alpha_g \in \mathbb{C}\}
+\]
+הוא תת-מרחב אינווריאנטי תחת $G$ (הוכחנו קודם), וכל הווקטורים בו הם וקטורים עצמיים של $C$ עם ערך עצמי $\lambda$.
+
+\textbf{שלב 5:} מכיוון ש-$T$ בלתי פריקה, $V'$ חייב להיות $\{0\}$ או $V$. אבל $v \in V'$ (בחירת $\alpha_e = 1$, שאר המקדמים $0$), ולכן $V' \neq \{0\}$.
+
+\textbf{מסקנה:} $V' = V$, ולכן $C$ פועל כ-$\lambda I$ על כל $V$. 
+
+\subsection{משמעות פיזיקלית של למה של שור}
+
+\begin{importantbox}[label=box:schur_physics]{קשר לפיזיקה: ניוון אנרגיה}
+תהי $G$ חבורת סימטריה של המילטוניאן: $[H, T(g)] = 0$ לכל $g \in G$.
+
+\textbf{למה של שור מלמד:} אם $T_\alpha$ היא הצגה בלתי פריקה של $G$ בממד $d_\alpha$, אזי \textbf{כל $d_\alpha$ המצבים} בהצגה זו חייבים להיות בעלי \textbf{אותה אנרגיה} $E_\alpha$.
+
+\textbf{משמעות:}
+\begin{itemize}
+    \item \textbf{ניוון סימטרי:} מימד ההצגה = ניוון רמת האנרגיה
+    \item \textbf{ניוון מקרי:} אם שתי רמות מהצגות שונות בעלות אותה אנרגיה בדיוק, יש לחשוד בסימטריה נסתרת גדולה יותר!
+\end{itemize}
+\end{importantbox}
+
+\textbf{דוגמה פיזיקלית:} מולקולת מתאן (CH$_4$) בעלת סימטריית טטראדר. הספקטרום האנרגטי מראה ניוון של $1, 3, 3, 5$ - בהתאם להצגות הבלתי פריקות של חבורת הטטראדר!
+
+\subsection{חוקי טרנספורמציה של אופרטורים}
+
+\subsubsection{גזירת חוק הטרנספורמציה}
+
+\textbf[]{חוק טרנספורמציה של אופרטורים}
+\textbf{מצב מקורי:} $\ket{\psi}$, אופרטור $O$, ערך תצפית:
+\[
+\braket{\psi | O | \psi}
+\]
+
+\textbf{מצב לאחר טרנספורמציית סימטריה:}
+\[
+\ket{\psi'} = U \ket{\psi}, \quad O \to O'
+\]
+
+\textbf{דרישת שקילות:} ערך התצפית נשמר:
+\[
+\braket{\psi | O | \psi} = \braket{\psi' | O' | \psi'}
+\]
+
+\textbf{פיתוח:}
+\begin{align*}
+\braket{\psi | O | \psi} &= \braket{\psi' | O' | \psi'} \\
+&= \bra{\psi} U^\dagger O' U \ket{\psi}
+\end{align*}
+
+\textbf{מכיוון שזה נכון לכל $\ket{\psi}$:}
+\[
+\boxed{O = U^\dagger O' U \quad \Leftrightarrow \quad O' = U O U^\dagger}
+\]
+
+
+\textbf{פרשנות:} אופרטור עובר טרנספורמציה דמיון (\LR{conjugation}) על-ידי אופרטור הסימטריה.
+
+\begin{examplebox}[label=ex:rotation_operator]{דוגמה: סיבוב של אופרטורי וקטור}
+סיבוב $U_R$ משנה רכיבי וקטור מיקום:
+\[
+\vec{r}' = U_R \vec{r} U_R^\dagger = R \vec{r}
+\]
+כאשר $R$ היא מטריצת הסיבוב הקלאסית.
+
+באופן דומה, תנע:
+\[
+\vec{p}' = U_R \vec{p} U_R^\dagger = R \vec{p}
+\]
+\end{examplebox}
+
+\subsection{מבוא לחבורות רציפות}
+
+\subsubsection{מחבורות דיסקרטיות לחבורות רציפות}
+
+\begin{definitionbox}[label=def:continuous_group]{חבורה רציפה}
+חבורה $G$ היא \textbf{רציפה} אם איבריה מאופיינים על-ידי פרמטרים רציפים:
+\[
+g = g(a_1, a_2, \ldots, a_r)
+\]
+כאשר $(a_1, \ldots, a_r) \in M$ ו-$M$ היא \textbf{יריעה} (\LR{manifold}) חלקה ברורית $r$-ממדית.
+
+\textbf{דוגמאות:}
+\begin{itemize}
+    \item סיבובים במישור: $g(\phi) = R(\phi)$, $M = S^1$ (מעגל), $r = 1$
+    \item סיבובים ב-$\mathbb{R}^3$: $g(\theta, \phi, \psi)$ (זוויות אוילר), $r = 3$
+    \item הזזות: $g(x) = T_x$, $M = \mathbb{R}$, $r = 1$
+\end{itemize}
+\end{definitionbox}
+
+\subsubsection{ייצוג אקספוננציאלי}
+
+\textbf{רעיון מרכזי:} כל פעולה בחבורה רציפה ניתנת להשגה על-ידי \textbf{סכום אינסופי של פעולות אינפיניטסימליות}.
+
+\textbf{גזירת הייצוג האקספוננציאלי}
+\textbf{דוגמה: סיבובים במישור}
+
+\textbf{שלב 1 - פעולה על פונקציה:} סיבוב בזווית $\phi$ פועל על פונקציה $f(\theta)$:
+\[
+T(\phi) f(\theta) = f(\theta - \phi)
+\]
+
+\textbf{שלב 2 - קירוב לינארי:} עבור $\phi$ קטן:
+\begin{align*}
+[T(\phi) f](\theta) &= f(\theta +\phi) \approx f(\theta) + \phi \frac{df}{d\theta} \\
+&= \left(1 - i\phi \cdot i\frac{d}{d\theta}\right) f(\theta)
+\end{align*}
+
+\textbf{שלב 3 - הגדרת גנרטור:} נגדיר
+\[
+X = i\frac{d}{d\theta}
+\]
+ואז
+\[
+T(\phi) \approx 1 - i\phi X \quad \text{(עבור } \phi \text{ קטן)}
+\]
+
+\textbf{שלב 4 - פירוק לסכום:} עבור $\phi$ גדולה, נחלק ל-$n$ צעדים קטנים:
+\[
+T(\phi) = \left[T\left(\frac{\phi}{n}\right)\right]^n = \left(1 - i\frac{\phi}{n} X\right)^n
+\]
+
+\textbf{שלב 5 - גבול $n \to \infty$:}
+\[
+T(\phi) = \lim_{n\to\infty} \left(1 - i\frac{\phi}{n} X\right)^n = e^{-i\phi X}
+\]
+
+
+\begin{importantbox}[label=box:generator]{גנרטור של חבורת סיבובים}
+\[
+X = i\frac{d}{d\theta}
+\]
+הוא \textbf{גנרטור} של חבורת הסיבובים במישור.
+
+\textbf{תכונות:}
+\begin{itemize}
+    \item $X$ הוא אופרטור הרמיטי
+    \item כל איבר בחבורה: $T(\phi) = e^{-i\phi X}$
+    \item $X$ "חי" בשכונה של איבר היחידה ($\phi \to 0$)
+\end{itemize}
+\end{importantbox}
+
+\subsubsection{אימות באמצעות טור טיילור}
+
+\begin{align*}
+e^{-i\phi X} f(\theta) &= e^{-i\phi \cdot i\frac{d}{d\theta}} f(\theta) = e^{\phi \frac{d}{d\theta}} f(\theta) \\
+&= \sum_{k=0}^\infty \frac{1}{k!} \left(\phi \frac{d}{d\theta}\right)^k f(\theta) \\
+&= \sum_{k=0}^\infty \frac{\phi^k}{k!} \frac{d^k f}{d\theta^k}(\theta) \\
+&= f(\theta + \phi) \quad \checkmark
+\end{align*}
+
+זהו בדיוק טור טיילור של $f$ סביב $\theta$!
+
+\subsection{מבט קדימה: חבורות לי}
+
+\begin{notebox}
+\textbf{חבורת לי (\LR{Lie group}):} חבורה רציפה שהיא גם יריעה חלקה, כך שהמכפלה והיפוך בחבורה הן פונקציות חלקות.
+
+\textbf{עקרון כללי:} כל המידע על חבורת לי מקודד ב\textbf{גנרטורים} (אופרטורים הרמיטיים) וביחסי החילוף ביניהם - \textbf{אלגברת לי}.
+
+\textbf{בשיעורים הבאים:} נלמד לעומק את חבורת הסיבובים $SO(3)$, הקשר ל-$SU(2)$, וכיצד זה קשור לתכונות הספין של חלקיקים.
+\end{notebox}
+
+\subsection{סיכום עשר נקודות}
+
+\begin{summarybox}[label=box:lecture3_summary]{סיכום שיעור 03}
+\begin{enumerate}
+    \item \textbf{סידור מחדש:} מכפלת כל איברי חבורה סופית באיבר מסוים מניבה סידור מחדש של אותם איברים.
+    
+    \item \textbf{מרחב אינווריאנטי:} תת-מרחב $V' \subseteq V$ שפעולת החבורה לא מוציאה ממנו וקטורים.
+    
+    \item \textbf{פריקות:} הצגה \textbf{בלתי פריקה} אינה מכילה תתי-מרחבים אינווריאנטיים לא-טריוויאליים.
+    
+    \item \textbf{$S_3$ - שש איברים:} חבורת התמורות של שלושה איברים, $|S_3| = 6$.
+    
+    \item \textbf{פירוק $S_3$:} ההצגה התלת-ממדית הטבעית מתפרקת ל: הצגה חד-ממדית (מרכז מאסה) + הצגה דו-ממדית (קואורדינטות יחסיות).
+    
+    \item \textbf{משפט הממדים:} $|G| = \sum_\alpha d_\alpha^2$ - סדר החבורה שווה לסכום ריבועי ממדי ההצגות הבלתי פריקות.
+    
+    \item \textbf{למה של שור 2:} אם $C$ הרמיטי ומתחלף עם כל איברי הצגה בלתי פריקה, אז $C = \lambda I$.
+    
+    \item \textbf{משמעות פיזיקלית:} ניוון אנרגיה בהצגה בלתי פריקה שווה למימד ההצגה - סימטריה קובעת ניוון!
+    
+    \item \textbf{חוק טרנספורמציה:} אופרטור $O$ עובר ל-$O' = UOU^\dagger$ תחת טרנספורמציית סימטריה $U$.
+    
+    \item \textbf{חבורות רציפות:} מאופיינות על-ידי \textbf{גנרטורים} הרמיטיים $X$, וכל איבר בחבורה הוא $T(\phi) = e^{-i\phi X}$.
+\end{enumerate}
+\end{summarybox}
+\newpage
+\subsection*{תזכורת מהשיעור הקודם}
+
+\begin{summarybox}{עיקרי הנקודות מהשיעורים הקודמים}
+\textbf{חבורות — הגדרה ותכונות:}
+\begin{itemize}
+    \item חבורה $G$ היא קבוצה עם פעולת מכפלה המקיימת ארבעה תנאים: \textbf{סגירות, איבר יחידה, הופכי, אסוציאטיביות}
+    \item חבורה היא מושג אבסטרקטי — כדי "לממש" אותה בעולם הפיזיקלי נזקקים ל\textbf{הצגה}
+\end{itemize}
+
+\textbf{הצגות של חבורות:}
+\begin{itemize}
+    \item \textbf{הצגה} $T: G \to \text{GL}(V)$ היא הומומורפיזם מהחבורה לאופרטורים על מרחב וקטורי $V$
+    \item בקורס שלנו: $T(g)$ הוא אופרטור אוניטרי הפועל על מרחב מצבים קוונטיים
+    \item כל הצגה ניתנת לפירוק להצגות \textbf{בלתי-פריקות} (\LR{irreducible}) — אלו אבני הבניין
+\end{itemize}
+
+\textbf{משפט האורתוגונליות (\LR{Great Orthogonality Theorem}):}
+\begin{equation}
+\sum_{g\in G}T^{(\alpha)*}_{ik}(g) \, T^{(\beta)}_{jl}(g) = \frac{|G|}{d_\alpha}\delta_{\alpha\beta}\delta_{ij}\delta_{kl}
+\end{equation}
+כאשר $d_\alpha = \dim(T^{(\alpha)})$ הוא מימד ההצגה ה-$\alpha$.
+
+\textbf{משפט הממדים:}
+\begin{equation}
+|G| = \sum_{\alpha} d_\alpha^2
+\end{equation}
+סדר החבורה שווה לסכום ריבועי ממדי ההצגות הבלתי-פריקות.
+\end{summarybox}
+
+
+\subsection{מבוא לחבורות רציפות}
+
+\subsubsection{הבדל בין חבורות דיסקרטיות לחבורות רציפות}
+
+עד כה עסקנו בחבורות \textbf{דיסקרטיות} (בעיקר סופיות), כמו חבורת השיקוף $\{I, P\}$ או חבורת התמורות $S_3$. כעת נעבור לחבורות \textbf{רציפות} — חבורות שאיבריהן תלויים בפרמטרים רציפים.
+
+\begin{definitionbox}{חבורה רציפה}
+חבורה $G$ נקראת \textbf{חבורה רציפה} אם איבריה מאופיינים על-ידי פרמטרים רציפים:
+\[
+g = g(\theta_1, \theta_2, \ldots, \theta_n)
+\]
+כאשר $(\theta_1, \ldots, \theta_n)$ משתנים רציפים על יריעה (\LR{manifold}) חלקה.
+
+\textbf{דוגמאות פיזיקליות:}
+\begin{itemize}
+    \item \textbf{סיבובים במישור} $O(2)$: פרמטר אחד $\theta \in [0, 2\pi)$
+    \item \textbf{סיבובים במרחב} $SO(3)$: שלושה פרמטרים (זוויות אוילר)
+    \item \textbf{הזזות במרחב} $\mathbb{R}^3$: שלושה פרמטרים $(x, y, z)$
+\end{itemize}
+\end{definitionbox}
+
+\subsubsection{דוגמה מרכזית: חבורת הסיבובים במישור $O(2)$}
+
+\begin{examplebox}{שלוש הצגות שונות של $O(2)$}
+חבורת הסיבובים במישור $O(2)$ ניתנת לייצוג בשלוש דרכים שונות:
+
+\textbf{הצגה 1 — מטריצות סיבוב (דו-ממדית):}
+\[
+R(\theta) = \begin{pmatrix}
+\cos\theta & -\sin\theta \\
+\sin\theta & \cos\theta
+\end{pmatrix}
+\]
+זוהי מטריצת סיבוב שפועלת על וקטורים במישור: $(x, y) \to (x', y')$.
+
+\textbf{הצגה 2 — מספרים מרוכבים (חד-ממדית):}
+\[
+z \to e^{i\theta} z
+\]
+סיבוב של מספר מרוכב $z = x + iy$ בזווית $\theta$ על-ידי הכפלה ב-$e^{i\theta}$.
+
+\textbf{הצגה 3 — פעולה על פונקציות (אינסוף-ממדית):}
+\[
+[T(\theta) f](\varphi) = f(\varphi - \theta)
+\]
+סיבוב פועל על פונקציה $f(\varphi)$ על-ידי הזזת הארגומנט.
+
+\textbf{מסקנה:} אלו שלוש הצגות שונות של אותה חבורה אבסטרקטית $O(2)$!
+\end{examplebox}
+
+\begin{notebox}{אימות הומומורפיזם}
+נבדוק שההצגה השלישית אכן משמרת את מבנה החבורה:
+\[
+[T(\theta_1) T(\theta_2) f](\varphi) = [T(\theta_1)(f(\varphi - \theta_2))] = f(\varphi - \theta_2 - \theta_1) = [T(\theta_1 + \theta_2) f](\varphi)
+\]
+אכן, $T(\theta_1) T(\theta_2) = T(\theta_1 + \theta_2)$ 
+\end{notebox}
+
+\subsection{גנרטורים אינפיניטסימליים — רעיון מפתח}
+
+\subsubsection{סיבוב קטן מאוד — קירוב לינארי}
+
+הרעיון המרכזי: \textbf{כל חבורה רציפה ניתנת לתיאור באמצעיעות "גנרטורים" — אופרטורים הפועלים בשכונה קטנה של איבר היחידה.}
+
+נבחן סיבוב קטן מאוד בזווית $\varphi \ll 1$ בכל אחת משלוש ההצגות:
+
+\textbf{קירוב לינארי לסיבוב קטן}
+\textbf{הצגה 1 — מטריצות סיבוב:}
+\begin{align*}
+R(\varphi) &= \begin{pmatrix}
+\cos\varphi & -\sin\varphi \\
+\sin\varphi & \cos\varphi
+\end{pmatrix} \\
+&\stackrel{\varphi \ll 1}{\approx} \begin{pmatrix}
+1 & -\varphi \\
+\varphi & 1
+\end{pmatrix} \\
+&= I + \varphi \begin{pmatrix}
+0 & -1 \\
+1 & 0
+\end{pmatrix} \\
+&= I + i\varphi \underbrace{\begin{pmatrix}
+0 & i \\
+-i & 0
+\end{pmatrix}}_{=X_1}
+\end{align*}
+
+\textbf{הצגה 2 — מספרים מרוכבים:}
+\begin{align*}
+e^{i\varphi} z &\approx (1 + i\varphi) z \\
+&= z + i\varphi \cdot \underbrace{1}_{=X_2} \cdot z
+\end{align*}
+
+\textbf{הצגה 3 — פעולה על פונקציות:}
+\begin{align*}
+[T(\varphi) f](\theta) &= f(\theta - \varphi) \\
+&\approx f(\theta) - \varphi \frac{\partial f}{\partial \theta} \\
+&= f(\theta) + i\varphi \cdot \underbrace{\left(-i\frac{\partial}{\partial\theta}\right)}_{=X_3} f(\theta)
+\end{align*}
+
+\textbf{מסקנה כללית:}
+\[
+\boxed{T(\varphi) \approx I + i\varphi X}
+\]
+כאשר $X$ הוא \textbf{גנרטור אינפיניטסימלי} של החבורה.
+
+
+\begin{importantbox}{הגנרטורים של $O(2)$ בשלוש ההצגות}
+\begin{align*}
+X_1 &= \begin{pmatrix} 0 & i \\ -i & 0 \end{pmatrix} \quad \text{(הצגה דו-ממדית)} \\
+X_2 &= 1 \quad \text{(הצגה חד-ממדית)} \\
+X_3 &= -i\frac{\partial}{\partial\theta} \quad \text{(הצגה על מרחב הפונקציות)}
+\end{align*}
+
+שלושת הגנרטורים מתאימים לשלוש ההצגות השונות של אותה החבורה!
+\end{importantbox}
+
+\subsubsection{הרמיטיות הגנרטור — הוכחה}
+
+\begin{theorembox}{הגנרטור של חבורה אוניטרית הוא הרמיטי}
+תהי $T(\theta)$ הצגה אוניטרית של חבורה רציפה: $T^\dagger(\theta) T(\theta) = I$ לכל $\theta$.
+
+אזי הגנרטור $X$ המוגדר על-ידי
+\[
+T(\varphi) = I + i\varphi X + O(\varphi^2)
+\]
+הוא בהכרח \textbf{הרמיטי}: $X^\dagger = X$.
+\end{theorembox}
+
+\textbf{הוכחה:}
+\begin{align*}
+I &= T^\dagger(\varphi) T(\varphi) \\
+&= (I + i\varphi X + \cdots)^\dagger (I + i\varphi X + \cdots) \\
+&= (I - i\varphi X^\dagger + \cdots)(I + i\varphi X + \cdots) \\
+&= I + i\varphi(X - X^\dagger) + O(\varphi^2)
+\end{align*}
+
+השוואת מקדם $\varphi$ משני הצדדים:
+\[
+0 = i(X - X^\dagger) \quad \Rightarrow \quad \boxed{X = X^\dagger}
+\]
+
+\begin{notebox}{משמעות פיזיקלית}
+גנרטורים הרמיטיים $\Leftrightarrow$ אופרטורים המייצגים גדלים מדידים!
+
+זה לא מקרה: בפיזיקה קוונטית, סימטריות רציפות תמיד מקושרות לגדלים פיזיקליים נשמרים (משפט נתר):
+\begin{itemize}
+    \item סימטרית הזזה בזמן $\Leftrightarrow$ אנרגיה (המילטוניאן $\hat{H}$)
+    \item סימטרית הזזה במרחב $\Leftrightarrow$ תנע ($\hat{\vec{p}}$)
+    \item סימטרית סיבוב $\Leftrightarrow$ תנע זוויתי ($\hat{\vec{L}}$)
+\end{itemize}
+\end{notebox}
+
+\subsubsection{חבורה כללית עם מספר פרמטרים}
+
+עבור חבורה כללית עם $n$ פרמטרים $\theta_1, \ldots, \theta_n$:
+\[
+\boxed{T(\epsilon_1, \ldots, \epsilon_n) = I + i\sum_{a=1}^{n} \epsilon_a X_a + O(\epsilon^2)}
+\]
+
+כאשר $X_1, \ldots, X_n$ הם $n$ גנרטורים בלתי-תלויים.
+
+\begin{definitionbox}{אלגברת לי}
+הגנרטורים $\{X_a\}$ מקיימים יחסי קומוטציה:
+\[
+\boxed{[X_a, X_b] = i\sum_{c=1}^{n} C_{abc} X_c}
+\]
+
+המקדמים $C_{abc}$ נקראים \textbf{קבועי המבנה} \LR{(structure constants)} של האלגברה, והם מאפיינים באופן מלא את מבנה החבורה.
+
+מערכת הגנרטורים ויחסי הקומוטציה ביניהם נקראת \textbf{אלגברת לי} של החבורה.
+\end{definitionbox}
+
+\begin{examplebox}{דוגמה: חבורת הסיבובים במרחב $SO(3)$}
+חבורת הסיבובים במרחב תלת-ממדי מתוארת על-ידי שלושה גנרטורים $L_x, L_y, L_z$ (רכיבי התנע הזוויתי) המקיימים:
+\[
+[L_i, L_j] = i\hbar \epsilon_{ijk} L_k
+\]
+
+זוהי \textbf{אלגברת $\mathfrak{so}(3)$} — אלגברת לי של חבורת הסיבובים.
+
+\textbf{הערה:} נלמד זאת בהרחבה בשיעורים הבאים!
+\end{examplebox}
+
+\subsection{ייצוג אקספוננציאלי — מגנרטורים לאיברי החבורה}
+
+\subsubsection{גזירת הייצוג האקספוננציאלי}
+
+איך עוברים מטרנספורמציה אינפיניטסימלית $T(\varphi) \approx I + i\varphi X$ לטרנספורמציה סופית $T(\theta)$?
+
+\textbf{מסיבוב קטן לסיבוב גדול}
+\textbf{רעיון:} נפרק סיבוב גדול $\theta$ ל-$n$ סיבובים קטנים, כל אחד בזווית $\theta/n$:
+
+\textbf{שלב 1:} סיבוב קטן:
+\[
+T\left(\frac{\theta}{n}\right) \approx I + i\frac{\theta}{n} X
+\]
+
+\textbf{שלב 2:} ביצוע $n$ סיבובים כאלה:
+\[
+T(\theta) = \left[T\left(\frac{\theta}{n}\right)\right]^n \approx \left(I + i\frac{\theta}{n} X\right)^n
+\]
+
+\textbf{שלב 3:} גבול $n \to \infty$:
+\[
+T(\theta) = \lim_{n\to\infty} \left(I + i\frac{\theta}{n} X\right)^n = \boxed{e^{i\theta X}}
+\]
+
+זוהי ההגדרה הסטנדרטית של פונקציית האקספוננט של אופרטור!
+
+
+\begin{importantbox}{הנוסחה המרכזית — ייצוג אקספוננציאלי}
+לכל חבורה רציפה חד-פרמטרית עם גנרטור $X$:
+\[
+\boxed{T(\theta) = e^{i\theta X}}
+\]
+
+\textbf{הכללה לחבורה רב-פרמטרית:} אם יש $n$ גנרטורים $X_1, \ldots, X_n$:
+\[
+T(\theta_1, \ldots, \theta_n) = e^{i\sum_{a=1}^{n} \theta_a X_a} \quad \text{(כאשר הגנרטורים מתחלפים)}
+\]
+
+או באופן כללי (נוסחת Baker-Campbell-Hausdorff) כאשר אינם מתחלפים.
+\end{importantbox}
+
+\subsubsection{אימות באמצעות טור טיילור}
+
+נאמת את הנוסחה עבור הצגה 3 (פעולה על פונקציות):
+
+\begin{align*}
+[T(\theta) f](\varphi) &= \left[e^{i\theta X} f\right](\varphi) \\
+&= \left[e^{i\theta \cdot (-i\frac{\partial}{\partial\varphi})} f\right](\varphi) \\
+&= \left[e^{\theta \frac{\partial}{\partial\varphi}} f\right](\varphi) \\
+&= \sum_{k=0}^{\infty} \frac{1}{k!} \left(\theta \frac{\partial}{\partial\varphi}\right)^k f(\varphi) \\
+&= \sum_{k=0}^{\infty} \frac{\theta^k}{k!} \frac{\partial^k f}{\partial\varphi^k}(\varphi) \\
+&= f(\varphi + \theta) \quad \checkmark
+\end{align*}
+
+השורה האחרונה היא \textbf{טור טיילור} של $f$ סביב $\varphi$!
+
+\begin{notebox}{אינטואיציה}
+הגנרטור $X = -i\frac{\partial}{\partial\varphi}$ הוא "מפעיל ההזזה" — הוא מזיז את הארגומנט של הפונקציה.
+
+הפעלתו $n$ פעמים שקולה להזזה ב-$n$ צעדים קטנים, ובגבול הרציף מקבלים הזזה סופית.
+\end{notebox}
+
+\subsection{גנרטורים פיזיקליים — קשר לגדלים נשמרים}
+
+\subsubsection{המילטוניאן כגנרטור הזזה בזמן}
+
+\textbf{גזירת אופרטור האבולוציה בזמן}
+תהי $\ket{\psi(t)}$ פונקצית גל המקיימת את משוואת שרדינגר:
+\[
+i\hbar \frac{\partial}{\partial t}\ket{\psi(t)} = \hat{H}\ket{\psi(t)}
+\]
+
+\textbf{שאלה:} מהו אופרטור האבולוציה $U(t)$ המקיים $\ket{\psi(t)} = U(t)\ket{\psi(0)}$?
+
+\textbf{פתרון:} עבור $\Delta t$ קטן:
+\[
+\ket{\psi(t + \Delta t)} \approx \ket{\psi(t)} + \Delta t \frac{\partial}{\partial t}\ket{\psi(t)} = \left(I - \frac{i\Delta t}{\hbar}\hat{H}\right)\ket{\psi(t)}
+\]
+
+לכן:
+\[
+U(\Delta t) \approx I - \frac{i\Delta t}{\hbar}\hat{H} = I + i\Delta t \cdot \underbrace{\left(-\frac{\hat{H}}{\hbar}\right)}_{=X_{\text{time}}}
+\]
+
+\textbf{מסקנה:} הגנרטור של הזזה בזמן הוא $X_{\text{time}} = -\frac{\hat{H}}{\hbar}$, ואופרטור האבולוציה הסופי:
+\[
+\boxed{U(t) = e^{-\frac{i}{\hbar}\hat{H}t}}
+\]
+
+
+\begin{importantbox}{המילטוניאן — גנרטור סימטרית זמן}
+\[
+\boxed{U(t) = e^{-\frac{i}{\hbar}\hat{H}t}}
+\]
+
+\textbf{פרשנות פיזיקלית:}
+\begin{itemize}
+    \item $\hat{H}$ הוא גנרטור ההזזה בזמן
+    \item אם $[\hat{H}, \hat{O}] = 0$ לאופרטור כלשהו $\hat{O}$, אז $\hat{O}$ נשמר בזמן (גודל שמור)
+    \item סימטריה בזמן $\Leftrightarrow$ שימור אנרגיה (משפט נתר)
+\end{itemize}
+\end{importantbox}
+
+\subsubsection{אופרטור התנע כגנרטור הזזה במרחב}
+
+באופן דומה, \textbf{אופרטור התנע} $\hat{\vec{p}}$ הוא גנרטור ההזזות המרחביות:
+
+\begin{definitionbox}{אופרטור ההזזה המרחבית}
+הזזה בווקטור $\vec{a}$ מיוצגת על-ידי:
+\[
+\boxed{T(\vec{a}) = e^{\frac{i}{\hbar}\vec{a} \cdot \hat{\vec{p}}}}
+\]
+
+\textbf{פעולה על מצב:}
+\[
+T(\vec{a})\ket{\psi(\vec{r})} = \ket{\psi(\vec{r} - \vec{a})}
+\]
+
+\textbf{פעולה בייצוג מיקום:}
+\[
+[T(\vec{a})\psi](\vec{r}) = \psi(\vec{r} - \vec{a})
+\]
+\end{definitionbox}
+
+\begin{examplebox}{גנרטור ההזזה החד-ממדית}
+בממד אחד, עבור הזזה $a$ לאורך ציר $x$:
+\[
+T(a) = e^{\frac{i}{\hbar}a\hat{p}_x} = e^{a\frac{\partial}{\partial x}}
+\]
+
+כי $\hat{p}_x = -i\hbar\frac{\partial}{\partial x}$ בייצוג מיקום.
+
+\textbf{אימות:}
+\[
+[T(a)\psi](x) = e^{a\frac{\partial}{\partial x}}\psi(x) = \sum_{k=0}^{\infty}\frac{a^k}{k!}\frac{\partial^k\psi}{\partial x^k}(x) = \psi(x + a) \quad \checkmark
+\]
+\end{examplebox}
+
+\subsubsection{תנע זוויתי כגנרטור סיבובים}
+
+\begin{importantbox}{תנע זוויתי — גנרטור סיבובים}
+סיבוב בזווית $\theta$ סביב ציר $\hat{n}$ מיוצג על-ידי:
+\[
+\boxed{R(\theta, \hat{n}) = e^{-\frac{i}{\hbar}\theta \hat{n} \cdot \hat{\vec{L}}}}
+\]
+
+כאשר $\hat{\vec{L}} = \hat{\vec{r}} \times \hat{\vec{p}}$ הוא אופרטור התנע הזוויתי.
+
+\textbf{דוגמה:} סיבוב סביב ציר $z$:
+\[
+R_z(\theta) = e^{-\frac{i}{\hbar}\theta \hat{L}_z}
+\]
+\end{importantbox}
+
+\begin{summarybox}{טבלת גנרטורים פיזיקליים}
+\begin{center}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{סימטריה} & \textbf{גנרטור} & \textbf{אופרטור הטרנספורמציה} \\ \hline
+הזזה בזמן & $-\frac{\hat{H}}{\hbar}$ & $U(t) = e^{-\frac{i}{\hbar}\hat{H}t}$ \\ \hline
+הזזה במרחב & $\frac{\hat{\vec{p}}}{\hbar}$ & $T(\vec{a}) = e^{\frac{i}{\hbar}\vec{a} \cdot \hat{\vec{p}}}$ \\ \hline
+סיבוב במרחב & $-\frac{\hat{\vec{L}}}{\hbar}$ & $R(\theta, \hat{n}) = e^{-\frac{i}{\hbar}\theta \hat{n} \cdot \hat{\vec{L}}}$ \\ \hline
+\end{tabular}
+\end{center}
+
+\textbf{משפט נתר:} כל סימטריה רציפה מתאימה לגודל פיזיקלי נשמר!
+\end{summarybox}
+
+\subsection{אופרטורים אנטי-לינאריים — המקרה של שיקוף זמן}
+
+\subsubsection{בעיה: שיקוף זמן אינו לינארי}
+
+עד כה כל הסימטריות שראינו היו \textbf{לינאריות ואוניטריות}. אך יש חריג חשוב: \textbf{שיקוף זמן}.
+
+\begin{definitionbox}{אופרטור שיקוף זמן $\mathcal{T}$}
+אופרטור שיקוף זמן $\mathcal{T}$ משנה את כיוון הזמן:
+\[
+t \to -t
+\]
+
+\textbf{השפעה על גדלים פיזיקליים:}
+\begin{itemize}
+    \item מיקום: $\vec{r} \to \vec{r}$ (ללא שינוי)
+    \item תנע: $\vec{p} \to -\vec{p}$ (הופך סימן)
+    \item תנע זוויתי: $\vec{L} = \vec{r} \times \vec{p} \to -\vec{L}$ (הופך סימן)
+    \item אנרגיה: $E \to E$ (ללא שינוי)
+\end{itemize}
+\end{definitionbox}
+
+\textbf{הוכחה: $\mathcal{T}$ חייב להיות אנטי-לינארי}
+\textbf{נתבונן במשוואת שרדינגר:}
+\[
+i\hbar \frac{\partial}{\partial t}\ket{\psi(t)} = \hat{H}\ket{\psi(t)}
+\]
+
+\textbf{שיקוף זמן:} $t \to -t$, $\ket{\psi(t)} \to \mathcal{T}\ket{\psi(-t)}$.
+
+\textbf{הנחה (המילטוניאן אינווריאנטי):} $\mathcal{T}\hat{H}\mathcal{T}^{-1} = \hat{H}$.
+
+\textbf{נפעיל $\mathcal{T}$ על משוואת שרדינגר:}
+\[
+\mathcal{T}\left(i\hbar \frac{\partial}{\partial t}\ket{\psi(t)}\right) = \mathcal{T}\hat{H}\ket{\psi(t)}
+\]
+
+\textbf{צד ימין:}
+\[
+\mathcal{T}\hat{H}\ket{\psi(t)} = \mathcal{T}\hat{H}\mathcal{T}^{-1}\mathcal{T}\ket{\psi(t)} = \hat{H}\mathcal{T}\ket{\psi(t)}
+\]
+
+\textbf{צד שמאל (עם $t \to -t$):}
+\[
+\mathcal{T}\left(i\hbar \frac{\partial}{\partial t}\right) = -i\hbar \frac{\partial}{\partial(-t)}\mathcal{T} = i\hbar\frac{\partial}{\partial t}\mathcal{T}
+\]
+
+\textbf{אבל זה לא מתאים!} כדי לקבל משוואת שרדינגר עם $-t$, נצטרך:
+\[
+-i\hbar\frac{\partial}{\partial t}\mathcal{T}\ket{\psi(-t)} = \hat{H}\mathcal{T}\ket{\psi(-t)}
+\]
+
+\textbf{הפתרון:} $\mathcal{T}$ חייב להפוך את מקדם $i$:
+\[
+\mathcal{T}(i\ket{\psi}) = -i\mathcal{T}\ket{\psi}
+\]
+
+זהו \textbf{אופרטור אנטי-לינארי}!
+
+
+\begin{definitionbox}{אופרטור אנטי-לינארי}
+אופרטור $\mathcal{A}$ נקרא \textbf{אנטי-לינארי} אם:
+\begin{align}
+\mathcal{A}(\ket{\psi} + \ket{\phi}) &= \mathcal{A}\ket{\psi} + \mathcal{A}\ket{\phi} \quad \text{(לינאריות)} \\
+\mathcal{A}(c\ket{\psi}) &= c^* \mathcal{A}\ket{\psi} \quad \text{(צימוד מרוכב של המקדם!)}
+\end{align}
+
+\textbf{דוגמה:} צימוד מרוכב $K$:
+\[
+K\ket{\psi} = \ket{\psi^*}, \quad K(c\ket{\psi}) = c^*\ket{\psi^*}
+\]
+\end{definitionbox}
+
+\begin{importantbox}{תכונות שיקוף זמן}
+\textbf{אופרטור שיקוף זמן:}
+\[
+\mathcal{T} = UK
+\]
+כאשר $U$ אוניטרי ו-$K$ צימוד מרוכב.
+
+\textbf{תכונות:}
+\begin{itemize}
+    \item $\mathcal{T}$ אנטי-לינארי ואנטי-אוניטרי: $\mathcal{T}^\dagger\mathcal{T} = I$
+    \item $\mathcal{T}^2 = \pm I$ (לחלקיקים עם ספין שלם/חצי-שלם)
+    \item $\mathcal{T}\hat{\vec{p}}\mathcal{T}^{-1} = -\hat{\vec{p}}$ (תנע הופך סימן)
+    \item $\mathcal{T}\hat{\vec{r}}\mathcal{T}^{-1} = \hat{\vec{r}}$ (מיקום נשמר)
+\end{itemize}
+
+\textbf{הבדל מהותי:} $\mathcal{T}$ אינו ניתן לייצוג כ-$e^{i\theta X}$ עם $X$ הרמיטי!
+\end{importantbox}
+
+\begin{notebox}{סיכום: שני סוגי סימטריות}
+\textbf{1. סימטריות לינאריות אוניטריות:} (רוב הסימטריות)
+\begin{itemize}
+    \item ניתנות לייצוג $U = e^{i\theta X}$ עם $X$ הרמיטי
+    \item דוגמאות: סיבובים, הזזות, שיקוף מרחבי
+\end{itemize}
+
+\textbf{2. סימטריות אנטי-לינאריות אנטי-אוניטריות:} (רק שיקוף זמן!)
+\begin{itemize}
+    \item $\mathcal{T} = UK$ עם $K$ צימוד מרוכב
+    \item לא ניתנות לייצוג אקספוננציאלי
+    \item מתנהגות אחרת לחלוטין מסימטריות לינאריות
+\end{itemize}
+\end{notebox}
+
+\subsection{סיכום עיקרי הנקודות}
+
+\begin{summarybox}
+\textbf{חבורות רציפות:}
+\begin{itemize}
+    \item חבורה רציפה מאופיינת על-ידי פרמטרים רציפים $g(\theta_1, \ldots, \theta_n)$
+    \item דוגמאות: $O(2)$ (סיבובים במישור), $SO(3)$ (סיבובים במרחב), הזזות
+    \item כל הצגה של חבורה רציפה ניתנת למספר ייצוגים שונים
+\end{itemize}
+
+\textbf{גנרטורים אינפיניטסימליים:}
+\begin{itemize}
+    \item כל חבורה רציפה מתוארת באמצעות גנרטורים $X_a$ "חיים" בשכונה של איבר היחידה
+    \item טרנספורמציה קטנה: $T(\varphi) \approx I + i\varphi X$
+    \item גנרטור של חבורה אוניטרית הוא בהכרח \textbf{הרמיטי}: $X = X^\dagger$
+    \item גנרטורים הרמיטיים $\Leftrightarrow$ אופרטורים המייצגים גדלים מדידים
+\end{itemize}
+
+\textbf{ייצוג אקספוננציאלי:}
+\begin{itemize}
+    \item כל איבר בחבורה: $T(\theta) = e^{i\theta X}$ (עבור חבורה חד-פרמטרית)
+    \item נובע מפירוק טרנספורמציה סופית ל-$n$ טרנספורמציות אינפיניטסימליות
+    \item אימות באמצעות טור טיילור: $e^{\theta\frac{\partial}{\partial x}}f(x) = f(x + \theta)$
+\end{itemize}
+
+\textbf{גנרטורים פיזיקליים — משפט נתר:}
+\begin{itemize}
+    \item \textbf{המילטוניאן} $\hat{H}$: גנרטור הזזה בזמן — $U(t) = e^{-\frac{i}{\hbar}\hat{H}t}$
+    \item \textbf{תנע} $\hat{\vec{p}}$: גנרטור הזזה במרחב — $T(\vec{a}) = e^{\frac{i}{\hbar}\vec{a} \cdot \hat{\vec{p}}}$
+    \item \textbf{תנע זוויתי} $\hat{\vec{L}}$: גנרטור סיבובים — $R(\theta, \hat{n}) = e^{-\frac{i}{\hbar}\theta \hat{n} \cdot \hat{\vec{L}}}$
+    \item סימטריה רציפה $\Leftrightarrow$ גודל פיזיקלי נשמר
+\end{itemize}
+
+\textbf{אלגברת לי:}
+\begin{itemize}
+    \item גנרטורים מקיימים יחסי קומוטציה: $[X_a, X_b] = i\sum_c C_{abc} X_c$
+    \item קבועי המבנה $C_{abc}$ מאפיינים באופן מלא את מבנה החבורה
+    \item אלגברת לי + יחסי קומוטציה = תיאור מלא של החבורה
+\end{itemize}
+
+\textbf{אופרטורים אנטי-לינאריים:}
+\begin{itemize}
+    \item רוב הסימטריות הן לינאריות ואוניטריות
+    \item \textbf{שיקוף זמן} $\mathcal{T}$ הוא החריג: אנטי-לינארי ואנטי-אוניטרי
+    \item $\mathcal{T}(c\ket{\psi}) = c^* \mathcal{T}\ket{\psi}$ — צימוד מרוכב של המקדם
+    \item $\mathcal{T} = UK$ כאשר $K$ צימוד מרוכב
+    \item אינו ניתן לייצוג אקספוננציאלי $e^{i\theta X}$
+\end{itemize}
+\end{summarybox}
+
+\subsection*{נקודות למחשבה ובדיקת הבנה}
+
+\begin{enumerate}
+    \item הסבירו מדוע גנרטור של חבורה אוניטרית חייב להיות הרמיטי. מה המשמעות הפיזיקלית?
+    
+    \item אמתו את הנוסחה $e^{a\frac{\partial}{\partial x}}f(x) = f(x+a)$ באמצעות טור טיילור. מדוע זה מראה ש-$\hat{p}_x = -i\hbar\frac{\partial}{\partial x}$ הוא גנרטור ההזזות?
+    
+    \item הסבירו את הקשר בין משפט נתר לבין הגנרטורים הפיזיקליים. מדוע סימטריה רציפה מובילה לגודל נשמר?
+    
+    \item מהו ההבדל המהותי בין אופרטור לינארי לאופרטור אנטי-לינארי? תנו דוגמה לכל אחד.
+    
+    \item מדוע שיקוף זמן $\mathcal{T}$ חייב להיות אנטי-לינארי? מה הבעיה אם ננסה להגדיר אותו כאופרטור לינארי?
+    
+    \item חשבו על אלגברת הלי של חבורת הסיבובים: $[L_i, L_j] = i\hbar\epsilon_{ijk}L_k$. מה המשמעות הפיזיקלית של יחסי קומוטציה אלו?
+\end{enumerate}

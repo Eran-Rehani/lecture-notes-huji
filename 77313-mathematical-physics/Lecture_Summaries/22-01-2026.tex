@@ -1,0 +1,307 @@
+\section{משוואות אינטגרליות מסוג וולטרה ותורת ההפרעות}
+
+\subsection{משוואות אינטגרליות מסוג וולטרה \LR{(Volterra Equations)}}
+בשיעורים הקודמים עסקנו במשוואות אינטגרליות מסוג \LR{Fredholm}, בהן גבולות האינטגרציה היו קבועים ($a$ עד $b$). כעת נדון במשוואות מסוג \LR{Volterra}, המהוות הכללה למקרה בו אחד מגבולות האינטגרציה הוא משתנה (לרוב $x$).
+
+\begin{definitionbox}{משוואת וולטרה מסוג שני}
+משוואת וולטרה לינארית מסוג שני ניתנת לכתיבה בצורה:
+\[
+u(x) = g(x) + \lambda \int_{a}^{x} K(x,y) u(y) \, dy
+\]
+כאשר:
+\begin{itemize}
+    \item $u(x)$ היא הפונקציה הנעלמת.
+    \item $K(x,y)$ הוא הגרעין \LR{(Kernel)}.
+    \item הגבול העליון של האינטגרל תלוי במשתנה הבלתי-תלוי $x$.
+\end{itemize}
+\end{definitionbox}
+
+\subsubsection{שיטת הפתרון: גזירה והמרה למד"ר}
+בשונה ממשוואות פרדהולם (שהופכות למערכת משוואות אלגבריות במקרים פריקים), משוואות וולטרה ניתנות לרוב להמרה למשוואות דיפרנציאליות באמצעות גזירה לפי $x$. הכלי המתמטי המרכזי לכך הוא כלל לייבניץ לגזירת אינטגרל.
+
+\begin{theorembox}{כלל לייבניץ לגזירת אינטגרל \LR{(Leibniz Integral Rule)}}
+עבור אינטגרל עם גבולות תלויים ב-$x$:
+\[
+I(x) = \int_{a(x)}^{b(x)} f(x,t) \, dt
+\]
+הנגזרת לפי $x$ היא:
+\[
+\frac{dI}{dx} = f(x, b(x)) \cdot b'(x) - f(x, a(x)) \cdot a'(x) + \int_{a(x)}^{b(x)} \frac{\partial f(x,t)}{\partial x} \, dt
+\]
+במקרה של משוואת וולטרה פשוטה אינטגרל מ-$0$ עד $x$:
+\[
+\frac{d}{dx} \int_{0}^{x} G(y) \, dy = G(x)
+\]
+\end{theorembox}
+
+\begin{examplebox}{דוגמה לפתרון משוואת וולטרה}
+נתונה המשוואה האינטגרלית:
+\[
+u(x) = x \left( 1 + \int_{0}^{x} y u(y) \, dy \right)
+\]
+\textbf{שלב 1: זיהוי והגדרה} \\
+המשוואה מערבת אינטגרל עם גבול משתנה. ננסה להמיר אותה למשוואה דיפרנציאלית. גזירה ישירה עשויה להוביל למשוואה אינטגרו-דיפרנציאלית מסובכת. במקום זאת, נגדיר משתנה עזר עבור האינטגרל.
+נסמן:
+\[
+f(x) = \int_{0}^{x} y u(y) \, dy
+\]
+אזי המשוואה המקורית הופכת לקשר אלגברי בין $u$ ל-$f$:
+\begin{equation} \label{eq:u_f_relation}
+u(x) = x(1 + f(x))
+\end{equation}
+
+\textbf{שלב 2: גזירה והרכבת מד"ר} \\
+נגזור את $f(x)$ לפי הגדרתו (לפי המשפט היסודי של החדו"א):
+\[
+f'(x) = \frac{d}{dx} \int_{0}^{x} y u(y) \, dy = x u(x)
+\]
+נציב את $u(x)$ ממשוואה \eqref{eq:u_f_relation} לתוך הביטוי לנגזרת:
+\[
+f'(x) = x \cdot [x(1 + f(x))] = x^2 (1 + f(x))
+\]
+קיבלנו מד"ר מסדר ראשון עבור $f(x)$:
+\[
+\frac{df}{dx} = x^2 (1+f)
+\]
+
+\textbf{שלב 3: פתרון המד"ר} \\
+נבצע הפרדת משתנים:
+\[
+\frac{df}{1+f} = x^2 \, dx \implies \ln|1+f| = \frac{x^3}{3} + C_0
+\]
+ולכן:
+\[
+1 + f(x) = C e^{x^3/3}
+\]
+נציב חזרה לביטוי עבור $u(x)$ מתוך \eqref{eq:u_f_relation}:
+\[
+u(x) = x \cdot C e^{x^3/3}
+\]
+
+\textbf{שלב 4: קביעת הקבוע $C$} \\
+המעבר למד"ר הוסיף דרגת חופש (קבוע אינטגרציה $C$) שאינה קיימת במשוואה האינטגרלית המקורית. עלינו למצוא את $C$ על ידי הצבה במשוואה המקורית.
+נציב את $u(x)$ שמצאנו:
+\[
+C x e^{x^3/3} = x \left( 1 + \int_{0}^{x} y \left( C y e^{y^3/3} \right) dy \right)
+\]
+נצמצם ב-$x$ (עבור $x \neq 0$) ונחשב את האינטגרל באגף ימין. נשתמש בהצבה $t = y^3/3 \implies dt = y^2 dy$:
+\[
+\int_{0}^{x} C y^2 e^{y^3/3} \, dy = C \int_{0}^{x^3/3} e^t \, dt = C \left[ e^t \right]_0^{x^3/3} = C (e^{x^3/3} - 1)
+\]
+נציב חזרה למשוואה:
+\[
+C e^{x^3/3} = 1 + C (e^{x^3/3} - 1)
+\]
+\[
+C e^{x^3/3} = 1 + C e^{x^3/3} - C \implies C = 1
+\]
+\textbf{תוצאה סופית:}
+\[
+u(x) = x e^{x^3/3}
+\]
+\end{examplebox}
+
+
+
+השיטה הכללית לגזירת אינטגרל אשר גבולותיו והאינטגרנד שלו תלויים בפרמטר (לרוב $x$) נקראת כלל לייבניץ. כלל זה חיוני לטיפול במשוואות וולטרה, בהן האינטגרל מוגדר עד $x$.
+
+\begin{theorembox}{משפט: כלל לייבניץ המוכלל}
+יהי $I(x)$ אינטגרל המוגדר באופן הבא:
+\[
+I(x) = \int_{a(x)}^{b(x)} f(x,t) \, dt
+\]
+כאשר $a(x)$ ו-$b(x)$ הן פונקציות גזירות של $x$, ו-$f(x,t)$ ונגזרתה החלקית $\frac{\partial f}{\partial x}$ רציפות בתחום הרלוונטי.
+אזי הנגזרת של $I(x)$ לפי $x$ היא:
+\[
+\frac{dI}{dx} = \underbrace{f(x, b(x)) \cdot b'(x)}_{\text{תרומת הגבול העליון}} - \underbrace{f(x, a(x)) \cdot a'(x)}_{\text{תרומת הגבול התחתון}} + \underbrace{\int_{a(x)}^{b(x)} \frac{\partial f(x,t)}{\partial x} \, dt}_{\text{תרומת השינוי באינטגרנד}}
+\]
+\end{theorembox}
+
+\subsubsection{יישום עבור משוואות וולטרה}
+במסגרת הקורס, אנו עוסקים לרוב במקרים בהם הגבול התחתון קבוע ($a(x) = \text{const}$) והגבול העליון הוא המשתנה עצמו ($b(x) = x$). במקרה זה, הנוסחה מצטמצמת לצורה השימושית הבאה:
+
+\begin{resultbox}{גזירת אינטגרל וולטרה (מקרה פרטי)}
+עבור אינטגרל מהצורה:
+\[
+I(x) = \int_{0}^{x} K(x,y) u(y) \, dy
+\]
+הנגזרת לפי $x$ היא:
+\[
+\frac{dI}{dx} = K(x,x) u(x) + \int_{0}^{x} \frac{\partial K(x,y)}{\partial x} u(y) \, dy
+\]
+\end{resultbox}
+
+\begin{notebox}{הערה פיזיקלית}
+במשוואות רבות בפיזיקה, הגרעין הוא מסוג קונבולוציה (Convolution), כלומר תלוי בהפרש בלבד: $K(x,y) = K(x-y)$. במקרה כזה:
+\begin{itemize}
+    \item האיבר הראשון נותן $K(0)u(x)$.
+    \item הנגזרת החלקית נותנת $\frac{\partial}{\partial x} K(x-y) = K'(x-y)$.
+\end{itemize}
+זהו שלב קריטי במעבר ממשוואה אינטגרלית למשוואה דיפרנציאלית.
+\end{notebox}
+
+\begin{examplebox}{דוגמה לגזירה מלאה}
+חשב את הנגזרת של:
+\[
+I(x) = \int_{0}^{x^2} \sin(x-t) \, dt
+\]
+\textbf{פתרון:}
+נזהה את המרכיבים:
+\begin{itemize}
+    \item גבול עליון: $b(x) = x^2 \implies b'(x) = 2x$.
+    \item גבול תחתון: $a(x) = 0 \implies a'(x) = 0$.
+    \item אינטגרנד: $f(x,t) = \sin(x-t) \implies \frac{\partial f}{\partial x} = \cos(x-t)$.
+\end{itemize}
+נציב בנוסחת לייבניץ:
+\[
+\frac{dI}{dx} = \sin(x - x^2) \cdot 2x - 0 + \int_{0}^{x^2} \cos(x-t) \, dt
+\]
+נחשב את האינטגרל הנותר:
+\[
+\int_{0}^{x^2} \cos(x-t) \, dt = \left[ -\sin(x-t) \right]_{t=0}^{t=x^2} = -\sin(x-x^2) - (-\sin(x))
+\]
+סה"כ נקבל:
+\[
+\frac{dI}{dx} = 2x \sin(x-x^2) - \sin(x-x^2) + \sin(x)
+\]
+\end{examplebox}
+
+\section{תורת ההפרעות \LR{(Perturbation Theory)}}
+
+תורת ההפרעות היא כלי חזק למציאת פתרונות מקורבים לבעיות שאינן ניתנות לפתרון אנליטי מדויק, כאשר הבעיה מכילה פרמטר קטן $\epsilon \ll 1$. הרעיון המרכזי הוא לפתח את הפתרון כטור חזקות ב-$\epsilon$, סביב פתרון ידוע של הבעיה "הלא מופרעת" (כאשר $\epsilon=0$).
+
+\subsection{דוגמה: פתרון משוואה אלגברית}
+נתבונן במשוואה האלגברית הבאה:
+\[
+x - 1 = \epsilon x^3, \quad \epsilon \ll 1
+\]
+ניתן לנתח את הבעיה גרפית כחיתוך בין הישר $y=x-1$ לבין הפולינום השלישי $y=\epsilon x^3$ (שהוא "שטוח" מאוד ליד הראשית).
+\begin{center}
+\begin{tikzpicture}[scale=0.8]
+    \draw[->] (-3,0) -- (5,0) node[right] {$x$};
+    \draw[->] (0,-3) -- (0,3) node[above] {$y$};
+    \draw[domain=-2.5:4.5, smooth, variable=\x, blue, thick] plot ({\x}, {\x-1});
+    \node[blue] at (4,2.5) {$x-1$};
+    \draw[domain=-2.5:4.5, smooth, variable=\x, red, thick, dashed] plot ({\x}, {0.1*\x*\x*\x});
+    \node[red] at (3.5,4) {$\epsilon x^3$};
+    % Roots
+    \filldraw (1.1,0.1) circle (2pt) node[below right] {$x \approx 1$};
+    \filldraw (3.1,2.1) circle (2pt) node[above left] {$x \gg 1$};
+    \filldraw (-3.2,-4.2) circle (2pt); % just implied
+\end{tikzpicture}
+\end{center}
+למשוואה יש שלושה שורשים: שורש אחד קרוב ל-$x=1$ ושני שורשים רחוקים מאוד (חיובי ושלילי).
+
+\subsubsection{מקרה 1: הפרעה רגולרית (סביב $x \approx 1$)}
+כאשר $\epsilon \to 0$, המשוואה מתנוונת ל-$x-1=0 \implies x=1$.
+נחפש פתרון בצורה איטרטיבית:
+\[
+x = x_0 + \delta
+\]
+כאשר $x_0=1$ ו-$\delta$ הוא תיקון קטן התלוי ב-$\epsilon$.
+
+\textbf{סדר ראשון:}
+נניח $\delta \sim O(\epsilon)$. נציב $x=1+\delta$ במשוואה:
+\[
+(1+\delta) - 1 = \epsilon (1+\delta)^3
+\]
+\[
+\delta = \epsilon (1 + 3\delta + 3\delta^2 + \delta^3)
+\]
+מכיוון ש-$\delta$ קטן, האיברים $\epsilon \delta, \epsilon \delta^2$ זניחים ביחס ל-$\epsilon$. בסדר מוביל נקבל:
+\[
+\delta \approx \epsilon
+\]
+כלומר, הקירוב מסדר ראשון הוא $x_1 = 1 + \epsilon$.
+
+\textbf{סדר שני:}
+נחפש תיקון נוסף. נציב $x = 1 + \epsilon + \delta_2$, כאשר כעת $\delta_2 \sim O(\epsilon^2)$.
+\[
+(1 + \epsilon + \delta_2) - 1 = \epsilon (1 + \epsilon + \delta_2)^3
+\]
+\[
+\epsilon + \delta_2 = \epsilon (1 + 3(\epsilon+\delta_2) + \dots)
+\]
+\[
+\epsilon + \delta_2 \approx \epsilon + 3\epsilon^2
+\]
+האיבר $\epsilon$ מצטמצם, ונקבל $\delta_2 \approx 3\epsilon^2$.
+
+\begin{resultbox}{הפתרון בקרבת $x=1$}
+\[
+x \approx 1 + \epsilon + 3\epsilon^2 + O(\epsilon^3)
+\]
+\end{resultbox}
+
+\subsubsection{מקרה 2: הפרעה סינגולרית (איזון דומיננטי עבור $x \gg 1$)}
+השורשים הרחוקים מתקבלים כאשר האיבר הקובי $\epsilon x^3$ אינו זניח אלא מאזן את האיבר הלינארי $x$.
+נניח ש-$x$ גדול מאוד, כך שניתן להזניח את ה-$1$ במשוואה $x - 1 \approx x$.
+משוואת האיזון הדומיננטי \LR{(Dominant Balance)}:
+\[
+x \approx \epsilon x^3 \implies x^2 \approx \frac{1}{\epsilon} \implies x \approx \pm \frac{1}{\sqrt{\epsilon}}
+\]
+תוצאה זו מראה שהשורשים שואפים לאינסוף כאשר $\epsilon \to 0$, ולכן זהו טור לורן ב-$\epsilon$ (חזקות שליליות). נגדיר את הפתרון כ:
+\[
+x = \frac{1}{\sqrt{\epsilon}}(1 + \delta)
+\]
+כאשר $\delta \ll 1$ הוא תיקון חסר יחידות. נציב במשוואה המקורית:
+\[
+\frac{1}{\sqrt{\epsilon}}(1+\delta) - 1 = \epsilon \left[ \frac{1}{\sqrt{\epsilon}}(1+\delta) \right]^3
+\]
+נפתח את אגף ימין:
+\[
+\frac{1}{\sqrt{\epsilon}} + \frac{\delta}{\sqrt{\epsilon}} - 1 = \epsilon \cdot \frac{1}{\epsilon\sqrt{\epsilon}} (1 + 3\delta + O(\delta^2))
+\]
+\[
+\frac{1}{\sqrt{\epsilon}} + \frac{\delta}{\sqrt{\epsilon}} - 1 = \frac{1}{\sqrt{\epsilon}} (1 + 3\delta)
+\]
+האיבר המוביל $\frac{1}{\sqrt{\epsilon}}$ מצטמצם משני הצדדים. נשארנו עם:
+\[
+\frac{\delta}{\sqrt{\epsilon}} - 1 \approx \frac{3\delta}{\sqrt{\epsilon}}
+\]
+נכפיל ב-$\sqrt{\epsilon}$:
+\[
+\delta - \sqrt{\epsilon} = 3\delta \implies -2\delta = \sqrt{\epsilon} \implies \delta = -\frac{\sqrt{\epsilon}}{2}
+\]
+
+\begin{resultbox}{הפתרונות הרחוקים}
+\[
+x_{2,3} \approx \pm \frac{1}{\sqrt{\epsilon}} \left( 1 - \frac{\sqrt{\epsilon}}{2} \right) = \pm \left( \frac{1}{\sqrt{\epsilon}} - \frac{1}{2} \right)
+\]
+\end{resultbox}
+
+\begin{notebox}{סיכום שיטת ההפרעות}
+\begin{enumerate}
+    \item מנחשים סדר גודל לפתרון (איזון דומיננטי) כאשר $\epsilon \to 0$.
+    \item מציבים טור אסימפטוטי ומבצעים השוואת מקדמים סדר-אחר-סדר \LR{(Order by order)}.
+    \item במקרה של משוואות לא לינאריות, חלק מהפתרונות עשויים להיות סינגולריים (שואפים לאינסוף) ודורשים סקיילינג (Rescaling) של המשתנה.
+\end{enumerate}
+\end{notebox}
+
+
+
+\newpage
+
+\section*{מידע נוסף למבחן}
+
+\begin{summarybox}{מידע על המבחן}
+    \begin{itemize}
+        \item \textbf{מבנה:} המבחן יכלול 5 שאלות.
+        \item \textbf{זמן:} מומלץ להקדיש כחצי שעה לכל שאלה.
+        \item \textbf{רמת קושי:} השאלות בודקות הבנה, ללא אינטגרלים מסובכים מדי הדורשים זמן טכני רב.
+        \item \textbf{נושאים למבחן:}
+        \begin{itemize}
+            \item פונקציית דלתא
+            \item תורת שטורם-ליוביל
+            \item פונקציית גרין
+            \item משוואות דיפרנציאליות (סדר ראשון ושני)
+            \item מיון וסיווג משוואות
+            \item משוואת הגלים, דיפוזיה, לפלס
+            \item משוואות אי-הומוגניות
+            \item משוואות אינטגרליות (מומלץ להתחיל בשאלה זו במבחן - נושא "קל")
+            \item חשבון וריאציות
+        \end{itemize}
+    \end{itemize}
+\end{summarybox}
+
+

@@ -1,0 +1,133 @@
+\section{הרצאה: משוואת הגלים במימד אחד ובשני מימדים}
+
+בשיעור זה אנו משלימים את הדיון על גלים במיתר סופי (מימד אחד), מוכיחים את שקילות הפתרונות (גלים עומדים מול גלים נעים), ומתחילים את הדיון על גלים במימדים גבוהים יותר (ממברנה מלבנית).
+
+\subsection{משוואת הגלים במימד אחד: מיתר סופי}
+
+אנו עוסקים בבעיה של מיתר המתוח בין $x=0$ ל-$x=L$. המטרה היא למצוא את ההעתק $u(x,t)$ לכל זמן $t>0$.
+
+\begin{definitionbox}{ניסוח הבעיה (בעיית שפה והתחלה)}
+משוואת הגלים (הומוגנית):
+$$\frac{\partial^2 u}{\partial t^2} = c^2 \frac{\partial^2 u}{\partial x^2}, \quad 0 < x < L, \quad t > 0$$
+תנאי שפה (\LR{Boundary Conditions} - דיריכלה הומוגניים):
+$$u(0,t) = 0, \quad u(L,t) = 0$$
+תנאי התחלה (\LR{Initial Conditions}):
+$$u(x,0) = f(x) \quad (\text{צורת המיתר ההתחלתית})$$
+$$\frac{\partial u}{\partial t}(x,0) = g(x) \quad (\text{המהירות ההתחלתית})$$
+\end{definitionbox}
+
+\subsubsection{פתרון באמצעות הפרדת משתנים}
+אנו מחפשים פתרון מהצורה $u(x,t) = X(x)T(t)$. הצבה במשוואה מובילה להפרדה לשתי משוואות דיפרנציאליות רגילות, התלויות בקבוע הפרדה שאנו מסמנים כ-$\lambda$ (או $-k^2$).
+
+מתוך תורת שטורם-ליוביל (\LR{Sturm-Liouville}), אנו יודעים כי הבעיה המרחבית:
+$$X''(x) + \lambda X(x) = 0, \quad X(0)=X(L)=0$$
+גוררת אוסף בדיד של פתרונות (פונקציות עצמיות) וערכים עצמיים:
+
+\begin{resultbox}{הפונקציות העצמיות המרחביות}
+הערכים העצמיים הם $\lambda_n = \left(\frac{n\pi}{L}\right)^2$.
+הפונקציות העצמיות הן:
+$$X_n(x) = \sin\left(\frac{n\pi x}{L}\right), \quad n=1,2,3,\dots$$
+\end{resultbox}
+
+עבור החלק הזמני, המשוואה היא $\ddot{T}_n(t) + c^2 \lambda_n T_n(t) = 0$. הפתרון הכללי הוא תנודה הרמונית בתדירות $\omega_n = c\sqrt{\lambda_n} = \frac{n\pi c}{L}$:
+$$T_n(t) = C_n \cos(\omega_n t) + D_n \sin(\omega_n t)$$
+
+\subsubsection{הפתרון הכללי ומציאת המקדמים}
+לפי עקרון הסופרפוזיציה (המשוואה לינארית), הפתרון הכללי הוא סכום אינסופי של המודים (\LR{Modes}):
+
+$$u(x,t) = \sum_{n=1}^{\infty} \left[ C_n \cos\left(\frac{n\pi c t}{L}\right) + D_n \sin\left(\frac{n\pi c t}{L}\right) \right] \sin\left(\frac{n\pi x}{L}\right)$$
+
+כדי למצוא את המקדמים $C_n, D_n$, אנו משתמשים בתנאי ההתחלה ובאורתוגונליות של הפונקציות $\sin(n\pi x/L)$.
+
+\begin{notebox}{אורתוגונליות}
+האינטגרל של מכפלת סינוסים הוא:
+$$\int_0^L \sin\left(\frac{n\pi x}{L}\right) \sin\left(\frac{m\pi x}{L}\right) dx = \frac{L}{2} \delta_{nm}$$
+\end{notebox}
+
+יישום תנאי ההתחלה:
+\begin{enumerate}
+    \item \textbf{עבור ההעתק ההתחלתי $f(x)$:}
+    $$u(x,0) = \sum_{n=1}^{\infty} C_n \sin\left(\frac{n\pi x}{L}\right) = f(x)$$
+    באמצעות מכפלה פנימית ואינטגרציה, מקבלים:
+    $$C_n = \frac{2}{L} \int_0^L f(x) \sin\left(\frac{n\pi x}{L}\right) dx$$
+
+    \item \textbf{עבור המהירות ההתחלתית $g(x)$:}
+    גוזרים לפי הזמן ומציבים $t=0$:
+    $$\frac{\partial u}{\partial t}(x,0) = \sum_{n=1}^{\infty} D_n \left(\frac{n\pi c}{L}\right) \sin\left(\frac{n\pi x}{L}\right) = g(x)$$
+    ומכאן המקדם $D_n$:
+    $$D_n = \frac{2}{n\pi c} \int_0^L g(x) \sin\left(\frac{n\pi x}{L}\right) dx$$
+\end{enumerate}
+
+\subsection{המשמעות הפיזיקלית: אופני תנודה (\LR{Modes})}
+כל איבר בסכום נקרא "אופן תנודה" (\LR{Normal Mode}).
+\begin{itemize}
+    \item **המוד הבסיסי ($n=1$):** \LR{Fundamental mode}. אין צמתים (\LR{nodes}) למעט הקצוות. אורך הגל הוא $2L$.
+    \item **ההרמוניה השנייה ($n=2$):** \LR{First Overtone}. יש צומת אחד במרכז ($x=L/2$). התדר כפול מהתדר הבסיסי (אוקטבה).
+    \item **ההרמוניה ה-$n$:** יש $n-1$ צמתים פנימיים.
+\end{itemize}
+
+\begin{center}
+\begin{tikzpicture}
+\begin{axis}[
+    width=10cm, height=5cm,
+    xlabel={$x$}, ylabel={$u(x)$},
+    domain=0:1, samples=100,
+    axis lines=middle,
+    xtick={0,0.5,1}, xticklabels={0,$L/2$,$L$},
+    ytick=\empty,
+    legend pos=outer north east,
+    title={אופני תנודה (גלים עומדים)}
+]
+\addplot[blue, thick] {sin(deg(pi*x))}; \addlegendentry{$n=1$}
+\addplot[red, thick, dashed] {sin(deg(2*pi*x))}; \addlegendentry{$n=2$}
+\addplot[green!60!black, thick, dotted] {sin(deg(3*pi*x))}; \addlegendentry{$n=3$}
+\end{axis}
+\end{tikzpicture}
+\end{center}
+
+\subsection{שקילות בין גלים עומדים לגלים נעים}
+בשיעור הקודם ראינו את פתרון ד'אלמבר (\LR{d'Alembert}) המתאר גלים נעים:
+$$u(x,t) = F(x-ct) + G(x+ct)$$
+כעת נראה כי הפתרון שקיבלנו בהפרדת משתנים (סכום גלים עומדים) זהה לחלוטין לפתרון הגלים הנעים, בהינתן הרחבה מחזורית ואי-זוגית של הפונקציות.
+
+נשתמש בזהות הטריגונומטרית:
+$$\sin(\alpha)\cos(\beta) = \frac{1}{2}[\sin(\alpha-\beta) + \sin(\alpha+\beta)]$$
+נפעיל זאת על האיבר הכללי בטור (עבור החלק של $C_n$):
+$$\sin\left(\frac{n\pi x}{L}\right) \cos\left(\frac{n\pi c t}{L}\right) = \frac{1}{2} \left[ \sin\left(\frac{n\pi}{L}(x-ct)\right) + \sin\left(\frac{n\pi}{L}(x+ct)\right) \right]$$
+
+\begin{theorembox}{מסקנה: הקשר לפתרון ד'אלמבר (\LR{d'Alembert})}
+ניתן לכתוב את הפתרון הכללי כ:
+$$u(x,t) = \frac{1}{2} \left[ \tilde{f}(x-ct) + \tilde{f}(x+ct) \right] + \frac{1}{2c} \int_{x-ct}^{x+ct} \tilde{g}(s) ds$$
+כאשר $\tilde{f}$ ו-$\tilde{g}$ הן ההרחבות **האי-זוגיות והמחזוריות** (במחזור $2L$) של תנאי ההתחלה $f(x), g(x)$.
+תנאי השפה במיתר סופי "מאלצים" את הגלים המוחזרים להתנהג כאילו הם גלים מחזוריים במרחב אינסופי.
+\end{theorembox}
+
+\subsection{יחידות הפתרון (\LR{Uniqueness})}
+האם ייתכן פתרון אחר?
+נניח שיש שני פתרונות $u_1, u_2$ המקיימים את המשוואה ואת תנאי השפה וההתחלה.
+נגדיר $w = u_1 - u_2$. הפונקציה $w$ מקיימת את משוואת הגלים עם תנאי התחלה אפס ($w(x,0)=0, w_t(x,0)=0$).
+ניתן להראות (למשל באמצעות שימור אנרגיה או פיתוח לטור אורתוגונלי) שכל המקדמים בפיתוח של $w$ חייבים להתאפס.
+לכן $w \equiv 0 \Rightarrow u_1 = u_2$.
+**המשמעות:** הפיתוח לטור פורייה שמצאנו הוא הפתרון היחיד.
+
+\section{מבוא לגלים בשני מימדים: ממברנה מלבנית}
+
+אנו עוברים לטפל בבעיה דו-מימדית, למשל תוף מלבני. ההעתק הוא $u(x,y,t)$.
+
+\begin{definitionbox}{משוואת הגלים ב-2D}
+$$\frac{\partial^2 u}{\partial t^2} = c^2 \nabla^2 u = c^2 \left( \frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2} \right)$$
+תחום המלבן: $0 < x < L_x, \quad 0 < y < L_y$.
+תנאי שפה (מסגרת תפוסה): $u=0$ על כל היקף המלבן.
+\end{definitionbox}
+
+\subsubsection{הפרדת משתנים בקרטזיות}
+נחפש פתרון מהצורה:
+$$u(x,y,t) = X(x)Y(y)T(t)$$
+הצבה במשוואה וחלוקה ב-$XYT$ מובילה ל:
+$$\frac{\ddot{T}}{c^2 T} = \frac{X''}{X} + \frac{Y''}{Y} = -k^2$$
+מכיוון שצד ימין הוא סכום של פונקציה של $x$ ופונקציה של $y$, כל אחת מהן חייבת להיות קבועה בנפרד:
+$$\frac{X''}{X} = -k_x^2, \quad \frac{Y''}{Y} = -k_y^2$$
+כאשר הקשר בין הקבועים הוא:
+$$k^2 = k_x^2 + k_y^2$$
+
+קיבלנו שתי בעיות שטורם-ליוביל (\LR{Sturm-Liouville}) חד-מימדיות (אחת ל-$x$ ואחת ל-$y$). הפתרון המלא יהיה מכפלה של סינוסים בשני הכיוונים. נשלים את הפיתוח המלא ומציאת הערכים העצמיים בשיעור הבא.

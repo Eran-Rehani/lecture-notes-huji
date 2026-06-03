@@ -1,0 +1,207 @@
+\documentclass{article}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{fontspec}
+\setlength{\parindent}{0bp}
+\usepackage{xcolor}
+\definecolor{lyxboxbgcolor}{rgb}{0.800781, 0.800781, 0.800781}
+\usepackage{float}
+\usepackage{units}
+\usepackage{cancel}
+\usepackage{graphicx}
+\usepackage{geometry}
+\geometry{verbose,tmargin=2.7cm,bmargin=2cm,lmargin=2cm,rmargin=2cm,headheight=2cm,headsep=0cm,footskip=0cm}
+\usepackage{setspace}
+\usepackage{microtype}
+\onehalfspacing
+\usepackage[pdfusetitle,
+ bookmarks=true,bookmarksnumbered=true,bookmarksopen=true,bookmarksopenlevel=2,
+ breaklinks=true,pdfborder={0 0 0},pdfborderstyle={},backref=section,colorlinks=true]
+ {hyperref}
+\hypersetup{
+ linkcolor=black, citecolor=black}
+
+\makeatletter
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% LyX specific LaTeX commands.
+\providecommand\textquotedblplain{%
+  \bgroup\addfontfeatures{Mapping=}\char34\egroup}
+
+\@ifundefined{date}{}{\date{}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% User specified LaTeX commands.
+% Engine guard: use XeLaTeX/LuaLaTeX
+\usepackage{iftex}
+\ifPDFTeX
+  \PackageError{template}{Please compile with XeLaTeX or LuaLaTeX}{}
+\fi
+
+% ======== ADVANCED HEBREW ACADEMIC TEMPLATE ========
+% Packages (trimmed to avoid conflicts)
+% \usepackage{autobreak}  % REMOVE: can conflict with amsmath; use \allowdisplaybreaks
+% \usepackage[T1]{fontenc}  % REMOVE: not needed with fontspec
+\usepackage{relsize}
+\usepackage{xcolor}
+\usepackage{amssymb}
+\usepackage{titlesec}
+\usepackage{polyglossia}
+\usepackage{fancyhdr}
+\usepackage{tcolorbox}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{geometry}
+\usepackage{microtype}
+\usepackage{fontspec}
+\usepackage{physics}
+\usepackage{mathtools}
+\usepackage{empheq}
+\usepackage{mdframed}
+
+% Colors (deduplicated)
+\definecolor{primaryblue}{RGB}{33,150,243}
+\definecolor{secondaryblue}{RGB}{63,81,181}
+\definecolor{accentgreen}{RGB}{76,175,80}
+\definecolor{warningcolor}{RGB}{255,152,0}
+\definecolor{errorcolor}{RGB}{244,67,54}
+\definecolor{infocolor}{RGB}{3,169,244}
+\definecolor{notecolor}{RGB}{255,193,7}
+\definecolor{theoremcolor}{RGB}{156,39,176}
+\definecolor{definitioncolor}{RGB}{255,87,34}
+\definecolor{examplecolor}{RGB}{0,150,136}
+\definecolor{lightgray}{RGB}{245,245,245}
+\definecolor{darkgray}{RGB}{66,66,66}
+% Add aliases for colors referenced in layout to avoid missing-color errors
+\colorlet{successcolor}{accentgreen}
+\colorlet{warningred}{errorcolor}
+\colorlet{purple}{theoremcolor}
+\colorlet{green}{accentgreen}
+\colorlet{blue}{primaryblue}
+\colorlet{orange}{warningcolor}
+\definecolor{brown}{RGB}{121,85,72}
+
+% Language + fonts (polyglossia)
+\setdefaultlanguage{hebrew}
+\setotherlanguage{english}
+
+% Robust font selection with fallbacks (fixes Times New Roman not loadable)
+% Hebrew serif
+\IfFontExistsTF{David CLM}
+  {\newfontfamily\hebrewfont[Script=Hebrew]{David CLM}}
+% Hebrew sans
+
+% Math font (unchanged)
+% Use Unicode math with Libertinus as default; several alternatives available.
+\usepackage{unicode-math}
+\setmathfont{XITS Math} % default math font
+\geometry{a4paper, margin=1in}
+
+% Setting up font for Hebrew (if using XeLaTeX or LuaLaTeX, polyglossia is preferred, 
+% but babel is used here for standard compatibility)
+\selectlanguage{hebrew}
+
+\title{סיכום הרצאה: משוואת לפלס - גיאומטריות שונות}
+\author{סיכום מבוסס תמליל}
+\date{}
+
+\begin{document}
+
+\maketitle
+
+\section{חזרה: משוואת לפלס בחצי מישור}
+בשיעור הקודם עסקנו בבעיית חצי מישור ($y > 0$, $-\infty < x < \infty$) עם תנאי שפה:
+$$ u(x,0) = f(x) $$
+ודרישה שהפוטנציאל דועך באינסוף.
+הפתרון התקבל באמצעות טרנספורם פורייה והגדרת \textbf{פונקציית גרין}. הפתרון הוא קונבולוציה בין תנאי השפה לפונקציית גרין:
+\begin{equation}
+    u(x,y) = \int_{-\infty}^{\infty} f(\xi) G(x,y,\xi) d\xi
+\end{equation}
+כאשר פונקציית גרין לחצי מישור היא:
+\begin{equation}
+    G(x,y) = \frac{1}{\pi} \frac{y}{y^2 + (x-\xi)^2}
+\end{equation}
+
+\subsection{משמעות פיזיקלית: כלוב פראדיי}
+הוזכר כי אם תנאי השפה הוא מחזורי (למשל $f(x) = A \sin(kx)$), הפתרון דועך אקספוננציאלית בכיוון $y$:
+$$ u(x,y) \sim e^{-ky} \sin(kx) $$
+דבר זה מסביר את עקרון הפעולה של \textbf{כלוב פראדיי}: פוטנציאל מחזורי על השפה דועך במהירות בתוך הנפח.
+
+\section{משוואת לפלס בפרוסה אינסופית (Infinite Strip)}
+הבעיה מוגדרת בתחום: $-\infty < x < \infty$ ו- $0 < y < L$.
+\begin{itemize}
+    \item תנאי שפה: $u(x,0) = f(x)$ ו- $u(x,L) = 0$.
+    \item דרישת התאפסות ב- $x \to \pm \infty$.
+\end{itemize}
+
+\subsection{שיטת הפתרון}
+מבצעים טרנספורם פורייה לפי $x$ ומקבלים משוואה דיפרנציאלית רגילה עבור $\hat{u}(k,y)$:
+\begin{equation}
+    \frac{d^2 \hat{u}}{dy^2} - k^2 \hat{u} = 0
+\end{equation}
+הפתרון הכללי הוא סכום של אקספוננטים (או סינוס היפרבולי). לאחר הצבת תנאי השפה מתקבל הפתרון במרחב התדר:
+\begin{equation}
+    \hat{u}(k,y) = \hat{f}(k) \frac{\sinh(k(L-y))}{\sinh(kL)}
+\end{equation}
+בחזרה למרחב המקום, מקבלים פונקציית גרין חדשה המותאמת לגיאומטריה של הפרוסה.
+
+\subsection{עקרון הסופרפוזיציה}
+אם נתונים תנאי שפה לא הומוגניים בשני הצדדים ($u(x,0)=f(x)$ וגם $u(x,L)=g(x)$), מפרקים את הבעיה לשתי תת-בעיות:
+\begin{enumerate}
+    \item $u_1$: תנאי שפה $f(x)$ למטה ו-$0$ למעלה.
+    \item $u_2$: תנאי שפה $0$ למטה ו-$g(x)$ למעלה.
+\end{enumerate}
+הפתרון המלא הוא הסכום: $u = u_1 + u_2$, מכוח הליניאריות של משוואת לפלס.
+
+\section{משוואת לפלס בתחום סופי: מלבן}
+גיאומטריה: $0 < x < L_x$, $0 < y < L_y$.
+שיטת הפתרון: \textbf{הפרדת משתנים} $u(x,y) = X(x)Y(y)$.
+
+נניח תנאי שפה לא הומוגני על צלע אחת בלבד ($y=0$) ו-0 בשאר הצלעות.
+המשוואות המתקבלות:
+\begin{align}
+    X''(x) + \lambda^2 X(x) &= 0 \\
+    Y''(y) - \lambda^2 Y(y) &= 0
+\end{align}
+בציר $x$ (בו יש תנאי שפה הומוגניים בשני הקצוות) מתקבלת בעיית שטורם-ליוביל עם ערכים עצמיים דיסקרטיים:
+$$ \lambda_n = \frac{n\pi}{L_x} $$
+הפתרון הכללי הוא טור:
+\begin{equation}
+    u(x,y) = \sum_{n=1}^{\infty} C_n \sin\left(\frac{n\pi x}{L_x}\right) \sinh\left(\frac{n\pi (L_y - y)}{L_x}\right)
+\end{equation}
+את המקדמים $C_n$ מוצאים על ידי הטלת תנאי השפה $f(x)$ על הפונקציות העצמיות (טור פורייה סינוס).
+
+\section{משוואת לפלס בעיגול (קואורדינטות פולריות)}
+עוברים לקואורדינטות $(r, \theta)$. הלפלסיאן:
+\begin{equation}
+    \nabla^2 u = \frac{\partial^2 u}{\partial r^2} + \frac{1}{r}\frac{\partial u}{\partial r} + \frac{1}{r^2}\frac{\partial^2 u}{\partial \theta^2} = 0
+\end{equation}
+מבצעים הפרדת משתנים: $u(r,\theta) = R(r)\Theta(\theta)$.
+
+\subsection{המשוואה הזוויתית}
+מתקבלת המשוואה $\Theta'' + \lambda^2 \Theta = 0$.
+בגלל המחזוריות של המעגל ($\Theta(\theta) = \Theta(\theta + 2\pi)$), הערכים העצמיים חייבים להיות שלמים: $\lambda = n$ (כאשר $n=0,1,2,\dots$).
+הפתרונות הם $\sin(n\theta)$ ו-$\cos(n\theta)$.
+
+\subsection{המשוואה הרדיאלית (משוואת אוילר)}
+\begin{equation}
+    r^2 R'' + r R' - n^2 R = 0
+\end{equation}
+הפתרונות הם מהצורה $R(r) \sim r^\alpha$.
+עבור $n \neq 0$, הפתרון הכללי הוא:
+$$ R_n(r) = C_1 r^n + C_2 r^{-n} $$
+עבור $n = 0$, הפתרון הוא קבוע (או $\ln r$).
+
+\subsection{בעיה פנימית}
+עבור פתרון בתוך עיגול מלא ($0 \le r < a$), הפוטנציאל חייב להיות סופי בראשית ($r=0$). לכן, זורקים את האיברים המתבדרים ($r^{-n}$ ו-$\ln r$).
+הפתרון הכללי לבעיה פנימית:
+\begin{equation}
+    u(r,\theta) = A_0 + \sum_{n=1}^{\infty} r^n (A_n \cos(n\theta) + B_n \sin(n\theta))
+\end{equation}
+את המקדמים מוצאים בעזרת טור פורייה של תנאי השפה על היקף המעגל.
+
+\end{document}

@@ -1,0 +1,705 @@
+\documentclass[10pt,a4paper]{article}
+
+% ===== PACKAGES =====
+\usepackage[margin=0.5in]{geometry}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{multicol}
+\usepackage{enumitem}
+\usepackage{fancyhdr}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\usepackage{titlesec}
+\usepackage{physics}
+
+% ===== PAGE SETUP =====
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{2pt}
+\setlength{\columnseprule}{0.4pt}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[C]{\textbf{Mathematical Physics - Exam Cheat Sheet}}
+\fancyfoot[C]{\thepage}
+
+% ===== SECTION FORMATTING =====
+\titleformat{\section}{\normalfont\bfseries\large}{\thesection.}{0.5em}{}
+\titleformat{\subsection}{\normalfont\bfseries\normalsize}{\thesubsection}{0.5em}{}
+\titlespacing*{\section}{0pt}{6pt}{3pt}
+\titlespacing*{\subsection}{0pt}{4pt}{2pt}
+
+% ===== CUSTOM BOXES =====
+\tcbset{
+    boxrule=0.5pt,
+    arc=2pt,
+    left=3pt,
+    right=3pt,
+    top=2pt,
+    bottom=2pt,
+    fonttitle=\bfseries\small
+}
+
+\newtcolorbox{keyformula}[1][]{
+    colback=blue!5,
+    colframe=blue!70!black,
+    title=#1
+}
+
+\newtcolorbox{warning}[1][]{
+    colback=red!5,
+    colframe=red!70!black,
+    title=#1
+}
+
+\newtcolorbox{example}[1][]{
+    colback=green!5,
+    colframe=green!50!black,
+    title=#1
+}
+
+% ===== COMPACT LISTS =====
+\setlist{noitemsep,topsep=0pt,parsep=0pt,partopsep=0pt,leftmargin=*}
+
+\begin{document}
+\small
+
+\begin{multicols}{2}
+
+% ==========================================
+\section{Ordinary Differential Equations}
+% ==========================================
+
+\subsection{First-Order Linear ODEs}
+General form: $\displaystyle \frac{dy}{dx} + P(x)y = Q(x)$
+
+\begin{keyformula}[Integrating Factor Method]
+Multiply by $\mu(x) = e^{\int P(x)\,dx}$:
+\begin{equation}
+y(x) = \frac{1}{\mu(x)}\left[\int \mu(x)Q(x)\,dx + C\right]
+\end{equation}
+\end{keyformula}
+
+\textbf{Separable equations:} $\displaystyle\frac{dy}{dx} = f(x)g(y) \Rightarrow \int\frac{dy}{g(y)} = \int f(x)\,dx$
+
+\subsection{Second-Order Linear ODEs}
+Homogeneous form: $a y'' + b y' + c y = 0$
+
+\textbf{Characteristic equation:} $ar^2 + br + c = 0$
+\begin{itemize}
+    \item Two real roots $r_1 \neq r_2$: $y = C_1 e^{r_1 x} + C_2 e^{r_2 x}$
+    \item Repeated root $r$: $y = (C_1 + C_2 x)e^{rx}$
+    \item Complex roots $\alpha \pm i\beta$: $y = e^{\alpha x}(C_1\cos\beta x + C_2\sin\beta x)$
+\end{itemize}
+
+\begin{keyformula}[Variation of Parameters]
+For $y'' + p(x)y' + q(x)y = f(x)$ with homogeneous solutions $y_1, y_2$:
+\begin{equation}
+y_p = -y_1\int\frac{y_2 f}{W}dx + y_2\int\frac{y_1 f}{W}dx
+\end{equation}
+where Wronskian $W = y_1 y_2' - y_2 y_1'$
+\end{keyformula}
+
+\subsection{Euler Equations}
+Form: $x^2 y'' + ax y' + by = 0$
+
+\textbf{Solution:} Substitute $y = x^r$ to get $r(r-1) + ar + b = 0$
+\begin{itemize}
+    \item Distinct roots: $y = C_1 x^{r_1} + C_2 x^{r_2}$
+    \item Repeated: $y = (C_1 + C_2\ln x)x^r$
+    \item Complex $\alpha \pm i\beta$: $y = x^\alpha[C_1\cos(\beta\ln x) + C_2\sin(\beta\ln x)]$
+\end{itemize}
+
+\subsection{Special First-Order Types}
+\textbf{Bernoulli:} $y' + Py = Qy^n$
+
+Substitute $v = y^{1-n}$ $\Rightarrow$ linear in $v$
+
+\textbf{Exact:} $M\,dx + N\,dy = 0$ with $\partial_y M = \partial_x N$
+
+Find potential $\Phi$ with $\Phi_x = M$, $\Phi_y = N$, then $\Phi = C$
+
+\textbf{Riccati:} $y' + y^2 + r(x) = 0$
+
+Substitute $y = -u'/u$ $\Rightarrow$ $u'' - r(x)u = 0$ (linearization)
+
+% ==========================================
+\section{Dirac Delta \& Heaviside Functions}
+% ==========================================
+
+\begin{keyformula}[Dirac Delta Properties]
+\begin{align}
+&\int_{-\infty}^{\infty} \delta(x-a)f(x)\,dx = f(a) \\
+&\delta(ax) = \frac{1}{|a|}\delta(x) \\
+&\delta(g(x)) = \sum_i \frac{\delta(x-x_i)}{|g'(x_i)|} \text{ where } g(x_i)=0 \\
+&x\delta(x) = 0,\quad \delta(-x) = \delta(x) \\
+&\delta'(x) \cdot f(x) \to -f'(0) \text{ under integration}
+\end{align}
+\end{keyformula}
+
+\textbf{Representations:}
+$\displaystyle\delta(x) = \lim_{\epsilon\to 0}\frac{1}{\sqrt{\pi}\epsilon}e^{-x^2/\epsilon^2} = \frac{1}{2\pi}\int_{-\infty}^{\infty}e^{ikx}\,dk$
+
+\textbf{Heaviside step function:}
+$H(x) = \begin{cases} 0 & x<0 \\ 1 & x>0 \end{cases}$, \quad $\displaystyle\frac{dH}{dx} = \delta(x)$
+
+\textbf{Chain rule:} $\displaystyle\dv{x}[H(g(x))] = \delta(g(x))g'(x)$
+
+\begin{example}[Composite Argument]
+For $\delta(g(x))$ with $g(x) = (x^2-1)(x-2)$:
+
+Roots: $x \in \{-1, 1, 2\}$, compute $|g'(x_i)|$ at each.
+\begin{equation}
+\int\delta(g(x))\varphi(x)dx = \frac{\varphi(-1)}{6} + \frac{\varphi(1)}{2} + \frac{\varphi(2)}{3}
+\end{equation}
+\end{example}
+
+\textbf{Jump conditions:} Integrating $u'' = f + A\delta(x-x_0)$ gives
+$u'(x_0^+) - u'(x_0^-) = A$
+
+% ==========================================
+\section{Sturm-Liouville Theory}
+% ==========================================
+
+\begin{keyformula}[Sturm-Liouville Problem]
+\begin{equation}
+\frac{d}{dx}\left[p(x)\frac{du}{dx}\right] + q(x)u + \lambda w(x)u = 0
+\end{equation}
+with boundary conditions at $x=a,b$.
+\end{keyformula}
+
+\textbf{Self-Adjoint Form:} $L = \frac{d}{dx}\left(p\frac{d}{dx}\right) + q$
+
+\textbf{Key Properties (Sturm-Liouville Theorem):}
+\begin{enumerate}
+    \item All eigenvalues $\lambda_n$ are \textbf{real}
+    \item Eigenfunctions for different $\lambda_n$ are \textbf{orthogonal}:
+    \begin{equation}
+    \int_a^b u_m(x)u_n(x)w(x)\,dx = 0 \quad (m \neq n)
+    \end{equation}
+    \item Eigenfunctions form a \textbf{complete basis}
+    \item Eigenvalues form discrete sequence: $\lambda_1 < \lambda_2 < \cdots$
+\end{enumerate}
+
+\textbf{Generalized Fourier Series:}
+\begin{equation}
+f(x) = \sum_{n=1}^{\infty} c_n u_n(x), \quad c_n = \frac{\langle f, u_n \rangle}{\langle u_n, u_n \rangle} = \frac{\int_a^b f(x)u_n(x)w(x)\,dx}{\int_a^b u_n^2(x)w(x)\,dx}
+\end{equation}
+
+\begin{example}[Common Eigenfunctions]
+String with fixed ends ($u(0)=u(L)=0$):
+\begin{equation}
+u_n(x) = \sin\left(\frac{n\pi x}{L}\right), \quad \lambda_n = \left(\frac{n\pi}{L}\right)^2
+\end{equation}
+\end{example}
+
+\textbf{Converting to Self-Adjoint Form:}
+Given $p_0 u'' + p_1 u' + p_2 u = 0$ where $p_1 \neq p_0'$:
+
+Multiply by integrating factor:
+\begin{equation}
+F(x) = \exp\left(\int\frac{p_1 - p_0'}{p_0}\,dx\right)
+\end{equation}
+
+\begin{example}[Robin BC Spectrum]
+For $u'' + \lambda u = 0$ on $[0,L]$ with Robin BC:
+$u'(0) - h_1 u(0) = 0$, $u'(L) + h_2 u(L) = 0$
+
+Transcendental equation for $\lambda = k^2$:
+\begin{equation}
+(h_1 + h_2)\cos kL = \left(k + \frac{h_1 h_2}{k}\right)\sin kL
+\end{equation}
+Limits: $h \to \infty$ gives Dirichlet, $h \to 0$ gives Neumann.
+\end{example}
+
+% ==========================================
+\section{Green's Functions}
+% ==========================================
+
+\begin{keyformula}[Green's Function Definition]
+For $Lu(x) = f(x)$ with boundary conditions:
+\begin{equation}
+LG(x,x') = \delta(x-x')
+\end{equation}
+Solution: $\displaystyle u(x) = \int_a^b G(x,x')f(x')\,dx'$
+\end{keyformula}
+
+\subsection{Spectral Representation}
+If $Lu_n = \lambda_n u_n$ (eigenfunctions):
+\begin{equation}
+G(x,x') = \sum_n \frac{u_n(x)u_n^*(x')}{\lambda_n - \lambda}
+\end{equation}
+
+\subsection{Closed Form (Wronskian Method)}
+For $L = \frac{d}{dx}\left(p\frac{d}{dx}\right) + q$:
+\begin{equation}
+G(x,x') = \frac{1}{p(x')W(x')}\begin{cases} y_1(x)y_2(x') & x < x' \\ y_1(x')y_2(x) & x > x' \end{cases}
+\end{equation}
+where $y_1$ satisfies left BC, $y_2$ satisfies right BC, $W = y_1 y_2' - y_2 y_1'$
+
+\begin{warning}[Key Properties]
+\begin{itemize}
+    \item $G(x,x') = G(x',x)$ (symmetry for self-adjoint $L$)
+    \item $G$ is continuous at $x=x'$
+    \item $\partial_x G$ has jump $1/p(x')$ at $x=x'$
+\end{itemize}
+\end{warning}
+
+\begin{example}[Harmonic Oscillator]
+For $u'' + k^2 u = f(x)$, $u(0)=u(L)=0$:
+\begin{equation}
+G(x,x') = \frac{1}{k\sin(kL)}\begin{cases} \sin(kx)\sin(k(L-x')) & x<x' \\ \sin(kx')\sin(k(L-x)) & x>x' \end{cases}
+\end{equation}
+\end{example}
+
+% ==========================================
+\section{Classification of PDEs}
+% ==========================================
+
+\textbf{General 2nd-order linear PDE:}
+$Au_{xx} + Bu_{xy} + Cu_{yy} + Du_x + Eu_y + Fu = G$
+
+\begin{keyformula}[Discriminant Classification]
+$\Delta = B^2 - 4AC$
+\begin{itemize}
+    \item $\Delta > 0$: \textbf{Hyperbolic} (wave equation)
+    \item $\Delta = 0$: \textbf{Parabolic} (diffusion/heat equation)
+    \item $\Delta < 0$: \textbf{Elliptic} (Laplace equation)
+\end{itemize}
+\end{keyformula}
+
+\textbf{Characteristics:} Solutions to $\displaystyle\frac{dy}{dx} = \frac{B \pm \sqrt{\Delta}}{2A}$
+
+\textbf{Canonical Forms:}
+\begin{itemize}
+    \item Hyperbolic: $u_{\xi\eta} = \phi$ (d'Alembert form)
+    \item Parabolic: $u_{\xi\xi} = u_\eta$ (heat equation form)
+    \item Elliptic: $u_{\xi\xi} + u_{\eta\eta} = \phi$ (Laplace form)
+\end{itemize}
+
+\begin{example}[Canonical Transform]
+$u_{xx} + 2u_{xy} - 3u_{yy} = 0$: $\Delta = 4 + 12 = 16 > 0$ (hyperbolic)
+
+Characteristics: $\frac{dy}{dx} = 1 \pm 2$ $\Rightarrow$ $\xi = y + x$, $\eta = y - 3x$
+
+Canonical form: $u_{\xi\eta} = 0$ $\Rightarrow$ $u = F(\xi) + G(\eta)$
+\end{example}
+
+% ==========================================
+\section{Wave Equation}
+% ==========================================
+
+\begin{keyformula}[1D Wave Equation]
+\begin{equation}
+\frac{\partial^2 u}{\partial t^2} = c^2 \frac{\partial^2 u}{\partial x^2}
+\end{equation}
+\textbf{General Solution:} $u(x,t) = F(x-ct) + G(x+ct)$
+
+(Sum of right- and left-traveling waves)
+\end{keyformula}
+
+\subsection{d'Alembert Solution (Infinite Domain)}
+\begin{equation}
+u(x,t) = \frac{1}{2}[f(x+ct) + f(x-ct)] + \frac{1}{2c}\int_{x-ct}^{x+ct} g(\xi)\,d\xi
+\end{equation}
+where $u(x,0) = f(x)$, $u_t(x,0) = g(x)$
+
+\subsection{Separation of Variables (Finite Domain)}
+For $u(0,t) = u(L,t) = 0$:
+\begin{equation}
+u(x,t) = \sum_{n=1}^{\infty}\left[C_n\cos(\omega_n t) + D_n\sin(\omega_n t)\right]\sin\left(\frac{n\pi x}{L}\right)
+\end{equation}
+where $\omega_n = \frac{n\pi c}{L}$
+
+\textbf{Coefficients from initial conditions:}
+\begin{align}
+C_n &= \frac{2}{L}\int_0^L f(x)\sin\left(\frac{n\pi x}{L}\right)dx \\
+D_n &= \frac{2}{n\pi c}\int_0^L g(x)\sin\left(\frac{n\pi x}{L}\right)dx
+\end{align}
+
+\subsection{2D Wave Equation (Rectangular Membrane)}
+$\displaystyle\frac{\partial^2 u}{\partial t^2} = c^2\left(\frac{\partial^2 u}{\partial x^2} + \frac{\partial^2 u}{\partial y^2}\right)$
+
+\textbf{Normal modes:}
+\begin{equation}
+\phi_{nm}(x,y) = \sin\left(\frac{n\pi x}{L_x}\right)\sin\left(\frac{m\pi y}{L_y}\right)
+\end{equation}
+
+\textbf{Frequencies:}
+\begin{equation}
+\omega_{nm} = c\pi\sqrt{\left(\frac{n}{L_x}\right)^2 + \left(\frac{m}{L_y}\right)^2}
+\end{equation}
+
+\begin{warning}[Degeneracy]
+For square membrane ($L_x=L_y=L$): $\omega_{nm} = \omega_{mn}$ when $n\neq m$.
+Different spatial patterns, same frequency!
+\end{warning}
+
+% ==========================================
+\section{Diffusion (Heat) Equation}
+% ==========================================
+
+\begin{keyformula}[Heat Equation]
+\begin{equation}
+\frac{\partial u}{\partial t} = a^2 \frac{\partial^2 u}{\partial x^2}
+\end{equation}
+\textbf{General Solution:} $u(x,t) = \sum_n C_n e^{-a^2 k_n^2 t} X_n(x)$
+
+where $X_n$ are spatial eigenfunctions, $k_n$ eigenvalues.
+
+(Parabolic, only 1st derivative in time $\Rightarrow$ one IC needed)
+\end{keyformula}
+
+\subsection{Separation of Variables (Finite Domain)}
+For $u(0,t) = u(L,t) = 0$, $u(x,0) = f(x)$:
+\begin{equation}
+u(x,t) = \sum_{n=1}^{\infty} C_n e^{-a^2(n\pi/L)^2 t}\sin\left(\frac{n\pi x}{L}\right)
+\end{equation}
+where $\displaystyle C_n = \frac{2}{L}\int_0^L f(x)\sin\left(\frac{n\pi x}{L}\right)dx$
+
+\textbf{Key feature:} Exponential decay of all modes. High-frequency modes ($n$ large) decay fastest $\Rightarrow$ smoothing.
+
+\subsection{Fourier Transform Method (Infinite Domain)}
+\begin{equation}
+u(x,t) = \frac{1}{\sqrt{4\pi a^2 t}}\int_{-\infty}^{\infty} f(\xi)e^{-(x-\xi)^2/(4a^2 t)}\,d\xi
+\end{equation}
+
+\begin{keyformula}[Heat Kernel (Green's Function)]
+\begin{equation}
+G(x,t;\xi,0) = \frac{1}{\sqrt{4\pi a^2 t}}e^{-(x-\xi)^2/(4a^2 t)}
+\end{equation}
+\end{keyformula}
+
+\textbf{Properties:}
+\begin{itemize}
+    \item $\int_{-\infty}^{\infty} G\,dx = 1$ (mass conservation)
+    \item Width $\sim \sqrt{t}$ (diffusive spreading)
+    \item $G(x,0^+) = \delta(x-\xi)$
+\end{itemize}
+
+% ==========================================
+\section{Laplace Equation}
+% ==========================================
+
+\begin{keyformula}[Laplace Equation]
+\begin{equation}
+\nabla^2 u = 0
+\end{equation}
+\textbf{General Solutions:}
+\begin{itemize}
+\item Cartesian: $u = (Ae^{kx}+Be^{-kx})(C\cos ky + D\sin ky)$
+\item Polar: $u = (C_0 + D_0\ln r) + \sum_{n=1}^{\infty}(C_n r^n + D_n r^{-n})(A_n\cos n\theta + B_n\sin n\theta)$
+\end{itemize}
+(Elliptic, steady-state problems)
+\end{keyformula}
+
+\subsection{Polar Coordinates}
+$\displaystyle\nabla^2 u = \frac{1}{r}\frac{\partial}{\partial r}\left(r\frac{\partial u}{\partial r}\right) + \frac{1}{r^2}\frac{\partial^2 u}{\partial \theta^2} = 0$
+
+\textbf{Angular equation:} $\Theta'' + n^2\Theta = 0$
+
+For periodic BC ($\Theta(\theta+2\pi) = \Theta(\theta)$): $n = 0,1,2,\ldots$
+
+\textbf{Radial equation (Euler type):} $r^2 R'' + rR' - n^2 R = 0$
+\begin{itemize}
+    \item $n \geq 1$: $R(r) = C_1 r^n + C_2 r^{-n}$
+    \item $n = 0$: $R(r) = C_1\ln r + C_2$
+\end{itemize}
+
+\begin{keyformula}[Interior Problem ($r \leq R$)]
+Require bounded solution at $r=0 \Rightarrow$ reject $r^{-n}, \ln r$:
+\begin{equation}
+u(r,\theta) = A_0 + \sum_{n=1}^{\infty} r^n[A_n\cos(n\theta) + B_n\sin(n\theta)]
+\end{equation}
+\end{keyformula}
+
+\begin{keyformula}[Exterior Problem ($r \geq R$)]
+Require bounded at $r\to\infty \Rightarrow$ reject $r^n$:
+\begin{equation}
+u(r,\theta) = A_0 + \sum_{n=1}^{\infty} r^{-n}[A_n\cos(n\theta) + B_n\sin(n\theta)]
+\end{equation}
+\end{keyformula}
+
+\textbf{Finding coefficients:} Match $u(R,\theta) = g(\theta)$ using Fourier series of $g$.
+
+\begin{example}[Worked Example]
+BC: $u(R,\theta) = 3\sin\theta - 2\cos(3\theta)$
+
+Direct matching (no integrals needed!):
+\begin{equation}
+u(r,\theta) = 3\frac{r}{R}\sin\theta - 2\frac{r^3}{R^3}\cos(3\theta)
+\end{equation}
+\end{example}
+
+\begin{keyformula}[Half-Plane Poisson Kernel]
+For $\nabla^2 u = 0$ in $y > 0$ with $u(x,0) = g(x)$:
+\begin{equation}
+u(x,y) = \frac{1}{\pi}\int_{-\infty}^{\infty}\frac{y}{(x-\xi)^2 + y^2}g(\xi)\,d\xi
+\end{equation}
+\end{keyformula}
+
+% ==========================================
+\section{Inhomogeneous PDEs}
+% ==========================================
+
+\textbf{General principle:} $u_{\text{general}} = u_{\text{homogeneous}} + u_{\text{particular}}$
+
+\subsection{Eigenfunction Expansion Method}
+For $\displaystyle\frac{\partial^2 u}{\partial t^2} - c^2\frac{\partial^2 u}{\partial x^2} = F(x,t)$:
+
+\textbf{Step 1:} Expand source in eigenfunctions:
+\begin{equation}
+F(x,t) = \sum_{n=1}^{\infty} F_n(t)\sin\left(\frac{n\pi x}{L}\right)
+\end{equation}
+where $\displaystyle F_n(t) = \frac{2}{L}\int_0^L F(x,t)\sin\left(\frac{n\pi x}{L}\right)dx$
+
+\textbf{Step 2:} Assume solution:
+$\displaystyle u(x,t) = \sum_{n=1}^{\infty} h_n(t)\sin\left(\frac{n\pi x}{L}\right)$
+
+\textbf{Step 3:} Substitute to get ODE for each $h_n(t)$:
+\begin{equation}
+\ddot{h}_n + \omega_n^2 h_n = F_n(t), \quad \omega_n = \frac{n\pi c}{L}
+\end{equation}
+
+\textbf{Step 4:} Solve each ODE using Green's function/variation of parameters.
+
+\subsection{Steady-State + Transient Decomposition}
+For heat equation with fixed BC $u(0,t)=T_1$, $u(L,t)=T_2$:
+
+\textbf{Steady state:} $u_s(x) = T_1 + (T_2-T_1)\frac{x}{L}$
+
+\textbf{Transient:} $v = u - u_s$ satisfies homogeneous BC.
+
+\begin{warning}[Resonance Handling]
+For undetermined coefficients with resonant RHS:
+
+Multiply ansatz by $t^m$ where $m$ = algebraic multiplicity.
+
+\textbf{Example:} $y'' - 2y' + y = e^t$
+
+Char. eq: $(r-1)^2 = 0$ (mult. 2), so try $y_p = At^2 e^t$
+
+$\Rightarrow y = (C_1 + C_2 t)e^t + \frac{1}{2}t^2 e^t$
+\end{warning}
+
+% ==========================================
+\section{Fourier Transforms}
+% ==========================================
+
+\begin{keyformula}[Definition]
+\begin{align}
+\hat{f}(k) &= \mathcal{F}[f] = \frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty} f(x)e^{-ikx}\,dx \\
+f(x) &= \mathcal{F}^{-1}[\hat{f}] = \frac{1}{\sqrt{2\pi}}\int_{-\infty}^{\infty} \hat{f}(k)e^{ikx}\,dk
+\end{align}
+\end{keyformula}
+
+\textbf{Key Properties:}
+\begin{align}
+\mathcal{F}[f'(x)] &= ik\hat{f}(k) \\
+\mathcal{F}[f''(x)] &= -k^2\hat{f}(k) \\
+\mathcal{F}[xf(x)] &= i\frac{d\hat{f}}{dk} \\
+\mathcal{F}[f(x-a)] &= e^{-ika}\hat{f}(k) \\
+\mathcal{F}[f*g] &= \sqrt{2\pi}\,\hat{f}\cdot\hat{g}
+\end{align}
+
+\textbf{Common Transforms:}
+\begin{align}
+\mathcal{F}[e^{-ax^2}] &= \frac{1}{\sqrt{2a}}e^{-k^2/(4a)} \\
+\mathcal{F}[\delta(x)] &= \frac{1}{\sqrt{2\pi}} \\
+\mathcal{F}[e^{-a|x|}] &= \sqrt{\frac{2}{\pi}}\frac{a}{a^2+k^2}
+\end{align}
+
+\begin{keyformula}[Parseval's Theorem]
+\begin{equation}
+\int_{-\infty}^{\infty}|f(x)|^2\,dx = \int_{-\infty}^{\infty}|\hat{f}(k)|^2\,dk
+\end{equation}
+\end{keyformula}
+
+% ==========================================
+\section{Integral Equations}
+% ==========================================
+
+\subsection{Fredholm Equations}
+\begin{keyformula}[Type II Fredholm Equation]
+\begin{equation}
+u(x) = f(x) + \lambda\int_a^b K(x,y)u(y)\,dy
+\end{equation}
+Fixed limits $[a,b]$, $K(x,y)$ is the kernel.
+\end{keyformula}
+
+\textbf{Separable Kernel:} $K(x,y) = \sum_{i=1}^n g_i(x)h_i(y)$
+
+$\Rightarrow$ Reduces to linear algebra: $\vec{c} = \vec{d} + \lambda A\vec{c}$
+
+where $c_i = \int_a^b h_i(y)u(y)\,dy$, \quad $A_{ij} = \int_a^b h_i(y)g_j(y)\,dy$
+
+\textbf{Solution:} $\vec{c} = (I - \lambda A)^{-1}\vec{d}$
+
+\begin{warning}[Singular Values]
+No unique solution when $\det(I-\lambda A) = 0$
+
+$\Rightarrow$ $\lambda = 1/\lambda_{\text{eigen}}$ of matrix $A$
+\end{warning}
+
+\textbf{Difference Kernel:} $K(x,y) = K(x-y)$
+
+For infinite domain: Use Fourier transform!
+\begin{equation}
+\hat{u}(k) = \frac{\hat{f}(k)}{1 - \lambda\sqrt{2\pi}\hat{K}(k)}
+\end{equation}
+
+\subsection{Volterra Equations}
+\begin{keyformula}[Type II Volterra Equation]
+\begin{equation}
+u(x) = f(x) + \lambda\int_a^x K(x,y)u(y)\,dy
+\end{equation}
+Upper limit is variable $x$!
+\end{keyformula}
+
+\textbf{Solution method:} Convert to ODE via differentiation.
+
+\begin{keyformula}[Leibniz Rule]
+\begin{equation}
+\frac{d}{dx}\int_{a(x)}^{b(x)} g(x,y)\,dy = g(x,b)\cdot b' - g(x,a)\cdot a' + \int_a^b \frac{\partial g}{\partial x}\,dy
+\end{equation}
+\end{keyformula}
+
+\begin{example}[Volterra $\to$ ODE]
+$\displaystyle u(x) = x\left(1 + \int_0^x yu(y)\,dy\right)$
+
+Let $f(x) = \int_0^x yu(y)\,dy$, so $u = x(1+f)$
+
+Differentiate: $f' = xu(x) = x^2(1+f)$
+
+Solve separable ODE: $f = Ce^{x^3/3} - 1$
+
+Verify $C=1$ using original equation $\Rightarrow$ $u(x) = xe^{x^3/3}$
+\end{example}
+
+\begin{example}[Rank-1 Fredholm]
+$\displaystyle u(x) = f(x) + \lambda x\int_0^1 y\,u(y)\,dy$
+
+Let $C = \int_0^1 y u(y)dy$. Then $u = f + \lambda x C$ and
+$C = \langle y, f\rangle + \frac{\lambda C}{3}$
+\begin{equation}
+u(x) = f(x) + \lambda x\frac{\int_0^1 y f(y)dy}{1 - \lambda/3}\quad (\lambda \neq 3)
+\end{equation}
+\end{example}
+
+\begin{warning}[Exam Tip]
+Integral equations are typically easier—consider starting with these!
+\end{warning}
+
+% ==========================================
+\section{Perturbation Theory}
+% ==========================================
+
+\textbf{Goal:} Approximate solutions when exact solution is impossible, using small parameter $\epsilon \ll 1$.
+
+\subsection{Regular Perturbation}
+Expand: $x = x_0 + \epsilon x_1 + \epsilon^2 x_2 + \cdots$
+
+Substitute and match powers of $\epsilon$ order by order.
+
+\begin{example}[$x - 1 = \epsilon x^3$, root near $x=1$]
+Order 0: $x_0 = 1$
+
+Order 1: $\delta = \epsilon(1+\delta)^3 \approx \epsilon \Rightarrow x \approx 1 + \epsilon$
+
+Order 2: $x \approx 1 + \epsilon + 3\epsilon^2 + O(\epsilon^3)$
+\end{example}
+
+\subsection{Singular Perturbation (Dominant Balance)}
+When some solutions become large as $\epsilon\to 0$:
+
+\textbf{Step 1:} Find dominant balance by assuming $x \sim \epsilon^{-\alpha}$
+
+\textbf{Step 2:} Rescale: $x = \epsilon^{-\alpha}(1 + \delta)$
+
+\begin{example}[$x - 1 = \epsilon x^3$, large roots]
+Dominant balance: $x \approx \epsilon x^3 \Rightarrow x^2 \approx 1/\epsilon$
+
+So $x \approx \pm 1/\sqrt{\epsilon}$
+
+Refinement: $x = \frac{1}{\sqrt{\epsilon}}(1+\delta)$, solve for $\delta$:
+\begin{equation}
+x \approx \pm\left(\frac{1}{\sqrt{\epsilon}} - \frac{1}{2}\right)
+\end{equation}
+\end{example}
+
+\begin{warning}[Key Insight]
+Correction terms may involve non-integer powers of $\epsilon$ (e.g., $\sqrt{\epsilon}$)!
+\end{warning}
+
+% ==========================================
+\section{Calculus of Variations}
+% ==========================================
+
+\textbf{Problem:} Find $y(x)$ that extremizes:
+\begin{equation}
+J[y] = \int_a^b F(x,y,y')\,dx
+\end{equation}
+subject to $y(a) = A$, $y(b) = B$.
+
+\begin{keyformula}[Euler-Lagrange Equation]
+\begin{equation}
+\frac{\partial F}{\partial y} - \frac{d}{dx}\frac{\partial F}{\partial y'} = 0
+\end{equation}
+\end{keyformula}
+
+\textbf{Special cases:}
+\begin{itemize}
+    \item $F$ doesn't depend on $y$: $\frac{\partial F}{\partial y'} = \text{const}$
+    \item $F$ doesn't depend on $x$: $F - y'\frac{\partial F}{\partial y'} = \text{const}$ (Beltrami)
+\end{itemize}
+
+\begin{example}[Brachistochrone]
+Time for particle sliding under gravity:
+$\displaystyle T = \int_0^{x_1}\sqrt{\frac{1+(y')^2}{2gy}}\,dx$
+
+E-L $\Rightarrow$ Cycloid: $x = a(\theta - \sin\theta)$, $y = a(1-\cos\theta)$
+\end{example}
+
+\begin{example}[Geodesics on Sphere]
+Arc length: $\displaystyle s = \int\sqrt{1 + \sin^2\phi\,(\theta')^2}\,d\phi$
+
+E-L $\Rightarrow$ Great circles (shortest paths)
+\end{example}
+
+\textbf{Multiple functions:} For $J[y_1,\ldots,y_n]$, solve system:
+\begin{equation}
+\frac{\partial F}{\partial y_i} - \frac{d}{dx}\frac{\partial F}{\partial y_i'} = 0 \quad (i=1,\ldots,n)
+\end{equation}
+
+\textbf{Constraints (Lagrange multipliers):}
+For $J[y]$ subject to $\int G(x,y,y')\,dx = \ell$:
+
+Solve E-L for $F^* = F + \lambda G$
+
+\begin{example}[Isoperimetric Problem]
+Minimize arc length $S = \int\sqrt{1+y'^2}dx$ with fixed area $A = \int y\,dx$.
+
+$F^* = \sqrt{1+y'^2} + \lambda y$ ($x$-free $\Rightarrow$ Beltrami):
+\begin{equation}
+\frac{1}{\sqrt{1+y'^2}} - \lambda y = C
+\end{equation}
+Solution: circular arc $(y - y_0)^2 + x^2 = R^2$
+\end{example}
+
+% ==========================================
+\section{Quick Reference: Orthogonality}
+% ==========================================
+
+\begin{keyformula}[Common Orthogonality Relations]
+\textbf{Sines:}
+$\displaystyle\int_0^L \sin\frac{n\pi x}{L}\sin\frac{m\pi x}{L}\,dx = \frac{L}{2}\delta_{nm}$
+
+\textbf{Cosines:}
+$\displaystyle\int_0^L \cos\frac{n\pi x}{L}\cos\frac{m\pi x}{L}\,dx = \frac{L}{2}\delta_{nm}$ ($n,m>0$)
+
+\textbf{Complex exponentials:}
+$\displaystyle\int_0^L e^{i2\pi nx/L}e^{-i2\pi mx/L}\,dx = L\delta_{nm}$
+\end{keyformula}
+
+\vfill
+
+
+\end{multicols}
+\end{document}

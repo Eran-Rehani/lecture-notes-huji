@@ -1,0 +1,186 @@
+\section{הרצאה: פיתוח משוואת הדיפוזיה ומשוואת הרצף}
+
+בשיעור זה נעבור ממשוואות היפרבוליות (כמו משוואת הגלים) למשפחה חדשה של משוואות: משוואות פרבוליות, ובראשן \textbf{משוואת הדיפוזיה} (או משוואת החום). נפתח את המשוואה בשתי גישות שונות: גישה מאקרוסקופית המבוססת על חוקי שימור ורצף, וגישה מיקרוסקופית המבוססת על הלוך אקראי (\LR{Random Walk}).
+
+\subsection{משוואת הרצף וחוק שימור האנרגיה}
+
+כדי לפתח את משוואת הדיפוזיה, נתבונן בנפח שרירותי $V$ המלא בחומר (גז, נוזל או מוצק). נגדיר את האנרגיה הפנימית הכוללת בנפח זה כ-$U$.
+
+\begin{definitionbox}{צפיפות אנרגיה פנימית}
+נסמן את צפיפות האנרגיה הפנימית ב-$u(\vec{r},t)$. הקשר לאנרגיה הכוללת הוא:
+\[
+U(t) = \int_V u(\vec{r},t) \, dV
+\]
+\end{definitionbox}
+
+לפי החוק הראשון של התרמודינמיקה, השינוי באנרגיה הפנימית בזמן, $\frac{dU}{dt}$, נובע משני גורמים:
+\begin{enumerate}
+    \item \textbf{עבודה ($W$):} כיווץ/התפשטות הנפח, עבודה חשמלית או כימית.
+    \item \textbf{חום ($Q$):} מעבר אנרגיה ספונטני הנובע מהפרשי טמפרטורות (ללא עבודה יזומה).
+\end{enumerate}
+
+בפיתוח הנוכחי, נניח שהמערכת \textbf{אינה מבצעת עבודה} (נפח קבוע, ללא ריאקציות), ונתמקד בזרימת חום ספונטנית.
+
+\subsubsection{פיתוח משוואת הרצף}
+נגדיר את וקטור שטף החום $\vec{J}$. וקטור זה מתאר את כמות האנרגיה העוברת ליחידת שטח ליחידת זמן. כיוון הווקטור מצביע על כיוון הזרימה.
+
+קצב השינוי של האנרגיה בתוך הנפח $V$ שווה לשטף האנרגיה \textbf{הנכנס} דרך השפה $\partial V$ (המעטפת):
+\[
+\frac{dU}{dt} = -\oint_{\partial V} \vec{J} \cdot \hat{n} \, dA
+\]
+הסימן השלילי נובע מכך ש-$\hat{n}$ הוא נורמל המצביע \textbf{החוצה} מהנפח. אם $\vec{J}$ מקביל ל-$\hat{n}$, אנרגיה יוצאת והנגזרת שלילית.
+
+נשתמש בהגדרת $U$ ובמשפט הדיברגנץ (\LR{Gauss's Theorem}) כדי להמיר את אינטגרל המשטח לאינטגרל נפחי:
+\[
+\frac{d}{dt} \int_V u \, dV = - \int_V (\nabla \cdot \vec{J}) \, dV
+\]
+נניח שהחומר במנוחה מאקרוסקופית (אין הסעה, $\vec{v}=0$), ולכן ניתן להכניס את הנגזרת בזמן לתוך האינטגרל כנגזרת חלקית:
+\[
+\int_V \left( \frac{\partial u}{\partial t} + \nabla \cdot \vec{J} \right) \, dV = 0
+\]
+מכיוון שהשוויון נכון לכל נפח שרירותי $V$ (אנו יכולים לכווץ את הנפח לנקודה), האינטגרנד חייב להתאפס זהותית.
+
+\begin{resultbox}{משוואת הרצף (Continuity Equation)}
+\[
+\boxed{\frac{\partial u}{\partial t} + \nabla \cdot \vec{J} = 0}
+\]
+משוואה זו היא חוק שימור מקומי: השינוי בצפיפות הגודל (אנרגיה/מסה/מטען) בנקודה שווה לדיברגנץ (ההתבדרות) של השטף באותה נקודה.
+\end{resultbox}
+
+\subsection{חוק פורייה וקבלת משוואת הדיפוזיה}
+
+משוואת הרצף היא משוואה כללית מאוד. כדי לקבל את משוואת הדיפוזיה הספציפית לחום, עלינו להניח שתי הנחות פיזיקליות נוספות ("יחסי מבנה" - \LR{Constitutive Relations}):
+
+\subsubsection{1. קשר בין אנרגיה לטמפרטורה}
+נניח שהשינוי באנרגיה הפנימית נובע בעיקר משינוי בטמפרטורה (הנחה טובה לגזים ומוצקים, פחות לנוזלים דחוסים).
+\[
+u \approx c_v T
+\]
+כאשר $c_v$ הוא קיבול החום הסגולי (ליחידת נפח) ו-$T$ הטמפרטורה.
+לכן: $\frac{\partial u}{\partial t} = c_v \frac{\partial T}{\partial t}$.
+
+\subsubsection{2. חוק פורייה (Fourier's Law)}
+אנו יודעים אינטואיטיבית שחום זורם מאזור חם לאזור קר. הקשר בין שטף החום לגרדיאנט הטמפרטורה הוא לינארי (עבור הפרשי טמפרטורה קטנים):
+
+\begin{definitionbox}{חוק פורייה}
+\[
+\vec{J} = -\kappa \nabla T
+\]
+כאשר:
+\begin{itemize}
+    \item $\kappa$ (\LR{Kappa}): מקדם הולכת החום (\LR{Thermal Conductivity}). יחידות: $[\text{W}\cdot\text{m}^{-1}\cdot\text{K}^{-1}]$.
+    \item הסימן המינוס: מבטיח שהזרימה היא במורד הגרדיאנט (מהחם לקר).
+\end{itemize}
+\end{definitionbox}
+
+\subsubsection{קבלת משוואת הדיפוזיה}
+נציב את שני הקשרים הנ"ל למשוואת הרצף:
+\[
+c_v \frac{\partial T}{\partial t} + \nabla \cdot (-\kappa \nabla T) = 0
+\]
+\[
+c_v \frac{\partial T}{\partial t} = \nabla \cdot (\kappa \nabla T)
+\]
+בהנחה שהחומר הומוגני ($\kappa$ קבוע במרחב) וקיבול החום קבוע:
+\[
+\frac{\partial T}{\partial t} = \frac{\kappa}{c_v} \nabla^2 T
+\]
+
+\begin{resultbox}{משוואת הדיפוזיה (משוואת החום)}
+נסמן את \textbf{מקדם הדיפוזיה} ב-$D = \frac{\kappa}{c_v}$ (יחידות: $[\text{m}^2/\text{s}]$):
+\[
+\boxed{\frac{\partial T}{\partial t} = D \nabla^2 T}
+\]
+\end{resultbox}
+
+\begin{notebox}{משמעות מקדם הדיפוזיה}
+היחידות של $D$ הן $[\text{Length}^2 / \text{Time}]$. זה מרמז שבדיפוזיה, המרחק האופייני שחומר/חום מתפשט גדל כמו \textbf{שורש הזמן} ($x \sim \sqrt{Dt}$), בשונה מתנועה גלית או בליסטית שבה $x \sim vt$. התהליך הוא איטי יותר.
+\end{notebox}
+
+\subsection{פיתוח מיקרוסקופית: הלוך אקראי (Random Walk)}
+
+כעת נפתח את אותה משוואה מתוך שיקולים הסתברותיים, ללא הנחות תרמודינמיות, אלא מתוך מודל של "שיכור" ההולך על סריג.
+
+\textbf{המודל:}
+\begin{itemize}
+    \item סריג חד-ממדי עם מרווחים $L$.
+    \item בכל צעד זמן $\Delta t$, החלקיק זז ימינה בסיכוי $1/2$ או שמאלה בסיכוי $1/2$.
+    \item נגדיר $P(x,t)$: ההסתברות (או הצפיפות) למצוא את החלקיק במיקום $x$ בזמן $t$.
+\end{itemize}
+
+\begin{center}
+\begin{tikzpicture}
+    % Draw lattice line
+    \draw[<->] (-3.5,0) -- (3.5,0);
+    
+    % Draw lattice points
+    \foreach \x in {-2, 0, 2}
+        \draw[fill=black] (\x,0) circle (2pt);
+    
+    % Labels
+    \node[below] at (0,-0.2) {$x$};
+    \node[below] at (-2,-0.2) {$x-L$};
+    \node[below] at (2,-0.2) {$x+L$};
+    
+    % Arrows
+    \draw[->, thick, blue] (-1.8, 0.2) to[bend left] node[midway, above] {$1/2$} (-0.2, 0.2);
+    \draw[->, thick, blue] (1.8, 0.2) to[bend right] node[midway, above] {$1/2$} (0.2, 0.2);
+    
+    \node at (0, 1.5) {\textbf{משוואת המאסטר (Master Equation):}};
+    \node at (0, 1) {$P(x, t+\Delta t) = \frac{1}{2}P(x-L, t) + \frac{1}{2}P(x+L, t)$};
+\end{tikzpicture}
+\end{center}
+
+כדי להגיע למשוואה דיפרנציאלית, נבצע \textbf{גבול הרצף} ($L \to 0, \Delta t \to 0$) באמצעות פיתוח טור טיילור.
+
+\textbf{אגף שמאל (פיתוח בזמן):}
+\[
+P(x, t+\Delta t) \approx P(x,t) + \Delta t \frac{\partial P}{\partial t}
+\]
+
+\textbf{אגף ימין (פיתוח במרחב):}
+נפתח את האיברים $P(x\pm L, t)$ עד סדר שני ב-$L$ (סדר ראשון יתבטל בגלל הסימטריה):
+\[
+P(x\pm L, t) \approx P(x,t) \pm L \frac{\partial P}{\partial x} + \frac{L^2}{2} \frac{\partial^2 P}{\partial x^2}
+\]
+נציב במשוואת המאסטר:
+\begin{align*}
+P + \Delta t \frac{\partial P}{\partial t} &= \frac{1}{2}\left( P - L P_x + \frac{L^2}{2} P_{xx} \right) + \frac{1}{2}\left( P + L P_x + \frac{L^2}{2} P_{xx} \right) \\
+P + \Delta t \frac{\partial P}{\partial t} &= P + 0 + \frac{L^2}{2} \frac{\partial^2 P}{\partial x^2}
+\end{align*}
+נצמצם את $P(x,t)$ משני הצדדים ונחלק ב-$\Delta t$:
+\[
+\frac{\partial P}{\partial t} = \left( \frac{L^2}{2\Delta t} \right) \frac{\partial^2 P}{\partial x^2}
+\]
+
+כדי שהגבול יהיה מוגדר היטב, עלינו לדרוש שהיחס $\frac{L^2}{2\Delta t}$ ישאף לקבוע סופי כאשר $L,\Delta t \to 0$.
+
+\begin{resultbox}{משוואת הדיפוזיה מתוך הלוך אקראי}
+נגדיר את מקדם הדיפוזיה $D = \lim_{L,\Delta t \to 0} \frac{L^2}{2\Delta t}$. נקבל:
+\[
+\frac{\partial P}{\partial t} = D \frac{\partial^2 P}{\partial x^2}
+\]
+\end{resultbox}
+
+\subsection{תכונות בסיסיות של משוואת הדיפוזיה}
+
+\begin{theorembox}{החלקה (Smoothing)}
+בניגוד למשוואת הגלים שמשמרת את צורת הגל, משוואת הדיפוזיה "ממיסה" את הפרופיל ההתחלתי.
+\begin{itemize}
+    \item פיקים חדים דועכים ומתרחבים.
+    \item בזמן $t \to \infty$, הפתרון שואף למצב אחיד (קבוע) או לאפס (תלוי בתנאי השפה).
+    \item אינפורמציה על המצב ההתחלתי המדויק אובדת עם הזמן (תהליך בלתי הפיך, הקשור לעלייה באנטרופיה).
+\end{itemize}
+\end{theorembox}
+
+\subsubsection{חוקי שימור תחת דיפוזיה}
+נסתכל על המסה הכוללת (או האנרגיה הכוללת) במערכת אינסופית חד-ממדית: $M(t) = \int_{-\infty}^{\infty} u(x,t) \, dx$.
+נבדוק את הנגזרת בזמן:
+\[
+\frac{dM}{dt} = \int_{-\infty}^{\infty} \frac{\partial u}{\partial t} \, dx = \int_{-\infty}^{\infty} D \frac{\partial^2 u}{\partial x^2} \, dx = D \left[ \frac{\partial u}{\partial x} \right]_{-\infty}^{\infty}
+\]
+עבור מערכת אינסופית שבה הפונקציה והנגזרת שלה דועכות לאפס בקצוות ($\lim_{x\to\pm\infty} u_x = 0$), נקבל $\frac{dM}{dt} = 0$.
+\textbf{מסקנה:} המסה הכוללת נשמרת.
+
+באופן דומה, ניתן להראות ש\textbf{מרכז המסה} $\langle x \rangle = \frac{1}{M} \int x u \, dx$ נשמר בזמן (לא זז) עבור דיפוזיה סימטרית ללא סחיפה (\LR{Drift}). זה נובע מכך שלכל חלקיק שזז ימינה יש בממוצע חלקיק שזז שמאלה.
+
