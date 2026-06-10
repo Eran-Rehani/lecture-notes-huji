@@ -1,0 +1,516 @@
+%% Lecture 18 -- Effective magnetic charges, linear magnetic media, uniqueness, and forces
+\section{Lecture 18 -- Effective Magnetic Charges, Linear Media, and Forces on Magnetic Matter}\label{sec:lec18}
+
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 07/06/2026 & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+
+\subsection*{Overview}
+
+Lecture 17 reduced a magnetized body to a magnetic scalar potential $\psi_M$ obeying the
+electrostatic Poisson equation $\lapl\psi_M=-4\pi\rho_M$ with $\rho_M=-\divg\bvec{M}$.
+This lecture turns that formal analogy into a working method and then studies the
+materials themselves:
+\begin{itemize}
+  \item complete the proof of the curl form of Gauss's theorem used last time;
+  \item rewrite $\psi_M$ as the potential of \emph{effective volume and surface magnetic
+        charges} $\rho_M=-\divg\bvec{M}$, $\sigma_M=\bvec{M}\cdot\uvec{n}$, and use them
+        as a recipe to solve a uniformly magnetized magnet;
+  \item state the matching conditions on $\bB$ and $\Hvec$ across an interface;
+  \item introduce \emph{linear media} $\bvec{M}=\chi\Hvec$ with permeability
+        $\mu=1+4\pi\chi$ (paramagnets $\chi>0$, diamagnets $\chi<0$);
+  \item prove \emph{uniqueness} of the resulting boundary value problem and deduce that
+        linear media carry no remanent magnetization;
+  \item compute the \emph{force} on linear matter, $\propto\nabla  B^{2}$, explaining why
+        paramagnets are pulled into strong fields and diamagnets expelled;
+  \item begin the microscopic (Langevin) account of diamagnetism.
+\end{itemize}
+
+%------------------------------------------------------------
+\subsection{The Curl Form of Gauss's Theorem}\label{subsec:lec18-curl-gauss}
+
+\subsubsection*{Mathematical Setup}
+In Lecture 17 we converted the curl term of the magnetization vector potential into a
+surface integral using the identity
+\begin{equation}\label{eq:lec18-curl-gauss}
+  \int_V (\nabla\times\bvec{A})\,d^3r=\oint_S \uvec{n}\times\bvec{A}\,d\sigma,
+\end{equation}
+with $\uvec{n}$ the outward normal of $S=\partial V$. It looks unlike the ordinary
+divergence theorem; here we prove it by reducing it to the standard one. The trick is to
+dot \eqref{eq:lec18-curl-gauss} into an \emph{arbitrary constant} vector $\bvec{c}$ and
+to use a vector identity.
+
+\lem[lem:lec18-curl-gauss]{Curl Form of the Divergence Theorem}{
+  For any smooth vector field $\bvec{A}$ on a volume $V$ with boundary $S$ and outward
+  normal $\uvec{n}$,
+  \begin{equation}\label{eq:lec18-curl-gauss-boxed}
+    \boxed{\int_V (\nabla\times\bvec{A})\,d^3r=\oint_S \uvec{n}\times\bvec{A}\,d\sigma.}
+  \end{equation}
+}
+
+\subsubsection*{Proof}
+Let $\bvec{c}$ be a constant vector and dot it into the left-hand side. Since $\bvec{c}$
+is constant it passes inside the integral:
+\begin{equation}\label{eq:lec18-cdot-curl}
+  \bvec{c}\cdot\!\int_V (\nabla\times\bvec{A})\,d^3r
+  =\int_V \bvec{c}\cdot(\nabla\times\bvec{A})\,d^3r.
+\end{equation}
+Use the product identity (an $\varepsilon_{ijk}$ one-liner)
+\begin{equation}\label{eq:lec18-vec-identity}
+  \divg(\bvec{A}\times\bvec{c})
+  =\bvec{c}\cdot(\nabla\times\bvec{A})-\bvec{A}\cdot(\nabla\times\bvec{c}).
+\end{equation}
+Because $\bvec{c}$ is constant, $\nabla\times\bvec{c}=0$ and the last term drops, so
+$\bvec{c}\cdot(\nabla\times\bvec{A})=\divg(\bvec{A}\times\bvec{c})$. Therefore
+\begin{equation}\label{eq:lec18-apply-divthm}
+  \int_V \bvec{c}\cdot(\nabla\times\bvec{A})\,d^3r
+  =\int_V \divg(\bvec{A}\times\bvec{c})\,d^3r
+  =\oint_S (\bvec{A}\times\bvec{c})\cdot\uvec{n}\,d\sigma,
+\end{equation}
+the last step being the ordinary divergence theorem applied to the vector
+$\bvec{A}\times\bvec{c}$. The integrand is a scalar triple product; cycling it,
+\begin{equation}\label{eq:lec18-cyclic}
+  (\bvec{A}\times\bvec{c})\cdot\uvec{n}
+  =\bvec{c}\cdot(\uvec{n}\times\bvec{A}),
+\end{equation}
+so that
+\begin{equation}\label{eq:lec18-cancel-c}
+  \bvec{c}\cdot\!\int_V (\nabla\times\bvec{A})\,d^3r
+  =\bvec{c}\cdot\!\oint_S (\uvec{n}\times\bvec{A})\,d\sigma.
+\end{equation}
+Since $\bvec{c}$ is an \emph{arbitrary} constant vector, the two vectors it multiplies
+must be equal, which is \eqref{eq:lec18-curl-gauss-boxed}. $\blacksquare$
+
+\nt{The pattern ``dot into a constant $\bvec{c}$, reduce to the standard divergence
+theorem, then strip $\bvec{c}$'' generates a whole family of integral theorems
+($\int\nabla \phi\,d^3r=\oint\phi\,\uvec{n}\,d\sigma$, etc.) from the single divergence
+theorem.}
+
+%------------------------------------------------------------
+\subsection{Effective Magnetic Charges}\label{subsec:lec18-magnetic-charges}
+
+\subsubsection*{Mathematical Setup}
+Start from the magnetic scalar potential of Lecture 17,
+\begin{equation}\label{eq:lec18-psi-start}
+  \psi_M(\br)=\int d^3r'\,
+  \frac{\bvec{M}(\br')\cdot(\br-\br')}{|\br-\br'|^3}
+  =\int d^3r'\,\bvec{M}(\br')\cdot\nabla'\frac{1}{|\br-\br'|},
+\end{equation}
+where in the second form we used
+$\nabla'|\br-\br'|^{-1}=(\br-\br')/|\br-\br'|^3$ (the primed gradient acts on $\br'$).
+Now run the same product-rule manipulation as for the bound currents, but with a
+\emph{divergence} instead of a curl. Write
+\begin{equation}\label{eq:lec18-product}
+  \divg'\!\left(\frac{\bvec{M}}{|\br-\br'|}\right)
+  =\bvec{M}\cdot\nabla'\frac{1}{|\br-\br'|}
+  +\frac{\divg'\bvec{M}}{|\br-\br'|},
+\end{equation}
+so the integrand of \eqref{eq:lec18-psi-start} becomes
+\begin{equation}\label{eq:lec18-integrand}
+  \bvec{M}\cdot\nabla'\frac{1}{|\br-\br'|}
+  =\divg'\!\left(\frac{\bvec{M}}{|\br-\br'|}\right)
+  -\frac{\divg'\bvec{M}}{|\br-\br'|}.
+\end{equation}
+Integrating over the body and turning the first (total-divergence) term into a surface
+integral by the ordinary divergence theorem,
+\begin{equation}\label{eq:lec18-psi-split}
+  \boxed{\psi_M(\br)
+  =\oint_S \frac{\bvec{M}(\br')\cdot\uvec{n}}{|\br-\br'|}\,d\sigma'
+  +\int_V \frac{-\divg'\bvec{M}(\br')}{|\br-\br'|}\,d^3r'.}
+\end{equation}
+\textit{Significance:} $\psi_M$ is literally the electrostatic potential of a surface
+charge $\sigma_M=\bvec{M}\cdot\uvec{n}$ plus a volume charge $\rho_M=-\divg\bvec{M}$; the
+magnetic problem is now an electrostatics problem.
+
+\dfn[dfn:lec18-eff-charges]{Effective Magnetic Charges}{
+  In a region with no free currents the magnetized body is equivalent, for the purpose
+  of computing $\Hvec=-\nabla \psi_M$, to the fictitious charge densities
+  \begin{equation}\label{eq:lec18-eff-charges}
+    \boxed{\rho_M=-\divg\bvec{M}\quad(\text{volume}),
+    \qquad
+    \sigma_M=\bvec{M}\cdot\uvec{n}\quad(\text{surface}).}
+  \end{equation}
+}
+\textit{Significance:} These are bookkeeping sources only -- there are no magnetic
+monopoles -- but every electrostatic technique (images, separation of variables,
+multipole expansion) transfers directly to magnetostatics through them. They are the
+magnetic mirror of the bound charges $\rho_b=-\divg\bvec{P}$, $\sigma_b=\bvec{P}\cdot\uvec{n}$
+of a dielectric.
+
+\nt{The same physics also has a \emph{current} description from Lecture 17,
+$\Jvec_M=c\,\nabla\times\bvec{M}$ and $\bvec{K}_M=c\,\bvec{M}\times\uvec{n}$. The two
+pictures (effective charges vs.\ bound currents) are completely equivalent; which is
+easier is a matter of symmetry and convenience, exactly like choosing a coordinate
+system.}
+
+\subsubsection*{Worked Recipe: the Uniformly Magnetized Magnet}
+Consider a permanent magnet -- take a cylinder of height $h$ and radius $a$ -- with
+\emph{uniform} magnetization $\bvec{M}=M\uvec{z}$ along its axis, sitting in vacuum with
+no free currents. We want $\bB$ everywhere.
+
+\ex[ex:lec18-bar-magnet]{Uniformly Magnetized Cylinder}{
+  Because $\bvec{M}$ is constant, $\rho_M=-\divg\bvec{M}=0$: there is \emph{no} volume
+  charge. The only sources are surface charges $\sigma_M=\bvec{M}\cdot\uvec{n}=M\,(\uvec{z}\cdot\uvec{n})$:
+  \begin{itemize}
+    \item \textbf{top cap} ($\uvec{n}=+\uvec{z}$): $\sigma_M=+M$;
+    \item \textbf{bottom cap} ($\uvec{n}=-\uvec{z}$): $\sigma_M=-M$;
+    \item \textbf{side wall} ($\uvec{n}\perp\uvec{z}$): $\sigma_M=0$.
+  \end{itemize}
+  Solve the \emph{electrostatics} of these two charged disks for the potential
+  $\psi_M(\br)$ (an ordinary $\sigma/|\br-\br'|$ integral), then
+  \begin{equation}\label{eq:lec18-recipe}
+    \Hvec=-\nabla \psi_M,
+    \qquad
+    \bB=\Hvec+4\pi\bvec{M}.
+  \end{equation}
+  Outside the magnet $\bvec{M}=0$, so $\bB=\Hvec$; inside they differ by the uniform
+  $4\pi\bvec{M}$. Because $\bvec{M}$ is constant the addition is trivial, and the field
+  is obtained in all of space.
+}
+\textit{Significance:} A magnet with uniform $\bvec{M}$ produces exactly the $\Hvec$-field
+of two oppositely charged disks -- the magnetic ``north'' and ``south'' poles are the
+$\pm\sigma_M$ caps.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[>=Stealth, thick, scale=1.0]
+  % the magnet body
+  \draw[rounded corners=1pt, fill=blue!6] (-0.9,-1.6) rectangle (0.9,1.6);
+  % magnetization arrow
+  \draw[->, red!70!black, line width=1.2pt] (0,-1.0) -- (0,1.0)
+    node[midway, right] {$\bvec{M}=M\uvec{z}$};
+  % top positive charges
+  \node at (-0.55,1.35) {$+$}; \node at (-0.18,1.35) {$+$};
+  \node at (0.18,1.35) {$+$};  \node at (0.55,1.35) {$+$};
+  \node[above] at (0,1.6) {$\sigma_M=+M$};
+  % bottom negative charges
+  \node at (-0.55,-1.35) {$-$}; \node at (-0.18,-1.35) {$-$};
+  \node at (0.18,-1.35) {$-$};  \node at (0.55,-1.35) {$-$};
+  \node[below] at (0,-1.6) {$\sigma_M=-M$};
+  % side label
+  \node[right, gray] at (0.9,0) {$\sigma_M=0$};
+  % axis
+  \draw[->, gray] (1.9,-1.6) -- (1.9,1.7) node[above] {$z$};
+\end{tikzpicture}
+\caption{A uniformly magnetized cylinder. Since $\divg\bvec{M}=0$ there is no volume
+magnetic charge; the equivalent electrostatic problem has surface charge
+$\sigma_M=\bvec{M}\cdot\uvec{n}=\pm M$ only on the caps and zero on the side wall.}
+\label{fig:lec18-bar-magnet}
+\end{figure}
+
+%------------------------------------------------------------
+\subsection{Boundary Conditions for $\bB$ and $\Hvec$}\label{subsec:lec18-bc}
+
+\subsubsection*{Conceptual Background}
+When a problem has two regions (two materials, or matter and vacuum) one solves the
+field equations in each region and stitches the solutions together at the interface. The
+matching conditions follow from the two field laws exactly as in electrostatics.
+
+\paragraph{Normal $\bB$ is continuous.}
+From $\divg\bB=0$ (exact -- no magnetic monopoles) apply the divergence theorem to a
+thin Gaussian pillbox straddling the interface; as its height $\to0$ the flux through the
+rim vanishes and only the two faces survive, forcing
+\begin{equation}\label{eq:lec18-Bperp}
+  \boxed{B^{\perp}_{1}=B^{\perp}_{2}.}
+\end{equation}
+\textit{Significance:} The component of $\bB$ normal to any interface never jumps,
+regardless of currents.
+
+\paragraph{Tangential $\Hvec$ is continuous (absent free surface currents).}
+From $\nabla\times\Hvec=(4\pi/c)\Jvec_{\rm f}$, run a thin Stokesian loop across the
+interface. The circulation equals the enclosed free current. A \emph{volume} free
+current $\Jvec_{\rm f}$ gives a flux that vanishes as the loop is squeezed onto the
+surface; only a \emph{free surface current} $\bvec{K}_{\rm f}$ survives. Hence, if
+$\bvec{K}_{\rm f}=0$,
+\begin{equation}\label{eq:lec18-Hpar}
+  \boxed{H^{\parallel}_{1}=H^{\parallel}_{2}\qquad(\bvec{K}_{\rm f}=0).}
+\end{equation}
+\textit{Significance:} The tangential $\Hvec$ jumps \emph{only} where a genuine free
+sheet current flows on the surface -- the magnetic analogue of how the tangential $\bE$
+(here the normal field) jumps only at a surface charge. Bound/volume currents never cause
+a jump because their enclosed flux shrinks with the loop.
+
+\nt{There is no boundary condition on $\divg\Hvec$ and no general jump condition built
+from it: we have a formula for $\nabla\times\Hvec$ but the ``source'' $-4\pi\divg\bvec{M}$
+of $\Hvec$ is internal to the matter. Use $B^{\perp}$ continuous and $H^{\parallel}$
+continuous as the working pair.}
+
+%------------------------------------------------------------
+\subsection{Linear Magnetic Media}\label{subsec:lec18-linear}
+
+\subsubsection*{Physical Motivation}
+So far $\bvec{M}$ was \emph{given}. The more common physical situation is the opposite:
+an initially unmagnetized material is placed in an external field, it magnetizes, and the
+induced $\bvec{M}$ in turn modifies the field around it. In general $\bvec{M}=\bvec{M}(\bB)$
+is a self-consistent unknown, and the system
+\begin{equation}\label{eq:lec18-system}
+  \divg\bB=0,\qquad
+  \nabla\times\Hvec=\frac{4\pi}{c}\Jvec_{\rm f},\qquad
+  \bB=\Hvec+4\pi\bvec{M}
+\end{equation}
+is not closed until the constitutive relation $\bvec{M}(\Hvec)$ is supplied.
+
+\dfn[dfn:lec18-linear]{Linear Media: Susceptibility and Permeability}{
+  A \emph{linear} material (paramagnet or diamagnet) obeys
+  \begin{equation}\label{eq:lec18-MchiH}
+    \boxed{\bvec{M}=\chi\,\Hvec,}
+  \end{equation}
+  with $\chi$ the \emph{magnetic susceptibility} (an intrinsic material constant, possibly
+  position-dependent in an inhomogeneous body). Substituting into $\bB=\Hvec+4\pi\bvec{M}$,
+  \begin{equation}\label{eq:lec18-BmuH}
+    \boxed{\bB=(1+4\pi\chi)\Hvec\equiv\mu\,\Hvec,
+    \qquad
+    \mu=1+4\pi\chi,}
+  \end{equation}
+  where $\mu$ is the \emph{magnetic permeability}.
+}
+\textit{Significance:} The single constant $\mu$ closes the system
+\eqref{eq:lec18-system}; the whole response of the material is encoded in it.
+
+The sign of $\chi$ classifies the material:
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lll}
+  \toprule
+  $\chi>0$ & paramagnet & $\mu>1$ \\
+  $\chi<0$ & diamagnet & $\mu<1$ \\
+  $\chi=0$ & vacuum & $\mu=1$ \\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\nt{Every material responds to a magnetic field -- there is no truly ``non-magnetic''
+matter. Everyday ``non-magnetic'' objects are simply dia/paramagnets with extremely weak
+$\chi$: for diamagnets $\chi\sim10^{-10}$ (order of magnitude), so $\mu$ sits
+extraordinarily close to $1$. Gold, for instance, is diamagnetic but its response is
+invisible to ordinary magnets. Linearity itself is special: ferromagnets are nonlinear
+and hysteretic, and the linear law is at best a weak-field approximation there.}
+
+%------------------------------------------------------------
+\subsection{Uniqueness of the Boundary Value Problem}\label{subsec:lec18-uniqueness}
+
+\subsubsection*{Mathematical Setup}
+With $\mu$ given, the system \eqref{eq:lec18-system} is closed. We show its solution is
+\emph{unique}: given the free currents and the material data, there is at most one field.
+Suppose two solutions $(\bB_1,\Hvec_1)$ and $(\bB_2,\Hvec_2)$ exist and form the
+difference
+\begin{equation}\label{eq:lec18-diff}
+  \bB'=\bB_1-\bB_2,\qquad \Hvec'=\Hvec_1-\Hvec_2.
+\end{equation}
+Subtracting the two copies of \eqref{eq:lec18-system}, and using
+$\bB_i=\mu\Hvec_i$, the difference satisfies the \emph{source-free} system
+\begin{equation}\label{eq:lec18-diff-system}
+  \divg\bB'=0,\qquad \nabla\times\Hvec'=0,\qquad \bB'=\mu\,\Hvec'.
+\end{equation}
+
+\subsubsection*{The Energy Argument}
+Since $\nabla\times\Hvec'=0$, there is a potential $\Hvec'=-\nabla \psi'$. Consider the
+positive-looking quantity $\mu\,|\Hvec'|^2=\bB'\cdot\Hvec'$ and rewrite it as a
+divergence. Using $\Hvec'=-\nabla \psi'$,
+\begin{equation}\label{eq:lec18-BdotH}
+  \bB'\cdot\Hvec'=-\bB'\cdot\nabla \psi'
+  =-\divg(\psi'\bB')+\psi'\,\divg\bB'
+  =-\divg(\psi'\bB'),
+\end{equation}
+because $\divg\bB'=0$. Integrate over all space and convert to a surface integral over a
+large sphere $S_R$ of radius $R$:
+\begin{equation}\label{eq:lec18-integral}
+  \int_{\text{all space}}\mu\,|\Hvec'|^2\,d^3r
+  =-\oint_{S_R}\psi'\,\bB'\cdot\uvec{n}\,d\sigma.
+\end{equation}
+For sources confined to a finite region the fields fall off at least as fast as those of
+a dipole: $\psi'\sim 1/R^2$ and $B'\sim1/R^3$ (even a hypothetical monopole would give
+$\psi'\sim1/R$, $B'\sim1/R^2$, i.e.\ integrand $\sim1/R^3$). Since the area grows only as
+$R^2$, the surface term vanishes as $R\to\infty$:
+\begin{equation}\label{eq:lec18-zero}
+  \boxed{\int_{\text{all space}}\mu\,|\Hvec'|^2\,d^3r=0.}
+\end{equation}
+\textit{Significance:} The total ``energy'' of the difference field is forced to zero by
+the boundary behaviour alone.
+
+\subsubsection*{Conclusion}
+For the materials we treat $\mu>0$ everywhere (paramagnets have $\chi>0$ so $\mu>1$;
+diamagnets have tiny $|\chi|$ so $\mu\lesssim1$ stays positive). Then the integrand
+$\mu|\Hvec'|^2\ge0$, and a non-negative integrand with zero integral must vanish
+pointwise:
+\begin{equation}\label{eq:lec18-Hprime-zero}
+  \Hvec'=0\ \Rightarrow\ \bB'=\mu\Hvec'=0
+  \ \Rightarrow\ (\bB_1,\Hvec_1)=(\bB_2,\Hvec_2).
+\end{equation}
+The solution is unique. $\blacksquare$
+
+\begin{remark}
+The argument needs $\mu>0$, which is why it covers ordinary matter:
+$\mu=1+4\pi\chi$ with $|\chi|\ll1$ sits just above (paramagnets) or just below
+(diamagnets) unity. Nothing in the magnetostatic equations \emph{forbids} a strongly
+negative $\chi$; the bound $\chi>-1/4\pi$ (so $\mu>0$) is a \emph{thermodynamic}
+stability requirement, not an electromagnetic one. The extreme case
+$\chi=-\tfrac{1}{4\pi}$ gives $\mu=0$, i.e.\ $\bB=\mu\Hvec=0$ inside the material: this is
+the \emph{ideal diamagnet} -- a superconductor expelling all flux (the Meissner effect of
+Lecture 16). Genuine $\mu<0$ media are exotic and unstable, so for every material we treat
+$\mu>0$ and uniqueness holds.
+\end{remark}
+
+\cor[cor:lec18-no-remanence]{No Remanent Magnetization in Linear Media}{
+  With no free currents ($\Jvec_{\rm f}=0$) the full system \eqref{eq:lec18-system}
+  coincides with the source-free difference system \eqref{eq:lec18-diff-system}, whose
+  unique solution is $\bB=\Hvec=0$, hence $\bvec{M}=\chi\Hvec=0$. A linear material left
+  to itself carries \emph{no} field.
+}
+\textit{Significance:} Magnetization of a linear medium exists only while an external
+source is on. Switch the free currents on, they induce $\bvec{M}$; switch them off and
+$\bvec{M}$ disappears. This is exactly what distinguishes linear media from ferromagnets,
+where the $\bvec{M}(\Hvec)$ relation is different and magnetization \emph{remains} after
+the external field is removed (permanent magnets).
+
+%------------------------------------------------------------
+\subsection{Force on Linear Magnetic Matter}\label{subsec:lec18-force}
+
+\subsubsection*{Physical Motivation}
+A magnetic dipole $\bmu$ in a field has potential energy $U=-\bmu\cdot\bB$ and feels a
+force $\bvec{F}=-\nabla  U=\nabla (\bmu\cdot\bB)$ (for $\bmu$ held fixed). For a piece of
+linear matter the moment is itself induced by the field, $\bmu\propto\bB$, and the energy
+acquires a compensating factor of $\tfrac12$ -- exactly as the electrostatic energy
+$\tfrac12\int\rho\phi$ carries a $\tfrac12$ to avoid double-counting the
+self-interaction.
+
+\subsubsection*{Force Density}
+Work with the force per unit volume. Using $\bvec{M}=\chi\Hvec$ and $\Hvec=\bB/\mu$, the
+$i$-th component of the force density is
+\begin{equation}\label{eq:lec18-fdensity-step}
+  f_i=M_j\,\partial_i B_j
+  =\frac{\chi}{\mu}\,B_j\,\partial_i B_j
+  =\frac{\chi}{2\mu}\,\partial_i\!\left(B_j B_j\right)
+  =\frac{\chi}{2\mu}\,\partial_i B^{2}.
+\end{equation}
+Here $B^2=\bB\cdot\bB$ is the \emph{total} field at the material element (this is where
+the $\tfrac12$ of the energy argument is automatically reproduced: writing the induced
+moment through $\bB$ counts the same energy twice, which the $\tfrac12$ corrects).
+In vector form, for constant $\chi,\mu$,
+\begin{equation}\label{eq:lec18-force-boxed}
+  \boxed{\bvec{f}=\nabla \!\left(\frac{\chi}{2\mu}\,B^{2}\right)
+  =-\nabla  U,\qquad
+  U=-\frac{\chi}{2\mu}\,B^{2}.}
+\end{equation}
+\textit{Significance:} The force on linear matter is a gradient of $B^2$; its sign is set
+by $\chi$, so paramagnets ($\chi>0$) and diamagnets ($\chi<0$) move oppositely. A uniform
+field exerts \emph{no} net force ($\nabla  B^2=0$).
+
+\subsubsection*{Para- vs.\ Diamagnets}
+Because $\nabla  B^2$ points toward stronger field:
+\begin{itemize}
+  \item \textbf{Paramagnet} ($\chi>0$): $\bvec{f}$ points up the gradient -- the sample is
+        pulled \emph{into} regions of strong field, i.e.\ it sticks to the pole of a
+        magnet.
+  \item \textbf{Diamagnet} ($\chi<0$): $\bvec{f}$ points down the gradient -- the sample
+        is pushed \emph{out} toward weak field, i.e.\ it is repelled by a magnet.
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[>=Stealth, thick, scale=1.0]
+  % field gradient region: dense lines on the left (strong), sparse on the right (weak)
+  \foreach \x/\op in {0/100, 0.5/80, 1.1/55, 1.8/35, 2.7/20} {
+    \draw[blue!\op!gray] (\x,-1.3) -- (\x,1.3);
+  }
+  \node[blue!70!black] at (0.2,1.6) {strong $B$};
+  \node[gray] at (2.7,1.6) {weak $B$};
+  % gradient direction
+  \draw[->, thick] (3.4,0) -- (4.2,0) node[right] {$\nabla  B^2$};
+  % paramagnet pulled toward strong field
+  \filldraw[red!25] (1.9,0.5) circle (0.18);
+  \draw[->, red!70!black, line width=1pt] (1.7,0.5) -- (1.0,0.5);
+  \node[red!70!black, right] at (1.95,0.5) {para ($\chi>0$)};
+  % diamagnet pushed toward weak field
+  \filldraw[green!25] (1.0,-0.6) circle (0.18);
+  \draw[->, green!50!black, line width=1pt] (1.2,-0.6) -- (1.9,-0.6);
+  \node[green!50!black, right] at (1.95,-0.6) {dia ($\chi<0$)};
+\end{tikzpicture}
+\caption{In an inhomogeneous field a paramagnet is drawn toward strong field (up the
+$\nabla  B^2$) while a diamagnet is expelled toward weak field. A uniform field produces no
+net force.}
+\label{fig:lec18-para-dia}
+\end{figure}
+
+\nt{The everyday analogue is electrostatic: a scrap of paper (a dielectric, effective
+$\chi>0$, ``like a paramagnet'') is drawn toward the strong field near a statically
+charged garment, because the field induces dipoles and the polarized scrap is pulled into
+the strong-field region -- the same $\nabla (\text{field})^2$ mechanism.}
+
+%------------------------------------------------------------
+\subsection{Microscopic Origin of Diamagnetism (Begun)}\label{subsec:lec18-diamagnetism}
+
+\subsubsection*{Physical Motivation}
+Where do $\chi$ and its sign come from? We sketch the classical (Langevin) picture of
+\emph{diamagnetism}, which arises from the \emph{orbital} motion of atomic electrons; the
+spin contribution drives paramagnetism and is set aside here. Consider a gas of atoms,
+each carrying orbital angular momentum $\bvec{L}$.
+
+\subsubsection*{Larmor Precession}
+Switching on a field $\bB$ (uniform on atomic scales) exerts a torque on the atomic moment
+$\bmu=\dfrac{e}{2m_ec}\bvec{L}$, so
+\begin{equation}\label{eq:lec18-torque}
+  \frac{d\bvec{L}}{dt}=\bmu\times\bB
+  =\frac{e}{2m_ec}\,\bvec{L}\times\bB
+  =\boldsymbol{\omega}\times\bvec{L},
+\end{equation}
+which is the equation of \emph{precession} of $\bvec{L}$ about $\bB$ at the Larmor
+frequency
+\begin{equation}\label{eq:lec18-larmor}
+  \boxed{\boldsymbol{\omega}=-\frac{e}{2m_ec}\,\bB.}
+\end{equation}
+\textit{Significance:} Every atomic moment precesses rigidly about $\bB$ at a single,
+field-proportional rate $\omega$; since the electron charge is negative, $\boldsymbol{\omega}$
+points along $\bB$.
+
+\subsubsection*{Induced Moment}
+The precession adds, on top of the orbital motion, a common circulation: each electron
+$n$ acquires an extra velocity
+\begin{equation}\label{eq:lec18-deltav}
+  \Delta\bvec{v}_n=\boldsymbol{\omega}\times\br_n,
+\end{equation}
+hence an extra current density and an extra magnetic moment. With
+$\Delta\Jvec=\sum_n e\,\Delta\bvec{v}_n\,\delta^{(3)}(\br-\br_n)$ and
+$\Delta\bmu=\tfrac{1}{2c}\int \br\times\Delta\Jvec\,d^3r$, the $\delta$-functions collapse
+the integral to
+\begin{equation}\label{eq:lec18-deltamu}
+  \Delta\bmu=\frac{e}{2c}\sum_{n}\br_n\times\bigl(\boldsymbol{\omega}\times\br_n\bigr).
+\end{equation}
+\textit{Significance:} The induced moment is quadratic in the geometry and (through
+$\boldsymbol{\omega}\propto\bB$) linear in $\bB$, and it opposes $\bB$ -- the seed of a
+\emph{negative} susceptibility. Completing the average over the precession and summing
+over atoms per unit volume to extract $\chi$ is left for next lecture.
+
+\nt{This derivation needs the \emph{orbital} angular momentum: spin also precesses, but
+spin is not the circulation of charge, so it does not generate the velocity
+\eqref{eq:lec18-deltav}. Spin instead underlies paramagnetism. The next lecture averages
+$\Delta\bmu$ over the precession, sums over atoms, reads off $\chi$, and estimates its
+(tiny) magnitude.}
+
+%------------------------------------------------------------
+\subsection{Summary}\label{subsec:lec18-summary}
+
+\begin{itemize}
+  \item The curl form of Gauss's theorem,
+        $\int_V\nabla\times\bvec{A}\,d^3r=\oint_S\uvec{n}\times\bvec{A}\,d\sigma$, follows
+        from the divergence theorem by dotting with a constant vector.
+  \item $\psi_M$ is the electrostatic potential of effective magnetic charges
+        $\rho_M=-\divg\bvec{M}$ (volume) and $\sigma_M=\bvec{M}\cdot\uvec{n}$ (surface);
+        a uniform magnet has charges only on the caps perpendicular to $\bvec{M}$.
+  \item Matching conditions: $B^{\perp}$ always continuous; $H^{\parallel}$ continuous
+        unless a free surface current $\bvec{K}_{\rm f}$ flows.
+  \item Linear media: $\bvec{M}=\chi\Hvec$, $\bB=\mu\Hvec$, $\mu=1+4\pi\chi$;
+        $\chi>0$ paramagnet, $\chi<0$ diamagnet, $\chi=0$ vacuum.
+  \item The magnetostatic BVP for $\mu>0$ has a unique solution
+        ($\int\mu|\Hvec'|^2=0\Rightarrow\Hvec'=0$); consequently linear media keep no
+        magnetization without external currents, unlike ferromagnets.
+  \item Force on linear matter $\bvec{f}=\nabla \!\bigl(\tfrac{\chi}{2\mu}B^2\bigr)$:
+        paramagnets are pulled into strong field, diamagnets expelled to weak field.
+  \item Diamagnetism originates in Larmor precession
+        $\boldsymbol{\omega}=-\tfrac{e}{2m_ec}\bB$ of orbital electrons, giving an induced
+        moment $\Delta\bmu=\tfrac{e}{2c}\sum_n\br_n\times(\boldsymbol{\omega}\times\br_n)$
+        opposing $\bB$ -- to be completed next lecture.
+\end{itemize}

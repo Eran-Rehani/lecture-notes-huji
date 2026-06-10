@@ -1,0 +1,606 @@
+%%═══════════════════════════════════════════════════════════════════
+%% Lecture 09 — Beta Decay: Fermi Theory, Spectrum, Selection Rules & Neutrinos
+%% 77603 — Nuclear Physics
+%% Date: 9 June 2026
+%% Lecturer: Dr. Moshe Friedman
+%%═══════════════════════════════════════════════════════════════════
+
+\section{Lecture 09 — Beta Decay: Fermi Theory, Spectrum \& Neutrinos}
+\label{sec:lec09}
+
+\noindent\textbf{\textcolor{doc}{Lecture date: 9 June 2026}}\quad\textemdash\quad
+\textit{Lecturer: Dr.\ Moshe Friedman.}
+
+%%───────────────────────────────────────────────────────────────────
+\subsection*{Overview}
+%%───────────────────────────────────────────────────────────────────
+Having treated $\alpha$ decay in Lecture~8, we now turn to the second great decay
+channel: \emph{beta decay}, the manifestation of the \emph{weak interaction} in
+nuclei. The lecture builds the \emph{Fermi theory} of $\beta$ decay (1933) from
+the ground up: starting again from Fermi's golden rule, we factorise the
+transition rate into a weak coupling, a nuclear matrix element, and a
+\emph{lepton phase-space} factor. Counting the available states of the emitted
+electron and antineutrino reproduces the characteristic \emph{continuous} $\beta$
+spectrum $N(p)\propto p^2(Q-T_e)^2$ --- historically the very anomaly that forced
+Pauli to postulate the neutrino. We then add the Coulomb correction (the Fermi
+function), define the experimentally central quantity $ft_{1/2}$ and its logarithm
+$\log ft$, classify transitions (Fermi, Gamow--Teller, forbidden, super-allowed)
+via selection rules, and close with three landmark pieces of neutrino physics:
+the endpoint measurement of the neutrino mass, neutrino helicity, and the solar
+neutrino problem as evidence for neutrino oscillations (hence mass). A brief
+statement of the $\gamma$-decay multipole selection rules and a real
+$\nucleus{Al}{23}$ decay-spectroscopy study tie the chapter together.
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{The Three Modes of Beta Decay and the Valley of Stability}
+\label{subsec:lec09:modes}
+%%═══════════════════════════════════════════════════════════════════
+
+\subsubsection*{Physical Motivation}
+On the chart of nuclides, stable isotopes trace a narrow curved band --- the
+\emph{valley (or line) of stability}. Think of it \emph{topographically}: the
+binding-energy landscape is a wadi (a dry riverbed). A nucleus off the floor of
+the valley ``rolls downhill'' toward stability, but it can only move \emph{along}
+isobaric ($A=\text{const}$) chains, never across them, because the decays that
+drive it conserve mass number. The agent that walks a nucleus diagonally back
+into the valley is \emph{beta decay}.
+
+\dfn[dfn:lec09:betamodes]{The Three Beta Decay Modes}{%
+All three conserve mass number $A$ and shift the nucleus by one unit in $Z$:
+\begin{align}
+  \beta^- &: \quad n \to p + e^- + \bar\nu_e,
+     &(Z,N)&\to(Z+1,\,N-1), \label{eq:lec09:betaminus}\\
+  \beta^+ &: \quad p \to n + e^+ + \nu_e,
+     &(Z,N)&\to(Z-1,\,N+1), \label{eq:lec09:betaplus}\\
+  \text{EC} &: \quad p + e^- \to n + \nu_e,
+     &(Z,N)&\to(Z-1,\,N+1). \label{eq:lec09:ec}
+\end{align}}
+Here $\beta^-$ acts on the neutron-rich (right) flank of the valley, $\beta^+$ on
+the proton-rich (left) flank. \emph{Electron capture} (EC) absorbs an
+\emph{atomic} inner-shell electron --- one that spends part of its time inside
+the nucleus --- and yields the same nuclear daughter as $\beta^+$.
+
+\subsubsection*{Conceptual Background --- Conservation Laws}
+A bare $n\to p$ conversion would violate charge conservation, so a charged lepton
+must accompany it; and a bare $n\to p+e^-$ would violate \emph{lepton number}
+conservation, so a neutral lepton (a neutrino) is also required. Assigning
+lepton number $L=+1$ to leptons ($e^-,\nu$) and $L=-1$ to antileptons
+($e^+,\bar\nu$):
+\begin{equation}
+  \label{eq:lec09:conservation}
+  \boxed{\Delta Q = 0 \quad\text{(charge)}, \qquad \Delta L = 0 \quad\text{(lepton number)}.}
+\end{equation}
+\textit{Significance:} these two bookkeeping rules \emph{alone} dictate which
+neutral lepton appears --- a $\bar\nu_e$ accompanies the $e^-$ in $\beta^-$, while
+a $\nu_e$ accompanies the $e^+$ in $\beta^+$ and the absorbed $e^-$ in EC.
+
+\nt{There are \emph{three generations} of leptons, $e,\mu,\tau$, each with its own
+neutrino $\nu_e,\nu_\mu,\nu_\tau$. Nuclear $\beta$ decay involves only the
+electronic flavour, so throughout we write simply $\nu,\bar\nu$ for
+$\nu_e,\bar\nu_e$.}
+
+\subsubsection*{Why $\beta$ Dominates Over $\alpha$ Off the Heavy Corner}
+$\alpha$ decay moves a nucleus two steps down and two left ($\Delta Z=-2$,
+$\Delta N=-2$) --- also diagonally toward the valley --- but is favoured only at
+very high $A$. Elsewhere $\beta$ decay dominates because (i) for $\beta^-$ there
+is \emph{no Coulomb barrier} (the emitted electron is attracted, not repelled, by
+the daughter), and (ii) the leptons do not feel the strong force that confines
+nucleons, so the process is intrinsically simpler and proceeds whenever it is
+energetically allowed. Astrophysically, violent neutron-rich environments
+(supernovae, neutron-star mergers, the $r$-process) and reactor fission both
+create nuclei far from stability that then $\beta$-decay back --- making
+$\beta$-decay theory central to nucleosynthesis and reactor design.
+
+\paragraph{$\beta^+$ versus EC --- an energetics argument.}
+$\beta^+$ and EC give the \emph{same} nuclear daughter, so which wins? The
+decisive point is the rest-mass budget. In $\beta^+$ a positron must be
+\emph{created from nothing} ($+m_ec^2$) \emph{and} the captured/lost electron must
+be accounted for ($+m_ec^2$ relative to EC, which instead \emph{consumes} an
+already-present electron). Hence $\beta^+$ costs about
+\begin{equation}
+  \label{eq:lec09:bplus_vs_ec}
+  \boxed{Q_{\beta^+} = Q_{\text{EC}} - 2m_ec^2,
+  \qquad 2m_ec^2 = 1.022\,\text{MeV}.}
+\end{equation}
+\textit{Significance:} EC is \emph{always} open if $\beta^+$ is, but not
+conversely --- a nucleus may have just enough energy for EC yet too little
+($<1.022$~MeV margin) for $\beta^+$. This is why chart entries often list a
+combined symbol $\varepsilon$ (EC) or $\varepsilon/\beta^+$ as competing channels
+on the proton-rich side. EC is harder to detect (only an X-ray from the refilling
+atomic shell), whereas $\beta^+$ ejects a measurable positron.
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{Fermi Theory: Golden Rule and the Matrix Element}
+\label{subsec:lec09:fermi_theory}
+%%═══════════════════════════════════════════════════════════════════
+
+\subsubsection*{Conceptual Background}
+\emph{Fermi theory} (mid-1930s) predates and is not fully consistent with the
+modern Standard Model, but it is more than adequate for nuclear physics. As in
+Lecture~8 we start from \emph{Fermi's golden rule} for the decay constant,
+\begin{equation}
+  \label{eq:lec09:fgr}
+  \lambda = \frac{2\pi}{\hbar}\,|V_{fi}|^2\,\rho(E_f),
+\end{equation}
+and our task is to evaluate the two factors --- the transition matrix element
+$V_{fi}$ and the density of final states $\rho(E_f)$ --- for the specific case
+where the final state contains the daughter nucleus \emph{plus} a created
+electron and antineutrino.
+
+\subsubsection*{Mathematical Setup --- the Transition Matrix Element}
+By definition $V_{fi}=\int \psi_f^* \,V\, \psi_i\,dV$. Fermi's ansatz writes the
+weak interaction as a point ``contact'' coupling of strength $G$, with the final
+state a product of three wavefunctions --- daughter nucleus, electron,
+antineutrino:
+\begin{equation}
+  \label{eq:lec09:Vfi}
+  V_{fi} = G\!\int \psi_f^{*}\,\phi_e^{*}\,\phi_{\bar\nu}^{*}\;
+           \mathcal{O}(x)\;\psi_i \; dV,
+\end{equation}
+where $\psi_i,\psi_f$ are the initial/final \emph{nuclear} states,
+$\phi_e,\phi_{\bar\nu}$ the lepton wavefunctions, and $\mathcal{O}(x)$ the (so far
+unknown) interaction operator. The leptons are created as free particles, so we
+model them as plane waves normalised in a box of volume $V$:
+\begin{equation}
+  \label{eq:lec09:planewaves}
+  \phi_e = \frac{1}{\sqrt{V}}\,e^{-i\,\bvec{p}\cdot\bvec{r}/\hbar},
+  \qquad
+  \phi_{\bar\nu} = \frac{1}{\sqrt{V}}\,e^{-i\,\bvec{q}\cdot\bvec{r}/\hbar},
+\end{equation}
+with $\bvec p$ the electron momentum and $\bvec q$ the antineutrino momentum.
+
+\subsubsection*{The Allowed Approximation}
+Expand each lepton plane wave in a Taylor series about the nucleus:
+\begin{equation}
+  \label{eq:lec09:taylor}
+  e^{-i\bvec p\cdot\bvec r/\hbar}
+  = 1 - \frac{i\,\bvec p\cdot\bvec r}{\hbar} + \dots
+\end{equation}
+The size of the first correction is fixed by physics we already know: the
+electron carries $p\sim 1\,\text{MeV}/c$ and is emitted from \emph{within} the
+nucleus, $r\lesssim R\sim 1\,\text{fm}$ (``the electron leaves the nucleus, not
+the Moon''). Then
+\begin{equation}
+  \label{eq:lec09:pr_estimate}
+  \frac{p\,R}{\hbar} \sim
+  \frac{(1\,\text{MeV}/c)(1\,\text{fm})}{\hbar}
+  \approx 5\times10^{-3} \ll 1,
+\end{equation}
+so we keep only the leading term, $e^{-i\bvec p\cdot\bvec r/\hbar}\approx 1$, and
+likewise for the antineutrino.
+
+\dfn[dfn:lec09:allowed]{Allowed Approximation}{%
+Two assumptions taken together:
+\begin{enumerate}[label=(\roman*),nosep]
+  \item replace both lepton plane waves by unity inside the nucleus
+        ($pR/\hbar\ll1$, equivalently $\Delta L=0$);
+  \item the surviving \emph{nuclear} matrix element
+        $M_{fi}=\int\psi_f^*\,\psi_i\,dV$ is taken \emph{independent} of the
+        lepton momenta $\bvec p,\bvec q$ (a constant pulled out of the
+        phase-space integral).
+\end{enumerate}}
+\textit{Significance:} under \eqref{eq:lec09:taylor}--\eqref{eq:lec09:pr_estimate}
+the two normalisation factors $1/\sqrt V$ survive as $1/V$, the operator
+sandwich collapses to a nuclear overlap $M_{fi}$, and \emph{all} the momentum
+dependence of $\lambda$ is pushed into the density of states. The leptons are
+created uniformly likely everywhere inside the nucleus.
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{Lepton Phase Space and the Density of States}
+\label{subsec:lec09:phasespace}
+%%═══════════════════════════════════════════════════════════════════
+
+\subsubsection*{Mathematical Setup}
+The final state is (discrete nuclear level) $\times$ (electron) $\times$
+(antineutrino). Because nuclear levels are essentially discrete on the scale of
+the lepton continuum, the nuclear density of states is $\approx 1$; all the
+counting is in the \emph{lepton} momenta. Count states in phase space (position
+$\times$ momentum), with the smallest phase-space cell $h^3$:
+\begin{equation}
+  \label{eq:lec09:dos_space}
+  \text{spatial factor} = \frac{V}{h^3}
+  \qquad\text{(one for $e$, one for $\bar\nu$)}.
+\end{equation}
+For the momentum part, the number of states with $|\bvec p|$ in $[p,p+dp]$ is the
+volume of a spherical shell in momentum space (since
+$p^2=p_x^2+p_y^2+p_z^2$):
+\begin{equation}
+  \label{eq:lec09:dos_e}
+  dn_e = \frac{4\pi p^2\,dp\;V}{h^3},
+  \qquad
+  dn_{\bar\nu} = \frac{4\pi q^2\,dq\;V}{h^3}.
+\end{equation}
+The joint number of final lepton states is therefore
+\begin{equation}
+  \label{eq:lec09:dos_joint}
+  dn_e\,dn_{\bar\nu}
+  = \frac{(4\pi)^2 V^2\,p^2\,q^2\,dp\,dq}{h^6}.
+\end{equation}
+
+\subsubsection*{Folding It All Together}
+Insert $|V_{fi}|^2$ (which gives $G^2|M_{fi}|^2 / V^2$ --- the two box volumes
+\emph{cancel} the $V^2$ above, so no choice of normalisation volume survives) and
+the density of states \eqref{eq:lec09:dos_joint} into the golden rule
+\eqref{eq:lec09:fgr}. The differential decay constant for fixed lepton momenta is
+\begin{equation}
+  \label{eq:lec09:dlambda}
+  d\lambda = \frac{2\pi}{\hbar}\,G^2\,|M_{fi}|^2\,
+             \frac{(4\pi)^2\,p^2\,q^2\,dp\,dq}{h^6}.
+\end{equation}
+We want the rate \emph{per unit energy} of the final nuclear level, so we must
+trade $dq$ for $dE_f$. Assuming the neutrino is \emph{massless}, its total energy
+is $E_{\bar\nu}=qc$; with total released energy split between the two leptons,
+$E_f = E_e + qc$ at fixed $E_e$, so
+\begin{equation}
+  \label{eq:lec09:dqdE}
+  \boxed{\frac{dq}{dE_f} = \frac{1}{c}.}
+\end{equation}
+
+\subsubsection*{Eliminating $q$ via Energy Conservation}
+The two momenta are linked by energy conservation. The total kinetic energy
+released, $Q$ (the $Q$-value), is shared between electron and antineutrino, so the
+antineutrino momentum is
+\begin{equation}
+  \label{eq:lec09:q_of_p}
+  \boxed{q = \frac{Q - T_e}{c},}
+\end{equation}
+where $T_e$ is the electron kinetic energy. Substituting
+\eqref{eq:lec09:dqdE}--\eqref{eq:lec09:q_of_p} into \eqref{eq:lec09:dlambda} and
+collecting constants yields the \emph{momentum distribution} of the emitted
+electrons.
+
+\thm[th:lec09:spectrum]{Beta Spectrum (Allowed, Uncorrected)}{%
+\begin{equation}
+  \label{eq:lec09:Np}
+  \boxed{N(p)\,dp \;\propto\; p^2\,(Q - T_e)^2\,dp
+       \;=\; p^2\,q^2 c^2\,dp.}
+\end{equation}}
+\textit{Significance:} the continuous $\beta$ spectrum is \emph{pure phase space}.
+The two factors are the electron's own state count ($p^2$) and the antineutrino's
+($q^2\propto(Q-T_e)^2$); their product peaks in the middle and vanishes at both
+endpoints, exactly the bell-skewed shape seen experimentally.
+
+\subsubsection*{Physical Intuition --- Why a Continuous Spectrum?}
+A two-body decay gives the daughter a \emph{fixed} momentum; a single discrete
+$\gamma$ would have a sharp line. Here, three bodies share the energy, so the
+electron's momentum is \emph{not} fixed. The shape is a pure counting effect, in
+exact analogy with rolling dice:
+\begin{itemize}[nosep]
+  \item One die: each face $1$--$6$ equally likely (uniform).
+  \item Two dice: the sum is peaked at $7$ \emph{not} because nature ``prefers''
+        $7$, but because $7$ has \emph{six} realisations
+        ($1\!+\!6,\dots,6\!+\!1$) while $2$ has only one.
+\end{itemize}
+The momentum is a \emph{vector}; we measure only its magnitude, so the number of
+ways to realise a given $|\bvec p|$ grows as $4\pi p^2$. With two leptons sharing
+a fixed total energy, the joint count $p^2q^2$ is maximal when the energy is
+shared (the centre of the distribution), and zero when one lepton takes
+everything. This is the same many-states-dominate logic as the entropy maximum in
+statistical mechanics, here a counting on a six-dimensional ($\bvec p\times\bvec
+q$) phase space.
+
+\nt{Pitfall: the spectrum is \emph{not} a thermal or dynamical preference. Each
+microstate is equally probable; the peak arises purely because more microstates
+realise an intermediate momentum. Do not invoke any ``force'' that pushes the
+electron to mid-spectrum.}
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{Coulomb Correction: the Fermi Function}
+\label{subsec:lec09:fermifunc}
+%%═══════════════════════════════════════════════════════════════════
+
+\subsubsection*{Physical Motivation}
+Comparing the predicted $N(p)$ to data for $\nucleus{Cu}{64}$ --- which decays
+both by $\beta^-$ (to $\nucleus{Zn}{64}$, $38\%$) and by $\beta^+/\text{EC}$ (to
+$\nucleus{Ni}{64}$, $61\%$) --- the $\beta^+$ branch is visibly \emph{shifted to
+higher momenta}. The cause: our counting assumed all final states equally
+probable, ignoring the electromagnetic interaction between the \emph{charged}
+lepton and the daughter nucleus. A positron is \emph{repelled} by the
+positively charged daughter (a forward ``kick'', depleting low momenta); an
+electron is \emph{attracted} (enhancing low momenta).
+
+\dfn[dfn:lec09:fermifunction]{Fermi Function $F(Z',p)$}{%
+A multiplicative correction depending only on the \emph{daughter} charge $Z'$ and
+the lepton momentum $p$ (or energy $E$), accounting for the Coulomb distortion of
+the outgoing lepton wavefunction:
+\begin{equation}
+  \label{eq:lec09:corrected_spectrum}
+  N(p)\,dp \;\propto\; F(Z',p)\,p^2\,(Q-T_e)^2\,|M_{fi}|^2\,S(p,q)\,dp.
+\end{equation}}
+\textit{Significance:} $F(Z',p)$ restores agreement with experiment; $F>1$
+enhances low-energy electrons ($\beta^-$), $F<1$ suppresses low-energy positrons
+($\beta^+$). The extra factor $S(p,q)$ is the \emph{shape factor}: in the allowed
+approximation $S=1$, but in general the matrix element may depend on $p,q$ and
+$S\neq1$ (forbidden transitions).
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{Total Rate, the $ft$ Value and $\log ft$}
+\label{subsec:lec09:ftvalue}
+%%═══════════════════════════════════════════════════════════════════
+
+\subsubsection*{Mathematical Setup}
+The total decay constant integrates the corrected spectrum over all allowed
+electron momenta, from $0$ to the maximum $p_\text{max}$ (set by $T_e=Q$):
+\begin{equation}
+  \label{eq:lec09:lambda_int}
+  \lambda = \frac{G^2\,|M_{fi}|^2}{2\pi^3\hbar^7 c^3}
+            \int_0^{p_\text{max}} F(Z',p)\,p^2\,(Q-T_e)^2\,dp.
+\end{equation}
+Define the dimensionless \emph{Fermi integral} $f(Z',E_0)$ by extracting the
+electron mass scales ($E_0\equiv$ endpoint total energy, $E\equiv$ electron total
+energy):
+\begin{equation}
+  \label{eq:lec09:fermi_integral}
+  f(Z',E_0) = \frac{1}{(m_ec)^3(m_ec^2)^2}
+              \int_0^{p_\text{max}} F(Z',p)\,p^2\,(E_0-E)^2\,dp.
+\end{equation}
+The function $f$ is \emph{calculable}; the half-life $t_{1/2}$ is
+\emph{measurable} via $\lambda=\ln2/t_{1/2}$ with $\ln2\approx0.693$.
+
+\thm[th:lec09:ft]{The Comparative Half-Life $ft_{1/2}$}{%
+\begin{equation}
+  \label{eq:lec09:ft}
+  \boxed{ft_{1/2} = \frac{0.693\;\bigl(2\pi^3\hbar^7\bigr)}
+                          {G^2\,m_e^5 c^4\,|M_{fi}|^2}.}
+\end{equation}}
+\textit{Significance:} $ft_{1/2}$ strips away \emph{all} the trivial kinematics
+(the phase-space integral $f$) and constants, leaving only the physics --- the
+weak coupling $G$ and the nuclear matrix element $|M_{fi}|^2$. Measuring $t_{1/2}$
+and computing $f$ thus delivers $|M_{fi}|^2$ directly: $ft$ is the great
+equaliser that lets us compare decays across the chart.
+
+\subsubsection*{The Weak Coupling Constant $G$}
+Each of the four forces has a ``charge'' setting how strongly matter responds to
+it: mass for gravity, electric charge $Q$ for electromagnetism, and a coupling
+$g$ for each of the strong and weak forces. In $\beta$ decay $G$ plays this role.
+It is fixed \emph{empirically} from measured $\beta$ lifetimes (via
+\eqref{eq:lec09:ft}); the result is $\sim2$ orders of magnitude smaller than the
+strong coupling --- which is precisely why we call it the \emph{weak} force.
+
+\subsubsection*{Using $\log ft$ in Practice}
+Because $ft$ ranges over many orders of magnitude, one tabulates $\log_{10}ft$,
+typically between $3$ and $20$:
+\begin{equation}
+  \label{eq:lec09:logft_range}
+  \log ft \approx 3 \;\;(\text{very probable})
+  \quad\longrightarrow\quad
+  \log ft \approx 20 \;\;(\text{extremely improbable}).
+\end{equation}
+A small $\log ft$ means a large matrix element (strong overlap of initial and
+final nuclear wavefunctions); a large $\log ft$ flags a strongly suppressed
+(forbidden) transition.
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{Selection Rules: Fermi, Gamow--Teller, and Forbidden Transitions}
+\label{subsec:lec09:selection}
+%%═══════════════════════════════════════════════════════════════════
+
+\subsubsection*{Conceptual Background}
+Unlike the \emph{absolute} selection rules of $\alpha$ and $\gamma$ decay (where
+``forbidden'' means truly forbidden), the $\beta$-decay rules are
+\emph{quantitative}: they govern \emph{how probable} a transition is, not whether
+it can happen at all. Within the allowed approximation the leptons carry off no
+orbital angular momentum, $L=0$, so the only angular momentum available to change
+the nuclear spin is the \emph{coupled lepton spin} $S$ of the $e$--$\bar\nu$ pair.
+
+\dfn[dfn:lec09:fermi_gt]{Allowed Selection Rules}{%
+\begin{align}
+  \textbf{Fermi:}\quad &S=0\ (e^\uparrow\bar\nu^\downarrow\text{ or }e^\downarrow\bar\nu^\uparrow),
+    & \Delta I &= 0, & \Delta\pi &= \text{no}. \label{eq:lec09:fermi_rule}\\
+  \textbf{Gamow--Teller:}\quad &S=1\ (\text{parallel lepton spins}),
+    & \Delta I &= 0,\,\pm1, & \Delta\pi &= \text{no}. \label{eq:lec09:gt_rule}
+\end{align}}
+\textit{Significance:} the lepton pair leaves either as a spin singlet (Fermi) or
+a spin triplet (Gamow--Teller). In \emph{both} cases there is no parity change,
+because $\Delta\pi=(-1)^L$ and $L=0$. (Gamow--Teller cannot drive a
+$0\to0$ transition because the triplet must change $I$ by at least the unit it
+carries.)
+
+\subsubsection*{Forbidden and Super-Allowed Transitions}
+Beyond the leading term, the Taylor expansion \eqref{eq:lec09:taylor} supplies
+$L\neq0$ contributions --- \emph{forbidden} transitions. They are not strictly
+forbidden, merely suppressed (larger $\log ft$); the parity rule becomes
+\begin{equation}
+  \label{eq:lec09:forbidden_parity}
+  \boxed{\Delta\pi = (-1)^{L}.}
+\end{equation}
+The hierarchy: \emph{super-allowed} ($\log ft\sim3$, near-perfect overlap of
+initial/final wavefunctions) $\to$ \emph{allowed} $\to$ \emph{first forbidden}
+($\Delta\pi=\text{yes}$) $\to$ \emph{second forbidden}, etc., each step adding a
+unit of $L$ and several orders of magnitude to $ft$. When all allowed channels
+are blocked by spin/parity, a forbidden transition becomes the \emph{dominant}
+decay.
+
+\paragraph{Why $L\!\neq\!0$ is hard --- a unified picture.}
+The assumption $pR/\hbar\ll1$ is \emph{the same} as $L\approx0$: classically
+$\bvec L=\bvec r\times\bvec p$, so $|\bvec L|/\hbar \lesssim pR/\hbar\ll1$. To
+build even one quantum of orbital angular momentum the electron would have to be
+emitted far from the nuclear centre, but the nucleus is tiny compared with the
+lever arm needed for $L\sim\hbar$ at $p\sim1\,\text{MeV}/c$. Quantum mechanically
+the lepton wavefunction extends to infinity, so $L>0$ is not impossible --- just
+exponentially unlikely, exactly as tunnelling makes high-$\ell$ $\alpha$ decay
+rare.
+
+\subsubsection*{Method --- Classifying a Given $\beta$ Transition}
+\begin{enumerate}[label=\arabic*.,nosep]
+  \item Read off $I^\pi_i$ and $I^\pi_f$ of parent and daughter levels.
+  \item Compute $\Delta I=|I_i-I_f|$ and whether parity changes.
+  \item If $\Delta\pi=\text{no}$ and $\Delta I=0,\pm1$: \emph{allowed}
+        (Fermi if $\Delta I=0$, Gamow--Teller if $\Delta I=0,1$).
+  \item If $\Delta\pi=\text{yes}$: at least \emph{first forbidden} ($L=1$).
+  \item Match the smallest $L$ consistent with
+        $\Delta\pi=(-1)^L$ and $|I_i-I_f|\le L+S$; that order sets the expected
+        $\log ft$.
+\end{enumerate}
+
+\ex[ex:lec09:cu64]{Worked Example: the $\nucleus{Cu}{64}$ Branches}{%
+$\nucleus{Cu}{64}$ ($I^\pi=1^+$) sits at the floor of an $A=64$ valley with stable
+neighbours on \emph{both} sides, so it decays two ways:
+\[
+  \nucleus{Cu}{64}\xrightarrow{\ \beta^-\,(38\%)\ }\nucleus{Zn}{64}\,(0^+),
+  \qquad
+  \nucleus{Cu}{64}\xrightarrow{\ \beta^+/\text{EC}\,(61\%)\ }\nucleus{Ni}{64}\,(0^+).
+\]
+\emph{Both} are $1^+\to0^+$: $\Delta I=1$, $\Delta\pi=\text{no}$ $\Rightarrow$
+\emph{allowed Gamow--Teller} (forbidden as pure Fermi, which needs $\Delta I=0$).
+The $\beta^-$ spectrum follows the bare phase-space shape $N(p)\propto
+p^2(Q-T_e)^2$, while the $\beta^+$ spectrum is pushed to higher momenta by the
+Coulomb repulsion encoded in $F(Z',p)<1$ at low $p$. \emph{Energetics:} since EC
+appears, $Q_{\text{EC}}>0$; $\beta^+$ runs only because $Q_{\text{EC}}>1.022$~MeV,
+i.e.\ \eqref{eq:lec09:bplus_vs_ec} is satisfied with margin.}
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{Neutrino Physics from Beta Decay}
+\label{subsec:lec09:neutrinos}
+%%═══════════════════════════════════════════════════════════════════
+
+\subsubsection*{(a) Neutrino Mass from the Spectrum Endpoint}
+We \emph{assumed} $m_\nu=0$ in \eqref{eq:lec09:dqdE}. To test it, reinstate a
+small mass: it deforms the spectrum only at the extreme \emph{high-energy
+endpoint}, where the electron takes nearly all the energy and the neutrino is
+left almost at rest. The shape there changes from meeting the axis tangentially
+($m_\nu=0$) to dropping more steeply ($m_\nu>0$), but the effect is tiny --- a
+shift comparable to the neutrino mass, tens of eV at most, against an electron
+mass of $511\,\text{keV}$.
+\begin{equation}
+  \label{eq:lec09:nu_mass_bound}
+  \boxed{m_{\nu}c^2 \lesssim 0.25\,\text{eV}\quad(\text{current bound}),}
+\end{equation}
+versus $\sim20\,\text{eV}$ in older textbooks. No experiment has resolved a
+\emph{nonzero} mass from the endpoint; one can only place ever-tighter upper
+bounds (e.g.\ tritium-endpoint and $0\nu\beta\beta$ searches). The Standard Model
+is built assuming $m_\nu=0$, so a definite mass is one of the most important open
+questions in physics.
+
+\nt{Pitfall: the endpoint distortion is a property of the \emph{last few keV} of
+the spectrum only --- the bulk shape is completely insensitive to $m_\nu$. This is
+why these experiments demand enormous statistics and energy resolution.}
+
+\subsubsection*{(b) Helicity}
+\dfn[dfn:lec09:helicity]{Helicity}{%
+For any spinning particle, the projection of its spin onto its momentum
+direction (up to normalisation):
+\begin{equation}
+  \label{eq:lec09:helicity}
+  h = \frac{\bvec{S}\cdot\hat{\bvec p}}{|\bvec S|}.
+\end{equation}
+$h>0$ (spin along motion) is ``right-handed''; $h<0$ is ``left-handed'' (the
+right-hand/screw rule).}
+Naively one expects a $50/50$ split, but experiment is startling:
+\begin{equation}
+  \label{eq:lec09:nu_helicity}
+  \boxed{\text{all neutrinos are left-handed;\ all antineutrinos are right-handed.}}
+\end{equation}
+\textit{Significance:} the weak interaction \emph{maximally violates parity}.
+There are no right-handed neutrinos to drive ``inverse'' weak reactions that
+would need them, a fact established beyond doubt and built into the Standard
+Model.
+
+\subsubsection*{(c) The Solar Neutrino Problem $\to$ Neutrino Oscillations}
+The Sun shines by the $pp$-chain (four protons $\to$ $\nucleus{He}{4}$), emitting
+copious electron neutrinos $\nu_e$. Davis's Homestake experiment (1.5~km
+underground, a huge $\nucleus{Cl}{37}$ tank) detected them via
+\begin{equation}
+  \label{eq:lec09:davis}
+  \nu_e + \nucleus{Cl}{37} \to \nucleus{Ar}{37} + e^-,
+\end{equation}
+counting $\nucleus{Ar}{37}$ atoms at a rate of $\sim1$ atom/day over a decade.
+The result was a shock: only \emph{one third} of the predicted flux. Two
+possibilities --- either the solar model was wrong, or the neutrino theory was.
+
+\thm[th:lec09:oscillations]{Resolution --- Neutrino Oscillations}{%
+The Sun emits pure $\nu_e$, but \emph{only} $\nu_e$ can convert $\nucleus{Cl}{37}$.
+En route to Earth the state evolves into an equal mixture
+\[
+  \ket{\nu_e}\;\longrightarrow\;
+  \tfrac13\ket{\nu_e}+\tfrac13\ket{\nu_\mu}+\tfrac13\ket{\nu_\tau},
+\]
+so a $\nucleus{Cl}{37}$ detector sees only the surviving $\tfrac13$.}
+\textit{Significance:} flavour oscillation requires the flavour eigenstates to
+\emph{not} be mass eigenstates --- a mixing that is possible \emph{only if
+neutrinos have mass}. Davis's deficit is thus direct evidence for $m_\nu\neq0$,
+contradicting the massless-neutrino Standard Model. (Whether the neutrino is its
+own antiparticle --- Dirac vs.\ Majorana --- remains open, and is the target of
+$0\nu\beta\beta$ experiments.)
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{Gamma Decay Selection Rules (Brief)}
+\label{subsec:lec09:gamma}
+%%═══════════════════════════════════════════════════════════════════
+
+\subsubsection*{Conceptual Background}
+Closing the radioactivity chapter, the lecturer states the $\gamma$ (photon)
+multipole selection rules, contrasting them with $\beta$. A photon \emph{always}
+carries away at least one unit of angular momentum:
+\begin{equation}
+  \label{eq:lec09:gamma_L}
+  \boxed{|I_i - I_f| \le L \le I_i + I_f, \qquad L \ge 1.}
+\end{equation}
+Hence a $0\to0$ electromagnetic transition is impossible --- unlike $\beta$ or
+$\alpha$, where leptons/$\alpha$ can leave radially with $L=0$. A blocked
+$0\to0$ de-excitation must instead proceed by a \emph{cascade} through
+intermediate levels or by \emph{internal conversion} (handing the energy directly
+to an atomic electron).
+
+\dfn[dfn:lec09:em_multipole]{Electric vs.\ Magnetic Multipoles}{%
+Parity fixes the character ($E$ = electric, $M$ = magnetic) of each multipole
+order $L$:
+\begin{align}
+  \Delta\pi=(-1)^{L}&:\quad \text{electric } EL, \label{eq:lec09:EL}\\
+  \Delta\pi=(-1)^{L+1}&:\quad \text{magnetic } ML. \label{eq:lec09:ML}
+\end{align}}
+\textit{Significance:} for a given $\Delta\pi$ between two levels, $E$ and $M$
+multipoles of the \emph{same} order can never compete (parity forbids it); since
+each higher multipole is weaker by several orders of magnitude, the lowest
+allowed multipole dominates, giving a clean $E/M$ hierarchy for every transition.
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{Putting It Together: \texorpdfstring{$\nucleus{Al}{23}$}{Al-23} Decay Spectroscopy}
+\label{subsec:lec09:al23}
+%%═══════════════════════════════════════════════════════════════════
+
+\subsubsection*{Physical Motivation}
+The lecturer closes with a real study (I.~Goldberg, Friedman group): $\beta$-decay
+spectroscopy of $\nucleus{Al}{23}$ ($t_{1/2}\approx 0.45\,\text{s}$,
+$Q\approx12\,\text{MeV}$), illustrating how all the chapter's tools combine to map
+a nuclear level scheme.
+
+\subsubsection*{Method --- Reconstructing a Level Scheme from Decays}
+\begin{enumerate}[label=\arabic*.,nosep]
+  \item \textbf{Measure the half-life:} accumulate the activity for $\sim0.5$~s,
+        then watch the exponential decay --- recovering $t_{1/2}$ and confirming
+        build-up/decay kinetics from Lecture~5.
+  \item \textbf{Record the $\gamma$ spectrum:} hundreds of lines on a log scale.
+        Identify each line's origin, including detector artefacts:
+        \begin{itemize}[nosep]
+          \item a strong $511\,\text{keV}$ line --- from \emph{both} pair
+                production \emph{and} positron annihilation following $\beta^+$;
+          \item \emph{Single-Escape} (SE) peaks at $E_\gamma-511\,\text{keV}$ and
+                \emph{Double-Escape} (DE) at $E_\gamma-1022\,\text{keV}$, when one
+                or both annihilation photons leave the detector
+                (e.g.\ a full-energy peak at $4082\,\text{keV}$ shows an SE
+                companion at $3571\,\text{keV}$).
+        \end{itemize}
+  \item \textbf{Subtract backgrounds:} identify ubiquitous room lines (K, Bi, U
+        natural activity).
+  \item \textbf{Use coincidences:} $\gamma$-rays detected \emph{simultaneously}
+        belong to a \emph{cascade} (emitted together down a chain). Proton
+        coincidences flag $\beta$-delayed proton emission, possible when the
+        daughter level lies above the proton separation energy.
+  \item \textbf{Assign $I^\pi$ and build the scheme:} combine $\gamma$ energies,
+        coincidences, $\beta$ branchings, and $\log ft$ to tag each level's spin
+        and parity. A small $\log ft\approx3.27$ flags an allowed/super-allowed
+        $\beta$ branch (very similar parent/daughter spin); larger values flag
+        forbidden branches.
+\end{enumerate}
+\textit{Significance:} the full nuclear level structure --- energies, spins,
+parities, decay paths (including $\beta$-delayed proton emission to
+$\nucleus{Na}{22}$) --- is reconstructed \emph{purely} from its radioactive
+emissions. This is the practical payoff of the entire decay chapter: decays as a
+\emph{probe} of nuclear structure.
+
+\nt{Exam note: the TA homework is deliberately a review of these methods. The
+exam will be based \emph{closely} on the homework problems --- possibly with small
+variations --- so memorising every derivation matters less than being fluent with
+the master formulas (spectrum shape, $ft$, selection-rule classification, $Q$-value
+energetics) and the worked methods above.}

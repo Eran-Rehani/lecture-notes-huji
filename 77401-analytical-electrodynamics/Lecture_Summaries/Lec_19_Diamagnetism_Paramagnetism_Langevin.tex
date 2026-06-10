@@ -1,0 +1,471 @@
+%% Lecture 19 -- Diamagnetism and paramagnetism: Larmor's theorem, the Langevin formula, and the Curie law
+\section{Lecture 19 -- Diamagnetism and Paramagnetism (Langevin Theory)}\label{sec:lec19}
+
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 09/06/2026 & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+
+\subsection*{Overview}
+
+Lecture 18 closed by sketching the microscopic origin of diamagnetism: switching on a
+field $\bB$ makes every atomic electron precess, picking up a velocity
+$\Delta\bvec{v}_n=\boldsymbol{\omega}\times\br_n$ at the Larmor frequency
+$\boldsymbol{\omega}=-\tfrac{e}{2m_ec}\bB$, and the induced moment opposes $\bB$. That
+derivation, however, leaned on the atom \emph{having} an orbital angular momentum
+$\bvec{L}$ to precess. This lecture does three things:
+\begin{itemize}
+  \item \textbf{Frees Larmor's theorem from the assumption $\bvec{L}\neq0$:} by passing to
+        a frame rotating at $\boldsymbol{\omega}$ we show the Coriolis force \emph{exactly
+        cancels} the Lorentz force, so every electron acquires
+        $\Delta\bvec{v}=\boldsymbol{\omega}\times\br$ whether or not the atom carries
+        angular momentum. This is why diamagnetism is universal -- present in
+        \emph{every} material.
+  \item \textbf{Completes the Langevin diamagnetism formula}
+        $\chi_{\rm dia}=-\tfrac{ne^2Z}{6mc^2}\langle r^2\rangle$ by averaging the induced
+        moment over the precession, and estimates it numerically
+        ($\chi_{\rm dia}\sim-10^{-9}$), with a digression on the \emph{classical electron
+        radius} $r_c=e^2/mc^2$ that appears in the estimate.
+  \item \textbf{Introduces paramagnetism:} for atoms with a \emph{permanent} moment
+        (orbital or spin), precession alone produces no net alignment; it is
+        \emph{thermal} agitation (collisions) that, through the Boltzmann distribution,
+        biases the moments along $\bB$. This yields the \emph{Langevin function}
+        $L(a)=\coth a-1/a$ and, in the weak-field limit, the \emph{Curie law}
+        $\chi_{\rm para}=n\mu^2/3T>0$, some two orders of magnitude larger than the
+        diamagnetic response.
+\end{itemize}
+
+%------------------------------------------------------------
+\subsection{Larmor's Theorem Without Assuming $\bvec{L}$}\label{subsec:lec19-larmor}
+
+\subsubsection*{Physical Motivation}
+The previous derivation started from a precessing angular momentum,
+$d\bvec{L}/dt=\boldsymbol{\omega}\times\bvec{L}$, and read off that each electron is carried
+around with the precession, $\Delta\bvec{v}_n=\boldsymbol{\omega}\times\br_n$. But many
+diamagnets (ground-state hydrogen, paired-electron molecules) have \emph{zero} total
+angular momentum -- there is nothing to precess. We need to show the velocity increment
+$\Delta\bvec{v}=\boldsymbol{\omega}\times\br$ is correct \emph{regardless} of $\bvec{L}$.
+The cleanest argument never mentions $\bvec{L}$ at all: it works directly with the
+equation of motion of a single electron, seen from a rotating frame.
+
+\subsubsection*{The Rotating-Frame Argument}
+Take one atomic electron undergoing some (arbitrary, classical) bound motion. Before the
+field is switched on its equation of motion in the lab is
+\begin{equation}\label{eq:lec19-eom-lab0}
+  m\,\dot{\bvec{v}}=\bvec{F}_{\rm bind},
+\end{equation}
+with $\bvec{F}_{\rm bind}$ the (real) forces binding it to the nucleus. Switching on a
+uniform $\bB$ adds the Lorentz force, so
+\begin{equation}\label{eq:lec19-eom-lab}
+  m\,\dot{\bvec{v}}=\bvec{F}_{\rm bind}+\frac{e}{c}\,\bvec{v}\times\bB .
+\end{equation}
+We want to understand the \emph{effect of the new term}. Pass to a frame rotating with
+angular velocity
+\begin{equation}\label{eq:lec19-omega}
+  \boldsymbol{\omega}=-\frac{e}{2m_ec}\,\bB
+\end{equation}
+(the same $\boldsymbol{\omega}$ we can always build from $e,m,c$ and the applied $\bB$).
+In a rotating frame two fictitious forces appear, the centrifugal force and the Coriolis
+force,
+\begin{equation}\label{eq:lec19-coriolis}
+  \bvec{F}_{\rm cf}=-m\,\boldsymbol{\omega}\times(\boldsymbol{\omega}\times\br),
+  \qquad
+  \bvec{F}_{\rm Cor}=2m\,\bvec{v}'\times\boldsymbol{\omega},
+\end{equation}
+where $\bvec{v}'$ is the velocity \emph{measured in the rotating frame}. The centrifugal
+term is $O(\omega^2)\propto B^2$; in the weak-field, non-relativistic regime of atomic
+matter it is negligible and we drop it (see the pitfall note). For the Coriolis term use
+the velocity-addition relation between lab and rotating frame,
+\begin{equation}\label{eq:lec19-vprime}
+  \bvec{v}'=\bvec{v}-\boldsymbol{\omega}\times\br,
+\end{equation}
+so that
+\begin{equation}\label{eq:lec19-coriolis-expand}
+  \bvec{F}_{\rm Cor}
+  =2m\,(\bvec{v}-\boldsymbol{\omega}\times\br)\times\boldsymbol{\omega}
+  =2m\,\bvec{v}\times\boldsymbol{\omega}
+   \;\underbrace{-\,2m\,(\boldsymbol{\omega}\times\br)\times\boldsymbol{\omega}}_{O(\omega^2),\ \text{drop}} .
+\end{equation}
+Keeping the leading term and inserting \eqref{eq:lec19-omega},
+\begin{equation}\label{eq:lec19-cancel}
+  \bvec{F}_{\rm Cor}\simeq 2m\,\bvec{v}\times\boldsymbol{\omega}
+  =2m\,\bvec{v}\times\!\left(-\frac{e}{2m c}\bB\right)
+  =-\frac{e}{c}\,\bvec{v}\times\bB .
+\end{equation}
+This is precisely \emph{minus} the Lorentz force of \eqref{eq:lec19-eom-lab}. Therefore in
+the rotating frame the two field-dependent terms annihilate and the equation of motion
+collapses back to the field-free form
+\begin{equation}\label{eq:lec19-eom-rot}
+  m\,\dot{\bvec{v}}'=\bvec{F}_{\rm bind},
+\end{equation}
+identical to \eqref{eq:lec19-eom-lab0}.
+
+\thm[thm:lec19-larmor]{Larmor's Theorem}{
+  To leading order in $\bB$, the motion of the atomic electrons in a uniform field is the
+  same motion they execute with no field, viewed from a frame rotating at the Larmor
+  frequency $\boldsymbol{\omega}=-\tfrac{e}{2m_ec}\bB$. Equivalently, switching on $\bB$
+  superposes on each electron the rigid rotation
+  \begin{equation}\label{eq:lec19-larmor-boxed}
+    \boxed{\Delta\bvec{v}_n=\boldsymbol{\omega}\times\br_n,
+    \qquad
+    \boldsymbol{\omega}=-\frac{e}{2m_ec}\,\bB,}
+  \end{equation}
+  \emph{independently} of whether the atom carries angular momentum.
+}
+\textit{Significance:} The induced circulation $\Delta\bvec{v}_n=\boldsymbol{\omega}\times\br_n$
+is a property of the field and the charge-to-mass ratio alone, not of any pre-existing
+orbit. Diamagnetism is therefore present in \emph{every} material; the bound currents it
+needs are generated by the field itself.
+
+\nt{Pitfall: the cancellation is \emph{exact only at order} $B$. The Coriolis force kills
+the full Lorentz force, but the centrifugal force and the dropped term in
+\eqref{eq:lec19-coriolis-expand} are $O(\omega^2)\propto B^2$. Keeping them would be
+inconsistent -- we already discarded $B^2$ pieces elsewhere -- and physically they are
+suppressed by $(\omega r/c)$-type factors that are tiny for atomic electrons
+($v/c\lesssim10^{-2}$). ``Fictitious'' does not mean ``unreal'': in the rotating frame the
+Coriolis force is as physical as gravity in an accelerated frame; here the frame change is
+just a device to see what the added Lorentz force does.}
+
+\subsubsection*{Method: turning ``switching on $\bB$'' into a kinematic rotation}
+\begin{enumerate}
+  \item Build the Larmor vector $\boldsymbol{\omega}=-\tfrac{e}{2m_ec}\bB$ from the applied
+        field.
+  \item Pass to the frame rotating at $\boldsymbol{\omega}$; write the two inertial forces
+        \eqref{eq:lec19-coriolis}.
+  \item Drop everything $O(\omega^2)$ (centrifugal, and the
+        $\boldsymbol{\omega}\times\br$ piece of Coriolis).
+  \item Check that the surviving Coriolis term equals $-\bvec{F}_{\rm Lorentz}$; conclude
+        the rotating-frame motion is field-free.
+  \item Transform back: the lab motion is the old motion plus the rigid rotation
+        $\Delta\bvec{v}=\boldsymbol{\omega}\times\br$.
+\end{enumerate}
+
+%------------------------------------------------------------
+\subsection{The Langevin Diamagnetism Formula}\label{subsec:lec19-langevin-dia}
+
+\subsubsection*{Mathematical Setup}
+The extra circulation \eqref{eq:lec19-larmor-boxed} is an extra current
+$\Delta\Jvec=\sum_n e\,\Delta\bvec{v}_n\,\delta^{(3)}(\br-\br_n)$, hence an extra moment
+$\Delta\bmu=\tfrac{1}{2c}\int d^3r\,\br\times\Delta\Jvec$. The $\delta$-functions collapse
+the integral and, with $\Delta\bvec{v}_n=\boldsymbol{\omega}\times\br_n$,
+\begin{equation}\label{eq:lec19-deltamu}
+  \Delta\bmu=\frac{e}{2c}\sum_n \br_n\times(\boldsymbol{\omega}\times\br_n)
+  =\frac{e}{2c}\sum_n\Bigl[\boldsymbol{\omega}\,r_n^2-\br_n(\boldsymbol{\omega}\cdot\br_n)\Bigr],
+\end{equation}
+using the BAC--CAB identity $\bvec{a}\times(\bvec{b}\times\bvec{a})=\bvec{b}\,a^2-\bvec{a}(\bvec{a}\cdot\bvec{b})$.
+
+\subsubsection*{Projecting onto the Axes}
+Choose $\bB=B\uvec{z}$, so $\boldsymbol{\omega}=\omega\uvec{z}$ with $\omega=-eB/2m c$.
+Then $\boldsymbol{\omega}\cdot\br_n=\omega z_n$ and the three components of
+\eqref{eq:lec19-deltamu} read
+\begin{align}
+  \Delta\mu_z &=\frac{e}{2c}\sum_n\bigl[\omega r_n^2-\omega z_n^2\bigr]
+              =\frac{e\omega}{2c}\sum_n\bigl(x_n^2+y_n^2\bigr),\label{eq:lec19-muz}\\
+  \Delta\mu_x &=-\frac{e\omega}{2c}\sum_n x_n z_n,\qquad
+  \Delta\mu_y =-\frac{e\omega}{2c}\sum_n y_n z_n.\label{eq:lec19-muxy}
+\end{align}
+
+\subsubsection*{Averaging over the Precession}
+We never observe instantaneous projections; the measured magnetization is a time average
+over the (fast) precession. Averaging \eqref{eq:lec19-muxy}, the products $x_nz_n$ and
+$y_nz_n$ are odd under the precession about $\uvec{z}$ and wash out,
+\begin{equation}\label{eq:lec19-xy-vanish}
+  \langle\Delta\mu_x\rangle=\langle\Delta\mu_y\rangle=0,
+\end{equation}
+leaving only the axial part. Summing over the $Z$ electrons of an atom and then over the
+$n$ atoms per unit volume gives the magnetization (a density, hence the symbol $n$ for the
+atomic number density),
+\begin{equation}\label{eq:lec19-Mz-raw}
+  M_z=\frac{n e\omega}{2c}\,Z\,\langle\rho^2\rangle,
+  \qquad
+  \rho^2\equiv x^2+y^2\ \ (\text{distance}^2\ \text{from the }z\text{-axis}).
+\end{equation}
+Insert $\omega=-eB/2mc$:
+\begin{equation}\label{eq:lec19-Mz-rho}
+  M_z=-\frac{n e^2 Z}{4 m c^2}\,\langle\rho^2\rangle\,B .
+\end{equation}
+
+\subsubsection*{Isotropy: from $\langle\rho^2\rangle$ to $\langle r^2\rangle$}
+Before the field is applied a gas has no preferred direction, so
+$\langle x^2\rangle=\langle y^2\rangle=\langle z^2\rangle=\tfrac13\langle r^2\rangle$ and
+\begin{equation}\label{eq:lec19-rho-to-r}
+  \langle\rho^2\rangle=\langle x^2+y^2\rangle=\tfrac23\langle r^2\rangle .
+\end{equation}
+(The field introduces a preferred axis only at $O(B)$, which would correct
+\eqref{eq:lec19-Mz-rho} at $O(B^2)$ -- consistently negligible.) Hence
+\begin{equation}\label{eq:lec19-Mz-final}
+  M_z=-\frac{n e^2 Z}{6 m c^2}\,\langle r^2\rangle\,B .
+\end{equation}
+
+\dfn[dfn:lec19-langevin-dia]{Langevin Diamagnetic Susceptibility}{
+  Because $|\chi|\ll1$ we may set $\Hvec\simeq\bB$ ($\mu\simeq1$) and read off
+  $M=\chi H\simeq\chi B$:
+  \begin{equation}\label{eq:lec19-chi-dia}
+    \boxed{\chi_{\rm dia}=-\frac{n e^2 Z}{6 m c^2}\,\langle r^2\rangle<0 .}
+  \end{equation}
+  Here $n$ is the atomic number density, $Z$ the number of electrons per atom, and
+  $\langle r^2\rangle$ the mean-square electron distance from the nucleus.
+}
+\textit{Significance:} The susceptibility is intrinsically \emph{negative} -- the induced
+magnetization opposes $\bB$ -- and temperature-independent, the hallmark that
+distinguishes Langevin diamagnetism from the Curie paramagnetism below. (Derived by
+Langevin in 1905, the same year as special relativity.)
+
+\nt{Pitfall: in \eqref{eq:lec19-chi-dia} ``$e$'' is the electron charge magnitude squared,
+so the sign of $\chi$ comes entirely from the structure of the calculation, not from
+$\mathrm{sign}(e)$. Also note $\langle r^2\rangle$ is the mean-square distance from the
+\emph{nucleus}, while $\langle\rho^2\rangle$ in \eqref{eq:lec19-Mz-raw} is from the
+\emph{axis}; the factor $2/3$ in \eqref{eq:lec19-rho-to-r} is exactly the bridge and is a
+common place to drop a number.}
+
+%------------------------------------------------------------
+\subsection{Numerical Estimate and the Classical Electron Radius}\label{subsec:lec19-estimate}
+
+\subsubsection*{Plugging in Numbers (CGS)}
+To see how small $\chi_{\rm dia}$ is, take $Z\sim1$ (e.g.\ $\mathrm{H}_2$, He) and estimate
+each factor:
+\begin{itemize}
+  \item \textbf{Number density} from the ideal-gas law $PV=Nk_BT\Rightarrow n=P/k_BT$. At
+        room temperature ($T\sim300\,\mathrm{K}$) and one atmosphere,
+        $n\sim2.7\times10^{19}\,\mathrm{cm^{-3}}$.
+  \item \textbf{Atomic size} $\langle r^2\rangle^{1/2}\sim a_0\sim0.5\times10^{-8}\,\mathrm{cm}$
+        (one \aa ngstr\"om).
+  \item \textbf{The combination} $e^2/mc^2\equiv r_c=2.8\times10^{-13}\,\mathrm{cm}$, the
+        \emph{classical electron radius}.
+\end{itemize}
+Writing $\chi_{\rm dia}=-\tfrac{nZ}{6}\,r_c\,\langle r^2\rangle$ and inserting these,
+\begin{equation}\label{eq:lec19-chi-number}
+  \boxed{|\chi_{\rm dia}|\sim 10^{-9}\ \ (\text{order of magnitude, and negative}).}
+\end{equation}
+\textit{Significance:} Even multiplied by $4\pi$ to form the permeability
+$\mu=1+4\pi\chi$, this leaves $\mu$ indistinguishable from $1$ -- which is why ``ordinary''
+matter looks non-magnetic. Paramagnetism, when present, is $\sim100\times$ stronger
+($\chi\sim10^{-7}$), so it always masks the diamagnetic background.
+
+\subsubsection*{Aside: Why $r_c=e^2/mc^2$ is Called the Classical Radius}
+Model the electron as a charged sphere of radius $r_c$ with external field $E=e/r^2$. Its
+electrostatic self-energy is
+\begin{equation}\label{eq:lec19-selfenergy}
+  U=\frac{1}{8\pi}\int_{r_c}^{\infty}E^2\,d^3r
+   =\frac{1}{8\pi}\int_{r_c}^{\infty}\frac{e^2}{r^4}\,4\pi r^2\,dr
+   =\frac{e^2}{2}\int_{r_c}^{\infty}\frac{dr}{r^2}=\frac{e^2}{2r_c},
+\end{equation}
+which \emph{diverges} as $r_c\to0$. Demanding that this electrostatic energy account for
+the entire rest energy, $U\sim mc^2$, fixes
+\begin{equation}\label{eq:lec19-rc}
+  \boxed{r_c=\frac{e^2}{mc^2}\approx2.8\times10^{-13}\,\mathrm{cm}.}
+\end{equation}
+\textit{Significance:} $r_c$ is the scale at which a purely classical ``field energy
+equals mass'' picture of the electron would break down. It is not a real size: the Compton
+wavelength $\lambda_C=\hbar/mc\approx r_c/\alpha\sim100\,r_c$ (with the fine-structure
+constant $\alpha=e^2/\hbar c\approx1/137$) is \emph{larger}, so quantum and relativistic
+effects -- ultimately electron--positron pair creation -- intervene long before one probes
+$r_c$. Asking ``how big is the electron'' is meaningless below $\lambda_C$, where any
+measurement injects enough energy to create new particles.
+
+%------------------------------------------------------------
+\subsection{Paramagnetism: Why Precession Alone Does Nothing}\label{subsec:lec19-para-setup}
+
+\subsubsection*{Physical Motivation}
+Paramagnetism requires atoms with a \emph{permanent} magnetic moment $\bmu$, i.e.\ a
+non-zero total angular momentum -- orbital $\bvec{L}$, electronic spin, or both (most
+often spin, from an unpaired electron). A gas of such atoms has, before any field,
+\emph{zero} net moment: the orientations are completely random, so $\sum\bmu=0$.
+
+Switching on $\bB$ does \emph{not}, by itself, fix this. Every $\bmu$ feels the torque
+$\bmu\times\bB$ and precesses, but they all precess at the \emph{same} Larmor rate
+$\boldsymbol{\omega}$. A snapshot of the gas at any later time is just the initial random
+configuration rigidly rotated, so the total moment stays zero. Precession reorients each
+moment but creates no bias.
+
+\subsubsection*{Conceptual Background: it is thermal, not mechanical}
+What \emph{does} create a bias is the interaction of the atoms with each other -- in the
+simplest picture, collisions. These let an atom's moment hop between orientations, and
+because the orientation along $\bB$ has lower energy $U=-\bmu\cdot\bB$, the system relaxes
+toward a thermal (Boltzmann) distribution that favours alignment. The competition between
+this energetic preference and thermal randomization is the whole content of paramagnetism;
+the microscopic details of the collisions drop out, which is exactly why one uses
+\emph{statistical/thermal physics} rather than tracking individual dynamics.
+
+\nt{This separates the two effects cleanly. Diamagnetism is a \emph{mechanical} response
+(the field-induced current of Larmor's theorem) present in all matter. Paramagnetism is a
+\emph{statistical} response (thermal alignment of pre-existing moments) present only when
+the atoms carry angular momentum, and it overwhelms diamagnetism when it occurs.}
+
+%------------------------------------------------------------
+\subsection{The Langevin Function and the Curie Law}\label{subsec:lec19-curie}
+
+\subsubsection*{Mathematical Setup: the Boltzmann Weight}
+A moment at angle $\theta$ to $\bB=B\uvec{z}$ has energy
+\begin{equation}\label{eq:lec19-U}
+  U=-\bmu\cdot\bB=-\mu B\cos\theta .
+\end{equation}
+By the Boltzmann distribution the number of atoms per unit volume whose moment lies in the
+angular strip $[\theta,\theta+d\theta]$ (integrating over the azimuth $\phi$, which nothing
+depends on) is
+\begin{equation}\label{eq:lec19-dn}
+  dn=C\,e^{-\beta U}\sin\theta\,d\theta
+    =C\,e^{a\cos\theta}\sin\theta\,d\theta,
+  \qquad
+  a\equiv\beta\mu B=\frac{\mu B}{T},
+\end{equation}
+with $\beta=1/k_BT$ and $k_B\equiv1$. The $\sin\theta\,d\theta$ is the solid-angle measure
+(after the trivial $\phi$-integration); $C$ is a normalization.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[>=Stealth, thick, scale=1.0]
+  % field axis
+  \draw[->, blue!60!black, line width=1pt] (0,-1.6) -- (0,2.0) node[above] {$\bB=B\uvec{z}$};
+  % the two cones bounding theta .. theta+dtheta
+  \draw[gray] (0,0) -- (60:2);
+  \draw[gray] (0,0) -- (75:2);
+  % arc marking theta
+  \draw[->] (0.8,0) arc (0:60:0.8);
+  \node at (32:1.05) {$\theta$};
+  % strip between the cones
+  \draw[red!70!black, line width=1.2pt] (60:2) arc (60:75:2);
+  \node[red!70!black, right] at (67:2.05) {$d\theta$};
+  % a representative moment
+  \draw[->, red!70!black, line width=1.2pt] (0,0) -- (67:1.5);
+  \node[red!70!black] at (67:1.7) {$\bmu$};
+\end{tikzpicture}
+\caption{Geometry for the Boltzmann count. Moments pointing into the cone between $\theta$
+and $\theta+d\theta$ have energy $-\mu B\cos\theta$; their number is
+$dn\propto e^{a\cos\theta}\sin\theta\,d\theta$. The azimuth is integrated out by isotropy
+about $\bB$.}
+\label{fig:lec19-strip}
+\end{figure}
+
+\subsubsection*{Normalization}
+Fixing $C$ by demanding $\int dn=n$ (the total number density),
+\begin{equation}\label{eq:lec19-norm}
+  n=C\int_0^{\pi}e^{a\cos\theta}\sin\theta\,d\theta
+   =C\left[-\frac{1}{a}e^{a\cos\theta}\right]_0^{\pi}
+   =C\,\frac{2\sinh a}{a}
+  \ \Rightarrow\
+  C=\frac{a\,n}{2\sinh a}.
+\end{equation}
+
+\subsubsection*{The Magnetization}
+By azimuthal symmetry only the $z$-projection of each moment survives the sum; the
+magnetization is
+\begin{equation}\label{eq:lec19-Mz-int}
+  M=M_z=\int \mu\cos\theta\,dn
+   =\frac{\mu\,a\,n}{2\sinh a}\int_0^{\pi}\cos\theta\,e^{a\cos\theta}\sin\theta\,d\theta .
+\end{equation}
+Substituting $x=\cos\theta$ and differentiating the normalization integral under the
+parameter $a$,
+\begin{equation}\label{eq:lec19-Ideriv}
+  \int_{-1}^{1}x\,e^{ax}\,dx
+  =\frac{d}{da}\int_{-1}^{1}e^{ax}\,dx
+  =\frac{d}{da}\!\left(\frac{2\sinh a}{a}\right)
+  =\frac{2\,(a\cosh a-\sinh a)}{a^2}.
+\end{equation}
+Hence
+\begin{equation}\label{eq:lec19-Mz-langevin}
+  M=\frac{\mu\,a\,n}{2\sinh a}\cdot\frac{2(a\cosh a-\sinh a)}{a^2}
+   =n\mu\left(\coth a-\frac1a\right).
+\end{equation}
+
+\thm[thm:lec19-langevin]{Langevin Magnetization}{
+  A gas of $n$ moments $\mu$ per unit volume at temperature $T$ in field $B$ has
+  magnetization along the field
+  \begin{equation}\label{eq:lec19-langevin-boxed}
+    \boxed{M=n\mu\,L(a),\qquad
+    L(a)=\coth a-\frac1a,\qquad
+    a=\frac{\mu B}{T},}
+  \end{equation}
+  where $L(a)$ is the \emph{Langevin function}.
+}
+\textit{Significance:} A single dimensionless ratio $a=\mu B/T$ -- the magnetic energy
+measured in units of thermal energy -- controls the entire response, interpolating between
+no alignment ($a\to0$) and complete saturation ($a\to\infty$).
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[>=Stealth, scale=1.0]
+  \draw[->] (0,0) -- (5.2,0) node[right] {$a=\mu B/T$};
+  \draw[->] (0,0) -- (0,2.6) node[above] {$L(a)$};
+  \draw[dashed] (0,2.0) -- (5.0,2.0) node[right] {$1$ (saturation)};
+  % Langevin curve L(a)=coth a - 1/a, scaled so that L=1 -> y=2
+  \draw[blue!70!black, line width=1pt]
+    plot[domain=0.01:5,samples=60] (\x, {2*((cosh(\x)/sinh(\x)) - 1/\x)});
+  % small-a tangent L ~ a/3  -> y = 2*a/3
+  \draw[red!70!black, dashed] (0,0) -- (2.4,1.6) node[above left] {slope $\tfrac13$};
+  \node[blue!70!black] at (3.6,1.55) {$L(a)$};
+\end{tikzpicture}
+\caption{The Langevin function $L(a)=\coth a-1/a$. For small $a$ it rises linearly with
+slope $1/3$ (Curie regime); for large $a$ it saturates at $1$ (all moments aligned).}
+\label{fig:lec19-langevin}
+\end{figure}
+
+\subsubsection*{Two Limits}
+\paragraph{Saturation, $a\gg1$ (low $T$ or strong $B$).}
+$\coth a\to1$ and $1/a\to0$, so
+\begin{equation}\label{eq:lec19-sat}
+  M\to n\mu :
+\end{equation}
+every moment is aligned, the maximum possible magnetization. Physically one cools a warm
+gas (or raises $B$) until thermal agitation can no longer randomize the moments.
+
+\paragraph{Curie regime, $a\ll1$ (the usual case).}
+Expanding $L(a)=\tfrac{a}{3}-\tfrac{a^3}{45}+\dots$,
+\begin{equation}\label{eq:lec19-curie-M}
+  M\simeq n\mu\cdot\frac{a}{3}=\frac{n\mu^2 B}{3T}.
+\end{equation}
+
+\cor[cor:lec19-curie]{Curie's Law}{
+  In the weak-field/high-temperature limit the paramagnetic susceptibility is
+  \begin{equation}\label{eq:lec19-curie-boxed}
+    \boxed{\chi_{\rm para}=\frac{n\mu^2}{3T}>0,}
+  \end{equation}
+  positive (magnetization \emph{along} $\bB$) and inversely proportional to temperature.
+}
+\textit{Significance:} The $1/T$ dependence is the experimental signature of paramagnetism
+and the sharpest contrast with the temperature-independent diamagnetic
+\eqref{eq:lec19-chi-dia}: warming the gas lets thermal motion fight the alignment, weakening
+the response. With $\mu$ of order a Bohr magneton, $\chi_{\rm para}\sim10^{-7}$ at room
+temperature -- about $100\times$ the diamagnetic background, which it therefore dominates.
+
+\nt{Pitfall: $a=\mu B/T$ is genuinely \emph{tiny} in ordinary conditions
+($\mu B\ll k_BT$), so the linear Curie law -- not the full Langevin function -- is what one
+uses; saturation is a low-temperature / high-field laboratory regime. Keep $k_B$ explicit
+($a=\mu B/k_BT$) if you are tracking units; here $k_B=1$.}
+
+\subsubsection*{Method: computing a thermal magnetization}
+\begin{enumerate}
+  \item Write the orientation energy $U=-\bmu\cdot\bB=-\mu B\cos\theta$.
+  \item Weight orientations by Boltzmann, $dn\propto e^{-\beta U}\sin\theta\,d\theta$, and
+        fix the constant by $\int dn=n$.
+  \item Average the field-projection: $M=\int\mu\cos\theta\,dn$; evaluate via $x=\cos\theta$
+        and ``differentiate the partition integral under $a$''.
+  \item Read off $M=n\mu\,L(a)$; expand $L(a)\approx a/3$ for the susceptibility, or take
+        $L\to1$ for saturation.
+\end{enumerate}
+
+%------------------------------------------------------------
+\subsection{Summary}\label{subsec:lec19-summary}
+
+\begin{itemize}
+  \item \textbf{Larmor's theorem} holds without assuming $\bvec{L}$: in the frame rotating
+        at $\boldsymbol{\omega}=-\tfrac{e}{2m_ec}\bB$ the Coriolis force cancels the Lorentz
+        force ($2m\bvec{v}\times\boldsymbol{\omega}=-\tfrac{e}{c}\bvec{v}\times\bB$), so each
+        electron simply acquires $\Delta\bvec{v}=\boldsymbol{\omega}\times\br$. Hence
+        diamagnetism is universal.
+  \item \textbf{Langevin diamagnetism:} averaging the induced moment leaves only the axial
+        part, giving $\chi_{\rm dia}=-\tfrac{ne^2Z}{6mc^2}\langle r^2\rangle<0$,
+        temperature-independent and $\sim-10^{-9}$ numerically.
+  \item The estimate uses the \textbf{classical electron radius}
+        $r_c=e^2/mc^2\approx2.8\times10^{-13}\,$cm, obtained by equating the electrostatic
+        self-energy $e^2/2r_c$ to $mc^2$; it is unphysical below the Compton wavelength
+        $\lambda_C=\hbar/mc\sim100\,r_c$.
+  \item \textbf{Paramagnetism} needs permanent moments and is thermal, not mechanical:
+        precession alone keeps $\sum\bmu=0$; collisions drive Boltzmann alignment.
+  \item The Boltzmann average gives the \textbf{Langevin function}
+        $M=n\mu\,(\coth a-1/a)$, $a=\mu B/T$: saturation $M\to n\mu$ for $a\gg1$, and the
+        \textbf{Curie law} $\chi_{\rm para}=n\mu^2/3T>0$ for $a\ll1$ -- positive, $\propto
+        1/T$, and $\sim100\times$ stronger than diamagnetism.
+\end{itemize}

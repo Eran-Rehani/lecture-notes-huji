@@ -1,0 +1,381 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\section{Lecture 18 -- Viscosity and the Navier--Stokes Equation}\label{sec:lec18}
+\begin{center}
+  \textbf{Date:} June 8, 2026
+\end{center}
+
+\subsection*{Overview}
+We have now finished two thirds of the course: the mechanics of solids (elasticity) and the mechanics of fluids in the \emph{ideal} approximation, where there is no internal friction. Every fluid result so far -- Euler's equation, Bernoulli, Kelvin's circulation theorem, potential flow, D'Alembert's paradox -- rested on the assumption that the stress in a fluid is purely an isotropic pressure, $\sigma_{ij}=-p\,\delta_{ij}$. This lecture finally relaxes that assumption and introduces \emph{viscosity}: internal friction between adjacent fluid layers moving relative to one another. We do this twice. First an \emph{elementary} pass (Newton's picture of shear drag near a wall) to build physical intuition and name the two viscosity coefficients. Then a \emph{rigorous} pass using the philosophy of effective field theory: we write down the most general stress correction $\sigma'_{ij}$ allowed by the symmetries (static limit, Galilean invariance, rotational invariance), expanded to leading order in velocity gradients. The two routes meet at the same constitutive relation, which we substitute into Euler's equation to obtain the \textbf{Navier--Stokes equation} -- the equation that governs essentially all of the remainder of the course, and the central equation of real fluid mechanics. We close with the no-slip boundary condition, the table of physical viscosities, the kinematic viscosity and its diffusive dimensions, the Clay Millennium problem, and a first look at how viscosity \emph{breaks} the conservation laws of ideal flow: vorticity now obeys a diffusion equation.
+
+\medskip\noindent\textbf{Topics:}
+\begin{enumerate}
+  \item Recap of the ideal-fluid equations; the isotropic stress $\sigma_{ij}=-p\delta_{ij}$ and the viscous correction $\sigma'_{ij}$
+  \item Elementary picture: shear flow near a wall and Newton's law of viscosity; the shear viscosity $\eta$
+  \item The bulk (volume) viscosity $\zeta$; relevant only for compressible flow
+  \item Rigorous derivation by effective field theory: static limit, Galilean invariance, expansion in velocity gradients
+  \item The strain-rate tensor $D_{ij}$; symmetric/antisymmetric and isotropic/deviatoric decompositions; the general constitutive relation
+  \item Substitution into Euler $\Rightarrow$ the Navier--Stokes equation
+  \item Newtonian fluids, the no-slip boundary condition, kinematic viscosity $\nu$ and diffusive dimensions
+  \item Viscosity values for real fluids; the Poise; the Millennium problem
+  \item Vorticity in viscous flow: the diffusion equation $\partial_t\bvec\omega-\curl(\vel\times\bvec\omega)=\nu\lapl\bvec\omega$
+\end{enumerate}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Recap: The Ideal Fluid, and Where Viscosity Enters}\label{sec:lec18:recap}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Conceptual Background}
+The ideal (inviscid) fluid was governed by three equations. The momentum (Euler) equation,
+\begin{equation}
+  \material{\vel} = \pdv{\vel}{t} + (\vel\cdot\grad)\vel = -\frac{1}{\rho}\grad p + \body,
+  \label{eq:lec18_euler}
+\end{equation}
+where the material derivative $\material{\vel}$ is the acceleration of a fluid element and $\body$ is the external body force per unit mass; the continuity equation,
+\begin{equation}
+  \pdv{\rho}{t} + \divg(\rho\vel) = 0;
+  \label{eq:lec18_continuity}
+\end{equation}
+and an algebraic \emph{equation of state} relating density and pressure. We met two standard forms: the incompressible case $\rho=\rho_0=\text{const}$, and the barotropic case in which the enthalpy derivative gives the density, $\dv{h}{p}=1/\rho$.
+
+\paragraph{The origin of $-\grad p/\rho$.} The pressure term in \eqref{eq:lec18_euler} arose from a purely \emph{isotropic} stress tensor,
+\begin{equation}
+  \sigma_{ij} = -p\,\delta_{ij},
+  \label{eq:lec18_isotropic_stress}
+\end{equation}
+inserted into the force balance $\rho\,\material{v_i}=\partial_j\sigma_{ij}+\rho f_i$. With \eqref{eq:lec18_isotropic_stress}, $\partial_j\sigma_{ij}=-\partial_i p$, reproducing Euler.
+
+\subsubsection*{The plan: a correction to the stress}
+For a \emph{viscous} fluid the stress is no longer purely isotropic. We write
+\begin{equation}
+  \boxed{\sigma_{ij} = -p\,\delta_{ij} + \sigma'_{ij},}
+  \label{eq:lec18_stress_split}
+\end{equation}
+where $\sigma'_{ij}$ is the \emph{viscous stress}: an additional contribution that is exact only for a static fluid (where it vanishes) but is generally present, and generally \emph{not} isotropic, once the fluid is in (non-uniform) motion.
+\textit{Significance:} The entire physics of viscosity lives in $\sigma'_{ij}$. Our task is to determine its form, and our two key inputs will be that it vanishes when the fluid is static (no relative motion) and that it must respect the symmetries of the problem.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Elementary Picture: Shear Flow Near a Wall}\label{sec:lec18:elementary}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+Consider the prototypical viscous situation: a fluid flowing parallel to a solid plane wall, with a velocity directed along $x$ but \emph{varying} with the distance $y$ from the wall,
+\begin{equation}
+  \vel = \big(v_x(y),\,0,\,0\big).
+  \label{eq:lec18_shear_field}
+\end{equation}
+Because adjacent horizontal layers move at different speeds, they slide past one another -- a shearing motion. Viscosity is precisely the internal friction resisting this sliding: each layer drags its neighbour, and the fluid as a whole exerts a tangential drag on the wall.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=1.0]
+  % wall (hatched)
+  \fill[metalcol!40] (-2.6,-0.6) rectangle (2.6,-0.3);
+  \foreach \xh in {-2.5,-2.3,...,2.5}{ \draw[metalcol!30!black,thin] (\xh,-0.6)--(\xh+0.2,-0.3); }
+  \draw[very thick] (-2.6,-0.3)--(2.6,-0.3);
+  \node[font=\small] at (-2.9,-0.45) {wall};
+  % velocity profile arrows (increasing with y)
+  \foreach \y/\L in {0.0/0.15,0.4/0.55,0.8/0.95,1.2/1.35,1.6/1.75}{
+    \draw[vvec] (-1.6,\y-0.3)--(-1.6+\L,\y-0.3);
+  }
+  % profile curve (tips of the arrows)
+  \draw[myred,thick,dashed] plot[smooth,domain=0:1.6,samples=30,variable=\y]
+    ({-1.6+0.15+0.5625*\y},{\y-0.3});
+  \node[myred,font=\small] at (0.7,1.45) {$v_x(y)$};
+  \draw[->,gray] (-1.6,-0.3)--(-1.6,1.7) node[left,black,font=\small]{$y$};
+  \draw[->,gray] (-1.6,-0.3)--(2.2,-0.3) node[below,black,font=\small]{$x$};
+  % shear element
+  \draw[myorange,thick] (1.0,0.2) rectangle (1.5,0.7);
+  \node[myorange,font=\scriptsize] at (1.25,0.95) {element};
+\end{tikzpicture}
+\caption{Shear flow near a solid wall. The streamwise velocity $v_x$ grows with height $y$, so neighbouring layers slide past one another. Viscosity transmits a tangential (shear) force between layers and onto the wall, proportional to the gradient $\partial_y v_x$.}
+\label{fig:lec18_shear}
+\end{figure}
+
+\subsubsection*{Newton's Law of Viscosity}
+The force $d\bvec F$ the fluid exerts on a surface element of area $dA$ at the wall has two parts. The pressure contributes the familiar \emph{normal} force $-p\,d\bvec A$. In addition the friction contributes a \emph{tangential} force $d\bvec F'$ -- the fluid trying to drag the surface along with it. Newton (in the \emph{Principia}, stated in words) posited that this shear force is proportional to the velocity gradient:
+\begin{equation}
+  \boxed{dF' = \eta\,\pdv{v_x}{y}\,dA.}
+  \label{eq:lec18_newton_law}
+\end{equation}
+The proportionality constant $\eta$ is the \textbf{shear viscosity} (or \emph{dynamic} viscosity). Dividing by area, $dF'/dA$ is a stress -- a tangential (off-diagonal) component of the stress tensor.
+\textit{Significance:} This is the experimental cornerstone of viscous flow: shear stress $\propto$ rate of shear. It defines $\eta$ and identifies the off-diagonal $\sigma'_{xy}=\eta\,\partial_y v_x$ as the first piece of the viscous stress tensor we will reconstruct in full.
+
+\nt{Pitfall: the viscous force depends on the \emph{gradient} of the velocity, not the velocity itself. A student (in lecture, Adam) asked why -- shouldn't friction scale with speed? The reason is symmetry, not dimensions: a fluid in \emph{uniform} motion $v_x=\text{const}$ has no relative motion between its parts; transforming to its rest frame it is simply static, and a static fluid exerts no shear. Only \emph{differences} in velocity between layers -- i.e.\ gradients -- produce viscous stress. This Galilean argument is made rigorous in \cref{sec:lec18:eft}.}
+
+\paragraph{Why the no-slip condition appears.} A second consequence of friction: a viscous fluid sticks to a solid wall. We will find that the \emph{entire} velocity must vanish at a solid boundary (not just its normal component, as for an ideal fluid). Given that, only two possibilities exist near a wall -- either the fluid is globally static (no viscous force), or there is a velocity gradient (and the force is proportional to it). This dichotomy already foreshadows \eqref{eq:lec18_newton_law}.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{The Second Coefficient: Bulk (Volume) Viscosity}\label{sec:lec18:bulk}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+The shear viscosity describes resistance to \emph{shape} change (sliding layers). There is a second, independent kind of internal friction: resistance to a change of \emph{volume}, i.e.\ to compression or expansion of a fluid element. The associated stress is \emph{isotropic} (unlike the shear stress) but still proportional to a velocity gradient -- specifically to the only scalar one can build from $\partial_i v_j$, namely its trace, the divergence $\divg\vel$:
+\begin{equation}
+  \sigma'_{ij} \;\supset\; \zeta\,(\divg\vel)\,\delta_{ij}.
+  \label{eq:lec18_bulk_stress}
+\end{equation}
+The coefficient $\zeta$ is the \textbf{bulk} (or \emph{volume}) viscosity. Physically this is an extra pressure -- but one that depends on the velocity field, specifically on the \emph{rate} of expansion.
+\textit{Significance:} Because $\divg\vel$ is the fractional rate of volume change of a fluid element, $\zeta$ only acts when elements are being compressed or expanded.
+
+\nt{For an \emph{incompressible} flow $\divg\vel=0$ (it follows from the continuity equation \eqref{eq:lec18_continuity} when $\rho=\text{const}$: the $\partial_t\rho$ term drops and $\rho$ factors out, leaving $\divg\vel=0$). Hence the bulk viscosity $\zeta$ is \emph{irrelevant for incompressible flow} -- it contributes only when the fluid is genuinely compressible (e.g.\ sound waves, where density changes matter). This term is a relatively late addition, introduced by the British fluid dynamicist Horace Lamb (1879).}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Rigorous Derivation: Effective Field Theory for the Viscous Stress}\label{sec:lec18:eft}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Mathematical Setup}
+We now derive the form of $\sigma'_{ij}$ from first principles, using the same logic of a \emph{constitutive relation} we used in elasticity (there we wanted $\sigma$ as a function of the strain $\varepsilon$; here we want $\sigma'$ as a functional of the velocity field $\vel$). The method is that of \textbf{effective field theory}:
+
+\dfn[eft-method]{Effective Field Theory Method}{%
+  Write down \emph{all} terms permitted by the symmetries, order by order in some small-quantity expansion. Here the expansion is in (small) velocities and velocity gradients.
+}
+\textit{Significance:} Rather than deriving the stress microscopically, we let symmetry dictate its most general allowed form, keeping only the leading terms. The coefficients ($\eta,\zeta$) are then phenomenological -- to be measured -- but the \emph{structure} is fixed.
+
+\paragraph{Constraint 1 -- the static limit.} By construction $\sigma'$ is the correction beyond pressure, so it must vanish when the fluid is at rest. As a functional of the field,
+\begin{equation}
+  \vel(\bvec x)=\bvec 0 \quad\Longrightarrow\quad \sigma'_{ij}[\vel](\bvec x)=0 .
+  \label{eq:lec18_static_limit}
+\end{equation}
+Here $[\vel]$ denotes dependence on the whole field (and its derivatives), not just its pointwise value. Expanding $\sigma'$ in a Taylor series for small velocities, the zeroth-order (constant) term is therefore absent; the leading term is \emph{linear} in $\vel$ and its derivatives:
+\begin{equation}
+  \sigma'_{ij} = \big(\text{linear in } \vel \text{ and } \partial\vel\big) + O(\vel^2).
+  \label{eq:lec18_taylor}
+\end{equation}
+
+\paragraph{Constraint 2 -- Galilean invariance.} Consider a fluid in \emph{uniform} motion, $\vel(\bvec x)=\vel_0=\text{const}$. By Galilean relativity we may boost to the fluid's rest frame, where it is static; hence again no viscous stress:
+\begin{equation}
+  \vel(\bvec x)=\vel_0 \quad\Longrightarrow\quad \sigma'_{ij}=0 .
+  \label{eq:lec18_galilean}
+\end{equation}
+A term linear in $\vel$ \emph{itself} would not vanish for constant $\vel_0$; it is therefore forbidden. The leading allowed dependence is on the first \emph{derivative} of the velocity, $\partial_i v_j$. This is the rigorous version of the intuitive answer to Adam's question: only velocity \emph{gradients} can enter.
+\textit{Significance:} Two symmetry inputs -- the static limit and Galilean invariance -- between them remove both the constant and the velocity-only terms, leaving the first velocity \emph{gradient} $\partial_i v_j$ as the leading object. Note the index bookkeeping now works: $\sigma'_{ij}$ has two free indices, and so does $\partial_i v_j$.
+
+\subsubsection{Decomposing the Velocity Gradient}\label{sec:lec18:decomp}
+
+\subsubsection*{Mathematical Setup}
+The object $\partial_i v_j$ is a general rank-2 tensor; we split it into symmetric and antisymmetric parts:
+\begin{equation}
+  \partial_i v_j = \underbrace{\tfrac{1}{2}\big(\partial_i v_j + \partial_j v_i\big)}_{\displaystyle D_{ij}}
+                 + \underbrace{\tfrac{1}{2}\big(\partial_i v_j - \partial_j v_i\big)}_{\text{antisymmetric}} .
+  \label{eq:lec18_gradv_split}
+\end{equation}
+
+\dfn[strain-rate]{Strain-Rate Tensor}{%
+  The symmetric part
+  \begin{equation}
+    D_{ij} \equiv \tfrac{1}{2}\big(\partial_i v_j + \partial_j v_i\big)
+    \label{eq:lec18_Dij}
+  \end{equation}
+  is the \emph{strain-rate tensor} (rate-of-strain tensor).
+}
+\textit{Significance:} The name is exact. Recall the (small) strain tensor of elasticity $\varepsilon_{ij}=\tfrac{1}{2}(\partial_i u_j+\partial_j u_i)$, built from the displacement $\bvec u$. Since the velocity is the time derivative of the displacement, $v_i=\partial_t u_i$, differentiating the strain gives
+\begin{equation}
+  D_{ij} = \tfrac{1}{2}\big(\partial_i\partial_t u_j + \partial_j\partial_t u_i\big) = \pdv{t}\varepsilon_{ij} .
+  \label{eq:lec18_Dij_is_strainrate}
+\end{equation}
+So $D_{ij}$ is literally the \emph{rate of straining} of the fluid element -- the fluid is continuously deforming, and what matters for viscous stress is the \emph{rate} of that deformation.
+
+\paragraph{Only the symmetric part survives.} The viscous stress can depend on $D_{ij}$ but \emph{not} on the antisymmetric part, for two reasons.
+\begin{enumerate}
+  \item \textbf{Linearity + symmetry of $\sigma$.} We assumed a linear relation, and $\sigma_{ij}$ (hence $\sigma'_{ij}$) is a symmetric tensor (from conservation of angular momentum). A symmetric tensor linearly related to $\partial_i v_j$ can only couple to the symmetric part $D_{ij}$.
+  \item \textbf{Rotational invariance (deeper).} The antisymmetric part of $\partial_i v_j$ represents a \emph{local rigid rotation} of the fluid (exactly as the antisymmetric derivative of the displacement described rigid rotation in elasticity). A rigid rotation carries no relative deformation, so by rotational symmetry the stress cannot depend on it. This argument is stronger: it holds for all higher-order corrections too, not just the linear one.
+\end{enumerate}
+\textit{Significance:} The antisymmetric part is rotation, which produces no stress; only the genuine deformation rate $D_{ij}$ can.
+
+\subsubsection{Isotropic--Deviatoric Split and the Constitutive Relation}\label{sec:lec18:constitutive}
+
+\subsubsection*{Mathematical Setup}
+Finally decompose the symmetric tensor $D_{ij}$ into its isotropic (trace) part and its traceless \emph{deviatoric} part:
+\begin{equation}
+  D_{ij} = \underbrace{\Big(D_{ij} - \tfrac{1}{3}\delta_{ij}D_{kk}\Big)}_{\text{deviatoric (traceless)}}
+         + \underbrace{\tfrac{1}{3}\delta_{ij}D_{kk}}_{\text{isotropic}},
+  \qquad D_{kk}=\divg\vel .
+  \label{eq:lec18_dev_iso}
+\end{equation}
+The stress $\sigma'_{ij}$ may depend on each part with an independent coefficient. Assigning $\eta$ to the (traceless) shear part and $\zeta$ to the isotropic part gives the final constitutive relation:
+
+\thm[visc-stress]{Viscous Stress Tensor (Newtonian Fluid)}{%
+  \begin{equation}
+    \boxed{\;\sigma'_{ij} = \eta\Big(\partial_i v_j + \partial_j v_i - \tfrac{2}{3}\,\delta_{ij}\,\divg\vel\Big) + \zeta\,\delta_{ij}\,\divg\vel\;}
+    \label{eq:lec18_visc_stress}
+  \end{equation}
+}
+\textit{Significance:} This is the first central result. The shear viscosity $\eta$ multiplies the traceless rate of shear (the factor $-\tfrac{2}{3}\delta_{ij}\divg\vel$ removes its trace, since in 3D the trace of $\partial_iv_j+\partial_jv_i$ is $2\divg\vel$); the bulk viscosity $\zeta$ multiplies the rate of volume change. Together they are the most general, leading-order, symmetry-allowed correction to the pressure-only stress -- the definition of a \textbf{Newtonian fluid}.
+
+\nt{Pitfall: the factor of $\tfrac{2}{3}$ exists only to make the $\eta$ term traceless, so that $\eta$ and $\zeta$ are cleanly separated (shear vs.\ volume). Check: the trace of the $\eta$-bracket is $2\divg\vel-\tfrac{2}{3}\cdot 3\,\divg\vel=0$, while the trace of the whole expression is $3\zeta\divg\vel$ -- purely the bulk part, as intended. Dropping the $\tfrac{2}{3}$ would contaminate $\zeta$ with shear viscosity.}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Assembling the Navier--Stokes Equation}\label{sec:lec18:ns}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Mathematical Setup}
+Only the momentum equation changes; continuity \eqref{eq:lec18_continuity} and the equation of state are untouched. We need the force per unit volume contributed by the viscous stress, $\partial_j\sigma'_{ij}$. Differentiate \eqref{eq:lec18_visc_stress}:
+\begin{align}
+  \partial_j\sigma'_{ij}
+  &= \eta\Big(\partial_j\partial_i v_j + \partial_j\partial_j v_i - \tfrac{2}{3}\,\partial_i\,\divg\vel\Big) + \zeta\,\partial_i\,\divg\vel \notag\\
+  &= \eta\Big(\partial_i(\divg\vel) + \lapl v_i - \tfrac{2}{3}\,\partial_i(\divg\vel)\Big) + \zeta\,\partial_i(\divg\vel) \notag\\
+  &= \eta\,\lapl v_i + \Big(\zeta + \tfrac{1}{3}\eta\Big)\,\partial_i(\divg\vel).
+  \label{eq:lec18_divsigma}
+\end{align}
+In the second line we used $\partial_j\partial_j v_i=\lapl v_i$ and exchanged derivatives so that $\partial_j\partial_i v_j=\partial_i(\partial_j v_j)=\partial_i(\divg\vel)$; the $\eta\,\partial_i(\divg\vel)$ from the first term combines with $-\tfrac{2}{3}\eta\,\partial_i(\divg\vel)$ to leave $+\tfrac{1}{3}\eta\,\partial_i(\divg\vel)$.
+\textit{Significance:} Two distinct viscous force terms emerge: a vector Laplacian $\eta\lapl\vel$ (the dominant, shear term) and a gradient-of-divergence $(\zeta+\tfrac{1}{3}\eta)\grad(\divg\vel)$ (compressional, vanishing for incompressible flow).
+
+Adding \eqref{eq:lec18_divsigma} to the right side of the force balance and multiplying through by $\rho$ (equivalently keeping $\rho$ on the left), Euler's equation becomes:
+
+\thm[navier-stokes]{The Navier--Stokes Equation}{%
+  \begin{equation}
+    \boxed{\;\rho\Big(\pdv{\vel}{t} + (\vel\cdot\grad)\vel\Big) = -\grad p + \eta\,\lapl\vel + \Big(\zeta + \tfrac{1}{3}\eta\Big)\grad(\divg\vel)\;}
+    \label{eq:lec18_NS}
+  \end{equation}
+  (a body-force term $\rho\body$ may be added on the right; by convention it is usually omitted when quoting ``Navier--Stokes'').
+}
+\textit{Significance:} This is the master equation of viscous fluid dynamics, governing nearly the entire remainder of the course. It corrects Euler with the two viscosity terms. Historically: Claude-Louis Navier did preliminary work in the 1820s; George Gabriel Stokes gave the definitive British formulation in 1851.
+
+\nt{The vector Laplacian $\lapl\vel$ means ``take the scalar Laplacian of each Cartesian component separately,'' $(\lapl\vel)_i=\lapl v_i$. This is true only in Cartesian coordinates; see \cref{sec:lec18:remarks}.}
+
+\paragraph{Consistency with the elementary picture.} In the elementary intro we wrote the single shear component $\sigma'_{xy}=\eta\,\partial_y v_x$. We now see it as one off-diagonal entry of the full tensor \eqref{eq:lec18_visc_stress}: for the shear field $\vel=(v_x(y),0,0)$, only $\partial_y v_x\ne 0$, so $\sigma'_{xy}=\eta(\partial_y v_x+\partial_x v_y)=\eta\,\partial_y v_x$, recovering Newton's law \eqref{eq:lec18_newton_law}. The elementary drag was simply the $xy$-component of the tensor equation.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Boundary Condition, Newtonian Fluids, and Kinematic Viscosity}\label{sec:lec18:bc_nu}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{The No-Slip Boundary Condition}
+Navier--Stokes is a second-order PDE; to make the problem well-posed we need boundary conditions. At a solid wall the condition is \emph{no-slip}:
+\begin{equation}
+  \boxed{\vel = \bvec 0 \quad\text{on a solid boundary.}}
+  \label{eq:lec18_noslip}
+\end{equation}
+\textit{Significance:} This is stronger than the ideal-fluid condition. For an ideal fluid we required only the \emph{normal} velocity to vanish ($v_n=0$, no penetration) while allowing tangential slip. Viscosity adds friction \emph{between the fluid and the wall}, so the fluid sticks: \emph{all} components vanish, including the tangential one. Compare:
+\begin{equation}
+  \text{ideal: } v_n = 0 \quad\text{(slip allowed)};\qquad
+  \text{viscous: } \vel = \bvec 0 \quad\text{(no slip).}
+  \label{eq:lec18_bc_compare}
+\end{equation}
+
+\subsubsection*{Newtonian fluids -- a reminder it is an approximation}
+A fluid is \emph{Newtonian} when $\sigma'_{ij}$ is linear in the velocity gradients, as in \eqref{eq:lec18_visc_stress}. This matches Newton's verbal description. Navier--Stokes is the leading-order truncation: in general $\sigma'$ could contain higher powers of $\vel$ and higher derivatives. Non-Newtonian fluids (e.g.\ polymers, suspensions) are \emph{not} described by \eqref{eq:lec18_NS}, and we will not treat them. Even so, Navier--Stokes already exhibits vastly richer behaviour than Euler.
+
+\subsubsection*{Kinematic Viscosity and the Incompressible Equation}
+For an incompressible fluid, $\divg\vel=0$, the bulk term and the $\grad(\divg\vel)$ term both drop. Dividing \eqref{eq:lec18_NS} by $\rho$:
+\begin{equation}
+  \boxed{\pdv{\vel}{t} + (\vel\cdot\grad)\vel = -\frac{1}{\rho}\grad p + \nu\,\lapl\vel,}
+  \qquad
+  \nu \equiv \frac{\eta}{\rho},
+  \label{eq:lec18_NS_incomp}
+\end{equation}
+where $\nu$ is the \textbf{kinematic viscosity}. Notice the density has \emph{disappeared} except inside the pressure term; $\nu$ is viscosity ``per unit mass.''
+\textit{Significance:} The incompressible Navier--Stokes equation is the workhorse form. The single material parameter $\nu$ now controls the viscous physics.
+
+\paragraph{Dimensions of $\nu$ -- a diffusion coefficient.} From \eqref{eq:lec18_NS_incomp}, $\nu$ has the dimensions of $(\partial_t\vel)/(\lapl\vel)$:
+\begin{equation}
+  [\nu] = \frac{[\partial_t v]}{[\lapl v]} = \frac{v/T}{v/L^2} = \frac{L^2}{T}.
+  \label{eq:lec18_nu_dim}
+\end{equation}
+This is the dimension of a \textbf{diffusion coefficient} (length$^2$/time) -- not a velocity ($L/T$) and not a velocity-squared, but velocity-squared $\times$ time. We will see this is not a coincidence: $\nu$ governs an honest diffusion equation (for vorticity, \cref{sec:lec18:vorticity}).
+
+\paragraph{Dimensions of $\eta$.} Since $\eta=\rho\nu$,
+\begin{equation}
+  [\eta] = [\rho]\,[\nu] = \frac{M}{L^3}\cdot\frac{L^2}{T} = \frac{M}{L\,T}.
+  \label{eq:lec18_eta_dim}
+\end{equation}
+
+\nt{Notation: $\eta$ is also written $\mu$ (especially in the engineering literature), where it is the \emph{shear} or \emph{dynamic} viscosity. We met $\mu$ before in linear elasticity as a Lamé coefficient (the shear modulus); the reuse is suggestive -- the elastic $\mu$ relates stress to shear \emph{strain}, while the viscous $\eta$ relates stress to shear \emph{strain rate}. We follow Landau \& Lifshitz and write $\eta$. The CGS unit of $\eta$ is the \emph{poise}, $1\ \mathrm{P}=1\ \mathrm{g\,cm^{-1}\,s^{-1}}$, named for the French scientist Poiseuille (whom we will meet later); the unit was so named in 1913.}
+
+\subsubsection*{Representative values}
+A table of four common fluids (CGS units: $\eta$ in poise $=\mathrm{g\,cm^{-1}s^{-1}}$, $\nu=\eta/\rho$ in $\mathrm{cm^2 s^{-1}}$, $\rho$ in $\mathrm{g\,cm^{-3}}$):
+\begin{center}
+\begin{tabular}{lccc}
+\toprule
+Fluid & $\eta$ (poise) & $\nu$ (cm$^2$/s) & $\rho$ (g/cm$^3$) \\
+\midrule
+Water    & $0.010$ & $0.010$ & $1.0$ \\
+Air      & $\sim1.8\times10^{-4}$ & $\sim0.15$ & $\sim1.2\times10^{-3}$ \\
+Alcohol  & $\sim0.018$ & $\sim0.022$ & $0.8$ \\
+Glycerin & $\sim8.5$ & $\sim6.8$ & $1.26$ \\
+Mercury  & $0.0156$ & $0.0012$ & $13.6$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+\textit{Reading the table:} For water $\rho=1$, so $\eta$ and $\nu$ coincide numerically. Air has a much smaller $\eta$ than water, yet because its density is $\sim10^3$ times smaller, its \emph{kinematic} viscosity $\nu$ is actually \emph{larger} than water's by nearly three orders of magnitude. Glycerin is hugely viscous -- some $700\times$ water. Mercury, despite its large density, has a tiny kinematic viscosity. (It is its density ratio to water, $\sim13.6$, that makes $760\ \mathrm{mm}$ of mercury equal $\sim10\ \mathrm{m}$ of water in a barometer.)
+\textit{Significance:} The relevant viscosity for the \emph{dynamics} of a flow is the kinematic $\nu$, and the air/water comparison shows why it, not $\eta$, is the physically governing quantity.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Two Remarks: Curvilinear Coordinates and the Millennium Problem}\label{sec:lec18:remarks}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Navier--Stokes in non-Cartesian coordinates}
+To use \eqref{eq:lec18_NS} in cylindrical or spherical coordinates we need the \emph{vector} Laplacian $\lapl\vel$, the divergence, and the gradient in those systems. As in elasticity, there are two routes:
+\begin{enumerate}
+  \item Look up the ready-made formulae (e.g.\ in Landau \& Lifshitz).
+  \item Derive them by expressing the operators in the curvilinear basis -- but one must remember to differentiate the \emph{basis vectors} too (they vary in space). For example the spherical gradient is $\grad=\uvec r\,\partial_r+\uvec\theta\,\tfrac{1}{r}\partial_\theta+\uvec\phi\,\tfrac{1}{r\sin\theta}\partial_\phi$, and $\partial_\theta\uvec r\ne 0$, etc.
+\end{enumerate}
+\textit{Significance:} The subtlety -- and the usual source of error -- is exactly that the unit vectors are position-dependent, so the vector Laplacian is \emph{not} obtained by Laplacian-ing each curvilinear component naively.
+
+\subsubsection*{The Clay Millennium Problem}
+Navier--Stokes is at the frontier of mathematics, not only physics. In 2000 the Clay Mathematics Institute named seven \emph{Millennium Prize Problems} (\$1 million each); one concerns Navier--Stokes:
+\begin{quote}
+  Prove that the (incompressible) Navier--Stokes equations, for suitable initial data, always admit a globally defined \emph{smooth} solution -- or find a counterexample.
+\end{quote}
+It is straightforward to \emph{write down} the equation, but extremely hard to know whether a smooth solution always \emph{exists} and stays smooth. Simulations of flow past a wing show singularities, turbulence, instabilities, and vorticity forming; whether the continuum equation itself can develop a true singularity in finite time is unknown. The problem remains open.
+\textit{Significance:} The very equation we will spend the rest of the course solving in special cases is, in full generality, beyond current mathematics -- a measure of how rich it is.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Viscosity Breaks Conservation: The Vorticity Diffusion Equation}\label{sec:lec18:vorticity}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Conceptual Background}
+The ideal fluid conserved energy, mass (continuity), and circulation/vorticity (Kelvin's theorem). Viscosity violates all of these, and we want the \emph{rate} of violation -- which will be proportional to the viscosity coefficients. We illustrate with vorticity, $\bvec\omega=\curl\vel$. For ideal incompressible flow the local form of Kelvin's theorem was
+\begin{equation}
+  \pdv{\bvec\omega}{t} - \curl(\vel\times\bvec\omega) = 0,
+  \label{eq:lec18_kelvin_local}
+\end{equation}
+the statement that vorticity is frozen into and merely advected by the flow.
+
+\subsubsection*{Mathematical Setup}
+Take the incompressible Navier--Stokes equation \eqref{eq:lec18_NS_incomp} and rewrite the advection term with the standard vector identity
+\begin{equation}
+  (\vel\cdot\grad)\vel = \grad\!\Big(\tfrac{1}{2}v^2\Big) - \vel\times\bvec\omega,
+  \label{eq:lec18_advection_identity}
+\end{equation}
+which follows from expanding $\vel\times(\curl\vel)=\grad(\tfrac12 v^2)-(\vel\cdot\grad)\vel$ (the same identity that gave the Bernoulli term in ideal flow). Then
+\begin{equation}
+  \pdv{\vel}{t} + \grad\!\Big(\tfrac{1}{2}v^2\Big) - \vel\times\bvec\omega = -\frac{1}{\rho}\grad p + \nu\,\lapl\vel .
+  \label{eq:lec18_NS_rotform}
+\end{equation}
+Now take the curl of both sides. Every \emph{gradient} dies under the curl: $\curl\grad(\tfrac12 v^2)=0$, and $\curl(\grad p/\rho)=0$ because $\rho=\text{const}$ (incompressible). Using $\curl\vel=\bvec\omega$ and exchanging curl with the Laplacian on the right:
+\begin{equation}
+  \boxed{\;\pdv{\bvec\omega}{t} - \curl(\vel\times\bvec\omega) = \nu\,\lapl\bvec\omega\;}
+  \label{eq:lec18_vorticity_diffusion}
+\end{equation}
+\textit{Significance:} The left side is exactly the ideal-flow conservation law \eqref{eq:lec18_kelvin_local}; viscosity adds the source $\nu\lapl\bvec\omega$ on the right, proportional to the kinematic viscosity. Vorticity is no longer conserved.
+
+\paragraph{It is a diffusion equation.} Ignoring the advection term $\curl(\vel\times\bvec\omega)$, \eqref{eq:lec18_vorticity_diffusion} reads $\partial_t\bvec\omega=\nu\lapl\bvec\omega$ -- a \emph{diffusion equation} with diffusion coefficient $\nu$ (first time derivative $=$ coefficient $\times$ second spatial derivative). This vindicates the dimensional clue \eqref{eq:lec18_nu_dim}: $\nu$ really is a diffusivity.
+\textit{Significance:} In an ideal fluid vorticity is never created and, once present, is merely carried along with the flow. In a viscous fluid vorticity \emph{diffuses}: it spreads out from where it is generated (e.g.\ at walls) into the bulk, exactly like heat or a dye. This single equation captures the essential new physics of viscosity -- the smearing and spreading of rotation.
+
+\nt{The professor flagged the next topics for the following session: the corresponding violation of \emph{energy} conservation -- viscous \emph{dissipation}, the rate at which mechanical energy is converted to heat by internal friction -- again proportional to the viscosity coefficients.}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection*{Summary}
+%%─────────────────────────────────────────────────────────────────────────────
+\begin{itemize}
+  \item \textbf{Stress split:} $\sigma_{ij}=-p\,\delta_{ij}+\sigma'_{ij}$; viscosity lives entirely in the correction $\sigma'_{ij}$, which vanishes for a static or uniformly-moving fluid.
+  \item \textbf{Elementary law (Newton):} shear stress $\sigma'_{xy}=\eta\,\partial_y v_x$; $\eta$ is the shear (dynamic) viscosity. The bulk viscosity $\zeta$ multiplies $\divg\vel$ and matters only for compressible flow.
+  \item \textbf{EFT derivation:} static limit $\Rightarrow$ no constant term; Galilean invariance $\Rightarrow$ no $\vel$ term, only $\partial_i v_j$; symmetry/rotation $\Rightarrow$ only the symmetric strain-rate $D_{ij}=\tfrac12(\partial_iv_j+\partial_jv_i)=\partial_t\varepsilon_{ij}$.
+  \item \textbf{Constitutive relation:} $\sigma'_{ij}=\eta(\partial_iv_j+\partial_jv_i-\tfrac{2}{3}\delta_{ij}\divg\vel)+\zeta\,\delta_{ij}\,\divg\vel$ (Newtonian fluid).
+  \item \textbf{Navier--Stokes:} $\rho(\partial_t\vel+(\vel\cdot\grad)\vel)=-\grad p+\eta\lapl\vel+(\zeta+\tfrac13\eta)\grad(\divg\vel)$. Incompressible: $\partial_t\vel+(\vel\cdot\grad)\vel=-\tfrac{1}{\rho}\grad p+\nu\lapl\vel$, $\nu=\eta/\rho$.
+  \item \textbf{No-slip BC:} $\vel=\bvec 0$ on solid walls (vs.\ only $v_n=0$ for ideal flow).
+  \item \textbf{Kinematic viscosity} $\nu=\eta/\rho$ has diffusion dimensions $L^2/T$; for water $\eta\approx\nu\approx0.01$ CGS, air has larger $\nu$, glycerin $\sim700\times$ water.
+  \item \textbf{Vorticity:} no longer conserved -- $\partial_t\bvec\omega-\curl(\vel\times\bvec\omega)=\nu\lapl\bvec\omega$, a diffusion equation; viscosity makes vorticity spread.
+  \item \textbf{Millennium problem:} global existence/smoothness of incompressible Navier--Stokes is an open \$1M problem.
+\end{itemize}
+
+\subsection*{Further Reading}
+\begin{itemize}
+  \item L.\,D. Landau and E.\,M. Lifshitz, \textit{Fluid Mechanics} (Vol.\ 6): \S15 (the equations of motion of a viscous fluid), \S16 (energy dissipation), \S17 (the no-slip condition).
+  \item G.\,K. Batchelor, \textit{An Introduction to Fluid Dynamics}: \S3.3--3.4 (the stress tensor and the Navier--Stokes equation).
+  \item D.\,J. Acheson, \textit{Elementary Fluid Dynamics}: Ch.\ 6 (viscous flow, vorticity diffusion).
+\end{itemize}
+
+\end{document}

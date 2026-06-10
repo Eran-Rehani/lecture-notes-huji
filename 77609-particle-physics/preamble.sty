@@ -1,0 +1,81 @@
+\ProvidesPackage{preamble}
+
+%% -- Core packages -----------------------------------------------------------
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{physics}
+\usepackage[margin=2cm]{geometry}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue]{hyperref}
+\usepackage[shortlabels]{enumitem}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{subfiles}
+\usepackage{cancel}
+\usepackage{siunitx}
+\usepackage[compat=1.1.0]{tikz-feynman}
+\usepackage{slashed}
+\AtBeginDocument{\RenewCommandCopy\qty\SI}
+
+%% -- Page style --------------------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\setlength{\headheight}{14pt}
+\let\oldpart\part
+\renewcommand{\part}[1]{\oldpart{#1}\markboth{#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{#1}}
+\renewcommand{\subsectionmark}[1]{\markright{#1}}
+\lhead{\small\nouppercase{\leftmark}}
+\rhead{\small\nouppercase{\rightmark}}
+\cfoot{\textbf{\thepage}}
+
+%% ── Theorem environments (eye-candy tcolorbox) ───────────────────────────────
+\usepackage{eye-candy}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+%% -- General notation --------------------------------------------------------
+\newcommand{\bvec}[1]{\mathbf{#1}}
+\newcommand{\anticomm}[2]{\{#1,\, #2\}}
+\newcommand{\expectval}[1]{\langle #1 \rangle}
+
+%% -- QFT / particle physics specific ----------------------------------------
+\newcommand{\lagr}{\mathcal{L}}
+\newcommand{\hamilt}{\mathcal{H}}
+\newcommand{\Mamp}{\mathcal{M}}
+\newcommand{\partialmu}{\partial_{\mu}}
+\newcommand{\fourvec}[1]{#1^{\mu}}
+\newcommand{\lorentz}[1]{\Lambda^{\mu}_{\ \nu} #1}
+\newcommand{\Dirac}[1]{\slashed{#1}}
+\newcommand{\spinor}[1]{u_{#1}}
+\newcommand{\propagator}[2]{\frac{i}{#1^2 - #2^2}}
+\newcommand{\vertex}[1]{-ig_{#1}}
+\newcommand{\dcross}{\frac{d\sigma}{d\Omega}}
+\newcommand{\DecayRate}{\Gamma}
+
+%% -- Course-specific macros --------------------------------------------------
+%% SUGGESTED MACROS (do not add to preamble.sty without review):
+ \newcommand{\SM}{\mathrm{SM}}
+\newcommand{\QFT}{\mathrm{QFT}}
+\newcommand{\QED}{\mathrm{QED}}
+\newcommand{\QCD}{\mathrm{QCD}}
+\newcommand{\Lag}{\mathcal{L}}
+\newcommand{\dphi}{\dot{\phi}}
+
+%% ── Homework formatting (used by Homework/HW_*.tex subfiles) ────────────────
+\usepackage{mdframed}
+\newcounter{problem}
+\newcommand{\problem}[1]{\stepcounter{problem}\subsection*{Question \theproblem: #1}}
+\newenvironment{questionbox}{%
+  \begin{mdframed}[linewidth=0.5pt, innertopmargin=3pt, innerbottommargin=3pt,
+    innerleftmargin=3pt, innerrightmargin=3pt, backgroundcolor=gray!6]%
+}{%
+  \end{mdframed}\medskip}
+\theoremstyle{definition}
+\newtheorem{solution}{Solution}
+\newenvironment{solutionbox}{%
+  \begin{mdframed}[linewidth=0.5pt, innertopmargin=3pt, innerbottommargin=3pt,
+    innerleftmargin=4pt, innerrightmargin=4pt, backgroundcolor=blue!4]%
+  \textbf{Solution.}\par\smallskip
+}{%
+  \end{mdframed}\medskip}

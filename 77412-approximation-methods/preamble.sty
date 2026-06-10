@@ -1,0 +1,33 @@
+\ProvidesPackage{preamble}
+
+%% ── Core packages ────────────────────────────────────────────────────────────
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{physics}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue]{hyperref}
+\usepackage{enumitem}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{subfiles}
+\usepackage{cancel}
+\usepackage{siunitx}
+\usepackage{tensor}
+
+%% ── Page style ───────────────────────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\setlength{\headheight}{14pt}
+\let\oldpart\part
+\renewcommand{\part}[1]{\oldpart{#1}\markboth{#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{#1}}
+\renewcommand{\subsectionmark}[1]{\markright{#1}}
+\lhead{\small\nouppercase{\leftmark}}
+\rhead{\small\nouppercase{\rightmark}}
+\cfoot{\textbf{\thepage}}
+
+%% ── Theorem environments (eye-candy tcolorbox) ───────────────────────────────
+\usepackage{eye-candy}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}

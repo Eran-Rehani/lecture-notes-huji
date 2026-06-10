@@ -1,0 +1,50 @@
+\ProvidesPackage{preamble}
+
+%% ── Core packages ────────────────────────────────────────────────────────────
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{physics}
+\usepackage[margin=2.5cm]{geometry}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue]{hyperref}
+\usepackage[shortlabels]{enumitem}  % shortlabels: accept [(a)], [1.] forms used by Homework subfiles
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{subfiles}
+\usepackage{cancel}
+\usepackage{siunitx}
+\usepackage{isotope}
+\usepackage{bm}                 % bold math symbols (\bm) — used by Homework subfiles
+\usepackage[version=4]{mhchem}  % nuclide notation (\ce) — used by Homework subfiles
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,calc,decorations.pathreplacing,patterns}
+
+%% ── Page style ───────────────────────────────────────────────────────────────
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small 77603 — Nuclear Physics}
+\rhead{\small \thesubsection}
+\cfoot{\thepage}
+
+%% ── Theorem environments (eye-candy tcolorbox) ───────────────────────────────
+\usepackage{eye-candy}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+%% ── General notation ─────────────────────────────────────────────────────────
+\newcommand{\bvec}[1]{\mathbf{#1}}
+\newcommand{\expectval}[1]{\langle #1 \rangle}
+
+%% ── Nuclear physics specific ─────────────────────────────────────────────────
+\newcommand{\nucleus}[2]{{}^{#2}\mathrm{#1}}   % \nucleus{Fe}{56} -> 56Fe
+\newcommand{\BE}{B(E)}                          % binding energy
+\newcommand{\Qval}{Q}                           % Q value
+\newcommand{\xsec}{\sigma}                      % cross section
+\newcommand{\formfac}{F(q)}                     % form factor
+\newcommand{\isospin}{\mathbf{T}}               % isospin operator
+\newcommand{\halflife}{t_{1/2}}                 % half-life
+\newcommand{\activity}{\mathcal{A}}             % activity
+\newcommand{\nucrad}{r_0}                       % nuclear radius parameter
+\newcommand{\BW}{B_W}                           % Bethe-Weizsacker
+
+%% ── Course-specific macros — add below as course progresses ──────────────────

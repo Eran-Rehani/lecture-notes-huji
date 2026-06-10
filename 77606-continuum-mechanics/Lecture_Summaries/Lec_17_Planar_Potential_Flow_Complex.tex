@@ -466,20 +466,29 @@ which vanishes at $z=\pm R$: the two \emph{stagnation points} on the disk, fore 
   % the disk
   \shade[ball color=myblue!40] (0,0) circle (0.6);
   \node[font=\small] at (0,0) {$R$};
-  % oncoming/diverting streamlines
-  \foreach \y in {-1.5,-0.95,0.95,1.5}{
-    \draw[vvec] (-2.8,\y)
-      .. controls (-1.1,\y) and (-0.9,{\y*0.5}) .. (0,{\y*0.45})
-      .. controls (0.9,{\y*0.5}) and (1.1,\y) .. (2.8,\y);
-  }
-  % central dividing streamline + stagnation points
-  \draw[vvec] (-2.8,0)--(-0.62,0);
-  \draw[vvec] (0.62,0)--(2.8,0);
+  % exact streamlines from psi=v0*y*(1-R^2/r^2), R=0.6
+  % coordinates numerically sampled at x in {-2.8,-2.2,-1.5,-0.9,-0.5,0,...}
+  %% h=0.24
+  \draw[vvec] plot[smooth] coordinates {(-2.8,0.251) (-2.2,0.259) (-1.5,0.284) (-0.9,0.385) (-0.5,0.595) (0.0,0.732) (0.5,0.595) (0.9,0.385) (1.5,0.284) (2.2,0.259) (2.8,0.251)};
+  \draw[vvec] plot[smooth] coordinates {(-2.8,-0.251) (-2.2,-0.259) (-1.5,-0.284) (-0.9,-0.385) (-0.5,-0.595) (0.0,-0.732) (0.5,-0.595) (0.9,-0.385) (1.5,-0.284) (2.2,-0.259) (2.8,-0.251)};
+  %% h=0.48
+  \draw[vvec] plot[smooth] coordinates {(-2.8,0.502) (-2.2,0.516) (-1.5,0.558) (-0.9,0.672) (-0.5,0.803) (0.0,0.886) (0.5,0.803) (0.9,0.672) (1.5,0.558) (2.2,0.516) (2.8,0.502)};
+  \draw[vvec] plot[smooth] coordinates {(-2.8,-0.502) (-2.2,-0.516) (-1.5,-0.558) (-0.9,-0.672) (-0.5,-0.803) (0.0,-0.886) (0.5,-0.803) (0.9,-0.672) (1.5,-0.558) (2.2,-0.516) (2.8,-0.502)};
+  %% h=0.72
+  \draw[vvec] plot[smooth] coordinates {(-2.8,0.752) (-2.2,0.771) (-1.5,0.821) (-0.9,0.920) (-0.5,1.007) (0.0,1.060) (0.5,1.007) (0.9,0.920) (1.5,0.821) (2.2,0.771) (2.8,0.752)};
+  \draw[vvec] plot[smooth] coordinates {(-2.8,-0.752) (-2.2,-0.771) (-1.5,-0.821) (-0.9,-0.920) (-0.5,-1.007) (0.0,-1.060) (0.5,-1.007) (0.9,-0.920) (1.5,-0.821) (2.2,-0.771) (2.8,-0.752)};
+  %% h=1.10
+  \draw[vvec] plot[smooth] coordinates {(-2.8,1.145) (-2.2,1.168) (-1.5,1.217) (-0.9,1.288) (-0.5,1.336) (0.0,1.364) (0.5,1.336) (0.9,1.288) (1.5,1.217) (2.2,1.168) (2.8,1.145)};
+  \draw[vvec] plot[smooth] coordinates {(-2.8,-1.145) (-2.2,-1.168) (-1.5,-1.217) (-0.9,-1.288) (-0.5,-1.336) (0.0,-1.364) (0.5,-1.336) (0.9,-1.288) (1.5,-1.217) (2.2,-1.168) (2.8,-1.145)};
+  % axial stagnation streamlines
+  \draw[vvec] (-2.8,0)--(-0.61,0);
+  \draw[vvec] (0.61,0)--(2.8,0);
+  % stagnation points
   \fill[myred] (-0.6,0) circle (2.2pt);
-  \fill[myred] (0.6,0) circle (2.2pt);
-  \node[myred,font=\scriptsize,below left] at (-0.6,-0.05){front stag.};
-  \node[myred,font=\scriptsize,below right] at (0.6,-0.05){rear stag.};
-  \node[vcol,font=\small] at (-2.6,1.8){$v_0$};
+  \fill[myred]  (0.6,0) circle (2.2pt);
+  \node[myred,font=\scriptsize,below=2pt] at (-0.6,0){front stag.};
+  \node[myred,font=\scriptsize,below=2pt] at ( 0.6,0){rear stag.};
+  \node[vcol,font=\small] at (-2.5,1.6){$v_0$};
 \end{tikzpicture}
 \caption{Uniform flow past a solid disk, $w=v_0(z+R^2/z)$. The circle $|z|=R$ is the streamline $\psi=0$; the stream divides at the front stagnation point $z=-R$ and rejoins at the rear $z=+R$ (where $dw/dz=0$). The $R^2/z$ term is the 2D dipole, the planar analogue of the sphere's dipole.}
 \label{fig:lec17_disk}

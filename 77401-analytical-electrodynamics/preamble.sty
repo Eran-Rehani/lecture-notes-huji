@@ -1,0 +1,88 @@
+\ProvidesPackage{preamble}
+
+%% ── Core packages ────────────────────────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{physics}
+\usepackage[margin=1.8cm]{geometry}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue]{hyperref}
+\usepackage[shortlabels]{enumitem}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{subfiles}
+\usepackage{cancel}
+\usepackage{siunitx}
+\usepackage{tensor}
+\usetikzlibrary{arrows.meta,calc}
+
+%% ── Math font (pdflatex — pick one, comment the rest) ────────────────────────
+%% STIX Two / XITS-equivalent (default): closest pdflatex match to XITS
+\usepackage{newtxtext}
+%% Times New Roman style:   \usepackage{newtxtext,newtxmath}
+%% Palatino style:          \usepackage{mathpazo}  (add \usepackage{palatino} for text)
+%% Utopia / Fourier:        \usepackage{fourier}
+%% KP Fonts (balanced):     \usepackage{kpfonts}
+%% Computer Modern (LaTeX default): comment out all of the above
+%%
+%% NOTE: True XITS (OpenType) requires XeLaTeX/LuaLaTeX + unicode-math.
+
+%% ── Page style ───────────────────────────────────────────────────────────────
+\setlength{\headheight}{13.6pt}
+\addtolength{\topmargin}{-1.6pt}
+\pagestyle{fancy}
+\fancyhf{}
+\AtBeginDocument{\renewcommand{\sectionmark}[1]{\markright{#1}}}
+\lhead{\small \nouppercase{\leftmark}}
+\rhead{\small \nouppercase{\rightmark}}
+\cfoot{\thepage}
+
+%% ── Theorem environments (eye-candy tcolorbox) ───────────────────────────────
+\usepackage{eye-candy}
+\theoremstyle{remark}
+\newtheorem{remark}{Remark}
+
+%% ── Vector notation ──────────────────────────────────────────────────────────
+\newcommand{\bvec}[1]{\mathbf{#1}}
+\newcommand{\uvec}[1]{\hat{\mathbf{#1}}}
+\newcommand{\tens}[1]{\boldsymbol{#1}}
+
+%% ── Differential operators 
+\newcommand{\divg}{\nabla \cdot}
+\newcommand{\lapl}{\nabla^2}
+\newcommand{\ddt}{\frac{d}{dt}}
+
+%% ── Electrodynamics specific ─────────────────────────────────────────────────
+\newcommand{\Dvec}{\mathbf{D}}
+\newcommand{\Hvec}{\mathbf{H}}
+\newcommand{\Avec}{\mathbf{A}}
+\newcommand{\Jvec}{\mathbf{J}}
+\newcommand{\emtensor}{T^{\mu\nu}}
+\newcommand{\fourvec}[1]{#1^{\mu}}
+\newcommand{\contract}[1]{\eta_{\mu\nu}#1^{\mu}#1^{\nu}}
+\newcommand{\Fmunu}{F^{\mu\nu}}
+\newcommand{\partialmu}{\partial_{\mu}}
+\newcommand{\Green}{G(\mathbf{r}, \mathbf{r}')}
+\newcommand{\multipole}[2]{Q_{#1}^{#2}}    % multipole moment
+
+%% ── Course-specific macros — add below as course progresses ──────────────────
+%% SUGGESTED MACROS (do not add to preamble.sty without review):
+%% \newcommand{\bnabla}{\boldsymbol{\nabla}}
+ \newcommand{\bE}{\mathbf{E}}
+\newcommand{\bB}{\mathbf{B}}
+ \newcommand{\bu}{\mathbf{u}}
+\newcommand{\bv}{\mathbf{v}}
+ \newcommand{\br}{\mathbf{r}}
+\newcommand{\bmu}{\boldsymbol{\mu}}
+
+%% ── Homework subfile compatibility ──────────────────────────────────────────
+\newcounter{problem}
+\newcommand{\problem}[1]{%
+  \stepcounter{problem}%
+  \subsection*{\theproblem.\ #1}%
+}
+\newtheorem{question}{Question}[section]
+\newtheorem*{solution}{Solution}
