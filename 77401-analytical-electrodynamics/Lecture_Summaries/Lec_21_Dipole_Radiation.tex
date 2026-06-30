@@ -1,0 +1,533 @@
+%% Lecture 21 -- Retarded Potentials: Physical Interpretation, Far-Field Expansion, and Dipole Radiation
+\section{Lecture 21 -- Retarded Potentials, Far-Field Expansion, and Dipole Radiation}\label{sec:lec21}
+
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 16/06/2026 & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+
+\subsection*{Overview}
+
+Building on the Green-function formalism of Lecture~20, this lecture has three acts.
+First, we revisit the physical interpretation of the \emph{retarded} Green function and
+explain why the \emph{advanced} solution --- while mathematically valid --- is physically
+inadmissible for initial-value problems.
+Second, we show that the retarded potentials reduce to Coulomb/Biot--Savart in the static
+limit and briefly note the Liénard--Wiechert potentials for a single moving charge.
+Third, and most importantly, we derive the radiation fields produced by a \emph{localized},
+\emph{slowly-moving} source as seen from a distant observation point. Under two
+approximations --- geometric ($r \gg L$) and non-relativistic ($v \ll c$, equivalently
+$\lambda \gg L$) --- the retarded potentials expand systematically. The leading
+radiation contribution is controlled entirely by the second time derivative of the
+\textbf{electric dipole moment} $\bvec{p}(t)$. This is the origin of \textbf{dipole
+radiation}.
+
+\paragraph{Notation.}
+$\bvec{x}$ is the observation point, $\bvec{y}$ is a source point, $r=|\bvec{x}|$,
+$\uvec{r}=\bvec{x}/r$, $R=|\bvec{x}-\bvec{y}|$, and $t_R \equiv t - R/c$ is the
+retarded time.
+
+%-----------------------------------------------------------
+\subsection{Retarded Potentials: Recap and Physical Interpretation}
+\label{subsec:lec21-recap}
+
+\subsubsection*{Physical Motivation}
+In Lecture~20 we showed that inserting the retarded Green function
+$G_{\rm ret}(x-y)=\delta(c(t-t')-|\bvec{x}-\bvec{y}|)/(4\pi|\bvec{x}-\bvec{y}|)$
+into the particular-solution formula and performing the $dt'$ integral via the delta
+function yields:
+
+\dfn[def:lec21-ret-potentials]{Retarded Potentials}{
+\begin{equation}\label{eq:lec21-phi-ret}
+  \phi(t,\bvec{x}) = \int d^3y\,\frac{\rho(t_R,\bvec{y})}{|\bvec{x}-\bvec{y}|},
+  \qquad
+  \Avec(t,\bvec{x}) = \frac{1}{c}\int d^3y\,\frac{\Jvec(t_R,\bvec{y})}{|\bvec{x}-\bvec{y}|},
+\end{equation}
+where
+\begin{equation}\label{eq:lec21-tret}
+  \boxed{t_R \equiv t - \frac{|\bvec{x}-\bvec{y}|}{c}.}
+\end{equation}
+}
+
+\textit{Significance:} The structure is the same Coulomb/Biot--Savart superposition as in
+statics, but the source at $\bvec{y}$ is evaluated not ``now'' but at the \emph{retarded
+time} $t_R$: the moment when a light signal had to leave $\bvec{y}$ in order to reach
+$\bvec{x}$ exactly at time $t$. Information propagates at $c$, so the field at $\bvec{x}$
+now was caused by the source in the past.
+
+\begin{remark}
+Because $t_R$ depends on the integration variable $\bvec{y}$, different volume elements
+in the source contribute to the field at $(t,\bvec{x})$ at \emph{different} retarded
+times. A snapshot of the sources at a single instant does not determine the field at a
+distant point; one must account for the varying light-travel time across the source.
+\end{remark}
+
+%-----------------------------------------------------------
+\subsection{Why the Advanced Green Function Is Unphysical}
+\label{subsec:lec21-advanced}
+
+\subsubsection*{Conceptual Background}
+The wave equation admits a two-parameter family of Green functions:
+\[
+  G = a\,\frac{\delta(x^0 - r)}{4\pi r} + b\,\frac{\delta(x^0 + r)}{4\pi r},
+  \qquad a + b = \frac{1}{4\pi}.
+\]
+The $b$-piece, $G_{\rm adv} \propto \delta(x^0+r)/r$, is nonzero only on the
+\emph{past} light cone of the observation event: it would make the field at $\bvec{x}$
+now depend on sources at future times $t' = t + R/c > t$.
+
+Why can we not use such a solution physically? Consider the equation of motion for a
+charge $q$ in the field it generates:
+\begin{enumerate}
+  \item The force on $q$ at time $t$ requires $\phi$ and $\Avec$ at $(t,\bvec{x}(t))$.
+  \item With an advanced contribution, $\phi$ depends on where $q$ will be at $t'>t$.
+  \item But the future location $\bvec{x}(t')$ is exactly what the equation of motion
+        is supposed to \emph{predict} from the current state.
+\end{enumerate}
+The argument is circular: solving the equation of motion requires knowing the future,
+but the future is what solving the equation of motion is supposed to give.
+The retarded Green function avoids this by making the force at $t$ depend only on the
+\emph{past} trajectory, which is already known.
+
+\textit{Significance:} Physics selects $b=0$ not by mathematical necessity but by the
+requirement that the theory admits initial-value (predictive) formulations. The
+choice $b=0$ is the field-theory analogue of specifying initial position and velocity
+in Newtonian mechanics.
+
+\nt{Pitfall: the action $S=\int d^4x\,\mathcal{L}$ is invariant under time-reversal, and
+so are the Maxwell equations themselves. The \emph{solution} with retarded boundary
+conditions spontaneously breaks this symmetry: the field ``remembers'' the past, not
+the future. Symmetry of the equations of motion does not imply symmetry of the solutions.}
+
+%-----------------------------------------------------------
+\subsection{Static Limit and Liénard--Wiechert Potentials}
+\label{subsec:lec21-static-lw}
+
+\subsubsection*{Conceptual Background}
+\paragraph{Static limit.}
+If $\rho$ and $\Jvec$ are time-independent, then $\rho(t_R,\bvec{y}) = \rho(\bvec{y})$
+regardless of $t_R$. The retarded potentials \eqref{eq:lec21-phi-ret} then reduce
+immediately to the Coulomb and Biot--Savart integrals from electro- and magnetostatics:
+\begin{equation}\label{eq:lec21-static-limit}
+  \phi(\bvec{x}) = \int d^3y\,\frac{\rho(\bvec{y})}{|\bvec{x}-\bvec{y}|},
+  \qquad
+  \Avec(\bvec{x}) = \frac{1}{c}\int d^3y\,\frac{\Jvec(\bvec{y})}{|\bvec{x}-\bvec{y}|}.
+\end{equation}
+This is a consistency check: retardation disappears when nothing changes.
+
+\paragraph{Liénard--Wiechert potentials (named, not derived).}
+For a single point charge $e$ moving along a prescribed trajectory $\bvec{r}(t)$, the
+charge and current densities are
+\[
+  \rho(t,\bvec{y}) = e\,\delta^{(3)}(\bvec{y}-\bvec{r}(t)),
+  \qquad
+  \Jvec(t,\bvec{y}) = e\,\dot{\bvec{r}}(t)\,\delta^{(3)}(\bvec{y}-\bvec{r}(t)).
+\]
+Substituting into \eqref{eq:lec21-phi-ret} and performing the integral (with care about
+the Jacobian of the retarded-time constraint) yields the
+\textbf{Liénard--Wiechert potentials}. We will not derive them explicitly; instead we
+proceed to the far-field approximation, which is more transparent and covers the most
+physically important regime.
+
+\nt{A key consequence of the Liénard--Wiechert potentials is that a charge in
+\emph{uniform motion} does not radiate. Only \emph{accelerating} charges produce
+fields that carry energy to spatial infinity.  We will re-derive this from the
+far-field expansion below.}
+
+%-----------------------------------------------------------
+\subsection{Far-Field Setup: Two Approximations}
+\label{subsec:lec21-farfield-setup}
+
+\subsubsection*{Physical Motivation}
+We consider a source confined to a spatial region of characteristic size $L$: the
+sources $\rho(t,\bvec{y})$ and $\Jvec(t,\bvec{y})$ are negligible for
+$|\bvec{y}|\gtrsim L$. The observation point $\bvec{x}$ is far away:
+\begin{equation}\label{eq:lec21-farfield-geo}
+  r = |\bvec{x}| \gg L.
+\end{equation}
+This covers the physically ubiquitous case of a radio antenna, an oscillating atom, or
+any compact radiating system viewed from a large distance.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[>=Stealth, scale=1.2]
+  \draw[fill=blue!10, draw=blue!50!black, thick, rounded corners=6pt]
+    (-0.65,-0.45) rectangle (0.65,0.45);
+  \node at (0,0) {\small sources};
+  \draw[<->, thick] (-0.65,-0.65) -- (0.65,-0.65) node[midway, below] {${\sim}L$};
+  \node[circle, fill=red!70!black, inner sep=2.5pt] (X) at (5.5,1.0) {};
+  \node[right] at (5.5,1.0) {$\bvec{x}$};
+  \draw[->, thick, black] (0,0) -- (5.5,1.0) node[midway, above left] {$r \gg L$};
+  \draw[->, thick, blue!70!black] (0,0) -- (0.35,0.25) node[right] {$\bvec{y}$};
+  \draw[->, thick, green!55!black] (0.35,0.25) -- (5.5,1.0)
+    node[midway, below right] {$\bvec{x}-\bvec{y}$};
+\end{tikzpicture}
+\caption{Far-field geometry. The source region has size ${\sim}L$. The observation
+point $\bvec{x}$ satisfies $r=|\bvec{x}|\gg L$. Within the source, $|\bvec{y}|\lesssim L\ll r$.}
+\label{fig:lec21-farfield}
+\end{figure}
+
+\subsubsection*{Mathematical Setup: Geometric Approximation}
+For $|\bvec{y}|\ll r$ we expand
+\begin{align}\label{eq:lec21-R-expand}
+  R \equiv |\bvec{x}-\bvec{y}|
+  &= \sqrt{r^2 - 2\bvec{x}\cdot\bvec{y}+|\bvec{y}|^2}
+   = r\sqrt{1 - \frac{2\,\uvec{r}\cdot\bvec{y}}{r}+\frac{|\bvec{y}|^2}{r^2}} \notag\\
+  &\approx r\!\left(1 - \frac{\uvec{r}\cdot\bvec{y}}{r}\right)
+   = r - \uvec{r}\cdot\bvec{y} + O(L^2/r).
+\end{align}
+Therefore, at leading order in $L/r$:
+\begin{equation}\label{eq:lec21-Rleading}
+  \boxed{\frac{1}{R} \approx \frac{1}{r},
+  \qquad
+  t_R(\bvec{y}) \approx \underbrace{\left(t-\frac{r}{c}\right)}_{t_R^{(0)}}
+                         + \frac{\uvec{r}\cdot\bvec{y}}{c}.}
+\end{equation}
+\textit{Significance:} The $1/R$ prefactor in the integrals \eqref{eq:lec21-phi-ret}
+is replaced by the constant $1/r$ (valid because corrections are $O(L/r)$ smaller). The
+variation of $R$ with $\bvec{y}$ matters, however, inside the retarded-time argument,
+because it produces a phase shift $\uvec{r}\cdot\bvec{y}/c$ that drives the multipole
+expansion.
+
+\subsubsection*{Non-Relativistic Approximation and the Taylor Expansion}
+The phase shift $\uvec{r}\cdot\bvec{y}/c \lesssim L/c$ is the extra retardation due to
+the finite size of the source. For the Taylor expansion of $\rho(t_R(\bvec{y}),\bvec{y})$
+around $t_R^{(0)}$ to be valid, this shift must be small compared to the characteristic
+time $T$ over which $\rho$ changes significantly:
+\begin{equation}\label{eq:lec21-nonrel-condition}
+  \frac{L}{c} \ll T \quad\Longleftrightarrow\quad
+  v_{\rm typ} = \frac{L}{T} \ll c.
+\end{equation}
+In words: the typical velocity of charges in the source must be non-relativistic.
+Equivalently, since $\lambda = cT$ is the wavelength of the emitted radiation,
+\begin{equation}\label{eq:lec21-wavelength}
+  \boxed{\lambda = cT \gg L.}
+\end{equation}
+\textit{Significance:} This is the \emph{long-wavelength} or \emph{electrically small}
+approximation: the source fits many times inside one wavelength. Under this condition
+we may Taylor-expand the source in the small parameter $\uvec{r}\cdot\bvec{y}/c$:
+\begin{equation}\label{eq:lec21-taylor-rho}
+  \rho(t_R(\bvec{y}),\bvec{y})
+  \approx \rho(t_R^{(0)},\bvec{y})
+  + \dot\rho(t_R^{(0)},\bvec{y})\frac{\uvec{r}\cdot\bvec{y}}{c}
+  + \ldots
+\end{equation}
+and similarly for $\Jvec$.
+
+\nt{For an atom of size $L \sim 1\,\text{\AA}$ emitting visible light
+$\lambda\sim 500\,\text{nm}$, the ratio $L/\lambda \sim 10^{-3}$. The dipole
+approximation is excellent for atomic radiation. For a radio antenna of length
+$L \sim 1\,\text{m}$ and frequency $f=300\,\text{MHz}$ ($\lambda=1\,\text{m}$),
+we have $L/\lambda \sim 1$ and the approximation breaks down --- higher multipoles
+are needed.}
+
+%-----------------------------------------------------------
+\subsection{Far-Field Electric Potential}
+\label{subsec:lec21-farfield-phi}
+
+\subsubsection*{Mathematical Setup}
+Applying \eqref{eq:lec21-Rleading} to the scalar potential in \eqref{eq:lec21-phi-ret}:
+\begin{equation}\label{eq:lec21-phi-step1}
+  \phi(t,\bvec{x}) \approx \frac{1}{r}
+  \int d^3y\,\rho\!\left(t_R^{(0)}+\frac{\uvec{r}\cdot\bvec{y}}{c},\,\bvec{y}\right).
+\end{equation}
+Inserting the Taylor expansion \eqref{eq:lec21-taylor-rho}:
+\begin{equation}\label{eq:lec21-phi-taylor}
+  \phi(t,\bvec{x}) \approx
+  \frac{1}{r}\underbrace{\int d^3y\,\rho(t_R^{(0)},\bvec{y})}_{\text{total charge }Q}
+  + \frac{1}{cr}\underbrace{\int d^3y\,\dot\rho(t_R^{(0)},\bvec{y})\,(\uvec{r}\cdot\bvec{y})}_{\text{dipole term}}
+  + \ldots
+\end{equation}
+
+\paragraph{First term: total charge.}
+Since $Q = \int d^3y\,\rho$ is conserved and time-independent, this gives $Q/r$,
+the familiar Coulomb monopole.
+
+\paragraph{Second term: dipole moment.}
+Because $t_R^{(0)}$ is independent of $\bvec{y}$, the time derivative can be pulled
+out of the integral:
+\[
+  \int d^3y\,\dot\rho(t_R^{(0)},\bvec{y})\,\bvec{y}
+  = \frac{d}{dt}\bigg|_{t=t_R^{(0)}}\int d^3y\,\rho(t,\bvec{y})\,\bvec{y}
+  = \dot{\bvec{p}}(t_R^{(0)}),
+\]
+where $\bvec{p}(t) \equiv \int d^3y\,\rho(t,\bvec{y})\,\bvec{y}$ is the electric dipole
+moment. Hence:
+\begin{equation}\label{eq:lec21-phi-far}
+  \boxed{\phi(t,\bvec{x}) \approx \frac{Q}{r}
+  + \frac{\uvec{r}\cdot\dot{\bvec{p}}(t_R^{(0)})}{cr}
+  + O\!\left(\frac{L}{r}\right).}
+\end{equation}
+\textit{Significance:} The scalar potential has a static Coulomb piece plus a dynamical
+piece proportional to $\dot{\bvec{p}}$. Both decay as $1/r$, but only the
+$\dot{\bvec{p}}$ term is sensitive to the motion of the sources. For a neutral system
+($Q=0$), the leading term is the dipole contribution.
+
+\nt{Pitfall: both the Coulomb term $Q/r$ and the dipole correction $\dot{p}/cr$ decay
+as $1/r$, yet only the dipole term contributes to radiation. The reason is that
+radiation requires the Poynting vector $\bvec{S} \propto \bvec{E}\times\bvec{B}$ to
+give a finite total power through a sphere at $r\to\infty$. The Coulomb field gives
+$\bvec{E}\sim Q/r^2$, so $|\bvec{S}|\sim Q^2/r^4$, and the total power
+$\sim r^2|\bvec{S}|\sim Q^2/r^2\to 0$. Only the fields that decay as $1/r$ in the
+\emph{fields} (not the potentials) carry energy to infinity.}
+
+%-----------------------------------------------------------
+\subsection{Far-Field Vector Potential}
+\label{subsec:lec21-farfield-A}
+
+\subsubsection*{Mathematical Setup}
+The same geometric approximation gives:
+\begin{equation}\label{eq:lec21-A-step1}
+  \Avec(t,\bvec{x}) \approx \frac{1}{cr}
+  \int d^3y\,\Jvec\!\left(t_R^{(0)}+\frac{\uvec{r}\cdot\bvec{y}}{c},\,\bvec{y}\right).
+\end{equation}
+At zeroth order in the Taylor expansion (the leading non-trivial term for $\Avec$):
+\begin{equation}\label{eq:lec21-A-step2}
+  \Avec(t,\bvec{x}) \approx \frac{1}{cr}\int d^3y\,\Jvec(t_R^{(0)},\bvec{y}).
+\end{equation}
+We convert the current integral to a dipole derivative using the continuity equation
+$\partial_t\rho + \divg\Jvec = 0$. Multiply by $y_i$ and integrate over all space;
+integrating the second term by parts (localized source $\Rightarrow$ no boundary term):
+\[
+  0 = \partial_t\!\int d^3y\,\rho\,y_i + \int d^3y\,y_i\,\nabla_j J_j
+    = \dot{p}_i - \int d^3y\,J_i.
+\]
+Therefore:
+\begin{equation}\label{eq:lec21-dpdt-J}
+  \boxed{\dot{\bvec{p}}(t) = \int d^3y\,\Jvec(t,\bvec{y}).}
+\end{equation}
+\textit{Significance:} The rate of change of the dipole moment equals the total current.
+This identity (a consequence of charge conservation) converts a vector current integral
+into the time derivative of a scalar-weighted charge distribution.
+
+Substituting into \eqref{eq:lec21-A-step2}:
+\begin{equation}\label{eq:lec21-A-far}
+  \boxed{\Avec(t,\bvec{x}) \approx \frac{\dot{\bvec{p}}(t_R^{(0)})}{cr}.}
+\end{equation}
+\textit{Significance:} The far-field vector potential is controlled entirely by
+$\dot{\bvec{p}}$ at the retarded time. Together with \eqref{eq:lec21-phi-far}, we
+see that both the correction to $\phi$ and $\Avec$ are $O(v/c)$ relative to the
+Coulomb term and are of the same order in the approximation --- keeping one without
+the other would be inconsistent.
+
+%-----------------------------------------------------------
+\subsection{Magnetic Field in the Radiation Zone}
+\label{subsec:lec21-B-field}
+
+\subsubsection*{Mathematical Setup}
+We compute $\bvec{B} = \nabla\times\Avec$ using \eqref{eq:lec21-A-far}:
+\[
+  \bvec{B} = \nabla\times\!\left[\frac{\dot{\bvec{p}}(t_R^{(0)})}{cr}\right]
+  = \frac{1}{cr}\nabla\times\dot{\bvec{p}}(t_R^{(0)})
+    + \nabla\!\left(\frac{1}{cr}\right)\times\dot{\bvec{p}}(t_R^{(0)}).
+\]
+The second term involves $\nabla(1/r) \sim 1/r^2$, giving a $B\sim 1/r^2$
+contribution. Since radiation requires fields decaying as $1/r$, we discard this term.
+
+For the first term, the gradient acts through the retarded time
+$t_R^{(0)} = t - r/c$:
+\[
+  [\nabla\times\dot{\bvec{p}}(t_R^{(0)})]_i
+  = \epsilon_{ijk}\,\partial_j\dot{p}_k(t - r/c)
+  = \epsilon_{ijk}\,\ddot{p}_k(t_R^{(0)})\,\partial_j\!\left(-\frac{r}{c}\right)
+  = -\frac{\epsilon_{ijk}\,\hat{r}_j\,\ddot{p}_k}{c}.
+\]
+Recognising the cross product $(\bvec{A}\times\bvec{B})_i = \epsilon_{ijk}A_jB_k$:
+\[
+  \nabla\times\dot{\bvec{p}}(t_R^{(0)}) = -\frac{\ddot{\bvec{p}}(t_R^{(0)})\times\uvec{r}}{c}.
+\]
+Therefore:
+\begin{equation}\label{eq:lec21-B-rad}
+  \boxed{\bvec{B}(t,\bvec{x}) = \frac{\ddot{\bvec{p}}(t_R^{(0)})\times\uvec{r}}{c^2 r}.}
+\end{equation}
+\textit{Significance:} The magnetic radiation field is proportional to $\ddot{\bvec{p}}$
+--- the \emph{second} time derivative of the dipole moment, i.e.\ the acceleration of
+the charges. A dipole oscillating at constant velocity ($\ddot{\bvec{p}}=0$) produces no
+radiation magnetic field. The factor $1/r$ ensures a finite energy flux through any
+sphere.
+
+\nt{Pitfall: when computing $\nabla\times\Avec$ in the radiation zone, \emph{do not}
+differentiate the $1/r$ prefactor --- that yields $1/r^2$ and belongs to the near
+field. The radiation arises entirely from differentiating \emph{through} the retarded
+time $t_R^{(0)}=t-r/c$, which brings down one factor of $\ddot{\bvec{p}}/c$.}
+
+%-----------------------------------------------------------
+\subsection{Electric Field in the Radiation Zone}
+\label{subsec:lec21-E-field}
+
+\subsubsection*{Mathematical Setup}
+The electric field is $\bvec{E}=-\nabla\phi - (1/c)\partial_t\Avec$.
+Differentiating $\Avec = \dot{\bvec{p}}(t_R^{(0)})/(cr)$ with respect to $t$ (at
+fixed $\bvec{x}$) gives $(1/c)\partial_t\Avec = \ddot{\bvec{p}}(t_R^{(0)})/(c^2r)$.
+Differentiating the dipole term in $\phi$ (again only through $t_R^{(0)}$) gives
+$-\nabla\phi_{\rm dip} \approx +\uvec{r}(\uvec{r}\cdot\ddot{\bvec{p}})/(c^2r)$.
+Adding these two contributions (the derivation is left as an exercise and is analogous
+to the $\bvec{B}$ calculation):
+
+\begin{equation}\label{eq:lec21-E-rad}
+  \boxed{\bvec{E}(t,\bvec{x})
+  = \frac{[\ddot{\bvec{p}}(t_R^{(0)})\times\uvec{r}]\times\uvec{r}}{c^2 r}.}
+\end{equation}
+\textit{Significance:} The electric radiation field is the part of $\ddot{\bvec{p}}$
+transverse to the line of sight. Expanding with the BAC--CAB rule,
+$(\ddot{\bvec{p}}\times\uvec{r})\times\uvec{r}
+= \uvec{r}(\uvec{r}\cdot\ddot{\bvec{p}}) - \ddot{\bvec{p}}
+= -\ddot{\bvec{p}}_\perp$,
+so $\bvec{E}=-\ddot{\bvec{p}}_\perp/(c^2r)$: the field vanishes along the dipole axis
+($\theta=0$) and is maximum in the equatorial plane ($\theta=\pi/2$).
+
+\subsubsection*{Plane-Wave Structure and the Radiation Triad}
+A direct computation using \eqref{eq:lec21-B-rad} and \eqref{eq:lec21-E-rad} gives:
+\begin{equation}\label{eq:lec21-E-from-B}
+  \boxed{\bvec{E} = \bvec{B}\times\uvec{r},}
+\end{equation}
+which implies that $\bvec{E}$, $\bvec{B}$, and $\uvec{r}$ form a right-handed orthogonal
+triad with $|\bvec{E}|=|\bvec{B}|$. This is exactly the structure of a plane wave
+propagating in the $\uvec{r}$ direction.
+
+\textit{Significance:} At large distances a spherical wave looks locally flat, just as
+the curved surface of the Earth appears flat on human scales. The energy flows radially
+outward via the Poynting vector $\bvec{S} = (c/4\pi)\bvec{E}\times\bvec{B}$,
+which points in the $\uvec{r}$ direction.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[>=Stealth, scale=1.4]
+  % Dipole axis
+  \draw[->, very thick, black!70] (0,-0.8) -- (0,0.8)
+    node[right] {$\ddot{\bvec{p}}$};
+  % r direction
+  \draw[->, thick, red!70!black] (0,0) -- (2.8,1.6)
+    node[right] {$\uvec{r}$};
+  % theta arc
+  \draw[gray] (0,0.45) arc (90:30:0.45) node[midway, right] {\small$\theta$};
+  % B field (perpendicular to both r and p, into/out of page)
+  \draw[->, thick, blue!70!black] (2.8,1.6) -- (1.8,2.5)
+    node[above] {$\bvec{B}$};
+  % E field
+  \draw[->, thick, green!60!black] (2.8,1.6) -- (3.8,1.2)
+    node[right] {$\bvec{E}$};
+  % No radiation along the axis
+  \draw[dashed, gray!60] (0,0) -- (0,2.2);
+  \node[gray, right] at (0.08,2.0) {\small no radiation ($\theta=0$)};
+  % Maximum radiation label
+  \node[black!60, below right] at (2.2, -0.2) {\small max radiation ($\theta=\pi/2$)};
+  \draw[dashed, gray!60] (0,0) -- (2.5,-0.3);
+\end{tikzpicture}
+\caption{Radiation fields of an oscillating electric dipole. Both $\bvec{E}$ and
+$\bvec{B}$ are perpendicular to $\uvec{r}$ and to each other. The intensity is
+proportional to $\sin^2\theta$: maximum in the equatorial plane, zero along the
+dipole axis.}
+\label{fig:lec21-dipole-pattern}
+\end{figure}
+
+%-----------------------------------------------------------
+\subsection{Dipole Approximation: Summary and Scope}
+\label{subsec:lec21-dipole-summary}
+
+\dfn[def:lec21-dipole-approx]{Electric Dipole (Long-Wavelength) Approximation}{
+Valid when $r \gg L$ (far field) and $v\ll c$ (equivalently $\lambda \gg L$).
+The leading radiation fields are, with $t_R = t - r/c$:
+\begin{align*}
+  \Avec &= \frac{\dot{\bvec{p}}(t_R)}{cr},
+  &
+  \bvec{B} &= \frac{\ddot{\bvec{p}}(t_R)\times\uvec{r}}{c^2r},
+  &
+  \bvec{E} &= \bvec{B}\times\uvec{r},
+\end{align*}
+where $\bvec{p}(t)=\int d^3y\,\rho(t,\bvec{y})\,\bvec{y}$ is the electric dipole
+moment of the source.
+}
+
+\subsubsection*{Method: Computing Dipole Radiation}
+\begin{enumerate}
+  \item Confirm the approximation is valid: $r \gg L$ and $v \ll c$ (or $\lambda \gg L$).
+  \item Compute $\bvec{p}(t) = \sum_\alpha q_\alpha \bvec{r}_\alpha(t)$ (discrete) or
+        $\int d^3y\,\rho\,\bvec{y}$ (continuous).
+  \item Differentiate twice to get $\ddot{\bvec{p}}(t)$.
+  \item Write $\bvec{B} = (\ddot{\bvec{p}}(t_R)\times\uvec{r})/(c^2r)$ and
+        $\bvec{E} = \bvec{B}\times\uvec{r}$.
+  \item The angular power distribution follows $dP/d\Omega\propto|\ddot{\bvec{p}}|^2\sin^2\theta$
+        (to be derived next lecture).
+\end{enumerate}
+
+\ex[ex:lec21-oscillating]{Worked Example: Oscillating Dipole}{
+A charge $+q$ oscillates along the $z$-axis: $z(t) = d\cos(\omega t)$, with $-q$ fixed
+at the origin. The dipole moment is $\bvec{p}(t) = qd\cos(\omega t)\,\uvec{z}$, so
+$\ddot{\bvec{p}}(t) = -qd\omega^2\cos(\omega t)\,\uvec{z}$.
+
+In spherical coordinates ($\uvec{r}$ at polar angle $\theta$ from $z$-axis):
+\begin{align*}
+  \bvec{B}
+  &= \frac{-qd\omega^2\cos(\omega t_R)}{c^2 r}\,\uvec{z}\times\uvec{r}
+   = \frac{qd\omega^2\cos(\omega t_R)\sin\theta}{c^2 r}\,\uvec{\phi},\\
+  \bvec{E}
+  &= \bvec{B}\times\uvec{r}
+   = \frac{qd\omega^2\cos(\omega t_R)\sin\theta}{c^2 r}\,\uvec{\theta},
+\end{align*}
+where $t_R = t - r/c$.
+
+Both fields are maximum in the equatorial plane ($\theta=\pi/2$) and vanish along the
+$z$-axis ($\theta = 0,\pi$). The amplitude falls off as $1/r$, confirming that this
+field carries energy to infinity: it is genuine radiation.
+}
+
+\nt{Pitfall: for a system of charges with total charge $Q = \sum_\alpha q_\alpha \neq 0$,
+the centre-of-mass contribution to $\ddot{\bvec{p}}$ is $Q\ddot{\bvec{r}}_{\rm cm}$.
+If all charges accelerate identically (rigid-body motion), there is no relative motion
+and hence no radiation, even though $\ddot{\bvec{p}} \neq 0$ superficially. A truly
+neutral system ($Q=0$) cannot radiate via the centre-of-mass mode; radiation requires
+\emph{internal} relative acceleration.}
+
+\subsubsection*{Beyond Dipole: Higher Multipoles}
+The Taylor expansion \eqref{eq:lec21-taylor-rho} is a systematic series in $L/\lambda$.
+When the dipole contribution vanishes (by symmetry or selection rules), the next
+non-zero term in the expansion gives either the \textbf{electric quadrupole} or the
+\textbf{magnetic dipole} radiation, both of order $(L/\lambda)^2$ smaller than the
+electric dipole. We will not derive these here, but the pattern is clear: higher
+multipoles enter at higher order in the long-wavelength expansion.
+
+%-----------------------------------------------------------
+\subsection*{Summary}
+
+\begin{itemize}
+  \item The retarded potentials \eqref{eq:lec21-phi-ret} express the field at $(t,\bvec{x})$
+        as a Coulomb/Biot--Savart superposition evaluated at retarded times
+        $t_R = t - |\bvec{x}-\bvec{y}|/c$. Different volume elements contribute at different
+        past moments.
+  \item The advanced Green function is mathematically valid but physically inadmissible: using
+        it would require knowledge of the future to solve the equations of motion, making
+        initial-value predictions impossible.
+  \item In the static limit the retarded potentials reduce to Coulomb/Biot--Savart.
+  \item Under the two approximations $r\gg L$ and $v\ll c$ ($\Leftrightarrow \lambda\gg L$):
+    \[
+      \phi \approx \frac{Q}{r} + \frac{\uvec{r}\cdot\dot{\bvec{p}}(t_R)}{cr},
+      \qquad
+      \Avec \approx \frac{\dot{\bvec{p}}(t_R)}{cr}.
+    \]
+  \item The identity $\dot{\bvec{p}} = \int d^3y\,\Jvec$ (from continuity) converts the
+        current integral to a dipole derivative.
+  \item The radiation fields decay as $1/r$ and are:
+    \[
+      \bvec{B} = \frac{\ddot{\bvec{p}}(t_R)\times\uvec{r}}{c^2r},
+      \qquad
+      \bvec{E} = \bvec{B}\times\uvec{r}.
+    \]
+  \item Radiation requires $\ddot{\bvec{p}}\neq 0$: only \emph{accelerating} charges
+        radiate at dipole order.
+  \item At large $r$, $\bvec{E}\perp\bvec{B}\perp\uvec{r}$ with $|\bvec{E}|=|\bvec{B}|$:
+        the radiation locally resembles a plane wave.
+\end{itemize}
+
+\subsection*{Further Reading}
+\begin{itemize}
+  \item J.\,D. Jackson, \textit{Classical Electrodynamics}, 3rd ed.: Chapter 9
+        (multipole radiation, dipole radiation).
+  \item D.\,J. Griffiths, \textit{Introduction to Electrodynamics}, 4th ed.: Chapter 11
+        (radiation).
+  \item L.\,D. Landau \& E.\,M. Lifshitz, \textit{The Classical Theory of Fields}, Vol.\ 2:
+        Chapter 9 (radiation of electromagnetic waves).
+  \item David Tong, \textit{Lectures on Electromagnetism}: Chapter 6, radiation.
+\end{itemize}

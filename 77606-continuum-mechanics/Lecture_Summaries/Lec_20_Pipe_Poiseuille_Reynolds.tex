@@ -1,0 +1,411 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\section{Lecture 20 -- Viscous Pipe Flow (Poiseuille) and the Reynolds Number}\label{sec:lec20}
+\begin{center}
+  \textbf{Date:} June 15, 2026
+\end{center}
+
+\subsection*{Overview}
+This lecture is, in the professor's words, ``very practical.'' Having solved the two flat-plate flows in \cref{sec:lec19}, we now treat the more realistic and historically central problem of \textbf{steady viscous flow inside a circular pipe} -- the Hagen--Poiseuille problem. We carry out a \emph{complete} analysis: not just the velocity profile (a parabola of revolution) but every global quantity that an engineer or physiologist would care about -- the \textbf{discharge} (volume flux), the \textbf{drag force} the fluid exerts on the pipe wall, and the \textbf{viscous dissipation} (mechanical power lost to heat). Two recurring lessons emerge: (i) a global balance argument -- force balance, then power balance -- reproduces results that cost us an explicit integral, and is \emph{more general} than the cylindrical geometry; (ii) the celebrated $R^4$ dependence of the discharge, Poiseuille's law, which makes pipe radius the dominant design parameter.
+
+The second half opens a new and conceptually deeper theme. We introduce \textbf{dimensional analysis} and the \textbf{Reynolds number} $\reynolds=v_0 R/\nu$ -- the single dimensionless group governing viscous flow -- and the principle of \textbf{dynamic similarity} (two flows with the same $\reynolds$ are qualitatively identical), the basis of wind-tunnel and scale-model testing. Finally we set up, but do not yet solve, the problem we will complete next time: \textbf{Stokes flow past a sphere} at low Reynolds number, which resolves the d'Alembert paradox of \cref{sec:lec16} by supplying a genuine drag.
+
+\medskip\noindent\textbf{Topics:}
+\begin{enumerate}
+  \item Recap of the Newtonian viscous stress and Navier--Stokes
+  \item Pipe-flow setup: assumptions (incompressible, steady, fully developed, axisymmetric); the four questions (profile, discharge, drag, dissipation)
+  \item Reduction by continuity and the transverse Navier--Stokes components; separation of variables
+  \item Solving in cylindrical coordinates: the radial Laplacian, double integration, regularity and no-slip; the parabolic profile
+  \item Discharge $Q$ and Poiseuille's $R^4$ law; historical note (Hagen, Poiseuille, Stokes)
+  \item Drag force on the wall; the general force balance $F_d=P'A$
+  \item Application: domestic plumbing -- static (Pascal) vs.\ dynamic pressure, the role of pipe diameter
+  \item Viscous dissipation per unit length; the general power balance $D=P'Q$
+  \item Dimensional analysis and the Reynolds number $\reynolds=v_0R/\nu$; dynamic similarity
+  \item Setup of Stokes flow past a sphere at low $\reynolds$ (to be solved next lecture)
+\end{enumerate}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Recap: Newtonian Stress and Navier--Stokes}\label{sec:lec20:recap}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Mathematical Setup}
+We recall the constitutive and dynamical equations from \cref{sec:lec18,sec:lec19}. The total stress in a viscous fluid splits into a pressure part and a viscous correction $\sigma'_{ij}$,
+\begin{equation}
+  \sigma_{ij}=-p\,\delta_{ij}+\sigma'_{ij},\qquad
+  \sigma'_{ij}=\eta\Big(\partial_i v_j+\partial_j v_i-\tfrac23\delta_{ij}\,\divg\vel\Big)+\zeta\,\delta_{ij}\,\divg\vel .
+  \label{eq:lec20_stress}
+\end{equation}
+The professor also rewrote the shear part in the elasticity language of the \emph{symmetric exterior derivative}: $\sigma'_{ij}=2\eta\big[\partial_{(i}v_{j)}-\tfrac13\delta_{ij}\partial_k v_k\big]+\zeta\,\delta_{ij}\,\partial_k v_k$, where $\partial_{(i}v_{j)}=\tfrac12(\partial_i v_j+\partial_j v_i)$ carries the factor $\tfrac12$ by definition -- exactly the strain tensor built from a displacement in elasticity, now built from the velocity. The Navier--Stokes equation is
+\begin{equation}
+  \rho\,\material{\vel}
+    = -\grad p + \eta\,\lapl\vel + \Big(\zeta+\tfrac13\eta\Big)\grad(\divg\vel),
+  \label{eq:lec20_NS}
+\end{equation}
+which for incompressible flow ($\divg\vel=0$) loses the last term, leaving $\rho\,\material{\vel}=-\grad p+\eta\lapl\vel$. The no-slip boundary condition $\vel=\bvec0$ holds on a stationary solid wall.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Viscous Flow in a Cylindrical Pipe (Hagen--Poiseuille)}\label{sec:lec20:pipe}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+Instead of two infinite plates we now confine the fluid to a circular pipe of radius $R$, with the flow directed along the pipe axis $x$. This is the realistic geometry of blood vessels, water mains and oil pipelines. \emph{Before} solving, it pays to state precisely what we want to know:
+\begin{enumerate}
+  \item the \textbf{velocity profile} $v_x$ -- we will argue it depends on the radial distance $r$ alone;
+  \item the \textbf{discharge} (Hebrew \emph{spika}) $Q$ -- the volume of fluid crossing a cross-section per unit time (a flux);
+  \item the \textbf{drag force} the fluid exerts on the pipe (the friction between fluid layers and the stationary wall);
+  \item the total \textbf{energy dissipation} -- the mechanical power lost to heat.
+\end{enumerate}
+
+\subsubsection*{Assumptions}
+\begin{itemize}
+  \item \textbf{Incompressible}, $\divg\vel=0$ (so no equation of state is needed).
+  \item \textbf{Axial flow}: $\vel=\big(v_x,0,0\big)$, motion only along the pipe axis.
+  \item \textbf{Steady}, $\partial_t\vel=0$.
+  \item \textbf{Fully developed}: independent of $x$ as well as of $t$. (Near a pipe entrance there is transient $t$- and $x$-dependence; once the flow ``relaxes'' these disappear.)
+  \item \textbf{Cylindrical symmetry}: nothing depends on the azimuthal angle.
+  \item \textbf{No-slip} at the wall $r=R$.
+\end{itemize}
+
+\paragraph{Step 1 -- continuity.} With $\vel=(v_x,0,0)$, incompressibility gives $\divg\vel=\partial_x v_x=0$, so $v_x$ does not depend on $x$. Combined with cylindrical symmetry, $v_x$ depends on the \emph{radial} coordinate alone:
+\begin{equation}
+  \partial_x v_x=0 \;\Longrightarrow\; v_x=v_x(r),\qquad r=\sqrt{y^2+z^2}.
+  \label{eq:lec20_continuity}
+\end{equation}
+Three functions of three variables have collapsed to one function of one variable.
+
+\paragraph{Step 2 -- transverse components.} The advection term $(\vel\cdot\grad)\vel$ and the velocity itself point along $x$, so the $y$- and $z$-components of Navier--Stokes retain only the pressure gradient:
+\begin{equation}
+  \partial_y p=0,\qquad \partial_z p=0 \;\Longrightarrow\; p=p(x).
+  \label{eq:lec20_transverse}
+\end{equation}
+As in plane channel flow, the dependences are complementary: the \emph{velocity} on the transverse coordinate $r$, the \emph{pressure} on the longitudinal coordinate $x$.
+
+\paragraph{Step 3 -- the axial component and separation of variables.} Project Navier--Stokes onto $\uvec x$. Steadiness kills $\partial_t\vel$; the advection term $v_x\partial_x v_x=0$ by \eqref{eq:lec20_continuity}. What remains is
+\begin{equation}
+  0=-\partial_x p+\eta\,\lapl v_x \;\Longrightarrow\; \partial_x p=\eta\,\lapl v_x .
+  \label{eq:lec20_separation}
+\end{equation}
+The left side depends only on $x$; the right side (through $v_x(r)$) only on $r$. Two functions of independent variables can be equal only if both equal the \emph{same constant}. Physically the pressure must \emph{drop} along the flow, so the constant is negative; we write it with a positive $P'$:
+\begin{equation}
+  \partial_x p=-P'=\text{const}<0,\qquad P'>0,
+  \qquad\Longrightarrow\qquad
+  \lapl v_x=-\frac{P'}{\eta}\equiv -K,
+  \label{eq:lec20_const}
+\end{equation}
+introducing the shorthand $K\equiv P'/\eta$ (pressure gradient over viscosity) to avoid carrying the ratio through the algebra.
+\textit{Significance:} Everything so far is independent of the cross-sectional shape; cylindrical symmetry enters only now, through the form of the Laplacian.
+
+\subsubsection{Solving the Radial Equation}\label{sec:lec20:radial}
+
+\subsubsection*{Mathematical Setup}
+For a function of $r$ alone the (scalar) Laplacian in cylindrical coordinates keeps only the radial part,
+\begin{equation}
+  \lapl v_x=\frac{1}{r}\dv{r}\!\left(r\,\dv{v_x}{r}\right)
+  =\dv[2]{v_x}{r}+\frac1r\dv{v_x}{r},
+  \label{eq:lec20_cyl_lapl}
+\end{equation}
+the $\partial_\theta^2$ and $\partial_x^2$ terms vanishing. Equation \eqref{eq:lec20_const} thus becomes the \emph{ordinary} differential equation
+\begin{equation}
+  \frac1r\dv{r}\!\left(r\,\dv{v_x}{r}\right)=-K ,
+  \label{eq:lec20_ode}
+\end{equation}
+a great simplification: the partial differential (Laplace-type) problem is now solvable by two successive integrations.
+
+\paragraph{First integration.} Multiply by $r$ and integrate: $r\,v_x'=-\tfrac{K}{2}r^2+A$, hence
+\begin{equation}
+  \dv{v_x}{r}=-\frac{K}{2}\,r+\frac{A}{r}.
+  \label{eq:lec20_int1}
+\end{equation}
+\paragraph{Second integration.}
+\begin{equation}
+  v_x(r)=-\frac{K}{4}\,r^2+A\ln r+B .
+  \label{eq:lec20_int2}
+\end{equation}
+Two integration constants $A,B$ have appeared, but the physical wall condition $v_x(R)=0$ is only \emph{one} boundary condition. The second comes from \textbf{regularity}: the velocity must be finite on the axis. Since $\ln r\to-\infty$ as $r\to0$,
+\begin{equation}
+  v_x(0)\ \text{finite}\;\Longrightarrow\; A=0 .
+  \label{eq:lec20_regularity}
+\end{equation}
+This is a mathematical, not a physical, boundary condition -- the price of a singular coordinate system at the origin. Then no-slip $v_x(R)=0$ fixes $B=\tfrac{K}{4}R^2$, and restoring $K=P'/\eta$:
+
+\thm[hagen-poiseuille]{Hagen--Poiseuille Velocity Profile}{%
+  \begin{equation}
+    \boxed{\;v_x(r)=\frac{K}{4}\big(R^2-r^2\big)=\frac{P'}{4\eta}\big(R^2-r^2\big)\;}
+    \label{eq:lec20_profile}
+  \end{equation}
+}
+\textit{Significance:} The profile is a downward \emph{parabola} (a paraboloid of revolution), maximal on the axis and vanishing at the wall by no-slip. The speed is inversely proportional to $\eta$ (less viscous $\to$ faster) and proportional to the pressure gradient $P'$ and to $R^2$. The centreline maximum is
+\begin{equation}
+  v_{\max}=v_x(0)=\frac{P'R^2}{4\eta},
+  \label{eq:lec20_vmax}
+\end{equation}
+and at the half-radius the speed is $\tfrac34 v_{\max}$ (from the $r^2$ law).
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=1.0]
+  % pipe walls
+  \draw[very thick] (-0.3,1.6)--(4.0,1.6);
+  \draw[very thick] (-0.3,-1.6)--(4.0,-1.6);
+  \fill[metalcol!40] (-0.3,1.6) rectangle (4.0,1.85);
+  \fill[metalcol!40] (-0.3,-1.85) rectangle (4.0,-1.6);
+  \foreach \xh in {-0.2,0.0,...,3.9}{
+    \draw[metalcol!30!black,thin] (\xh,1.6)--(\xh+0.12,1.85);
+    \draw[metalcol!30!black,thin] (\xh,-1.85)--(\xh+0.12,-1.6);
+  }
+  % axis
+  \draw[->,gray] (-0.3,0)--(4.2,0) node[below,black,font=\small]{$x$};
+  \draw[->,gray] (0.2,-1.6)--(0.2,1.95) node[left,black,font=\small]{$r$};
+  % parabolic profile arrows: v ~ (R^2 - r^2), R=1.6
+  \foreach \r in {-1.5,-1.2,...,1.5}{
+    \pgfmathsetmacro\L{2.4*(1-(\r/1.6)*(\r/1.6))}
+    \draw[vvec] (1.2,\r)--(1.2+\L,\r);
+  }
+  \draw[myred,thick,dashed] plot[smooth,domain=-1.6:1.6,samples=40,variable=\r]
+    ({1.2+2.4*(1-(\r/1.6)*(\r/1.6))},{\r});
+  \node[myred,font=\small] at (3.95,0.0) {$v_x(r)$};
+  \node[font=\small] at (0.45,1.25) {$R$};
+  \node[font=\small,vcol] at (1.55,-0.95) {$v_{\max}$};
+\end{tikzpicture}
+\caption{Steady fully-developed viscous flow in a circular pipe of radius $R$. The velocity profile $v_x(r)=\tfrac{P'}{4\eta}(R^2-r^2)$ is a parabola: maximal on the axis, zero at the wall by no-slip.}
+\label{fig:lec20_pipe}
+\end{figure}
+
+\subsubsection{Discharge and Poiseuille's $R^4$ Law}\label{sec:lec20:discharge}
+
+\subsubsection*{Physical Motivation}
+The \textbf{discharge} $Q$ measures the volume of fluid passing through a cross-section per unit time -- a flux of the velocity field through the area:
+\begin{equation}
+  Q=\int_{S}\vel\cdot d\bvec S .
+  \label{eq:lec20_Q_def}
+\end{equation}
+(The mass discharge is $\rho Q$.) For the pipe, the area element in cylindrical coordinates is $dS=2\pi r\dd{r}$, and $\vel\cdot d\bvec S=v_x(r)\,2\pi r\dd{r}$:
+\begin{equation}
+  Q=\int_0^R \frac{P'}{4\eta}\big(R^2-r^2\big)\,2\pi r\dd{r}
+   =\frac{2\pi P'}{4\eta}\left[\frac{R^2 r^2}{2}-\frac{r^4}{4}\right]_0^R
+   =\frac{2\pi P'}{4\eta}\cdot\frac{R^4}{4}.
+  \label{eq:lec20_Q_int}
+\end{equation}
+
+\thm[poiseuille-law]{Poiseuille's Law (Discharge)}{%
+  \begin{equation}
+    \boxed{\;Q=\frac{\pi P' R^4}{8\eta}\;}
+    \label{eq:lec20_Q}
+  \end{equation}
+}
+\textit{Significance:} The discharge scales as the \emph{fourth power} of the radius. This dramatic sensitivity -- halving a pipe's radius cuts its throughput sixteenfold -- explains why arterial narrowing is so dangerous and why pipe diameter dominates plumbing design. The $R^4$ law could in part be anticipated by dimensional analysis, but the precise coefficient $\pi/8$ requires the calculation.
+
+\nt{The professor noted a subtlety raised in class: although $Q\propto R^4$ looks like ``faster growth'' than $Q\propto R^2$, whether $R^4$ exceeds $R^2$ depends on whether $R$ (a dimensional quantity) is large or small compared to the relevant scale; for $R<1$ in the appropriate units $R^4<R^2$. The clean statement is the scaling exponent, not a naive comparison of powers.}
+
+\subsubsection*{Historical note}
+The law was discovered \emph{experimentally}, independently, by two people, and proved theoretically only later:
+\begin{itemize}
+  \item \textbf{Gotthilf Hagen} (1797--1884), a German civil engineer.
+  \item \textbf{Jean-Léonard-Marie Poiseuille} (1797--1869), a French physician/physiologist, who began publishing in 1840 (experiments $\sim$1838). His interest was physiological -- blood and other bodily fluids in vessels all obey this law, and ``many medical problems are really problems of plumbing.''
+  \item The \emph{theory} -- the derivation above -- is due to \textbf{George Stokes} (1845).
+\end{itemize}
+
+\subsubsection{Drag Force on the Wall}\label{sec:lec20:drag}
+
+\subsubsection*{Physical Motivation}
+The flowing fluid drags the pipe forward (along $+x$); to hold the pipe still one must apply an equal force backward. Let $F_d$ be the drag force \emph{per unit length} of pipe that the fluid exerts on the wall. We obtain it by integrating the wall traction over the circumference:
+\begin{equation}
+  F_d=-\oint \sigma_{xr}\dd{l} ,
+  \label{eq:lec20_Fd_def}
+\end{equation}
+where we take the $x$-component of $\sigma_{ij}n_j$ with $\hat{\bvec n}=\uvec r$ (the relevant shear component is $\sigma_{xr}$) and $\oint dl=2\pi R$. For incompressible flow the relevant stress component is
+\begin{equation}
+  \sigma_{xr}=2\eta\cdot\tfrac12\big(\partial_x v_r+\partial_r v_x\big)=\eta\,\partial_r v_x ,
+  \label{eq:lec20_sigma_xr}
+\end{equation}
+since there is no radial velocity and $v_x$ is $x$-independent. From the profile, $\partial_r v_x=-\tfrac{P'}{2\eta}\,r$, so at the wall $\sigma_{xr}|_{r=R}=-\tfrac{P'R}{2}$. Then
+\begin{equation}
+  F_d=-\,\sigma_{xr}\big|_{R}\cdot 2\pi R
+     =\frac{P'R}{2}\cdot 2\pi R
+     =P'\,\pi R^2 .
+  \label{eq:lec20_Fd_calc}
+\end{equation}
+
+\thm[pipe-drag]{Drag Force per Unit Length}{%
+  \begin{equation}
+    \boxed{\;F_d=P'\,A,\qquad A=\pi R^2\;}
+    \label{eq:lec20_Fd}
+  \end{equation}
+}
+\textit{Significance:} The drag per unit length equals the pressure gradient times the cross-sectional area. Remarkably the factors of $\eta$ and the detailed profile have cancelled.
+
+\subsubsection*{The general force balance (any cross-section)}
+Result \eqref{eq:lec20_Fd} is not special to a circular pipe; it follows from a force balance on a slab of fluid of length $\Delta L$. The upstream pressure $p_1$ pushes right with force $p_1 A$, the downstream $p_2<p_1$ pushes left with $p_2 A$, and the wall exerts $-F_d\,\Delta L$. Steady flow means \emph{no acceleration}, so the forces sum to zero:
+\begin{equation}
+  (p_1-p_2)\,A=F_d\,\Delta L .
+  \label{eq:lec20_balance}
+\end{equation}
+Since $P'=-\partial_x p=(p_1-p_2)/\Delta L$, this is exactly $F_d=P'A$.
+\textit{Significance:} We computed the drag ``honestly'' via the stress, but a global force balance would have predicted it with no integral -- and for \emph{any} cross-sectional shape. This is the first instance of the lecture's recurring theme: global balances beat detailed integration.
+
+\subsubsection*{Application: domestic plumbing}\label{sec:lec20:plumbing}
+Does the diameter of the pipe feeding a household tap matter? The municipality guarantees a standard supply pressure (typically $2.5$--$5$ atm). By \textbf{Pascal's principle} (hydrostatics, \cref{sec:lec11}), in a \emph{static} fluid the pressure is uniform (neglecting gravity over equal heights):
+\begin{equation}
+  p_{\text{tap}}=p_{\text{supply}}\qquad(\text{tap closed, no flow}),
+  \label{eq:lec20_pascal}
+\end{equation}
+\emph{independent} of pipe diameter. So with the tap shut a pressure gauge shows the same reading whatever the pipe. The diameter matters only when the tap is \emph{open}: then there is a discharge $Q$, and along the pipe the pressure drops -- the \textbf{dynamic pressure drop}. Inverting Poiseuille's law,
+\begin{equation}
+  \Delta p_{\text{dyn}}=P'\,L=\frac{8\eta L}{\pi R^4}\,Q ,
+  \label{eq:lec20_pdyn}
+\end{equation}
+where $L$ is the pipe length. The larger $R$, the smaller the pressure drop for a given discharge, and the higher the delivered (dynamic) pressure at the tap.
+\textit{Significance:} Static pressure is diameter-blind (Pascal); only the \emph{flowing} regime, governed by the $R^4$ law, rewards a wider pipe. A gauge read on a closed tap reports the static pressure and hides this entirely.
+
+\subsubsection{Viscous Dissipation in the Pipe}\label{sec:lec20:dissipation}
+
+\subsubsection*{Physical Motivation}
+The internal friction converts mechanical energy to heat. From \cref{sec:lec19} the dissipation \emph{per unit volume} for incompressible flow is $\eta$ times the squared velocity gradient; with only the $r$--$x$ shear surviving,
+\begin{equation}
+  \dot{\mathcal D}_{\text{vol}}=\eta\,(\partial_r v_x)^2
+   =\eta\left(\frac{P'r}{2\eta}\right)^2=\frac{P'^2 r^2}{4\eta}.
+  \label{eq:lec20_diss_vol}
+\end{equation}
+This grows as $r^2$: dissipation is \emph{zero on the axis} (where the gradient vanishes) and \emph{maximal at the wall} (where the parabola is steepest). To get the dissipation per unit \emph{length} of pipe we integrate over the cross-section (not the volume -- the per-length quantity is wanted):
+\begin{equation}
+  D=\int_0^R \dot{\mathcal D}_{\text{vol}}\,2\pi r\dd{r}
+   =\frac{P'^2}{4\eta}\,2\pi\int_0^R r^3\dd{r}
+   =\frac{P'^2}{4\eta}\,2\pi\,\frac{R^4}{4}.
+  \label{eq:lec20_diss_int}
+\end{equation}
+
+\thm[pipe-dissipation]{Dissipation per Unit Length and the Power Balance}{%
+  \begin{equation}
+    \boxed{\;D=\frac{\pi P'^2 R^4}{8\eta}=P'\,Q\;}
+    \label{eq:lec20_diss}
+  \end{equation}
+}
+\textit{Significance:} Comparing with Poiseuille's law \eqref{eq:lec20_Q}, the dissipation per unit length is exactly $P'$ times the discharge -- the energy analogue of the force result $F_d=P'A$.
+
+\subsubsection*{The general power balance (any cross-section)}
+Just as the drag came from force balance, $D=P'Q$ comes from a \textbf{power balance}, valid for any geometry. The mechanical power injected into a fluid slab is the pressure force times velocity, summed over the inlet/outlet area; the net is $(p_1-p_2)Q=P'\Delta L\,Q$ over length $\Delta L$. In steady flow this injected power is entirely dissipated:
+\begin{equation}
+  \underbrace{(p_1-p_2)\,Q}_{\text{power in}}=\underbrace{D\,\Delta L}_{\text{power dissipated}}
+  \;\Longrightarrow\; D=P'Q .
+  \label{eq:lec20_power_balance}
+\end{equation}
+\textit{Significance:} A second global balance reproduces an integral. (For Couette-type flows with a moving wall one must add the power $F\cdot v$ delivered by the dragging boundary -- a force times the wall velocity.)
+
+\subsubsection*{Method}
+To analyse steady incompressible flow in a pipe (or any uniform conduit):
+\begin{enumerate}
+  \item Take $\vel=(v_x,0,0)$; continuity gives $\partial_x v_x=0$, and symmetry gives $v_x=v_x(r)$.
+  \item Transverse Navier--Stokes components give $p=p(x)$.
+  \item Axial component $\Rightarrow \partial_x p=\eta\lapl v_x=\text{const}$; set $\partial_x p=-P'$, $K=P'/\eta$.
+  \item Write $\lapl$ in the right coordinates; integrate twice; fix constants by \emph{regularity} on the axis and \emph{no-slip} at the wall.
+  \item Discharge: $Q=\int v_x\dd{S}$ (use $2\pi r\dd{r}$ for a circle).
+  \item Drag and dissipation: either integrate the stress / $\eta(\partial_r v_x)^2$, \emph{or} use the global balances $F_d=P'A$ and $D=P'Q$.
+\end{enumerate}
+
+\ex[pipe-flow]{Worked Example: pipe profile, discharge, drag, dissipation}{%
+  \emph{Setup.} Incompressible fluid (viscosity $\eta$) in a pipe of radius $R$, driven by a pressure gradient $\partial_x p=-P'$ ($P'>0$), steady and fully developed.\\[2pt]
+  \emph{Profile.} From $\tfrac1r(rv_x')'=-P'/\eta$ with regularity at $r=0$ and $v_x(R)=0$:
+  \[
+    v_x(r)=\frac{P'}{4\eta}\big(R^2-r^2\big),\qquad v_{\max}=\frac{P'R^2}{4\eta}.
+  \]
+  \emph{Discharge.} $Q=\displaystyle\int_0^R v_x\,2\pi r\dd{r}=\frac{\pi P'R^4}{8\eta}$ (the $R^4$ law).\\[2pt]
+  \emph{Drag per length.} Wall shear $\sigma_{xr}|_R=\eta\,\partial_r v_x|_R=-P'R/2$, so
+  $F_d=-\sigma_{xr}|_R\cdot2\pi R=P'\pi R^2=P'A$.\\[2pt]
+  \emph{Dissipation per length.} $D=\displaystyle\int_0^R \eta(\partial_r v_x)^2\,2\pi r\dd{r}=\frac{\pi P'^2R^4}{8\eta}=P'Q$.\\[4pt]
+  \emph{Check.} Both $F_d=P'A$ and $D=P'Q$ follow independently from force and power balance on a slab of length $\Delta L$ (steady $\Rightarrow$ zero net force, all injected power dissipated) -- a consistency test passing with no extra geometry.
+}
+
+\nt{Pitfall: (i) the second boundary condition is \emph{regularity at the axis} ($A=0$ to kill the $\ln r$), not a second physical wall -- forgetting it leaves an unphysical logarithmic singularity. (ii) Use the \emph{cylindrical} radial Laplacian $\tfrac1r(rv')'$, not $v''$; the $\tfrac1r v'$ term is essential and changes $r^2$-coefficients. (iii) For dissipation \emph{per unit length} integrate over the cross-section ($2\pi r\dd{r}$), not the volume -- the per-volume rate already excludes the length. (iv) Sign of $P'$: it is defined as $-\partial_x p>0$, so $v_{\max}>0$.}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Dimensional Analysis and the Reynolds Number}\label{sec:lec20:reynolds}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+We turn to steady flow \emph{past} a solid sphere of radius $R$, with uniform far-field velocity $v_0$ and an incompressible viscous fluid. Before solving anything, ask what dimensionless combinations the answer can depend on. The available parameters are
+\begin{equation}
+  R\ [\,L\,],\qquad v_0\ \Big[\tfrac{L}{T}\Big],\qquad
+  \nu=\frac{\eta}{\rho}\ \Big[\tfrac{L^2}{T}\Big],
+  \label{eq:lec20_params}
+\end{equation}
+where the \textbf{kinematic viscosity} $\nu=\eta/\rho$ is chosen precisely because it involves only length and time (the mass in $\eta$ is divided out by $\rho$); $\nu$ is a \emph{diffusivity}. All three quantities involve only $L$ and $T$, so by the Buckingham-$\pi$ counting (3 quantities, 2 dimensions) there is exactly \emph{one} independent dimensionless group. To eliminate $T$ we need one power of $v_0$; to then eliminate $L$ we need one power of $R$; dividing by $\nu$:
+
+\dfn[reynolds]{Reynolds Number}{%
+  \begin{equation}
+    \boxed{\;\reynolds=\frac{v_0\,R}{\nu}=\frac{\rho\,v_0\,R}{\eta}\;}
+    \label{eq:lec20_Re}
+  \end{equation}
+  the unique dimensionless group built from a characteristic size $R$, a characteristic speed $v_0$, and the kinematic viscosity $\nu$.
+}
+\textit{Significance:} $\reynolds$ is essentially the \emph{inverse of a dimensionless viscosity}. Low $\reynolds$ means effectively very viscous flow (viscous forces dominate); high $\reynolds$ means effectively inviscid -- the ideal-fluid limit. The two limits are where solutions simplify: high $\reynolds$ is the ideal flow already studied; low $\reynolds$ is the Stokes regime we tackle next.
+
+\nt{The kinematic viscosity plays the role of a diffusion coefficient for momentum (recall the vorticity diffusion equation $\partial_t\bvec\omega=\nu\lapl\bvec\omega$ of \cref{sec:lec19}), which is why $[\nu]=L^2/T$ like any diffusivity.}
+
+\subsubsection*{Dynamic similarity}
+The deep consequence: a viscous flow depends on its parameters \emph{only through} $\reynolds$ (up to overall power-law scalings). Hence two physically different flows with the \emph{same} Reynolds number are \textbf{qualitatively identical}.
+
+\thm[similarity]{Dynamic Similarity}{%
+  Two flows with the same Reynolds number,
+  \[
+    \reynolds^{(1)}=\frac{v_0^{(1)}R^{(1)}}{\nu^{(1)}}
+    =\frac{v_0^{(2)}R^{(2)}}{\nu^{(2)}}=\reynolds^{(2)},
+  \]
+  are qualitatively the same flow -- the (suitably non-dimensionalised) velocity fields coincide.
+}
+\textit{Significance:} This is the principle behind \textbf{wind tunnels} and \textbf{water-tunnel scale models}. To study a submarine, build a model $10\times$ smaller, keep the same fluid, but run it $10\times$ faster: same $\reynolds$, same flow pattern. One may even change the fluid, provided $\reynolds$ is matched. In physics this is ``dimensional analysis''; in engineering it is called \emph{similitude} or \emph{similarity}.
+
+\subsubsection*{Historical note}
+Despite Stokes having introduced the group when solving the sphere problem (1845), the \emph{name} was given by Arnold \textbf{Sommerfeld} in 1908, honouring \textbf{Osborne Reynolds} (1842--1912), a British physicist of Irish descent. Reynolds' 1883 dye experiment injected coloured fluid into pipe flow: at high effective viscosity (low $\reynolds$) the dye streams in a smooth line (laminar); at low effective viscosity (high $\reynolds$) it breaks up (turbulent). He recognised that the transition depends not on $R$, $v_0$, $\nu$ separately but only on their combination \eqref{eq:lec20_Re}.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Setup: Stokes Flow Past a Sphere (Low \texorpdfstring{$\reynolds$}{Re})}\label{sec:lec20:stokes}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Conceptual Background}
+We revisit the sphere of \cref{sec:lec16}, where ideal potential flow gave the \textbf{d'Alembert paradox}: a symmetric pressure distribution and \emph{zero drag}. We now restore viscosity and expect it to break the symmetry and produce a genuine drag. We work in the \textbf{low Reynolds number} (high effective viscosity) limit, $\reynolds\ll1$. Steady incompressible Navier--Stokes reads
+\begin{equation}
+  \rho\,(\vel\cdot\grad)\vel=-\grad p+\eta\,\lapl\vel ,\qquad \divg\vel=0 .
+  \label{eq:lec20_NS_sphere}
+\end{equation}
+Estimate the two right-hand-competing terms by their scales: the advection (inertial) term carries \emph{one} velocity derivative, $\sim \rho v_0^2/R$; the viscous term carries \emph{two}, $\sim \eta v_0/R^2$. Their ratio is
+\begin{equation}
+  \frac{|\rho(\vel\cdot\grad)\vel|}{|\eta\lapl\vel|}
+  \sim\frac{\rho v_0^2/R}{\eta v_0/R^2}
+  =\frac{\rho v_0 R}{\eta}=\frac{v_0 R}{\nu}=\reynolds .
+  \label{eq:lec20_estimate}
+\end{equation}
+For $\reynolds\ll1$ the inertial term is negligible and may be dropped, linearising the problem to the \textbf{Stokes equations}:
+
+\thm[stokes-eqs]{Stokes (Creeping-Flow) Equations}{%
+  \begin{equation}
+    \boxed{\;\grad p=\eta\,\lapl\vel,\qquad \divg\vel=0\;}
+    \label{eq:lec20_stokes}
+  \end{equation}
+}
+\textit{Significance:} Four equations (three components plus continuity) for four unknowns ($\vel$, $p$). They are \emph{linear} -- the great simplification of low-$\reynolds$ flow -- and form the starting point for the full solution (velocity field, pressure, and the resulting Stokes drag on the sphere) to be carried out next lecture.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection*{Summary}
+%%─────────────────────────────────────────────────────────────────────────────
+\begin{itemize}
+  \item \textbf{Pipe flow setup:} incompressible, steady, fully developed, axisymmetric. Continuity $\Rightarrow v_x=v_x(r)$; transverse Navier--Stokes $\Rightarrow p=p(x)$; axial $\Rightarrow \partial_x p=\eta\lapl v_x=-P'=\text{const}$.
+  \item \textbf{Profile:} $v_x(r)=\tfrac{P'}{4\eta}(R^2-r^2)$ -- a parabola; $v_{\max}=P'R^2/4\eta$. Constants fixed by regularity on axis ($A=0$) and no-slip at wall.
+  \item \textbf{Discharge (Poiseuille's law):} $Q=\pi P'R^4/8\eta\propto R^4$.
+  \item \textbf{Drag per length:} $F_d=P'A=P'\pi R^2$, also from force balance $(p_1-p_2)A=F_d\Delta L$.
+  \item \textbf{Dissipation per length:} $D=\pi P'^2R^4/8\eta=P'Q$, also from power balance $(p_1-p_2)Q=D\Delta L$.
+  \item \textbf{Plumbing:} static pressure is diameter-independent (Pascal); only the dynamic drop $\Delta p_{\text{dyn}}=8\eta L Q/\pi R^4$ rewards a wider pipe.
+  \item \textbf{Reynolds number:} $\reynolds=v_0R/\nu=\rho v_0 R/\eta$, the unique dimensionless group; $\nu=\eta/\rho$ is a momentum diffusivity. Low $\reynolds$ = viscous/Stokes; high $\reynolds$ = ideal.
+  \item \textbf{Dynamic similarity:} equal $\reynolds$ $\Rightarrow$ qualitatively identical flows (wind tunnels, scale models).
+  \item \textbf{Stokes flow setup:} for $\reynolds\ll1$ drop inertia (ratio $=\reynolds$), giving the linear creeping-flow equations $\grad p=\eta\lapl\vel$, $\divg\vel=0$ -- to be solved for the sphere next time, resolving d'Alembert.
+\end{itemize}
+
+\subsection*{Further Reading}
+\begin{itemize}
+  \item L.\,D. Landau and E.\,M. Lifshitz, \textit{Fluid Mechanics} (Vol.\ 6): \S17 (flow in a pipe -- Poiseuille's formula, discharge and dissipation), \S19 (the similarity principle and the Reynolds number), \S20 (Stokes' formula -- flow past a sphere at small $\reynolds$).
+  \item G.\,K. Batchelor, \textit{An Introduction to Fluid Dynamics}: \S4.2 (steady flow in a tube of circular cross-section), \S4.7 (the Reynolds number and dynamical similarity), \S4.9 (flow due to a moving sphere at small $\reynolds$).
+  \item D.\,J. Acheson, \textit{Elementary Fluid Dynamics}: \S2.3 (flow in a circular pipe, Hagen--Poiseuille), \S6.1--6.2 (low-Reynolds-number flow and Stokes flow past a sphere).
+  \item NIST / standard reference -- Hagen--Poiseuille and Reynolds number overviews: \url{https://en.wikipedia.org/wiki/Hagen\%E2\%80\%93Poiseuille_equation} and \url{https://en.wikipedia.org/wiki/Reynolds_number}.
+\end{itemize}
+
+\end{document}

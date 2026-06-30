@@ -1,0 +1,754 @@
+%%===================================================================
+%% Lecture 20 -- The Quark Sector of the Standard Model:
+%%               Covariant Derivative, Yukawa Diagonalization,
+%%               the CKM Matrix, and the Boson Spectrum
+%% 77609 -- Introduction to Elementary Particles
+%% Date: 21/06/2026
+%% Lecturer: Prof. Yonit Hochberg
+%%===================================================================
+
+\section{Lecture 20 -- The Quark Sector: Covariant Derivative, Yukawa Diagonalization, and the CKM Matrix}\label{sec:lec20}
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 21/06/2026 & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+
+%%------------------------------------------------------------------
+\subsection{Overview}\label{subsec:lec20:overview}
+
+In Lecture~19 we assembled the full Standard Model (SM) gauge group
+$G_{\SM} = SU(3)_C\times SU(2)_L\times U(1)_Y$ and wrote its Lagrangian
+schematically. Today we work through the \emph{quark sector} in detail
+and discover the one structurally new feature that quarks bring and
+leptons do not: a \emph{mismatch between two different mass bases} that
+cannot be rotated away. This mismatch is the
+\textbf{Cabibbo--Kobayashi--Maskawa (CKM) matrix}, the central result of
+the lecture.
+
+The logical chain is:
+\begin{enumerate}
+  \item \textbf{Field content and covariant derivative} --- recall the
+        five fermion representations and build the single object,
+        $D_\mu$, from which every gauge interaction is read off. We see
+        how $D_\mu$ specializes to each representation.
+  \item \textbf{Kinetic terms} for gauge fields, fermions, and the
+        scalar.
+  \item \textbf{No bare fermion masses} --- gauge invariance forbids
+        $m\bar\psi_L\psi_R$ for every SM fermion.
+  \item \textbf{Yukawa couplings} --- the only gauge-invariant way to
+        give fermions mass, using the Higgs doublet.
+  \item \textbf{Diagonalizing the Yukawa matrices} --- bi-unitary
+        rotations, and the crucial observation that the up-type and
+        down-type rotations of the \emph{same} left-handed doublet
+        $Q_L$ differ. Their relative rotation is the CKM matrix.
+  \item \textbf{Quark electric charges} from $Q = T^3 + Y$.
+  \item \textbf{The boson spectrum} --- which gauge bosons get a mass
+        and which stay massless.
+\end{enumerate}
+
+Throughout, ``read off from $D_\mu$'' is the operating principle:
+once the representation of a field is fixed, all of its gauge couplings
+are determined, not chosen.
+
+%%==================================================================
+\subsection{Field Content of the Standard Model}\label{subsec:lec20:content}
+
+\subsubsection*{Conceptual Background}
+
+A gauge theory is \emph{defined} by three inputs: (i) a gauge group,
+(ii) the representations in which the matter fields sit, and (iii) the
+pattern of spontaneous symmetry breaking. For the SM these are
+\begin{equation}
+  \boxed{
+    \underbrace{SU(3)_C\times SU(2)_L\times U(1)_Y}_{G_{\SM}}
+    \;\xrightarrow{\ \langle\phi\rangle\neq0\ }\;
+    SU(3)_C\times U(1)_{\rm EM}
+  }
+  \label{eq:lec20:ssb}
+\end{equation}
+where the breaking is triggered by the Higgs field $\phi$ acquiring a
+vacuum expectation value (vev). Here $C$ = color, $L$ = left
+(the group acts only on left-handed fermions), and $Y$ = hypercharge.
+
+\textit{Significance:} Everything that follows --- masses, couplings,
+mixing --- is a consequence of this one line. The physics is in the
+choice of representations.
+
+The matter content is \emph{three generations} of fermions, each in
+five irreducible representations, plus one Higgs scalar. The
+generation index $i = 1,2,3$ labels identical copies that differ only
+through their Yukawa couplings (introduced below). We write
+$(\,SU(3)_C,\ SU(2)_L\,)_Y$ for the representation, giving the dimension
+of each non-Abelian factor and the $U(1)_Y$ charge as a subscript:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.4}
+\begin{tabular}{@{}lllc@{}}
+  \toprule
+  Field & Name & $(\,SU(3)_C,\,SU(2)_L\,)_Y$ & Components ($i=1$)\\
+  \midrule
+  $Q_{Li}$ & LH quark doublet      & $(\mathbf3,\,\mathbf2)_{+1/6}$ & $(u_L,\,d_L)^T$\\
+  $u_{Ri}$ & RH up-type quark      & $(\mathbf3,\,\mathbf1)_{+2/3}$ & $u_R$\\
+  $d_{Ri}$ & RH down-type quark    & $(\mathbf3,\,\mathbf1)_{-1/3}$ & $d_R$\\
+  $L_{Li}$ & LH lepton doublet     & $(\mathbf1,\,\mathbf2)_{-1/2}$ & $(\nu_{L},\,\ell_L)^T$\\
+  $e_{Ri}$ & RH charged lepton     & $(\mathbf1,\,\mathbf1)_{-1}$   & $e_R$\\
+  \midrule
+  $\phi$   & Higgs doublet         & $(\mathbf1,\,\mathbf2)_{+1/2}$ & $(\phi^+,\,\phi^0)^T$\\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\nt{Pitfall: the \emph{left-handed} quarks live in a single
+$SU(2)_L$ doublet $Q_{Li}$, but the \emph{right-handed} up and down
+quarks are \emph{separate} $SU(2)_L$ singlets $u_{Ri}$ and $d_{Ri}$
+with \emph{different} hypercharges ($+\tfrac23$ vs.\ $-\tfrac13$).
+This left/right asymmetry is exactly what forbids bare masses
+(Sec.~\ref{subsec:lec20:nomass}) and what later forces the CKM matrix
+to appear (Sec.~\ref{subsec:lec20:ckm}).}
+
+%%==================================================================
+\subsection{The Covariant Derivative}\label{subsec:lec20:covd}
+
+\subsubsection*{Mathematical Setup}
+
+Local gauge invariance requires that ordinary derivatives
+$\partial_\mu$ acting on a charged field be promoted to
+\emph{covariant} derivatives $D_\mu$ that include one gauge field per
+generator. With three gauge couplings $g_s$ (for $SU(3)_C$), $g$
+(for $SU(2)_L$), and $g'$ (for $U(1)_Y$), the general covariant
+derivative is
+\begin{equation}
+  \boxed{
+    D_\mu = \partial_\mu
+            + i g_s\, G^a_\mu\, L^a
+            + i g\, W^b_\mu\, T^b
+            + i g'\, B_\mu\, Y
+  }
+  \label{eq:lec20:covd}
+\end{equation}
+where:
+\begin{itemize}
+  \item $G^a_\mu$ ($a=1,\dots,8$) are the eight gluon fields and $L^a$
+        the $SU(3)_C$ generators;
+  \item $W^b_\mu$ ($b=1,2,3$) are the three weak bosons and $T^b$ the
+        $SU(2)_L$ generators;
+  \item $B_\mu$ is the single hypercharge boson and $Y$ the hypercharge
+        (a number for each field).
+\end{itemize}
+The index ranges $a=1,\dots,8$ and $b=1,2,3$ are set by the dimension
+of the \emph{adjoint} representation of each group, i.e.\ by the number
+of generators ($8$ for $SU(3)$, $3$ for $SU(2)$, $1$ for $U(1)$).
+
+\paragraph{How $D_\mu$ specializes to each representation.}
+The objects $L^a$, $T^b$, $Y$ are abstract generators; their concrete
+form depends on the representation the field sits in. The rule is:
+
+\dfn[dfn:lec20:generators]{Generators in Each Representation}{
+\begin{itemize}
+  \item \textbf{$SU(3)_C$ generators $L^a$:}
+        \begin{itemize}
+          \item on a color \emph{triplet} (every quark field $Q_L,u_R,d_R$):
+                $L^a = \dfrac{\lambda^a}{2}$, with $\lambda^a$ the
+                Gell-Mann matrices;
+          \item on a color \emph{singlet} (Higgs, all leptons):
+                $L^a = 0$ --- they do not feel the strong force.
+        \end{itemize}
+  \item \textbf{$SU(2)_L$ generators $T^b$:}
+        \begin{itemize}
+          \item on a weak \emph{doublet} ($Q_L,L_L,\phi$):
+                $T^b = \dfrac{\sigma^b}{2}$, with $\sigma^b$ the Pauli
+                matrices;
+          \item on a weak \emph{singlet} ($u_R,d_R,e_R$): $T^b = 0$.
+        \end{itemize}
+  \item \textbf{$U(1)_Y$ generator $Y$:} simply the hypercharge number
+        of the field (it is always non-trivial unless $Y=0$).
+\end{itemize}
+}
+
+\textit{Significance:} A field's couplings are not free inputs. Once we
+declare ``$Q_L$ is a $(\mathbf3,\mathbf2)_{1/6}$,'' the explicit $D_\mu$
+acting on it --- and hence all its gauge interactions --- is fully fixed.
+
+\ex[ex:lec20:covd-QL]{Worked Example: $D_\mu$ Acting on $Q_L$}{
+Take the left-handed quark doublet $Q_L\in(\mathbf3,\mathbf2)_{1/6}$.
+It is a color triplet, a weak doublet, and has $Y=\tfrac16$, so each
+piece of Eq.~\eqref{eq:lec20:covd} survives:
+\begin{equation*}
+  D_\mu Q_L
+  = \left(\partial_\mu
+    + i g_s\, G^a_\mu\,\frac{\lambda^a}{2}
+    + i g\, W^b_\mu\,\frac{\sigma^b}{2}
+    + i g'\, B_\mu\,\frac{1}{6}\right) Q_L .
+\end{equation*}
+By contrast, for the right-handed down quark $d_R\in(\mathbf3,\mathbf1)_{-1/3}$
+the weak piece drops out (singlet $\Rightarrow T^b=0$):
+\begin{equation*}
+  D_\mu d_R
+  = \left(\partial_\mu
+    + i g_s\, G^a_\mu\,\frac{\lambda^a}{2}
+    + i g'\, B_\mu\Bigl(-\tfrac13\Bigr)\right) d_R ,
+\end{equation*}
+and for a lepton $L_L\in(\mathbf1,\mathbf2)_{-1/2}$ the color piece drops
+out ($L^a=0$). \emph{Reading the representation $\to$ writing $D_\mu$ is
+the whole skill.}
+}
+
+\paragraph{The adjoint representation.}
+For a field sitting in the \emph{adjoint} of a non-Abelian group (this
+is where the gauge bosons themselves live), the generators are built
+directly from the structure constants:
+\begin{equation}
+  \bigl(L^a_{\rm adj}\bigr)_{bc} = -i f^{abc}\quad(SU(3)),
+  \qquad
+  \bigl(T^a_{\rm adj}\bigr)_{bc} = -i\,\epsilon^{abc}\quad(SU(2)),
+  \label{eq:lec20:adjoint}
+\end{equation}
+where $f^{abc}$ are the $SU(3)$ structure constants and
+$\epsilon^{abc}$ the $SU(2)$ ones. This is the explicit statement that
+\emph{in the adjoint, the generators are nothing but the structure
+constants of the group} --- it is why gluons carry color and why the
+$W$'s carry weak isospin (and hence self-interact, as seen in
+Lecture~19).
+
+%%==================================================================
+\subsection{Kinetic Terms}\label{subsec:lec20:kinetic}
+
+\subsubsection*{Mathematical Setup}
+
+We organize the SM Lagrangian into four pieces,
+\begin{equation}
+  \lagr_{\SM} = \lagr_{\rm kin} + \lagr_{\rm Yukawa} + \lagr_{\rm scalar},
+  \label{eq:lec20:lag-pieces}
+\end{equation}
+(with the fermion kinetic term often counted separately). The kinetic
+part collects every term with derivatives. Using the field strengths
+written in Lecture~19,
+\begin{align}
+  G^a_{\mu\nu} &= \partial_\mu G^a_\nu - \partial_\nu G^a_\mu
+                  - g_s f^{abc}G^b_\mu G^c_\nu, \\
+  W^a_{\mu\nu} &= \partial_\mu W^a_\nu - \partial_\nu W^a_\mu
+                  - g\,\epsilon^{abc}W^b_\mu W^c_\nu, \\
+  B_{\mu\nu}   &= \partial_\mu B_\nu - \partial_\nu B_\mu,
+\end{align}
+the kinetic Lagrangian is
+\begin{equation}
+  \boxed{
+  \begin{aligned}
+    \lagr_{\rm kin}
+    &= -\tfrac14 G^a_{\mu\nu}G^{a\mu\nu}
+       -\tfrac14 W^a_{\mu\nu}W^{a\mu\nu}
+       -\tfrac14 B_{\mu\nu}B^{\mu\nu}\\
+    &\quad + \sum_{\psi} i\,\bar\psi\,\slashed{D}\,\psi
+           + (D_\mu\phi)^\dagger(D^\mu\phi),
+  \end{aligned}}
+  \label{eq:lec20:kinetic}
+\end{equation}
+where the sum runs over \emph{all} fermion fields,
+\begin{equation}
+  \psi \in \{\,Q_{Li},\ u_{Ri},\ d_{Ri},\ L_{Li},\ e_{Ri}\,\},
+  \qquad i=1,2,3,
+  \label{eq:lec20:psi-sum}
+\end{equation}
+and for each field $D_\mu$ takes the representation-specific form of
+Sec.~\ref{subsec:lec20:covd}. The Feynman-slash notation is
+$\slashed{D}=\gamma^\mu D_\mu$.
+
+\textit{Significance:} A single compact line,
+$\sum_\psi i\bar\psi\slashed D\psi$, encodes \emph{every} gauge
+interaction of \emph{every} fermion --- strong, weak, and
+electromagnetic --- because $D_\mu$ knows each field's representation.
+
+%%==================================================================
+\subsection{No Bare Mass Terms for Fermions}\label{subsec:lec20:nomass}
+
+\subsubsection*{Conceptual Background}
+
+A Dirac mass term couples a left-handed field to a right-handed one,
+\begin{equation}
+  \lagr_{\rm mass} = -m\,\bar\psi_L\psi_R + \text{h.c.}
+  \label{eq:lec20:diracmass}
+\end{equation}
+For this to be allowed in the Lagrangian it must be a \emph{singlet}
+under the full gauge group --- otherwise it would not be gauge
+invariant. The question is therefore purely group-theoretic: can
+$\bar\psi_L\psi_R$ form a singlet for any SM fermion?
+
+\clm[clm:lec20:nomass]{Bare Fermion Masses Are Forbidden}{
+For every SM fermion, the product $\bar\psi_L\psi_R$ fails to be a
+gauge singlet, so
+\begin{equation}
+  \boxed{m_{\rm bare} = 0 \quad\text{for all SM fermions.}}
+  \label{eq:lec20:nomass-result}
+\end{equation}
+}
+
+\subsubsection*{Why it fails --- the quark case}
+
+Try to build a quark mass term, e.g.\ $\bar Q_L\,u_R$:
+\begin{itemize}
+  \item \textbf{$SU(3)_C$:} $\bar Q_L\sim\bar{\mathbf3}$,
+        $u_R\sim\mathbf3$, and $\bar{\mathbf3}\otimes\mathbf3\supset\mathbf1$.
+        \checkmark\ (color is fine).
+  \item \textbf{$SU(2)_L$:} $\bar Q_L\sim\bar{\mathbf2}$, $u_R\sim\mathbf1$,
+        and $\bar{\mathbf2}\otimes\mathbf1 = \mathbf2\neq\mathbf1$.
+        ($\boldsymbol\times$) (no singlet --- this term has a leftover weak index).
+  \item \textbf{$U(1)_Y$:} $Y(\bar Q_L)+Y(u_R) = -\tfrac16+\tfrac23
+        = +\tfrac12\neq 0$. ($\boldsymbol\times$) (hypercharge does not cancel).
+\end{itemize}
+Two of the three factors fail. The same happens for the leptons:
+$\bar L_L e_R$ is an $SU(2)_L$ doublet ($\mathbf2$, not a singlet) and
+carries net hypercharge $-\tfrac12+(-1)\neq0$.
+
+\textit{Significance:} Chirality plus the gauge assignment makes a bare
+mass impossible. \emph{All} fermion masses must therefore come from
+somewhere else --- the Higgs mechanism via Yukawa couplings. This is
+not an aesthetic choice; it is forced.
+
+\nt{Pitfall: it is the \emph{mismatch} between the left-handed
+(doublet) and right-handed (singlet) assignments that kills the mass
+term. If left and right fields lived in the \emph{same} representation
+(as in QED or QCD alone, which are vector-like), a bare mass would be
+allowed. The chiral structure of the weak interaction is exactly what
+makes the Higgs necessary.}
+
+%%==================================================================
+\subsection{Yukawa Couplings}\label{subsec:lec20:yukawa}
+
+\subsubsection*{Physical Motivation}
+
+Since $\bar\psi_L\psi_R$ alone is not a singlet, we repair it by
+inserting the Higgs doublet $\phi$ to soak up the leftover $SU(2)_L$
+and $U(1)_Y$ charges. The result is a \emph{Yukawa coupling}: a
+gauge-invariant, dimension-4 (renormalizable) term linking two
+fermions to the scalar. When $\phi$ acquires its vev, each Yukawa term
+becomes a mass term.
+
+\subsubsection*{Mathematical Setup}
+
+We need both $\phi$ and a partner that carries the opposite weak
+charge. Define the \emph{charge-conjugate} Higgs doublet
+\begin{equation}
+  \tilde\phi \equiv i\sigma^2\phi^* ,
+  \qquad (\tilde\phi)_a = \epsilon_{ab}\,\phi_b^* ,
+  \label{eq:lec20:phitilde}
+\end{equation}
+which is also an $SU(2)_L$ doublet but with hypercharge $Y(\tilde\phi)
+= -\tfrac12$ (opposite to $\phi$). With $\phi$ and $\tilde\phi$
+available we can write all three Yukawa terms:
+\begin{equation}
+  \boxed{
+    -\lagr_{\rm Yukawa}
+    = Y^u_{ij}\,\bar Q_{Li}\,\tilde\phi\,u_{Rj}
+    + Y^d_{ij}\,\bar Q_{Li}\,\phi\,d_{Rj}
+    + Y^e_{ij}\,\bar L_{Li}\,\phi\,e_{Rj}
+    + \text{h.c.}
+  }
+  \label{eq:lec20:yukawa}
+\end{equation}
+where $Y^u, Y^d, Y^e$ are \emph{arbitrary complex $3\times3$ matrices}
+in generation space ($i,j=1,2,3$).
+
+\paragraph{Checking gauge invariance through hypercharge.}
+The quickest consistency check is $U(1)_Y$: the hypercharges of the
+three factors must sum to zero.
+\begin{align*}
+  \text{up:}   \quad & Y(\bar Q_L) + Y(\tilde\phi) + Y(u_R)
+                       = -\tfrac16 - \tfrac12 + \tfrac23 = 0,\quad\checkmark\\
+  \text{down:} \quad & Y(\bar Q_L) + Y(\phi) + Y(d_R)
+                       = -\tfrac16 + \tfrac12 - \tfrac13 = 0,\quad\checkmark\\
+  \text{lepton:}\quad& Y(\bar L_L) + Y(\phi) + Y(e_R)
+                       = +\tfrac12 + \tfrac12 - 1 = 0.\quad\checkmark
+\end{align*}
+The up-type term \emph{must} use $\tilde\phi$ (not $\phi$) precisely
+because only $\tilde\phi$ carries the hypercharge that makes the sum
+vanish.
+
+\textit{Significance:} The Yukawa couplings are the \emph{only}
+renormalizable terms that can give fermions mass, and they are
+unavoidably matrices in generation space. Their off-diagonal entries
+are the seed of all flavor physics.
+
+\nt{Pitfall: do not confuse the conjugate doublet $\tilde\phi$ with
+$\phi^\dagger$. $\tilde\phi = i\sigma^2\phi^*$ is still a
+\emph{column} doublet (it transforms as a $\mathbf2$ of $SU(2)_L$),
+whereas $\phi^\dagger$ is a row. Only $\tilde\phi$ can multiply $u_R$
+to make an invariant.}
+
+\paragraph{The lepton sector is the easy case.}
+The leptons are exactly as in the Lepton Standard Model of
+Lectures~17--18, with the only change that they are now also $SU(3)_C$
+singlets (which does nothing). As before, a single bi-unitary rotation
+puts $Y^e$ into real diagonal form,
+\begin{equation}
+  Y^e \;\xrightarrow{\ \text{rotate}\ }\;
+  \hat Y^e = \mathrm{diag}(y_e,\,y_\mu,\,y_\tau),
+  \label{eq:lec20:ye-diag}
+\end{equation}
+and in this \emph{mass basis} the doublet components are named
+$(\nu_{eL},e_L),(\nu_{\mu L},\mu_L),(\nu_{\tau L},\tau_L)$. There is no
+mixing among leptons. The quark sector is where something genuinely new
+happens.
+
+%%==================================================================
+\subsection{Diagonalizing the Quark Yukawa Matrices}\label{subsec:lec20:ckm}
+
+\subsubsection*{Mathematical Setup: Bi-Unitary Diagonalization}
+
+Any complex matrix $M$ can be brought to real, non-negative diagonal
+form by a \emph{bi-unitary} transformation: there exist unitary
+matrices $V_L, V_R$ such that $V_L M V_R^\dagger$ is diagonal with
+non-negative entries (this is the singular-value decomposition). We
+apply this independently to $Y^u$ and $Y^d$.
+
+\paragraph{Step 1 --- diagonalize the up-type Yukawa.}
+Choose unitary matrices $V_{uL}, V_{uR}$ so that
+\begin{equation}
+  \hat Y^u = V_{uL}\,Y^u\,V_{uR}^\dagger
+           = \mathrm{diag}(y_u,\,y_c,\,y_t),
+  \label{eq:lec20:yu-diag}
+\end{equation}
+real and diagonal, ordered by size $y_u<y_c<y_t$. The rotation
+$V_{uL}$ acts on the \emph{up-components} of the left-handed doublets
+$Q_L$, and $V_{uR}$ on the right-handed fields $u_R$. In this basis we
+name the resulting mass-eigenstate fields
+\begin{equation*}
+  \text{LH up-components:}\ (u_L,\,c_L,\,t_L),
+  \qquad
+  \text{RH up quarks:}\ (u_R,\,c_R,\,t_R),
+\end{equation*}
+ordered to match the eigenvalues (up, charm, top).
+
+\paragraph{Step 2 --- diagonalize the down-type Yukawa.}
+\emph{Alternatively}, choose a \emph{different} pair $V_{dL}, V_{dR}$ so
+that
+\begin{equation}
+  \hat Y^d = V_{dL}\,Y^d\,V_{dR}^\dagger
+           = \mathrm{diag}(y_d,\,y_s,\,y_b),
+  \label{eq:lec20:yd-diag}
+\end{equation}
+real and diagonal, ordered $y_d<y_s<y_b$ (down, strange, bottom). Here
+$V_{dL}$ acts on the \emph{down-components} of $Q_L$ and $V_{dR}$ on the
+$d_R$ fields.
+
+\subsubsection*{The Key Tension: One Doublet, Two Rotations}
+
+Here is the crux. The \emph{same} left-handed doublet $Q_{Li}$ supplies
+\emph{both} the up-components (which appear in $Y^u$) and the
+down-components (which appear in $Y^d$). To diagonalize $Y^u$ we must
+rotate $Q_L$ by $V_{uL}$; to diagonalize $Y^d$ we must rotate the
+\emph{same} $Q_L$ by $V_{dL}$. In general these are different unitary
+matrices:
+\begin{equation}
+  \boxed{V_{uL}\neq V_{dL}.}
+  \label{eq:lec20:vneq}
+\end{equation}
+We therefore \emph{cannot} make both $Y^u$ and $Y^d$ diagonal at the
+same time. Concretely:
+\begin{itemize}
+  \item In the basis where $Y^u$ is diagonal (the up-quark mass basis),
+        the down Yukawa is \emph{not} diagonal: it equals its own
+        diagonal form rotated by a leftover matrix $V$,
+        $\;Y^d \to \hat Y^d\,V$.
+  \item In the basis where $Y^d$ is diagonal (the down-quark mass
+        basis), $Y^u$ is rotated by the same $V$.
+\end{itemize}
+This leftover rotation is the relative misalignment of the two
+diagonalizations,
+\begin{equation}
+  \boxed{V_{\rm CKM} = V_{uL}\,V_{dL}^\dagger.}
+  \label{eq:lec20:ckm-def}
+\end{equation}
+
+\dfn[dfn:lec20:ckm]{Cabibbo--Kobayashi--Maskawa (CKM) Matrix}{
+The CKM matrix $V_{\rm CKM}=V_{uL}V_{dL}^\dagger$ is the unitary
+$3\times3$ matrix measuring the mismatch between the up-quark and
+down-quark mass bases. It is named for \textbf{C}abibbo (who found the
+two-generation version), \textbf{K}obayashi, and \textbf{M}askawa (who
+extended it to three generations and showed it can accommodate CP
+violation). It is a \emph{physical}, measurable object and plays a
+\emph{crucial role in charged-current weak interactions} (the $W^\pm$
+couplings to quarks).
+}
+
+\textit{Significance:} The mass basis for up-type quarks is
+\emph{not} the mass basis for down-type quarks. Their unavoidable
+relative rotation $V_{\rm CKM}$ is the origin of quark flavor mixing
+and of all CP violation in the SM. Leptons have no analogue here
+because (with massless neutrinos) only one charged-lepton Yukawa needs
+diagonalizing.
+
+\subsubsection*{Why this matters physically (foreshadowing Thursday)}
+
+The CKM matrix has no effect on the photon, $Z$, or gluon couplings:
+those are \emph{flavor-diagonal} neutral currents, and a unitary
+rotation acting identically on a fermion and its conjugate leaves them
+unchanged (no tree-level flavor-changing neutral currents). It survives
+only in the \emph{charged current}, where a $W^\pm$ connects an
+up-type quark to a down-type quark of the \emph{other} mass basis:
+\begin{equation}
+  \lagr_{\rm CC}
+  \supset
+  -\frac{g}{\sqrt2}\,W^+_\mu\,
+  \bar u_{Li}\,\gamma^\mu\,(V_{\rm CKM})_{ij}\,d_{Lj}
+  + \text{h.c.}
+  \label{eq:lec20:cc-foreshadow}
+\end{equation}
+So if a $W$ decay leaves you holding one flavor of quark, there is an
+amplitude --- weighted by the corresponding CKM element --- to find a
+\emph{different} down-type flavor as its partner. This is how flavor
+``changes'' even though each individual vertex is diagonal in the weak
+basis. (We will derive Eq.~\eqref{eq:lec20:cc-foreshadow} carefully in
+the next lecture.)
+
+\subsubsection*{Method: Finding the Physical Mixing Matrix}
+\begin{enumerate}
+  \item Write the general complex Yukawa matrices $Y^u, Y^d$ in the weak
+        (interaction) basis.
+  \item Bi-unitarily diagonalize each:
+        $\hat Y^u = V_{uL}Y^u V_{uR}^\dagger$,
+        $\hat Y^d = V_{dL}Y^d V_{dR}^\dagger$.
+  \item Identify the four left/right rotations
+        $V_{uL},V_{uR},V_{dL},V_{dR}$.
+  \item Form the physical mixing matrix from the two \emph{left-handed}
+        rotations that act on the shared doublet:
+        $V_{\rm CKM} = V_{uL}V_{dL}^\dagger$.
+  \item The right-handed rotations $V_{uR},V_{dR}$ are unphysical: they
+        act on singlets that never share an $SU(2)_L$ structure, and
+        drop out of all observables.
+\end{enumerate}
+
+\ex[ex:lec20:cabibbo]{Worked Example: Two-Generation (Cabibbo) Mixing}{
+With only two generations, the leftover misalignment is a single
+real rotation angle, the \emph{Cabibbo angle} $\theta_c$:
+\begin{equation*}
+  V_{\rm CKM}^{(2)}
+  = \begin{pmatrix} \cos\theta_c & \sin\theta_c\\
+                    -\sin\theta_c & \cos\theta_c \end{pmatrix},
+  \qquad \theta_c\approx 13^\circ .
+\end{equation*}
+The charged current then reads, schematically,
+\begin{equation*}
+  \bar u_L\gamma^\mu(\cos\theta_c\, d_L + \sin\theta_c\, s_L)
+  + \bar c_L\gamma^\mu(-\sin\theta_c\, d_L + \cos\theta_c\, s_L).
+\end{equation*}
+\textbf{Interpretation:} the up quark couples mostly to the down quark
+($\cos\theta_c\approx0.97$) but with a small amplitude
+($\sin\theta_c\approx0.22$) to the strange quark. This single number
+explains why strangeness-changing decays (e.g.\
+$K^+\to\mu^+\nu_\mu$) are suppressed relative to
+strangeness-conserving ones --- they pay a factor $\sin^2\theta_c$ in
+rate. Counting the parameters: a general $2\times2$ unitary matrix has
+4 real parameters, but 3 of its phases can be absorbed by redefining
+the quark fields, leaving exactly \emph{one} physical angle.
+}
+
+\nt{Pitfall: the right-handed rotations $V_{uR}$ and $V_{dR}$ are
+\emph{not} physical and do \emph{not} enter $V_{\rm CKM}$. A common
+error is to write $V_{\rm CKM}=V_{uL}V_{dR}^\dagger$ or to include a
+right-handed mixing. Only the left-handed doublet is shared between the
+two Yukawa terms, so only $V_{uL}$ and $V_{dL}$ can fail to cancel.}
+
+\nt{Pitfall: parameter counting for three generations. A unitary
+$3\times3$ matrix has $9$ real parameters. Of these, $5$ relative quark
+phases can be rephased away, leaving $4$ physical parameters:
+\emph{three mixing angles and one CP-violating phase}. That surviving
+phase --- impossible with only two generations --- is Kobayashi and
+Maskawa's reason for predicting a third generation.}
+
+%%==================================================================
+\subsection{Electric Charges of the Quarks}\label{subsec:lec20:charges}
+
+\subsubsection*{Conceptual Background}
+
+After spontaneous symmetry breaking, the unbroken electromagnetic
+generator is the Gell-Mann--Nishijima combination
+\begin{equation}
+  Q = T^3 + Y,
+  \label{eq:lec20:gmn}
+\end{equation}
+which survives because the Higgs vev sits in the lower (electrically
+neutral) component of the doublet, leaving $Q\langle\phi\rangle=0$.
+We now apply $Q=T^3+Y$ to each quark field, using $T^3=\pm\tfrac12$ for
+the upper/lower entry of an $SU(2)_L$ doublet and $T^3=0$ for a singlet.
+
+For the left-handed doublet $Q_L$ with $Y=\tfrac16$:
+\begin{align}
+  Q(u_L) &= T^3 + Y = +\tfrac12 + \tfrac16 = +\tfrac23,
+  \label{eq:lec20:Qu}\\
+  Q(d_L) &= T^3 + Y = -\tfrac12 + \tfrac16 = -\tfrac13.
+  \label{eq:lec20:Qd}
+\end{align}
+For the right-handed singlets ($T^3=0$, so $Q=Y$):
+\begin{equation}
+  Q(u_R) = Y = +\tfrac23,
+  \qquad
+  Q(d_R) = Y = -\tfrac13.
+  \label{eq:lec20:QuRdR}
+\end{equation}
+
+\clm[clm:lec20:charges]{Quark Electric Charges}{
+The left- and right-handed up-type quarks both have
+$Q=+\tfrac23$, and the down-type quarks both have $Q=-\tfrac13$:
+\begin{equation}
+  \boxed{
+    Q(u,c,t) = +\tfrac23,
+    \qquad
+    Q(d,s,b) = -\tfrac13.
+  }
+  \label{eq:lec20:quark-charges}
+\end{equation}
+}
+
+\textit{Significance:} The fractional charges $+\tfrac23$ and
+$-\tfrac13$ are not inputs; they fall out of the hypercharge assignments
+$Y(Q_L)=\tfrac16$, $Y(u_R)=\tfrac23$, $Y(d_R)=-\tfrac13$ through
+$Q=T^3+Y$. That $u_L$ and $u_R$ end up with the \emph{same} $Q$ (and
+likewise $d_L,d_R$) is exactly what makes the photon coupling
+vector-like and a Dirac mass electrically consistent.
+
+\nt{Pitfall: the up-type and down-type quarks have the same hypercharge
+\emph{inside the doublet} ($Y=\tfrac16$ for both $u_L$ and $d_L$) but
+differ in $T^3$; it is $T^3$ that splits their electric charges by one
+unit. This unit of charge is exactly what the $W^\pm$ (charge $\pm1$)
+carries away in a charged-current transition $u\leftrightarrow d$.}
+
+%%==================================================================
+\subsection{The Boson Spectrum}\label{subsec:lec20:spectrum}
+
+\subsubsection*{Physical Motivation}
+
+With the matter sector understood, we ask which gauge bosons are
+massive and which remain massless after
+$SU(2)_L\times U(1)_Y\to U(1)_{\rm EM}$ (with $SU(3)_C$ untouched).
+The rule from spontaneous symmetry breaking: a gauge boson acquires a
+mass for each \emph{broken} generator, by ``eating'' the corresponding
+would-be Goldstone boson; gauge bosons of \emph{unbroken} generators
+stay massless.
+
+\subsubsection*{Counting}
+
+The electroweak factor $SU(2)_L\times U(1)_Y$ has $3+1=4$ generators.
+The breaking leaves one unbroken combination ($U(1)_{\rm EM}$), so
+\begin{equation}
+  \boxed{
+    4 \text{ EW generators}
+    \;\longrightarrow\;
+    \underbrace{3}_{\text{broken}\ \to\ \text{massive}}
+    + \underbrace{1}_{\text{unbroken}\ \to\ \text{massless}}.
+  }
+  \label{eq:lec20:ew-count}
+\end{equation}
+The three broken generators give three massive bosons --- $W^+$, $W^-$,
+$Z$ --- which absorb the three would-be Goldstone bosons of the Higgs
+doublet as their longitudinal polarizations. The one unbroken
+generator gives the massless photon $A$ (or $A^0$). Since $SU(3)_C$ is
+not broken at all, its eight gluons $G^a_\mu$ remain massless.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}llc@{}}
+  \toprule
+  Boson(s) & Origin & Mass\\
+  \midrule
+  $8$ gluons $G^a_\mu$ & unbroken $SU(3)_C$ adjoint & massless\\
+  $W^+,\,W^-$          & 2 broken EW generators     & massive\\
+  $Z$                  & 1 broken EW generator      & massive\\
+  photon $A$           & unbroken $U(1)_{\rm EM}$    & massless\\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\subsubsection*{Goldstone bookkeeping and the Higgs}
+
+The complex Higgs doublet $\phi=(\phi^+,\phi^0)^T$ has four real
+degrees of freedom. Three are eaten:
+\begin{equation}
+  \underbrace{4}_{\text{real d.o.f.\ of }\phi}
+  = \underbrace{3}_{\text{Goldstones eaten by }W^\pm,Z}
+  + \underbrace{1}_{\text{physical Higgs }h}.
+  \label{eq:lec20:goldstone-count}
+\end{equation}
+The three eaten Goldstones become the longitudinal components of
+$W^\pm$ and $Z$; the remaining degree of freedom is the physical,
+massive, real scalar Higgs boson $h$.
+
+\subsubsection*{The $\rho$ parameter}
+
+Because the breaking is driven by an $SU(2)_L$ \emph{doublet} (the same
+as in the Lepton Standard Model), the tree-level relation between the
+$W$ and $Z$ masses is preserved:
+\begin{equation}
+  \boxed{
+    \rho \equiv \frac{m_W^2}{m_Z^2\cos^2\theta_W} = 1 .
+  }
+  \label{eq:lec20:rho}
+\end{equation}
+
+\textit{Significance:} Adding color ($SU(3)_C$) and the quarks does
+\emph{not} disturb the electroweak boson spectrum --- that part of the
+story is identical to the Lepton Standard Model. The genuinely new
+ingredient relative to the LSM is the eight massless gluons, protected
+by the unbroken color symmetry, and the quarks themselves, whose up-
+and down-type mass bases differ (the CKM story above).
+
+%%------------------------------------------------------------------
+\subsection*{To Remember}
+
+\begin{itemize}
+  \item \textbf{Covariant derivative:}
+        $D_\mu = \partial_\mu + ig_s G^a_\mu L^a + ig W^b_\mu T^b
+        + ig' B_\mu Y$; specialize per representation
+        ($L^a=\lambda^a/2$ on color triplets, $0$ on singlets;
+        $T^b=\sigma^b/2$ on weak doublets, $0$ on singlets).
+  \item \textbf{Adjoint generators:} $(T^a_{\rm adj})_{bc}=-if^{abc}$ ---
+        gauge bosons carry the charge of their group and self-interact.
+  \item \textbf{No bare masses:} $\bar\psi_L\psi_R$ is never a gauge
+        singlet (fails $SU(2)_L$ and/or $U(1)_Y$); all masses come from
+        Yukawa couplings.
+  \item \textbf{Yukawa terms:}
+        $Y^u_{ij}\bar Q_{Li}\tilde\phi u_{Rj}
+        + Y^d_{ij}\bar Q_{Li}\phi d_{Rj}
+        + Y^e_{ij}\bar L_{Li}\phi e_{Rj} + \text{h.c.}$,
+        with $\tilde\phi=i\sigma^2\phi^*$ for up-type; $Y$'s are general
+        complex $3\times3$.
+  \item \textbf{CKM matrix:} $V_{\rm CKM}=V_{uL}V_{dL}^\dagger$ --- the
+        up-quark and down-quark mass bases are misaligned because the
+        shared doublet $Q_L$ needs two different left-rotations
+        ($V_{uL}\neq V_{dL}$). It enters \emph{only} the charged current;
+        $3$ angles $+1$ CP phase for three generations.
+  \item \textbf{Quark charges:} $Q=T^3+Y\Rightarrow Q(u,c,t)=+\tfrac23$,
+        $Q(d,s,b)=-\tfrac13$.
+  \item \textbf{Boson spectrum:} $SU(2)_L\times U(1)_Y\to U(1)_{\rm EM}$
+        gives massive $W^\pm,Z$ (3 broken generators, 3 eaten
+        Goldstones) and massless $\gamma$; $SU(3)_C$ unbroken $\Rightarrow$
+        $8$ massless gluons; $1$ physical Higgs $h$; $\rho=1$ at tree
+        level.
+\end{itemize}
+
+%%------------------------------------------------------------------
+\begin{furtherreading}
+\subsection*{Further Reading}
+
+\begin{itemize}
+  \item D.\,J. Griffiths, \textit{Introduction to Elementary Particles}
+        (2nd ed.): Ch.~9--10, for quark charges, the Cabibbo angle, and
+        an introductory treatment of quark mixing.
+  \item F. Halzen \& A.\,D. Martin, \textit{Quarks and Leptons}:
+        Ch.~12, on the GIM mechanism, the Cabibbo angle, and the CKM
+        matrix in charged-current processes.
+  \item Y. Grossman \& Y. Nir, \textit{The Standard Model: From
+        Fundamental Physics to Experimental Probes}: Ch.~9--11
+        (\textit{The Standard Model with quarks}); this is the closest
+        match to the notation and logic of this course, including the
+        bi-unitary diagonalization and the $V_{\rm CKM}=V_{uL}V_{dL}^\dagger$
+        derivation.
+  \item M.\,E. Peskin \& D.\,V. Schroeder, \textit{An Introduction to
+        Quantum Field Theory}: \S20.3, for the quark Yukawa sector and
+        the CKM matrix.
+  \item Particle Data Group, \textit{Review of Particle Physics} (2024):
+        \textit{CKM Quark-Mixing Matrix} review for measured magnitudes,
+        angles, and the Jarlskog invariant. \url{https://pdg.lbl.gov/}
+\end{itemize}
+\end{furtherreading}

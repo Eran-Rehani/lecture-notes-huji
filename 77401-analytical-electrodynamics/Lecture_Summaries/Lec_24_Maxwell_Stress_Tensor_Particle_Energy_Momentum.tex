@@ -1,0 +1,460 @@
+%% Lecture 24 -- Maxwell Stress Tensor, Radiation Pressure, and the Particle Energy-Momentum Tensor
+\section{Lecture 24 -- Maxwell Stress Tensor \& the Particle Energy-Momentum Tensor}\label{sec:lec24}
+
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 28/06/2026 & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+
+\subsection*{Overview}
+
+Lecture~23 built the symmetric, gauge-invariant electromagnetic energy-momentum tensor
+$\emtensor=-\tfrac{1}{4\pi}F^{\mu\rho}F^{\nu}{}_{\rho}
++\tfrac{1}{16\pi}\eta^{\mu\nu}F_{\alpha\beta}F^{\alpha\beta}$ and identified its time row:
+$T^{00}=u$ (energy density) and $T^{0i}=S_i/c$ (Poynting flux / momentum density). This
+lecture finishes reading the tensor by interpreting its purely spatial block $T^{ij}$ -- the
+\textbf{Maxwell stress tensor} -- as a momentum flux, and computes a representative
+component. We then discover a deep property: $\emtensor$ is \emph{traceless},
+$T^{\mu}{}_{\mu}=0$, a direct consequence of the masslessness of light, and read off the
+\textbf{equation of state of thermal radiation} $P=u/3$.
+
+The second half opens a new construction. With charges present the field tensor alone is
+\emph{not} conserved -- the field does work on the particles -- so we build the
+\textbf{energy-momentum tensor of a system of point particles} $T^{\mu\nu}_{\text{p}}$ from
+the physical meaning of each component, cast it in manifestly symmetric and manifestly
+covariant forms, and show its divergence is
+$\partial_\mu T^{\mu\nu}_{\text{p}}=\sum_n\dot p_n^\nu\,\delta^3(\bvec x-\bvec x_n)$. This
+vanishes for free particles but not for charged ones; next lecture the leftover will be
+shown to exactly cancel $\partial_\mu T^{\mu\nu}_{\text{EM}}$, so that the \emph{total}
+field-plus-matter tensor is conserved.
+
+% ==============================================================================
+\subsection{The Spatial Block $T^{ij}$: the Maxwell Stress Tensor}
+\label{subsec:lec24:stress}
+% ==============================================================================
+
+\subsubsection*{Physical Motivation}
+We already know two thirds of the $4\times4$ matrix $\emtensor$: the $00$ entry is energy
+density and the $0i$ entries are the Poynting vector over $c$. By symmetry the $i0$ entries
+are the same Poynting vector. What remains is the $3\times3$ spatial block $T^{ij}$. To read
+its meaning, recall the universal interpretation of a conserved tensor: for fixed $\nu$, the
+continuity equation $\partial_\mu T^{\mu\nu}=0$ says $T^{0\nu}$ is a density and $T^{i\nu}$
+its current (flux). Applying this with $\nu=j$ a \emph{spatial} index, $T^{0j}$ is the
+density of $j$-momentum and $T^{ij}$ is the flux of that $j$-momentum.
+
+\dfn[def:lec24:stress]{Maxwell Stress Tensor (momentum flux)}{
+For spatial indices $i,j$,
+\begin{equation}\label{eq:lec24:Tij-meaning}
+  T^{ij}=\text{amount of }j\text{-momentum crossing, per unit time,}
+         \text{ a unit area whose normal points along }\uvec i .
+\end{equation}
+Equivalently, releasing the first index, the row $T^{i\cdot}$ for fixed $i$ is a vector
+$\bvec\Pi^{(i)}$ whose components $\Pi^{(i)}_j=T^{ij}$ give the three momentum components
+flowing through the surface $\perp\uvec i$. The conventional Maxwell stress tensor is
+$\sigma_{ij}\equiv -T^{ij}$ (a sign of convention only).
+}
+
+\textit{Significance:} Just as the Poynting vector tells us how field \emph{energy} streams
+through a surface, $T^{ij}$ tells us how field \emph{momentum} streams through a surface;
+this is what lets electromagnetic fields exert forces and pressures on matter.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[scale=1.2,>=Stealth]
+  % surface with normal along x (i-direction)
+  \draw[thick] (0,-1.2) -- (0,1.2);
+  \node[left] at (0,1.2) {surface $\perp\uvec i$};
+  \fill[gray!20] (-0.05,-1.2) rectangle (0.05,1.2);
+  % normal
+  \draw[->,thick] (0,0) -- (1.0,0) node[below right]{$\uvec i$ (normal)};
+  % momentum components carried through
+  \draw[->,blue,thick] (0,0) -- (1.0,0.0) ;
+  \draw[->,red,thick] (0,0.0) -- (0.0,1.0) node[above]{$T^{ij}\,\uvec j$};
+  \node[blue,below] at (1.0,-0.05) {$T^{ii}$ (pressure)};
+  % incoming flux arrows
+  \foreach \y in {-0.8,-0.4,0,0.4,0.8}
+     \draw[->,gray] (-1.0,\y) -- (-0.2,\y);
+  \node[gray] at (-1.05,1.05) {field};
+\end{tikzpicture}
+\caption{The stress tensor as momentum flux. $T^{ij}$ is the $j$-component of momentum
+carried per unit time through a unit area with normal $\uvec i$. The diagonal entry
+$T^{ii}$ (no sum) -- momentum \emph{normal} to the surface -- is a pressure.}
+\label{fig:lec24:stress}
+\end{figure}
+
+\subsubsection*{Worked component: $T^{12}$}
+\ex[ex:lec24:T12]{Worked Example: an off-diagonal stress component}{
+Compute $T^{12}$ for the electromagnetic field. From
+\eqref{eq:lec23:symmetric-T}, with $\mu=1,\nu=2$ the metric term drops because
+$\eta^{12}=0$, leaving
+\begin{equation}\label{eq:lec24:T12-start}
+  T^{12}=-\frac{1}{4\pi}F^{1\rho}F^{2}{}_{\rho}.
+\end{equation}
+Sum over $\rho=0,1,2,3$. The terms $\rho=1$ and $\rho=2$ vanish ($F^{11}=0$ and
+$F^{2}{}_{2}=0$), so only $\rho=0$ and $\rho=3$ survive:
+\begin{equation}\label{eq:lec24:T12-two}
+  T^{12}=-\frac{1}{4\pi}\Big(F^{10}F^{2}{}_{0}+F^{13}F^{2}{}_{3}\Big).
+\end{equation}
+Use the field-strength matrix \eqref{eq:lec23:F-matrix},
+$F_{0i}=E_i$, $F_{ij}=-\epsilon_{ijk}B_k$, raising indices with
+$\eta=\mathrm{diag}(+,-,-,-)$ (each spatial raise gives a sign, a time raise gives a sign):
+\begin{align}
+  F^{10}&=-F_{10}=E_x, & F^{2}{}_{0}&=F^{20}=-F_{20}=E_y,\notag\\
+  F^{13}&=F_{13}=B_y,  & F^{2}{}_{3}&=-F^{23}=-F_{23}=B_x.
+  \label{eq:lec24:T12-comps}
+\end{align}
+Hence $F^{10}F^{2}{}_{0}=E_xE_y$ and $F^{13}F^{2}{}_{3}=B_xB_y$, giving
+\begin{equation}\label{eq:lec24:T12-result}
+  \boxed{\;T^{12}=-\frac{1}{4\pi}\big(E_xE_y+B_xB_y\big).\;}
+\end{equation}
+The remaining components follow the same pattern; collecting them gives the general formula
+\begin{equation}\label{eq:lec24:Tij-general}
+  \boxed{\;T^{ij}=-\frac{1}{4\pi}\Big[E_iE_j+B_iB_j-\tfrac12\,\delta_{ij}\,(E^2+B^2)\Big].\;}
+\end{equation}
+Because $\emtensor$ is symmetric, only six of the nine $T^{ij}$ are independent.
+}
+\textit{Significance:} The off-diagonal $T^{12}\propto E_xE_y+B_xB_y$ is a \emph{shear}
+stress -- $x$-momentum flowing in the $y$-direction -- exactly the structure that produces
+torques and tangential forces on bodies in a field.
+
+\nt{Pitfall: with the metric $(+,-,-,-)$, raising a \emph{time} index and raising a
+\emph{spatial} index both flip the sign, so e.g. $F^{20}=-F_{20}$ but
+$F^{2}{}_{0}=\eta_{00}F^{20}=F^{20}$ -- mixing these up flips the sign of off-diagonal
+stresses. Always lower/raise one index at a time and track each $\eta$ factor. Also do not
+forget the $-\tfrac12\delta_{ij}(E^2+B^2)$ piece: it is present only on the diagonal
+(from the $\eta^{ij}$ term) and is precisely what makes the tensor traceless.}
+
+\subsubsection*{Diagonal entries are pressures}
+Take $i=j$ (no sum). Then $T^{ii}$ is the flux of $i$-momentum through a surface whose
+normal is also $\uvec i$ -- momentum delivered \emph{perpendicular} to the surface, per unit
+time, per unit area. Momentum per unit time is a force, and force per unit area normal to a
+surface is a \textbf{pressure}. Concretely, if a wall absorbs all the radiation hitting it,
+the field deposits its normal momentum on the wall and the wall feels a pressure
+\begin{equation}\label{eq:lec24:pressure}
+  P_{\text{on }\perp\uvec i\text{ wall}}=\sigma_{ii}=-T^{ii}=
+  \frac{1}{4\pi}\Big[E_i^2+B_i^2-\tfrac12(E^2+B^2)\Big].
+\end{equation}
+\textit{Significance:} This identifies the diagonal of the field stress tensor with
+\textbf{radiation pressure} -- the mechanism behind light sails, the Lebedev experiment, and
+the pressure of trapped thermal radiation.
+
+\begin{remark}[Caveat: is $T^{ij}$ really a ``tensor''?]
+Under \emph{full} Lorentz transformations $\emtensor$ is a genuine rank-2 four-tensor, but
+its spatial block $T^{ij}$ alone carries only spatial indices, so it is \emph{not} a
+four-tensor by itself -- exactly like the moment-of-inertia tensor in mechanics. It is,
+however, a perfectly good rank-2 tensor under spatial \emph{rotations}, because rotations are
+a subgroup of the Lorentz group and they do not mix the time index in. So $T^{ij}$ rotates
+as a $3\times3$ tensor, and the row vectors $T^{0i}$, $T^{i0}$ rotate as ordinary 3-vectors
+(the Poynting vector).
+\end{remark}
+
+% ==============================================================================
+\subsection{Tracelessness and the Radiation Equation of State}
+\label{subsec:lec24:trace}
+% ==============================================================================
+
+\subsubsection*{Conceptual Background}
+A single scalar built from $\emtensor$ is its trace $T^{\mu}{}_{\mu}=\eta_{\mu\nu}\emtensor$.
+For massive matter the trace is nonzero (it is essentially the rest-mass density); a
+\emph{vanishing} trace is the hallmark of a massless, scale-invariant field. We now show the
+EM tensor is traceless.
+
+\lem[lem:lec24:traceless]{The EM Stress Tensor is Traceless}{
+\begin{equation}\label{eq:lec24:traceless}
+  \boxed{\;T^{\mu}{}_{\mu}=\eta_{\mu\nu}\emtensor=0.\;}
+\end{equation}
+}
+
+\subsubsection*{Derivation}
+Contract \eqref{eq:lec23:symmetric-T} with $\eta_{\mu\nu}$, term by term. The first term:
+\begin{equation}\label{eq:lec24:trace-1}
+  \eta_{\mu\nu}\Big(-\frac{1}{4\pi}F^{\mu\rho}F^{\nu}{}_{\rho}\Big)
+  =-\frac{1}{4\pi}F_{\nu}{}^{\rho}F^{\nu}{}_{\rho}
+  =-\frac{1}{4\pi}F_{\alpha\beta}F^{\alpha\beta}.
+\end{equation}
+The second term uses $\eta_{\mu\nu}\eta^{\mu\nu}=\delta^{\mu}_{\mu}=4$:
+\begin{equation}\label{eq:lec24:trace-2}
+  \eta_{\mu\nu}\,\frac{1}{16\pi}\eta^{\mu\nu}F_{\alpha\beta}F^{\alpha\beta}
+  =\frac{4}{16\pi}F_{\alpha\beta}F^{\alpha\beta}
+  =\frac{1}{4\pi}F_{\alpha\beta}F^{\alpha\beta}.
+\end{equation}
+The two contributions are equal and opposite, so they cancel exactly:
+\begin{equation}\label{eq:lec24:trace-sum}
+  T^{\mu}{}_{\mu}=-\frac{1}{4\pi}F_{\alpha\beta}F^{\alpha\beta}
+                +\frac{1}{4\pi}F_{\alpha\beta}F^{\alpha\beta}=0.
+\end{equation}
+\textit{Significance:} The cancellation is not an accident of bookkeeping -- it is forced by
+the dimensionless coupling $-\tfrac{1}{16\pi}F^2$ and reflects that the photon is massless
+(the theory has no length scale). A traceless symmetric $\emtensor$ is the field-theoretic
+fingerprint of conformal (scale) invariance.
+
+\subsubsection*{From tracelessness to $P=u/3$}
+Write the trace in $3+1$ form. With $\eta=\mathrm{diag}(+,-,-,-)$,
+\begin{equation}\label{eq:lec24:trace-split}
+  0=T^{\mu}{}_{\mu}=T^{00}-\sum_{i}T^{ii}
+   \quad\Longrightarrow\quad
+   T^{00}=\sum_{i}T^{ii}=T^{11}+T^{22}+T^{33}.
+\end{equation}
+Now consider electromagnetic radiation in \textbf{thermal equilibrium} -- e.g. blackbody
+radiation filling a heated cavity. Isotropy forces the three diagonal stresses to be equal;
+calling their common value the pressure $P$ and using $T^{00}=u$ (energy density),
+\begin{equation}\label{eq:lec24:eos}
+  u=T^{11}+T^{22}+T^{33}=3P
+  \quad\Longrightarrow\quad
+  \boxed{\;P=\frac{u}{3}.\;}
+\end{equation}
+
+\cor[cor:lec24:radiation-eos]{Equation of State of Thermal Radiation}{
+A photon gas in thermodynamic equilibrium satisfies $P=u/3$, where $u=U/V$ is the energy
+density. This is the relation you used in statistical mechanics to derive the Stefan--
+Boltzmann law and the radiation contribution to stellar pressure.
+}
+\textit{Significance:} A purely field-theoretic property -- the tracelessness of $\emtensor$
+-- reproduces a cornerstone thermodynamic result. Massless radiation always obeys $P=u/3$;
+a nonrelativistic gas instead obeys $P=\tfrac{2}{3}u$, the difference traceable to the
+nonzero trace (mass) of matter.
+
+\begin{remark}[A switched-on current sheet: where does the field go?]
+A long aside (prompted by the recitation problem of an infinite sheet carrying surface
+current $\bvec K=K\,\theta(t)\,\uvec z$ switched on at $t=0$) illustrates causality and
+radiation. Switching the current on launches a \emph{plane wave} travelling away from the
+sheet at speed $c$. An observer at distance $x$ measures nothing until the wavefront
+arrives at $t=x/c$ (only the static-source intuition ``constant $K\Rightarrow$ pure $\bvec
+B$, no $\bvec E$'' would predict $\bE=0$). Once the front passes, translation symmetry along
+the sheet forces $\bvec B\parallel\uvec y$ and the wave's $\bE\parallel\uvec x$
+(transverse, $\bE\perp\bB\perp\uvec{\text{propagation}}$), so a \emph{nonzero} radiated
+$E_x$ persists -- carrying away the energy and momentum the source had to supply to start
+the current. The lesson: the naive long-time limit is wrong precisely because information
+about ``switch-on'' keeps arriving from ever more distant parts of the infinite sheet.
+\end{remark}
+
+% ==============================================================================
+\subsection{Energy-Momentum Tensor of Point Particles}
+\label{subsec:lec24:particles}
+% ==============================================================================
+
+\subsubsection*{Physical Motivation}
+With sources present the EM Lagrangian acquires the explicitly $x$-dependent coupling
+$-\tfrac1c J_\mu A^\mu$, and the field tensor is \emph{no longer} conserved: the field does
+work on the charges and hands them energy and momentum. We expect that adding the
+particles' own energy-momentum back in restores conservation of the \emph{total}. So we
+need a tensor $T^{\mu\nu}_{\text{p}}$ for a system of point charges. Rather than re-run the
+Noether machinery (awkward for point particles), we \emph{build} it directly from the known
+physical meaning of each component established above.
+
+\subsubsection*{Construction from the component meanings}
+Work with one particle of four-momentum $p^\mu=(E/c,\bvec p)$ at position $\bvec x(t)$;
+several particles just add (a sum over $n$).
+
+\paragraph{Density row $T^{0\mu}$.}
+$T^{00}$ must be the energy density. A point particle of energy $E=p^0c$ sitting at
+$\bvec x(t)$ has energy density $p^0c\,\delta^3(\bvec x-\bvec x(t))$. More generally
+$T^{0\mu}$ is the density of $p^\mu$. The normalization is fixed by demanding
+$P^\mu=\tfrac1c\int d^3x\,T^{0\mu}=p^\mu$ (Lec~23), which requires
+\begin{equation}\label{eq:lec24:T0mu}
+  T^{0\mu}_{\text{p}}=c\,p^\mu\,\delta^3(\bvec x-\bvec x(t)).
+\end{equation}
+
+\paragraph{Current rows $T^{i\mu}$.}
+$T^{i\mu}$ is the flux (current) of $p^\mu$. A density $\rho$ moving with velocity $\bvec v$
+produces a current $\rho\bvec v$; applying this to the ``$p^\mu$-density''
+$p^\mu\delta^3$ gives
+\begin{equation}\label{eq:lec24:Timu}
+  T^{i\mu}_{\text{p}}=p^\mu\,v^i\,\delta^3(\bvec x-\bvec x(t)),
+  \qquad v^i=\frac{dx^i}{dt}.
+\end{equation}
+
+\paragraph{Unifying with $x^0=ct$.}
+Since $\dfrac{dx^0}{dt}=c$ and $\dfrac{dx^i}{dt}=v^i$, equations
+\eqref{eq:lec24:T0mu}--\eqref{eq:lec24:Timu} combine into a single formula:
+\begin{equation}\label{eq:lec24:Tmunu-practical}
+  \boxed{\;T^{\mu\nu}_{\text{p}}=\sum_n p_n^{\mu}\,\frac{dx_n^{\nu}}{dt}\,
+        \delta^3\!\big(\bvec x-\bvec x_n(t)\big).\;}
+\end{equation}
+Indeed $\nu=0$ recovers \eqref{eq:lec24:T0mu} (the factor $dx^0/dt=c$) and $\nu=i$ recovers
+\eqref{eq:lec24:Timu}.
+\textit{Significance:} The particle tensor is assembled purely from kinematics
+(positions, velocities, momenta) and the component meanings of $T^{\mu\nu}$ -- no
+Lagrangian needed.
+
+\subsubsection*{Manifestly symmetric and covariant forms}
+Equation \eqref{eq:lec24:Tmunu-practical} does not \emph{look} symmetric. Use
+$p^\mu=mc\,\dfrac{dx^\mu}{ds}$ (with $ds$ the invariant interval, $p^\mu p_\mu=m^2c^2$) and
+$\dfrac{dx^\nu}{dt}=\dfrac{ds}{dt}\dfrac{dx^\nu}{ds}$:
+\begin{equation}\label{eq:lec24:Tmunu-symmetric}
+  T^{\mu\nu}_{\text{p}}=\sum_n m_n c\,\frac{ds}{dt}\,
+     \frac{dx_n^{\mu}}{ds}\frac{dx_n^{\nu}}{ds}\,
+     \delta^3\!\big(\bvec x-\bvec x_n(t)\big),
+\end{equation}
+which is \emph{manifestly symmetric} in $\mu\leftrightarrow\nu$: the prefactor
+$m c\,(ds/dt)$ is a scalar and the two derivatives appear symmetrically. To make Lorentz
+covariance manifest as well, trade the bare $\delta^3$ for a four-dimensional delta by
+introducing a worldline integral over $s$:
+\begin{equation}\label{eq:lec24:Tmunu-covariant}
+  \boxed{\;T^{\mu\nu}_{\text{p}}=\sum_n m_n c^2\!\int ds\;
+        \frac{dx_n^{\mu}}{ds}\frac{dx_n^{\nu}}{ds}\,
+        \delta^4\!\big(x-x_n(s)\big).\;}
+\end{equation}
+
+\clm[clm:lec24:covariant]{The covariant form reduces to the practical one}{
+Do the $s$-integral in \eqref{eq:lec24:Tmunu-covariant} using the time component of
+$\delta^4=\delta(x^0-x^0(s))\,\delta^3(\bvec x-\bvec x(s))$:
+\[
+  \int ds\,\delta\big(x^0-x^0(s)\big)\,(\cdots)
+  =\frac{1}{|dx^0/ds|}(\cdots)
+  =\frac{1}{c}\frac{ds}{dt}(\cdots),
+\]
+since $dx^0/ds=c\,dt/ds$. Therefore
+\[
+  T^{\mu\nu}_{\text{p}}
+  =\sum_n m_n c^2\cdot\frac1c\frac{ds}{dt}\,
+     \frac{dx_n^{\mu}}{ds}\frac{dx_n^{\nu}}{ds}\,\delta^3
+  =\sum_n \underbrace{m_n c\frac{dx_n^\mu}{ds}}_{p_n^\mu}\,
+     \underbrace{\frac{ds}{dt}\frac{dx_n^\nu}{ds}}_{dx_n^\nu/dt}\,\delta^3,
+\]
+recovering \eqref{eq:lec24:Tmunu-practical} exactly.
+}
+
+\subsubsection*{Why it is a genuine tensor}
+In \eqref{eq:lec24:Tmunu-covariant} every factor is transparently covariant:
+$m c^2$ and $ds$ are Lorentz scalars; $\delta^4(x-x_n(s))$ is a scalar (its four-dimensional
+integral is $1$, and $d^4x$ is invariant); and $\dfrac{dx^\mu}{ds}\dfrac{dx^\nu}{ds}$ is a
+direct (outer) product of two four-vectors. A scalar times an outer product of two
+four-vectors is a rank-2 four-tensor. \emph{Hence $T^{\mu\nu}_{\text{p}}$ is a Lorentz
+tensor} -- which was not obvious in the three-dimensional form \eqref{eq:lec24:Tmunu-practical}
+because the lone $\delta^3$ and $dx^\nu/dt$ are not separately covariant.
+
+\nt{Pitfall: $\delta^3(\bvec x-\bvec x(t))$ is \emph{not} a Lorentz scalar (the volume
+element $d^3x$ Lorentz-contracts by $\gamma$), and $1/\gamma$ from $ds=dt/\gamma\cdot c$ is
+exactly what compensates it. The clean way to see covariance is therefore always the
+$\delta^4$ form, not the $\delta^3$ form. The tensor is also \emph{not} unique -- as with the
+EM tensor one may add divergence-free pieces -- but every valid choice obeys the same
+continuity equation, which is all that matters.}
+
+% ==============================================================================
+\subsection{Divergence of the Particle Tensor}
+\label{subsec:lec24:divergence}
+% ==============================================================================
+
+\subsubsection*{Mathematical Setup}
+To test conservation we compute $\partial_\mu T^{\mu\nu}_{\text{p}}$. Use the practical form
+with the velocity on the first (divergence) index,
+$T^{\mu\nu}_{\text{p}}=\sum_n p_n^{\nu}\,\dfrac{dx_n^{\mu}}{dt}\,\delta^3(\bvec x-\bvec x_n(t))$
+(allowed by symmetry). Only the delta function depends on the observation point $\bvec x$;
+$p^\nu(t)$ and $v^i(t)$ depend on the particle's time $t=x^0/c$.
+
+\subsubsection*{Derivation}
+Split $\partial_\mu=\partial_0+\partial_i$ for a single particle (drop the sum). The time
+piece, with $dx^0/dt=c$ and $\partial_0=\tfrac1c\partial_t$:
+\begin{equation}\label{eq:lec24:div-time}
+  \partial_0 T^{0\nu}
+  =\frac1c\,\partial_t\!\big(p^\nu\,c\,\delta^3\big)
+  =\dot p^\nu\,\delta^3+p^\nu\,\partial_t\delta^3 .
+\end{equation}
+The space piece, with $p^\nu,v^i$ independent of $\bvec x$:
+\begin{equation}\label{eq:lec24:div-space}
+  \partial_i T^{i\nu}=p^\nu\,v^i\,\partial_i\delta^3 .
+\end{equation}
+Now use the key chain-rule identity for a delta moving on a trajectory,
+\begin{equation}\label{eq:lec24:delta-chain}
+  \partial_t\,\delta^3\!\big(\bvec x-\bvec x(t)\big)
+  =-\dot x^i\,\partial_i\delta^3
+  =-v^i\,\partial_i\delta^3 ,
+\end{equation}
+(differentiating through the argument $-\bvec x(t)$). Substituting
+\eqref{eq:lec24:delta-chain} into \eqref{eq:lec24:div-time} shows the second term of
+\eqref{eq:lec24:div-time} cancels \eqref{eq:lec24:div-space}:
+\begin{equation}\label{eq:lec24:div-cancel}
+  p^\nu\,\partial_t\delta^3+\partial_i T^{i\nu}
+  =-p^\nu v^i\partial_i\delta^3+p^\nu v^i\partial_i\delta^3=0 .
+\end{equation}
+Only the first term of \eqref{eq:lec24:div-time} survives. Restoring the sum over particles,
+\begin{equation}\label{eq:lec24:div-result}
+  \boxed{\;\partial_\mu T^{\mu\nu}_{\text{p}}
+        =\sum_n \frac{dp_n^{\nu}}{dt}\,\delta^3\!\big(\bvec x-\bvec x_n(t)\big).\;}
+\end{equation}
+\textit{Significance:} The divergence of the particle tensor is the \textbf{rate of change of
+particle momentum} -- i.e. the force on the particles, localized at their positions. It
+vanishes only when the particles are force-free.
+
+\subsubsection*{What conservation requires}
+\begin{itemize}
+  \item \textbf{Free particles.} If no force acts, $\dot p^\nu_n=0$, so
+        $\partial_\mu T^{\mu\nu}_{\text{p}}=0$ and the particle tensor is conserved on its
+        own -- as it must be, since a free particle has constant energy and momentum.
+  \item \textbf{Charged particles in a field.} The Lorentz force makes
+        $\dfrac{dp_n^\nu}{dt}\neq0$, so $T^{\mu\nu}_{\text{p}}$ alone is \emph{not}
+        conserved. Likewise (next lecture) $\partial_\mu T^{\mu\nu}_{\text{EM}}\neq0$ once
+        the source term is kept. The physical expectation is that the two non-conservations
+        are equal and opposite -- the field's lost momentum is exactly the particles' gained
+        momentum (radiation reaction / Lorentz force) -- so that
+        \begin{equation}\label{eq:lec24:total}
+          \partial_\mu\big(T^{\mu\nu}_{\text{EM}}+T^{\mu\nu}_{\text{p}}\big)=0 .
+        \end{equation}
+\end{itemize}
+\textit{Significance:} Conservation of energy-momentum holds only for the
+\emph{closed} system field $+$ matter; this is the relativistic statement that fields exert
+forces and carry away momentum (an accelerating charge radiates, recoils, and the radiation
+carries the missing momentum). Verifying \eqref{eq:lec24:total} explicitly -- by computing
+$\partial_\mu T^{\mu\nu}_{\text{EM}}$ and matching it against $-\sum\dot p^\nu\delta^3$ --
+is the task begun at the end of the lecture and completed next time.
+
+% ==============================================================================
+\subsection*{Method: Building an Energy-Momentum Tensor from Component Meanings}
+% ==============================================================================
+\begin{enumerate}
+  \item Identify what each block must be: $T^{00}=$ energy density, $T^{0i}=$ energy
+        flux $/c$ (= momentum density), $T^{ij}=$ flux of $j$-momentum through a surface
+        $\perp\uvec i$.
+  \item Write the energy density as (energy)$\times\delta^3$ at the source location; fix the
+        normalization by demanding $P^\mu=\tfrac1c\int d^3x\,T^{0\mu}$ equals the known
+        total $p^\mu$.
+  \item Get the flux rows by multiplying the density by the velocity $v^i=dx^i/dt$
+        (current $=$ density $\times$ velocity).
+  \item Unify the rows using $x^0=ct$ (so $dx^0/dt=c$): one formula
+        $T^{\mu\nu}=\sum p^\mu\,(dx^\nu/dt)\,\delta^3$.
+  \item Make symmetry manifest with $p^\mu=mc\,dx^\mu/ds$, and covariance manifest with a
+        worldline integral $\int ds\,\delta^4(x-x(s))$.
+  \item Test conservation by computing $\partial_\mu T^{\mu\nu}$; use
+        $\partial_t\delta^3=-v^i\partial_i\delta^3$ to collapse it to $\sum\dot p^\nu\delta^3$
+        (the force on the sources).
+\end{enumerate}
+
+% ==============================================================================
+\subsection*{Summary}
+
+\begin{itemize}
+  \item The spatial block $T^{ij}=-\tfrac{1}{4\pi}[E_iE_j+B_iB_j-\tfrac12\delta_{ij}(E^2+B^2)]$
+        is the Maxwell stress tensor: $T^{ij}$ = flux of $j$-momentum through a surface
+        $\perp\uvec i$; the diagonal $\sigma_{ii}=-T^{ii}$ is the radiation pressure.
+        Example: $T^{12}=-\tfrac{1}{4\pi}(E_xE_y+B_xB_y)$.
+  \item $\emtensor$ is \textbf{traceless}, $T^\mu{}_\mu=0$ (the cancellation
+        $-\tfrac{1}{4\pi}F^2+\tfrac{4}{16\pi}F^2$), reflecting the masslessness/scale
+        invariance of light. Tracelessness $+$ isotropy gives the radiation equation of
+        state $P=u/3$.
+  \item The point-particle tensor, built from component meanings, is
+        $T^{\mu\nu}_{\text{p}}=\sum_n p_n^\mu\,(dx_n^\nu/dt)\,\delta^3(\bvec x-\bvec x_n)$,
+        equivalently the manifestly symmetric/covariant
+        $\sum_n m_nc^2\int ds\,(dx^\mu/ds)(dx^\nu/ds)\,\delta^4(x-x_n(s))$.
+  \item Its divergence is $\partial_\mu T^{\mu\nu}_{\text{p}}=\sum_n\dot p_n^\nu\,
+        \delta^3(\bvec x-\bvec x_n)$: zero for free particles, nonzero (Lorentz force) for
+        charges. Only the total $T^{\mu\nu}_{\text{EM}}+T^{\mu\nu}_{\text{p}}$ is conserved.
+\end{itemize}
+
+\subsection*{Further Reading}
+\begin{itemize}
+  \item L.\,D. Landau \& E.\,M. Lifshitz, \textit{The Classical Theory of Fields}
+        (Vol.~2): §32--33 (energy-momentum tensor of fields and of particles;
+        the form \eqref{eq:lec24:Tmunu-symmetric}) and §33 problems (Maxwell stresses).
+  \item J.\,D. Jackson, \textit{Classical Electrodynamics} (3rd ed.): §6.7
+        (Maxwell stress tensor, momentum flux) and §12.10 (symmetric stress tensor,
+        tracelessness).
+  \item D.\,J. Griffiths, \textit{Introduction to Electrodynamics} (4th ed.): §8.2.2--8.2.3
+        (Maxwell stress tensor and momentum), §9.4.2 (radiation pressure).
+  \item D. Tong, \textit{Lectures on Electromagnetism}, §5.4
+        (energy and momentum, stress tensor): \url{https://www.damtp.cam.ac.uk/user/tong/em.html}
+  \item Wikipedia, \textit{Maxwell stress tensor} and \textit{Radiation pressure}:
+        \url{https://en.wikipedia.org/wiki/Maxwell_stress_tensor}
+\end{itemize}

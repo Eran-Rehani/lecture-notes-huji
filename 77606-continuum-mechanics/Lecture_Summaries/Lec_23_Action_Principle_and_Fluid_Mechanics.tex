@@ -1,0 +1,412 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\section{Lecture 23 -- Fluid Mechanics from the Action Principle}\label{sec:lec23}
+\begin{center}
+  \textbf{Date:} June 24, 2026
+\end{center}
+
+\subsection*{Overview}
+The final lecture returns to a more structural question.  Throughout the course
+we mostly wrote the local equations of motion directly: force balance in
+elasticity, continuity plus Euler's equation for ideal fluids, and
+Navier--Stokes for viscous fluids.  The viewpoint of this lecture is different:
+ask whether the equations can be obtained from one scalar object, the
+\textbf{action}.
+
+In ordinary analytical mechanics a trajectory $q_i(t)$ is physical when it makes
+
+action stationary.  The lecture generalizes this statement to fields
+$\phi_a(\bvec x,t)$, whose degrees of freedom are labelled by both space and
+time.  The payoff is conceptual: if a theory has an action, then continuous
+symmetries of the action imply conservation laws by Noether's theorem.
+For ideal fluids this gives a unified origin for energy conservation, momentum
+conservation, and Kelvin circulation conservation.  Viscosity is different:
+like friction in mechanics, it is dissipative and is not naturally obtained from
+a standard action principle.
+
+\medskip\noindent\textbf{Topics:}
+\begin{enumerate}
+  \item Reminder: action, Euler--Lagrange equations, and Noether's theorem in
+    mechanics.
+  \item Local field actions and the field Euler--Lagrange equations.
+  \item Full variational derivation of the field Euler--Lagrange equations.
+  \item Example: vibrating string and the wave equation.
+  \item Functional derivative viewpoint: why
+    $\delta\phi(x)/\delta\phi(y)=\delta(x-y)$.
+  \item Noether theorem for fields and conserved currents.
+  \item Material/Lagrangian-coordinate action for ideal fluids.
+  \item Symmetries behind the conservation laws of ideal fluids.
+  \item Incompressible ideal fluid action and pressure as a Lagrange multiplier.
+\end{enumerate}
+
+\subsection{From Mechanics to Fields}
+
+\subsubsection*{Ordinary analytical mechanics}
+For finitely many generalized coordinates $q_i(t)$, the action is
+\begin{equation}
+  S[q]=\int_{t_1}^{t_2} L(q_i,\dot q_i,t)\,dt .
+  \label{eq:lec23_mechanical_action}
+\end{equation}
+Stationarity, $\delta S=0$ for arbitrary variations $\delta q_i(t)$ that vanish
+at the endpoints, gives
+\begin{equation}
+  \boxed{\pdv{L}{q_i}-\dv{t}\pdv{L}{\dot q_i}=0 .}
+  \label{eq:lec23_mechanical_el}
+\end{equation}
+Thus one scalar function $L$ produces all equations of motion.
+
+Noether's theorem says more.  If a continuous transformation with infinitesimal
+parameter $s$ changes the Lagrangian only by a total derivative,
+\begin{equation}
+  \delta L=\dv{\Lambda}{t},
+  \label{eq:lec23_mech_noether_condition}
+\end{equation}
+then the corresponding quantity
+\begin{equation}
+  Q=\pdv{L}{\dot q_i}\,\delta q_i-\Lambda
+  \label{eq:lec23_mech_noether_charge}
+\end{equation}
+is conserved on solutions.  The subtraction of $\Lambda$ is important.  The
+standard energy conservation law from time translations is the famous case in
+which this total-derivative term matters.
+
+\subsubsection*{Fields as infinitely many degrees of freedom}
+A field theory replaces the finite list $q_i(t)$ by fields
+\begin{equation}
+  \phi_a=\phi_a(x^\mu),\qquad x^\mu=(t,x,y,z),
+\end{equation}
+where $a$ labels the different fields.  A mechanical coordinate is a special
+case of a field depending only on time.  The local field-theory action is
+\begin{equation}
+  \boxed{S[\phi]=\int d^4x\,\mathcal L\!\left(\phi_a,\partial_\mu\phi_a\right)}
+  \label{eq:lec23_field_action}
+\end{equation}
+with Lagrangian density $\mathcal L$.  ``Local'' means that at a point $x$ the
+density depends only on the fields and their derivatives at the same point, not
+on values at far-away points.
+
+\paragraph{Physical intuition for locality.}
+A field removes mysterious action at a distance.  For example, instead of saying
+that Earth pulls the Moon directly across empty space, one may say: Earth
+creates a gravitational potential field $\Phi$, the field obeys a local
+differential equation, and the Moon responds to the local gradient
+$-\grad\Phi$ at its position.  Information is mediated by fields and local
+equations.
+
+\paragraph{Dimensions.}
+In mechanics, $[L]=\text{energy}$ and $[S]=\text{action}$.  In field theory,
+$S$ still has dimensions of action, but because $S=\int dt\,d^3x\,\mathcal L$,
+\begin{equation}
+  [\mathcal L]=\frac{\text{energy}}{\text{volume}}.
+\end{equation}
+So $\mathcal L$ is an energy density rather than an energy.
+
+\subsection{Derivation of the Field Euler--Lagrange Equations}
+Consider one field $\phi$ first.  The multi-field case just adds an index $a$.
+Vary the field by an arbitrary small function that vanishes on the spacetime
+boundary,
+\begin{equation}
+  \phi(x)\longrightarrow \phi(x)+\delta\phi(x),
+  \qquad \delta\phi\big|_{\partial\Omega}=0 .
+\end{equation}
+The first-order change in the action is
+\begin{align}
+  \delta S
+  &=\int_\Omega d^4x\,\delta\mathcal L  \\
+  &=\int_\Omega d^4x\left[
+    \pdv{\mathcal L}{\phi}\,\delta\phi
+    +\pdv{\mathcal L}{(\partial_\mu\phi)}\,\delta(\partial_\mu\phi)
+  \right].
+  \label{eq:lec23_delta_s_chain}
+\end{align}
+Variation and differentiation commute, so
+\begin{equation}
+  \delta(\partial_\mu\phi)=\partial_\mu(\delta\phi).
+\end{equation}
+Now integrate the second term by parts:
+\begin{align}
+  \int_\Omega d^4x\,
+  \pdv{\mathcal L}{(\partial_\mu\phi)}\partial_\mu(\delta\phi)
+  &=\int_\Omega d^4x\,\partial_\mu\left(
+    \pdv{\mathcal L}{(\partial_\mu\phi)}\delta\phi\right) \\
+  &\quad-\int_\Omega d^4x\,
+    \partial_\mu\left[\pdv{\mathcal L}{(\partial_\mu\phi)}\right]\delta\phi .
+\end{align}
+By Gauss' theorem the first term is a boundary flux.  It vanishes because
+$\delta\phi=0$ on the boundary.  Therefore
+\begin{equation}
+  \delta S=\int_\Omega d^4x\left[
+    \pdv{\mathcal L}{\phi}
+    -\partial_\mu\left(\pdv{\mathcal L}{(\partial_\mu\phi)}\right)
+  \right]\delta\phi .
+  \label{eq:lec23_delta_s_final}
+\end{equation}
+For this to vanish for every possible interior variation $\delta\phi(x)$, the
+coefficient must vanish pointwise.  Hence
+\begin{equation}
+  \boxed{
+  \pdv{\mathcal L}{\phi_a}
+  -\partial_\mu\left(\pdv{\mathcal L}{(\partial_\mu\phi_a)}\right)=0
+  }
+  \label{eq:lec23_field_el}
+\end{equation}
+for each field $\phi_a$.
+
+\nt{The field Euler--Lagrange equation is local: it is a differential equation
+involving the field and its derivatives at the same point.  This locality came
+straight from the local form of the action.}
+
+\subsection{Example: Vibrating String}
+
+\subsubsection*{Physical setup}
+Let $\phi(x,t)$ be the transverse displacement of a stretched string.  Let
+$\rho$ be the mass per unit length and $T$ the tension.  For small slopes,
+\begin{equation}
+  \mathcal L=\frac12\rho(\partial_t\phi)^2-\frac12T(\partial_x\phi)^2 .
+  \label{eq:lec23_string_lagrangian}
+\end{equation}
+This is exactly ``kinetic energy density minus potential energy density.''  The
+potential energy comes from stretching: if neighboring points have different
+transverse displacements, $\partial_x\phi\ne0$, the string length increases and
+tension stores energy.
+
+\subsubsection*{Derivation}
+The density does not depend explicitly on $\phi$, only on its derivatives, so
+\begin{equation}
+  \pdv{\mathcal L}{\phi}=0,
+  \qquad
+  \pdv{\mathcal L}{(\partial_t\phi)}=\rho\partial_t\phi,
+  \qquad
+  \pdv{\mathcal L}{(\partial_x\phi)}=-T\partial_x\phi .
+\end{equation}
+Substituting into \eqref{eq:lec23_field_el},
+\begin{align}
+  0-\partial_t(\rho\partial_t\phi)-\partial_x(-T\partial_x\phi)&=0,\\
+  \rho\partial_t^2\phi-T\partial_x^2\phi&=0.
+\end{align}
+Thus
+\begin{equation}
+  \boxed{\partial_t^2\phi=c^2\partial_x^2\phi,
+  \qquad c^2=\frac{T}{\rho}.}
+  \label{eq:lec23_string_wave}
+\end{equation}
+The wave speed increases with tension and decreases with inertia per unit
+length, exactly as physical intuition suggests.
+
+\subsection{Functional Derivative Viewpoint}
+The field $\phi(x)$ may be thought of as infinitely many variables: one variable
+for each spatial point.  In a discretized version, write
+\begin{equation}
+  \phi_i\equiv \phi(x_i).
+\end{equation}
+Ordinary independent variables satisfy
+\begin{equation}
+  \pdv{\phi_i}{\phi_j}=\delta_{ij}.
+\end{equation}
+In the continuum limit the Kronecker delta becomes the Dirac delta:
+\begin{equation}
+  \boxed{\frac{\delta\phi(y)}{\delta\phi(x)}=\delta^{(d)}(y-x).}
+  \label{eq:lec23_functional_delta}
+\end{equation}
+The intuition is direct: changing the field at $x$ does not change the field at
+$y$ unless $x=y$.
+
+Using this rule, compute the functional derivative of
+$S=\int d^dy\,\mathcal L(\phi(y),\partial_\mu\phi(y))$:
+\begin{align}
+  \frac{\delta S}{\delta\phi(x)}
+  &=\int d^dy\left[
+    \pdv{\mathcal L}{\phi(y)}\frac{\delta\phi(y)}{\delta\phi(x)}
+    +\pdv{\mathcal L}{(\partial_\mu\phi(y))}
+      \frac{\delta(\partial_\mu\phi(y))}{\delta\phi(x)}
+  \right] \\
+  &=\int d^dy\left[
+    \pdv{\mathcal L}{\phi(y)}\delta(y-x)
+    +\pdv{\mathcal L}{(\partial_\mu\phi(y))}\partial_{y^\mu}\delta(y-x)
+  \right].
+\end{align}
+The second term is integrated by parts in $y$:
+\begin{equation}
+  \int d^dy\,F(y)\partial_{y^\mu}\delta(y-x)
+  =-\partial_{x^\mu}F(x).
+\end{equation}
+Therefore
+\begin{equation}
+  \boxed{
+  \frac{\delta S}{\delta\phi(x)}
+  =\pdv{\mathcal L}{\phi}(x)
+  -\partial_\mu\left[\pdv{\mathcal L}{(\partial_\mu\phi)}\right](x).}
+  \label{eq:lec23_functional_derivative_el}
+\end{equation}
+Stationarity is simply
+\begin{equation}
+  \frac{\delta S}{\delta\phi_a(x)}=0
+  \qquad\text{for every field and every point.}
+\end{equation}
+
+\subsection{Noether Theorem for Fields}
+Suppose a continuous infinitesimal transformation changes the fields by
+\begin{equation}
+  \phi_a\longrightarrow \phi_a+s\,\delta\phi_a+O(s^2)
+\end{equation}
+and changes the Lagrangian density by a total divergence,
+\begin{equation}
+  \delta\mathcal L=\partial_\mu\Lambda^\mu .
+  \label{eq:lec23_field_noether_condition}
+\end{equation}
+Then the Noether current is
+\begin{equation}
+  \boxed{j^\mu=\frac{\partial\mathcal L}{\partial(\partial_\mu\phi_a)}\,
+  \delta\phi_a-\Lambda^\mu,}
+  \label{eq:lec23_noether_current}
+\end{equation}
+with summation over $a$, and on solutions it obeys
+\begin{equation}
+  \boxed{\partial_\mu j^\mu=0.}
+  \label{eq:lec23_current_conservation}
+\end{equation}
+
+In ordinary mechanics the conserved object is a number.  In field theory the
+conserved object is a \textbf{current}.  Writing $j^\mu=(\rho_Q,\bvec j_Q)$,
+\begin{equation}
+  \partial_t\rho_Q+\divg\bvec j_Q=0.
+\end{equation}
+The amount of $Q$ inside a volume changes only because $Q$ flows through the
+boundary.  This is the same structure as charge conservation,
+$\partial_t\rho_e+\divg\bvec j_e=0$.
+
+\subsection{Ideal Fluids from an Action}
+
+\subsubsection*{Why use material coordinates?}
+The Eulerian velocity field $\vel(\bvec x,t)$ is the natural language for many
+fluid calculations, but the action principle is simplest in the material
+(Lagrangian) description.  Label each fluid element by
+\begin{equation}
+  \refcoord=(X^1,X^2,X^3),
+\end{equation}
+often chosen to be its initial position.  The dynamical fields are the current
+positions of the labelled elements,
+\begin{equation}
+  x^i=x^i(\refcoord,t),\qquad i=1,2,3.
+\end{equation}
+The velocity of that element is $\dot x^i(\refcoord,t)$.
+
+Let
+\begin{equation}
+  J=\det\left(\pdv{x^i}{X^A}\right)
+  \label{eq:lec23_jacobian}
+\end{equation}
+be the Jacobian from label space to physical space.  Since mass is conserved,
+\begin{equation}
+  \rho(\bvec x,t)=\frac{\rho_0(\refcoord)}{J},
+  \label{eq:lec23_mass_jacobian}
+\end{equation}
+where $\rho_0(\refcoord)$ is the mass density in label space.
+
+\subsubsection*{Compressible ideal fluid action}
+For a compressible ideal fluid, a standard material-coordinate action is
+\begin{equation}
+  \boxed{
+  S=\int dt\,d^3X\,\rho_0(\refcoord)
+  \left[\frac12\dot{\bvec x}^{\,2}-\epsilon(\rho)-\Phi(\bvec x)\right].}
+  \label{eq:lec23_compressible_fluid_action}
+\end{equation}
+Here $\epsilon$ is the internal energy per unit mass and $\Phi$ is an external
+potential per unit mass, for example $\Phi=gz$ in uniform gravity.  The pressure
+is hidden in the dependence of $\epsilon$ on density, and density is hidden in
+$J$ via \eqref{eq:lec23_mass_jacobian}.  Varying $x^i(\refcoord,t)$ gives the
+Euler equation of ideal-fluid dynamics.  The algebra is longer than in the
+string example because varying $x^i$ also varies the determinant $J$.
+
+The useful geometric identity mentioned in the lecture is the Piola identity,
+\begin{equation}
+  \pdv{}{X^A}\left(J\pdv{X^A}{x^i}\right)=0,
+  \label{eq:lec23_piola_identity}
+\end{equation}
+which is one of the tools that turns the variation of the determinant into the
+pressure-gradient force in Euler's equation.
+
+\subsubsection*{Physical meaning}
+The action is still kinetic minus potential energy.  The kinetic part tracks the
+motion of each labelled fluid element.  The internal-energy part penalizes
+compression or expansion because changing $J$ changes $\rho$.  The external
+potential part gives body forces such as gravity.  Therefore the usual pressure
+force in Euler's equation is not put in by hand; it arises because neighboring
+fluid elements resist changes of local volume.
+
+\subsection{Conservation Laws of an Ideal Fluid as Symmetries}
+Ideal fluids have three central conservation laws, and the action viewpoint
+organizes them by their symmetries.
+
+\begin{center}
+\begin{tabular}{lll}
+\toprule
+Conservation law & Symmetry & Comment \\
+\midrule
+Energy & time translations & gives energy density and energy flux \\
+Momentum & spatial translations & also survives for viscous flow without external forces \\
+Kelvin circulation/vorticity & relabelling of fluid elements & special to ideal, non-dissipative flow \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\paragraph{Energy.}
+If the action has no explicit time dependence, time translation symmetry implies
+energy conservation.  In field language this is not just one number but a local
+continuity equation for energy density and energy flux.
+
+\paragraph{Momentum.}
+If there is no preferred point in space, spatial translation symmetry implies
+momentum conservation.  Even when viscosity is present and a standard action is
+lost, total momentum is still conserved if all forces are internal and no
+external body force acts.
+
+\paragraph{Kelvin circulation.}
+The labels $\refcoord$ are names of fluid elements.  Physics cannot depend on
+which names we choose.  This relabelling freedom is a symmetry of the ideal
+fluid action.  The corresponding Noether statement is Kelvin's theorem: the
+circulation around a material loop is conserved,
+\begin{equation}
+  \dv{}{t}\oint_{C(t)}\vel\cdot d\bvec l=0,
+\end{equation}
+under the usual ideal/barotropic assumptions.
+
+\subsection{Incompressible Ideal Fluid and Pressure as a Constraint}
+For an incompressible fluid the density is fixed.  A material volume element
+must keep its volume, so
+\begin{equation}
+  J=1.
+  \label{eq:lec23_incompressibility_j}
+\end{equation}
+The action can impose this with a Lagrange multiplier $p(\refcoord,t)$:
+\begin{equation}
+  \boxed{
+  S_{\rm inc}=\int dt\,d^3X\left\{
+  \rho_0\left[\frac12\dot{\bvec x}^{\,2}-\Phi(\bvec x)\right]
+  +p(\refcoord,t)\,[J-1]
+  \right\}.}
+  \label{eq:lec23_incompressible_action}
+\end{equation}
+Varying with respect to $p$ gives $J=1$.  Varying with respect to $\bvec x$ gives
+the incompressible Euler equation, with $p$ becoming the physical pressure.  This
+explains a central fact about incompressible flow: pressure is not supplied by
+an equation of state.  It is the constraint force that enforces
+$\divg\vel=0$.
+
+\subsection*{Key Takeaways}
+\begin{itemize}
+  \item A field theory action is an integral of a local Lagrangian density over
+    spacetime.
+  \item Stationarity gives local Euler--Lagrange differential equations.
+  \item Functional derivatives are ordinary derivatives with respect to an
+    infinite set of variables; the Dirac delta replaces the Kronecker delta.
+  \item Noether's theorem in field theory gives conserved currents
+    $\partial_\mu j^\mu=0$, not merely conserved numbers.
+  \item Ideal fluids admit an action in material coordinates.  Viscous fluids do
+    not, because viscosity is dissipative like friction.
+  \item Incompressibility is the constraint $J=1$, and pressure is the Lagrange
+    multiplier enforcing it.
+\end{itemize}
+
+\end{document}

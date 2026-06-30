@@ -1,0 +1,733 @@
+%%═══════════════════════════════════════════════════════════════════
+%% Lecture 10 — Nuclear Reactions, Cross Sections & Gamma Spectroscopy
+%% 77603 — Nuclear Physics
+%% Date: 16 June 2026
+%%═══════════════════════════════════════════════════════════════════
+
+\section{Lecture 10 — Nuclear Reactions, Cross Sections \& Gamma Spectroscopy}
+\label{sec:lec10}
+\date{16 June 2026}
+
+\noindent\textbf{\textcolor{doc}{Lecture date: 16 June 2026}}
+
+%%───────────────────────────────────────────────────────────────────
+\subsection*{Overview}
+%%───────────────────────────────────────────────────────────────────
+This lecture moves from static nuclear properties and spontaneous decays to
+\emph{nuclear reactions}: controlled collisions in which a projectile is sent
+into a target and the outgoing products are measured. Reactions are the main
+tool by which we produce unstable nuclei, probe level schemes, measure spins and
+parities, and reconstruct astrophysical processes such as stellar burning and
+explosive nucleosynthesis.
+
+The first part of the lecture sets up the language of reactions:
+$X(a,b)Y$, conservation laws, $Q$-values, threshold energies, laboratory versus
+centre-of-mass kinematics, and cross sections. The second part classifies
+reaction mechanisms: Coulomb/Rutherford scattering, ordinary nuclear scattering,
+compound-nucleus reactions, direct reactions, and resonant reactions described by
+the Breit--Wigner formula. The final part is a detailed worked example from
+Exercise~3: reconstructing the $\gamma$ spectrum and level feeding in
+$\nucleus{Na}{24}\to\nucleus{Mg}{24}$ after $\beta^-$ decay. This example ties
+together mass excesses, $\beta$ decay, $\gamma$ spectroscopy, detector response,
+branching ratios, coincidence peaks, and spin-parity selection rules.
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{What Is a Nuclear Reaction?}
+\label{subsec:lec10:reaction_notation}
+%%═══════════════════════════════════════════════════════════════════
+
+\subsubsection*{Physical Motivation}
+Until now, most of the course asked what a nucleus \emph{is}: its mass, radius,
+binding energy, spin, parity, shell structure, and decay modes. A reaction asks a
+more dynamical question: what happens when we deliberately bring two nuclear
+systems together? This matters in at least three settings:
+\begin{itemize}[nosep]
+  \item \textbf{astrophysics}: stars, novae, supernovae, and neutron-rich
+        explosions are powered or shaped by nuclear reactions;
+  \item \textbf{experiments}: scattering and transfer reactions reveal nuclear
+        radii, level energies, spins, parities, and spectroscopic information;
+  \item \textbf{applications}: medical isotopes, activation analysis, reactor
+        physics, and radiometric methods all depend on controlled reactions.
+\end{itemize}
+The energy scale in this discussion is nuclear rather than particle-physics
+scale: typically a few $\text{MeV}$ to tens of $\text{MeV}$, comparable to
+nuclear binding energies. At substantially higher energies, additional degrees
+of freedom enter and the simple low-energy reaction language must be extended.
+
+\dfn[dfn:lec10:reaction_notation]{Reaction Notation}{%
+A general two-body entrance and exit channel is written
+\begin{equation}
+  \label{eq:lec10:reaction_long}
+  a + X \longrightarrow b + Y,
+\end{equation}
+or, in the experimental shorthand,
+\begin{equation}
+  \label{eq:lec10:reaction_shorthand}
+  \boxed{X(a,b)Y.}
+\end{equation}
+Here $X$ is the target nucleus, $a$ is the projectile, $b$ is the measured
+outgoing light particle, and $Y$ is the residual nucleus.}
+\textit{Significance:} the shorthand $X(a,b)Y$ tells the experimental story:
+we started with target $X$, fired projectile $a$, detected particle $b$, and
+therefore inferred residual nucleus $Y$.
+
+\paragraph{Examples.}
+Elastic scattering is $X(a,a)X$: the same particles appear before and after.
+Inelastic scattering is $X(a,a')X^\ast$: the projectile remains the same species
+but loses kinetic energy to excite the target. A transfer reaction such as
+$\nucleus{Li}{7}(p,n)\nucleus{Be}{7}$ converts the target by transferring charge
+and nucleons. A radiative capture reaction such as
+\begin{equation}
+  \label{eq:lec10:radiative_capture_example}
+  \nucleus{Au}{197}(n,\gamma)\nucleus{Au}{198}
+\end{equation}
+absorbs the projectile and removes the excess energy by photon emission.
+
+\nt{The notation is conventional, not ontological. The same centre-of-mass
+reaction can sometimes be studied in inverse kinematics: instead of firing a
+light projectile at a heavy target, one accelerates the heavy radioactive nucleus
+and sends it into a light target. This is essential when the nucleus of interest
+is too short-lived to be made into a stationary target.}
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{Conservation Laws and Q-Values}
+\label{subsec:lec10:conservation_q}
+%%═══════════════════════════════════════════════════════════════════
+
+\subsubsection*{Conceptual Background}
+A nuclear reaction is fast, with a characteristic interaction time of order
+$10^{-22}$--$10^{-16}\,\text{s}$ depending on the mechanism. On this time scale
+the strong and electromagnetic interactions dominate; weak $\beta$ conversion is
+not part of the reaction itself. Therefore the reaction must obey the ordinary
+conservation laws, but with an especially useful simplification: proton number
+and neutron number are conserved separately in the reaction stage.
+
+\thm[th:lec10:conservation]{Conservation Laws in Low-Energy Nuclear Reactions}{%
+For $a+X\to b+Y$ one must conserve
+\begin{align}
+  \label{eq:lec10:conserve_energy_momentum}
+  E_\text{tot}^{(i)} &= E_\text{tot}^{(f)}, &
+  \bvec p_\text{tot}^{(i)} &= \bvec p_\text{tot}^{(f)},\\
+  \label{eq:lec10:conserve_quantum_numbers}
+  Z_i &= Z_f, &
+  N_i &= N_f,\\
+  \label{eq:lec10:conserve_spin_parity}
+  J_i^\pi &\to J_f^\pi \quad\text{subject to angular-momentum and parity
+  coupling.}
+\end{align}}
+\textit{Significance:} separate conservation of $Z$ and $N$ makes reaction
+bookkeeping much sharper than merely conserving $A=Z+N$; $\beta$ decay may occur
+later, but it is not part of the prompt nuclear reaction.
+
+\subsubsection*{Mathematical Setup --- the $Q$-Value}
+The $Q$-value is the rest-mass energy released by the reaction:
+\begin{equation}
+  \label{eq:lec10:q_value}
+  \boxed{
+  Q = \bigl(M_a + M_X - M_b - M_Y\bigr)c^2.}
+\end{equation}
+Equivalently, by total-energy conservation,
+\begin{equation}
+  \label{eq:lec10:q_value_kinetic}
+  \boxed{
+  Q = T_b + T_Y - T_a - T_X,}
+\end{equation}
+where $T_i$ denotes kinetic energy. If the target is at rest in the laboratory,
+$T_X=0$.
+\textit{Significance:} $Q>0$ means the reaction is exothermic; $Q<0$ means the
+incoming beam must supply at least enough kinetic energy to make up the rest-mass
+deficit.
+
+\subsubsection*{Threshold Energy}
+For an endothermic reaction, the threshold is \emph{not} simply
+$T_a=-Q$. Some kinetic energy must remain as centre-of-mass motion because total
+momentum must be conserved. The clean way to see this is to use the
+centre-of-mass energy. For a projectile $a$ incident on a stationary target $X$,
+the available centre-of-mass kinetic energy is
+\begin{equation}
+  \label{eq:lec10:e_cm_lab}
+  E_{\text{cm}} =
+  T_a\,\frac{M_X}{M_a+M_X}.
+\end{equation}
+At threshold the products have no relative kinetic energy in the centre-of-mass
+frame, so all available centre-of-mass energy is used to pay $-Q$:
+\begin{equation}
+  \label{eq:lec10:threshold_derivation}
+  T_{a,\text{thr}}\,\frac{M_X}{M_a+M_X} = -Q.
+\end{equation}
+Therefore
+\begin{equation}
+  \label{eq:lec10:threshold}
+  \boxed{
+  T_{a,\text{thr}} =
+  -Q\,\frac{M_a+M_X}{M_X}
+  \qquad(Q<0,\; X\text{ at rest}).}
+\end{equation}
+\textit{Significance:} the projectile must provide more than $|Q|$ because the
+final system must still carry the original centre-of-mass motion.
+
+\subsubsection*{Lab and Centre-of-Mass Pictures}
+The same reaction has a simpler geometry in the centre-of-mass frame: total
+momentum is zero, so the outgoing products are back-to-back. To compare with the
+detector, one then adds the centre-of-mass velocity vector to each outgoing
+velocity. This vector addition has an important experimental consequence. If the
+outgoing particle's centre-of-mass speed is smaller than the centre-of-mass
+velocity, the particle always moves forward in the lab, and the same laboratory
+angle can correspond to two centre-of-mass emission directions. If the outgoing
+speed is larger, backward laboratory emission becomes possible and the mapping
+changes.
+
+\nt{This is why reaction kinematics plots can have two branches at the same lab
+angle. The ambiguity is not detector noise; it is a real consequence of adding
+the centre-of-mass velocity to an isotropic two-body exit channel.}
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{Cross Sections: Probability Written as an Area}
+\label{subsec:lec10:cross_sections}
+%%═══════════════════════════════════════════════════════════════════
+
+\subsubsection*{Physical Motivation}
+The cross section answers the practical question: if I fire a projectile through
+a target, what is the probability that the reaction I care about occurs? It has
+units of area because of a simple geometric analogy. If a blind shooter fires
+uniformly through a frame containing a drawn object, the hit probability is the
+object's area divided by the frame area. In a target foil, the ``objects'' are
+effective interaction areas attached to each nucleus.
+
+\dfn[dfn:lec10:total_cross_section]{Total Cross Section}{%
+For a thin target,
+\begin{equation}
+  \label{eq:lec10:probability_sigma}
+  \boxed{
+  \frac{N_\text{react}}{N_\text{in}} = \sigma\,t,}
+\end{equation}
+where $t$ is the number of target nuclei per unit area:
+\begin{equation}
+  \label{eq:lec10:areal_density}
+  t = \frac{\rho\,\ell\,N_A}{A}.
+\end{equation}
+Here $\rho$ is mass density, $\ell$ is target thickness, $N_A$ is Avogadro's
+number, and $A$ is the molar mass in $\text{g/mol}$.}
+\textit{Significance:} $\sigma t$ is dimensionless and is the reaction
+probability in the thin-target limit $\sigma t\ll1$.
+
+For a thick target, one must account for removal of particles as they pass
+through successive layers. The infinitesimal form
+$dI=-n\sigma I\dd{x}$ gives
+\begin{equation}
+  \label{eq:lec10:attenuation}
+  \boxed{I(x)=I_0 e^{-n\sigma x}.}
+\end{equation}
+\textit{Significance:} the linear probability formula is the first-order limit
+of exponential attenuation.
+
+\subsubsection*{Why It Is Not Just a Geometric Size}
+If nuclei were hard spheres and the projectile had no wave nature, one might
+guess $\sigma=\pi R^2$. Quantum mechanically this is only a rough scale. The
+projectile has reduced de Broglie wavelength
+\begin{equation}
+  \label{eq:lec10:reduced_wavelength}
+  \bar\lambda = \frac{\hbar}{p},
+\end{equation}
+so even a hard-sphere estimate becomes energy dependent:
+\begin{equation}
+  \label{eq:lec10:hard_sphere}
+  \boxed{\sigma_{\text{hard sphere}}\sim \pi\qty(R+\bar\lambda)^2.}
+\end{equation}
+\textit{Significance:} slow particles have larger wavelengths and can have
+larger effective cross sections. More importantly, $\sigma$ also depends on the
+specific reaction channel and on selection rules, resonances, and nuclear
+structure.
+
+\paragraph{Units.}
+The standard nuclear unit is the barn:
+\begin{equation}
+  \label{eq:lec10:barn}
+  \boxed{1\,\text{b}=10^{-28}\,\text{m}^2=10^{-24}\,\text{cm}^2
+  =100\,\text{fm}^2.}
+\end{equation}
+Typical nuclear cross sections range from microbarns for rare processes to barns
+or more for favourable channels.
+
+\subsubsection*{Differential Cross Sections}
+Experiments often do not ask only whether a reaction occurred. They ask where
+the outgoing particle went and with what energy. The corresponding observables
+are
+\begin{align}
+  \label{eq:lec10:diff_cross_sections}
+  \frac{d\sigma}{d\Omega}(E_a,\theta)
+    &\quad\text{angular distribution},\\
+  \frac{d\sigma}{dE_b}(E_a,E_b)
+    &\quad\text{outgoing-energy distribution},\\
+  \frac{d^2\sigma}{dE_b\dd{\Omega}}(E_a,E_b,\theta)
+    &\quad\text{double-differential distribution}.
+\end{align}
+The total cross section is obtained by integrating over the unobserved variables:
+\begin{equation}
+  \label{eq:lec10:integral_cross_section}
+  \boxed{\sigma(E_a)=\int \frac{d\sigma}{d\Omega}(E_a,\theta)\dd{\Omega}.}
+\end{equation}
+\textit{Significance:} angular and energy distributions are where the nuclear
+structure information sits; the total cross section alone is often too blunt.
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{Reaction Mechanisms}
+\label{subsec:lec10:mechanisms}
+%%═══════════════════════════════════════════════════════════════════
+
+\subsubsection*{Physical Motivation}
+Two reactions with the same entrance and exit particles need not proceed through
+the same microscopic story. The mechanism is determined by energy, wavelength,
+time scale, and whether the projectile interacts with the whole nucleus or with
+individual nucleons.
+
+\subsubsection*{Coulomb and Nuclear Scattering}
+At low energies and large distances, charged projectiles primarily feel the
+Coulomb field. Then scattering is Rutherford-like: the projectile sees only the
+long-range electric force. Once the energy is high enough that the projectile
+reaches nuclear distances, the short-range nuclear force contributes and the
+wave nature of the projectile produces diffraction/interference patterns.
+
+\thm[th:lec10:rutherford]{Rutherford Scattering Regime}{%
+For a point Coulomb field, the differential cross section has the characteristic
+angular dependence
+\begin{equation}
+  \label{eq:lec10:rutherford}
+  \boxed{
+  \frac{d\sigma}{d\Omega}
+  \propto \frac{1}{\sin^4(\theta/2)}.}
+\end{equation}}
+\textit{Significance:} deviations from the Rutherford form signal finite nuclear
+size, electron screening, relativistic/spin effects, or the onset of the nuclear
+force.
+
+\subsubsection*{Compound-Nucleus Reactions}
+In a compound reaction, the projectile is fully absorbed and its energy is shared
+among many nucleons:
+\begin{equation}
+  \label{eq:lec10:compound_sequence}
+  a+X \longrightarrow C^\ast \longrightarrow b+Y.
+\end{equation}
+The lifetime is long on nuclear collision scales, typically
+$10^{-18}$--$10^{-16}\,\text{s}$. That is enough time for the compound nucleus to
+lose memory of how it was formed.
+
+\dfn[dfn:lec10:compound]{Compound-Nucleus Reaction}{%
+A reaction mechanism in which the entrance channel forms an equilibrated excited
+nucleus $C^\ast$, which later decays by emitting particles or photons.}
+\textit{Significance:} the exit probabilities depend mainly on the properties of
+$C^\ast$ and the energetically open decay channels, not on the detailed entrance
+history.
+
+This mechanism is also called a fusion-evaporation process when the two incoming
+nuclei fuse and the hot compound nucleus cools by evaporating nucleons or light
+clusters. It is useful for isotope production and for studying highly excited
+nuclei.
+
+\subsubsection*{Direct Reactions}
+At higher energies the projectile wavelength is shorter and the interaction time
+is much shorter, of order $10^{-22}\,\text{s}$. The projectile no longer sees a
+smooth whole nucleus; it samples individual nucleons or clusters. It may knock
+out a nucleon, transfer a nucleon, or excite a specific configuration.
+
+\dfn[dfn:lec10:direct]{Direct Reaction}{%
+A fast reaction in which the projectile interacts with one or a few degrees of
+freedom in the target, without forming an equilibrated compound nucleus.}
+\textit{Significance:} direct reactions are sensitive to single-particle or
+cluster structure, so they are powerful spectroscopic probes of shell-model
+orbitals and nuclear wavefunctions.
+
+\subsubsection*{Resonant Reactions}
+A resonant reaction occurs when the entrance-channel energy matches a real
+excited state of the combined system. Then the cross section can become very
+large over a narrow energy interval. If the system returns to the entrance
+channel, we observe resonant scattering; if it decays by photon emission, we
+observe radiative capture:
+\begin{equation}
+  \label{eq:lec10:resonance_capture}
+  a+X \longrightarrow C^\ast(E_r) \longrightarrow C+\gamma.
+\end{equation}
+
+\dfn[dfn:lec10:partial_width]{Partial Widths}{%
+If a resonant state can decay through several channels $i$, each channel has a
+partial width
+\begin{equation}
+  \label{eq:lec10:partial_width}
+  \Gamma_i = \frac{\hbar}{\tau_i},
+\end{equation}
+and the total width is
+\begin{equation}
+  \label{eq:lec10:total_width}
+  \boxed{\Gamma=\sum_i \Gamma_i.}
+\end{equation}}
+\textit{Significance:} $\Gamma_i/\Gamma$ is the branching fraction for channel
+$i$, while $\Gamma$ fixes the total lifetime and the energy width of the
+resonance.
+
+\thm[th:lec10:breit_wigner]{Breit--Wigner Resonance Formula}{%
+For entrance channel $a+X$ and exit channel $b+Y$, a single isolated resonance
+contributes approximately
+\begin{equation}
+  \label{eq:lec10:breit_wigner}
+  \boxed{
+  \sigma_{a\to b}(E)
+  =
+  \frac{\pi}{k^2}\,
+  \frac{2J+1}{(2I_a+1)(2I_X+1)}\,
+  \frac{\Gamma_a\Gamma_b}
+       {(E-E_r)^2+\Gamma^2/4}.}
+\end{equation}}
+Here $k$ is the entrance-channel wave number, $J$ is the resonance spin,
+$I_a,I_X$ are the projectile and target spins, $E_r$ is the resonance energy,
+and $\Gamma_a,\Gamma_b$ are the entrance and exit partial widths.
+\textit{Significance:} the Lorentzian denominator says \emph{where} the
+resonance is and how broad it is; the numerator says that both forming the
+resonance and decaying into the observed channel must be probable.
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{Worked Example: Na-24 to Mg-24 Gamma Spectroscopy}
+\label{subsec:lec10:na24_exercise}
+%%═══════════════════════════════════════════════════════════════════
+
+\subsubsection*{Problem Statement}
+Exercise~3 studies the decay
+\begin{equation}
+  \label{eq:lec10:na24_decay}
+  \nucleus{Na}{24}\longrightarrow \nucleus{Mg}{24}+e^-+\bar\nu_e,
+\end{equation}
+followed by $\gamma$ de-excitation of excited $\nucleus{Mg}{24}$ levels. The
+given $\nucleus{Mg}{24}$ levels are
+\begin{center}
+\begin{tabular}{ccl}
+  Energy (keV) & $J^\pi$ & label \\
+  \hline
+  $0$       & $0^+$ & ground state \\
+  $1368.67$ & $2^+$ & first excited state \\
+  $4122.85$ & $4^+$ & strongly fed level \\
+  $4238.35$ & $2^+$ & weakly fed/possibly un-fed level \\
+  $5235.16$ & $3^+$ & weakly fed level
+\end{tabular}
+\end{center}
+The observed $\gamma$ lines are
+\begin{center}
+\begin{tabular}{ccc}
+  $E_\gamma$ (keV) & $I_\gamma$ (\%) & interpretation \\
+  \hline
+  $996.82$   & $0.0014$ & $5235.16\to4238.35$ \\
+  $1368.633$ & $100$    & $1368.67\to0$ \\
+  $2754.028$ & $99.944$ & $4122.85\to1368.67$ \\
+  $2869.5$   & $0.0003$ & $4238.35\to1368.67$ \\
+  $3866.19$  & $0.052$  & $5235.16\to1368.67$ \\
+  $4237.96$  & $0.0011$ & $4238.35\to0$
+\end{tabular}
+\end{center}
+The intensities are normalized to the $1368.633\,\text{keV}$ line.
+
+\subsubsection*{Step 1 --- Compute the $\beta^-$ $Q$-Value}
+The exercise gives atomic mass excesses
+\begin{equation}
+  \label{eq:lec10:mass_excess_values}
+  \Delta(\nucleus{Na}{24})=-8417.901(17)\,\text{keV},\qquad
+  \Delta(\nucleus{Mg}{24})=-13933.578(13)\,\text{keV}.
+\end{equation}
+For $\beta^-$ decay using atomic masses, the electron masses cancel:
+\begin{equation}
+  \label{eq:lec10:beta_minus_q_atomic}
+  Q_{\beta^-}
+  = \bigl[M_\text{atom}(A,Z)-M_\text{atom}(A,Z+1)\bigr]c^2.
+\end{equation}
+Since both atoms have the same $A=24$, the $24u$ parts cancel and the mass
+excesses alone determine $Q$:
+\begin{align}
+  \label{eq:lec10:na24_q_calc}
+  Q_{\beta^-}
+  &= \Delta(\nucleus{Na}{24})-\Delta(\nucleus{Mg}{24}) \nonumber\\
+  &= -8417.901 - (-13933.578)\,\text{keV} \nonumber\\
+  &= 5515.677\,\text{keV}.
+\end{align}
+The uncertainty is
+\begin{equation}
+  \label{eq:lec10:na24_q_uncertainty}
+  \delta Q = \sqrt{(0.017)^2+(0.013)^2}\,\text{keV}
+  = 0.021\,\text{keV}.
+\end{equation}
+Therefore
+\begin{equation}
+  \label{eq:lec10:na24_q_result}
+  \boxed{Q_{\beta^-}=5515.677(21)\,\text{keV}.}
+\end{equation}
+\textit{Significance:} the $Q$-value is large enough to populate all listed
+excited states of $\nucleus{Mg}{24}$, but it does not say by itself which levels
+are actually populated; that requires spectroscopy and selection rules.
+
+\subsubsection*{Step 2 --- Identify the Spectrum}
+Although the parent decay is $\beta^-$, the displayed spectrum is not a
+$\beta$ spectrum. A $\beta$ spectrum is continuous because the electron and
+antineutrino share energy. The measured spectrum contains sharp peaks plus a
+large continuum, the signature of $\gamma$ detection in matter.
+
+\clm[clm:lec10:gamma_spectrum]{The measured spectrum is a gamma spectrum}{%
+The decisive clues are:
+\begin{itemize}[nosep]
+  \item sharp full-energy peaks at transition energies;
+  \item Compton continua and Compton edges;
+  \item pair-production escape peaks and the $511\,\text{keV}$ annihilation line.
+\end{itemize}}
+\textit{Significance:} the experiment detects photons emitted by excited
+$\nucleus{Mg}{24}$ after the $\beta$ decay, not the $\beta$ electron energy
+distribution itself.
+
+\subsubsection*{Step 3 --- Detector Features: Escape Peaks, Annihilation, Compton Edge}
+For a photon with energy $E_\gamma>2m_ec^2=1022\,\text{keV}$, pair production can
+occur in or near the detector:
+\begin{equation}
+  \label{eq:lec10:pair_production}
+  \gamma \to e^-+e^+.
+\end{equation}
+The positron annihilates,
+\begin{equation}
+  \label{eq:lec10:annihilation}
+  e^+ + e^- \to 2\gamma_{511},
+\end{equation}
+producing two $511\,\text{keV}$ photons. If one or both annihilation photons
+escape the detector, the deposited energy is
+\begin{equation}
+  \label{eq:lec10:escape_peaks}
+  \boxed{
+  E_\text{single escape}=E_\gamma-511\,\text{keV},\qquad
+  E_\text{double escape}=E_\gamma-1022\,\text{keV}.}
+\end{equation}
+\textit{Significance:} not every peak in a $\gamma$ spectrum is a nuclear
+transition; some are detector-response peaks.
+
+For the $1368.633\,\text{keV}$ line,
+\begin{align}
+  \label{eq:lec10:escape_1368}
+  E_\text{single} &\simeq 1368.633-511 = 857.6\,\text{keV},\\
+  E_\text{double} &\simeq 1368.633-1022 = 346.6\,\text{keV}.
+\end{align}
+Thus the unexplained $346\,\text{keV}$ feature is naturally the double-escape
+peak associated with the $1368.6\,\text{keV}$ photon. For the
+$2754.0\,\text{keV}$ line,
+\begin{equation}
+  \label{eq:lec10:single_escape_2754}
+  2754.028-511 \simeq 2243\,\text{keV},
+\end{equation}
+so the $2243\,\text{keV}$ peak is the single-escape peak of the
+$2754.028\,\text{keV}$ transition. The $511\,\text{keV}$ peak itself is the
+annihilation line.
+
+The broad background below full-energy peaks comes mainly from Compton
+scattering. The scattered photon energy is
+\begin{equation}
+  \label{eq:lec10:compton_photon}
+  E_{\gamma'}=
+  \frac{E_\gamma}{1+\dfrac{E_\gamma}{m_ec^2}(1-\cos\theta)},
+\end{equation}
+so the electron receives
+\begin{equation}
+  \label{eq:lec10:compton_electron_energy}
+  T_e=E_\gamma-E_{\gamma'}.
+\end{equation}
+The maximum deposited Compton energy occurs for backscattering,
+$\theta=\pi$:
+\begin{equation}
+  \label{eq:lec10:compton_edge}
+  \boxed{
+  T_{e,\max}
+  =
+  E_\gamma-
+  \frac{E_\gamma}{1+2E_\gamma/(m_ec^2)}.}
+\end{equation}
+\textit{Significance:} the red-arrow feature in the exercise is a Compton edge:
+the sharp upper end of the continuum from photons that scatter once and escape.
+
+\subsubsection*{Step 4 --- Coincidence Sum Peak}
+The spectrum also shows a peak near $4122\,\text{keV}$ that is not a listed
+nuclear transition. It is naturally explained as a \emph{sum peak}:
+\begin{equation}
+  \label{eq:lec10:sum_peak}
+  \boxed{
+  1368.633\,\text{keV}+2754.028\,\text{keV}
+  = 4122.661\,\text{keV}.}
+\end{equation}
+If the $4122.85\,\text{keV}$ level decays by the cascade
+\[
+  4122.85 \to 1368.67 \to 0,
+\]
+the two photons can arrive in the detector within the shaping time of the
+electronics. The detector then records one event whose energy is the sum of the
+two photon energies.
+
+\textit{Significance:} a sum peak is evidence that the two photons are emitted in
+prompt cascade from the same decay chain. It is not an extra level by itself.
+
+\subsubsection*{Step 5 --- Why Intensities Do Not Behave Like Peak Heights}
+The table's intensities are nuclear line intensities, normalized to the
+$1368.633\,\text{keV}$ line. They need not match the raw peak heights in the
+displayed spectrum. The observed full-energy peak area is schematically
+\begin{equation}
+  \label{eq:lec10:observed_peak_area}
+  A_\text{peak}(E_\gamma)
+  =
+  N_\text{decay}\,
+  I_\gamma\,
+  \varepsilon_\text{full}(E_\gamma),
+\end{equation}
+where $\varepsilon_\text{full}(E_\gamma)$ is the full-energy peak efficiency.
+This efficiency depends strongly on photon energy and on competing processes:
+photoelectric absorption, Compton escape, and pair-production escape.
+
+\textit{Significance:} the $1368.6\,\text{keV}$ and $2754.0\,\text{keV}$ lines
+can have nearly equal nuclear intensities while their plotted photopeak heights
+differ by orders of magnitude, because the detector is much less efficient for
+recording the full energy of the higher-energy photon.
+
+The sum of listed line intensities can exceed $100\%$ because one parent decay
+can emit more than one photon in a cascade. Intensities count photons, not
+exclusive decay branches.
+
+\subsubsection*{Step 6 --- Reconstruct Which Levels Were Populated}
+The central spectroscopy logic is a flow balance. For each level,
+\begin{equation}
+  \label{eq:lec10:level_balance}
+  \boxed{
+  \text{direct }\beta\text{ feeding}
+  =
+  \sum I_\gamma(\text{out of level})
+  -
+  \sum I_\gamma(\text{into level}),}
+\end{equation}
+after correcting all line intensities for detector efficiency and internal
+conversion when needed. In this exercise the table already gives the intensities
+to use, so the qualitative balance can be done directly.
+\textit{Significance:} level feeding is not read from a single line; it is a
+conservation-of-population problem on the level diagram.
+
+\paragraph{The $4122.85\,\text{keV}$ level.}
+The $4122.85\,\text{keV}$ level decays by the strong
+$2754.028\,\text{keV}$ transition to the $1368.67\,\text{keV}$ level:
+\begin{equation}
+  \label{eq:lec10:feed_4122}
+  B_\beta(4122.85)\simeq I_\gamma(2754.028)=99.944\%.
+\end{equation}
+There is no listed strong feeding into this level from above. Therefore almost
+all $\nucleus{Na}{24}$ $\beta$ decays populate this $4^+$ level directly.
+
+\paragraph{The $5235.16\,\text{keV}$ level.}
+This level decays through two listed branches:
+\[
+  5235.16\to4238.35 \quad(996.82\,\text{keV}),\qquad
+  5235.16\to1368.67 \quad(3866.19\,\text{keV}).
+\]
+Thus
+\begin{equation}
+  \label{eq:lec10:feed_5235}
+  B_\beta(5235.16)
+  \simeq 0.0014\%+0.052\%
+  = 0.0534\%.
+\end{equation}
+\textit{Significance:} this level is populated, but only weakly; the
+$4122.85\,\text{keV}$ level remains the dominant branch by far.
+
+\paragraph{The $4238.35\,\text{keV}$ level.}
+Outgoing intensity from this level is
+\begin{equation}
+  \label{eq:lec10:out_4238}
+  I_\text{out}(4238.35)
+  =
+  I_\gamma(2869.5)+I_\gamma(4237.96)
+  =
+  0.0003\%+0.0011\%
+  =
+  0.0014\%.
+\end{equation}
+Incoming intensity from the $5235.16\,\text{keV}$ level is
+\begin{equation}
+  \label{eq:lec10:in_4238}
+  I_\text{in}(4238.35)=I_\gamma(996.82)=0.0014\%.
+\end{equation}
+Therefore
+\begin{equation}
+  \label{eq:lec10:feed_4238}
+  \boxed{
+  B_\beta(4238.35)\simeq 0.0014\%-0.0014\%=0.}
+\end{equation}
+\textit{Significance:} within the quoted uncertainties, there is no need to
+postulate direct $\beta$ feeding of the $4238.35\,\text{keV}$ level. A tiny
+feeding cannot be excluded, but the data are consistent with zero.
+
+\paragraph{The $1368.67\,\text{keV}$ level.}
+This level emits the normalized $1368.633\,\text{keV}$ photon with intensity
+$100\%$. It also receives feeding from above:
+\begin{equation}
+  \label{eq:lec10:in_1368}
+  I_\text{in}(1368.67)
+  =
+  I_\gamma(2754.028)+I_\gamma(2869.5)+I_\gamma(3866.19).
+\end{equation}
+Numerically,
+\begin{equation}
+  \label{eq:lec10:feed_1368}
+  B_\beta(1368.67)
+  \simeq
+  100 - 99.944 - 0.0003 - 0.052
+  =
+  0.0037\%.
+\end{equation}
+Given the uncertainties, this is a very small value and is consistent with
+essentially no direct feeding at the level of this rough reconstruction.
+
+\subsubsection*{Step 7 --- Spin and Parity of the $\nucleus{Na}{24}$ Ground State}
+The strongest observed $\beta$ feeding goes to the $4122.85\,\text{keV}$ state,
+whose spin and parity are $4^+$. A strong $\beta$ branch usually indicates an
+allowed or nearly allowed transition. Allowed $\beta$ transitions do not change
+parity and have
+\begin{equation}
+  \label{eq:lec10:allowed_beta_selection}
+  \Delta J=0 \quad\text{(Fermi)},\qquad
+  \Delta J=0,\pm1 \quad\text{(Gamow--Teller, not }0\to0\text{)}.
+\end{equation}
+The simplest inference is therefore
+\begin{equation}
+  \label{eq:lec10:na24_spin_parity}
+  \boxed{J^\pi\bigl(\nucleus{Na}{24}_\text{g.s.}\bigr)\approx4^+.}
+\end{equation}
+\textit{Significance:} the dominant feeding acts like a spectroscopic pointer:
+the parent ground state is most naturally matched to the strongly fed $4^+$
+state of $\nucleus{Mg}{24}$.
+
+This inference agrees with the literature value, $J^\pi(\nucleus{Na}{24})=4^+$.
+
+\subsubsection*{Can We See Feeding to the $\nucleus{Mg}{24}$ Ground State?}
+Pure feeding directly into the $\nucleus{Mg}{24}$ ground state would emit no
+subsequent $\gamma$ ray, so it cannot be measured from the $\gamma$ intensity
+balance alone. However, selection rules provide a strong physical argument. If
+the parent is $4^+$ and the daughter ground state is $0^+$, then
+\begin{equation}
+  \label{eq:lec10:ground_state_delta_j}
+  \Delta J=4,\qquad \Delta\pi=+.
+\end{equation}
+The leptons must carry a large angular momentum, so the transition is highly
+forbidden and strongly suppressed compared with the observed $4^+\to4^+$
+feeding.
+
+\nt{Exam strategy: when reconstructing a decay scheme, separate what the
+spectrum directly proves from what selection rules make plausible. Gamma
+intensities cannot prove a silent ground-state branch is absent, but spin-parity
+arguments can show it should be extremely small.}
+
+\subsubsection*{Key Insight of the Exercise}
+The exercise is not mainly about recognizing individual peaks. The deeper method
+is:
+\begin{enumerate}[label=(\roman*),nosep]
+  \item use mass excesses to establish the available $\beta$ energy;
+  \item identify which spectral features are real nuclear transitions and which
+        are detector response;
+  \item correct the intuition about peak heights by remembering detector
+        efficiency;
+  \item balance incoming and outgoing $\gamma$ intensities level by level;
+  \item use the dominant feeding and selection rules to infer spin and parity.
+\end{enumerate}
+Knowing this chain is equivalent to knowing a large fraction of the course at
+the level required for the final exam.

@@ -1,0 +1,889 @@
+%%===================================================================
+%% Lecture 21 -- The Standard Model Completed:
+%%               Spectrum, Neutral/Charged/Higgs Currents,
+%%               Accidental Symmetries, Evidence for Color,
+%%               and Beyond the Standard Model
+%% 77609 -- Introduction to Elementary Particles
+%% Date: 25/06/2026  (final lecture)
+%% Lecturer: Prof. Yonit Hochberg
+%%===================================================================
+
+\section{Lecture 21 -- The Standard Model Completed: Currents, Color, Accidental Symmetries, and Beyond}\label{sec:lec21}
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 25/06/2026 \quad(\emph{final lecture}) & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+
+%%------------------------------------------------------------------
+\subsection{Overview}\label{subsec:lec21:overview}
+
+This is the closing lecture of the course. In
+Lectures~17--20 we built the full Standard Model gauge group
+$G_{\SM}=SU(3)_C\times SU(2)_L\times U(1)_Y$, broke it spontaneously to
+$SU(3)_C\times U(1)_{\rm EM}$, and discovered the CKM matrix in the
+quark Yukawa sector. Today we \emph{harvest the physics} of that
+construction: we read off every interaction the SM predicts, classify
+them, confront them with experiment, and finally step past the model to
+the open questions that define modern high-energy research.
+
+The logical chain is:
+\begin{enumerate}
+  \item \textbf{Fermion spectrum} --- masses from the Higgs vev, the full
+        mass table, and the (theoretically) massless neutrinos.
+  \item \textbf{Neutral-current ($Z$) interactions} --- the master
+        coupling $\propto (T^3-\sin^2\theta_W\,Q)$; universal, diagonal,
+        chiral.
+  \item \textbf{Charged-current ($W$) interactions} --- trivial for
+        leptons, but for quarks the CKM matrix makes them
+        \emph{non-universal} and \emph{non-diagonal}; only left-handed
+        fields couple.
+  \item \textbf{Higgs interactions} --- couplings $\propto$ mass; why the
+        Higgs decays dominantly to $b\bar b$; why there is no tree-level
+        $hgg$ or $h\gamma\gamma$.
+  \item \textbf{Accidental symmetries} --- baryon and lepton number,
+        and why the proton is stable.
+  \item \textbf{CKM magnitudes} --- the hierarchical Wolfenstein
+        structure.
+  \item \textbf{Evidence for color} --- the $R$-ratio of
+        $e^+e^-$ annihilation directly counts $N_c=3$.
+  \item \textbf{Weak-process taxonomy} --- leptonic, semileptonic,
+        non-leptonic.
+  \item \textbf{Beyond the Standard Model} --- naturalness, dark matter,
+        baryogenesis, the flavor puzzle.
+\end{enumerate}
+
+%%==================================================================
+\subsection{The Fermion Spectrum}\label{subsec:lec21:spectrum}
+
+\subsubsection*{Physical Motivation}
+
+In Lecture~20 we counted the \emph{boson} spectrum (massive $W^\pm,Z$;
+massless $\gamma$ and $8$ gluons). We now complete the picture with the
+\emph{fermion} masses. They are not free constants written into the
+Lagrangian --- gauge invariance forbade bare masses --- so every one of
+them is generated when the neutral Higgs component acquires its vacuum
+expectation value $\langle\phi^0\rangle = v/\sqrt2$.
+
+\subsubsection*{Masses from the Yukawa couplings}
+
+Inserting $\langle\phi^0\rangle=v/\sqrt2$ into the Yukawa terms of
+Lecture~20, each diagonalized Yukawa eigenvalue becomes a mass:
+\begin{equation}
+  \boxed{
+    m_{\ell} = y_\ell\,\frac{v}{\sqrt2},\quad
+    m_{u_i} = y_{u_i}\,\frac{v}{\sqrt2},\quad
+    m_{d_i} = y_{d_i}\,\frac{v}{\sqrt2},
+  }
+  \label{eq:lec21:fermion-masses}
+\end{equation}
+where $\ell\in\{e,\mu,\tau\}$, $u_i\in\{u,c,t\}$, $d_i\in\{d,s,b\}$, and
+$y$ are the (real, diagonal) Yukawa eigenvalues. Because the SM contains
+\emph{no} right-handed neutrino and (at the renormalizable level) no way
+to write a neutrino mass, the three neutrinos are predicted massless:
+\begin{equation}
+  \boxed{m_{\nu_e}=m_{\nu_\mu}=m_{\nu_\tau}=0
+        \quad(\text{in the SM}).}
+  \label{eq:lec21:massless-nu}
+\end{equation}
+
+\textit{Significance:} A single number, $v\approx 246~\text{GeV}$, sets
+the overall scale of \emph{every} fermion mass; the enormous spread of
+masses is entirely the spread of the dimensionless Yukawa couplings $y$.
+
+\nt{Pitfall: Eq.~\eqref{eq:lec21:massless-nu} is the SM
+\emph{prediction}, and it is \emph{wrong} --- neutrino oscillations show
+$m_\nu\neq0$. This is the one place where the renormalizable SM
+demonstrably fails, and it is the first item on the ``beyond the SM''
+list in Sec.~\ref{subsec:lec21:bsm}.}
+
+\paragraph{The measured spectrum.}
+Collecting the experimental values (used repeatedly as a reference for
+``what can decay to what''):
+\begin{center}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{@{}llll@{}}
+  \toprule
+  Generation & Charged lepton & Up-type quark & Down-type quark\\
+  \midrule
+  1 & $m_e\approx 0.511~\text{MeV}$    & $m_u\approx 1\text{--}3~\text{MeV}$  & $m_d\approx 4\text{--}6~\text{MeV}$\\
+  2 & $m_\mu\approx 105.66~\text{MeV}$ & $m_c\approx 1.3~\text{GeV}$          & $m_s\approx 100~\text{MeV}$\\
+  3 & $m_\tau\approx 1776.82~\text{MeV}$ & $m_t\approx 172.9~\text{GeV}$      & $m_b\approx 4.9~\text{GeV}$\\
+  \bottomrule
+\end{tabular}
+\end{center}
+The top quark is the heaviest fundamental particle in the SM, and the
+Higgs sits at $m_h\approx 125~\text{GeV}$. These two facts together
+($2m_t>m_h$, but $2m_b<m_h$) decide the dominant Higgs decay below.
+
+%%==================================================================
+\subsection{Categories of Interaction}\label{subsec:lec21:categories}
+
+Once the spectrum is fixed, every interaction is \emph{read off} from
+the covariant derivative and the Yukawa terms. They fall into groups:
+\begin{itemize}
+  \item \textbf{Already derived} (nothing new): QED of leptons, QED of
+        quarks, and QCD of quarks --- identical in form to what we built
+        for the Lepton Standard Model and for QCD.
+  \item \textbf{To work out now}: the couplings to the massive bosons
+        $Z$, $W^\pm$, and $h$, which carry the genuinely electroweak
+        physics.
+\end{itemize}
+We treat the three new cases in turn.
+
+%%==================================================================
+\subsection{Neutral-Current (\texorpdfstring{$Z$}{Z}) Interactions}\label{subsec:lec21:nc}
+
+\subsubsection*{Conceptual Background}
+
+The ``neutral current'' is the interaction mediated by the $Z$ boson.
+After electroweak symmetry breaking the $Z$ couples to every fermion
+through a single universal structure, weighted by the fermion's weak
+isospin $T^3$ and electric charge $Q$:
+\begin{equation}
+  \boxed{
+    \lagr_{\rm NC}
+    = \frac{e}{\sin\theta_W\cos\theta_W}
+      \sum_i \bar\psi_i
+      \left(T^3_i - \sin^2\theta_W\,Q_i\right)
+      \slashed{Z}\,\psi_i ,
+  }
+  \label{eq:lec21:nc}
+\end{equation}
+where $\theta_W$ is the weak mixing angle, $e=g\sin\theta_W$ is the
+electric charge, the sum runs over \emph{all} fermions $\psi_i$, and
+$\slashed Z=\gamma^\mu Z_\mu$. The prefactor can equivalently be written
+$g/\cos\theta_W$.
+
+\textit{Significance:} The presence of $T^3$ inside
+Eq.~\eqref{eq:lec21:nc} means the $Z$ \emph{cares about chirality}:
+left-handed fields (doublets, $T^3=\pm\tfrac12$) and right-handed fields
+(singlets, $T^3=0$) couple differently. The $Z$ is a \emph{chiral}
+probe.
+
+\subsubsection*{Reading off a coefficient}
+
+For each fermion we only need two numbers: its $T^3$ (the upper
+component of a doublet has $+\tfrac12$, the lower has $-\tfrac12$, a
+singlet has $0$) and its electric charge $Q=T^3+Y$. The coefficient is
+then $T^3-\sin^2\theta_W\,Q$. Recall the representations from
+Lecture~20:
+\[
+  Q_L=(\mathbf3,\mathbf2)_{+1/6},\quad
+  u_R=(\mathbf3,\mathbf1)_{+2/3},\quad
+  d_R=(\mathbf3,\mathbf1)_{-1/3},\quad
+  L_L=(\mathbf1,\mathbf2)_{-1/2},\quad
+  e_R=(\mathbf1,\mathbf1)_{-1}.
+\]
+
+\ex[ex:lec21:zcoeff]{Worked Example: $Z$-Coupling Coefficients}{
+Compute the coefficient $c_\psi = T^3_\psi - \sin^2\theta_W\,Q_\psi$ for
+four representative fields. Abbreviate $s_W^2\equiv\sin^2\theta_W$.
+\begin{itemize}
+  \item \textbf{Left-handed charged lepton $\ell_L$} (lower component of
+        $L_L$): $T^3=-\tfrac12$, $Q=-1$, so
+        \[
+          c_{\ell_L} = -\tfrac12 - s_W^2(-1) = -\tfrac12 + s_W^2 .
+        \]
+  \item \textbf{Right-handed charged lepton $e_R$} (singlet):
+        $T^3=0$, $Q=-1$, so
+        \[
+          c_{e_R} = 0 - s_W^2(-1) = +\,s_W^2 .
+        \]
+  \item \textbf{Left-handed neutrino $\nu_L$} (upper component of $L_L$):
+        $T^3=+\tfrac12$, $Q=0$, so
+        \[
+          c_{\nu_L} = +\tfrac12 - s_W^2(0) = +\tfrac12 .
+        \]
+  \item \textbf{Left-handed down quark $d_L$} (lower component of $Q_L$):
+        $T^3=-\tfrac12$, $Q=-\tfrac13$, so
+        \[
+          c_{d_L} = -\tfrac12 - s_W^2\!\left(-\tfrac13\right)
+                  = -\tfrac12 + \tfrac13 s_W^2 .
+        \]
+\end{itemize}
+Each coupling in the Lagrangian is then
+$\dfrac{e}{s_W c_W}\,c_\psi\,\bar\psi\,\slashed Z\,\psi$ with
+$c_W=\cos\theta_W$. Note $c_{\ell_L}\neq c_{e_R}$: the left- and
+right-handed electron couple to the $Z$ with \emph{different} strengths
+--- the hallmark of a chiral coupling.
+}
+
+\subsubsection*{Three defining properties}
+
+\clm[clm:lec21:nc-props]{The Neutral Current is Universal, Diagonal, and Chiral}{
+\begin{itemize}
+  \item \textbf{Universal:} within a given sector (e.g.\ all left-handed
+        charged leptons, or all left-handed up-type quarks) the coupling
+        is \emph{generation-independent} --- $e_L,\mu_L,\tau_L$ all
+        couple identically.
+  \item \textbf{Diagonal:} the $Z$ never connects two \emph{different}
+        flavors; there is no $\bar e\,\slashed Z\,\mu$ vertex
+        (no tree-level flavor-changing neutral current).
+  \item \textbf{Chiral:} the coupling depends on $T^3$, hence on whether
+        the field is left- or right-handed.
+\end{itemize}
+All three properties are \emph{confirmed by experiment}.
+}
+
+\textit{Significance:} ``Universal $+$ diagonal $+$ chiral'' is a sharp,
+falsifiable prediction of the electroweak gauge structure; the absence
+of tree-level flavor-changing neutral currents (FCNCs) is one of its
+most successful consequences.
+
+\subsubsection*{Method: Writing any $Z$ coupling}
+\begin{enumerate}
+  \item Identify the fermion's $SU(2)_L$ representation; read $T^3$
+        ($+\tfrac12$ upper doublet, $-\tfrac12$ lower doublet, $0$
+        singlet).
+  \item Compute $Q=T^3+Y$.
+  \item Form $c_\psi=T^3-\sin^2\theta_W\,Q$.
+  \item The interaction term is
+        $\dfrac{e}{\sin\theta_W\cos\theta_W}\,c_\psi\,
+        \bar\psi\,\slashed Z\,\psi$.
+\end{enumerate}
+
+\nt{Pitfall: $T^3$ is the eigenvalue of $\sigma^3/2$, \emph{not} of
+$\sigma^3$. The upper/lower components of a doublet carry
+$T^3=\pm\tfrac12$ (not $\pm1$). Forgetting the factor $\tfrac12$ is the
+single most common error in computing $Z$ couplings.}
+
+%%==================================================================
+\subsection{Charged-Current (\texorpdfstring{$W^\pm$}{W}) Interactions}\label{subsec:lec21:cc}
+
+\subsubsection*{Conceptual Background}
+
+The ``charged current'' is mediated by the $W^\pm$, which carries
+electric charge $\pm1$. Charge conservation at the vertex forces the
+$W$ to connect two \emph{different} fermions whose charges differ by one
+unit: a charged lepton and its neutrino, or an up-type and a down-type
+quark. Because the right-handed fields are $SU(2)_L$ singlets, only
+\emph{left-handed} fields couple to the $W$.
+
+\subsubsection*{Leptons: the easy case}
+
+For leptons the mass basis and the interaction (weak) basis coincide
+--- there is no leptonic mixing because the neutrinos are massless and
+only $Y^e$ needs diagonalizing. The coupling is therefore
+flavor-diagonal and generation-universal:
+\begin{equation}
+  \boxed{
+    \lagr_{\rm CC}^{\rm lept}
+    = -\frac{g}{\sqrt2}
+      \left(
+        \bar\nu_{eL}\,\slashed{W}^+ e_L
+        + \bar\nu_{\mu L}\,\slashed{W}^+ \mu_L
+        + \bar\nu_{\tau L}\,\slashed{W}^+ \tau_L
+      \right) + \text{h.c.}
+  }
+  \label{eq:lec21:cc-lept}
+\end{equation}
+Each $W$ links a charged lepton only to its \emph{own} neutrino: there
+is no $\bar\nu_\mu\,\slashed W\,e$ term. This is lepton flavor
+universality.
+
+\textit{Significance:} The $W$ vertex is what makes one neutrino
+``belong'' to one charged lepton --- it operationally \emph{defines}
+electron-, muon-, and tau-number.
+
+\subsubsection*{Quarks: the CKM matrix enters}
+
+For quarks the interaction basis is \emph{not} the mass basis. Working
+in the down-quark mass basis, the $W$ couples the up-type mass
+eigenstates $(u_L,c_L,t_L)$ to CKM-rotated down-type fields. Writing the
+mass eigenstates as $(u_L,c_L,t_L)^T = V_{\rm CKM}\,(u^d_L,c^d_L,t^d_L)^T$
+where the superscript $d$ denotes the partner sitting above $(d,s,b)$ in
+the down basis, the charged-current Lagrangian becomes
+\begin{equation}
+  \boxed{
+    \lagr_{\rm CC}^{\rm quark}
+    = -\frac{g}{\sqrt2}
+      \begin{pmatrix}\bar u_L & \bar c_L & \bar t_L\end{pmatrix}
+      V_{\rm CKM}\,\slashed{W}^+
+      \begin{pmatrix} d_L \\ s_L \\ b_L \end{pmatrix}
+    + \text{h.c.}
+  }
+  \label{eq:lec21:cc-quark}
+\end{equation}
+
+\clm[clm:lec21:cc-props]{The Quark Charged Current is Left-Handed, Non-Universal, and Non-Diagonal}{
+\begin{itemize}
+  \item \textbf{Only left-handed fields couple} --- the right-handed
+        quarks are $SU(2)_L$ singlets, so they never see the $W$.
+  \item \textbf{Non-universal and non-diagonal} --- $V_{\rm CKM}$ is not
+        proportional to the identity, so the $W$ connects different
+        generations (e.g.\ an up quark to a strange quark) with
+        amplitude $(V_{\rm CKM})_{us}$.
+\end{itemize}
+}
+
+\textit{Significance:} The CKM matrix lives \emph{entirely} in the quark
+charged current. It is the sole source of quark flavor change (and of CP
+violation) in the SM.
+
+\subsubsection*{Decay rates and the color factor}
+
+When a $W$ decays to a quark pair $u_i\bar d_j$, the amplitude is
+proportional to the relevant CKM element, so the rate goes as its
+modulus squared. There is also a multiplicity factor of $3$ because each
+quark is an $SU(3)_C$ triplet (three colors in the final state):
+\begin{equation}
+  \boxed{
+    \Gamma(W^+\to u_i\,\bar d_j)\ \propto\ 3\,\bigl|(V_{\rm CKM})_{ij}\bigr|^2 .
+  }
+  \label{eq:lec21:w-decay}
+\end{equation}
+By contrast, the leptonic rate $\Gamma(W^+\to \ell^+\nu_\ell)\propto 1$
+(no CKM, no color factor). Kinematically the $W$ \emph{cannot} decay to
+a final state containing the top quark, because $m_t>m_W$ --- the top is
+too heavy to be produced in a $W$ decay at rest.
+
+\ex[ex:lec21:wdecay]{Worked Example: Comparing $W$ Decay Channels}{
+A leptonic channel such as $W^+\to e^+\nu_e$ has amplitude
+$\propto 1$ (dropping the common $g/\sqrt2$). For the hadronic channel
+$W^+\to u\bar d$, the amplitude carries the CKM element $V_{ud}$ and the
+rate carries an extra color factor $3$:
+\[
+  \frac{\Gamma(W^+\to u\bar d)}{\Gamma(W^+\to e^+\nu_e)}
+  \approx 3\,|V_{ud}|^2 \approx 3(0.974)^2 \approx 2.85 .
+\]
+Summing over all kinematically allowed quark pairs (and using CKM
+unitarity, $\sum_j|V_{ij}|^2=1$) gives roughly $3$ for each accessible
+up-type row --- the origin of the well-known $\sim$ $1:1:1:3:3$ ratio of
+$e\nu:\mu\nu:\tau\nu:(\text{hadrons from }u):(\text{hadrons from }c)$
+branching fractions. The factor $3$ is a direct count of color.
+}
+
+\nt{Pitfall: the top does not appear in $W$ decays not because its CKM
+element is small, but because it is \emph{kinematically forbidden}
+($m_t>m_W$). Suppression by a small $|V_{ij}|$ and exclusion by
+kinematics are different effects --- do not conflate them.}
+
+%%==================================================================
+\subsection{Higgs-Boson Interactions}\label{subsec:lec21:higgs}
+
+\subsubsection*{Conceptual Background}
+
+The same Yukawa coupling that gives a fermion its mass also controls its
+coupling to the physical Higgs $h$. Hence the Higgs coupling to a
+fermion is \emph{proportional to that fermion's mass} and is
+\emph{flavor-diagonal}:
+\begin{equation}
+  \boxed{
+    \lagr_{hf\bar f}
+    = -\sum_f \frac{m_f}{v}\,h\,\bar f_L f_R + \text{h.c.},
+    \qquad f\in\{e,\mu,\tau,u,d,s,c,b,t\}.
+  }
+  \label{eq:lec21:hff}
+\end{equation}
+This follows because, after symmetry breaking,
+$\phi^0 \to (v+h)/\sqrt2$, so the Yukawa term $y_f\bar f_L\phi^0 f_R$
+produces both the mass $m_f=y_f v/\sqrt2$ and the coupling
+$(y_f/\sqrt2)\,h\,\bar f_L f_R = (m_f/v)\,h\,\bar f_L f_R$.
+
+\textit{Significance:} ``Coupling $\propto$ mass'' is the signature
+prediction of the Higgs mechanism; measuring Higgs couplings to
+different fermions and finding they scale with mass is the central test
+of the Higgs sector.
+
+\subsubsection*{The full Higgs Lagrangian}
+
+Collecting the self-interactions and the couplings to the massive gauge
+bosons (each $\propto m_V^2$, because gauge-boson masses also come from
+the vev):
+\begin{equation}
+  \begin{aligned}
+    \lagr_h
+    ={}& \tfrac12(\partial_\mu h)^2 - \tfrac12 m_h^2 h^2
+       - \frac{m_h^2}{2v}\,h^3 - \frac{m_h^2}{8v^2}\,h^4 \\
+     &+ m_W^2\,W^+_\mu W^{-\mu}
+        \left(\frac{2h}{v}+\frac{h^2}{v^2}\right)
+      + \tfrac12 m_Z^2\,Z_\mu Z^{\mu}
+        \left(\frac{2h}{v}+\frac{h^2}{v^2}\right)
+      - \sum_f \frac{m_f}{v}\,h\,\bar f_L f_R + \text{h.c.}
+  \end{aligned}
+  \label{eq:lec21:higgs-lagr}
+\end{equation}
+
+\subsubsection*{Which decay dominates?}
+
+The Higgs couples \emph{most strongly} to the heaviest fermion, the top.
+But a \emph{decay} $h\to f\bar f$ requires $2m_f<m_h$. Since
+$2m_t\approx 346~\text{GeV} > m_h\approx 125~\text{GeV}$, the top channel
+is closed. Among the pair-producible fermions, the heaviest is the
+bottom quark, so:
+\begin{equation}
+  \boxed{
+    h\ \text{decays dominantly to}\ b\bar b
+    \quad(\text{heaviest pair that satisfies } 2m_f<m_h).
+  }
+  \label{eq:lec21:hbb}
+\end{equation}
+
+\textit{Significance:} The dominant Higgs decay is a competition between
+``stronger coupling to heavier fermions'' and ``kinematic access'';
+$b\bar b$ wins because the top is just out of reach.
+
+\subsubsection*{No tree-level $hgg$ or $h\gamma\gamma$}
+
+There is \emph{no} tree-level coupling of the Higgs to gluons or
+photons. The reason is symmetric on both sides:
+\begin{itemize}
+  \item Gluons and the photon are massless (gauge bosons of the
+        \emph{unbroken} $SU(3)_C$ and $U(1)_{\rm EM}$). The Higgs couples
+        to gauge bosons \emph{through their mass}, so a massless boson
+        gets no tree-level $h$ coupling.
+  \item Equivalently, $h$ is color-neutral and electrically neutral, so
+        it cannot couple at tree level to the carriers of color or
+        charge.
+\end{itemize}
+These processes \emph{do} occur at one loop. For example
+$h\to\gamma\gamma$ and $h\to gg$ proceed through a fermion
+\emph{triangle diagram}, dominated by the top quark (strongest coupling)
+running in the loop --- even though a real top cannot be produced, a
+\emph{virtual} top can. The $h\to\gamma\gamma$ loop is the channel
+through which the Higgs was originally discovered.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}[>=Stealth, line join=round]
+  % incoming Higgs (dashed)
+  \draw[dashed, thick] (-2.6,0) -- (-1.2,0) node[midway, above]{$h$};
+  % the fermion triangle
+  \coordinate (A) at (-1.2,0);
+  \coordinate (B) at (0.6,1.0);
+  \coordinate (C) at (0.6,-1.0);
+  \draw[->, thick] (A) -- (B);
+  \draw[->, thick] (B) -- (C);
+  \draw[->, thick] (C) -- (A);
+  \node at (-0.55,0) {$t$};
+  % outgoing photons (wavy)
+  \draw[thick, decorate, decoration={snake, amplitude=1.1pt, segment length=6pt}]
+       (B) -- (2.4,1.4) node[right]{$\gamma$};
+  \draw[thick, decorate, decoration={snake, amplitude=1.1pt, segment length=6pt}]
+       (C) -- (2.4,-1.4) node[right]{$\gamma$};
+\end{tikzpicture}
+\caption{The top-quark triangle loop generating $h\to\gamma\gamma$
+(and, with gluons on the right, $h\to gg$). No tree-level vertex
+exists; the coupling is induced by a virtual heavy fermion.}
+\label{fig:lec21:triangle}
+\end{figure}
+
+\nt{Pitfall: ``the Higgs couples most strongly to the top'' and ``the
+Higgs cannot decay to the top'' are both true and not in conflict. The
+top dominates \emph{loop-induced} processes (as a virtual particle) but
+is forbidden as a \emph{real} decay product by $2m_t>m_h$.}
+
+%%==================================================================
+\subsection{Accidental Symmetries and Proton Stability}\label{subsec:lec21:accidental}
+
+\subsubsection*{Conceptual Background}
+
+An \emph{accidental symmetry} is a global symmetry of the Lagrangian
+that we did not impose --- it appears automatically once we write down
+the most general renormalizable terms consistent with the gauge
+symmetry and field content. We diagnose them by the standard trick:
+ask what symmetry survives when the Yukawa couplings are switched on and
+off.
+
+\subsubsection*{Yukawas off: a large flavor symmetry}
+
+With all Yukawas set to zero, only the kinetic terms remain. Each of the
+five fermion representations comes in three identical generations, so we
+may rotate each representation independently in generation space by a
+$U(3)$:
+\begin{equation}
+  \boxed{
+    G_{\rm flavor}^{(Y=0)} = U(3)^5
+    \;=\; U(3)_Q\times U(3)_u\times U(3)_d\times U(3)_L\times U(3)_e .
+  }
+  \label{eq:lec21:u3-5}
+\end{equation}
+
+\textit{Significance:} The covariant derivative is blind to generation,
+so before the Yukawas the SM has an enormous global flavor symmetry. The
+Yukawa couplings are the \emph{only} terms that break it.
+
+\subsubsection*{Yukawas on: what survives}
+
+Turning the Yukawas back on breaks $U(3)^5$ down dramatically:
+\begin{itemize}
+  \item \textbf{Leptons.} Each charged-lepton mass is distinct, so only
+        independent \emph{phase} rotations survive --- one per
+        generation. These are the individual lepton numbers
+        $U(1)_e\times U(1)_\mu\times U(1)_\tau$.
+  \item \textbf{Quarks.} Here something subtler happens. The
+        \emph{same} doublet $Q_L$ appears in \emph{both} the up Yukawa
+        ($Y^u$) and the down Yukawa ($Y^d$). One cannot rotate the
+        up-type and down-type quarks by independent phases without
+        spoiling one of the two Yukawa terms. The only surviving phase
+        rotation is the \emph{common} one acting on all quarks
+        simultaneously --- baryon number.
+\end{itemize}
+The surviving accidental symmetry is therefore
+\begin{equation}
+  \boxed{
+    G_{\rm flavor}^{\rm SM}
+    = U(1)_B\times U(1)_e\times U(1)_\mu\times U(1)_\tau,
+  }
+  \label{eq:lec21:accidental-sm}
+\end{equation}
+where under baryon number $U(1)_B$ every quark carries charge
+$+\tfrac13$ (so a three-quark baryon has $B=1$) and all other fields are
+neutral.
+
+\textit{Significance:} Baryon number and the three lepton numbers are
+\emph{not} imposed --- they emerge automatically. They are exactly
+conserved by the renormalizable SM.
+
+\subsubsection*{Why the proton is stable}
+
+\thm[thm:lec21:proton]{Stability of the Lightest Charged State}{
+The lightest particle carrying a conserved (accidental) charge is
+\emph{stable}: it has no lighter state of the same charge to decay into.
+The proton, being the lightest state with $B=1$, is therefore stable:
+\begin{equation}
+  \boxed{\text{proton stable} \iff U(1)_B \text{ conserved}.}
+  \label{eq:lec21:proton}
+\end{equation}
+}
+
+The proton ($uud$) is the lightest baryon-number-carrying state, so
+$U(1)_B$ conservation forbids proton decay --- consistent with the fact
+that proton decay has never been observed. However, $U(1)_B$ is only an
+\emph{accidental} symmetry of the \emph{renormalizable} Lagrangian:
+higher-dimensional (non-renormalizable) operators, expected from
+physics beyond the SM, can violate $B$ and \emph{would} make the proton
+decay. Observing proton decay would thus be direct evidence for new
+physics.
+
+\textit{Significance:} The longevity of the proton is not a brute fact
+but a consequence of an accidental symmetry --- and its eventual decay,
+if seen, would be a window onto a deeper Lagrangian.
+
+%%==================================================================
+\subsection{The CKM Matrix: Measured Magnitudes}\label{subsec:lec21:ckm-values}
+
+\subsubsection*{Physical Motivation}
+
+In Lecture~20 we defined $V_{\rm CKM}=V_{uL}V_{dL}^\dagger$ abstractly.
+Here are its measured magnitudes, which reveal a striking hierarchical
+pattern.
+
+The measured magnitudes are approximately
+\begin{equation}
+  |V_{\rm CKM}| \approx
+  \begin{pmatrix}
+    |V_{ud}| & |V_{us}| & |V_{ub}| \\
+    |V_{cd}| & |V_{cs}| & |V_{cb}| \\
+    |V_{td}| & |V_{ts}| & |V_{tb}|
+  \end{pmatrix}
+  \approx
+  \begin{pmatrix}
+    0.974 & 0.225 & 0.0035 \\
+    0.225 & 0.973 & 0.041 \\
+    0.0087 & 0.041 & 0.999
+  \end{pmatrix}.
+  \label{eq:lec21:ckm-numbers}
+\end{equation}
+The matrix is nearly the identity, with small off-diagonal elements that
+shrink rapidly away from the diagonal. Introducing the Cabibbo parameter
+$\lambda\equiv|V_{us}|\approx 0.225$, the structure is captured by the
+Wolfenstein parametrization:
+\begin{equation}
+  \boxed{
+    V_{\rm CKM} \approx
+    \begin{pmatrix}
+      1 & \lambda & \lambda^3 \\
+      \lambda & 1 & \lambda^2 \\
+      \lambda^3 & \lambda^2 & 1
+    \end{pmatrix},
+    \qquad \lambda\approx 0.225 .
+  }
+  \label{eq:lec21:wolfenstein}
+\end{equation}
+
+\textit{Significance:} Same-generation transitions are unsuppressed,
+$1\leftrightarrow2$ transitions cost $\lambda$, $2\leftrightarrow3$ cost
+$\lambda^2$, and $1\leftrightarrow3$ cost $\lambda^3$. This hierarchy
+directly controls which $W$-mediated quark decays are fast and which are
+rare (rates $\propto|V_{ij}|^2$).
+
+\nt{Parameter counting: a $3\times3$ unitary matrix has $9$ real
+parameters; $5$ relative quark phases can be removed by field
+redefinitions, leaving $4$ physical parameters --- \emph{three mixing
+angles and one CP-violating phase}. That irremovable phase, impossible
+with only two generations, is why Kobayashi and Maskawa predicted a
+third generation, and why this matrix earned the 2008 Nobel Prize.}
+
+%%==================================================================
+\subsection{Evidence for Color: the \texorpdfstring{$R$}{R}-Ratio}\label{subsec:lec21:color}
+
+\subsubsection*{Physical Motivation}
+
+How do we \emph{know} there are exactly $N_c=3$ colors? One of the
+cleanest pieces of evidence comes from comparing two cross sections in
+$e^+e^-$ annihilation: production of muons versus production of hadrons
+(quarks). The ratio counts colors directly.
+
+\subsubsection*{Which diagram dominates}
+
+At tree level, $e^+e^-\to f\bar f$ can proceed through an $s$-channel
+photon, $Z$, or Higgs:
+\begin{itemize}
+  \item \textbf{Photon:} propagator $\sim 1/q^2$ (massless photon).
+  \item \textbf{$Z$:} propagator $\sim 1/(q^2-m_Z^2)$ --- suppressed by
+        the large $m_Z$ at energies $q^2\ll m_Z^2$.
+  \item \textbf{Higgs:} coupling $\propto m_e$ (the electron Yukawa) ---
+        suppressed by the tiny electron mass.
+\end{itemize}
+At energies well below $m_Z$, the \emph{photon exchange dominates}
+completely.
+
+\subsubsection*{The ratio counts color}
+
+Because the initial state ($e^+e^-$) and the muon have the same electric
+charge ($|Q|=1$), those factors cancel in the ratio, leaving only the
+sum over the quarks' squared charges, times the number of colors:
+\begin{equation}
+  \boxed{
+    R \equiv
+    \frac{\sigma(e^+e^-\to \text{hadrons})}{\sigma(e^+e^-\to\mu^+\mu^-)}
+    = N_c\sum_q Q_q^2 ,
+  }
+  \label{eq:lec21:Rratio}
+\end{equation}
+where the sum runs over all quark flavors light enough to be
+pair-produced at the given energy.
+
+\ex[ex:lec21:Rratio]{Worked Example: $R$ Below the Top Threshold}{
+At energies below the top mass ($\sqrt s < 2m_t$) but above the $b\bar b$
+threshold, the accessible quarks are $u,d,s,c,b$:
+\begin{itemize}
+  \item up-type ($Q=+\tfrac23$): $u,c$ $\Rightarrow$
+        $2\times\left(\tfrac23\right)^2 = \tfrac89$;
+  \item down-type ($Q=-\tfrac13$): $d,s,b$ $\Rightarrow$
+        $3\times\left(\tfrac13\right)^2 = \tfrac39 = \tfrac13$.
+\end{itemize}
+So $\sum_q Q_q^2 = \tfrac89+\tfrac39 = \tfrac{11}{9}$. Then:
+\[
+  R_{\text{no color}} = \frac{11}{9}\approx 1.22,
+  \qquad
+  R_{\text{with } N_c=3} = 3\times\frac{11}{9} = \frac{33}{9}\approx 3.67 .
+\]
+Experiment agrees with $\tfrac{33}{9}$, \emph{not} $\tfrac{11}{9}$.
+The factor of $3$ is direct, quantitative evidence that quarks carry
+three colors.
+}
+
+\textit{Significance:} The number of colors is \emph{measured}, not
+assumed. $R$ jumps by the right factor of $3$, and steps up at each new
+quark threshold by $N_c Q_q^2$ --- a direct readout of both $N_c$ and
+the quark charges.
+
+\nt{Pitfall: when we ``observe quarks'' in the final state we never see
+free quarks --- they are confined and immediately \emph{hadronize} into
+color-neutral jets of hadrons. The cross section $\sigma(e^+e^-\to
+\text{hadrons})$ is what is measured; the parton-level
+$\sigma(e^+e^-\to q\bar q)$ is the theoretical object the $R$-ratio
+compares to.}
+
+%%==================================================================
+\subsection{Classifying Weak Processes}\label{subsec:lec21:taxonomy}
+
+\subsubsection*{Conceptual Background}
+
+Weak interactions are conventionally divided by the kind of particles
+participating in the $W/Z$ vertices:
+\begin{itemize}
+  \item \textbf{Leptonic:} the $W/Z$ couples \emph{only} to leptons.
+  \item \textbf{Semileptonic:} both leptons \emph{and} quarks
+        participate.
+  \item \textbf{Non-leptonic:} \emph{only} quarks participate (no
+        leptons).
+\end{itemize}
+
+\paragraph{Leptonic examples.}
+Muon-type tau decay,
+\begin{equation}
+  \tau^- \to \nu_\tau\,\mu^-\,\bar\nu_\mu ,
+  \label{eq:lec21:taudecay}
+\end{equation}
+where the $\tau^-$ emits a $W^-$ and becomes $\nu_\tau$, and the $W^-$
+then produces $\mu^-\bar\nu_\mu$. Another is inverse muon decay,
+$\nu_\mu\,e^- \to \mu^-\,\nu_e$. Only leptons appear at the vertices.
+
+\paragraph{Semileptonic example: neutron beta decay.}
+The neutron ($udd$) decays to a proton ($uud$) by converting one of its
+down quarks: $d\to u\,W^-$, followed by $W^-\to e^-\bar\nu_e$:
+\begin{equation}
+  n\to p\,e^-\,\bar\nu_e ,
+  \qquad \text{amplitude}\ \propto V_{ud}\ (\approx 1).
+  \label{eq:lec21:betadecay}
+\end{equation}
+The two spectator quarks are unaffected; the quark-level transition
+$d\to u$ carries the CKM element $V_{ud}$. A related crossing is
+$\bar\nu_e\,p\to e^+\,n$, the reaction through which the electron
+antineutrino was originally detected.
+
+\paragraph{Non-leptonic examples.}
+Here the $W$ connects only quarks. For the lambda hyperon
+($\Lambda=uds$):
+\begin{equation}
+  \Lambda \to p\,\pi^- ,
+  \qquad \text{amplitude}\ \propto V_{us}\ (\approx\lambda),
+  \label{eq:lec21:lambdadecay}
+\end{equation}
+via $s\to u\,W^-$ with $W^-\to \bar u\,d$; the $uud$ recombine into a
+proton and the $\bar u d$ into a $\pi^-$. Similarly the charged kaon
+decay
+\begin{equation}
+  K^+ \to \pi^+\,\pi^0 ,
+  \qquad \text{amplitude}\ \propto V_{us}.
+  \label{eq:lec21:kaondecay}
+\end{equation}
+
+\textit{Significance:} The classification tells you immediately which
+CKM elements and color factors enter a process, and hence its expected
+rate. A strangeness-changing decay pays a factor $\lambda=|V_{us}|$ per
+vertex; a same-generation transition pays nothing.
+
+\nt{Pitfall (exam tip): you are \emph{not} expected to memorize the
+quark content of exotic hadrons. You \emph{are} expected to draw the
+quark-level diagram once the content is given, identify which quark
+emits the $W$, and read off the CKM suppression of the active vertex.}
+
+%%==================================================================
+\subsection{Beyond the Standard Model}\label{subsec:lec21:bsm}
+
+\subsubsection*{Physical Motivation}
+
+The SM is extraordinarily successful, yet it is demonstrably incomplete.
+This is where high-energy research begins. The professor listed the main
+open questions:
+\begin{itemize}
+  \item \textbf{Neutrino masses.} The SM predicts $m_\nu=0$, but
+        oscillations prove $m_\nu\neq0$. This is the one
+        \emph{experimentally established} failure of the renormalizable
+        SM.
+  \item \textbf{Naturalness} (the hierarchy / fine-tuning problem) ---
+        discussed below.
+  \item \textbf{Dark matter.} Most of the matter in the universe is not
+        made of any SM particle; its identity is unknown.
+  \item \textbf{Baryogenesis.} Why is the universe made of matter and
+        not antimatter? The SM cannot generate the observed asymmetry.
+  \item \textbf{The flavor puzzle.} Why the observed pattern of fermion
+        masses (huge hierarchies) and of CKM mixing? More a ``puzzle''
+        than a sharp inconsistency.
+\end{itemize}
+
+\subsubsection*{The naturalness (hierarchy) problem}
+
+The Higgs mass receives quantum corrections from loops --- for example a
+top-quark loop. The physical (measured) mass is the sum of a bare term
+and these corrections:
+\begin{equation}
+  \boxed{
+    m_h^2\big|_{\rm phys}
+    = m_{h,\rm bare}^2 + c\,\Lambda^2 ,
+  }
+  \label{eq:lec21:hierarchy}
+\end{equation}
+where $\Lambda$ is the cutoff (the scale up to which the SM is valid)
+and $c=\mathcal O(1)$. The correction is \emph{quadratically divergent}
+in $\Lambda$ --- the same quadratic divergence we met when discussing
+loops earlier in the course.
+
+If nothing new exists below the Planck scale,
+$\Lambda\sim M_{\rm Pl}\sim 10^{18}~\text{GeV}$, then
+$\Lambda^2\sim 10^{36}~\text{GeV}^2$, while the measured
+$m_h^2\sim(125~\text{GeV})^2\sim 10^{4}~\text{GeV}^2$. The bare term must
+then cancel the loop correction to $\sim$ $32$ decimal places --- an
+extraordinary \emph{fine-tuning}. Equivalently: why is the weak force so
+much stronger than gravity?
+
+\textit{Significance:} A fundamental scalar at $125~\text{GeV}$, with its
+mass sensitive to physics all the way up to $M_{\rm Pl}$, looks as
+unnatural as a sharpened pencil balanced perfectly on its tip --- one
+suspects a hidden mechanism (a ``string'') holding it up.
+
+\nt{Pitfall: the hierarchy problem afflicts \emph{fundamental scalars}
+only. Fermion masses are protected by an approximate \emph{chiral
+symmetry} (the mass term vanishes in the symmetric limit, so corrections
+are proportional to the mass itself and only logarithmically divergent).
+This is why the electron mass is ``natural'' but the Higgs mass is not.}
+
+\paragraph{Directions for a solution.}
+Several broad strategies address naturalness:
+\begin{itemize}
+  \item \textbf{Compositeness:} the Higgs is not fundamental but a bound
+        state of size $R$, so the effective cutoff is $\Lambda\sim 1/R$
+        at a much lower scale.
+  \item \textbf{Supersymmetry:} relate the scalar to a fermion via a
+        symmetry; the fermion's chiral protection then ``leans over'' to
+        protect the scalar mass, cancelling the quadratic divergence.
+  \item \textbf{Cosmological relaxation:} the Higgs mass is not a static
+        constant but a parameter that evolved dynamically over the
+        history of the universe to its observed value.
+\end{itemize}
+The ultimate goal of the field is to find the \emph{true} Lagrangian of
+nature --- one simpler and more complete than the SM, addressing all of
+the above. A broad program of current and planned experiments is set to
+test these ideas.
+
+%%------------------------------------------------------------------
+\subsection*{To Remember}
+
+\begin{itemize}
+  \item \textbf{Fermion masses:} $m_f = y_f\,v/\sqrt2$ from the Higgs
+        vev; neutrinos massless in the SM (and this is wrong in nature).
+  \item \textbf{Neutral current:}
+        $\lagr_{\rm NC}=\frac{e}{s_Wc_W}\sum_i\bar\psi_i
+        (T^3_i-\sin^2\theta_W Q_i)\slashed Z\psi_i$ ---
+        universal, diagonal, chiral; no tree-level FCNC.
+  \item \textbf{Charged current:} leptons flavor-diagonal; quarks carry
+        $V_{\rm CKM}$, left-handed only, non-universal/non-diagonal.
+        $\Gamma(W\to u_i\bar d_j)\propto 3|V_{ij}|^2$; top too heavy to
+        appear.
+  \item \textbf{Higgs:} coupling $\propto m_f$, diagonal; dominant decay
+        $h\to b\bar b$ (top kinematically closed); no tree $hgg$ or
+        $h\gamma\gamma$ (loop-induced, top-dominated).
+  \item \textbf{Accidental symmetries:} $U(3)^5$ (Yukawas off) $\to$
+        $U(1)_B\times U(1)_e\times U(1)_\mu\times U(1)_\tau$ (on);
+        proton stable because it is the lightest $B$-charged state.
+  \item \textbf{CKM:} hierarchical,
+        $V\sim\left(\begin{smallmatrix}1&\lambda&\lambda^3\\
+        \lambda&1&\lambda^2\\\lambda^3&\lambda^2&1\end{smallmatrix}\right)$,
+        $\lambda\approx0.225$; $3$ angles $+$ $1$ CP phase.
+  \item \textbf{Color count:}
+        $R=\sigma(\to\text{had})/\sigma(\to\mu\mu)=N_c\sum_q Q_q^2$;
+        below top, $R=3\cdot\frac{11}{9}=\frac{33}{9}$ confirms $N_c=3$.
+  \item \textbf{Weak-process taxonomy:} leptonic / semileptonic /
+        non-leptonic; read off CKM suppression per active quark vertex.
+  \item \textbf{Beyond SM:} neutrino mass, naturalness
+        ($m_h^2=m_{\rm bare}^2+c\Lambda^2$, $32$-digit tuning if
+        $\Lambda\sim M_{\rm Pl}$), dark matter, baryogenesis, flavor.
+\end{itemize}
+
+%%------------------------------------------------------------------
+\begin{furtherreading}
+\subsection*{Further Reading}
+
+\begin{itemize}
+  \item D.\,J. Griffiths, \textit{Introduction to Elementary Particles}
+        (2nd ed.): Ch.~9--10 for neutral/charged currents, the $R$-ratio,
+        and the Cabibbo angle; \S2 for the weak-process classification.
+  \item F. Halzen \& A.\,D. Martin, \textit{Quarks and Leptons}: Ch.~12--13
+        for the electroweak currents and $e^+e^-\to$ hadrons.
+  \item Y. Grossman \& Y. Nir, \textit{The Standard Model}: chapters on
+        the SM currents, accidental symmetries, and baryon/lepton number
+        --- the closest match to this course's logic and notation.
+  \item M.\,E. Peskin \& D.\,V. Schroeder, \textit{An Introduction to QFT}:
+        \S20 for the electroweak currents; \S5.3 for the $R$-ratio.
+  \item For naturalness/BSM: G.\,F. Giudice, ``Naturally Speaking'';
+        Particle Data Group, \textit{Review of Particle Physics} (2024),
+        reviews on the Higgs boson and on physics beyond the SM.
+        \url{https://pdg.lbl.gov/}
+\end{itemize}
+\end{furtherreading}

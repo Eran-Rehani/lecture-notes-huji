@@ -1,0 +1,683 @@
+%%═══════════════════════════════════════════════════════════════════
+%% Lecture 11 — Nuclear Energy: Fusion, Fission & Reactors
+%% 77603 — Nuclear Physics
+%% Date: 23 June 2026
+%%═══════════════════════════════════════════════════════════════════
+
+\section{Lecture 11 — Nuclear Energy: Fusion, Fission \& Reactors}
+\label{sec:lec11}
+
+\noindent\textbf{\textcolor{doc}{Lecture date: 23 June 2026}}
+
+%%───────────────────────────────────────────────────────────────────
+\subsection*{Overview}
+%%───────────────────────────────────────────────────────────────────
+This lecture asks how nuclear binding energy becomes usable macroscopic energy.
+The unifying picture is the binding-energy curve: nuclei below the iron/nickel
+region can usually release energy by \emph{fusion}, while very heavy nuclei can
+release energy by \emph{fission}. The two processes look opposite---joining
+light nuclei versus splitting heavy nuclei---but the accounting is the same: if
+the final nuclear configuration has larger total binding energy than the initial
+configuration, the missing rest mass appears as kinetic energy, photons,
+neutrinos, and ultimately heat.
+
+The lecture then develops three linked topics.
+\begin{itemize}[nosep]
+  \item \textbf{Fusion}: Coulomb-barrier penetration, the Gamow window in
+        stars, magnetic/inertial confinement on Earth, and the distinction
+        between physical and engineering break-even.
+  \item \textbf{Fission}: the liquid-drop competition between surface tension
+        and Coulomb repulsion, induced fission of uranium, prompt neutrons,
+        fission-fragment distributions, and why \nucleus{U}{235} and
+        \nucleus{U}{238} behave so differently.
+  \item \textbf{Reactors}: neutron multiplication, the four-factor and
+        six-factor formulas, criticality, delayed neutrons, moderators,
+        coolants, control rods, enrichment, natural reactors, and the main
+        engineering/environmental issues of nuclear power.
+\end{itemize}
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{The Binding-Energy Curve as an Energy Map}
+\label{subsec:lec11:binding_curve_energy}
+%%═══════════════════════════════════════════════════════════════════
+
+The starting point is the familiar plot of binding energy per nucleon,
+$B/A$, versus mass number $A$. It rises rapidly from hydrogen to light nuclei,
+continues upward more slowly, reaches a broad maximum around
+$A\simeq 56$--$60$ (iron/nickel region), and then decreases slowly for very
+heavy nuclei.
+
+\dfn[dfn:lec11:energy_release]{Nuclear Energy Release}{%
+For a reaction
+\begin{equation}
+  \sum_i X_i \longrightarrow \sum_f Y_f,
+\end{equation}
+the energy release is
+\begin{equation}
+  \boxed{Q=\left(\sum_i M_i-\sum_f M_f\right)c^2
+        = B_f^{\rm tot}-B_i^{\rm tot}.}
+\end{equation}
+The reaction releases energy when the total final binding energy is larger than
+the total initial binding energy.}
+
+\paragraph{Physical intuition.}
+Binding energy is negative potential energy written as a positive number: a more
+strongly bound final state has lower rest mass. Thus energy is released whenever
+nucleons rearrange themselves into a more tightly bound configuration. For light
+nuclei, moving rightward/upward on the $B/A$ curve usually means fusion releases
+energy. For very heavy nuclei, moving leftward toward two medium-mass fragments
+also raises the total binding energy per nucleon, so fission releases energy.
+
+\nt{The important comparison is not the binding energy of one nucleus alone, but
+\emph{the total binding energy of all nucleons before and after}. Even if $Z$
+and $N$ are separately conserved, rearranging nucleons among different nuclei can
+change the total binding energy by many MeV per nucleon.}
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{Fusion: Why It Releases Energy and Why It Is Hard}
+\label{subsec:lec11:fusion_basics}
+%%═══════════════════════════════════════════════════════════════════
+
+\dfn[dfn:lec11:fusion]{Fusion}{%
+Fusion is a reaction in which two light nuclei combine into a heavier nuclear
+system,
+\begin{equation}
+  X_1+X_2\longrightarrow Y+\text{energy/products}.
+\end{equation}
+For $A\lesssim 60$, fusion can increase the total binding energy and therefore
+release energy.}
+
+A schematic first step in the proton--proton chain is
+\begin{equation}
+  p+p\longrightarrow d+e^+ + \nu_e,
+  \label{eq:lec11:pp_first_step}
+\end{equation}
+where one proton converts to a neutron through the weak interaction. Charge is
+conserved because the positron carries positive charge; lepton number is
+conserved by the emitted neutrino. The positron later slows down in the plasma
+and annihilates with an electron,
+\begin{equation}
+  e^+ + e^- \longrightarrow 2\gamma.
+\end{equation}
+The neutrino usually escapes, carrying away energy that is essentially lost from
+the point of view of heat production.
+
+\subsubsection*{The Coulomb Barrier}
+The reason fusion is difficult is not the nuclear force. Once two nuclei are
+within a few femtometres, the strong interaction can bind them. The difficulty is
+bringing two positively charged nuclei close enough to reach that range. Outside
+the nuclear-force region the potential is approximately
+\begin{equation}
+  V_C(r)=\frac{1}{4\pi\epsilon_0}\frac{Z_1Z_2e^2}{r}.
+\end{equation}
+The larger $Z_1Z_2$ is, the higher and thicker the Coulomb barrier becomes.
+This is why proton--proton or deuterium--tritium fusion is much easier than, say,
+carbon--carbon fusion.
+
+Classically, a particle with energy below the barrier turns around. Quantum
+mechanically, it can tunnel. In WKB form the tunnelling probability is
+\begin{equation}
+  P(E)\sim e^{-2G(E)},
+  \qquad
+  G(E)=\frac{1}{\hbar}\int_{r_1}^{r_2}\sqrt{2\mu\,[V_C(r)-E]}\,\dd r,
+  \label{eq:lec11:fusion_wkb}
+\end{equation}
+where $r_1,r_2$ are the classical turning points and $\mu$ is the reduced mass.
+For a Coulomb barrier this leads to the standard Gamow behaviour
+\begin{equation}
+  \boxed{P(E)\propto \exp\left[-\sqrt{\frac{E_G}{E}}\right]},
+  \label{eq:lec11:gamow_probability}
+\end{equation}
+with $E_G\propto \mu (Z_1Z_2e^2)^2/\hbar^2$. The exact prefactor is less
+important here than the lesson: the probability rises extremely rapidly with
+energy, because the forbidden barrier width shrinks.
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{The Gamow Window in Stars}
+\label{subsec:lec11:gamow_window}
+%%═══════════════════════════════════════════════════════════════════
+
+In a stellar plasma the particles do not all have the same energy. Their kinetic
+energies are approximately Maxwell--Boltzmann distributed,
+\begin{equation}
+  \frac{\dd n}{\dd E}\propto \sqrt{E}\,e^{-E/k_BT}.
+\end{equation}
+Low-energy particles are abundant but tunnel poorly; high-energy particles
+tunnel well but are exponentially rare. The reaction rate is controlled by the
+product of these two factors:
+\begin{equation}
+  \text{rate integrand}\propto e^{-E/k_BT}\,
+  e^{-\sqrt{E_G/E}}
+  \quad\text{(up to slower factors).}
+  \label{eq:lec11:gamow_integrand}
+\end{equation}
+
+\thm[th:lec11:gamow_window]{Gamow Window}{%
+The dominant stellar fusion reactions occur in a narrow energy interval above
+$k_BT$, where the falling Maxwell tail and the rising tunnelling probability
+balance. This interval is called the \emph{Gamow window}.}
+
+\subsubsection*{Derivation of the Peak Energy}
+To estimate the peak, minimize the exponent
+\begin{equation}
+  \Phi(E)=\frac{E}{k_BT}+\sqrt{\frac{E_G}{E}}.
+\end{equation}
+Then
+\begin{equation}
+  \dv{\Phi}{E}
+  =\frac{1}{k_BT}-\frac{1}{2}\sqrt{E_G}\,E^{-3/2}=0.
+\end{equation}
+Therefore
+\begin{equation}
+  E_0^{3/2}=\frac{1}{2}\sqrt{E_G}\,k_BT,
+\end{equation}
+and hence
+\begin{equation}
+  \boxed{E_0=\left[\frac{(k_BT)^2E_G}{4}\right]^{1/3}.}
+  \label{eq:lec11:gamow_peak}
+\end{equation}
+This $E_0$ is typically several times larger than $k_BT$. Thus the relevant
+fusion reactions in the Sun do not occur at the thermal average energy itself,
+but in the high-energy tail of the plasma distribution.
+
+\paragraph{Stellar intuition.}
+Stars succeed where laboratory devices struggle because they have enormous mass,
+gravity, pressure, and time. The Sun's core temperature is of order
+$10^7\,\mathrm K$, lower than many terrestrial fusion designs, but solar material
+is gravitationally confined for billions of years. Each particle gets many
+chances to tunnel.
+
+\paragraph{Beyond hydrogen burning.}
+As stars evolve, they may burn helium, carbon, oxygen, neon, and silicon,
+eventually producing nuclei near iron/nickel. Each later burning stage requires
+higher temperature because larger $Z_1Z_2$ raises the Coulomb barrier. Once the
+core reaches the iron region, fusion no longer provides net energy, because the
+binding-energy curve has reached its maximum.
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{Fusion Power on Earth}
+\label{subsec:lec11:fusion_power}
+%%═══════════════════════════════════════════════════════════════════
+
+Terrestrial fusion needs three things simultaneously:
+\begin{enumerate}[nosep]
+  \item sufficiently high temperature, so some particles enter the Gamow window;
+  \item sufficiently high density, so collisions occur often enough;
+  \item sufficiently long confinement time, so the plasma releases more fusion
+        energy than the machine spends maintaining it.
+\end{enumerate}
+
+\dfn[dfn:lec11:fusion_q]{Fusion Gain}{%
+The physical fusion gain is often written
+\begin{equation}
+  Q_{\rm phys}=\frac{\text{fusion energy released by the plasma}}
+                    {\text{energy delivered to the plasma}}.
+\end{equation}
+Engineering gain compares useful electrical output with the total energy cost of
+running the entire facility, including magnets, lasers, cryogenics, pumps,
+control systems, and conversion losses.}
+
+\paragraph{Magnetic confinement.}
+In a tokamak or stellarator, a hot ionized plasma is confined by magnetic fields,
+because no material wall can directly hold a $\sim10^8\,\mathrm K$ plasma. A
+major design goal is to keep the plasma stable and confined long enough that
+fusion heating becomes self-sustaining. ITER is the large international tokamak
+project in France. Its goal is a large physical gain, not commercial electricity
+production.
+
+\paragraph{Inertial confinement.}
+In laser inertial confinement, intense laser pulses compress a tiny capsule of
+fuel for a very short time. The National Ignition Facility (NIF) is the main
+example. Such experiments can reach physical break-even in a carefully defined
+sense, but this is still far from an engineering power plant, because the driver
+system and repetition-rate requirements are enormous.
+
+\nt{Headlines about ``break-even'' are therefore ambiguous. A device may have
+$Q_{\rm phys}>1$ for the plasma while still having engineering gain far below
+unity for the full facility. A power plant needs the latter.}
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{Fission as a Collective Instability}
+\label{subsec:lec11:fission_liquid_drop}
+%%═══════════════════════════════════════════════════════════════════
+
+\dfn[dfn:lec11:fission]{Fission}{%
+Fission is the splitting of a heavy nucleus into two substantial fragments,
+typically with several free neutrons and roughly $200\,\mathrm{MeV}$ of released
+energy per fission event.}
+
+Fission can be viewed as a very asymmetric relative of alpha decay: both require
+separation of charged nuclear pieces through a Coulomb barrier. The difference is
+that in alpha decay the emitted cluster is a compact, strongly bound
+\nucleus{He}{4}; in fission there is no reason to imagine a preformed fragment
+with $Z\sim30$--$60$ sitting inside the nucleus. Instead, the whole heavy nucleus
+undergoes a collective deformation.
+
+\subsubsection*{Liquid-Drop Energy Balance}
+The relevant terms in the semi-empirical mass formula are the surface and
+Coulomb terms,
+\begin{equation}
+  B(A,Z)=\cdots -a_s A^{2/3}-a_c\frac{Z^2}{A^{1/3}}+\cdots,
+\end{equation}
+where using $Z^2$ rather than $Z(Z-1)$ is sufficient for this qualitative
+large-$Z$ argument. The surface term favours a sphere, because for fixed volume
+a sphere minimizes surface area. The Coulomb term favours deformation, because
+protons reduce their mutual repulsion by moving farther apart.
+
+Model the nucleus as a slightly deformed spheroid with semiaxes
+\begin{equation}
+  a=R(1+\varepsilon),
+  \qquad
+  b=R(1+\varepsilon)^{-1/2},
+\end{equation}
+so that the volume is conserved:
+\begin{equation}
+  ab^2=R^3.
+\end{equation}
+For small $\varepsilon$, the surface area and Coulomb energy have expansions of
+the form
+\begin{align}
+  S(\varepsilon)
+  &=4\pi R^2\left(1+\frac{2}{5}\varepsilon^2+\cdots\right),
+  \label{eq:lec11:surface_expansion}\\
+  E_C(\varepsilon)
+  &=E_C(0)\left(1-\frac{1}{5}\varepsilon^2+\cdots\right).
+  \label{eq:lec11:coulomb_expansion}
+\end{align}
+There is no term linear in $\varepsilon$ because the sphere is an extremum.
+
+The binding-energy change is therefore
+\begin{equation}
+  \Delta B
+  =B(\varepsilon)-B(0)
+  \simeq
+  \left[-\frac{2}{5}a_sA^{2/3}
+  +\frac{1}{5}a_cZ^2A^{-1/3}\right]\varepsilon^2.
+  \label{eq:lec11:deltaB_deformation}
+\end{equation}
+The first term is negative: increasing surface area reduces binding. The second
+term is positive: reducing Coulomb repulsion increases binding.
+
+The spherical shape becomes unstable if a small deformation increases the
+binding energy, i.e. if the coefficient of $\varepsilon^2$ is positive:
+\begin{equation}
+  a_cZ^2A^{-1/3}>2a_sA^{2/3}.
+\end{equation}
+Equivalently,
+\begin{equation}
+  \boxed{\frac{Z^2}{A}>\frac{2a_s}{a_c}\approx 47.}
+  \label{eq:lec11:fissility_condition}
+\end{equation}
+This is the liquid-drop fissility criterion.
+
+\paragraph{Physical intuition.}
+For ordinary heavy nuclei, the surface term still wins near the spherical shape,
+so there is a fission barrier. But as $Z^2/A$ grows, Coulomb repulsion becomes
+more dangerous. Superheavy nuclei are therefore limited by fission instability,
+although shell closures can produce enhanced stability in special regions.
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{Induced Fission and Fission Products}
+\label{subsec:lec11:induced_fission}
+%%═══════════════════════════════════════════════════════════════════
+
+A neutron can induce fission by being captured and forming a highly excited
+compound nucleus. A representative channel is
+\begin{equation}
+  \nucleus{U}{235}+n\longrightarrow \nucleus{U}{236}^{\ast}
+  \longrightarrow \nucleus{Ba}{141}+\nucleus{Kr}{93}+2n+Q,
+  \label{eq:lec11:u235_fission_example}
+\end{equation}
+with
+\begin{equation}
+  Q\sim 200\,\mathrm{MeV}.
+\end{equation}
+The exact fragments vary from event to event. The mass distribution is broad but
+not centred at equal halves; for \nucleus{U}{235} thermal fission it has two
+large peaks roughly near
+\begin{equation}
+  A\sim 95,
+  \qquad
+  A\sim 140.
+\end{equation}
+Thus fission usually gives one lighter and one heavier fragment, plus prompt
+neutrons.
+
+\paragraph{Prompt neutrons.}
+The average number of prompt neutrons emitted per fission is denoted $\nu$ and
+is typically
+\begin{equation}
+  \boxed{\nu\sim2\text{--}4.}
+\end{equation}
+For \nucleus{U}{235}, the average is about $2.4$--$2.5$. These neutrons are the
+reason a chain reaction is possible: one neutron can trigger fission, but the
+fission produces more than one neutron.
+
+\subsubsection*{Energy Sharing Between Fragments}
+In the centre-of-mass frame, the two large fragments recoil nearly back-to-back.
+Neglecting the relatively small momentum carried by prompt neutrons, momentum
+conservation gives
+\begin{equation}
+  p_1=p_2=p.
+\end{equation}
+Their kinetic energies are
+\begin{equation}
+  T_i=\frac{p^2}{2M_i}.
+\end{equation}
+Therefore
+\begin{equation}
+  \boxed{\frac{T_1}{T_2}=\frac{M_2}{M_1}.}
+  \label{eq:lec11:fission_energy_sharing}
+\end{equation}
+The lighter fragment receives the larger kinetic energy. This kinetic energy is
+quickly converted into heat in the surrounding material.
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{Why \texorpdfstring{$\nucleus{U}{235}$}{U-235} Fissions with Slow Neutrons but \texorpdfstring{$\nucleus{U}{238}$}{U-238} Does Not}
+\label{subsec:lec11:u235_u238}
+%%═══════════════════════════════════════════════════════════════════
+
+A crucial point in reactor physics is that \nucleus{U}{235} has a large fission
+cross section for thermal neutrons, whereas \nucleus{U}{238} does not. The
+lecture explanation used pairing.
+
+\paragraph{Pairing-energy argument.}
+Uranium has $Z=92$, even. For \nucleus{U}{238}, the neutron number is
+$N=146$, also even. Capturing a neutron gives $\nucleus{U}{239}^{\ast}$, with odd
+$N=147$. This loses pairing energy relative to an even-neutron configuration.
+For \nucleus{U}{235}, however, $N=143$ is odd. Capturing a neutron gives
+$\nucleus{U}{236}^{\ast}$ with even $N=144$, gaining pairing energy. That extra
+excitation helps the compound nucleus cross the fission barrier.
+
+Because barrier penetration and fission probabilities depend very sensitively on
+available excitation energy, a pairing-energy difference of order MeV causes
+orders-of-magnitude differences in cross section.
+
+\paragraph{Energy dependence.}
+The thermal fission cross section of \nucleus{U}{235} is very large at slow
+neutron energies and contains resonant structure at higher energies. For
+\nucleus{U}{238}, fission becomes significant mainly for fast neutrons above a
+threshold. Hence reactors that rely on thermal neutrons need a fissile isotope
+such as \nucleus{U}{235} or \nucleus{Pu}{239}.
+
+\nt{Slow neutrons are more effective partly because their de Broglie wavelength
+is larger: $\lambda=h/p$. A larger wave character means a larger effective
+interaction cross section. For many thermal-neutron reactions the cross section
+roughly follows a $1/v$ trend away from resonances.}
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{Neutron Multiplication: The Four-Factor Formula}
+\label{subsec:lec11:four_factor}
+%%═══════════════════════════════════════════════════════════════════
+
+A reactor is controlled by the average number of neutrons in one generation
+relative to the previous generation. This is the multiplication factor.
+
+\dfn[dfn:lec11:k]{Multiplication Factor}{%
+The effective multiplication factor is
+\begin{equation}
+  k=\frac{\text{number of neutrons in generation }n+1}
+          {\text{number of neutrons in generation }n}.
+\end{equation}
+If $k<1$ the chain reaction dies out; if $k=1$ it is critical and steady; if
+$k>1$ it grows.}
+
+For an ideal infinite reactor, no neutron leaks out. The multiplication factor is
+then written
+\begin{equation}
+  \boxed{k_\infty=\eta\,\varepsilon\,p\,f.}
+  \label{eq:lec11:four_factor}
+\end{equation}
+These four factors follow the life history of a neutron.
+
+\begin{description}[leftmargin=2.8cm,style=nextline]
+  \item[$\eta$ --- reproduction factor]
+  Number of fast neutrons produced per thermal neutron absorbed in the fuel:
+  \begin{equation}
+    \eta=\nu\frac{\sigma_f}{\sigma_a}
+    \simeq \nu\frac{\sigma_f}{\sigma_f+\sigma_\gamma}.
+    \label{eq:lec11:eta}
+  \end{equation}
+  Here $\sigma_f$ is the fission cross section and $\sigma_a$ is the total
+  absorption cross section in the fuel.
+
+  \item[$\varepsilon$ --- fast fission factor]
+  Correction for additional fissions caused by fast neutrons before they slow
+  down. Usually $\varepsilon>1$.
+
+  \item[$p$ --- resonance escape probability]
+  Probability that a neutron slows from fast to thermal energies without being
+  absorbed in resonance capture, especially by \nucleus{U}{238}.
+
+  \item[$f$ --- thermal utilization factor]
+  Probability that a thermal neutron is absorbed in the fuel rather than in the
+  moderator, coolant, control material, or structural material.
+\end{description}
+
+\paragraph{Derivation as a neutron balance.}
+Start with one thermal neutron absorbed in the fuel. It produces on average
+$\eta$ fast neutrons. Fast fission increases this by $\varepsilon$. A fraction
+$p$ survives slowing down without resonance absorption. Finally, a fraction $f$
+of the thermalized neutrons is absorbed in the fuel where it can continue the
+chain. Multiplying these independent survival/production factors gives
+Eq.~\eqref{eq:lec11:four_factor}.
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{Finite Reactors: Leakage and the Six-Factor Formula}
+\label{subsec:lec11:six_factor}
+%%═══════════════════════════════════════════════════════════════════
+
+Real reactors are finite, so neutrons can escape. The infinite multiplication
+factor must be multiplied by non-leakage probabilities. In the lecture notation,
+if $N_f$ and $N_t$ are leakage probabilities for fast and thermal neutrons, then
+\begin{equation}
+  \boxed{k_{\rm eff}
+  =\eta\,\varepsilon\,p\,f\,(1-N_f)(1-N_t).}
+  \label{eq:lec11:six_factor}
+\end{equation}
+Equivalently, many textbooks write
+\begin{equation}
+  k_{\rm eff}=\eta\,\varepsilon\,p\,f\,P_f\,P_t,
+\end{equation}
+where $P_f$ and $P_t$ are fast and thermal non-leakage probabilities.
+
+\paragraph{Critical size intuition.}
+Large systems leak a smaller fraction of their neutrons because volume grows as
+$R^3$ while surface area grows as $R^2$. This is why a sufficiently small piece
+of fissile material can be subcritical even if the same composition in a larger
+geometry would be critical.
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{Criticality, Prompt Neutrons, and Delayed Neutrons}
+\label{subsec:lec11:criticality_delayed}
+%%═══════════════════════════════════════════════════════════════════
+
+If each generation takes a characteristic time $\tau_g$, then after $n$
+generations the neutron population is approximately
+\begin{equation}
+  N_n=N_0k^n,
+  \qquad
+  n=\frac{t}{\tau_g}.
+\end{equation}
+Thus
+\begin{equation}
+  \boxed{N(t)=N_0\,k^{t/\tau_g}
+  =N_0\exp\left(\frac{\ln k}{\tau_g}t\right).}
+  \label{eq:lec11:neutron_growth}
+\end{equation}
+If $\tau_g\sim10^{-3}\,\mathrm s$ and $k=1.1$, then after one second
+\begin{equation}
+  N(1\,\mathrm s)=N_0(1.1)^{1000},
+\end{equation}
+which is catastrophically large. A reactor cannot be safely controlled if it is
+supercritical on prompt neutrons alone.
+
+The solution is delayed neutrons. Some neutron-rich fission fragments undergo
+$\beta^-$ decay to an excited daughter state, and the daughter excitation lies
+above the neutron separation energy $S_n$. The daughter can then emit a neutron:
+\begin{equation}
+  (A,Z)\xrightarrow{\beta^-}(A,Z+1)^\ast
+  \longrightarrow (A-1,Z+1)+n.
+\end{equation}
+These \emph{beta-delayed neutrons} appear on time scales of seconds rather than
+milliseconds.
+
+\thm[th:lec11:delayed_neutrons]{Why Delayed Neutrons Make Reactors Controllable}{%
+A power reactor is designed so that it is subcritical on prompt neutrons alone,
+but critical when delayed neutrons are included. Then the relevant control time
+scale is seconds, not milliseconds, allowing mechanical control rods and thermal
+feedback to regulate the chain reaction.}
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{Main Reactor Ingredients}
+\label{subsec:lec11:reactor_ingredients}
+%%═══════════════════════════════════════════════════════════════════
+
+A thermal reactor needs four basic ingredients.
+
+\begin{enumerate}[label=\textbf{\arabic*.},leftmargin=1.2cm]
+  \item \textbf{Fissile material.} A fuel such as \nucleus{U}{235} or
+        \nucleus{Pu}{239} that can fission efficiently after thermal-neutron
+        absorption.
+  \item \textbf{Moderator.} A material that slows fast neutrons to thermal
+        energies. Efficient slowing requires elastic collisions with nuclei of
+        comparable mass, so hydrogen is excellent.
+  \item \textbf{Control rods.} Neutron absorbers such as cadmium, boron, or
+        hafnium. Inserting rods lowers $k$; withdrawing rods raises $k$.
+  \item \textbf{Coolant.} A circulating material that removes heat from the
+        core and transfers it to a heat exchanger or turbine system.
+\end{enumerate}
+
+\subsubsection*{Why Hydrogen Moderates Well}
+For an elastic collision between a neutron of mass $m$ and a stationary target
+of mass $M$, the maximum fractional energy transfer is
+\begin{equation}
+  \boxed{\frac{\Delta E_{\max}}{E}
+  =\frac{4mM}{(m+M)^2}.}
+  \label{eq:lec11:elastic_transfer}
+\end{equation}
+This is maximal when $M=m$. Therefore protons in ordinary water are extremely
+good neutron moderators. Concrete also shields neutrons well partly because it
+contains water/hydrogen.
+
+\paragraph{Light water.}
+Ordinary water moderates well, is cheap, and is an excellent heat-transfer fluid.
+Its disadvantage is that hydrogen also absorbs some neutrons, reducing $f$.
+Light-water reactors therefore usually require enriched uranium.
+
+\paragraph{Heavy water.}
+Heavy water, $\mathrm{D_2O}$, moderates somewhat less efficiently per collision
+because deuterium is heavier than a neutron, but it absorbs far fewer neutrons.
+This allows CANDU-type reactors to run on natural uranium, at the price of using
+expensive heavy water.
+
+\paragraph{Graphite.}
+Graphite is less effective per collision than hydrogen but has low absorption and
+is mechanically convenient. Graphite-moderated reactors need a separate coolant,
+such as water or gas.
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{Heat Engines and Reactor Types}
+\label{subsec:lec11:reactor_types}
+%%═══════════════════════════════════════════════════════════════════
+
+Nuclear reactors do not directly turn nuclear energy into electricity. They make
+heat. The heat is used to run a thermodynamic cycle, usually by producing steam
+that drives turbines.
+
+The ideal upper bound on heat-engine efficiency is the Carnot efficiency,
+\begin{equation}
+  \boxed{\eta_{\rm Carnot}=1-\frac{T_c}{T_h}.}
+  \label{eq:lec11:carnot}
+\end{equation}
+Thus a hotter reactor can in principle convert heat to electricity more
+efficiently. Ordinary water at atmospheric pressure boils at
+$100^\circ\mathrm C$, too low for high efficiency, so many reactors operate water
+under high pressure.
+
+\paragraph{Pressurized-water reactor (PWR).}
+The core water is kept at high pressure so it does not boil, with typical
+operating temperatures of order $300^\circ\mathrm C$. It transfers heat to a
+secondary water loop that makes steam for the turbine. This keeps the most
+radioactive water inside the primary loop.
+
+\paragraph{Boiling-water reactor (BWR).}
+Water boils in the core and the steam goes more directly to the turbine system.
+The design is simpler in some ways, but the steam loop is more radioactive.
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{Enrichment, Natural Uranium, and Oklo}
+\label{subsec:lec11:enrichment_oklo}
+%%═══════════════════════════════════════════════════════════════════
+
+Natural uranium today is mostly \nucleus{U}{238}, with only about
+$0.7\%$ \nucleus{U}{235}. Light-water reactors usually require enrichment to a
+few percent \nucleus{U}{235}. A common enrichment route uses uranium hexafluoride,
+$\mathrm{UF_6}$, in gas centrifuges. Because molecules containing
+\nucleus{U}{235} are slightly lighter than those containing \nucleus{U}{238}, a
+rapidly rotating centrifuge produces a tiny isotope separation. Cascading many
+centrifuges gives useful enrichment.
+
+Historically, gaseous diffusion was also used: the diffusion rate depends weakly
+on molecular mass, so repeated diffusion stages can enrich \nucleus{U}{235}, but
+very inefficiently.
+
+\paragraph{Oklo: a natural reactor.}
+A famous natural fission reactor operated in Oklo, Gabon, roughly two billion
+years ago. The key fact is that \nucleus{U}{235} has a shorter half-life than
+\nucleus{U}{238}, so the natural \nucleus{U}{235} fraction was higher in the
+past. In special geological conditions, with water acting as a moderator, a
+natural uranium deposit could become critical. Later measurements found uranium
+depleted in \nucleus{U}{235}, revealing that fission had already occurred there.
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection{Waste, Decay Heat, and the Nuclear-Power Debate}
+\label{subsec:lec11:waste}
+%%═══════════════════════════════════════════════════════════════════
+
+Fission products and neutron-activation products are radioactive. Even after the
+chain reaction stops, the fuel continues to release decay heat. This is why spent
+fuel is first stored in water pools: the water removes heat and provides
+radiation shielding. After shorter-lived isotopes decay, fuel can be moved to dry
+casks or other storage systems.
+
+\paragraph{Long time scales.}
+The difficult waste problem is not the first few seconds or days; it is the
+combination of radiotoxicity, heat production, chemical toxicity, and very long
+half-lives. A natural benchmark is: how long until the waste is no more
+radioactive than the uranium ore originally mined? The answer can be of order
+$10^4$--$10^5$ years, depending on the fuel cycle and what isotopes are included.
+This motivates geological repositories in stable rock formations.
+
+\paragraph{Why the debate is hard.}
+Nuclear fission produces large amounts of low-carbon electricity, but it raises
+hard questions: accident risk, cost of construction and decommissioning,
+long-term waste stewardship, proliferation concerns, and public trust. Newer
+reactor concepts attempt to improve safety, burn more of the fuel, use waste as
+fuel, or reduce long-lived waste. Whether those designs become economical and
+widely deployable is still an open technological and social question.
+
+%%═══════════════════════════════════════════════════════════════════
+\subsection*{Conceptual Summary}
+%%═══════════════════════════════════════════════════════════════════
+
+\begin{itemize}
+  \item Fusion and fission both release energy by moving nuclear matter toward
+        larger total binding energy.
+  \item Fusion is limited by Coulomb-barrier penetration; stars exploit the
+        Gamow window plus gravity and enormous time.
+  \item Terrestrial fusion must distinguish physical plasma gain from full
+        engineering gain.
+  \item Fission of heavy nuclei is a competition between surface energy, which
+        favours a sphere, and Coulomb energy, which favours elongation and
+        splitting.
+  \item \nucleus{U}{235} is fissile with thermal neutrons because neutron capture
+        gives favourable excitation/pairing in $\nucleus{U}{236}^{\ast}$;
+        \nucleus{U}{238} mainly fissions with fast neutrons.
+  \item A reactor is a neutron economy. The four-factor formula tracks
+        production, fast fission, resonance survival, and thermal utilization;
+        the six-factor formula adds leakage.
+  \item Safe power reactors operate with $k_{\rm eff}=1$ and rely on delayed
+        neutrons plus control rods and feedback to make the dynamics slow enough
+        to control.
+\end{itemize}

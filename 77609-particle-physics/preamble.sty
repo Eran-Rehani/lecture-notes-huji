@@ -3,7 +3,7 @@
 %% -- Core packages -----------------------------------------------------------
 \usepackage{amsmath, amssymb, amsthm}
 \usepackage{physics}
-\usepackage[margin=2cm]{geometry}
+\usepackage[margin=1.5cm]{geometry}
 \usepackage[colorlinks=true, linkcolor=blue, citecolor=blue]{hyperref}
 \usepackage[shortlabels]{enumitem}
 \usepackage{booktabs}
@@ -15,6 +15,23 @@
 \usepackage{siunitx}
 \usepackage[compat=1.1.0]{tikz-feynman}
 \usepackage{slashed}
+
+%% -- Font encoding + typography ----------------------------------------------
+\usepackage{iftex}
+\ifluatex
+  \usepackage{fontspec}
+  \setmainfont{Latin Modern Roman}
+\else
+  \usepackage[utf8]{inputenc}
+  \usepackage[T1]{fontenc}
+  \usepackage{lmodern}
+\fi
+%% \usepackage{lmodern}
+\usepackage[protrusion=true,expansion=true]{microtype}
+\frenchspacing
+\widowpenalty=10000
+\clubpenalty=10000
+
 \AtBeginDocument{\RenewCommandCopy\qty\SI}
 
 %% -- Page style --------------------------------------------------------------
@@ -67,15 +84,25 @@
 \newcounter{problem}
 \newcommand{\problem}[1]{\stepcounter{problem}\subsection*{Question \theproblem: #1}}
 \newenvironment{questionbox}{%
-  \begin{mdframed}[linewidth=0.5pt, innertopmargin=3pt, innerbottommargin=3pt,
-    innerleftmargin=3pt, innerrightmargin=3pt, backgroundcolor=gray!6]%
+  \begin{mdframed}[linewidth=0.5pt, innertopmargin=2pt, innerbottommargin=2pt,
+    innerleftmargin=2pt, innerrightmargin=2pt, backgroundcolor=gray!6]%
 }{%
   \end{mdframed}\medskip}
 \theoremstyle{definition}
 \newtheorem{solution}{Solution}
 \newenvironment{solutionbox}{%
-  \begin{mdframed}[linewidth=0.5pt, innertopmargin=3pt, innerbottommargin=3pt,
-    innerleftmargin=4pt, innerrightmargin=4pt, backgroundcolor=blue!4]%
+  \begin{mdframed}[linewidth=0.5pt, innertopmargin=2pt, innerbottommargin=2pt,
+    innerleftmargin=2pt, innerrightmargin=2pt, backgroundcolor=white]%
   \textbf{Solution.}\par\smallskip
 }{%
   \end{mdframed}\medskip}
+
+%% ── Exam-compendium print switch ────────────────────────────────────────────
+%% Set \examcompendiumtrue in the print master to hide "Further/Recommended
+%% Reading" blocks and trim filler. Defaults to false so main.tex is unaffected.
+\newif\ifexamcompendium
+\examcompendiumfalse
+%% furtherreading: wrap reading-list / further-reading blocks. Rendered normally,
+%% but swallowed entirely when \examcompendiumtrue.
+\usepackage{environ}
+\NewEnviron{furtherreading}{\ifexamcompendium\else\BODY\fi}

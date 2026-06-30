@@ -30,12 +30,22 @@
 %%
 %% NOTE: True XITS (OpenType) requires XeLaTeX/LuaLaTeX + unicode-math.
 
+%% ── Typography ───────────────────────────────────────────────────────────────
+\usepackage[protrusion=true,expansion=true]{microtype}
+\frenchspacing
+\widowpenalty=10000
+\clubpenalty=10000
+
 %% ── Page style ───────────────────────────────────────────────────────────────
 \setlength{\headheight}{13.6pt}
 \addtolength{\topmargin}{-1.6pt}
 \pagestyle{fancy}
 \fancyhf{}
-\AtBeginDocument{\renewcommand{\sectionmark}[1]{\markright{#1}}}
+% Left header = current \part (set via \markboth in \part*); right = \section/\subsection
+\AtBeginDocument{%
+  \renewcommand{\sectionmark}[1]{\markright{#1}}%
+  \renewcommand{\subsectionmark}[1]{\markright{#1}}%
+}
 \lhead{\small \nouppercase{\leftmark}}
 \rhead{\small \nouppercase{\rightmark}}
 \cfoot{\thepage}

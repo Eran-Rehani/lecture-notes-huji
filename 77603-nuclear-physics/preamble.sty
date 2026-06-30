@@ -19,11 +19,26 @@
 \usepackage{tikz}
 \usetikzlibrary{arrows.meta,calc,decorations.pathreplacing,patterns}
 
+%% ── Font encoding + typography ───────────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[protrusion=true,expansion=true]{microtype}
+\frenchspacing
+\widowpenalty=10000
+\clubpenalty=10000
+
 %% ── Page style ───────────────────────────────────────────────────────────────
 \pagestyle{fancy}
 \fancyhf{}
-\lhead{\small 77603 — Nuclear Physics}
-\rhead{\small \thesubsection}
+\setlength{\headheight}{14pt}
+% Left header = current \part; right header = current \section/\subsection
+\let\oldpart\part
+\renewcommand{\part}[1]{\oldpart{#1}\markboth{#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{#1}}
+\renewcommand{\subsectionmark}[1]{\markright{#1}}
+\lhead{\small\nouppercase{\leftmark}}
+\rhead{\small\nouppercase{\rightmark}}
 \cfoot{\thepage}
 
 %% ── Theorem environments (eye-candy tcolorbox) ───────────────────────────────
@@ -36,7 +51,7 @@
 \newcommand{\expectval}[1]{\langle #1 \rangle}
 
 %% ── Nuclear physics specific ─────────────────────────────────────────────────
-\newcommand{\nucleus}[2]{{}^{#2}\mathrm{#1}}   % \nucleus{Fe}{56} -> 56Fe
+\newcommand{\nucleus}[2]{\ensuremath{{}^{#2}\mathrm{#1}}}   % \nucleus{Fe}{56} -> 56Fe
 \newcommand{\BE}{B(E)}                          % binding energy
 \newcommand{\Qval}{Q}                           % Q value
 \newcommand{\xsec}{\sigma}                      % cross section

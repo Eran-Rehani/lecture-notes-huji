@@ -1,0 +1,494 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\section{Lecture 21 -- Stokes Flow Past a Sphere and Stokes' Drag Law}\label{sec:lec21}
+\begin{center}
+  \textbf{Date:} June 17, 2026
+\end{center}
+
+\subsection*{Overview}
+This lecture completes the problem set up at the end of \cref{sec:lec20}: \textbf{steady viscous flow past a sphere} at low Reynolds number ($\reynolds\ll1$), the historic problem solved by Stokes in 1851. The payoff is \textbf{Stokes' drag law}, $F_D=6\pi\eta R V_0$, which finally supplies the genuine drag that the ideal-fluid (potential-flow) treatment of \cref{sec:lec16} could not -- resolving the \textbf{d'Alembert paradox}.
+
+The derivation is long but every step is instructive, and it showcases a recurring strategy in continuum mechanics: \emph{reduce the number of unknown fields by introducing a potential, then convert the equations of motion into a single high-order equation for a single scalar}. Here incompressibility lets us trade the vector velocity for a single scalar \textbf{Stokes stream function} $f(r)$; the curl of the Stokes equation kills the pressure and yields the \textbf{biharmonic equation} $\nabla^4 f=0$ -- a four-derivative equation, exactly the order we already met in the Euler--Bernoulli beam (\cref{sec:lec09}). Solving it and imposing no-slip gives the velocity field, then the pressure, then -- by integrating the surface stress -- the drag.
+
+We open, as the professor did, with a short \textbf{exercise} extending the pipe-flow results $F_d=P'A$ and $D=P'Q$ of \cref{sec:lec20} to the general Couette--Poiseuille flow (pressure gradient \emph{and} a moving plate); it is solved in full below as a warm-up worked example. We close with the physical applications (terminal velocity of a sphere settling in a viscous fluid) and a qualitative tour of the flow as $\reynolds$ increases: laminar flow $\to$ vortex shedding (the von Kármán street) $\to$ turbulence, and the notion of a \textbf{boundary layer}.
+
+\medskip\noindent\textbf{Topics:}
+\begin{enumerate}
+  \item Opening exercise: drag force $F_d=P'A$ and dissipation $\tilde{D}=P'Q+F_U U$ for Couette--Poiseuille channel flow
+  \item Recap of the Stokes (creeping-flow) equations and the four-field problem
+  \item Reduction to a single scalar: the Stokes stream function $f(r)$ via a vector potential
+  \item Vorticity in terms of $f$; curl of the Stokes equation $\Rightarrow$ the biharmonic equation $\nabla^4 f=0$
+  \item Solving the radial biharmonic ODE; boundary conditions at infinity and no-slip at the sphere
+  \item The Stokes velocity field and pressure field
+  \item Drag force: integrating the surface stress; \textbf{Stokes' law} $F_D=6\pi\eta RV_0$
+  \item Application: terminal (settling) velocity of a sphere in a viscous fluid
+  \item Why the drag is non-zero now: comparison with the symmetric ideal-flow pressure (d'Alembert)
+  \item Qualitative flow regimes vs.\ $\reynolds$: laminar, von Kármán vortex street, turbulence, boundary layers
+\end{enumerate}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Opening Exercise: Drag and Dissipation for Couette--Poiseuille Flow}\label{sec:lec21:exercise}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Problem Statement}
+In \cref{sec:lec20} we derived two global relations for steady viscous pipe flow: the drag force per unit length $F_d=P'A$ and the dissipation per unit length $D=P'Q$; and the professor noted that if a wall \emph{moves}, one must add the power it delivers. The opening exercise generalises both results to the \textbf{combined Couette--Poiseuille channel}: two parallel plates at $y=0$ and $y=h$, the bottom plate fixed and the top plate sliding at speed $U$, driven by a pressure gradient $\partial_x p=-P'$ ($P'>0$). Show:
+\begin{enumerate}
+  \item the total drag force per unit length is still $F_d=P'A$ with $A=h$ (the moving wall adds no net axial force);
+  \item the dissipation per unit length satisfies
+\end{enumerate}
+\begin{equation}
+  \boxed{\;\tilde{D}=P'\,Q+F_U\,U\;}
+  \label{eq:lec21_dissipation}
+\end{equation}
+where $Q$ is the discharge (volume flux per unit width) and $F_U\equiv\sigma_{xy}\big|_{y=h}$ is the shear stress (force per unit area) the moving plate exerts on the fluid.
+
+\subsubsection*{Combined velocity profile}
+The flow is a superposition of plane Poiseuille (pressure-driven, both plates fixed) and plane Couette (plate-driven, no pressure gradient). Both satisfy the same linear ODE, so the solution is simply additive:
+\begin{equation}
+  v_x(y)=\underbrace{\frac{P'}{2\eta}\,y(h-y)}_{\text{Poiseuille}}+\underbrace{\frac{U}{h}\,y}_{\text{Couette}},
+  \qquad
+  v_x'(y)=\frac{P'}{2\eta}\,(h-2y)+\frac{U}{h}.
+  \label{eq:lec21_combined_profile}
+\end{equation}
+
+\paragraph{Part (a) -- Drag force.}
+The shear stresses at the two walls are
+\begin{equation}
+  \sigma_{xy}\big|_{y=0}=\eta\,v_x'(0)=\frac{P'h}{2}+\frac{\eta U}{h},\qquad
+  \sigma_{xy}\big|_{y=h}=\eta\,v_x'(h)=-\frac{P'h}{2}+\frac{\eta U}{h}.
+  \label{eq:lec21_combined_wallshear}
+\end{equation}
+The Couette contribution $\eta U/h$ enters with the \emph{same} sign at both walls and therefore cancels in the sum. The net drag on the fluid from both walls is
+\begin{equation}
+  F_d=\sigma_{xy}\big|_{y=0}-\sigma_{xy}\big|_{y=h}
+     =\frac{P'h}{2}-\left(-\frac{P'h}{2}\right)=P'h=P'\,A.
+  \label{eq:lec21_combined_Fd}
+\end{equation}
+(The minus sign in the sum reflects that the two walls face in opposite directions.) Equivalently, a steady slab force balance gives $F_d=P'A$ with no reference to the profile or to $U$, confirming that the drag is set entirely by the pressure gradient.
+
+\begin{equation}
+  \boxed{\;F_d=P'\,A,\qquad A=h\;}
+  \label{eq:lec21_channel_force}
+\end{equation}
+\textit{Significance:} The Couette (moving-wall) part superimposes a \emph{uniform} shear on both walls that cancels in the total force. $F_d=P'A$ is geometry-independent.
+
+\paragraph{Part (b) -- Dissipation power balance.}
+\textbf{Discharge.} Integrating the combined profile,
+\begin{equation}
+  Q=\int_0^h v_x\dd{y}
+   =\frac{P'h^3}{12\eta}+\frac{Uh}{2}.
+  \label{eq:lec21_combined_Q}
+\end{equation}
+
+\textbf{Moving-plate shear stress.} From \eqref{eq:lec21_combined_wallshear},
+\begin{equation}
+  F_U\equiv\sigma_{xy}\big|_{y=h}=\frac{\eta U}{h}-\frac{P'h}{2}.
+  \label{eq:lec21_FU}
+\end{equation}
+This is the force per unit area the top plate exerts on the fluid in the direction of its motion. (For pure Couette, $P'=0$: $F_U=\eta U/h>0$ -- the plate drags the fluid. For large $P'$, $F_U$ can be negative: the pressure-driven fluid is faster than the plate and drags it forward, so the plate actually \emph{resists} the fluid.)
+
+\textbf{Direct dissipation calculation.} Writing $v_x'=\tfrac{P'}{2\eta}(h-2y)+\tfrac{U}{h}$, squaring and integrating:
+\begin{align}
+  \tilde{D}&=\int_0^h\eta\,(v_x')^2\dd{y} \nonumber\\
+  &=\eta\left[
+      \frac{P'^2}{4\eta^2}\int_0^h(h-2y)^2\dd{y}
+     +\frac{P'U}{\eta h}\underbrace{\int_0^h(h-2y)\dd{y}}_{=\,0}
+     +\frac{U^2}{h^2}\int_0^h dy
+    \right] \nonumber\\
+  &=\frac{P'^2 h^3}{12\eta}+\frac{\eta U^2}{h}.
+  \label{eq:lec21_diss_direct}
+\end{align}
+The cross-term vanishes because $\int_0^h(h-2y)\dd{y}=0$: Poiseuille and Couette modes do \emph{not interact} in dissipation.
+
+\textbf{Verify the power balance \eqref{eq:lec21_dissipation}.}
+\begin{align}
+  P'Q+F_U\,U
+  &=P'\!\left(\frac{P'h^3}{12\eta}+\frac{Uh}{2}\right)
+   +\left(\frac{\eta U}{h}-\frac{P'h}{2}\right)U \nonumber\\
+  &=\frac{P'^2h^3}{12\eta}+\frac{P'Uh}{2}-\frac{P'Uh}{2}+\frac{\eta U^2}{h}
+   =\frac{P'^2h^3}{12\eta}+\frac{\eta U^2}{h}=\tilde{D}.\quad\checkmark
+  \label{eq:lec21_powercheck}
+\end{align}
+The $P'U$ cross-terms cancel in the power balance too -- a second, independent, miraculous cancellation.
+
+\thm[dissipation-channel]{Dissipation for Combined Couette--Poiseuille Flow}{%
+  \begin{equation}
+    \tilde{D}=P'\,Q+F_U\,U,\qquad
+    F_U=\sigma_{xy}\big|_{y=h}=\frac{\eta U}{h}-\frac{P'h}{2},\qquad
+    Q=\frac{P'h^3}{12\eta}+\frac{Uh}{2}.
+    \label{eq:lec21_dissipation_thm}
+  \end{equation}
+}
+\textit{Significance:} The total dissipation splits cleanly into two independent contributions: $P'Q$ (pressure does work at the rate $P'$ on a flux $Q$) and $F_U U$ (the moving plate injects power equal to the traction it exerts times its speed). The cross-mode coupling vanishes identically, a consequence of the linearity of the velocity profile. For a pipe the formula is the same with the Couette term absent: $D=P'Q$.
+
+\ex[channel-drag]{Worked Example: drag and dissipation for channel flow (the opening exercise)}{%
+  \emph{Setup:} gap $h$, $\partial_x p=-P'$, top plate at speed $U$.  Profile: $v_x=\frac{P'}{2\eta}y(h-y)+\frac{Uy}{h}$.\\[2pt]
+  \emph{Part (a) -- Drag.}
+  Wall shears: $\sigma_{xy}|_0=\frac{P'h}{2}+\frac{\eta U}{h}$, $\sigma_{xy}|_h=-\frac{P'h}{2}+\frac{\eta U}{h}$.
+  Total: $F_d=P'h=P'A$ (Couette part cancels). Cross-check: slab balance gives $F_d=P'A$ with no mention of $U$.\\[2pt]
+  \emph{Part (b) -- Dissipation.}
+  $Q=\frac{P'h^3}{12\eta}+\frac{Uh}{2}$;\quad
+  $F_U=\frac{\eta U}{h}-\frac{P'h}{2}$;\quad
+  $\tilde D=\frac{P'^2h^3}{12\eta}+\frac{\eta U^2}{h}$ (cross-term $=0$).\\[2pt]
+  Check: $P'Q+F_UU=\frac{P'^2h^3}{12\eta}+\frac{P'Uh}{2}-\frac{P'Uh}{2}+\frac{\eta U^2}{h}=\tilde D$. $\checkmark$\\[2pt]
+  \emph{Moral.} Moving wall does not change $F_d=P'A$. Dissipation adds a Couette term $\eta U^2/h$, bookept by $F_UU$.
+}
+
+\nt{Pitfall: the cross-term in $(v_x')^2$ vanishes because $\int_0^h(h-2y)\dd{y}=0$ -- Poiseuille and Couette modes decouple in dissipation. This is \emph{not} obvious from $\tilde{D}=P'Q+F_UU$, where $Q$ and $F_U$ each contain cross-terms; those cross-terms cancel when combined. Also: $F_U$ can be negative (the plate resists a pressure-driven flow faster than itself), in which case the plate \emph{absorbs} power rather than injecting it.}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{The Creeping-Flow Problem and Its Reduction}\label{sec:lec21:setup}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+A sphere of radius $R$ moves with velocity $\bvec V_0$ through a viscous fluid; equivalently (passing to the sphere's instantaneous rest frame) the fluid streams past a fixed sphere with uniform far-field velocity $\bvec V_0$. The fluid is highly viscous, $\reynolds=V_0R/\nu\ll1$, so inertia is negligible. We want the steady velocity field $\vel(\curcoord)$ and pressure $p(\curcoord)$; the density is not needed, as the flow is incompressible. From \cref{sec:lec20}, dropping the inertial term reduces Navier--Stokes to the linear \textbf{Stokes equations}:
+\begin{equation}
+  \grad p=\eta\,\lapl\vel,\qquad \divg\vel=0 .
+  \label{eq:lec21_stokes}
+\end{equation}
+These are four scalar equations (one vector + continuity) for four unknown fields ($\vel,p$). The no-slip boundary conditions are
+\begin{equation}
+  \vel=\bvec0 \ \ \text{at } r=R \quad(\text{no-slip on the sphere}),
+  \qquad \vel\to\bvec V_0 \ \ \text{as } r\to\infty .
+  \label{eq:lec21_bc}
+\end{equation}
+
+\subsubsection*{Step 1 -- reduce the unknowns with a potential}
+The key simplification: because $\divg\vel=0$ (and $\divg\bvec V_0=0$), the field $\vel-\bvec V_0$ is divergence-free and can be written as a curl,
+\begin{equation}
+  \vel-\bvec V_0=\grad\times\bvec A ,
+  \label{eq:lec21_vecpot}
+\end{equation}
+for some vector potential $\bvec A$. Now we constrain the \emph{form} of $\bvec A$ by symmetry:
+\begin{itemize}
+  \item the Stokes equations are \textbf{linear}, so the solution must be \emph{linear in} $\bvec V_0$;
+  \item $\vel$ is a true (polar) vector, so its potential $\bvec A$ must be a \textbf{pseudovector} (like the angular momentum or the magnetic field): under a reflection $\bvec A$ flips sign relative to a true vector. The only way to build a pseudovector linear in the true vector $\bvec V_0$ is with a \emph{cross product};
+  \item the remaining freedom is a single scalar function of $r$ (the problem has axial symmetry about $\bvec V_0$).
+\end{itemize}
+These three facts force
+\begin{equation}
+  \bvec A=\grad f(r)\times\bvec V_0=\grad\times\big(f(r)\,\bvec V_0\big),
+  \label{eq:lec21_A}
+\end{equation}
+where the second equality uses $\grad\times(f\bvec V_0)=\grad f\times\bvec V_0$ (since $\bvec V_0$ is constant). The single scalar $f(r)$ is the \textbf{Stokes stream function}: just as in planar potential flow (\cref{sec:lec17}) the stream function $\psi$ captured both velocity components, here axial symmetry makes the problem effectively two-dimensional (everything depends on $r,\theta$ only, never on the azimuth $\phi$), and $f$ encodes the whole field. Lines of constant $f$ are streamlines.
+
+\dfn[stokes-streamfn]{Stokes Stream Function}{%
+  For axisymmetric incompressible flow past a sphere, the velocity is generated by a single scalar $f(r)$ through
+  \begin{equation}
+    \vel=\bvec V_0+\grad\times\grad\times\big(f(r)\,\bvec V_0\big).
+    \label{eq:lec21_v_from_f}
+  \end{equation}
+}
+\textit{Significance:} The four unknown fields collapse to \emph{one} scalar function of \emph{one} variable -- the same ``find the right potential'' move that tamed planar flow and elasticity.
+
+\subsubsection*{Step 2 -- vorticity in terms of $f$}
+Expand \eqref{eq:lec21_v_from_f} using $\grad\times\grad\times\bvec C=\grad(\divg\bvec C)-\lapl\bvec C$ with $\bvec C=f\bvec V_0$. Since $\divg(f\bvec V_0)=\bvec V_0\cdot\grad f$ and $\lapl(f\bvec V_0)=\bvec V_0\,\lapl f$,
+\begin{equation}
+  \vel-\bvec V_0=\grad(\bvec V_0\cdot\grad f)-\bvec V_0\,\lapl f .
+  \label{eq:lec21_v_expand}
+\end{equation}
+Take the curl to get the vorticity $\bvec\omega=\grad\times\vel$. The first term is a gradient (curl-free), and $\grad\times(\lapl f\,\bvec V_0)=\grad(\lapl f)\times\bvec V_0$, so
+\begin{equation}
+  \bvec\omega=\grad\times\vel=-\,\grad(\lapl f)\times\bvec V_0 .
+  \label{eq:lec21_vorticity}
+\end{equation}
+The vorticity is built from $\grad(\lapl f)$ -- already \emph{three} derivatives of $f$.
+
+\subsubsection*{Step 3 -- equation of motion $\Rightarrow$ the biharmonic equation}
+Take the curl of the Stokes equation \eqref{eq:lec21_stokes}. The pressure drops out because $\grad\times\grad p=\bvec0$, and $\grad\times\lapl\vel=\lapl(\grad\times\vel)=\lapl\bvec\omega$:
+\begin{equation}
+  \grad\times(\grad p)=\eta\,\grad\times(\lapl\vel)
+  \;\Longrightarrow\; \lapl\bvec\omega=\bvec0 .
+  \label{eq:lec21_curl_stokes}
+\end{equation}
+This is the single equation for the velocity alone -- we have ``decoupled'' the pressure (it can be recovered afterward). Substituting \eqref{eq:lec21_vorticity},
+\begin{equation}
+  \lapl\bvec\omega=-\,\grad(\lapl\lapl f)\times\bvec V_0=\bvec0 .
+  \label{eq:lec21_biharm_pre}
+\end{equation}
+For the cross product to vanish, $\grad(\lapl\lapl f)$ must be parallel to $\bvec V_0$, i.e.\ a constant times $\bvec V_0$; but the far-field condition ($\vel\to\bvec V_0$, all derivatives of the disturbance $\to0$ at infinity) forces that constant to zero. Hence
+
+\thm[biharmonic]{Biharmonic Equation for the Stream Function}{%
+  \begin{equation}
+    \boxed{\;\lapl(\lapl f)=\nabla^4 f=0\;}
+    \label{eq:lec21_biharmonic}
+  \end{equation}
+}
+\textit{Significance:} A \emph{four-derivative} equation for a single scalar -- the same order as the Euler--Bernoulli beam (\cref{sec:lec09}); most of continuum mechanics gives two-derivative (Laplace/wave) equations, and these fourth-order cases are special. ``Biharmonic'' means $\lapl(\lapl f)=0$: $f$ is harmonic after one Laplacian.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Solving for the Stream Function}\label{sec:lec21:solve}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Mathematical Setup}
+Because $f=f(r)$ only, the Laplacian keeps only its radial part,
+\begin{equation}
+  \lapl f=\dv[2]{f}{r}+\frac{2}{r}\dv{f}{r}=\frac{1}{r^2}\dv{r}\!\left(r^2\dv{f}{r}\right),
+  \label{eq:lec21_radial_lapl}
+\end{equation}
+so the partial differential equation \eqref{eq:lec21_biharmonic} becomes an \emph{ordinary} fourth-order ODE, solvable by repeated integration.
+
+\paragraph{Outer Laplacian first.} Let $g\equiv\lapl f$. Then $\lapl g=0$: $g$ is a radial harmonic function, whose general form in three dimensions is a monopole plus a constant,
+\begin{equation}
+  g=\lapl f=\frac{2a}{r}+C .
+  \label{eq:lec21_g}
+\end{equation}
+The constant $C$ must vanish: a non-zero $C$ would make $\lapl f$ constant, hence $f\sim r^2$ and the velocity would grow at infinity, violating $\vel\to\bvec V_0$. So $\lapl f=2a/r$.
+
+\paragraph{Inner equation.} Solve $f''+\tfrac{2}{r}f'=2a/r$. A particular solution is $f_p=a\,r$ (indeed $f_p''=0$ and $\tfrac{2}{r}f_p'=2a/r$). The homogeneous solutions of $\lapl f=0$ are $\{\,1,\ 1/r\,\}$; together with the biharmonic-only mode $r^2$ (already excluded with $C$), the four independent radial solutions of $\nabla^4 f=0$ are
+\begin{equation}
+  f\in\big\{\,r^2,\ r,\ 1,\ 1/r\,\big\}.
+  \label{eq:lec21_basis}
+\end{equation}
+The constant ($1$) contributes nothing to $\vel$, and $r^2$ blows up at infinity, so the admissible decaying combination is
+\begin{equation}
+  f(r)=a\,r+\frac{b}{r}.
+  \label{eq:lec21_f_general}
+\end{equation}
+
+\paragraph{Boundary conditions at the sphere.} The far-field and growth conditions are already used; the two constants $a,b$ are fixed by \textbf{no-slip} at $r=R$, where \emph{both} velocity components must vanish, $v_r=v_\theta=0$. Writing $\vel$ from \eqref{eq:lec21_v_expand} in spherical components and imposing this at $r=R$ gives two linear equations for $a,b$. Their dimensions are fixed already by \eqref{eq:lec21_v_from_f}: $a$ has units of length and $b$ of length$^3$, so on dimensional grounds $a\propto R$ and $b\propto R^3$. The numerical coefficients come out
+\begin{equation}
+  \boxed{\;a=\tfrac34 R,\qquad b=\tfrac14 R^3\;}
+  \qquad\Longrightarrow\qquad
+  f(r)=\frac{3}{4}R\,r+\frac{1}{4}\frac{R^3}{r}.
+  \label{eq:lec21_ab}
+\end{equation}
+\textit{Significance:} Two length scales ($R$ and $R^3$) build the $1/r$ and $1/r^3$ decays of the disturbance; the slow $1/r$ tail is the hallmark of viscous (Stokes) flow -- the sphere ``feels'' distant walls, which is why Stokes drag is so long-ranged.
+
+\subsubsection*{Method}
+To solve a low-$\reynolds$ flow past an axisymmetric body:
+\begin{enumerate}
+  \item Use $\divg\vel=0$ to write $\vel-\bvec V_0=\grad\times\bvec A$, and fix $\bvec A=\grad f\times\bvec V_0$ by linearity, pseudovector parity, and symmetry.
+  \item Compute $\bvec\omega=\grad\times\vel$ in terms of $f$.
+  \item Curl the Stokes equation to kill $p$; get $\lapl\bvec\omega=0\Rightarrow\nabla^4 f=0$.
+  \item Reduce the Laplacian to its radial part; integrate to $f=ar+b/r$ (drop $r^2$, const by far-field).
+  \item Impose no-slip ($v_r=v_\theta=0$) at $r=R$ to fix $a,b$.
+  \item Recover $p$ from the Stokes equation, then integrate the surface stress for the drag.
+\end{enumerate}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{The Velocity and Pressure Fields}\label{sec:lec21:fields}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Velocity field}
+Substituting \eqref{eq:lec21_ab} into \eqref{eq:lec21_v_expand} and resolving into spherical components (with $\theta$ measured from the $\bvec V_0$ axis, so $\bvec V_0\cdot\uvec r=V_0\cos\theta$):
+
+\thm[stokes-velocity]{Stokes Velocity Field Past a Sphere}{%
+  \begin{align}
+    v_r&=V_0\cos\theta\left(1-\frac{3R}{2r}+\frac{R^3}{2r^3}\right),\label{eq:lec21_vr}\\[4pt]
+    v_\theta&=-\,V_0\sin\theta\left(1-\frac{3R}{4r}-\frac{R^3}{4r^3}\right),\label{eq:lec21_vtheta}
+  \end{align}
+  or, in coordinate-free form,
+  \begin{equation}
+    \vel=\bvec V_0-\frac{3R}{4}\,\frac{\bvec V_0+(\bvec V_0\cdot\uvec r)\,\uvec r}{r}
+        -\frac{R^3}{4}\,\frac{\bvec V_0-3(\bvec V_0\cdot\uvec r)\,\uvec r}{r^3}.
+    \label{eq:lec21_v_vector}
+  \end{equation}
+}
+\textit{Significance:} Beyond the uniform stream $\bvec V_0$, the disturbance has a slow $1/r$ part (the ``Stokeslet,'' carrying the net force) and a faster $1/r^3$ part (a potential dipole, the finite-size correction). Check the boundary conditions: at $r=R$ both brackets in \eqref{eq:lec21_vr}--\eqref{eq:lec21_vtheta} vanish ($1-\tfrac32+\tfrac12=0$ and $1-\tfrac34-\tfrac14=0$), so $\vel=\bvec0$ (no-slip); as $r\to\infty$ both $\to1$ and $\vel\to\bvec V_0$.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=1.0]
+  % sphere
+  \fill[metalcol] (0,0) circle (0.85);
+  \draw[thick] (0,0) circle (0.85);
+  \node at (0,0) {\small $R$};
+  % far-field velocity arrows on the left
+  \foreach \yy in {-2.0,-1.0,...,2.0}{
+    \draw[vvec] (-4.0,\yy)--(-3.2,\yy);
+  }
+  \node[vcol] at (-4.0,2.45) {\small $\bvec V_0$};
+  % streamlines bending around the sphere (fore-aft symmetric, schematic)
+  \foreach \yy in {0.55,1.1,1.8}{
+    \draw[myblue,thick] plot[smooth,domain=-3.0:3.0,samples=60,variable=\x]
+      ({\x},{\yy*sqrt(1+ (\x*\x)/(2.2*2.2))/sqrt(1+1/(2.2*2.2))*0 + \yy + 0.32*exp(-(\x*\x)/1.1)*(1)});
+  }
+  \foreach \yy in {-0.55,-1.1,-1.8}{
+    \draw[myblue,thick] plot[smooth,domain=-3.0:3.0,samples=60,variable=\x]
+      ({\x},{\yy - 0.32*exp(-(\x*\x)/1.1)*(1)});
+  }
+  % stagnation points
+  \fill[myred] (-0.85,0) circle (1.4pt);
+  \fill[myred] (0.85,0) circle (1.4pt);
+  \node[myred,font=\scriptsize] at (-1.25,0.28) {stag.};
+  \node[myred,font=\scriptsize] at (1.25,0.28) {stag.};
+  % drag force on sphere
+  \draw[force] (0,-1.25)--(1.2,-1.25) node[right,black,font=\small]{$\bvec F_D$};
+  % axis
+  \draw[->,gray] (-4.3,-2.6)--(4.3,-2.6) node[below,black,font=\small]{flow axis ($\theta$ from here)};
+\end{tikzpicture}
+\caption{Stokes flow past a sphere at $\reynolds\ll1$. The streamlines are fore--aft symmetric, with stagnation points where streamlines meet the sphere; the no-slip condition holds on the surface. The net force on the sphere, the Stokes drag $\bvec F_D=6\pi\eta R\bvec V_0$, points along the flow.}
+\label{fig:lec21_stokes}
+\end{figure}
+
+\subsubsection*{Pressure field}
+Recover $p$ from the Stokes equation $\grad p=\eta\lapl\vel$. A slick route: taking the divergence of \eqref{eq:lec21_stokes} gives $\lapl p=\eta\lapl(\divg\vel)=0$, so $p$ is \emph{harmonic}. It must be a true scalar, linear in $\bvec V_0$, decaying at infinity; the unique such harmonic is the dipole $\bvec V_0\cdot\uvec r/r^2$. Matching the coefficient to the Stokes equation gives
+
+\thm[stokes-pressure]{Stokes Pressure Field}{%
+  \begin{equation}
+    \boxed{\;p=p_0-\frac{3\eta R}{2}\,\frac{\bvec V_0\cdot\uvec r}{r^2}
+            =p_0-\frac{3\eta R\,V_0\cos\theta}{2r^2}\;}
+    \label{eq:lec21_pressure}
+  \end{equation}
+}
+\textit{Significance:} $p_0$ is the ambient (far-field) pressure, recovered as $r\to\infty$. Crucially the disturbance pressure is \emph{odd} in $\cos\theta$: high pressure on the upstream face ($\theta=\pi$), low on the downstream face ($\theta=0$). This fore--aft \emph{asymmetry} is precisely what the symmetric ideal-flow pressure lacked, and it is the seed of a non-zero drag.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{The Drag Force: Stokes' Law}\label{sec:lec21:drag}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+What pushes the sphere? The fluid exerts a surface traction $t_i=\sigma_{ij}\hat n_j$ with $\hat{\bvec n}=\uvec r$; the net force is the surface integral
+\begin{equation}
+  \bvec F=\oint_{r=R}\stress\cdot\uvec r\dd{A},\qquad
+  \sigma_{ij}=-p\,\delta_{ij}+\eta\big(\partial_i v_j+\partial_j v_i\big),
+  \label{eq:lec21_force_def}
+\end{equation}
+the viscous part using incompressibility ($\divg\vel=0$ kills the bulk term). By the axial symmetry the net force can only point along $\bvec V_0$ (no $\uvec r$ or $\uvec\theta$ direction is globally preferred -- those are \emph{fields}, not a fixed direction; only $\bvec V_0$ is a fixed vector), so we need just its $z$-component.
+
+\subsubsection*{The two stresses at the surface}
+On $r=R$ the relevant traction components are the normal $\sigma_{rr}$ and the tangential $\sigma_{r\theta}$:
+\begin{itemize}
+  \item \textbf{Normal viscous stress vanishes.} $\sigma'_{rr}=2\eta\,\partial_r v_r$, and from \eqref{eq:lec21_vr}, $\partial_r v_r\big|_{r=R}=0$ (the bracket and its radial derivative conspire to vanish at the surface). So the normal traction is pure pressure, $\sigma_{rr}=-p$.
+  \item \textbf{Tangential viscous stress.} Using the spherical-coordinate strain rate $\sigma_{r\theta}=\eta\big(\tfrac1r\partial_\theta v_r+\partial_r v_\theta-v_\theta/r\big)$, evaluated at $r=R$ (where $v_r=v_\theta=0$, so only $\partial_r v_\theta$ survives):
+  \begin{equation}
+    \sigma_{r\theta}\big|_{r=R}=\eta\,\partial_r v_\theta\big|_{R}=-\frac{3\eta V_0}{2R}\,\sin\theta .
+    \label{eq:lec21_srtheta}
+  \end{equation}
+\end{itemize}
+Project the traction onto the flow axis using $\uvec z=\cos\theta\,\uvec r-\sin\theta\,\uvec\theta$:
+\begin{equation}
+  t_z=\sigma_{rr}\cos\theta-\sigma_{r\theta}\sin\theta
+     =\Big(-p_0+\frac{3\eta V_0\cos\theta}{2R}\Big)\cos\theta
+       +\frac{3\eta V_0}{2R}\sin^2\theta
+     =-p_0\cos\theta+\frac{3\eta V_0}{2R}.
+  \label{eq:lec21_tz}
+\end{equation}
+The two $\theta$-dependent pieces combine, via $\cos^2\theta+\sin^2\theta=1$, into a \emph{constant} $\tfrac{3\eta V_0}{2R}$ -- the small miracle that makes the integral trivial.
+
+\subsubsection*{Integrating over the sphere}
+With $dA=R^2\dd{\Omega}$ and $\oint\cos\theta\dd{\Omega}=0$ (the ambient pressure $p_0$ gives no net force), only the constant survives:
+\begin{equation}
+  F_D=\oint_{r=R}t_z\dd{A}=\frac{3\eta V_0}{2R}\oint_{r=R}R^2\dd{\Omega}
+     =\frac{3\eta V_0}{2R}\cdot R^2\cdot 4\pi .
+  \label{eq:lec21_Fd_int}
+\end{equation}
+
+\thm[stokes-law]{Stokes' Drag Law}{%
+  \begin{equation}
+    \boxed{\;\bvec F_D=6\pi\,\eta\,R\,\bvec V_0\;}
+    \label{eq:lec21_stokeslaw}
+  \end{equation}
+}
+\textit{Significance:} The drag on a slowly-moving sphere is \emph{linear} in the velocity (unlike the $\propto V^2$ inertial drag at high $\reynolds$), linear in size $R$, and proportional to viscosity $\eta$ -- a dependence one could have guessed from dimensional analysis, leaving only the number $6\pi$ to the calculation. Of this, one third ($2\pi\eta RV_0$) is ``form drag'' from the asymmetric pressure and two thirds ($4\pi\eta RV_0$) is ``friction drag'' from the tangential viscous stress.
+
+\nt{Pitfall: the net force points along the fixed vector $\bvec V_0$, \emph{not} along $\uvec r$ or $\uvec\theta$ -- those are position-dependent fields and cannot be the direction of a single constant vector. The symmetry argument (cylindrical symmetry about $\bvec V_0$) is what fixes the direction \emph{before} any integral, leaving only one component to compute.}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Application: Terminal Velocity of a Settling Sphere}\label{sec:lec21:terminal}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+Drop a small metal bead into a jar of glycerin (a classic Tel-Aviv University demo). It briefly accelerates under gravity, but the drag grows with speed and quickly balances gravity: the bead settles at a constant \textbf{terminal velocity}. Because Stokes drag is velocity-dependent, this balance is automatic and is approached exponentially fast.
+
+\subsubsection*{Force balance and equation of motion}
+Let $x$ point downward (the direction of motion). With gravity $mg$ and the opposing Stokes drag $6\pi\eta R\,\dot x$,
+\begin{equation}
+  m\,\ddot x=mg-6\pi\eta R\,\dot x .
+  \label{eq:lec21_eom}
+\end{equation}
+At terminal velocity $\ddot x=0$:
+\begin{equation}
+  \boxed{\;V_{\text{term}}=\frac{mg}{6\pi\eta R}\;}
+  \label{eq:lec21_vterm}
+\end{equation}
+\textit{Significance:} Measuring $V_{\text{term}}$ of a known bead is a standard way to \emph{measure the viscosity} $\eta$ of a fluid (a falling-ball viscometer). Including buoyancy, $mg\to\tfrac43\pi R^3(\rho_s-\rho_f)g$, gives $V_{\text{term}}=\tfrac{2}{9}(\rho_s-\rho_f)gR^2/\eta$, so larger or denser beads settle faster ($\propto R^2$).
+
+\nt{The same idea applies to objects falling in air, but only if the air behaves as a \emph{very viscous} fluid ($\reynolds\ll1$). For everyday objects $\reynolds$ is large and the drag is not Stokes' linear law but the quadratic inertial drag; Stokes' formula then does \emph{not} apply. Always check $\reynolds$ before using $F_D=6\pi\eta RV$.}
+
+\ex[settling]{Worked Example: settling bead and exponential approach}{%
+  A bead of mass $m$, radius $R$ released from rest in a viscous fluid obeys \eqref{eq:lec21_eom}. Writing $\tau=m/(6\pi\eta R)$ and $V_{\text{term}}=mg/(6\pi\eta R)=g\tau$, the solution is
+  \[
+    \dot x(t)=V_{\text{term}}\big(1-e^{-t/\tau}\big).
+  \]
+  The bead reaches $63\%$ of terminal speed in one time constant $\tau$ and is essentially at $V_{\text{term}}$ after a few $\tau$. \emph{Check:} as $t\to\infty$, $\dot x\to V_{\text{term}}$ and $\ddot x\to0$, recovering the force balance.
+}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Why the Drag Is Non-Zero: Contrast with Ideal Flow}\label{sec:lec21:dalembert}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Conceptual Background}
+In \cref{sec:lec16} potential flow past a sphere gave a pressure field that was \emph{symmetric} fore-and-aft: the pressure at a point and at its antipode were equal, so their contributions to the net force cancelled in pairs -- the \textbf{d'Alembert paradox} of zero drag. Compare the two cases at antipodal points $\theta$ and $\pi-\theta$:
+\begin{itemize}
+  \item \textbf{Ideal flow:} the (Bernoulli) pressure depends on speed$^2$, hence on $\cos^2\theta$, which is \emph{even} under $\theta\to\pi-\theta$. Antipodal pressures are equal and the drag contributions cancel: $\bvec F_{\text{drag}}=\bvec0$.
+  \item \textbf{Stokes flow:} the disturbance pressure \eqref{eq:lec21_pressure} is $\propto\cos\theta$, which is \emph{odd} under $\theta\to\pi-\theta$ (it flips sign: $\cos(\pi-\theta)=-\cos\theta$). Antipodal contributions now \emph{add} rather than cancel. Together with the tangential viscous drag (which also pushes the same way everywhere), this yields a finite drag.
+\end{itemize}
+\textit{Significance:} Viscosity breaks the fore--aft symmetry of the pressure, converting the paradoxical zero into the physical Stokes drag. Both effects -- the pressure asymmetry and the direct viscous shear -- push the sphere downstream, and they combine in the ratio $1:2$.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Qualitative Picture: Flow Regimes vs.\ the Reynolds Number}\label{sec:lec21:regimes}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+Our exact solution is valid only for $\reynolds\ll1$. As $\reynolds$ increases (lower viscosity, faster flow, bigger body), the flow changes character qualitatively. The professor sketched the sequence:
+\begin{enumerate}
+  \item \textbf{$\reynolds\ll1$ -- laminar (Hebrew \emph{shichvati}, ``layered'').} Smooth, ordered, fore--aft-symmetric streamlines -- exactly our Stokes solution. Each fluid layer slides regularly past its neighbour. \emph{High} viscosity is what enforces this order.
+  \item \textbf{Intermediate $\reynolds$ -- wake and vortex shedding.} As viscosity is reduced the fore--aft symmetry breaks; a recirculating wake forms behind the body, and then vortices are shed \emph{alternately} from the two sides -- the \textbf{von Kármán vortex street}. (This is the ``glug-glug'' instability when emptying a bottle, and what makes flags flutter and wires ``sing'' in the wind.)
+  \item \textbf{$\reynolds\gg1$ -- turbulence.} The wake becomes disordered, random, chaotic motion. The orderly potential-flow picture is then a valid \emph{mathematical} solution but is \emph{not physical}: it is unstable and describes reality only in part of the domain.
+\end{enumerate}
+So it is counter-intuitively the \emph{high} viscosity (low $\reynolds$) that produces order, and reducing viscosity that breeds chaos.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=0.9]
+  % body
+  \fill[metalcol] (0,0) circle (0.45);
+  \draw[thick] (0,0) circle (0.45);
+  % incoming flow
+  \foreach \yy in {-1.2,-0.6,0,0.6,1.2}{ \draw[vvec] (-2.4,\yy)--(-1.7,\yy);}
+  \node[vcol] at (-2.4,1.6) {\small $\bvec V_0$};
+  % alternating vortices downstream (von Karman street)
+  \foreach \cx/\sgn in {1.4/1, 2.6/-1, 3.8/1, 5.0/-1}{
+    \draw[myred,thick,->] (\cx,0.55*\sgn) ++(0:0.32) arc (0:330:0.32);
+  }
+  \node[font=\small] at (3.2,-1.5) {von Kármán vortex street (increasing $\reynolds$)};
+  \draw[->,gray] (-2.6,-1.05)--(5.7,-1.05);
+\end{tikzpicture}
+\caption{As $\reynolds$ grows past the Stokes regime, the wake destabilises: vortices are shed alternately from the two sides of the body, forming the von Kármán vortex street; at still higher $\reynolds$ the wake becomes turbulent.}
+\label{fig:lec21_vortex}
+\end{figure}
+
+\subsubsection*{The boundary layer}
+A final subtlety for $\reynolds\gg1$: although viscosity is negligible over \emph{most} of the domain (so ideal flow applies there), it can \emph{never} be neglected in a thin \textbf{boundary layer} hugging the body surface. There the no-slip condition $\vel=\bvec0$ must be met, and the velocity must rise from zero to its ideal-flow value across a very thin layer -- so the velocity gradients (and hence the viscous term) are large no matter how small $\eta$ is. The layer thins as $\reynolds$ grows. Solving a high-$\reynolds$ flow therefore means matching an outer ideal-flow region to an inner boundary-layer region.
+\textit{Significance:} The boundary layer (Prandtl) reconciles ``ideal flow almost everywhere'' with ``no-slip at the wall,'' and is where viscous drag and flow separation originate. A proper treatment is beyond this course, but the conceptual point -- a singular limit where viscosity matters in a thin layer however small it is -- is essential.
+
+\nt{Looking ahead: next lecture turns to a different phenomenon in which viscosity is \emph{not} important -- small \textbf{disturbances propagating in a fluid} (e.g.\ the pressure pulse from a tap or a struck surface), i.e.\ sound waves in fluids, the fluid analogue of the elastic waves studied earlier.}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection*{Summary}
+%%─────────────────────────────────────────────────────────────────────────────
+\begin{itemize}
+  \item \textbf{Opening exercise:} for combined Couette--Poiseuille channel flow (pressure $P'$, top plate at $U$): drag $F_d=P'A$ (with $A=h$) -- Couette shears cancel between the two walls; dissipation $\tilde{D}=P'Q+F_U U$ with $F_U=\sigma_{xy}|_{y=h}=\eta U/h-P'h/2$ -- the Poiseuille--Couette cross-term vanishes in both the integral and the power balance.
+  \item \textbf{Reduction:} incompressibility $\Rightarrow\vel-\bvec V_0=\grad\times\bvec A$; linearity + pseudovector parity + symmetry $\Rightarrow\bvec A=\grad f(r)\times\bvec V_0$, a single scalar stream function.
+  \item \textbf{Equation:} curl of Stokes' equation kills $p$ and gives $\lapl\bvec\omega=0$; in terms of $f$ this is the \textbf{biharmonic equation} $\nabla^4 f=0$ (a fourth-order ODE for $f(r)$).
+  \item \textbf{Solution:} $f=ar+b/r$ (drop $r^2$ and const by far-field), with $a=\tfrac34 R$, $b=\tfrac14 R^3$ from no-slip at $r=R$.
+  \item \textbf{Velocity:} $v_r=V_0\cos\theta\,(1-\tfrac{3R}{2r}+\tfrac{R^3}{2r^3})$, $v_\theta=-V_0\sin\theta\,(1-\tfrac{3R}{4r}-\tfrac{R^3}{4r^3})$; slow $1/r$ (Stokeslet) plus $1/r^3$ dipole.
+  \item \textbf{Pressure:} $p=p_0-\tfrac{3\eta R}{2}\,\bvec V_0\cdot\uvec r/r^2\propto\cos\theta$ -- fore--aft \emph{antisymmetric}, unlike ideal flow.
+  \item \textbf{Stokes' law:} $\bvec F_D=6\pi\eta R\bvec V_0$ (one-third pressure/form drag, two-thirds viscous/friction drag); linear in $V_0$, $R$, $\eta$.
+  \item \textbf{Terminal velocity:} $V_{\text{term}}=mg/6\pi\eta R$ (with buoyancy $\tfrac29(\rho_s-\rho_f)gR^2/\eta$); exponential approach, basis of the falling-ball viscometer.
+  \item \textbf{d'Alembert resolved:} the odd-in-$\cos\theta$ viscous pressure does not cancel between antipodes, so the drag is non-zero -- viscosity breaks the symmetry that gave zero drag in ideal flow.
+  \item \textbf{Regimes:} laminar (Stokes) $\to$ von Kármán vortex street $\to$ turbulence as $\reynolds$ grows; the thin \textbf{boundary layer} keeps viscosity essential near the wall even at high $\reynolds$.
+\end{itemize}
+
+\subsection*{Further Reading}
+\begin{itemize}
+  \item L.\,D. Landau and E.\,M. Lifshitz, \textit{Fluid Mechanics} (Vol.\ 6): \S20 (Stokes' formula -- flow past a sphere at small $\reynolds$, the stream function and the $6\pi\eta R V$ drag), \S24 (the laminar wake), \S26--\S27 (boundary layers); \S40--\S41 for the transition to turbulence.
+  \item G.\,K. Batchelor, \textit{An Introduction to Fluid Dynamics}: \S4.9 (flow due to a moving sphere at small $\reynolds$ -- Stokes' solution), \S5.7 (boundary layers), \S5.11 (vortex shedding and the von Kármán street).
+  \item D.\,J. Acheson, \textit{Elementary Fluid Dynamics}: \S6.2 (Stokes flow past a sphere), \S6.4--6.5 (boundary layers and separation).
+  \item Stokes' law and the von Kármán vortex street overviews: \url{https://en.wikipedia.org/wiki/Stokes\%27_law} and \url{https://en.wikipedia.org/wiki/K\%C3\%A1rm\%C3\%A1n_vortex_street}.
+\end{itemize}
+
+\end{document}

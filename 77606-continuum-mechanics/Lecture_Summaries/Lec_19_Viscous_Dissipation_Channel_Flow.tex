@@ -1,0 +1,480 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\section{Lecture 19 -- Viscous Dissipation and Channel Flow}\label{sec:lec19}
+\begin{center}
+  \textbf{Date:} June 10, 2026
+\end{center}
+
+\subsection*{Overview}
+Having derived the Navier--Stokes equation in \cref{sec:lec18}, this lecture does two things. First it completes the \emph{conceptual} story of viscosity: viscosity \emph{breaks} the conservation laws that held for an ideal fluid, and we quantify the breaking. We introduce the language of an \textbf{anomaly} -- a quantity that is conserved in the unperturbed (ideal) theory but ceases to be conserved once a perturbation (here viscosity) is switched on. We already met the \emph{circulation/vorticity} anomaly (\cref{sec:lec18:vorticity}); now we treat the \emph{energy} anomaly in full. By a careful manipulation of the continuity and Navier--Stokes equations together with two thermodynamic identities, we (i) confirm the form of the energy flux $\bvec J_E$ that we had only \emph{asserted} for an ideal fluid, (ii) extract the \textbf{viscous dissipation rate} -- the rate at which mechanical energy is irreversibly converted to heat per unit volume -- and (iii) deduce, from the physical requirement that dissipation be positive, that the viscosity coefficients must satisfy $\eta\ge 0$, $\zeta\ge 0$.
+
+Second, the lecture turns to \emph{solving} Navier--Stokes. After a short orientation on why real flows demand numerical solution (discretisation of space and time), we work the first and simplest exact analytic solutions: steady, incompressible, unidirectional flow between two parallel plates. Two driving mechanisms give two named flows -- \textbf{Couette flow} (one plate dragged, linear velocity profile) and \textbf{Poiseuille flow} (a pressure gradient, parabolic profile) -- and in each case we compute the drag (shear) force the fluid exerts on the walls, recovering Newton's law of viscosity from \cref{sec:lec18:elementary} as an output rather than an input.
+
+\medskip\noindent\textbf{Topics:}
+\begin{enumerate}
+  \item Recap of Navier--Stokes; its status as the most general equation with $\le 2$ spatial derivatives; smallness of higher corrections
+  \item Anomalies: conserved quantities broken by a perturbation; the vorticity anomaly; the quantum $[\hat x,\hat p]$ analogy
+  \item Thermodynamic preliminaries: isentropic flow, $d\varepsilon=(p/\rho^2)\dd{\rho}$ and $dh=dp/\rho$
+  \item Energy density and energy flux; the full derivation of $\partial_t(\rho E)=-\divg\bvec J_E-(\text{dissipation})$
+  \item The dissipation rate $\sigma'_{ij}\partial_j v_i=\tfrac{\eta}{2}(\partial_iv_j+\partial_jv_i-\tfrac23\delta_{ij}\divg\vel)^2+\zeta(\divg\vel)^2$ and the positivity $\eta,\zeta\ge0$
+  \item Numerical solution of Navier--Stokes: discretisation, difference equations, algebraic systems
+  \item Channel flow setup: incompressible, unidirectional; continuity and the two Navier--Stokes components
+  \item Case A -- Couette flow: linear profile, drag force on the plates
+  \item Case B -- Poiseuille flow: parabolic profile, maximum velocity, wall drag
+\end{enumerate}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Recap: Navier--Stokes as an Effective Theory}\label{sec:lec19:recap}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Conceptual Background}
+The central result of the previous lecture, and arguably of the course, is the Navier--Stokes equation. With $\material{\vel}=\partial_t\vel+(\vel\cdot\grad)\vel$ the material derivative (left side identical in form to Euler's equation, now multiplied by $\rho$), and keeping only internal forces (pressure and viscosity, no external body force):
+\begin{equation}
+  \boxed{\;\rho\,\material{\vel}
+    = \rho\Big(\pdv{\vel}{t}+(\vel\cdot\grad)\vel\Big)
+    = -\grad p + \eta\,\lapl\vel + \Big(\zeta+\tfrac13\eta\Big)\grad(\divg\vel)\;}
+  \label{eq:lec19_NS}
+\end{equation}
+Recall $\lapl\vel$ is the \emph{vector} Laplacian: in Cartesian coordinates it acts componentwise, $(\lapl\vel)_i=\lapl v_i$, but in cylindrical/spherical coordinates it is \emph{not} the naive scalar Laplacian of each component and must be developed carefully. The final term involves $\grad(\divg\vel)$ and therefore \emph{vanishes for incompressible flow} ($\divg\vel=0$), where the coefficient combination $\zeta+\tfrac13\eta$ becomes irrelevant.
+
+\paragraph{Why ``universal''.} Equation \eqref{eq:lec19_NS} is the \emph{most general} equation of motion containing up to \emph{two} spatial derivatives of the velocity. Both viscous terms carry exactly two spatial derivatives ($\lapl\vel$ and $\grad\divg\vel$); there is no term with three. This is the conclusion of the effective-field-theory construction of \cref{sec:lec18:eft}: symmetry fixes the structure, and we truncate at the leading non-trivial order in gradients.
+
+\paragraph{Why it is nonetheless an approximation.} Navier--Stokes is the leading truncation, and occasionally further terms are required -- e.g.\ for \emph{non-Newtonian} fluids, in which $\sigma'_{ij}$ is not linear in the velocity gradients. Higher corrections come with \emph{additional} spatial derivatives, and each extra derivative, to remain dimensionless, must be accompanied by a length ratio
+\begin{equation}
+  \frac{L_{\text{atomic}}}{L_{\text{system}}}\sim\frac{10\ \mathrm{nm}}{\text{cm}\text{--}\text{m}}\ll 1 .
+  \label{eq:lec19_smallness}
+\end{equation}
+The numerator is the microscopic (molecular) scale at which the continuum picture breaks down, $\sim10\ \mathrm{nm}$; the denominator is the macroscopic system size. For ordinary fluids (water, air) at ordinary scales this ratio is minuscule, so Navier--Stokes is an excellent approximation -- failing only for very small systems (nano-devices) or anomalous fluids.
+\textit{Significance:} The same effective-field-theory logic that \emph{builds} Navier--Stokes also bounds its error: corrections are suppressed by powers of (atomic size)/(system size).
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Anomalies: Conservation Laws Broken by Viscosity}\label{sec:lec19:anomaly}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Conceptual Background}
+An ideal fluid possessed several conserved quantities: mass, momentum, energy (both as an energy-flux balance and via Bernoulli), and circulation (Kelvin's theorem). Viscosity, the new perturbation, spoils some of these. We adopt a standard piece of physics terminology for this phenomenon.
+
+\dfn[anomaly]{Anomaly}{%
+  An \emph{anomaly} is a quantity that is conserved in the unperturbed theory but \emph{ceases to be conserved} once a particular perturbation is turned on.
+}
+\textit{Significance:} The word names a recurring pattern across physics: a symmetry/conservation law of an idealised system that the more complete description violates. Here the ``perturbation'' is viscosity; the broken laws are circulation and energy.
+
+\nt{The professor offered a quantum-mechanical analogy. Classically the position and momentum of a particle commute, $\{x,p\}\to 0$ in the sense that $xp-px=0$; once $\hbar$ is switched on, $[\hat x,\hat p]=i\hbar\neq0$. The vanishing classical commutator is ``anomalously'' violated by the quantum perturbation $\hbar$, exactly as the conserved ideal-flow quantities are violated by the viscous perturbation $\eta$. (A second example: relativistic corrections in $1/c$ that are absent in the non-relativistic limit.)}
+
+\subsubsection*{The vorticity anomaly (recap)}
+The first anomaly we found was the breaking of \textbf{circulation} conservation. For incompressible flow, taking the curl of Navier--Stokes turned Kelvin's frozen-in law into a diffusion equation for the vorticity $\bvec\omega=\curl\vel$:
+\begin{equation}
+  \pdv{\bvec\omega}{t}-\curl(\vel\times\bvec\omega)=\frac{\eta}{\rho}\,\lapl\bvec\omega=\nu\,\lapl\bvec\omega .
+  \label{eq:lec19_vorticity}
+\end{equation}
+The left side is exactly the ideal-flow conservation statement; the right side is the viscous source, proportional to $\eta$ (equivalently the kinematic viscosity $\nu=\eta/\rho$), and it involves the vector Laplacian of $\bvec\omega$. In the incompressible case treated here the would-be compressible terms drop out. We now turn to the \emph{energy} anomaly.
+
+\nt{Momentum (Hebrew \emph{tnufa}, $\bvec p$) \emph{remains} conserved in the absence of external forces: the viscous stresses merely \emph{transport} momentum within the fluid, so total momentum is still conserved. It is energy and circulation, not momentum, that the internal friction spoils.}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Energy Dissipation in a Viscous Fluid}\label{sec:lec19:dissipation}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+For an ideal fluid energy satisfied a strict balance: the time derivative of the energy density equalled minus the divergence of an energy flux $\bvec J_E$, with \emph{no} source. Viscosity is internal friction, and like all friction in mechanics it dissipates: in the presence of friction (and the resistive stresses it produces) the system \emph{loses} mechanical energy, converting it to heat. We therefore expect
+\begin{equation}
+  \pdv{(\rho E)}{t} + \divg\bvec J_E = -\,(\text{dissipation}) \;\le 0\ \text{source},
+  \label{eq:lec19_energy_target}
+\end{equation}
+with the dissipation proportional to the viscosity coefficients and \emph{negative-definite} as a source (energy decreases). Our goals: derive \eqref{eq:lec19_energy_target} from the equations of motion, thereby (a) \emph{confirming} the previously-asserted form of $\bvec J_E$ for an ideal fluid and finding its viscous correction, and (b) computing the dissipation rate explicitly.
+
+\subsubsection*{Energy density and flux: the quantities involved}
+The energy density (energy per unit \emph{volume}) has a kinetic and a thermodynamic (internal) part:
+\begin{equation}
+  \rho E = \tfrac12\rho v^2 + \rho\varepsilon ,
+  \label{eq:lec19_energy_density}
+\end{equation}
+where $\varepsilon$ is the internal (thermodynamic) energy per unit \emph{mass}, so $\rho\varepsilon$ is internal energy per unit volume. The energy flux that we \emph{asserted} for the ideal fluid had the form ``density $\times$ velocity'', but with the enthalpy replacing the internal energy:
+\begin{equation}
+  \bvec J_E^{\text{ideal}} = \rho\vel\Big(\tfrac12 v^2 + h\Big),
+  \label{eq:lec19_JE_ideal}
+\end{equation}
+with $h=\varepsilon+p/\rho$ the enthalpy per unit mass. The extra piece beyond $\tfrac12 v^2+\varepsilon$ is $p/\rho$, the flow work done by pressure -- ``something like $pv$'' -- in analogy with the mass and charge fluxes $\rho\vel$. The whole point of the derivation is to \emph{prove} \eqref{eq:lec19_JE_ideal} and find what viscosity adds to it.
+
+\subsubsection*{Mathematical Setup: two thermodynamic identities}
+We assume the flow is \textbf{isentropic} (no heat conduction, $ds=0$), the relevant regime when we use energy and enthalpy in compressible flow. We need the differentials of $\varepsilon$ and $h$.
+
+\paragraph{Internal energy.} The first law per unit mass, with $1/\rho$ the specific volume, reads $d\varepsilon = T\dd{s} - p\,d(1/\rho)$. Isentropic ($ds=0$):
+\begin{equation}
+  d\varepsilon = -p\,d\!\left(\frac{1}{\rho}\right) = -p\left(-\frac{d\rho}{\rho^2}\right) = \frac{p}{\rho^2}\dd{\rho} .
+  \label{eq:lec19_deps}
+\end{equation}
+Here we used $d(1/\rho)=-d\rho/\rho^2$.
+
+\paragraph{Enthalpy.} By definition $h=\varepsilon+p/\rho$, so $dh=d\varepsilon+d(p/\rho)=d\varepsilon+\dfrac{dp}{\rho}-\dfrac{p}{\rho^2}d\rho$. Substituting \eqref{eq:lec19_deps}, the $d\rho$ pieces cancel and one term survives:
+\begin{equation}
+  \boxed{\dd{h}=\frac{dp}{\rho}\,}\qquad(\text{isentropic}).
+  \label{eq:lec19_dh}
+\end{equation}
+\textit{Significance:} For isentropic flow the enthalpy gradient is simply $\grad h=\grad p/\rho$ -- exactly the combination that appears on the right of Euler/Navier--Stokes. These two identities are the only thermodynamics we need.
+
+\subsubsection{The Derivation}\label{sec:lec19:dissipation_derivation}
+
+\subsubsection*{Mathematical Setup}
+We compute $\partial_t(\tfrac12\rho v^2+\rho\varepsilon)$ piece by piece, using continuity for any $\partial_t\rho$ and Navier--Stokes for any $\partial_t\vel$. Throughout, index notation and the Einstein summation convention are used; $\sigma'_{ij}$ is the viscous stress of \eqref{eq:lec18_visc_stress}.
+
+\paragraph{Kinetic part.} Differentiate $\tfrac12\rho v^2$:
+\begin{equation}
+  \pdv{}{t}\Big(\tfrac12\rho v^2\Big)=\tfrac12 v^2\,\partial_t\rho + \rho\,v_i\,\partial_t v_i .
+  \label{eq:lec19_kin1}
+\end{equation}
+Use continuity $\partial_t\rho=-\partial_k(\rho v_k)$ in the first term. For the second, take the $i$-component of Navier--Stokes written as a force balance per unit volume,
+\begin{equation}
+  \rho\,\partial_t v_i = -\rho\,v_k\partial_k v_i - \partial_i p + \partial_k\sigma'_{ik},
+  \label{eq:lec19_NS_index}
+\end{equation}
+where $\partial_k\sigma'_{ik}$ collects \emph{all} the viscous force ($\eta$- and $\zeta$-dependent) terms. Then $\rho v_i\partial_t v_i = -\rho v_i v_k\partial_k v_i - v_i\partial_i p + v_i\partial_k\sigma'_{ik}$, and noting $\rho v_i v_k\partial_k v_i=\rho v_k\partial_k(\tfrac12 v^2)$,
+\begin{equation}
+  \pdv{}{t}\Big(\tfrac12\rho v^2\Big)
+    = -\tfrac12 v^2\,\partial_k(\rho v_k) - \rho v_k\partial_k\!\Big(\tfrac12 v^2\Big)
+      - v_i\partial_i p + v_i\partial_k\sigma'_{ik}.
+  \label{eq:lec19_kin2}
+\end{equation}
+The first two terms combine by the product rule into a single divergence,
+\begin{equation}
+  -\tfrac12 v^2\,\partial_k(\rho v_k) - \rho v_k\,\partial_k\!\Big(\tfrac12 v^2\Big)
+    = -\partial_k\!\Big[\rho v_k\,\tfrac12 v^2\Big].
+  \label{eq:lec19_kin_div}
+\end{equation}
+For the viscous term we ``integrate by parts'' algebraically (split a total derivative):
+\begin{equation}
+  v_i\,\partial_k\sigma'_{ik} = \partial_k\big(v_i\sigma'_{ik}\big) - \sigma'_{ik}\,\partial_k v_i .
+  \label{eq:lec19_visc_split}
+\end{equation}
+Collecting,
+\begin{equation}
+  \pdv{}{t}\Big(\tfrac12\rho v^2\Big)
+    = -\partial_k\!\Big[\rho v_k\tfrac12 v^2 - v_i\sigma'_{ik}\Big]
+      - v_i\partial_i p - \sigma'_{ik}\partial_k v_i .
+  \label{eq:lec19_kin_final}
+\end{equation}
+
+\paragraph{Internal part.} Differentiate $\rho\varepsilon$: $\partial_t(\rho\varepsilon)=\varepsilon\,\partial_t\rho+\rho\,\partial_t\varepsilon$. The material derivative of $\varepsilon$ follows from \eqref{eq:lec19_deps}, $D\varepsilon/Dt=(p/\rho^2)\,D\rho/Dt$, and continuity gives $D\rho/Dt=\partial_t\rho+v_k\partial_k\rho=-\rho\,\divg\vel$. Hence $\rho\,D\varepsilon/Dt=-p\,\divg\vel$, and since $\partial_t(\rho\varepsilon)=-\partial_k(\rho\varepsilon v_k)+\rho\,D\varepsilon/Dt$,
+\begin{equation}
+  \pdv{(\rho\varepsilon)}{t} = -\partial_k(\rho\varepsilon v_k) - p\,\divg\vel .
+  \label{eq:lec19_int_final}
+\end{equation}
+
+\paragraph{Assembling, and the role of the pressure terms.} Add \eqref{eq:lec19_kin_final} and \eqref{eq:lec19_int_final}. The two pressure pieces combine into one divergence,
+\begin{equation}
+  - v_i\partial_i p - p\,\divg\vel = -\partial_i(p\,v_i) = -\divg(p\vel),
+  \label{eq:lec19_pressure_combine}
+\end{equation}
+which is precisely the flow-work term. Folding $p\vel=\rho\vel\,(p/\rho)$ together with the $\tfrac12 v^2$ and $\varepsilon$ flux terms reconstructs the enthalpy $h=\varepsilon+p/\rho$:
+\begin{equation}
+  -\partial_k\Big[\rho v_k\tfrac12 v^2\Big] - \partial_k(\rho\varepsilon v_k) - \partial_i(pv_i)
+    = -\partial_k\Big[\rho v_k\Big(\tfrac12 v^2 + h\Big)\Big].
+  \label{eq:lec19_enthalpy_recon}
+\end{equation}
+The result is the central energy balance:
+
+\thm[energy-dissipation]{Energy Balance and Viscous Dissipation}{%
+  \begin{equation}
+    \boxed{\;\pdv{}{t}\Big(\tfrac12\rho v^2+\rho\varepsilon\Big)
+      = -\,\partial_k\underbrace{\Big[\rho v_k\Big(\tfrac12 v^2+h\Big)-v_i\sigma'_{ik}\Big]}_{\displaystyle (\bvec J_E)_k}
+      \;-\;\underbrace{\sigma'_{ik}\,\partial_k v_i}_{\text{dissipation}}\;}
+    \label{eq:lec19_master}
+  \end{equation}
+}
+\textit{Significance:} Three results in one stroke. (i) The energy flux is confirmed: its inviscid part is exactly the asserted $\rho\vel(\tfrac12 v^2+h)$ of \eqref{eq:lec19_JE_ideal}; (ii) viscosity \emph{corrects} the flux by $-v_i\sigma'_{ik}$ (the fluid does work against viscous stresses); (iii) there is now a genuine \emph{source} term $-\sigma'_{ik}\partial_k v_i$ -- the dissipation -- absent for an ideal fluid, where $\sigma'=0$ makes the right side a pure divergence and energy is conserved.
+
+\subsubsection{Simplifying the Dissipation Rate}\label{sec:lec19:dissipation_simplify}
+
+\subsubsection*{Mathematical Setup}
+The dissipation per unit volume is $\sigma'_{ik}\partial_k v_i$. We simplify it using two facts. First, $\sigma'_{ik}$ is \emph{symmetric} (from conservation of angular momentum, established back in elasticity); contracting a symmetric tensor with $\partial_k v_i$ keeps only the symmetric part of the gradient -- the strain-rate tensor $D_{ik}=\tfrac12(\partial_i v_k+\partial_k v_i)$ of \cref{sec:lec18:decomp}. The antisymmetric part (a rigid rotation) drops:
+\begin{equation}
+  \sigma'_{ik}\,\partial_k v_i = \sigma'_{ik}\,D_{ik}.
+  \label{eq:lec19_diss_sym}
+\end{equation}
+Second, substitute the Newtonian constitutive relation written in deviatoric/isotropic form. Define the traceless symmetric combination
+\begin{equation}
+  S_{ik}\equiv \partial_i v_k+\partial_k v_i-\tfrac23\delta_{ik}\,\divg\vel,
+  \qquad S_{ii}=0,
+  \label{eq:lec19_Sdef}
+\end{equation}
+so that $\sigma'_{ik}=\eta\,S_{ik}+\zeta\,\delta_{ik}\,\divg\vel$. We also split the strain rate the same way, $D_{ik}=\tfrac12 S_{ik}+\tfrac13\delta_{ik}\,\divg\vel$. Then
+\begin{align}
+  \sigma'_{ik}D_{ik}
+    &= \big(\eta S_{ik}+\zeta\delta_{ik}\divg\vel\big)\Big(\tfrac12 S_{ik}+\tfrac13\delta_{ik}\divg\vel\Big) \notag\\
+    &= \tfrac12\eta\,S_{ik}S_{ik} + \zeta(\divg\vel)^2 ,
+  \label{eq:lec19_diss_expand}
+\end{align}
+where the cross terms vanish because $S_{ik}$ is traceless ($S_{ik}\delta_{ik}=0$) and $\delta_{ik}\delta_{ik}=3$ turns $\zeta\cdot\tfrac13\cdot3(\divg\vel)^2$ into $\zeta(\divg\vel)^2$. Hence:
+
+\thm[dissipation-rate]{Viscous Dissipation Rate (per unit volume)}{%
+  \begin{equation}
+    \boxed{\;\pdv{(\rho E)}{t}+\divg\bvec J_E
+      = -\Big[\frac{\eta}{2}\Big(\partial_i v_k+\partial_k v_i-\tfrac23\delta_{ik}\,\divg\vel\Big)^2
+        + \zeta\,(\divg\vel)^2\Big]\;}
+    \label{eq:lec19_diss_result}
+  \end{equation}
+  where $(\cdots)^2$ denotes the full tensor contraction $S_{ik}S_{ik}$ (the trace of the matrix squared).
+}
+\textit{Significance:} Mechanical energy is lost at this rate everywhere in the fluid. The shear part ($\eta$) is driven by the \emph{deviatoric} (shape-changing) strain rate; the bulk part ($\zeta$) by the \emph{rate of volume change} $\divg\vel$ and so vanishes for incompressible flow.
+
+\paragraph{Positivity $\Rightarrow$ $\eta,\zeta\ge0$.} Physically, friction must \emph{remove} energy, never create it: the dissipation must be positive. The right side of \eqref{eq:lec19_diss_result} is a sum of two manifestly non-negative squares multiplied by $\eta$ and $\zeta$. For the total to be $\ge0$ for \emph{every} flow,
+\begin{equation}
+  \boxed{\;\eta\ge0,\qquad \zeta\ge0.\;}
+  \label{eq:lec19_positivity}
+\end{equation}
+\textit{Significance:} A new, non-trivial constraint on Navier--Stokes obtained for free: the viscosity coefficients cannot be negative. A negative coefficient would mean friction \emph{producing} energy -- the reverse of friction, never seen in nature. This is a thermodynamic stability condition.
+
+\subsubsection*{Method}
+To compute the energy dissipation in a viscous flow:
+\begin{enumerate}
+  \item Write the energy density $\rho E=\tfrac12\rho v^2+\rho\varepsilon$ and differentiate in time.
+  \item Eliminate $\partial_t\rho$ with continuity and $\partial_t\vel$ with Navier--Stokes.
+  \item Collect all total-derivative pieces into a divergence; the inviscid remainder reconstructs $\bvec J_E=\rho\vel(\tfrac12v^2+h)$ using the isentropic identities $d\varepsilon=(p/\rho^2)d\rho$, $dh=dp/\rho$.
+  \item The leftover (non-divergence) viscous term is the dissipation: $\sigma'_{ik}\partial_k v_i=\sigma'_{ik}D_{ik}$.
+  \item Substitute $\sigma'_{ik}=\eta S_{ik}+\zeta\delta_{ik}\divg\vel$ to obtain $\tfrac{\eta}{2}S_{ik}^2+\zeta(\divg\vel)^2$.
+\end{enumerate}
+
+\nt{Pitfall: the deviatoric bracket must keep the full $-\tfrac23\delta_{ik}\divg\vel$ subtraction \emph{inside} the square, and the prefactor is $\tfrac{\eta}{2}$, not $\eta$. (In lecture a missing bracket and a missing $\tfrac12$ were corrected mid-derivation.) Forgetting the $-\tfrac23\delta_{ik}\divg\vel$ double-counts the bulk dissipation into the shear term; using $\eta$ instead of $\tfrac{\eta}{2}$ over-counts by a factor of two. For incompressible flow ($\divg\vel=0$) the bracket reduces to $\partial_iv_k+\partial_kv_i$ and the $\zeta$ term is absent.}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Interlude: Numerical Solution of Navier--Stokes}\label{sec:lec19:numerics}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Conceptual Background}
+Navier--Stokes is now in hand. Solving it is another matter. Real flows -- past an aircraft wing, around a submarine -- produce turbulence, eddies and fully three-dimensional complexity with \emph{no} closed-form solution; engineers obtain them by simulation (this is the basis of computational fluid dynamics, ``CFD''). The idea of a numerical solution:
+\begin{enumerate}
+  \item \textbf{Discretise} space and time. One does not solve for $\vel(\bvec x,t)$ at every continuous point and instant, but only on a grid of points $\{\bvec x_i\}$ and at discrete time steps $\{t_j\}$.
+  \item \textbf{Replace derivatives by differences.} Differential equations become \emph{difference} equations; e.g.\ $\partial_x v\to (v_{i+1}-v_i)/\Delta x$.
+  \item The result is a large system of \emph{algebraic} equations for the grid values $v(\bvec x_i,t_j)$, solved step by step from an initial condition.
+\end{enumerate}
+\textit{Significance:} In class we restrict to \emph{exact analytic} solutions in simple geometries; they build the physical intuition that even numerics ultimately rely on. Numerical methods are the subject of a dedicated course and are not developed here.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{First Exact Solutions: Flow Between Two Plates}\label{sec:lec19:channel}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+The simplest exact solutions of Navier--Stokes describe steady viscous flow in the gap between two infinite parallel plates, separated by a distance $h$, with the flow directed along $x$. Unlike an ideal fluid (which needs no forcing to keep flowing), a viscous fluid dissipates and so requires some agency to drive it. There are two such agencies, giving two cases:
+\begin{itemize}
+  \item \textbf{Case A (moving plate):} the lower plate is fixed, the upper plate is dragged at speed $v_0$ and pulls the fluid along by viscous adhesion. (Couette flow.)
+  \item \textbf{Case B (pressure gradient):} both plates are fixed; a pressure difference along $x$ pushes the fluid through. (Plane Poiseuille flow.)
+\end{itemize}
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=1.0]
+  % ---- Case A: Couette ----
+  \begin{scope}
+    \fill[metalcol!40] (-0.2,1.8) rectangle (3.4,2.05);
+    \foreach \xh in {-0.1,0.1,...,3.3}{ \draw[metalcol!30!black,thin] (\xh,1.8)--(\xh+0.15,2.05); }
+    \draw[very thick] (-0.2,1.8)--(3.4,1.8);
+    \fill[metalcol!40] (-0.2,-0.25) rectangle (3.4,0.0);
+    \foreach \xh in {-0.1,0.1,...,3.3}{ \draw[metalcol!30!black,thin] (\xh,-0.25)--(\xh+0.15,0.0); }
+    \draw[very thick] (-0.2,0.0)--(3.4,0.0);
+    \draw[force] (0.4,2.18)--(1.8,2.18) node[right,black,font=\small]{$v_0$};
+    % linear profile arrows
+    \foreach \y in {0.0,0.3,...,1.8}{ \draw[vvec] (1.0,\y)--(1.0+0.78*\y,\y); }
+    \draw[myred,thick,dashed] (1.0,0.0)--(1.0+0.78*1.8,1.8);
+    \draw[->,gray] (0.6,0.0)--(0.6,2.0) node[left,black,font=\small]{$y$};
+    \node[font=\small] at (0.4,0.9) {$h$};
+    \node[font=\small] at (1.7,-0.55) {\textbf{(A) Couette}};
+  \end{scope}
+  % ---- Case B: Poiseuille ----
+  \begin{scope}[xshift=5.6cm]
+    \fill[metalcol!40] (-0.2,1.8) rectangle (3.4,2.05);
+    \foreach \xh in {-0.1,0.1,...,3.3}{ \draw[metalcol!30!black,thin] (\xh,1.8)--(\xh+0.15,2.05); }
+    \draw[very thick] (-0.2,1.8)--(3.4,1.8);
+    \fill[metalcol!40] (-0.2,-0.25) rectangle (3.4,0.0);
+    \foreach \xh in {-0.1,0.1,...,3.3}{ \draw[metalcol!30!black,thin] (\xh,-0.25)--(\xh+0.15,0.0); }
+    \draw[very thick] (-0.2,0.0)--(3.4,0.0);
+    % parabolic profile arrows: vmax at y=0.9, zero at 0 and 1.8
+    \foreach \y in {0.0,0.3,...,1.8}{ \pgfmathsetmacro\L{2.3*\y*(1.8-\y)/(0.9*0.9)} \draw[vvec] (0.9,\y)--(0.9+0.42*\L,\y); }
+    \draw[myred,thick,dashed] plot[smooth,domain=0:1.8,samples=30,variable=\y]
+      ({0.9+0.42*2.3*\y*(1.8-\y)/(0.9*0.9)},{\y});
+    \draw[force] (-0.0,2.35)--(1.0,2.35) node[right,black,font=\small]{$-\grad p$};
+    \node[font=\small] at (1.7,-0.55) {\textbf{(B) Poiseuille}};
+  \end{scope}
+\end{tikzpicture}
+\caption{Steady unidirectional viscous flow between two plates. \textbf{(A) Couette:} the top plate moves at $v_0$, the bottom is fixed; the profile is \emph{linear}. \textbf{(B) Poiseuille:} both plates fixed, a pressure gradient drives the flow; the profile is a \emph{parabola}, vanishing at both walls (no-slip) and maximal at the centre.}
+\label{fig:lec19_channel}
+\end{figure}
+
+\subsubsection*{Assumptions and the governing equations}
+We assume:
+\begin{itemize}
+  \item \textbf{Incompressible} flow, $\divg\vel=0$ (no compression or expansion).
+  \item \textbf{Unidirectional} flow: $\vel=\big(v_x,0,0\big)$, all motion along $x$. (A notion we last used in solid mechanics, where quantities depended on a single axis.) We allow $v_x=v_x(x,y)$ for now and will show the $x$-dependence drops.
+  \item \textbf{Steady} flow, $\partial_t\vel=0$.
+  \item \textbf{No-slip} boundary condition at each wall (\cref{sec:lec18:bc_nu}): the fluid velocity equals the wall velocity there.
+\end{itemize}
+The equations are continuity ($\divg\vel=0$), incompressible Navier--Stokes \eqref{eq:lec18_NS_incomp}, and the boundary conditions. No equation of state is needed (incompressible).
+
+\paragraph{Step 1 -- continuity.} With $\vel=(v_x,0,0)$, $\divg\vel=\partial_x v_x=0$. So $v_x$ does not depend on $x$:
+\begin{equation}
+  \partial_x v_x = 0 \;\Longrightarrow\; v_x = v_x(y).
+  \label{eq:lec19_continuity}
+\end{equation}
+The velocity profile depends on $y$ alone.
+
+\paragraph{Step 2 -- the $y$-component of Navier--Stokes.} Project \eqref{eq:lec18_NS_incomp} onto $\uvec y$. Since $v_y\equiv0$ and the advection term is proportional to $\vel$ (also along $x$), every term vanishes except the pressure gradient:
+\begin{equation}
+  0 = -\frac{1}{\rho}\,\partial_y p \;\Longrightarrow\; \partial_y p=0
+  \;\Longrightarrow\; p=p(x).
+  \label{eq:lec19_ycomp}
+\end{equation}
+The pressure depends only on $x$. (Note the complementary dependences: the \emph{velocity} on $y$ only, the \emph{pressure} on $x$ only.)
+
+\paragraph{Step 3 -- the $x$-component of Navier--Stokes.} Project onto $\uvec x$. The advection term is $(\vel\cdot\grad)v_x=v_x\partial_x v_x=0$ by \eqref{eq:lec19_continuity}. The Laplacian is $\lapl v_x=\partial_x^2 v_x+\partial_y^2 v_x=\partial_y^2 v_x$ (the $x$-derivative vanishes since $v_x=v_x(y)$). For steady flow:
+\begin{equation}
+  0 = -\frac{1}{\rho}\,\partial_x p + \nu\,\partial_y^2 v_x .
+  \label{eq:lec19_xcomp}
+\end{equation}
+Multiplying by $\rho$ and using $\nu\rho=\eta$ (returning from the kinematic to the dynamic viscosity):
+\begin{equation}
+  \boxed{\;\partial_x p = \eta\,\partial_y^2 v_x .\;}
+  \label{eq:lec19_separation}
+\end{equation}
+The left side depends only on $x$; the right only on $y$. A function of $x$ can equal a function of $y$ only if both equal the \emph{same constant} -- this is separation of variables:
+\begin{equation}
+  \partial_x p = \eta\,\partial_y^2 v_x = \text{const}.
+  \label{eq:lec19_const}
+\end{equation}
+\textit{Significance:} Everything up to this point is common to both cases; the constant -- whether it is zero or not -- distinguishes Couette from Poiseuille.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsubsection{Case A: Couette Flow}\label{sec:lec19:couette}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+The lower plate at $y=0$ is fixed; the upper plate at $y=h$ moves at $v_0$. There is no applied pressure gradient -- the motion is driven entirely by the dragged plate -- so the separation constant is zero:
+\begin{equation}
+  \partial_x p = 0 \;\Longrightarrow\; \eta\,\partial_y^2 v_x = 0 \;\Longrightarrow\; \partial_y^2 v_x=0 ,
+  \qquad p=\text{const}.
+  \label{eq:lec19_couette_eq}
+\end{equation}
+A vanishing second derivative means $v_x$ is \emph{linear} in $y$. The no-slip conditions are
+\begin{equation}
+  v_x(y{=}0)=0,\qquad v_x(y{=}h)=v_0 ,
+  \label{eq:lec19_couette_bc}
+\end{equation}
+the fluid sticking to the stationary bottom and the moving top. The unique linear function satisfying these is
+
+\thm[couette]{Couette (Plane Drag) Flow}{%
+  \begin{equation}
+    \boxed{\;v_x(y)=\frac{y}{h}\,v_0,\qquad p=\text{const}.\;}
+    \label{eq:lec19_couette_profile}
+  \end{equation}
+}
+\textit{Significance:} The profile is a straight line from $0$ at the fixed wall to $v_0$ at the moving wall -- the simplest continuous interpolation, confirming the intuitive guess. The strain rate $\partial_y v_x=v_0/h$ is \emph{uniform} across the gap.
+
+\paragraph{Drag force on the plates.} The upper plate moves at constant velocity, so the net force on it is zero: the external pulling force must exactly balance the viscous drag the fluid exerts \emph{backwards} on it. The force per unit area the fluid exerts on a wall is $dF_i=\sigma_{ij}\,dS_j$, with the full stress
+\begin{equation}
+  \sigma_{ij}=-p\,\delta_{ij}+\eta\big(\partial_i v_j+\partial_j v_i\big),
+  \label{eq:lec19_couette_stress}
+\end{equation}
+the deviatoric subtraction $-\tfrac23\delta_{ij}\divg\vel$ being absent because the flow is incompressible. We want the \emph{tangential} ($x$) component on the upper wall, whose inward normal (into the fluid) is $-\uvec y$, i.e.\ $dS_j=-\delta_{jy}\dd{A}$. The pressure is normal ($\propto\delta_{ij}$) and contributes only to $F_y$, not to the shear; the only surviving piece is
+\begin{equation}
+  \frac{dF_x}{dA} = -\,\sigma_{xy}
+    = -\,\eta\big(\partial_x v_y+\partial_y v_x\big)
+    = -\,\eta\,\partial_y v_x = -\,\eta\,\frac{v_0}{h}.
+  \label{eq:lec19_couette_drag}
+\end{equation}
+\textit{Significance:} The drag on the upper plate is $\eta v_0/h$ directed along $-x$ (backwards), so an equal external force along $+x$ must be applied to keep it moving. This is precisely Newton's law of viscosity \eqref{eq:lec18_newton_law}, $\sigma'_{xy}=\eta\,\partial_y v_x$, here \emph{derived} from Navier--Stokes rather than assumed. On the lower (fixed) wall the normal reverses to $+\uvec y$ and the sign flips: the fluid drags it forwards ($+x$), so it must be held back. The two external forces -- pulling the top right, holding the bottom left -- form the couple that balances the viscous stresses.
+
+\nt{Pitfall: with incompressible flow you may use $\sigma'_{ij}=\eta(\partial_iv_j+\partial_jv_i)$ \emph{without} the $-\tfrac23\delta_{ij}\divg\vel$ term, since $\divg\vel=0$. Keep careful track of the wall normal's direction: it points \emph{into the fluid} when computing the force the fluid exerts on that wall, and it differs in sign between the upper and lower plates -- which is why the two required external forces point in opposite directions.}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsubsection{Case B: Plane Poiseuille Flow}\label{sec:lec19:poiseuille}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+Now both plates are fixed and the flow is driven by a constant pressure gradient -- a pump applies a force $F$ that produces a pressure decreasing linearly along the channel. Because the pressure \emph{drops} in the flow direction, it is convenient to define a positive constant $P'$ equal to \emph{minus} the (negative) gradient:
+\begin{equation}
+  \partial_x p \equiv -P' = \text{const}<0,\qquad P'>0 .
+  \label{eq:lec19_Pdef}
+\end{equation}
+The separation relation \eqref{eq:lec19_const} becomes $\eta\,\partial_y^2 v_x=-P'$, i.e.
+\begin{equation}
+  \partial_y^2 v_x = -\frac{P'}{\eta}=\text{const}\neq0 .
+  \label{eq:lec19_poiseuille_eq}
+\end{equation}
+A constant (negative) second derivative gives a downward \emph{parabola}, vanishing at both fixed walls. The no-slip conditions are now symmetric:
+\begin{equation}
+  v_x(y{=}0)=0,\qquad v_x(y{=}h)=0 .
+  \label{eq:lec19_poiseuille_bc}
+\end{equation}
+Integrating $\partial_y^2 v_x=-P'/\eta$ twice and fixing the two constants by \eqref{eq:lec19_poiseuille_bc} gives $v_x=-\tfrac{P'}{2\eta}y^2+ay$ with $a=P'h/(2\eta)$, i.e.
+
+\thm[poiseuille]{Plane Poiseuille (Pressure-Driven) Flow}{%
+  \begin{equation}
+    \boxed{\;v_x(y)=\frac{P'}{2\eta}\,y\,(h-y),\qquad p(x)=p_0-P'\,x.\;}
+    \label{eq:lec19_poiseuille_profile}
+  \end{equation}
+}
+\textit{Significance:} The velocity is a parabola: zero at both walls, maximal at the centre. Setting $\partial_y v_x=0$ gives the centre $y=h/2$ and the maximum speed
+\begin{equation}
+  v_{\max}=v_x\!\Big(\tfrac{h}{2}\Big)=\frac{P'h^2}{8\eta}.
+  \label{eq:lec19_vmax}
+\end{equation}
+The pressure falls linearly; physically it cannot fall forever (it would become negative), so the solution is valid only over a finite channel length, terminating where, e.g., the pipe opens.
+
+\paragraph{Drag force on the walls.} By the symmetry of the parabola the wall drag is identical on top and bottom; compute it at $y=0$, where the inward normal is $+\uvec y$, so the shear stress the fluid exerts is $\sigma_{xy}$. With the pressure purely normal again,
+\begin{equation}
+  \sigma_{xy}=\eta\,\partial_y v_x\Big|_{y=0}
+    = \eta\cdot\frac{P'}{2\eta}\,(h-2y)\Big|_{y=0}
+    = \frac{P'h}{2}.
+  \label{eq:lec19_poiseuille_drag}
+\end{equation}
+\textit{Significance:} There is also a \emph{normal} (pressure) force on the walls -- the fluid carries a pressure $p(x)$ that pushes outward -- but it does not contribute to the streamwise drag, which is purely the shear $\sigma_{xy}=P'h/2$. The fluid tries to drag both walls downstream; an external force must hold them in place.
+
+\subsubsection*{Method}
+To solve a steady, incompressible, unidirectional channel-flow problem:
+\begin{enumerate}
+  \item Take $\vel=(v_x(x,y),0,0)$; apply continuity to get $\partial_x v_x=0$, hence $v_x=v_x(y)$.
+  \item Use the $y$-component of Navier--Stokes to show $p=p(x)$.
+  \item Use the $x$-component to reach $\partial_x p=\eta\,\partial_y^2 v_x$; argue both sides equal a constant (separation of variables).
+  \item Set the constant by the driving mechanism: $0$ for a moving plate (Couette, linear profile), $-P'$ for a pressure gradient (Poiseuille, parabolic profile).
+  \item Integrate and impose no-slip at both walls to fix the profile.
+  \item Compute wall forces from $dF_i=\sigma_{ij}\,dS_j$ with $\sigma_{ij}=-p\delta_{ij}+\eta(\partial_iv_j+\partial_jv_i)$; the shear $\sigma_{xy}=\eta\,\partial_y v_x$ gives the drag, the pressure the normal force.
+\end{enumerate}
+
+\ex[channel-flow]{Worked Example: Couette and Poiseuille profiles and their drag}{%
+  \emph{Setup.} Incompressible fluid (viscosity $\eta$) between plates at $y=0$ and $y=h$, steady flow $\vel=(v_x(y),0,0)$.\\[2pt]
+  \emph{(a) Couette.} Top plate moves at $v_0$, bottom fixed, no pressure gradient. From $\partial_y^2 v_x=0$ and no-slip,
+  \[
+    v_x(y)=\frac{v_0}{h}\,y .
+  \]
+  Wall shear stress (uniform): $\sigma_{xy}=\eta\,\partial_y v_x=\eta\,v_0/h$. To keep the top plate moving steadily one applies a tangential force per area $\eta v_0/h$ along $+x$; the bottom plate must be held with $\eta v_0/h$ along $-x$.\\[4pt]
+  \emph{(b) Poiseuille.} Both plates fixed, pressure gradient $\partial_x p=-P'$ ($P'>0$). From $\partial_y^2 v_x=-P'/\eta$ and no-slip at both walls,
+  \[
+    v_x(y)=\frac{P'}{2\eta}\,y(h-y),\qquad
+    v_{\max}=\frac{P'h^2}{8\eta}\ \text{at } y=\tfrac h2 .
+  \]
+  Wall drag (same at each wall): $\sigma_{xy}=\eta\,\partial_y v_x|_{y=0}=P'h/2$.\\[4pt]
+  \emph{Check.} In (a) the strain rate $v_0/h$ is constant, so the shear stress is uniform across the gap -- consistent with $\partial_y^2v_x=0$ (no net viscous force on any fluid element, balancing zero pressure gradient). In (b) the shear stress $\eta\partial_yv_x=\tfrac{P'}{2}(h-2y)$ varies linearly, vanishing at the centre and reaching $\pm P'h/2$ at the walls; its gradient $-P'$ exactly balances the applied pressure gradient, as \eqref{eq:lec19_separation} demands.
+}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection*{Summary}
+%%─────────────────────────────────────────────────────────────────────────────
+\begin{itemize}
+  \item \textbf{Navier--Stokes} \eqref{eq:lec19_NS} is the most general equation of motion with $\le2$ spatial derivatives; corrections are suppressed by $L_{\text{atomic}}/L_{\text{system}}\ll1$, so it is an excellent approximation for ordinary fluids.
+  \item \textbf{Anomaly:} a quantity conserved in the ideal theory that viscosity breaks. Circulation/vorticity ($\partial_t\bvec\omega-\curl(\vel\times\bvec\omega)=\nu\lapl\bvec\omega$) and energy are anomalous; momentum is not.
+  \item \textbf{Thermodynamics (isentropic):} $d\varepsilon=(p/\rho^2)\dd{\rho}$, $dh=dp/\rho$.
+  \item \textbf{Energy balance:} $\partial_t(\tfrac12\rho v^2+\rho\varepsilon)=-\divg\bvec J_E-\sigma'_{ik}\partial_k v_i$, with $\bvec J_E=\rho\vel(\tfrac12 v^2+h)-\vel\!\cdot\!\sigma'$. The inviscid flux $\rho\vel(\tfrac12 v^2+h)$ is thereby confirmed.
+  \item \textbf{Dissipation rate:} $\sigma'_{ik}\partial_k v_i=\tfrac{\eta}{2}(\partial_iv_k+\partial_kv_i-\tfrac23\delta_{ik}\divg\vel)^2+\zeta(\divg\vel)^2\ge0$, forcing $\eta\ge0$, $\zeta\ge0$.
+  \item \textbf{Numerics:} real flows require discretising space/time, turning PDEs into algebraic difference equations.
+  \item \textbf{Channel flow (incompressible, unidirectional, steady):} continuity $\Rightarrow v_x=v_x(y)$; $y$-component $\Rightarrow p=p(x)$; $x$-component $\Rightarrow\partial_x p=\eta\partial_y^2 v_x=\text{const}$.
+  \item \textbf{Couette} (moving plate, no $\grad p$): linear $v_x=v_0 y/h$; uniform wall drag $\eta v_0/h$.
+  \item \textbf{Poiseuille} (pressure gradient $-P'$): parabolic $v_x=\tfrac{P'}{2\eta}y(h-y)$; $v_{\max}=P'h^2/8\eta$; wall drag $P'h/2$.
+\end{itemize}
+
+\subsection*{Further Reading}
+\begin{itemize}
+  \item L.\,D. Landau and E.\,M. Lifshitz, \textit{Fluid Mechanics} (Vol.\ 6): \S16 (energy dissipation in an incompressible fluid; the dissipation formula and positivity of $\eta,\zeta$), \S17 (flow in a pipe and between plates -- Couette and Poiseuille).
+  \item G.\,K. Batchelor, \textit{An Introduction to Fluid Dynamics}: \S4.2 (steady unidirectional flow), \S3.4 (the mechanical-energy and dissipation balance).
+  \item D.\,J. Acheson, \textit{Elementary Fluid Dynamics}: Ch.\ 2 (viscous flow between plates), Ch.\ 6 (dissipation).
+\end{itemize}
+
+\end{document}

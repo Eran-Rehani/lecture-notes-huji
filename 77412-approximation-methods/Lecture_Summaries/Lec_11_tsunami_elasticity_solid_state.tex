@@ -1,0 +1,531 @@
+%% ============================================================================
+\section{Lecture 11: Tsunami Amplification and Elasticity of Solids}
+\label{sec:lec11}
+%% ============================================================================
+\date{25/06/2026}
+
+\begin{center}
+    \textit{Lecture date: 25/06/2026}
+\end{center}
+
+This lecture closes the discussion of water waves by asking what happens to a
+tsunami as the ocean becomes shallow near shore. The same energy-flux logic is
+then used as a bridge to solid-state estimates: atomic sizes, mass densities,
+chemical bond energies, elastic moduli, sound speeds in solids, and the origin
+of thermal expansion from anharmonic bond potentials.
+
+%%----------------------------------------------------------------------------
+\subsection{Tsunami Shoaling from Energy Flux Conservation}
+\label{sec:lec11:tsunami-shoaling}
+%%----------------------------------------------------------------------------
+
+\subsubsection*{Physical Motivation}
+Lecture~10 showed that a tsunami is a shallow-water gravity wave with phase
+speed
+\begin{equation}
+    v_{\rm ph}=\sqrt{gH},
+    \label{eq:lec11:shallow-speed}
+\end{equation}
+where $g$ is the gravitational acceleration and $H$ is the water depth. In the
+open ocean $H$ is of order kilometers, while near shore it can be meters or
+less. The wave therefore slows down as it approaches land. The question is:
+what happens to its amplitude?
+
+The useful conserved quantity is not the local energy density. As the depth
+changes, the local wavelength and velocity change. What is conserved, in the
+absence of strong dissipation or reflection, is the \emph{energy flux}: the
+energy crossing a vertical line per unit time.
+
+\subsubsection*{Wave Energy Density}
+Let $Y$ denote the wave amplitude, i.e. the vertical displacement of the water
+surface from its mean level. A common mistake is to write an energy proportional
+to $Y$, but a wave energy must be quadratic in the amplitude. The gravitational
+potential energy per unit horizontal area is estimated by lifting a column of
+water of mass per area $\rho Y$ through a height of order $Y$:
+\begin{equation}
+    \frac{E}{A}\sim \rho gY^2 .
+    \label{eq:lec11:water-energy-area}
+\end{equation}
+The missing numerical coefficient is order unity and is irrelevant for the
+scaling argument. The important point is the quadratic dependence.
+
+\subsubsection*{Flux Conservation}
+The energy flux per unit crest length is the energy per unit area times the
+speed:
+\begin{equation}
+    F_E \sim \rho gY^2 v_{\rm ph}.
+    \label{eq:lec11:energy-flux}
+\end{equation}
+For a shallow-water wave, $v_{\rm ph}=\sqrt{gH}$, hence
+\begin{equation}
+    F_E \sim \rho gY^2\sqrt{gH}.
+    \label{eq:lec11:energy-flux-shallow}
+\end{equation}
+If $\rho$ and $g$ are fixed and the flux is conserved, then
+\begin{equation}
+    Y^2H^{1/2}=\text{constant}.
+    \label{eq:lec11:y2hhalf}
+\end{equation}
+Taking the square root gives
+\begin{equation}
+    \boxed{
+    YH^{1/4}=\text{constant}.
+    }
+    \label{eq:lec11:green-law}
+\end{equation}
+\textit{Significance:} As depth decreases, the tsunami amplitude grows only as
+$H^{-1/4}$ in the linear shallow-water regime; this weak power still becomes
+large when ocean depth changes by orders of magnitude.
+
+Comparing a deep-ocean region of depth $H_d$ and amplitude $Y_d$ with a shallower
+region of depth $H_s$ and amplitude $Y_s$,
+\begin{equation}
+    \boxed{
+    Y_s=Y_d\left(\frac{H_d}{H_s}\right)^{1/4}.
+    }
+    \label{eq:lec11:shoaling-ratio}
+\end{equation}
+\textit{Significance:} A one-metre tsunami in the deep ocean can become several
+metres high near shore without requiring any new energy source.
+
+\subsubsection*{Run-Up and the Nonlinear Shore Limit}
+The linear estimate cannot be continued all the way to $H\to0$. When the wave
+height becomes comparable to the water depth, the wave is no longer a small
+perturbation. The relevant depth scale is then set by the wave height itself,
+$H_s\sim Y_s$. Substituting this into flux conservation,
+\begin{equation}
+    Y_d^2H_d^{1/2}\sim Y_s^2Y_s^{1/2}=Y_s^{5/2}.
+    \label{eq:lec11:runup-step}
+\end{equation}
+Raise both sides to the power $2/5$:
+\begin{equation}
+    \boxed{
+    Y_s\sim Y_d^{4/5}H_d^{1/5}.
+    }
+    \label{eq:lec11:runup}
+\end{equation}
+\textit{Significance:} The final coastal run-up is a nonlinear estimate: once
+the wave is as tall as the local water column, the small-amplitude shallow-water
+description has broken down.
+
+\nt{The distinction between shoaling and run-up matters. Equation
+\eqref{eq:lec11:shoaling-ratio} describes linear amplification while the depth is
+still externally prescribed. Equation~\eqref{eq:lec11:runup} estimates the
+shoreline limit where the wave height itself sets the effective water depth.}
+
+\subsubsection*{Wave Breaking and Shock Formation}
+In a nonlinear shallow-water wave the local propagation speed depends on the
+local depth. The crest sits on a larger effective water column than the trough,
+so the crest can move faster. If the approach to shallow water is gradual enough,
+the crest has time to overtake the lower part of the wave, and the wave breaks.
+
+The same qualitative mechanism appears in other media. In the solar corona,
+convection excites acoustic and magnetohydrodynamic waves that travel upward
+into lower-density gas. Conservation of wave energy flux makes their amplitudes
+grow. Once the perturbation is nonlinear, hotter or more compressed parts of the
+wave propagate faster than cooler or less compressed parts, producing shocks.
+Shock dissipation converts ordered wave energy into heat.
+
+%%----------------------------------------------------------------------------
+\subsection{Atomic Sizes and Solid Densities}
+\label{sec:lec11:atomic-density}
+%%----------------------------------------------------------------------------
+
+\subsubsection*{Conceptual Background}
+To estimate solid properties, we start with the simplest possible microscopic
+picture: a solid is made of atoms packed a few Angstrom apart. The Bohr radius
+of hydrogen is
+\begin{equation}
+    a_0\simeq0.53\,\text{\AA}.
+    \label{eq:lec11:bohr}
+\end{equation}
+Most atomic radii from helium through uranium are of order
+\begin{equation}
+    a\simeq1.5\,\text{\AA}.
+    \label{eq:lec11:atomic-radius}
+\end{equation}
+Thus an atom occupies a volume of order
+\begin{equation}
+    V_{\rm atom}\sim (3\,\text{\AA})^3.
+    \label{eq:lec11:atomic-volume}
+\end{equation}
+
+\subsubsection*{Density Estimate}
+Let $A$ be the atomic mass number. The mass per atom is $Am_p$, where $m_p$ is
+the proton mass. The density is therefore
+\begin{equation}
+    \rho\sim \frac{Am_p}{(3\,\text{\AA})^3}.
+    \label{eq:lec11:rho-step}
+\end{equation}
+Using $m_p=1.67\times10^{-24}\,\text{g}$ and
+$3\,\text{\AA}=3\times10^{-8}\,\text{cm}$,
+\begin{align}
+    \rho
+    &\sim
+    \frac{A(1.67\times10^{-24}\,\text{g})}
+         {(3\times10^{-8}\,\text{cm})^3}
+    \notag\\
+    &=
+    \frac{1.67}{27}A\,\text{g\,cm}^{-3}
+    \sim 0.06A\,\text{g\,cm}^{-3}.
+    \label{eq:lec11:rho-number}
+\end{align}
+For heavy elements with $A\sim 100$--$200$, this gives densities of order
+$10\,\text{g\,cm}^{-3}$, which is the right scale for metals. For light solids
+the estimate gives values of order $1\,\text{g\,cm}^{-3}$.
+
+\clm[clm:lec11:solid-density]{Atomic Packing Density Estimate}{
+A solid made of atoms of radius $\sim1.5\,\text{\AA}$ has density
+\begin{equation}
+    \boxed{
+    \rho\sim \frac{Am_p}{(3\,\text{\AA})^3}
+    \sim 0.06A\,\text{g\,cm}^{-3}.
+    }
+    \label{eq:lec11:solid-density}
+\end{equation}
+}
+
+\textit{Significance:} The observed density scale of ordinary matter follows
+mainly from atomic size and nuclear mass; crystal structure changes only
+order-unity packing factors.
+
+\nt{Different lattices such as simple cubic, body-centred cubic, face-centred
+cubic, hexagonal close packing, glasses, and quasicrystals change the packing
+details, but they do not change the basic Angstrom-scale volume per atom.}
+
+%%----------------------------------------------------------------------------
+\subsection{Chemical Bond Energies}
+\label{sec:lec11:bond-energies}
+%%----------------------------------------------------------------------------
+
+\subsubsection*{Physical Motivation}
+Elasticity is controlled by how expensive it is to stretch or compress the
+bonds between atoms or molecules. The first task is therefore to estimate the
+energy scale of those bonds.
+
+\subsubsection*{Ionic Bonds from Hydrogen Scaling}
+The hydrogen ground-state energy is the Rydberg scale,
+\begin{equation}
+    E_{\rm H}=13.6\,\text{eV}.
+    \label{eq:lec11:rydberg}
+\end{equation}
+An ionic bond, for example in NaCl, is roughly a Coulomb attraction between
+oppositely charged ions separated by a distance of order a few Angstrom. Since
+the Coulomb energy scales as $1/r$, compare the ionic separation
+$r_{\rm ion}\sim3\,\text{\AA}$ to the Bohr radius $a_0\simeq0.5\,\text{\AA}$:
+\begin{equation}
+    E_{\rm ion}\sim E_{\rm H}\frac{a_0}{r_{\rm ion}}
+    \sim 13.6\,\text{eV}\cdot\frac{0.5}{3}
+    \sim 2\,\text{eV}.
+    \label{eq:lec11:ionic-step}
+\end{equation}
+Depending on charges, geometry, and screening, real ionic bond energies are
+typically a few electron-volts.
+
+\begin{equation}
+    \boxed{
+    E_{\rm bond}\sim 1\text{--}10\,\text{eV}
+    }
+    \label{eq:lec11:bond-scale}
+\end{equation}
+\textit{Significance:} Ordinary chemical bonds are tied to the atomic Coulomb
+scale, reduced from $13.6\,\text{eV}$ by the larger interatomic separation and
+by screening or charge sharing.
+
+\subsubsection*{Covalent and van der Waals Bonds}
+A covalent bond is quantum mechanical: when two atoms are brought together,
+the degenerate atomic energy levels split into a lower bonding state and a
+higher antibonding state. Electrons occupy the lower state, so the total energy
+is reduced. The splitting is again set by the overlap of Angstrom-scale
+electronic wavefunctions, so the energy is also in the electron-volt range.
+
+Van der Waals forces are weaker. Permanent dipole-dipole interactions scale as
+$r^{-3}$ in energy for fixed dipole orientations. Induced-dipole interactions
+between neutral nonpolar molecules are weaker still and scale as $r^{-6}$ in
+the attractive part. Phenomenological Lennard-Jones potentials often combine
+this attraction with a steep short-distance repulsion:
+\begin{equation}
+    U(r)=4\epsilon\left[\left(\frac{\sigma}{r}\right)^{12}
+    -\left(\frac{\sigma}{r}\right)^6\right].
+    \label{eq:lec11:lennard-jones}
+\end{equation}
+
+\nt{For mechanical properties, the relevant bond is the weakest bond that must
+be distorted by the deformation. Ice, for example, has strong covalent O--H
+bonds inside each water molecule, but much softer hydrogen bonds between
+molecules. The elastic modulus is controlled mainly by the softer link.}
+
+%%----------------------------------------------------------------------------
+\subsection{Elastic Moduli}
+\label{sec:lec11:elastic-moduli}
+%%----------------------------------------------------------------------------
+
+\subsubsection*{Mathematical Setup}
+Elastic moduli compare stress to strain. Stress has units of force per area,
+equivalently energy per volume. Strain is dimensionless. Therefore every elastic
+modulus has units of energy density.
+
+\dfn[dfn:lec11:young]{Young Modulus}{
+For a rod of length $L$ and cross-sectional area $A$, pulled by a force $F$,
+the tensile stress is $F/A$ and the longitudinal strain is $\Delta L/L$. The
+Young modulus $Y_{\rm Young}$ is defined by
+\begin{equation}
+    \boxed{
+    \frac{F}{A}=Y_{\rm Young}\frac{\Delta L}{L}.
+    }
+    \label{eq:lec11:young-def}
+\end{equation}
+}
+
+\textit{Significance:} $Y_{\rm Young}$ measures how much stress is required to
+produce a given fractional extension.
+
+\dfn[dfn:lec11:bulk-shear]{Bulk and Shear Moduli}{
+The bulk modulus $K$ describes compression:
+\begin{equation}
+    \boxed{
+    \Delta P=-K\frac{\Delta V}{V}.
+    }
+    \label{eq:lec11:bulk-def}
+\end{equation}
+The shear modulus $G_{\rm sh}$ describes shape change at nearly fixed volume:
+\begin{equation}
+    \boxed{
+    \frac{F}{A}=G_{\rm sh}\frac{\Delta x}{L}.
+    }
+    \label{eq:lec11:shear-def}
+\end{equation}
+}
+
+\textit{Significance:} Bulk response, shear response, and tensile response are
+different experiments, but their magnitudes are all set by microscopic bond
+curvatures divided by atomic volumes.
+
+\subsubsection*{Order-of-Magnitude Modulus from Bond Energy}
+Let $E_b$ be a typical bond energy and let $a$ be the interatomic spacing.
+Since modulus has dimensions of energy density,
+\begin{equation}
+    Y_{\rm Young}\sim K\sim G_{\rm sh}\sim \frac{E_b}{a^3}.
+    \label{eq:lec11:modulus-energy-density-step}
+\end{equation}
+With $E_b\sim4\,\text{eV}$ and $a\sim3\,\text{\AA}$,
+\begin{align}
+    \frac{E_b}{a^3}
+    &\sim
+    \frac{4(1.6\times10^{-12}\,\text{erg})}
+         {(3\times10^{-8}\,\text{cm})^3}
+    \notag\\
+    &\sim
+    2\times10^{11}\,\text{erg\,cm}^{-3}
+    =
+    2\times10^{10}\,\text{Pa}.
+    \label{eq:lec11:modulus-number}
+\end{align}
+Real elastic moduli range around this value: ice is softer, typical metals are
+$10^{10}$--$10^{11}\,\text{Pa}$, diamond is much stiffer, and graphite is very
+anisotropic because strong in-plane covalent bonds coexist with weak interlayer
+bonds.
+
+\begin{equation}
+    \boxed{
+    M_{\rm elastic}\sim \frac{E_b}{a^3}
+    \sim 10^{10}\text{--}10^{11}\,\text{Pa}.
+    }
+    \label{eq:lec11:elastic-scale}
+\end{equation}
+\textit{Significance:} The stiffness of ordinary solids is the chemical bond
+energy packed into an atomic volume.
+
+%%----------------------------------------------------------------------------
+\subsection{Elastic Modulus from the Bond Potential}
+\label{sec:lec11:bond-curvature}
+%%----------------------------------------------------------------------------
+
+\subsubsection*{Mathematical Setup}
+The energy-density estimate explains the scale. To see where the modulus comes
+from microscopically, expand the bond potential near its equilibrium separation.
+Let $x$ be the bond displacement from equilibrium and let $d$ be the equilibrium
+bond length. Since equilibrium is a minimum, the linear term vanishes:
+\begin{equation}
+    E(x)=E_0+\frac{1}{2}kx^2+\cdots,
+    \qquad
+    k=\left.\dv[2]{E}{x}\right|_{0}.
+    \label{eq:lec11:harmonic-bond}
+\end{equation}
+The force in one bond is
+\begin{equation}
+    F_1=-\dv{E}{x}=-kx.
+    \label{eq:lec11:bond-force}
+\end{equation}
+
+Consider a rod stretched by $\Delta L$. If all microscopic bonds share the
+strain, then the displacement of one bond is
+\begin{equation}
+    x=\Delta d=d\frac{\Delta L}{L}.
+    \label{eq:lec11:micro-strain}
+\end{equation}
+The number of parallel bonds crossing a section of area $A$ is of order
+$A/a^2$, so the stress is
+\begin{align}
+    \frac{F}{A}
+    &\sim
+    \frac{1}{A}\frac{A}{a^2}k\Delta d
+    =
+    \frac{k}{a^2}d\frac{\Delta L}{L}.
+    \label{eq:lec11:stress-micro}
+\end{align}
+Comparing with Eq.~\eqref{eq:lec11:young-def},
+\begin{equation}
+    \boxed{
+    Y_{\rm Young}\sim \frac{k d}{a^2}
+    =
+    \frac{d}{a^2}\left.\dv[2]{E}{x}\right|_0
+    \sim \frac{E_b}{a^3}.
+    }
+    \label{eq:lec11:young-curvature}
+\end{equation}
+\textit{Significance:} The elastic modulus is the curvature of the interatomic
+potential, multiplied by the geometry of how many bonds transmit force across a
+unit area.
+
+In the last step we used $d\sim a$ and estimated the potential curvature as
+$k\sim E_b/a^2$, because the energy changes by order $E_b$ over an atomic
+distance.
+
+%%----------------------------------------------------------------------------
+\subsection{Sound Speed in a Solid}
+\label{sec:lec11:sound-solid}
+%%----------------------------------------------------------------------------
+
+\subsubsection*{Physical Motivation}
+Sound speed in a gas was controlled by $\sqrt{P/\rho}$ because pressure was the
+restoring stress. In a solid, pressure is not the relevant microscopic stiffness.
+The restoring stress is elastic, so the pressure scale is replaced by an
+elastic modulus.
+
+Dimensional analysis gives
+\begin{equation}
+    c_s\sim\sqrt{\frac{M_{\rm elastic}}{\rho}}.
+    \label{eq:lec11:sound-solid-step}
+\end{equation}
+Using $M_{\rm elastic}\sim E_b/a^3$ and
+$\rho\sim m_{\rm atom}/a^3$,
+\begin{equation}
+    \boxed{
+    c_s\sim
+    \sqrt{\frac{E_b/a^3}{m_{\rm atom}/a^3}}
+    =
+    \sqrt{\frac{E_b}{m_{\rm atom}}}.
+    }
+    \label{eq:lec11:sound-solid}
+\end{equation}
+\textit{Significance:} The sound speed in a solid is the characteristic atomic
+vibration speed set by bond energy per atom divided by atomic mass.
+
+\ex[ex:lec11:sound-solid]{Worked Example: Solid Sound Speed}{
+Take $E_b\sim4\,\text{eV}=6.4\times10^{-19}\,\text{J}$ and an atomic mass
+$m_{\rm atom}\sim30m_p\sim5\times10^{-26}\,\text{kg}$. Then
+\[
+    c_s\sim\sqrt{\frac{6.4\times10^{-19}}{5\times10^{-26}}}
+    \sim \sqrt{1.3\times10^7}
+    \sim 4\times10^3\,\text{m/s}.
+    \]
+This is the correct kilometre-per-second scale for sound in many solids.
+}
+
+%%----------------------------------------------------------------------------
+\subsection{Thermal Expansion and Anharmonicity}
+\label{sec:lec11:thermal-expansion}
+%%----------------------------------------------------------------------------
+
+\subsubsection*{Conceptual Background}
+Thermal expansion is not caused merely by atoms moving more when they are hot.
+In a perfectly harmonic potential,
+\begin{equation}
+    U(x)=\frac{1}{2}kx^2,
+    \label{eq:lec11:harmonic-potential}
+\end{equation}
+the Boltzmann distribution is symmetric:
+\begin{equation}
+    P(x)\propto \exp\left[-\frac{kx^2}{2k_BT}\right].
+    \label{eq:lec11:boltzmann-harmonic}
+\end{equation}
+The mean displacement is therefore
+\begin{equation}
+    \langle x\rangle =0
+    \label{eq:lec11:harmonic-mean}
+\end{equation}
+at every temperature, even though $\langle x^2\rangle$ grows with $T$.
+
+\subsubsection*{Why Anharmonicity is Required}
+To make the average bond length increase with temperature, the potential must
+be asymmetric. Expand the bond potential to the next order:
+\begin{equation}
+    U(x)=E_0+\frac{1}{2}kx^2+\frac{1}{6}\lambda x^3+\cdots,
+    \qquad
+    \lambda=\left.\dv[3]{U}{x}\right|_0 .
+    \label{eq:lec11:anharmonic}
+\end{equation}
+The cubic term is the first term that can distinguish positive and negative
+displacements. Its natural size is estimated as
+\begin{equation}
+    \lambda\sim \frac{E_b}{a^3},
+    \label{eq:lec11:cubic-scale}
+\end{equation}
+while the harmonic curvature is
+\begin{equation}
+    k\sim\frac{E_b}{a^2}.
+    \label{eq:lec11:k-scale}
+\end{equation}
+
+\clm[clm:lec11:thermal-expansion]{Origin of Thermal Expansion}{
+A purely harmonic crystal does not thermally expand. Thermal expansion requires
+anharmonicity in the interatomic potential:
+\begin{equation}
+    \boxed{
+    \alpha_L\equiv\frac{1}{L}\dv{L}{T}
+    \sim \frac{k_B}{E_b}.
+    }
+    \label{eq:lec11:alpha-thermal}
+\end{equation}
+}
+
+\textit{Significance:} The fractional expansion per kelvin is small because
+room-temperature thermal energy $k_BT$ is much smaller than a chemical bond
+energy.
+
+For $E_b\sim1$--$5\,\text{eV}$,
+\begin{equation}
+    \alpha_L\sim\frac{8.6\times10^{-5}\,\text{eV/K}}{1\text{--}5\,\text{eV}}
+    \sim 10^{-5}\,\text{K}^{-1},
+    \label{eq:lec11:alpha-number}
+\end{equation}
+which is the observed scale for ordinary solids.
+
+\nt{The lecture stopped just before doing the full thermal-expansion estimate.
+The key setup is already fixed: the second derivative of the bond potential
+sets elastic moduli, while the third derivative sets the leading anharmonic
+correction responsible for expansion.}
+
+%%----------------------------------------------------------------------------
+\subsection{Summary}
+\label{sec:lec11:summary}
+%%----------------------------------------------------------------------------
+
+\begin{enumerate}
+    \item Tsunami amplitude growth follows from energy flux conservation:
+    $F_E\sim\rho gY^2\sqrt{gH}$, hence $YH^{1/4}=\text{constant}$ in the linear
+    shallow-water regime.
+    \item Near shore the small-amplitude description fails when $Y\sim H$,
+    giving the nonlinear run-up estimate $Y_s\sim Y_d^{4/5}H_d^{1/5}$.
+    \item Ordinary solid densities are set by Angstrom-scale atomic volumes:
+    $\rho\sim Am_p/(3\,\text{\AA})^3$.
+    \item Chemical bond energies are typically $1$--$10\,\text{eV}$, inherited
+    from Coulomb physics at atomic length scales.
+    \item Elastic moduli are bond energy densities:
+    $M_{\rm elastic}\sim E_b/a^3\sim10^{10}$--$10^{11}\,\text{Pa}$.
+    \item The sound speed in a solid is
+    $c_s\sim\sqrt{M_{\rm elastic}/\rho}\sim\sqrt{E_b/m_{\rm atom}}$.
+    \item Thermal expansion is an anharmonic effect: harmonic motion increases
+    $\langle x^2\rangle$ but leaves $\langle x\rangle$ unchanged.
+\end{enumerate}

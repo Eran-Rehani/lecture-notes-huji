@@ -1,0 +1,769 @@
+%%===================================================================
+%% Study Guide: Lecture 17 — The Higgs Mechanism in Unitary Gauge
+%%              and the Lepton Standard Model
+%% 77609 — Introduction to Elementary Particles, HUJI 2026
+%% Generated from: Lec_17_Higgs_Mechanism_Unitary_Gauge_Lepton_Standard_Model.tex
+%%                 and transcript 77609_2026-06-11_שעור_א.md
+%%===================================================================
+
+\documentclass[12pt,a4paper]{article}
+
+%% -- Core packages -----------------------------------------------------------
+\usepackage{amsmath, amssymb, amsthm}
+\usepackage{physics}
+\usepackage[margin=2cm]{geometry}
+\usepackage[colorlinks=true, linkcolor=blue, citecolor=blue]{hyperref}
+\usepackage[shortlabels]{enumitem}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{fancyhdr}
+\usepackage{cancel}
+\usepackage{siunitx}
+\usepackage[compat=1.1.0]{tikz-feynman}
+\usepackage{slashed}
+\AtBeginDocument{\RenewCommandCopy\qty\SI}
+
+%% -- Page style --------------------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\setlength{\headheight}{14pt}
+\lhead{\small 77609 — Introduction to Elementary Particles}
+\rhead{\small Study Guide: Lecture 17}
+\cfoot{\textbf{\thepage}}
+
+%% -- eye-candy environments (inline, no separate .sty needed) ----------------
+\usepackage[most,many,breakable]{tcolorbox}
+\usepackage{varwidth}
+\usetikzlibrary{calc,shapes.geometric,arrows,shadows.blur}
+
+\definecolor{mytheoremfr}{HTML}{00007B}
+\definecolor{mytheorembg}{HTML}{F2F2F9}
+\definecolor{myexamplebg}{HTML}{F2FBF8}
+\definecolor{myexamplefr}{HTML}{88D6D1}
+\definecolor{myexampleti}{HTML}{2A7F7F}
+\definecolor{myg}{RGB}{56,140,70}
+\definecolor{myr}{RGB}{199,68,64}
+
+\tcbuselibrary{theorems,skins,hooks}
+
+\newtcbtheorem[number within=section]{Theorem}{Physical Law}{
+  enhanced, breakable,
+  colback=mytheorembg, frame hidden, boxrule=0sp,
+  borderline west={2pt}{0pt}{mytheoremfr},
+  sharp corners, detach title,
+  before upper=\tcbtitle\par\smallskip,
+  coltitle=mytheoremfr, fonttitle=\bfseries\sffamily,
+  description font=\mdseries, separator sign none,
+}{th}
+
+\newtcbtheorem[number within=section]{Definition}{Physical Concept}{
+  enhanced, before skip=2mm, after skip=2mm,
+  colback=myr!5, colframe=myr!80!black, boxrule=0.5mm,
+  attach boxed title to top left={xshift=1cm,yshift*=1mm-\tcboxedtitleheight},
+  varwidth boxed title*=-3cm, colbacktitle=myr!75!black,
+  boxed title style={frame code={
+    \path[fill=tcbcolback]
+      ([yshift=-1mm,xshift=-1mm]frame.north west) arc[start angle=0,end angle=180,radius=1mm]
+      ([yshift=-1mm,xshift=1mm]frame.north east)  arc[start angle=180,end angle=0,radius=1mm];
+    \path[left color=tcbcolback!60!black, right color=tcbcolback!60!black,
+          middle color=tcbcolback!80!black]
+      ([xshift=-2mm]frame.north west) -- ([xshift=2mm]frame.north east)
+      [rounded corners=1mm]-- ([xshift=1mm,yshift=-1mm]frame.north east)
+      -- (frame.south east) -- (frame.south west)
+      -- ([xshift=-1mm,yshift=-1mm]frame.north west) [sharp corners]-- cycle;
+  }, interior engine=empty},
+  fonttitle=\bfseries, title={#2}, #1,
+}{def}
+
+\newtcbtheorem[number within=section]{Example}{Worked Example}{
+  colback=myexamplebg, breakable,
+  colframe=myexamplefr, coltitle=myexampleti, boxrule=1pt,
+  sharp corners, detach title,
+  before upper=\tcbtitle\par\smallskip,
+  fonttitle=\bfseries, description font=\mdseries,
+  separator sign none, description delimiters parenthesis,
+}{ex}
+
+\newtcolorbox{note}[1][]{
+  enhanced jigsaw, colback=gray!20!white, colframe=gray!80!black,
+  size=small, boxrule=1pt, title=\textbf{Note:},
+  halign title=flush center, coltitle=black, breakable,
+  drop shadow=black!50!white,
+  attach boxed title to top left={xshift=1cm,yshift=-\tcboxedtitleheight/2,
+                                   yshifttext=-\tcboxedtitleheight/2},
+  minipage boxed title=1.5cm,
+  boxed title style={colback=white, size=fbox, boxrule=1pt, boxsep=2pt},
+  #1,
+}
+
+\newcommand{\thm}[3][]{\begin{Theorem}{#2}{#1}#3\end{Theorem}}
+\newcommand{\dfn}[3][]{\begin{Definition}{#2}{#1}#3\end{Definition}}
+\newcommand{\ex}[3][]{\begin{Example}{#2}{#1}#3\end{Example}}
+\newcommand{\nt}[1]{\begin{note}#1\end{note}}
+
+%% -- Physics macros ----------------------------------------------------------
+\newcommand{\Lag}{\mathcal{L}}
+\newcommand{\Dirac}[1]{\slashed{#1}}
+
+%% -- mdframed (for completeness) ---------------------------------------------
+\usepackage{mdframed}
+
+\begin{document}
+
+\begin{center}
+  {\LARGE\bfseries Study Guide — Lecture 17}\\[0.4em]
+  {\large The Higgs Mechanism in Unitary Gauge \& the Lepton Standard Model}\\[0.3em]
+  {\normalsize 77609 — Introduction to Elementary Particles, HUJI 2026
+               \quad|\quad Prof.\ Yonit Hochberg}
+\end{center}
+\hrule
+\vspace{1em}
+
+%%===================================================================
+\section*{Study Guide — Lecture 17: Higgs Mechanism \& the Lepton Standard Model}
+\addcontentsline{toc}{section}{Study Guide — Lecture 17}
+\hrule\vspace{1.5em}
+
+%%===================================================================
+\subsection*{Part I \quad Core Concepts and Physical Intuition}
+\hrule\medskip
+
+%%-------------------------------------------------------------------
+\subsubsection*{1.1 \quad The Central Problem: Gauge Invariance vs.\ Mass}
+
+The gauge-invariance principle demands massless gauge bosons. For a local $U(1)$ symmetry, any term $\tfrac{1}{2}m^2 A_\mu A^\mu$ is forbidden because under $A_\mu \to A_\mu - \tfrac{1}{g}\partial_\mu\theta$ it transforms to something that is not gauge-invariant. Yet the $W^\pm$ and $Z$ bosons are experimentally massive ($m_W \approx 80\;\text{GeV}$, $m_Z \approx 91\;\text{GeV}$). The resolution is that the \textbf{vacuum}, not the Lagrangian, breaks the symmetry.
+
+\begin{quote}
+\textbf{Physical intuition.} The Lagrangian is gauge-invariant, but the ground state is not. A field that condenses ($\langle\phi\rangle \neq 0$) selects a preferred direction in field space, hiding the symmetry without violating it in the equations of motion. The resulting physics is distinct from an explicit mass term, and the two situations are experimentally distinguishable by the constrained relationship among all couplings and masses that SSB predicts.
+\end{quote}
+
+%%-------------------------------------------------------------------
+\subsubsection*{1.2 \quad The Role of the Local vs.\ Global Symmetry}
+
+\begin{itemize}
+  \item For a \textbf{global} broken symmetry (Goldstone's theorem): each broken generator produces a massless scalar — the Goldstone boson. These particles remain in the physical spectrum.
+
+  \item For a \textbf{local} broken symmetry (Higgs mechanism): the transformation parameter $\theta(x)$ is a function of spacetime. This extra freedom allows us to \emph{rotate the Goldstone field away point by point} — something a global transformation cannot do. The Goldstone boson is \textbf{eaten} by the gauge field, supplying its missing longitudinal polarization and thereby generating mass.
+\end{itemize}
+
+The critical word is \textbf{local}: the gauge freedom is what licenses the complete removal of the would-be Goldstone from the physical spectrum.
+
+%%-------------------------------------------------------------------
+\subsubsection*{1.3 \quad Three Universal Lessons for Any Local SSB}
+
+\thm[thm:sg:local-ssb]{Universal Lessons of Local SSB}{
+  The following hold for every gauge group $G$ broken spontaneously to a subgroup $H$, regardless of whether $G$ is Abelian, non-Abelian, or a product group:
+  \begin{enumerate}
+    \item \textbf{Broken generators $\Rightarrow$ massive gauge bosons.} Each generator broken by the vev gives mass to one gauge boson. There are $\dim G - \dim H$ broken generators, hence that many massive vectors.
+    \item \textbf{Unbroken generators $\Rightarrow$ massless gauge bosons.} The gauge bosons associated with the $\dim H$ surviving generators remain exactly massless, \emph{protected} by the residual symmetry.
+    \item \textbf{The condensing field must be a scalar.} A field carrying non-trivial Lorentz quantum numbers (spinor, vector) would break Lorentz invariance upon condensing. Only a Lorentz-scalar vev is consistent with the observed Lorentz invariance of the vacuum.
+  \end{enumerate}
+}
+
+%%===================================================================
+\subsection*{Part II \quad Rigorous Mathematical Derivations}
+\hrule\medskip
+
+%%-------------------------------------------------------------------
+\subsubsection*{2.1 \quad The Abelian Higgs Model: Setup}
+
+Consider a complex scalar $\phi$ of charge $+1$ under a local $U(1)$, with gauge-invariant Lagrangian
+\begin{equation}
+  \Lag = (D_\mu\phi)^\dagger D^\mu\phi
+       - \tfrac{1}{4}F_{\mu\nu}F^{\mu\nu}
+       - \mu^2\,\phi^\dagger\phi
+       - \lambda\,(\phi^\dagger\phi)^2 ,
+  \qquad
+  D_\mu\phi = (\partial_\mu + igA_\mu)\phi .
+  \label{eq:sg:abelian_lag}
+\end{equation}
+For $\mu^2 < 0$ the potential has a ring of minima at
+\begin{equation}
+  |\langle\phi\rangle| = \frac{v}{\sqrt{2}},
+  \qquad v^2 = -\frac{\mu^2}{\lambda} > 0 .
+  \label{eq:sg:vev}
+\end{equation}
+
+%%-------------------------------------------------------------------
+\subsubsection*{2.2 \quad The Nonlinear (Magnitude--Phase) Realization}
+
+Instead of the linear split $\phi = (\phi_1 + i\phi_2)/\sqrt{2}$, write $\phi$ in polar field variables:
+\begin{equation}
+  \phi(x) = e^{i\chi(x)/v}\,\frac{v + h(x)}{\sqrt{2}} ,
+  \label{eq:sg:nonlinear}
+\end{equation}
+where $h(x)$ is the radial (Higgs) excitation and $\chi(x)$ is the angular (Goldstone) excitation, both with vanishing vev. This is the \textbf{nonlinear realization}.
+
+\begin{quote}
+\textbf{Why this parameterization?} It isolates the gauge-transformable phase $\chi$ as a multiplicative exponential, making the unitary gauge choice transparent: a single local $U(1)$ transformation can eliminate $\chi(x)$ everywhere simultaneously.
+\end{quote}
+
+%%-------------------------------------------------------------------
+\subsubsection*{2.3 \quad The Unitary Gauge: Eliminating $\chi$}
+
+The theory \eqref{eq:sg:abelian_lag} is still locally $U(1)$-invariant even after SSB (the \emph{equations of motion} respect the symmetry; only the vacuum does not). Any local transformation $\phi \to e^{i\theta(x)}\phi$ is a valid redescription. Choose
+\begin{equation}
+  \boxed{\;\theta(x) = -\frac{\chi(x)}{v}\qquad (\text{unitary gauge}).\;}
+  \label{eq:sg:unitary_gauge}
+\end{equation}
+Under this transformation the fields become:
+\begin{align}
+  \phi &\;\to\; \phi' = \frac{v + h(x)}{\sqrt{2}} \quad (\text{real, positive}) , \label{eq:sg:phi_prime}\\
+  A_\mu &\;\to\; V_\mu = A_\mu - \frac{1}{g}\partial_\mu\theta
+               = A_\mu + \frac{1}{gv}\partial_\mu\chi . \label{eq:sg:V_mu}
+\end{align}
+The field $\chi$ has not been deleted — it has been \emph{transferred} into the gauge field $V_\mu$. It will reappear as the longitudinal polarization of the now-massive vector.
+
+%%-------------------------------------------------------------------
+\subsubsection*{2.4 \quad Expanding the Lagrangian in Unitary Gauge}
+
+\paragraph{Step 1: Covariant derivative on the real field.}
+\begin{equation}
+  D_\mu\phi' = (\partial_\mu + igV_\mu)\frac{v+h}{\sqrt{2}}
+             = \frac{1}{\sqrt{2}}\partial_\mu h + \frac{ig}{\sqrt{2}}V_\mu(v+h) .
+\end{equation}
+The modulus squared is
+\begin{equation}
+  |D_\mu\phi'|^2 = \frac{1}{2}(\partial_\mu h)^2
+                 + \frac{g^2}{2}V_\mu V^\mu (v+h)^2 .
+  \label{eq:sg:kinetic_exp}
+\end{equation}
+
+\paragraph{Step 2: Scalar potential in shifted form.}
+Rewrite $V(\phi) = \lambda\bigl(\phi^\dagger\phi - v^2/2\bigr)^2$ (equal to the original up to a constant). With $\phi'^\dagger\phi' = (v+h)^2/2$:
+\begin{equation}
+  \phi'^\dagger\phi' - \frac{v^2}{2} = vh + \frac{h^2}{2}
+  \;\Longrightarrow\;
+  V = \lambda\!\left(vh + \frac{h^2}{2}\right)^{\!2}
+    = \lambda v^2 h^2 + \lambda v\,h^3 + \frac{\lambda}{4}h^4 .
+  \label{eq:sg:V_exp}
+\end{equation}
+
+\paragraph{Step 3: Expand $(v+h)^2 = v^2 + 2vh + h^2$ in \eqref{eq:sg:kinetic_exp} and collect all terms.}
+\begin{equation}
+  \boxed{\;
+  \Lag = -\tfrac{1}{4}F_{\mu\nu}F^{\mu\nu}
+       + \tfrac{1}{2}(\partial_\mu h)^2
+       + \underbrace{\tfrac{1}{2}g^2v^2 V_\mu V^\mu}_{\text{vector mass}}
+       - \underbrace{\tfrac{1}{2}(2\lambda v^2)h^2}_{\text{scalar mass}}
+       + \tfrac{g^2}{2}V_\mu V^\mu h(2v+h)
+       - \lambda v\,h^3 - \tfrac{\lambda}{4}h^4 ,
+  \;}
+  \label{eq:sg:unitary_lag}
+\end{equation}
+where $F_{\mu\nu}$ is now built from $V_\mu$. \textbf{The field $\chi$ is absent.}
+
+%%-------------------------------------------------------------------
+\subsubsection*{2.5 \quad Reading Off the Physical Spectrum}
+
+Quadratic terms in \eqref{eq:sg:unitary_lag} determine the masses. For a \emph{real} massive vector the mass term is $+\tfrac{1}{2}m_V^2 V_\mu V^\mu$; for a real scalar it is $-\tfrac{1}{2}m_h^2 h^2$. Reading off:
+\begin{equation}
+  \boxed{\;
+  m_V^2 = g^2 v^2 ,
+  \qquad
+  m_h^2 = 2\lambda v^2 .
+  \;}
+  \label{eq:sg:masses}
+\end{equation}
+
+The two physical particles of the model are therefore a \textbf{massive vector boson} $V_\mu$ and a \textbf{massive real scalar} $h$ (the Higgs boson). Both masses vanish as $v \to 0$, confirming the vev as their sole source.
+
+%%-------------------------------------------------------------------
+\subsubsection*{2.6 \quad Degree-of-Freedom Bookkeeping (Abelian Case)}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lcc}
+\toprule
+Field / Mode & Before SSB & After SSB \\
+\midrule
+Gauge field $A_\mu$ (massless) & $2$ transverse & — \\
+Phase $\chi$ (real scalar) & $1$ & — \\
+Radial $h$ (real scalar) & $1$ & $1$ (Higgs boson) \\
+Vector $V_\mu$ (massive) & — & $3$ (2 transverse + 1 longitudinal) \\
+\midrule
+\textbf{Total} & $\mathbf{4}$ & $\mathbf{4}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+In symbols: $\underbrace{2}_{A_\mu\text{ massless}} + \underbrace{1}_{\chi} = \underbrace{3}_{V_\mu\text{ massive}}$, plus $1$ for $h$ on both sides. No degrees of freedom are created or destroyed; $\chi$ becomes the longitudinal polarization of $V_\mu$.
+
+%%-------------------------------------------------------------------
+\subsubsection*{2.7 \quad Coupling Relations from SSB}
+
+All interaction terms in \eqref{eq:sg:unitary_lag} descend from only \textbf{three} parameters $\{\lambda, v, g\}$. Two structural facts:
+
+\begin{enumerate}
+  \item \textbf{$hVV$ coupling $\propto m_V^2/v$:}
+  The term $\tfrac{g^2}{2}V_\mu V^\mu(2vh)$ has coefficient $g^2 v = m_V^2/v$:
+  \begin{equation}
+    g_{hVV} = g^2 v = \frac{m_V^2}{v} .
+    \label{eq:sg:hVV}
+  \end{equation}
+  The Higgs boson couples most strongly to the heaviest gauge bosons — the LHC discovery handle.
+
+  \item \textbf{Dimensionless couplings are preserved by SSB:}
+  The $h^4$ coefficient ($\lambda/4$) and the $h^2V^2$ coefficient ($g^2/2$) are dimensionless and match their values in the symmetric Lagrangian. Only operators with positive mass-dimension coefficients are shifted by the vev. This is a standard sanity check after any SSB calculation.
+\end{enumerate}
+
+\nt{\textbf{Normalization pitfall:} From $\tfrac{1}{2}g^2v^2 V_\mu V^\mu$ one reads $m_V^2 = g^2v^2$, i.e.\ $m_V = gv$ — \emph{no} extra $\sqrt{2}$. But for a Dirac fermion, $m_\psi = yv/\sqrt{2}$ (the $\sqrt{2}$ comes from the vev convention $\langle\phi\rangle = v/\sqrt{2}$), and for the scalar, $m_h^2 = 2\lambda v^2$ (the factor of $2$ comes from $\lambda(vh + h^2/2)^2$ expanded). Confusing these three normalizations is the most common error in spectrum questions.}
+
+%%-------------------------------------------------------------------
+\subsubsection*{2.8 \quad Algorithmic Method for Any Local SSB}
+
+\begin{enumerate}
+  \item Identify gauge group $G$, matter representations, and write the gauge-invariant Lagrangian.
+  \item Minimize the potential; record $\langle\phi\rangle$ and the scale $v$.
+  \item \textbf{Test generators on the vacuum:} $T^a\langle\phi\rangle = 0$ means $T^a$ is unbroken; otherwise it is broken. The unbroken generators form $H \subset G$.
+  \item Count: $\dim G - \dim H$ broken generators $\Rightarrow$ that many would-be Goldstones eaten $\Rightarrow$ that many gauge bosons become massive.
+  \item Go to unitary gauge (rotate Goldstone phases to zero) and expand $|D_\mu\phi|^2$ around the vev: terms quadratic in gauge fields are the mass matrix.
+  \item Expand the potential around the vev for scalar masses; verify DoF balance.
+\end{enumerate}
+
+%%-------------------------------------------------------------------
+\subsubsection*{2.9 \quad Fermion Masses in the Unitary Gauge}
+
+Add chiral fermions $\psi_L$, $\psi_R$ with charges satisfying the gauge-invariance condition
+\begin{equation}
+  q(\psi_R) - q(\psi_L) = q(\phi) .
+  \label{eq:sg:charge_cond}
+\end{equation}
+This ensures the Yukawa term $-y\,\phi\,\bar\psi_R\psi_L + \text{h.c.}$ is gauge-invariant while a bare mass $m\bar\psi_R\psi_L$ is forbidden. In unitary gauge $\phi \to (v+h)/\sqrt{2}$:
+\begin{equation}
+  \boxed{\;
+  \Lag_{\mathrm{Yuk}} = -\underbrace{\frac{yv}{\sqrt{2}}}_{m_\psi}\bar\psi_R\psi_L
+                      - \frac{y}{\sqrt{2}}\,h\,\bar\psi_R\psi_L + \text{h.c.}
+  \;}
+  \label{eq:sg:yukawa_unitary}
+\end{equation}
+
+The first term is a Dirac mass $m_\psi = yv/\sqrt{2}$; the second gives the Higgs–fermion coupling $g_{h\bar\psi\psi} = m_\psi/v$. Mass and Yukawa coupling are therefore determined by the \emph{same} parameter — a falsifiable prediction of the mechanism.
+
+%%-------------------------------------------------------------------
+\subsubsection*{2.10 \quad The Lepton Standard Model: Gauge Structure}
+
+\dfn[dfn:sg:lsm]{The Lepton Standard Model (LSM)}{
+  The LSM is the gauge theory with local symmetry $G_{\mathrm{LSM}} = SU(2)_L \times U(1)_Y$ (hypercharge, \emph{not} electromagnetism), field content as in Table~\ref{tab:sg:lsm}, and spontaneous breaking pattern
+  \begin{equation}
+    SU(2)_L \times U(1)_Y \;\longrightarrow\; U(1)_{\mathrm{EM}} .
+    \label{eq:sg:lsm_breaking}
+  \end{equation}
+  The full Standard Model is the LSM plus quarks and $SU(3)_c$ (QCD).
+}
+
+\begin{table}[ht]
+\centering
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lccc}
+\toprule
+Field & $SU(2)_L$ rep & $U(1)_Y$ charge $Y$ & Description \\
+\midrule
+$L_{Li} = \begin{pmatrix}\nu_{Li} \\ e_{Li}\end{pmatrix}$ & $\mathbf{2}$ & $-\tfrac{1}{2}$ & Left-handed lepton doublet, $i=1,2,3$ \\[8pt]
+$E_{Ri}$ & $\mathbf{1}$ & $-1$ & Right-handed charged lepton, $i=1,2,3$ \\[4pt]
+$\phi = \begin{pmatrix}\phi^+ \\ \phi^0\end{pmatrix}$ & $\mathbf{2}$ & $+\tfrac{1}{2}$ & Complex Higgs doublet \\
+\bottomrule
+\end{tabular}
+\caption{Field content of the Lepton Standard Model. Nine chiral (Weyl) fermions in two kinds of representations: $3 \times 2$ from doublets plus $3\times 1$ from singlets.}
+\label{tab:sg:lsm}
+\end{table}
+
+\paragraph{Gauge sector.}
+The group $SU(2)_L \times U(1)_Y$ has four generators: $\{T^a\}_{a=1,2,3}$ for $SU(2)_L$ and $Y$ for $U(1)_Y$, with algebra
+\begin{equation}
+  [T^a, T^b] = i\epsilon^{abc}T^c ,
+  \qquad
+  [T^a, Y] = 0 .
+  \label{eq:sg:algebra}
+\end{equation}
+The two factors are independent, hence the commutator of generators from different factors vanishes.
+
+\nt{\textbf{Exam trap — number of gauge couplings:} The number of independent gauge couplings equals the number of \emph{simple or $U(1)$ factors} in the gauge group, \emph{not} the number of generators. $SU(2)_L \times U(1)_Y$ has \textbf{two} independent couplings: $g$ (for $SU(2)_L$) and $g'$ (for $U(1)_Y$).}
+
+Locality requires one gauge boson per generator, four total:
+\begin{equation}
+  W^a_\mu \sim (\mathbf{3})_0 ,\quad a = 1,2,3
+  \qquad\text{(adjoint of }SU(2)_L\text{, zero hypercharge)} ,
+  \label{eq:sg:W_bosons}
+\end{equation}
+\begin{equation}
+  B_\mu \sim (\mathbf{1})_0
+  \qquad\text{(singlet of }SU(2)_L\text{, zero hypercharge)} .
+  \label{eq:sg:B_boson}
+\end{equation}
+
+\paragraph{Field strengths.}
+\begin{equation}
+  \boxed{\;
+  W^a_{\mu\nu} = \partial_\mu W^a_\nu - \partial_\nu W^a_\mu
+               - g\,\epsilon^{abc}W^b_\mu W^c_\nu ,
+  \qquad
+  B_{\mu\nu} = \partial_\mu B_\nu - \partial_\nu B_\mu .
+  \;}
+  \label{eq:sg:field_strengths}
+\end{equation}
+The non-Abelian $W^a_{\mu\nu}$ carries a cubic term in the structure constants (giving rise to 3- and 4-boson self-interactions); the Abelian $B_{\mu\nu}$ does not.
+
+%%-------------------------------------------------------------------
+\subsubsection*{2.11 \quad Covariant Derivatives for Each LSM Field}
+
+The general covariant derivative is
+\begin{equation}
+  \boxed{\;
+  D_\mu = \partial_\mu + igW^a_\mu T^a + ig'YB_\mu ,
+  \;}
+  \label{eq:sg:Dmu_general}
+\end{equation}
+where $T^a = \sigma^a/2$ on $SU(2)$ doublets and $T^a = 0$ on singlets, and $Y$ is the field's hypercharge eigenvalue. Explicitly:
+
+\begin{align}
+  D_\mu\phi &= \left(\partial_\mu + \frac{ig}{2}W^a_\mu\sigma^a + \frac{ig'}{2}B_\mu\right)\phi ,
+  \label{eq:sg:Dphi}\\[4pt]
+  D_\mu L_L &= \left(\partial_\mu + \frac{ig}{2}W^a_\mu\sigma^a - \frac{ig'}{2}B_\mu\right)L_L ,
+  \label{eq:sg:DL}\\[4pt]
+  D_\mu E_R &= \left(\partial_\mu - ig'B_\mu\right)E_R .
+  \label{eq:sg:DE}
+\end{align}
+
+The differences trace directly to the representation and hypercharge of each field ($Y = +\tfrac{1}{2}, -\tfrac{1}{2}, -1$ for $\phi$, $L_L$, $E_R$ respectively). The $SU(2)$ piece vanishes for the singlet $E_R$.
+
+%%-------------------------------------------------------------------
+\subsubsection*{2.12 \quad No Bare Lepton Mass Term}
+
+A Lorentz-invariant, renormalizable fermion mass requires the combination $\bar L_L E_R$. This fails \emph{both} gauge tests:
+
+\begin{itemize}
+  \item \textbf{$SU(2)_L$:} $\bar L_L$ is a doublet ($\bar{\mathbf{2}}$) and $E_R$ is a singlet ($\mathbf{1}$), so $\bar L_L E_R$ transforms as a doublet — not gauge-invariant.
+  \item \textbf{$U(1)_Y$:} Hypercharges add to $+\tfrac{1}{2} + (-1) = -\tfrac{1}{2} \neq 0$ — not invariant.
+\end{itemize}
+
+\begin{equation}
+  \boxed{\;\text{No bare lepton mass is permitted by the gauge representations.}\;}
+\end{equation}
+
+This is a theorem, not an assumption. Every observed lepton mass must arise from SSB.
+
+%%-------------------------------------------------------------------
+\subsubsection*{2.13 \quad The Yukawa Sector of the LSM}
+
+The unique renormalizable gauge-invariant coupling between leptons and the Higgs is
+\begin{equation}
+  \boxed{\;
+  \Lag_{\mathrm{Yuk}} = -Y^e_{ij}\,\bar L_{Li}\,\phi\,E_{Rj} + \text{h.c.}
+  \;}
+  \label{eq:sg:lsm_yukawa}
+\end{equation}
+
+\paragraph{Invariance check.}
+\begin{itemize}
+  \item $U(1)_Y$: $Y(\bar L_L) + Y(\phi) + Y(E_R) = +\tfrac{1}{2} + \tfrac{1}{2} + (-1) = 0$. \checkmark
+  \item $SU(2)_L$: $\bar{\mathbf{2}} \otimes \mathbf{2} \supset \mathbf{1}$ — the two doublets contract to a singlet. \checkmark
+\end{itemize}
+
+The coupling $Y^e_{ij}$ is a $3\times 3$ complex matrix of dimensionless numbers ($2\times\tfrac{3}{2} + 1 = 4$, leaving dimension-zero coefficient). A basis change among generations diagonalizes it:
+\begin{equation}
+  Y^e = \mathrm{diag}(y_e,\, y_\mu,\, y_\tau) \quad\text{(mass basis)} .
+  \label{eq:sg:mass_basis}
+\end{equation}
+Once the Higgs acquires its vev these three eigenvalues become the electron, muon, and tau masses: $m_\ell = y_\ell v/\sqrt{2}$.
+
+%%-------------------------------------------------------------------
+\subsubsection*{2.14 \quad The Scalar Sector and Choice of Vacuum}
+
+The potential is the same Mexican-hat form
+\begin{equation}
+  V(\phi) = -\mu^2\phi^\dagger\phi - \lambda(\phi^\dagger\phi)^2
+           = \lambda\!\left(\phi^\dagger\phi - \frac{v^2}{2}\right)^{\!2} + \text{const},
+  \qquad v^2 = -\frac{\mu^2}{\lambda} .
+\end{equation}
+For $\mu^2 < 0$ the doublet condenses with $|\langle\phi\rangle| = v/\sqrt{2}$. The potential fixes only the \emph{magnitude}; the \emph{direction} in the doublet is our convention. We place the vev in the real part of the lower ($T^3 = -\tfrac{1}{2}$) component:
+\begin{equation}
+  \boxed{\;
+  \langle\phi\rangle = \frac{1}{\sqrt{2}}\begin{pmatrix}0\\v\end{pmatrix} .
+  \;}
+  \label{eq:sg:lsm_vev}
+\end{equation}
+
+\begin{quote}
+  \textbf{Why the lower component?} We need the condensing component to be electrically neutral — a charged vacuum would spontaneously break $U(1)_{\mathrm{EM}}$, giving the photon a mass. We verify below that the lower component of $\phi$ carries $Q = 0$.
+\end{quote}
+
+%%-------------------------------------------------------------------
+\subsubsection*{2.15 \quad Deriving the Unbroken Generator: Electric Charge}
+
+A generator $\mathcal{Q}$ is unbroken iff $\mathcal{Q}\langle\phi\rangle = 0$. We test all four generators $\{T^1, T^2, T^3, Y\}$ on the vev \eqref{eq:sg:lsm_vev}.
+
+\paragraph{$T^1$ and $T^2$:}
+$\sigma^1 = \bigl(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\bigr)$ and $\sigma^2 = \bigl(\begin{smallmatrix}0&-i\\i&0\end{smallmatrix}\bigr)$ are off-diagonal, so
+\begin{equation}
+  T^1\langle\phi\rangle = \frac{\sigma^1}{2}\frac{1}{\sqrt{2}}\begin{pmatrix}0\\v\end{pmatrix}
+                        = \frac{1}{2\sqrt{2}}\begin{pmatrix}v\\0\end{pmatrix} \neq 0 ,
+  \qquad
+  T^2\langle\phi\rangle = \frac{i}{2\sqrt{2}}\begin{pmatrix}v\\0\end{pmatrix} \neq 0 .
+\end{equation}
+Both $T^1$ and $T^2$ are \textbf{broken}.
+
+\paragraph{$T^3$ and $Y$:}
+\begin{equation}
+  T^3\langle\phi\rangle
+  = \frac{1}{2}\begin{pmatrix}1&0\\0&-1\end{pmatrix}\frac{1}{\sqrt{2}}\begin{pmatrix}0\\v\end{pmatrix}
+  = -\frac{1}{2}\cdot\frac{1}{\sqrt{2}}\begin{pmatrix}0\\v\end{pmatrix} ,
+  \label{eq:sg:T3_on_vev}
+\end{equation}
+\begin{equation}
+  Y\langle\phi\rangle = +\frac{1}{2}\cdot\frac{1}{\sqrt{2}}\begin{pmatrix}0\\v\end{pmatrix} .
+  \label{eq:sg:Y_on_vev}
+\end{equation}
+These are equal in magnitude and opposite in sign. Their sum therefore vanishes:
+\begin{equation}
+  \boxed{\;
+  Q \equiv T^3 + Y ,
+  \qquad
+  Q\langle\phi\rangle = \left(-\frac{1}{2} + \frac{1}{2}\right)\frac{1}{\sqrt{2}}\begin{pmatrix}0\\v\end{pmatrix} = 0 .
+  \;}
+  \label{eq:sg:Q_unbroken}
+\end{equation}
+
+This single linear combination $Q = T^3 + Y$ is the \textbf{unbroken generator}. We identify $U(1)_Q$ with $U(1)_{\mathrm{EM}}$ and $Q$ with the electric charge operator.
+
+\begin{quote}
+  \textbf{Physical intuition.} Electric charge is not imposed on the Standard Model by hand. It \emph{emerges} as the unique combination of weak isospin and hypercharge that the Higgs vacuum happens to preserve. Had we placed the vev in the upper component ($T^3 = +\tfrac{1}{2}$), the preserved combination would be $Q = T^3 - Y$ — same physics, different convention.
+\end{quote}
+
+\nt{\textbf{Hypercharge convention:} The formula $Q = T^3 + Y$ uses the normalization where the lepton doublet has $Y_{L} = -\tfrac{1}{2}$. Many textbooks (e.g.\ Peskin \& Schroeder) normalize hypercharge by a factor of 2: $\tilde{Y}_L = -1$, giving $Q = T^3 + \tilde{Y}/2$. Always check the convention; note also that for $SU(2)$ singlets $T^3 = 0$, so a singlet's electric charge \emph{equals} its hypercharge.}
+
+%%-------------------------------------------------------------------
+\subsubsection*{2.16 \quad Electric Charges of All LSM Fields}
+
+\ex[ex:sg:charges]{Electric Charges via $Q = T^3 + Y$}{
+For doublets $T^3 = \pm\tfrac{1}{2}$ (upper/lower component); for singlets $T^3 = 0$.
+\begin{align*}
+  Q(\nu_L) &= +\tfrac{1}{2} + (-\tfrac{1}{2}) = 0 & &\text{(neutrino — neutral fermion)} \\
+  Q(e_L)   &= -\tfrac{1}{2} + (-\tfrac{1}{2}) = -1 & &\text{(left-handed electron)} \\
+  Q(e_R)   &= 0 + (-1) = -1 & &\text{(right-handed electron)} \\
+  Q(\phi^+)&= +\tfrac{1}{2} + \tfrac{1}{2} = +1 & &\text{(charged Higgs component)} \\
+  Q(\phi^0)&= -\tfrac{1}{2} + \tfrac{1}{2} = 0 & &\text{(neutral Higgs component — carries the vev)}
+\end{align*}
+Both chiralities of the electron have $Q = -1$, making the electron vector-like under $U(1)_{\mathrm{EM}}$ — a necessary condition for SSB to deliver a fermion mass. The vev component $\phi^0$ is electrically neutral as required.
+}
+
+%%-------------------------------------------------------------------
+\subsubsection*{2.17 \quad The Higgs Doublet in Unitary Gauge}
+
+Four generators, one unbroken $\Rightarrow$ three broken $\Rightarrow$ three would-be Goldstones eaten. Of the four real degrees of freedom of the complex doublet, three disappear and one physical scalar survives:
+\begin{equation}
+  \boxed{\;
+  \phi(x) = \frac{1}{\sqrt{2}}\begin{pmatrix}0 \\ v + h(x)\end{pmatrix}
+  \qquad(\text{unitary gauge}) .
+  \;}
+  \label{eq:sg:lsm_unitary}
+\end{equation}
+
+The surviving field $h$ is the \textbf{Higgs boson}: a real, electromagnetically neutral, color-singlet scalar with
+\begin{equation}
+  m_h^2 = 2\lambda v^2 ,
+  \qquad
+  m_h^{\text{measured}} = 125.09 \pm 0.24\;\text{GeV}
+  \quad(\text{LHC 2012, Nobel 2013}) .
+\end{equation}
+
+%%-------------------------------------------------------------------
+\subsubsection*{2.18 \quad Gauge-Boson Mass Matrix: Full Derivation}
+
+The gauge-boson masses come from $|D_\mu\langle\phi\rangle|^2$. Setting $\phi = \langle\phi\rangle$ and dropping $\partial_\mu$ (which annihilates a constant):
+\begin{equation}
+  D_\mu\langle\phi\rangle
+  = \frac{i}{2}\left(gW^a_\mu\sigma^a + g'B_\mu\right)\frac{1}{\sqrt{2}}\begin{pmatrix}0\\v\end{pmatrix}
+  = \frac{i}{\sqrt{8}}\left(gW^a_\mu\sigma^a + g'B_\mu\right)\begin{pmatrix}0\\v\end{pmatrix} .
+  \label{eq:sg:Dvev}
+\end{equation}
+
+\paragraph{Step 1: Expand the $2\times 2$ matrix.}
+Using $\sigma^1 = \bigl(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\bigr)$, $\sigma^2 = \bigl(\begin{smallmatrix}0&-i\\i&0\end{smallmatrix}\bigr)$, $\sigma^3 = \bigl(\begin{smallmatrix}1&0\\0&-1\end{smallmatrix}\bigr)$, and $B_\mu\cdot\mathbf{1}_2$:
+\begin{equation}
+  gW^a_\mu\sigma^a + g'B_\mu\mathbf{1}_2
+  = \begin{pmatrix}
+      gW^3_\mu + g'B_\mu & g(W^1_\mu - iW^2_\mu) \\[4pt]
+      g(W^1_\mu + iW^2_\mu) & -gW^3_\mu + g'B_\mu
+    \end{pmatrix} .
+  \label{eq:sg:matrix_form}
+\end{equation}
+
+\paragraph{Step 2: Act on the vev vector.}
+Acting \eqref{eq:sg:matrix_form} on $(0,v)^T$ selects the second column:
+\begin{equation}
+  \left(gW^a_\mu\sigma^a + g'B_\mu\right)\begin{pmatrix}0\\v\end{pmatrix}
+  = v\begin{pmatrix}g(W^1_\mu - iW^2_\mu)\\[4pt]-gW^3_\mu + g'B_\mu\end{pmatrix} .
+  \label{eq:sg:matrix_on_vev}
+\end{equation}
+
+\paragraph{Step 3: Form the modulus squared.}
+\begin{align}
+  \Lag_{\mathrm{mass}}
+  &= (D_\mu\langle\phi\rangle)^\dagger D^\mu\langle\phi\rangle \notag\\
+  &= \frac{v^2}{8}\left[
+       g^2(W^1_\mu)^2 + g^2(W^2_\mu)^2
+     + \bigl(gW^3_\mu - g'B_\mu\bigr)^2
+     \right]
+     + \frac{v^2}{8}\bigl|g(W^1_\mu - iW^2_\mu)\bigr|^2_{\text{(same as above)}} \notag\\[6pt]
+  &= \frac{v^2}{8}\Bigl[
+       g^2\bigl(W^1_\mu W^{1\mu} + W^2_\mu W^{2\mu}\bigr)
+     + \bigl(gW^3_\mu - g'B_\mu\bigr)\bigl(gW^{3\mu} - g'B^\mu\bigr)
+     \Bigr] .
+  \label{eq:sg:mass_quadratic}
+\end{align}
+
+\begin{equation}
+  \boxed{\;
+  \Lag_{\mathrm{mass}}
+  = \frac{v^2}{8}\Bigl[
+       g^2\bigl(W^1_\mu W^{1\mu} + W^2_\mu W^{2\mu}\bigr)
+     + \bigl(gW^3_\mu - g'B_\mu\bigr)^2
+    \Bigr] .
+  \;}
+  \label{eq:sg:mass_quad_box}
+\end{equation}
+
+\paragraph{Step 4: Identify the mass eigenstates.}
+
+\textbf{Charged sector} ($W^1$, $W^2$): Already diagonal. Define the complex (physical) charged bosons
+\begin{equation}
+  W^\pm_\mu = \frac{W^1_\mu \mp iW^2_\mu}{\sqrt{2}} ,
+  \label{eq:sg:W_charged}
+\end{equation}
+so $W^1_\mu W^{1\mu} + W^2_\mu W^{2\mu} = 2W^+_\mu W^{-\mu}$. Reading off the mass:
+\begin{equation}
+  \frac{v^2}{8}\cdot g^2 \cdot 2 W^+W^- = \frac{g^2v^2}{4}W^+W^-
+  \;\Longrightarrow\;
+  m_W^2 = \frac{g^2v^2}{4},\quad m_W = \frac{gv}{2} .
+  \label{eq:sg:mW}
+\end{equation}
+
+\textbf{Neutral sector} ($W^3$, $B$): The combination $gW^3_\mu - g'B_\mu$ appears with coefficient $\tfrac{v^2}{8}$. The orthogonal combination $g'W^3_\mu + gB_\mu$ (proportional to the photon $A_\mu$) is \emph{absent}: it was annihilated by $Q$. The neutral mass matrix is
+\begin{equation}
+  \frac{v^2}{8}
+  \begin{pmatrix}W^3 & B\end{pmatrix}
+  \begin{pmatrix}g^2 & -gg' \\ -gg' & g'^2\end{pmatrix}
+  \begin{pmatrix}W^3 \\ B\end{pmatrix} .
+  \label{eq:sg:neutral_mass_matrix}
+\end{equation}
+This $2\times2$ matrix has eigenvalues $0$ (photon) and $\tfrac{v^2}{4}(g^2+g'^2)$ (the $Z$ boson). Diagonalization is achieved by the \textbf{Weinberg angle} $\theta_W$ (to be derived in Lecture 18):
+\begin{equation}
+  \begin{pmatrix}A_\mu \\ Z_\mu\end{pmatrix}
+  = \begin{pmatrix}\sin\theta_W & \cos\theta_W \\ \cos\theta_W & -\sin\theta_W\end{pmatrix}
+    \begin{pmatrix}W^3_\mu \\ B_\mu\end{pmatrix},
+  \qquad \tan\theta_W = \frac{g'}{g} ,
+  \label{eq:sg:weinberg}
+\end{equation}
+giving
+\begin{equation}
+  m_A = 0 ,
+  \qquad
+  m_Z^2 = \frac{(g^2+g'^2)v^2}{4} = \frac{m_W^2}{\cos^2\theta_W} .
+  \label{eq:sg:mZ}
+\end{equation}
+
+\nt{\textbf{Pitfall:} In \eqref{eq:sg:mass_quad_box} the combination $g'W^3_\mu + gB_\mu$ (the photon direction, un-normalized) never appears. Do not expect four eigenvalues in the neutral sector — the photon mass is zero by construction, protected by the unbroken $U(1)_{\mathrm{EM}}$. If your computed neutral mass matrix has two nonzero eigenvalues, check the vev direction or the sign of the $U(1)_Y$ covariant derivative.}
+
+%%===================================================================
+\subsection*{Part III \quad Strategic Summary and Degree-of-Freedom Ledger}
+\hrule\medskip
+
+%%-------------------------------------------------------------------
+\subsubsection*{3.1 \quad Full DoF Bookkeeping for the LSM}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{lcc}
+\toprule
+State & DoF before SSB & DoF after SSB \\
+\midrule
+Complex Higgs doublet $\phi$ (4 real d.o.f.) & $4$ & $1$ (Higgs boson $h$) \\
+\quad $3$ eaten Goldstones & $3$ & $0$ \\[2pt]
+Massless $W^{1,2,3}_\mu$, $B_\mu$ (2 each) & $4\times 2 = 8$ & $0$ \\
+Massive $W^\pm_\mu$, $Z_\mu$ (3 each) & $0$ & $3\times 3 = 9$ \\
+Massless photon $A_\mu$ (2) & $0$ & $2$ \\
+\midrule
+\textbf{Total} & $\mathbf{12}$ & $\mathbf{12}$ \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+In formula: $4 + 8 = 12 = 9 + 2 + 1$.
+
+%%-------------------------------------------------------------------
+\subsubsection*{3.2 \quad Master Summary of the SSB Mechanism}
+
+\thm[thm:sg:ssb-summary]{Structural Summary of the Higgs Mechanism}{
+  Given a gauge theory with group $G$ broken spontaneously to $H$ by a scalar vev:
+  \begin{enumerate}
+    \item $\dim G - \dim H$ gauge bosons eat the would-be Goldstones and become \textbf{massive}; $\dim H$ gauge bosons remain \textbf{massless}.
+    \item All masses (vector, scalar, fermion) are proportional to the vev $v$ and vanish as $v\to0$.
+    \item The Higgs boson is the \emph{radial} excitation of the condensing field, with $m_h^2 = 2\lambda v^2$.
+    \item Yukawa couplings $y_f$ generate fermion masses $m_f = y_f v/\sqrt{2}$ and predict Higgs--fermion couplings $g_{hff} = m_f/v$ — a direct observational test.
+    \item The $hVV$ coupling is $g_{hVV} = m_V^2/v$: the Higgs talks most strongly to the heaviest gauge bosons.
+    \item Dimensionless couplings (e.g.\ $\lambda$, $g$, $g'$) are unchanged by SSB; only operators with positive mass-dimension coefficients are shifted by $v$.
+    \item Electric charge $Q = T^3 + Y$ is the \emph{emergent} unbroken generator, not a fundamental input.
+  \end{enumerate}
+}
+
+%%-------------------------------------------------------------------
+\subsubsection*{3.3 \quad Critical Pitfalls and Normalization Reference}
+
+\begin{table}[ht]
+\centering
+\renewcommand{\arraystretch}{1.5}
+\begin{tabular}{lll}
+\toprule
+Quantity & Correct formula & Common error \\
+\midrule
+Real vector mass & $m_V^2 = g^2v^2$ (from $\tfrac{1}{2}m_V^2 V^2$) & Extra $\sqrt{2}$ \\
+Charged $W$ mass & $m_W = gv/2$ (doublet vev) & Writing $gv$ \\
+Dirac fermion mass & $m_f = y_f v/\sqrt{2}$ & $yv$ or $yv/2$ \\
+Higgs boson mass & $m_h^2 = 2\lambda v^2$ (not $\lambda v^2$) & Factor of 2 missing \\
+Gauge couplings & $g$ (for $SU(2)_L$), $g'$ (for $U(1)_Y$) — two, not four & Confusing couplings with generators \\
+$Q$ formula & $Q = T^3 + Y$ (with $Y_{L} = -\tfrac{1}{2}$ convention) & $Q = T^3 + Y/2$ (P\&S convention) \\
+Photon mass & $0$ (automatic, no fourth eigenvalue) & Looking for four neutral eigenstates \\
+\bottomrule
+\end{tabular}
+\caption{Quick-reference normalization and formula table. The mass formulae differ by spin because the canonical kinetic-term normalizations differ.}
+\label{tab:sg:pitfalls}
+\end{table}
+
+\nt{\textbf{Three-normalization rule.} Keep these three distinct:
+\begin{itemize}
+  \item Real vector: $\Lag \supset +\tfrac{1}{2}m_V^2 V_\mu V^\mu \Rightarrow m_V = gv$.
+  \item Dirac fermion: $\Lag \supset -m_f\bar\psi\psi \Rightarrow m_f = yv/\sqrt{2}$.
+  \item Real scalar: $\Lag \supset -\tfrac{1}{2}m_h^2 h^2 \Rightarrow m_h^2 = 2\lambda v^2$.
+\end{itemize}
+The factors of $\sqrt{2}$ and $2$ come from the canonical normalizations of different spin fields, not from SSB itself.}
+
+%%-------------------------------------------------------------------
+\subsubsection*{3.4 \quad Physical Analogy: The Meissner Effect}
+
+In a superconductor the ground state (a Cooper-pair condensate) breaks the electromagnetic $U(1)$. By the same mechanism derived above, the photon inside the material acquires an effective mass $m_\gamma^{\mathrm{eff}}$. A massive photon cannot sustain long-range fields: electromagnetic fields are expelled except within a skin depth $\sim 1/m_\gamma^{\mathrm{eff}}$ (the London penetration length). This is the \textbf{Meissner effect} — literally the Higgs mechanism realized in condensed matter, decades before the electroweak theory.
+
+%%===================================================================
+\subsection*{Appendix: Worked Generator Action on the LSM Vev}
+
+For reference, here is the complete action of each generator of $SU(2)_L\times U(1)_Y$ on the vev $\langle\phi\rangle = \tfrac{1}{\sqrt{2}}(0,v)^T$, using $T^a = \sigma^a/2$ and $Y_\phi = +\tfrac{1}{2}$:
+
+\begin{align}
+  T^1\langle\phi\rangle &= \frac{1}{2\sqrt{2}}\begin{pmatrix}v\\0\end{pmatrix} \neq 0
+  &\Rightarrow\; T^1\;\text{broken} , \\[4pt]
+  T^2\langle\phi\rangle &= \frac{i}{2\sqrt{2}}\begin{pmatrix}v\\0\end{pmatrix} \neq 0
+  &\Rightarrow\; T^2\;\text{broken} , \\[4pt]
+  T^3\langle\phi\rangle &= -\frac{1}{2\sqrt{2}}\begin{pmatrix}0\\v\end{pmatrix}
+  &\Rightarrow\; T^3\;\text{broken} , \\[4pt]
+  Y\langle\phi\rangle   &= +\frac{1}{2\sqrt{2}}\begin{pmatrix}0\\v\end{pmatrix}
+  &\Rightarrow\; Y\;\text{broken} , \\[4pt]
+  (T^3+Y)\langle\phi\rangle &= \mathbf{0}
+  &\Rightarrow\; Q = T^3+Y\;\text{\textbf{unbroken}} .
+\end{align}
+
+The cancellation in the last line is the algebraic origin of electromagnetism.
+
+\bigskip\hrule
+
+\end{document}

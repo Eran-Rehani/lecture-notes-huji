@@ -1,0 +1,573 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\section{Lecture 24 -- Boundary Layers}\label{sec:lec24}
+\begin{center}
+  \textbf{Date:} June 29, 2026
+\end{center}
+
+\subsection*{Overview}
+The last lecture of the course studies one of the most important singular
+limits in fluid mechanics: \textbf{small viscosity near a solid boundary}.  At
+large Reynolds number it is tempting to drop viscosity and use ideal-fluid
+potential flow everywhere.  This is almost correct in the bulk, but it fails
+exactly where boundary conditions are imposed.  A viscous fluid obeys no-slip,
+so all components of the velocity vanish at a solid wall.  An ideal fluid only
+obeys no-penetration, so it may slide along the wall.
+
+The mismatch is repaired by a thin \textbf{boundary layer}.  Outside it the
+flow is essentially the ideal solution.  Inside it the velocity changes rapidly
+in the direction normal to the wall, and the viscous term, although multiplied
+by a small viscosity, becomes comparable to inertia because the normal
+gradients are large.  The method is therefore an example of matched asymptotic
+thinking: solve different approximate equations in different regions, then
+match them in their common range of validity.
+
+The concrete model in the lecture is the flow near the front stagnation point
+of a cylinder or sphere.  Zooming in on the wall turns the body into a flat
+plane, and the outer potential flow becomes the universal stagnation-point
+field
+\[
+  U_e(x)=\omega x,\qquad V_e(y)=-\omega y,
+\]
+where $\omega$ is a strain-rate scale with dimensions $T^{-1}$ (not the
+vorticity).  The boundary-layer equations reduce to a third-order nonlinear ODE
+for a single dimensionless function.  This is the Hiemenz stagnation-point
+boundary layer.
+
+\medskip\noindent\textbf{Topics:}
+\begin{enumerate}
+  \item Why high-Reynolds-number potential flow fails at a viscous wall.
+  \item Local potential-flow expansion near a wall stagnation point.
+  \item Derivation of the Prandtl boundary-layer equations.
+  \item Boundary conditions and pressure matching to the outer flow.
+  \item Scaling estimate for the boundary-layer thickness.
+  \item Similarity reduction of the stagnation-point boundary layer.
+  \item Shooting method and the numerical wall-shear coefficient.
+  \item Physical meaning of the wall shear and the course summary.
+\end{enumerate}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Why the Ideal Approximation Breaks Near a Wall}\label{sec:lec24:why-ideal-breaks}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+Consider a cylinder of radius $R$ moving through a fluid, or equivalently a
+fixed cylinder with fluid flowing past it.  For an incompressible viscous fluid
+the governing equations are
+\begin{equation}
+  \boxed{
+  \divg\vel=0,\qquad
+  \partial_t\vel+(\vel\cdot\grad)\vel
+  =-\frac{1}{\rho}\grad p+\nu\lapl\vel .}
+  \label{eq:lec24_incompressible_ns}
+\end{equation}
+\textit{Significance:} This is the equation whose large-$\reynolds$ limit we
+are trying to understand; the subtlety is not the bulk equation but the wall
+boundary condition.
+
+The Reynolds number is
+\begin{equation}
+  \boxed{\reynolds=\frac{UR}{\nu},}
+  \label{eq:lec24_reynolds}
+\end{equation}
+where $U$ is a typical speed, $R$ a typical size, and $\nu=\eta/\rho$ the
+kinematic viscosity.  The limit of small viscosity is $\reynolds\gg1$.  A naive
+estimate compares
+\begin{equation}
+  (\vel\cdot\grad)\vel\sim\frac{U^2}{R},
+  \qquad
+  \nu\lapl\vel\sim\nu\frac{U}{R^2}.
+  \label{eq:lec24_bulk_scaling}
+\end{equation}
+The ratio of viscous to inertial terms is then
+\begin{equation}
+  \boxed{
+  \frac{\nu U/R^2}{U^2/R}\sim\frac{1}{\reynolds}\ll1 .}
+  \label{eq:lec24_viscous_bulk_ratio}
+\end{equation}
+\textit{Significance:} Away from boundaries this justifies the ideal-fluid
+approximation at large Reynolds number.
+
+The problem is that the estimate
+\[
+  \grad\sim 1/R
+\]
+is not uniformly true.  At a solid wall a viscous fluid obeys
+\begin{equation}
+  \boxed{\vel=\bvec0\qquad\text{on the wall}.}
+  \label{eq:lec24_no_slip}
+\end{equation}
+\textit{Significance:} No-slip fixes both the normal and tangential components,
+so it is stronger than the ideal-fluid no-penetration condition.
+
+An ideal fluid, by contrast, only requires
+\begin{equation}
+  \boxed{\vel\cdot\uvec n=0\qquad\text{on the wall}.}
+  \label{eq:lec24_no_penetration}
+\end{equation}
+\textit{Significance:} Potential flow may slide tangentially along the wall, so
+it cannot satisfy the viscous boundary condition.
+
+Thus, if the outer ideal solution predicts a tangential velocity of order $U$
+right next to the wall, the true viscous velocity must fall from $U$ to $0$ over
+a short normal distance.  In that thin region
+\[
+  |\partial_y\vel|\gg U/R,
+\]
+so the viscous term cannot be dropped.  The small parameter multiplies the
+highest spatial derivatives, and the limit $\nu\to0$ is singular.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=1.0, >=Stealth]
+  \fill[blue!8] (0,0) rectangle (7,0.75);
+  \draw[very thick] (0,0) -- (7,0) node[right] {wall};
+  \draw[->, thick] (0.6,0) -- (0.6,2.2) node[above] {$y$};
+  \draw[->, thick] (0.6,0) -- (2.2,0) node[below] {$x$};
+  \draw[blue!70!black, thick] (0,0.75) -- (7,0.75);
+  \node[blue!70!black] at (6.0,1.05) {$y\sim\delta$};
+  \foreach \x/\len in {1.1/0.35,2.0/0.65,2.9/0.95,3.8/1.25,4.7/1.55,5.6/1.85,6.5/2.15} {
+    \draw[->, myred, thick] (\x,1.25) -- ++(\len,0);
+  }
+  \foreach \x/\len in {1.1/0.08,2.0/0.16,2.9/0.24,3.8/0.32,4.7/0.40,5.6/0.48,6.5/0.56} {
+    \draw[->, vcol, thick] (\x,0.35) -- ++(\len,0);
+  }
+  \node[myred] at (6.0,1.65) {outer flow $U_e(x)$};
+  \node[vcol] at (2.8,0.42) {rapid adjustment};
+  \node[blue!70!black] at (2.0,0.95) {boundary layer};
+\end{tikzpicture}
+\caption{A boundary layer is thin in the wall-normal direction.  The tangential
+velocity is zero at the wall but matches the outer ideal flow across a distance
+$\delta\ll R$.}
+\label{fig:lec24_boundary_layer_sketch}
+\end{figure}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Local Potential Flow Near a Stagnation Point}\label{sec:lec24:outer-stagnation}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Mathematical Setup}
+We zoom in on the front stagnation point of the body.  At that scale the curved
+surface looks like the plane $y=0$, the fluid occupies $y>0$, and the
+stagnation point is at $(x,y)=(0,0)$.  The outer flow is ideal,
+incompressible, and irrotational, so
+\begin{equation}
+  \vel=\grad\phi,\qquad \lapl\phi=0.
+  \label{eq:lec24_potential_laplace}
+\end{equation}
+At the stagnation point the velocity vanishes:
+\begin{equation}
+  \grad\phi(0,0)=\bvec0.
+  \label{eq:lec24_stagnation_condition}
+\end{equation}
+
+Expand $\phi$ to second order:
+\begin{equation}
+  \phi(x,y)=\phi_0+\frac12\left(Ax^2+2Bxy+Cy^2\right)+O(r^3).
+  \label{eq:lec24_phi_taylor}
+\end{equation}
+The constant $\phi_0$ does not affect the velocity, and the linear terms are
+absent because of \eqref{eq:lec24_stagnation_condition}.  No-penetration on the
+wall requires
+\begin{equation}
+  v_y(x,0)=\partial_y\phi(x,0)=Bx=0
+  \quad\text{for every }x,
+  \label{eq:lec24_wall_no_penetration_taylor}
+\end{equation}
+so $B=0$.  Laplace's equation gives
+\begin{equation}
+  \lapl\phi=A+C=0,
+  \label{eq:lec24_laplace_taylor}
+\end{equation}
+so $C=-A$.  Writing $A=\omega$, the local potential is
+\begin{equation}
+  \boxed{\phi(x,y)=\frac{\omega}{2}\left(x^2-y^2\right),\qquad
+  \vel_e=(U_e,V_e)=(\omega x,-\omega y).}
+  \label{eq:lec24_outer_stagnation_flow}
+\end{equation}
+\textit{Significance:} This hyperbolic velocity field is the universal leading
+form of two-dimensional potential flow near a wall stagnation point.
+
+On the wall $y=0$ this ideal solution gives
+\begin{equation}
+  U_e(x)=\omega x,\qquad V_e(x,0)=0.
+  \label{eq:lec24_outer_wall_velocity}
+\end{equation}
+The normal boundary condition is satisfied, but the tangential velocity is not
+zero except at the stagnation point itself.  This is precisely the mismatch the
+boundary layer must correct.
+
+The same outer solution fixes the pressure variation along the layer.  For a
+steady incompressible potential flow, Bernoulli gives
+\begin{equation}
+  p_e+\frac12\rho|\vel_e|^2=\text{const}.
+  \label{eq:lec24_outer_bernoulli}
+\end{equation}
+Near the wall, $|\vel_e|^2\simeq U_e^2=\omega^2x^2$, hence
+\begin{equation}
+  \boxed{
+  p_e(x)=p_s-\frac12\rho\omega^2x^2,\qquad
+  -\frac{1}{\rho}\dv{p_e}{x}=\omega^2x=U_e\dv{U_e}{x}.}
+  \label{eq:lec24_outer_pressure_gradient}
+\end{equation}
+\textit{Significance:} The boundary layer does not determine its own pressure
+to leading order; it inherits the tangential pressure gradient from the outer
+ideal flow.
+
+The complex-potential language from planar potential flow also applies:
+\begin{equation}
+  w(z)=\phi+i\psi=\frac{\omega}{2}z^2,\qquad z=x+iy,
+  \label{eq:lec24_complex_stagnation_potential}
+\end{equation}
+so
+\begin{equation}
+  \psi(x,y)=\omega xy.
+  \label{eq:lec24_stream_function_outer}
+\end{equation}
+The streamlines are therefore hyperbolae $xy=\text{const}$.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Prandtl Boundary-Layer Equations}\label{sec:lec24:prandtl-equations}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Mathematical Setup}
+Inside the boundary layer write the velocity components as
+\[
+  \vel=(u(x,y),v(x,y)),
+\]
+where $u$ is tangential to the wall and $v$ is normal to it.  We consider a
+steady incompressible flow.  The component form of Navier--Stokes is
+\begin{equation}
+  \begin{aligned}
+  u\partial_xu+v\partial_yu
+  &=-\frac1\rho\partial_xp
+    +\nu\left(\partial_x^2u+\partial_y^2u\right),\\
+  u\partial_xv+v\partial_yv
+  &=-\frac1\rho\partial_yp
+    +\nu\left(\partial_x^2v+\partial_y^2v\right),\\
+  \partial_xu+\partial_yv&=0.
+  \end{aligned}
+  \label{eq:lec24_component_ns}
+\end{equation}
+
+Let $L$ be the tangential scale and $\delta$ the boundary-layer thickness, with
+$\delta\ll L$.  The tangential velocity has size $U$.  Continuity gives the
+scale of the normal velocity:
+\begin{equation}
+  \partial_xu\sim\frac{U}{L},\qquad
+  \partial_yv\sim\frac{V}{\delta},
+  \qquad
+  \partial_xu+\partial_yv=0
+  \quad\Rightarrow\quad
+  \boxed{V\sim\frac{\delta}{L}U\ll U.}
+  \label{eq:lec24_normal_velocity_scaling}
+\end{equation}
+\textit{Significance:} The normal velocity is small, but its normal derivative
+is not; this is why it can still enter the tangential momentum equation.
+
+Now compare terms in the tangential equation.  The two advective terms scale as
+\begin{equation}
+  u\partial_xu\sim\frac{U^2}{L},\qquad
+  v\partial_yu\sim
+  \left(\frac{\delta}{L}U\right)\frac{U}{\delta}
+  =\frac{U^2}{L}.
+  \label{eq:lec24_advection_scaling}
+\end{equation}
+The viscous terms scale as
+\begin{equation}
+  \nu\partial_x^2u\sim\nu\frac{U}{L^2},\qquad
+  \nu\partial_y^2u\sim\nu\frac{U}{\delta^2}.
+  \label{eq:lec24_viscous_scaling}
+\end{equation}
+Since $\delta\ll L$, the $y$-derivative viscous term dominates the $x$-derivative
+viscous term.  The leading balance is therefore
+\begin{equation}
+  \frac{U^2}{L}\sim\nu\frac{U}{\delta^2}.
+  \label{eq:lec24_thickness_balance_raw}
+\end{equation}
+Solving for $\delta$ gives
+\begin{equation}
+  \boxed{\delta^2\sim\frac{\nu L}{U},\qquad
+  \frac{\delta}{L}\sim\reynolds^{-1/2}.}
+  \label{eq:lec24_boundary_layer_thickness_general}
+\end{equation}
+\textit{Significance:} Even as $\nu\to0$, the product
+$\nu\,\partial_y^2u$ remains important because
+$\partial_y^2u\sim U/\delta^2$ diverges like $1/\nu$.
+
+The normal momentum equation is smaller.  To leading order it says that
+pressure does not change across the thin layer:
+\begin{equation}
+  \boxed{\partial_y p=0,\qquad p(x,y)=p_e(x).}
+  \label{eq:lec24_pressure_constant_across_layer}
+\end{equation}
+\textit{Significance:} Boundary-layer pressure is imposed by the outer inviscid
+flow; the layer adjusts velocity and shear, not pressure across its thickness.
+
+Putting the leading terms together gives the Prandtl boundary-layer equations:
+\begin{equation}
+  \boxed{
+  u\partial_xu+v\partial_yu
+  =-\frac1\rho\dv{p_e}{x}+\nu\partial_y^2u,\qquad
+  \partial_xu+\partial_yv=0,\qquad
+  \partial_y p=0.}
+  \label{eq:lec24_prandtl_equations}
+\end{equation}
+\textit{Significance:} These equations retain exactly the viscous term needed
+to impose no-slip while discarding terms smaller by powers of $\delta/L$.
+
+Using the outer Euler equation,
+\begin{equation}
+  -\frac1\rho\dv{p_e}{x}=U_e(x)\dv{U_e}{x},
+  \label{eq:lec24_outer_euler_pressure}
+\end{equation}
+the tangential Prandtl equation may be written as
+\begin{equation}
+  \boxed{
+  u\partial_xu+v\partial_yu
+  =U_e\dv{U_e}{x}+\nu\partial_y^2u.}
+  \label{eq:lec24_prandtl_with_outer_velocity}
+\end{equation}
+\textit{Significance:} This is the matching form: the outer ideal flow enters
+only through the function $U_e(x)$.
+
+The boundary conditions are
+\begin{equation}
+  \boxed{
+  u(x,0)=0,\qquad v(x,0)=0,\qquad
+  u(x,y\to\infty)\to U_e(x).}
+  \label{eq:lec24_boundary_layer_bcs}
+\end{equation}
+\textit{Significance:} The layer satisfies the viscous wall condition at
+$y=0$ and matches the ideal solution as one exits the thin region.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Similarity Solution for Stagnation-Point Flow}\label{sec:lec24:similarity}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Motivation}
+For the stagnation-point outer flow
+\[
+  U_e(x)=\omega x,
+\]
+the boundary-layer thickness estimate becomes especially simple:
+\begin{equation}
+  \boxed{\delta\sim\sqrt{\frac{\nu}{\omega}}.}
+  \label{eq:lec24_stagnation_thickness}
+\end{equation}
+\textit{Significance:} Near a stagnation point the local strain rate $\omega$
+sets the tangential gradient, so the layer thickness is independent of $x$ in
+the leading similarity approximation.
+
+To solve the equations exactly within this approximation, introduce the
+dimensionless normal coordinate
+\begin{equation}
+  \tilde y=y\sqrt{\frac{\omega}{\nu}},
+  \label{eq:lec24_dimensionless_y}
+\end{equation}
+and a stream function
+\begin{equation}
+  \boxed{\psi(x,y)=\sqrt{\nu\omega}\,x\,f(\tilde y),}
+  \label{eq:lec24_stream_function_ansatz}
+\end{equation}
+\textit{Significance:} The stream function automatically satisfies
+incompressibility, and the chosen prefactor gives the correct dimensions.
+
+With the convention
+\begin{equation}
+  u=\partial_y\psi,\qquad v=-\partial_x\psi,
+  \label{eq:lec24_stream_velocity_definition}
+\end{equation}
+we obtain
+\begin{equation}
+  \boxed{
+  u(x,y)=\omega x f'(\tilde y),\qquad
+  v(x,y)=-\sqrt{\nu\omega}\,f(\tilde y),}
+  \label{eq:lec24_similarity_velocities}
+\end{equation}
+where primes denote derivatives with respect to $\tilde y$.
+\textit{Significance:} The whole velocity field is determined by one
+dimensionless profile $f$.
+
+\subsubsection*{Derivation of the ODE}
+Compute the needed derivatives:
+\begin{equation}
+  \begin{aligned}
+  \partial_xu&=\omega f',\\
+  \partial_yu&=\omega x f''\sqrt{\frac{\omega}{\nu}},\\
+  \partial_y^2u&=\omega x f'''\frac{\omega}{\nu}.
+  \end{aligned}
+  \label{eq:lec24_similarity_derivatives}
+\end{equation}
+Therefore
+\begin{equation}
+  u\partial_xu
+  =(\omega x f')(\omega f')
+  =\omega^2x(f')^2,
+  \label{eq:lec24_similarity_first_advection}
+\end{equation}
+and
+\begin{equation}
+  v\partial_yu
+  =\left(-\sqrt{\nu\omega}\,f\right)
+   \left(\omega x f''\sqrt{\frac{\omega}{\nu}}\right)
+  =-\omega^2x\,f f''.
+  \label{eq:lec24_similarity_second_advection}
+\end{equation}
+The viscous term is
+\begin{equation}
+  \nu\partial_y^2u=\nu\left(\omega x f'''\frac{\omega}{\nu}\right)
+  =\omega^2x f'''.
+  \label{eq:lec24_similarity_viscous}
+\end{equation}
+Since $U_e\,dU_e/dx=(\omega x)\omega=\omega^2x$, substitution into
+\eqref{eq:lec24_prandtl_with_outer_velocity} gives
+\begin{equation}
+  \omega^2x\left[(f')^2-f f''\right]
+  =\omega^2x\left[1+f'''\right].
+  \label{eq:lec24_similarity_before_dividing}
+\end{equation}
+For $x\neq0$ divide by $\omega^2x$ and rearrange:
+\begin{equation}
+  \boxed{f'''+f f''+1-(f')^2=0.}
+  \label{eq:lec24_hiemenz_equation}
+\end{equation}
+\textit{Significance:} The partial differential boundary-layer problem has
+collapsed to a nonlinear third-order ordinary differential equation.
+
+The boundary conditions follow from \eqref{eq:lec24_boundary_layer_bcs}.  At
+$y=0$,
+\[
+  u=0\Rightarrow f'(0)=0,\qquad
+  v=0\Rightarrow f(0)=0.
+\]
+Matching $u\to U_e=\omega x$ as $y\to\infty$ gives $f'\to1$.  Thus
+\begin{equation}
+  \boxed{f(0)=0,\qquad f'(0)=0,\qquad f'(\infty)=1.}
+  \label{eq:lec24_hiemenz_bcs}
+\end{equation}
+\textit{Significance:} The three boundary conditions match the order of the
+ODE, but one of them lives at infinity, so the solution is naturally found by
+shooting.
+
+\subsubsection*{Shooting and the wall-shear number}
+The Hiemenz equation has no elementary closed-form solution.  Numerically one
+chooses a trial value of $f''(0)$, integrates the ODE outward from
+\[
+  f(0)=0,\qquad f'(0)=0,\qquad f''(0)=s,
+\]
+and adjusts $s$ until the far-field condition $f'(\infty)=1$ is satisfied.
+This is the shooting method.  The successful value is
+\begin{equation}
+  \boxed{f''(0)\simeq 1.2326.}
+  \label{eq:lec24_hiemenz_wall_shear_number}
+\end{equation}
+\textit{Significance:} This single dimensionless number fixes the wall shear in
+the stagnation-point boundary layer.
+
+The wall shear stress is the tangential viscous stress
+\begin{equation}
+  \tau_w(x)=\eta\left.\partial_yu\right|_{y=0},
+  \label{eq:lec24_wall_shear_definition}
+\end{equation}
+where $\eta=\rho\nu$ is the dynamic viscosity.  Using
+\eqref{eq:lec24_similarity_derivatives},
+\begin{equation}
+  \boxed{
+  \tau_w(x)
+  =\eta\,\omega x\,f''(0)\sqrt{\frac{\omega}{\nu}}
+  =\rho f''(0)\,x\,\sqrt{\nu\omega^3}.}
+  \label{eq:lec24_wall_shear_result}
+\end{equation}
+\textit{Significance:} The shear tends to zero as $\nu^{1/2}$, not as $\nu$,
+because the velocity gradient grows like $1/\delta\sim\nu^{-1/2}$.
+
+Equivalently, for a general boundary-layer estimate,
+\begin{equation}
+  \boxed{\tau_w\sim\eta\frac{U}{\delta}
+  \sim\rho U\sqrt{\frac{\nu U}{L}}.}
+  \label{eq:lec24_shear_scaling_general}
+\end{equation}
+\textit{Significance:} A very thin layer converts a small viscosity into a
+finite leading correction to ideal-flow drag estimates.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Matched Asymptotic Meaning}\label{sec:lec24:matched-asymptotics}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Conceptual Background}
+The boundary-layer construction is not just a trick for this cylinder example.
+It is a general method for singular perturbation problems:
+\begin{itemize}
+  \item Solve an \textbf{outer problem} in the bulk, where the small term is
+  genuinely negligible.
+  \item Solve an \textbf{inner problem} near the boundary, using stretched
+  variables such as $\tilde y=y/\delta$.
+  \item Match the inner solution as $\tilde y\to\infty$ to the outer solution as
+  $y\to0$.
+\end{itemize}
+
+In the present problem the outer solution is the ideal potential flow.  The
+inner solution is governed by Prandtl's equations.  The matching condition is
+\[
+  u(x,y\to\infty)\to U_e(x).
+\]
+One may also view the boundary layer as generating an effective boundary
+condition for the outer flow: instead of resolving the thin layer everywhere,
+one encodes its effect on the bulk through shear stress, displacement
+thickness, or separation criteria.
+
+\nt{The lecture only analyzed the neighborhood of the front stagnation point.
+Farther along the body, boundary layers can thicken, separate, and feed the
+wake behind the object.  That wake is one of the physical ways viscosity
+resolves D'Alembert's paradox.}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Course Perspective}\label{sec:lec24:course-perspective}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Motivation}
+The lecture ended with a short course summary.  The course had two main parts.
+The first part, mechanics of solids, introduced stress, strain, Hooke's law,
+linear isotropic elasticity, torsion, bending, and the Euler--Bernoulli beam
+equation.  The second and larger part, mechanics of fluids, moved through
+hydrostatics, ideal-fluid dynamics, Bernoulli's equation, circulation and
+vorticity, potential flow, viscosity and Navier--Stokes, exact viscous-flow
+solutions, Reynolds-number regimes, sound waves, the action-principle
+viewpoint, and finally boundary layers.
+
+The recurring mathematical language was the language of fields:
+\[
+  \bvec u(\bvec x),\qquad \stress(\bvec x),\qquad \strain(\bvec x),\qquad
+  \vel(\bvec x,t),\qquad p(\bvec x,t),\qquad \rho(\bvec x,t).
+\]
+The recurring physical themes were conservation laws, boundary conditions,
+symmetry, dimensional analysis, and the fact that approximate equations have
+domains of validity.  Boundary layers are a fitting final topic because they
+show all of these themes at once: a conservation law gives Prandtl's equations,
+the no-slip boundary condition creates the layer, dimensional analysis predicts
+its thickness, and matching tells us how local and global solutions fit
+together.
+
+\subsection*{Key Takeaways}
+\begin{itemize}
+  \item Large $\reynolds$ does not mean viscosity is negligible everywhere; it
+  fails near no-slip walls.
+  \item Near a wall stagnation point the outer potential flow is
+  $\phi=\frac{\omega}{2}(x^2-y^2)$, so $U_e(x)=\omega x$.
+  \item In a boundary layer, $\partial_y$ derivatives dominate
+  $\partial_x$ derivatives, while pressure is inherited from the outer flow.
+  \item The Prandtl equations are the leading high-$\reynolds$ wall equations:
+  they keep $\nu\partial_y^2u$ but drop smaller viscous terms.
+  \item The general thickness estimate is
+  $\delta/L\sim\reynolds^{-1/2}$; for stagnation flow
+  $\delta\sim\sqrt{\nu/\omega}$.
+  \item The stagnation-point boundary layer reduces to
+  $f'''+f f''+1-(f')^2=0$ with
+  $f(0)=f'(0)=0$ and $f'(\infty)=1$.
+  \item Wall shear scales as $\tau_w\sim\eta U/\delta$, so it vanishes like
+  $\nu^{1/2}$ in the small-viscosity limit, not like $\nu$.
+\end{itemize}
+
+\end{document}

@@ -27,6 +27,15 @@
 \usepackage{cleveref}
 \usepackage{mdframed}
 
+%% ── Font encoding + typography ───────────────────────────────────────────────
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage[protrusion=true,expansion=true]{microtype}
+\frenchspacing
+\widowpenalty=10000
+\clubpenalty=10000
+
 \crefformat{section}{\S#2#1#3} % see manual of cleveref, section 8.2.1
 \crefformat{subsection}{\S#2#1#3}
 \crefformat{subsubsection}{\S#2#1#3}
@@ -49,8 +58,13 @@
 \addtolength{\topmargin}{-2pt}
 \pagestyle{fancy}
 \fancyhf{}
-\lhead{\small 77606 — Mechanics of Continua}
-\rhead{\small \bfseries\thesubsection}
+% Left header = current \part; right header = current \section/\subsection
+\let\oldpart\part
+\renewcommand{\part}[1]{\oldpart{#1}\markboth{#1}{}}
+\renewcommand{\sectionmark}[1]{\markright{#1}}
+\renewcommand{\subsectionmark}[1]{\markright{#1}}
+\lhead{\small\nouppercase{\leftmark}}
+\rhead{\small\bfseries\nouppercase{\rightmark}}
 \cfoot{\bfseries\thepage}
 
 %% ── Theorem environments (eye-candy tcolorbox) ───────────────────────────────

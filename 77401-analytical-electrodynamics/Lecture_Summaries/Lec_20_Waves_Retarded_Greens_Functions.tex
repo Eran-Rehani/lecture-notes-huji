@@ -1,0 +1,447 @@
+%% Lecture 20 -- Waves, Lorenz gauge, and retarded Green functions
+\section{Lecture 20 -- Waves and Retarded Green Functions}\label{sec:lec20}
+
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 14/06/2026 & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+
+\subsection*{Overview}
+
+We now leave magnetostatics and return to the full time-dependent Maxwell equations. The
+central object is still the four-potential $A^\mu=(\phi,\Avec)$ and the field tensor
+$F^{\mu\nu}=\partial^\mu A^\nu-\partial^\nu A^\mu$, but the source $J^\mu$ may now depend
+on time. This changes the mathematical problem from Poisson's equation to a wave equation:
+information no longer fills all space instantaneously, but propagates on the light cone.
+
+The lecture has three connected goals. First, we use gauge freedom to impose the Lorenz
+condition $\partial_\mu A^\mu=0$ and reduce the inhomogeneous Maxwell equations to four
+identical sourced wave equations. Second, we formulate the Green-function solution of this
+wave equation and check that current conservation automatically keeps the Lorenz gauge
+consistent. Third, we solve the scalar Green-function equation by Fourier transforming only
+in time. This converts the wave equation into the Helmholtz equation, whose spherically
+symmetric Green functions are outgoing and incoming spherical waves. Choosing the outgoing
+one is the physical 
+\emph{retarded} boundary condition.
+
+The conceptual point is causality. The differential equation by itself admits both
+retarded and advanced Green functions: a pulse can mathematically propagate toward the
+future or toward the past. Physics enters through the boundary condition that sources
+produce fields after they act, not before.
+
+%------------------------------------------------------------
+\subsection{Maxwell's Equations as a Wave Equation for $A^\mu$}\label{subsec:lec20-maxwell-wave}
+
+\subsubsection*{Conceptual Background}
+In electrostatics and magnetostatics we solved elliptic equations such as
+$\nabla^2\phi=-4\pi\rho$ or $-\nabla^2\Avec=4\pi\Jvec/c$. Those equations describe
+instantaneous constraints on a single time slice. Once $\rho$ and $\Jvec$ depend on time,
+the correct relativistic object is the four-current $J^\mu=(c\rho,\Jvec)$, and charge
+conservation becomes the covariant continuity equation
+\begin{equation}\label{eq:lec20-continuity}
+  \boxed{\partial_\mu J^\mu=0.}
+\end{equation}
+\textit{Significance:} The source of Maxwell's equations is physically admissible only if
+charge is neither created nor destroyed.
+
+The inhomogeneous Maxwell equations are
+\begin{equation}\label{eq:lec20-maxwell-covariant}
+  \boxed{\partial_\mu F^{\mu\nu}=\frac{4\pi}{c}J^\nu.}
+\end{equation}
+\textit{Significance:} This single tensor equation contains Gauss's law and the
+Ampere--Maxwell law, while the homogeneous equations are already built into
+$F_{\mu\nu}=\partial_\mu A_\nu-\partial_\nu A_\mu$.
+
+Insert
+\begin{equation}\label{eq:lec20-F-from-A}
+  F^{\mu\nu}=\partial^\mu A^\nu-\partial^\nu A^\mu
+\end{equation}
+into \eqref{eq:lec20-maxwell-covariant}. Since partial derivatives commute,
+\begin{align*}
+  \partial_\mu F^{\mu\nu}
+  &=\partial_\mu\qty(\partial^\mu A^\nu-\partial^\nu A^\mu) \\
+  &=\partial_\mu\partial^\mu A^\nu-\partial_\mu\partial^\nu A^\mu \\
+  &=\partial_\mu\partial^\mu A^\nu-\partial^\nu\qty(\partial_\mu A^\mu).
+\end{align*}
+Therefore the exact equation for the potential is
+\begin{equation}\label{eq:lec20-A-before-gauge}
+  \boxed{\partial_\mu\partial^\mu A^\nu
+  -\partial^\nu\qty(\partial_\mu A^\mu)=\frac{4\pi}{c}J^\nu.}
+\end{equation}
+\textit{Significance:} The four components of $A^\mu$ are coupled only through the gauge-dependent scalar $\partial_\mu A^\mu$.
+
+\subsubsection*{The d'Alembertian}
+With the metric $\eta_{\mu\nu}=\mathrm{diag}(+1,-1,-1,-1)$ and $x^0=ct$,
+\begin{align*}
+  \partial_\mu\partial^\mu
+  &=\eta^{\mu\nu}\partial_\mu\partial_\nu
+    =\eta^{00}\partial_0^2+\sum_{i=1}^{3}\eta^{ii}\partial_i^2 \\
+  &=\frac{1}{c^2}\frac{\partial^2}{\partial t^2}-\nabla^2.
+\end{align*}
+We denote this operator by
+\begin{equation}\label{eq:lec20-dalembertian}
+  \boxed{\partial_\mu\partial^\mu\equiv \Box
+  =\frac{1}{c^2}\frac{\partial^2}{\partial t^2}-\nabla^2.}
+\end{equation}
+\textit{Significance:} $\Box$ is the Lorentz-invariant wave operator; replacing $\nabla^2$ by $-\Box$ is the mathematical transition from statics to radiation.
+
+%------------------------------------------------------------
+\subsection{Gauge Fixing: The Lorenz Gauge}\label{subsec:lec20-lorenz-gauge}
+
+\subsubsection*{Physical Motivation}
+The potential is not unique: the transformation
+\begin{equation}\label{eq:lec20-gauge-transformation}
+  \boxed{A^\mu\longrightarrow \widetilde A^\mu=A^\mu+\partial^\mu f}
+\end{equation}
+\textit{Significance:} Gauge freedom changes the potential representation but leaves the measurable fields $\bE$ and $\bB$ unchanged.
+
+We use this freedom to choose a representative satisfying the Lorenz gauge
+\begin{equation}\label{eq:lec20-lorenz-condition}
+  \boxed{\partial_\mu A^\mu=0.}
+\end{equation}
+\textit{Significance:} The Lorenz gauge is the covariant analogue of the Coulomb gauge and turns Maxwell's equations into decoupled wave equations.
+
+\subsubsection*{Existence of the Lorenz Gauge}
+Suppose some potential $A^\mu$ does not obey \eqref{eq:lec20-lorenz-condition}. Define the
+new potential by \eqref{eq:lec20-gauge-transformation}. Its four-divergence is
+\begin{align*}
+  \partial_\mu\widetilde A^\mu
+  &=\partial_\mu A^\mu+\partial_\mu\partial^\mu f \\
+  &=\partial_\mu A^\mu+\Box f.
+\end{align*}
+Demanding $\partial_\mu\widetilde A^\mu=0$ gives the sourced wave equation
+\begin{equation}\label{eq:lec20-gauge-f-equation}
+  \boxed{\Box f=-\partial_\mu A^\mu.}
+\end{equation}
+\textit{Significance:} Imposing Lorenz gauge is legitimate because it reduces to solving the same kind of wave equation that we are about to solve for the fields.
+
+In the Lorenz gauge the second term of \eqref{eq:lec20-A-before-gauge} vanishes, and
+Maxwell's equations become
+\begin{equation}\label{eq:lec20-wave-A}
+  \boxed{\Box A^\nu=\frac{4\pi}{c}J^\nu.}
+\end{equation}
+\textit{Significance:} Each component of the four-potential propagates as a wave sourced by the corresponding component of the four-current.
+
+\nt{Pitfall: the name is \emph{Lorenz} gauge, after Ludvig Lorenz, not Lorentz gauge after Hendrik Lorentz. The condition is Lorentz covariant, but the historical name has no ``t''.}
+
+\subsubsection*{Method: fixing Lorenz gauge in practice}
+\begin{enumerate}
+  \item Compute the scalar $S\equiv\partial_\mu A^\mu$ for the potential you are given.
+  \item Solve the wave equation $\Box f=-S$ with the boundary condition appropriate to the problem.
+  \item Replace $A^\mu$ by $\widetilde A^\mu=A^\mu+\partial^\mu f$.
+  \item Check explicitly that $\partial_\mu\widetilde A^\mu=S+\Box f=0$.
+\end{enumerate}
+
+\ex[ex:lec20-gauge-fix]{Worked Example: Building a Lorenz-Gauge Representative}{
+Suppose a potential has divergence
+\begin{equation*}
+  \partial_\mu A^\mu=S(x),
+\end{equation*}
+where $S(x)$ is known. Let $G(x-y)$ be any Green function satisfying
+$\Box_xG(x-y)=\delta^{(4)}(x-y)$. Choose
+\begin{equation*}
+  f(x)=-\int d^4y\,G(x-y)S(y).
+\end{equation*}
+Then
+\begin{align*}
+  \Box_x f(x)
+  &=-\int d^4y\,\Box_xG(x-y)S(y) \\
+  &=-\int d^4y\,\delta^{(4)}(x-y)S(y) \\
+  &=-S(x).
+\end{align*}
+Therefore
+\begin{equation*}
+  \partial_\mu\widetilde A^\mu=\partial_\mu A^\mu+\Box f=S-S=0.
+\end{equation*}
+This explicitly constructs a Lorenz-gauge potential from the original one.
+}
+
+%------------------------------------------------------------
+\subsection{Green-Function Solution of the Sourced Wave Equation}\label{subsec:lec20-green-solution}
+
+\subsubsection*{Mathematical Setup}
+Equation \eqref{eq:lec20-wave-A} is linear and inhomogeneous. Therefore its general
+solution has the form
+\begin{equation}\label{eq:lec20-general-solution}
+  \boxed{\begin{aligned}
+    A^\nu&=A^\nu_{\rm p}+A^\nu_{\rm h},\\
+    \Box A^\nu_{\rm p}&=\frac{4\pi}{c}J^\nu,\qquad
+    \Box A^\nu_{\rm h}=0.
+  \end{aligned}}
+\end{equation}
+\textit{Significance:} The particular solution is the field generated by the sources, while the homogeneous solution is incoming free radiation supplied from outside the source region.
+
+A scalar Green function for the wave operator is defined by
+\begin{equation}\label{eq:lec20-green-definition}
+  \boxed{\Box_xG(x-y)=\delta^{(4)}(x-y),}
+\end{equation}
+where $x^\mu=(ct,\br)$ and $y^\mu=(ct',\br')$ are spacetime points.
+\textit{Significance:} $G(x-y)$ is the response to a unit spacetime impulse located at $y$.
+
+Using \eqref{eq:lec20-green-definition}, a particular solution is
+\begin{equation}\label{eq:lec20-A-particular}
+  \boxed{A^\nu_{\rm p}(x)=\frac{4\pi}{c}\int d^4y\,G(x-y)J^\nu(y).}
+\end{equation}
+\textit{Significance:} Once the response to a point impulse is known, the response to an arbitrary source is obtained by superposition over spacetime.
+
+To verify \eqref{eq:lec20-A-particular}, apply $\Box_x$:
+\begin{align*}
+  \Box_x A^\nu_{\rm p}(x)
+  &=\frac{4\pi}{c}\int d^4y\,\Box_xG(x-y)J^\nu(y) \\
+  &=\frac{4\pi}{c}\int d^4y\,\delta^{(4)}(x-y)J^\nu(y) \\
+  &=\frac{4\pi}{c}J^\nu(x),
+\end{align*}
+which is exactly \eqref{eq:lec20-wave-A}.
+
+\subsubsection*{Consistency with the Lorenz Gauge}
+We must also check that the Green-function solution obeys $\partial_\nu A^\nu=0$ if the
+source is conserved. Differentiate \eqref{eq:lec20-A-particular}:
+\begin{align*}
+  \partial^x_\nu A^\nu_{\rm p}(x)
+  &=\frac{4\pi}{c}\int d^4y\,\partial^x_\nu G(x-y)J^\nu(y).
+\end{align*}
+Because $G$ depends only on $x-y$,
+\begin{equation*}
+  \partial^x_\nu G(x-y)=-\partial^y_\nu G(x-y).
+\end{equation*}
+Therefore
+\begin{align*}
+  \partial^x_\nu A^\nu_{\rm p}(x)
+  &=-\frac{4\pi}{c}\int d^4y\,\partial^y_\nu G(x-y)J^\nu(y) \\
+  &=-\frac{4\pi}{c}\int d^4y\,\partial^y_\nu\qty(GJ^\nu)
+    +\frac{4\pi}{c}\int d^4y\,G(x-y)\partial^y_\nu J^\nu(y).
+\end{align*}
+For localized sources and Green functions obeying physical boundary conditions, the total
+four-divergence gives a boundary term at spatial and temporal infinity and vanishes. The
+second term vanishes by \eqref{eq:lec20-continuity}. Thus
+\begin{equation}\label{eq:lec20-lorenz-preserved}
+  \boxed{\partial_\nu A^\nu_{\rm p}=0\qquad(\partial_\nu J^\nu=0).}
+\end{equation}
+\textit{Significance:} Charge conservation is precisely what makes the Lorenz-gauge wave equation self-consistent.
+
+\nt{Pitfall: the Green function itself is only an auxiliary object and its source
+$\delta^{(4)}(x-y)$ is not a conserved electromagnetic current. Conservation is required
+for the physical $J^\mu$ inserted in \eqref{eq:lec20-A-particular}, not for the mathematical
+impulse defining $G$.}
+
+\subsubsection*{Method: solving a sourced wave equation with a Green function}
+\begin{enumerate}
+  \item Choose boundary conditions first: retarded, advanced, incoming radiation, outgoing radiation, or a finite-domain condition.
+  \item Solve $\Box G=\delta^{(4)}$ with those boundary conditions.
+  \item Convolve: $A^\nu_{\rm p}=(4\pi/c)G*J^\nu$.
+  \item Add any desired homogeneous solution $A^\nu_{\rm h}$ if the physical problem includes externally incident radiation.
+  \item Verify the Lorenz condition using $\partial_\mu J^\mu=0$ and the boundary behavior.
+\end{enumerate}
+
+%------------------------------------------------------------
+\subsection{Solving the Wave Green Function}\label{subsec:lec20-solving-green}
+
+\subsubsection*{Mathematical Setup}
+Translation invariance lets us place the impulse at the origin, $y=0$, and write
+$G(x-y)=G(x)$. The equation becomes
+\begin{equation}\label{eq:lec20-green-origin}
+  \qty(\frac{\partial^2}{\partial (x^0)^2}-\nabla^2)G(x^0,\br)=\delta(x^0)\delta^{(3)}(\br),
+\end{equation}
+where $x^0=ct$. We Fourier transform only in time:
+\begin{equation}\label{eq:lec20-fourier-def}
+  \widetilde G(k_0,\br)=\int_{-\infty}^{\infty}dx^0\,e^{-ik_0x^0}G(x^0,\br),
+\end{equation}
+with inverse
+\begin{equation}\label{eq:lec20-fourier-inverse}
+  G(x^0,\br)=\int_{-\infty}^{\infty}\frac{dk_0}{2\pi}\,e^{ik_0x^0}\widetilde G(k_0,\br).
+\end{equation}
+The time derivative term is integrated by parts twice. Assuming the boundary terms vanish,
+\begin{align*}
+  \int dx^0\,e^{-ik_0x^0}\frac{\partial^2G}{\partial (x^0)^2}
+  &=\int dx^0\,\frac{\partial^2}{\partial (x^0)^2}\qty(e^{-ik_0x^0})G \\
+  &=(-ik_0)^2\widetilde G=-k_0^2\widetilde G.
+\end{align*}
+The Fourier transform of $\delta(x^0)$ is $1$. Hence \eqref{eq:lec20-green-origin}
+becomes the Helmholtz Green equation
+\begin{equation}\label{eq:lec20-helmholtz}
+  \boxed{\qty(\nabla^2+k_0^2)\widetilde G(k_0,\br)=-\delta^{(3)}(\br).}
+\end{equation}
+\textit{Significance:} At fixed frequency $k_0$, the wave Green function is a spherical Helmholtz wave sourced at the origin.
+
+\subsubsection*{Rotational Symmetry and the Radial Equation}
+The source $\delta^{(3)}(\br)$ is rotationally invariant, so we seek a rotationally
+invariant solution $\widetilde G(k_0,\br)=\widetilde G(k_0,r)$ with $r=|\br|$. For a radial
+function,
+\begin{equation}\label{eq:lec20-radial-laplacian}
+  \nabla^2\widetilde G=\frac{1}{r}\frac{d^2}{dr^2}\qty(r\widetilde G).
+\end{equation}
+For $r\neq0$ the delta function vanishes, and \eqref{eq:lec20-helmholtz} gives
+\begin{equation}\label{eq:lec20-radial-homogeneous}
+  \frac{d^2}{dr^2}\qty(r\widetilde G)+k_0^2\qty(r\widetilde G)=0.
+\end{equation}
+Thus
+\begin{equation}\label{eq:lec20-Gtilde-general}
+  \boxed{\widetilde G(k_0,r)=A\frac{e^{-ik_0r}}{r}+B\frac{e^{ik_0r}}{r},\qquad r\neq0.}
+\end{equation}
+\textit{Significance:} The frequency-domain point response is a superposition of two spherical waves, one associated with propagation toward the future and one toward the past after transforming back to time.
+
+The singularity at $r=0$ fixes only $A+B$. Use the distributional identity
+\begin{equation}\label{eq:lec20-laplacian-one-over-r}
+  \nabla^2\frac{1}{r}=-4\pi\delta^{(3)}(\br).
+\end{equation}
+Near $r=0$, $e^{\pm ik_0r}=1+O(r)$, so the singular part of \eqref{eq:lec20-Gtilde-general} is
+$(A+B)/r$. Therefore
+\begin{equation}\label{eq:lec20-AplusB}
+  \boxed{A+B=\frac{1}{4\pi}.}
+\end{equation}
+\textit{Significance:} The local Coulomb-like singularity fixes the normalization, while the split between $A$ and $B$ remains a boundary-condition choice.
+
+\nt{Pitfall: do not multiply radial delta functions by powers of $r$ naively. The identity
+$f(\br)\delta^{(3)}(\br)=f(0)\delta^{(3)}(\br)$ requires $f$ to be regular at the origin;
+objects such as $r\delta^{(3)}(\br)$ inside spherical-coordinate measures must be handled as distributions, not by informal substitution.}
+
+\subsubsection*{Fourier Transform Back to Time}
+Using \eqref{eq:lec20-fourier-inverse},
+\begin{align*}
+  G(x^0,r)
+  &=\int\frac{dk_0}{2\pi}e^{ik_0x^0}
+    \qty(A\frac{e^{-ik_0r}}{r}+B\frac{e^{ik_0r}}{r}) \\
+  &=\frac{A}{r}\int\frac{dk_0}{2\pi}e^{ik_0(x^0-r)}
+    +\frac{B}{r}\int\frac{dk_0}{2\pi}e^{ik_0(x^0+r)} \\
+  &=\frac{A}{r}\delta(x^0-r)+\frac{B}{r}\delta(x^0+r).
+\end{align*}
+With \eqref{eq:lec20-AplusB}, the two elementary causal choices are
+\begin{equation}\label{eq:lec20-ret-adv-green}
+  \boxed{G_{\rm ret}(x)=\frac{\delta(x^0-r)}{4\pi r},\qquad
+  G_{\rm adv}(x)=\frac{\delta(x^0+r)}{4\pi r}.}
+\end{equation}
+\textit{Significance:} $G_{\rm ret}$ is nonzero only on the future light cone of the source event, while $G_{\rm adv}$ is nonzero only on its past light cone.
+
+Restoring the source point $y=(ct',\br')$ and writing $R=|\br-\br'|$ gives
+\begin{equation}\label{eq:lec20-ret-green-restored}
+  \boxed{G_{\rm ret}(x-y)=\frac{\delta\qty(c(t-t')-R)}{4\pi R},
+  \qquad R=|\br-\br'|.}
+\end{equation}
+\textit{Significance:} A source element at $\br'$ affects the observation point $\br$ only after the light-travel time $R/c$.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[>=Stealth, scale=1.0]
+  \draw[->] (-0.2,0) -- (6.1,0) node[right] {$x^1$};
+  \draw[->] (0,-0.3) -- (0,4.2) node[above] {$x^0=ct$};
+  \coordinate (O) at (0,0);
+  \draw[fill=black] (O) circle (1.5pt) node[below left] {source event $y$};
+  \draw[blue!70!black, thick] (O) -- (3.4,3.4) node[above right] {future light cone};
+  \draw[blue!70!black, thick] (O) -- (-0.9,0.9);
+  \draw[red!70!black, dashed, thick] (O) -- (3.0,-3.0);
+  \draw[red!70!black, dashed, thick] (O) -- (-0.9,-0.9) node[left] {past cone};
+  \draw[->, thick, orange!80!black] (0,0) -- (2.2,2.2);
+  \node[orange!80!black, right] at (1.35,1.65) {$R=c(t-t')$};
+  \draw[dotted] (2.2,0) -- (2.2,2.2);
+  \node[below] at (2.2,0) {$R$};
+  \node[blue!70!black] at (4.5,2.8) {$G_{\rm ret}\neq0$};
+\end{tikzpicture}
+\caption{Retarded support in a spacetime diagram. The impulse at $y$ produces a response only on its future light cone, $c(t-t')=|\br-\br'|$. The advanced Green function would instead live on the past cone.}
+\label{fig:lec20-light-cone}
+\end{figure}
+
+\subsubsection*{Method: deriving the retarded Green function}
+\begin{enumerate}
+  \item Use translation invariance to set the impulse at the origin.
+  \item Fourier transform in $x^0$ to convert $\Box G=\delta^{(4)}$ into the Helmholtz equation.
+  \item Use rotational symmetry to reduce the Helmholtz equation to an ordinary radial equation.
+  \item Solve for $r\neq0$: $\widetilde G=(Ae^{-ik_0r}+Be^{ik_0r})/r$.
+  \item Fix $A+B=1/(4\pi)$ from the $1/r$ singularity.
+  \item Choose the retarded boundary condition $B=0$ so the response vanishes before the source acts.
+\end{enumerate}
+
+\ex[ex:lec20-static-limit]{Worked Example: Retarded Potential of a Static Point Charge}{
+Take a charge $q$ at rest at the origin. Its four-current is
+\begin{equation*}
+  J^0(y)=c q\delta^{(3)}(\br'),\qquad \Jvec(y)=\bvec{0}.
+\end{equation*}
+Using \eqref{eq:lec20-A-particular} with \eqref{eq:lec20-ret-green-restored},
+\begin{align*}
+  \phi(t,\br)=A^0(t,\br)
+  &=\frac{4\pi}{c}\int cdt'\dd[3]{r}'\,
+    \frac{\delta\qty(c(t-t')-|\br-\br'|)}{4\pi|\br-\br'|}
+    c q\delta^{(3)}(\br') \\
+  &=4\pi c q\int dt'\,
+    \frac{\delta\qty(c(t-t')-r)}{4\pi r} \\
+  &=\frac{c q}{r}\int dt'\,\frac{1}{c}\delta\qty(t'-t+\frac{r}{c})
+    =\frac{q}{r}.
+\end{align*}
+The spatial potential is
+\begin{equation*}
+  \Avec(t,\br)=\frac{4\pi}{c}\int d^4y\,G_{\rm ret}(x-y)\Jvec(y)=\bvec{0}.
+\end{equation*}
+Hence the retarded formalism reproduces the Coulomb result for a time-independent source:
+\begin{equation*}
+  \phi=\frac{q}{r},\qquad \Avec=\bvec{0},\qquad \bE=\frac{q\br}{r^3},\qquad \bB=\bvec{0}.
+\end{equation*}
+}
+
+%------------------------------------------------------------
+\subsection{Retarded Potentials}\label{subsec:lec20-retarded-potentials}
+
+\subsubsection*{Physical Motivation}
+The retarded Green function is the physically standard choice because it implements the
+boundary condition ``no field before the source acts.'' Insert
+\eqref{eq:lec20-ret-green-restored} into \eqref{eq:lec20-A-particular}. Since
+$d^4y=dy^0d^3r'=c\dd{t}'\dd[3]{r}'$,
+\begin{align*}
+  A^\nu(t,\br)
+  &=\frac{4\pi}{c}\int cdt'\dd[3]{r}'\,
+    \frac{\delta\qty(c(t-t')-R)}{4\pi R}J^\nu(t',\br') \\
+  &=4\pi\int dt'\dd[3]{r}'\,
+    \frac{\delta\qty(c(t-t')-R)}{4\pi R}J^\nu(t',\br').
+\end{align*}
+Use
+\begin{equation*}
+  \delta\qty(c(t-t')-R)=\frac{1}{c}\delta\qty(t'-t+\frac{R}{c}),
+\end{equation*}
+so the $t'$ integral evaluates the source at the retarded time
+\begin{equation}\label{eq:lec20-retarded-time}
+  \boxed{t_{\rm ret}=t-\frac{|\br-\br'|}{c}.}
+\end{equation}
+\textit{Significance:} The field observed at $(t,\br)$ depends on what the source at $\br'$ was doing when light left it.
+
+Because $J^0=c\rho$ and $J^i=J_i$ as spatial components of the current vector, the standard
+retarded potentials are
+\begin{equation}\label{eq:lec20-retarded-potentials}
+  \boxed{\phi(t,\br)=\int d^3r'\,\frac{\rho(t_{\rm ret},\br')}{|\br-\br'|},\qquad
+  \Avec(t,\br)=\frac{1}{c}\int d^3r'\,\frac{\Jvec(t_{\rm ret},\br')}{|\br-\br'|}.}
+\end{equation}
+\textit{Significance:} Time-dependent electrodynamics is the static Coulomb/Biot--Savart superposition evaluated at retarded time, with radiation effects hidden in the time dependence of the sources.
+
+\nt{Pitfall: $R=|\br-\br'|$ depends on the integration point $\br'$. When differentiating
+retarded potentials to compute $\bE$ and $\bB$, derivatives act both on $1/R$ and on the
+retarded source through $t_{\rm ret}=t-R/c$. Forgetting this is the standard way to miss
+radiation terms.}
+
+%------------------------------------------------------------
+\subsection{Summary}\label{subsec:lec20-summary}
+
+\begin{itemize}
+  \item The full time-dependent Maxwell equations in Lorenz gauge reduce to
+        $\Box A^\nu=4\pi J^\nu/c$, with $\Box=c^{-2}\partial_t^2-\nabla^2$.
+  \item Lorenz gauge can always be reached by solving $\Box f=-\partial_\mu A^\mu$ and
+        transforming $A^\mu\to A^\mu+\partial^\mu f$.
+  \item A wave Green function obeys $\Box G(x-y)=\delta^{(4)}(x-y)$, giving
+        $A^\nu_{\rm p}=(4\pi/c)\int d^4y\,G(x-y)J^\nu(y)$.
+  \item Current conservation $\partial_\mu J^\mu=0$ guarantees that the Green-function
+        solution respects the Lorenz condition, up to boundary terms at infinity.
+  \item Fourier transforming in time turns the Green equation into
+        $(\nabla^2+k_0^2)\widetilde G=-\delta^{(3)}(\br)$, whose radial solutions are
+        $(Ae^{-ik_0r}+Be^{ik_0r})/r$ with $A+B=1/(4\pi)$.
+  \item Choosing $B=0$ gives the retarded Green function
+        $G_{\rm ret}=\delta(x^0-r)/(4\pi r)$, hence the retarded potentials
+        $\phi=\int \rho(t-R/c,\br')/R\dd[3]{r}'$ and
+        $\Avec=c^{-1}\int \Jvec(t-R/c,\br')/R\dd[3]{r}'$.
+\end{itemize}
+
+\subsection*{Further Reading}
+\begin{itemize}
+  \item J.\,D. Jackson, \textit{Classical Electrodynamics}, 3rd ed.: Chapter 6 (time-dependent Maxwell equations, gauges, Green functions, and retarded potentials).
+  \item D.\,J. Griffiths, \textit{Introduction to Electrodynamics}, 4th ed.: Chapter 10 (electrodynamic potentials and retarded solutions).
+  \item L.\,D. Landau \& E.\,M. Lifshitz, \textit{The Classical Theory of Fields}, Vol.\ 2: Chapter 8 (the electromagnetic field equations and retarded potentials).
+  \item David Tong, \textit{Lectures on Electromagnetism}, Chapter 6 notes -- \url{https://www.damtp.cam.ac.uk/user/tong/em.html}
+  \item MIT OpenCourseWare 8.07, \textit{Electromagnetism II} -- \url{https://ocw.mit.edu/courses/8-07-electromagnetism-ii-fall-2012/}
+\end{itemize}

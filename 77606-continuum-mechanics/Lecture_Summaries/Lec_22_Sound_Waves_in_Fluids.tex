@@ -1,0 +1,548 @@
+\documentclass[../main.tex]{subfiles}
+\begin{document}
+
+\section{Lecture 22 -- Sound Waves in Fluids}\label{sec:lec22}
+\begin{center}
+  \textbf{Date:} June 22, 2026
+\end{center}
+
+\subsection*{Overview}
+This lecture closes the discussion of Stokes flow past a sphere with two useful
+clarifications, then turns to a new phenomenon: \textbf{small disturbances in a
+fluid at rest}. The physical example is familiar from everyday life. A hammer
+tap, a lightning strike, a vibrating surface, or a droplet falling into water
+creates a local disturbance; the disturbance propagates away as a wave. In air
+we call it sound.
+
+The key idea is that a sound wave in a fluid is a coupled oscillation of
+\textbf{pressure}, \textbf{density}, and \textbf{velocity}. Unlike an elastic
+solid, a fluid at rest has no shear modulus, so it cannot support transverse
+sound waves. The only propagating acoustic mode is longitudinal: the fluid
+velocity oscillates parallel to the direction in which the wave travels.
+
+The mathematical strategy is the same perturbation method used throughout the
+course. Start from a homogeneous static solution
+\[
+  \vel=\bvec0,\qquad p=p_0,\qquad \rho=\rho_0,
+\]
+add small perturbations, keep only first order terms, and combine the linearized
+Euler equation, the linearized continuity equation, and the equation of state.
+The result is a wave equation with sound speed
+\[
+  c^2=\left(\pdv{p}{\rho}\right)_s,
+\]
+where the derivative is adiabatic/isentropic because sound oscillations are fast
+enough that heat has no time to flow appreciably between neighboring compressed
+and rarefied regions.
+
+\medskip\noindent\textbf{Topics:}
+\begin{enumerate}
+  \item Clarifications on the Stokes-sphere solution: multipoles, radial stream
+    function, and why the biharmonic source term vanishes.
+  \item Flow regimes around a sphere as the Reynolds number increases.
+  \item Phenomenology and historical measurements of sound in air and water.
+  \item Comparison with elastic waves in solids.
+  \item Linearization around a fluid at rest.
+  \item Absence of transverse sound waves in an ideal fluid.
+  \item Longitudinal velocity potential and the acoustic wave equation.
+  \item Sound speed in an ideal gas and in water.
+\end{enumerate}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Two Clarifications on Stokes Flow Past a Sphere}\label{sec:lec22:stokes-clarifications}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Conceptual Background}
+The previous lecture derived Stokes' law for a sphere moving slowly through a
+viscous fluid. The result was
+\begin{equation}
+  \boxed{\;\bvec F_D=6\pi\eta R\,\bvec V_0\;}
+  \label{eq:lec22_stokes_drag_recall}
+\end{equation}
+for a sphere of radius $R$ in a fluid of dynamic viscosity $\eta$, with far-field
+velocity $\bvec V_0$ in the sphere frame. The corresponding flow is called
+\textbf{creeping flow} (or Stokes flow): it is the low-Reynolds-number regime
+\[
+  \reynolds=\frac{V_0R}{\nu}\ll1,\qquad \nu=\eta/\rho.
+\]
+The professor returned to two points in the derivation that deserve to be made
+explicit.
+
+\subsubsection*{Why the scalar function may be radial}
+In \cref{sec:lec21} the velocity disturbance was written using one scalar
+function $f(r)$,
+\begin{equation}
+  \vel=\bvec V_0+\grad\times\grad\times\big(f(r)\bvec V_0\big).
+  \label{eq:lec22_stokes_stream_recall}
+\end{equation}
+The question is: why is $f$ allowed to depend only on $r$, and not also on
+$\theta$?
+
+The answer is not that the whole physical setup is spherically symmetric. It is
+not: the vector $\bvec V_0$ selects a preferred direction. The actual reason is
+\textbf{linearity}. In creeping flow the inertial term
+$(\vel\cdot\grad)\vel$ is neglected, so the Stokes equations are linear. Linear
+rotationally invariant equations allow a multipole decomposition: each angular
+momentum sector $\ell$ obeys its own equation and does not mix with the others,
+except through boundary conditions.
+
+The boundary condition at infinity is a uniform vector field,
+\[
+  \vel\to\bvec V_0\qquad(r\to\infty),
+\]
+and a vector transforms as the $\ell=1$ representation of rotations. Therefore
+the whole solution lives in the $\ell=1$ sector. The angular dependence is
+already supplied by the vector $\bvec V_0$ and by the differential operators in
+\eqref{eq:lec22_stokes_stream_recall}. Adding an arbitrary explicit
+$\theta$-dependence to $f$ would introduce other multipoles, which the boundary
+data do not excite.
+
+\nt{The phrase ``$f=f(r)$'' should therefore be read as: after the required
+$\ell=1$ angular structure has been factored out through $\bvec V_0$, the
+remaining unknown amplitude is radial.}
+
+\subsubsection*{Dipole plus Stokeslet}
+The velocity field found in \cref{sec:lec21} can be read as a sum of two
+$\ell=1$ vector fields:
+\begin{equation}
+  \vel=\bvec V_0-\frac{3R}{4}\,
+  \frac{\bvec V_0+(\bvec V_0\cdot\uvec r)\uvec r}{r}
+  -\frac{R^3}{4}\,
+  \frac{\bvec V_0-3(\bvec V_0\cdot\uvec r)\uvec r}{r^3}.
+  \label{eq:lec22_stokes_multipoles}
+\end{equation}
+The last term is the familiar \textbf{potential dipole} field: it can be written
+as the gradient of a scalar dipole potential. The $1/r$ term is also an
+$\ell=1$ vector field, but it is not the gradient of a scalar potential. It is
+the \textbf{Stokeslet} part of the solution, the long-ranged viscous disturbance
+associated with the net force on the sphere.
+
+\textit{Significance:} Both pieces carry the same angular momentum label
+$\ell=1$, but they are physically different: the $1/r^3$ part is a potential
+dipole correction, while the $1/r$ Stokeslet is the viscous force-carrying tail.
+
+\subsubsection*{Why the biharmonic equation is homogeneous}
+Another small gap in the derivation was the step from
+\[
+  \grad(\nabla^4 f)\times\bvec V_0=\bvec0
+\]
+to $\nabla^4 f=0$. The cross product vanishes if
+$\grad(\nabla^4 f)$ is parallel to $\bvec V_0$. But $f=f(r)$ is radial, so
+$\grad(\nabla^4 f)$ points in the radial direction $\uvec r$. A radial vector
+cannot be parallel to the same fixed vector $\bvec V_0$ at every point in space,
+unless it is zero. Hence
+\begin{equation}
+  \boxed{\;\nabla^4 f=0\;}
+  \label{eq:lec22_biharmonic_homogeneous}
+\end{equation}
+up to an irrelevant constant fixed by the far-field condition.
+
+\textit{Significance:} The homogeneity of the biharmonic equation follows from
+the combination of radial dependence and a fixed far-field direction; it is not
+an extra physical assumption.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Flow Regimes Around a Sphere}\label{sec:lec22:reynolds-regimes}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+The exact Stokes solution is derived in the limit $\reynolds\to0$, but the
+qualitative picture remains useful for small finite Reynolds number. As
+$\reynolds$ grows, the flow around a sphere does not merely change its numerical
+coefficients; it changes its \emph{type}.
+
+\begin{itemize}
+  \item \textbf{$\reynolds\lesssim1$--$10$: creeping/laminar flow.} The Stokes
+  picture is qualitatively correct. The flow is steady, smooth, and has no wake
+  vortices.
+
+  \item \textbf{$10\lesssim\reynolds\lesssim150$: steady separated wake.} The
+  fore-aft symmetry breaks and a recirculating region appears behind the sphere,
+  but the flow can still be steady in time.
+
+  \item \textbf{$150\lesssim\reynolds\lesssim10^3$--$10^4$: vortex shedding.}
+  Vortices are shed alternately from the two sides of the body, forming the
+  von Karman vortex street. The flow is now time-dependent but still visibly
+  organized.
+
+  \item \textbf{Large $\reynolds$: turbulence.} The wake becomes irregular and
+  chaotic. One can often describe statistical properties, but not a single
+  simple steady streamline pattern.
+\end{itemize}
+
+\nt{The precise transition values depend on geometry, roughness, perturbations,
+and on whether the body is a sphere or a cylinder. The point for this course is
+the qualitative sequence: Stokes flow, steady wake, periodic vortex shedding,
+then turbulence.}
+
+\textit{Significance:} High viscosity suppresses complexity and produces
+ordered flow. Decreasing viscosity, or increasing speed/size, increases
+$\reynolds$ and allows new nonlinear flow structures to appear.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Sound as a Propagating Fluid Disturbance}\label{sec:lec22:phenomenology}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+Now consider a fluid initially at rest. Strike it, push it, vibrate a boundary,
+or create a small pressure pulse. The disturbance propagates through the fluid.
+In air, this is ordinary sound. In water, the same mechanism gives underwater
+acoustic waves.
+
+The finite speed of sound is visible without special equipment. We see lightning
+almost immediately, but hear thunder seconds later. If the delay is about
+$10\,\mathrm{s}$, the storm is roughly $3$--$3.5\,\mathrm{km}$ away, because the
+speed of sound in air is about
+\[
+  c_{\mathrm{air}}\simeq 343\,\mathrm{m/s}
+\]
+near room temperature.
+
+Historically, this speed was measured long before electronic timing. Mersenne
+and others used visible flashes and loud sounds such as cannon fire to compare
+the arrival time of light and sound. Later measurements improved the value to
+the modern range. For water, Colladon and Sturm measured sound propagation
+across Lake Geneva in 1826 using an underwater bell and an underwater listening
+horn, finding a value close to
+\[
+  c_{\mathrm{water}}\simeq 1.48\,\mathrm{km/s}.
+\]
+Thus sound travels roughly five times faster in water than in air.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Comparison with Elastic Waves in Solids}\label{sec:lec22:solid-comparison}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Conceptual Background}
+In an elastic solid, the dynamical variable is the displacement field
+$\bvec u(\curcoord,t)$. Small-amplitude elastic waves split into:
+\begin{itemize}
+  \item \textbf{longitudinal waves}, where $\bvec u$ is parallel to the
+  propagation direction;
+  \item \textbf{transverse waves}, where $\bvec u$ is perpendicular to the
+  propagation direction. There are two independent transverse polarizations.
+\end{itemize}
+For an isotropic solid,
+\begin{equation}
+  \boxed{\;c_P^2=\frac{\lambda+2\mu}{\rho},\qquad
+  c_S^2=\frac{\mu}{\rho}\;}
+  \label{eq:lec22_elastic_wave_speeds}
+\end{equation}
+where $\lambda,\mu$ are the Lame constants and $\mu$ is the shear modulus.
+
+\textit{Significance:} The transverse waves exist only because a solid resists
+shear. A fluid at rest has no static shear modulus, so the transverse branch has
+no fluid analogue.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Linearization Around a Fluid at Rest}\label{sec:lec22:linearization}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Mathematical Setup}
+Start from a homogeneous static fluid:
+\begin{equation}
+  \vel_0=\bvec0,\qquad p=p_0,\qquad \rho=\rho_0,
+  \label{eq:lec22_background}
+\end{equation}
+with no important body force. Add small perturbations:
+\begin{equation}
+  \vel=\delta\vel,\qquad p=p_0+p',\qquad \rho=\rho_0+\rho',
+  \label{eq:lec22_perturbations}
+\end{equation}
+where $|\delta\vel|$, $|p'|$, and $|\rho'|$ are first-order quantities. Below we
+write $\vel$ for the perturbation velocity, since the background velocity is
+zero.
+
+For acoustic propagation we first neglect viscosity. Viscosity can attenuate a
+sound wave, but it is not what creates the wave. The relevant equations are
+Euler's equation and mass continuity:
+\begin{align}
+  \pdv{\vel}{t}+(\vel\cdot\grad)\vel&=-\frac{1}{\rho}\grad p,
+  \label{eq:lec22_euler_full}\\
+  \pdv{\rho}{t}+\divg(\rho\vel)&=0.
+  \label{eq:lec22_continuity_full}
+\end{align}
+
+\subsubsection*{Linearized Euler equation}
+In Euler's equation, $\partial_t\vel$ is first order, while
+$(\vel\cdot\grad)\vel$ is second order and is dropped. Also
+\[
+  \grad p=\grad(p_0+p')=\grad p',
+\]
+because $p_0$ is homogeneous. Since $\grad p'$ is already first order, replacing
+$1/\rho$ by $1/\rho_0$ is consistent to first order. Thus
+\begin{equation}
+  \boxed{\;\pdv{\vel}{t}=-\frac{1}{\rho_0}\grad p'\;}
+  \label{eq:lec22_linear_euler}
+\end{equation}
+\textit{Significance:} Pressure gradients accelerate the fluid. This is the
+``inertia'' half of sound: a compressed region pushes neighboring fluid outward.
+
+\subsubsection*{Linearized continuity equation}
+Expanding continuity,
+\[
+  \pdv{}{t}(\rho_0+\rho')+\divg\big((\rho_0+\rho')\vel\big)=0.
+\]
+The background density is constant, and $\rho'\vel$ is second order, so
+\begin{equation}
+  \boxed{\;\pdv{\rho'}{t}+\rho_0\,\divg\vel=0\;}
+  \label{eq:lec22_linear_continuity}
+\end{equation}
+\textit{Significance:} Converging velocity increases density; diverging velocity
+decreases density. This is the ``compression'' half of sound.
+
+\subsubsection*{Linearized equation of state}
+The fluid also needs a thermodynamic closure. For small disturbances,
+\begin{equation}
+  p'= \left(\pdv{p}{\rho}\right)_s \rho'.
+  \label{eq:lec22_eos_linear}
+\end{equation}
+Define
+\begin{equation}
+  \boxed{\;c^2\equiv\left(\pdv{p}{\rho}\right)_s\;}
+  \label{eq:lec22_sound_speed_def}
+\end{equation}
+where the derivative is taken at constant entropy $s$.
+
+\textit{Significance:} The derivative $c^2$ measures how strongly pressure
+responds to compression. It is the restoring force per unit density, exactly the
+structure expected for a wave speed.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Why There Are No Transverse Sound Waves in a Fluid}\label{sec:lec22:no-transverse}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Physical Motivation}
+In a transverse wave, the velocity field has a rotational part: the fluid would
+oscillate sideways relative to the propagation direction. A static fluid cannot
+support shear stress, so we expect no propagating transverse sound mode.
+
+\subsubsection*{Mathematical Check}
+Take the curl of the linearized Euler equation
+\eqref{eq:lec22_linear_euler}:
+\begin{equation}
+  \pdv{}{t}(\curl\vel)
+  =-\frac{1}{\rho_0}\curl(\grad p')=\bvec0.
+  \label{eq:lec22_vorticity_linear}
+\end{equation}
+With $\bvec\omega=\curl\vel$,
+\begin{equation}
+  \boxed{\;\pdv{\bvec\omega}{t}=0\;}
+  \label{eq:lec22_no_transverse}
+\end{equation}
+This is not a wave equation: there is no second time derivative balanced by a
+spatial Laplacian. If a rotational perturbation is present in an ideal fluid, it
+is simply frozen at this order; with viscosity included, it diffuses and
+decays.
+
+\textit{Significance:} Fluids have no acoustic shear branch. Ordinary sound in
+air or water is longitudinal.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Longitudinal Waves and the Acoustic Wave Equation}\label{sec:lec22:wave-equation}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Mathematical Setup}
+The propagating acoustic part is irrotational, so write the velocity perturbation
+using a scalar potential:
+\begin{equation}
+  \vel=\grad\phi.
+  \label{eq:lec22_velocity_potential}
+\end{equation}
+Substitute this into \eqref{eq:lec22_linear_euler}:
+\[
+  \grad\!\left(\pdv{\phi}{t}\right)=-\frac{1}{\rho_0}\grad p'
+  \quad\Longrightarrow\quad
+  \grad\!\left(\pdv{\phi}{t}+\frac{p'}{\rho_0}\right)=\bvec0.
+\]
+The expression in parentheses may depend only on time; this time-dependent
+constant can be absorbed into the freedom $\phi\mapsto\phi+g(t)$. Choose the
+gauge in which it vanishes:
+\begin{equation}
+  \boxed{\;p'=-\rho_0\,\pdv{\phi}{t}\;}
+  \label{eq:lec22_pressure_potential}
+\end{equation}
+
+Now use continuity. Since $\divg\vel=\lapl\phi$,
+\begin{equation}
+  \pdv{\rho'}{t}+\rho_0\lapl\phi=0.
+  \label{eq:lec22_cont_phi}
+\end{equation}
+The equation of state gives $\rho'=p'/c^2$. With
+\eqref{eq:lec22_pressure_potential},
+\[
+  \rho'=-\frac{\rho_0}{c^2}\pdv{\phi}{t}.
+\]
+Substituting this into \eqref{eq:lec22_cont_phi},
+\[
+  -\frac{\rho_0}{c^2}\pdv[2]{\phi}{t}+\rho_0\lapl\phi=0.
+\]
+Cancel $\rho_0$:
+\begin{equation}
+  \boxed{\;\lapl\phi=\frac{1}{c^2}\pdv[2]{\phi}{t}\;}
+  \label{eq:lec22_wave_phi}
+\end{equation}
+
+\textit{Significance:} The potential $\phi$ obeys the ordinary wave equation.
+Once $\phi$ is known, the velocity, pressure, and density perturbations are
+obtained from
+\[
+  \vel=\grad\phi,\qquad p'=-\rho_0\phi_t,\qquad \rho'=\frac{p'}{c^2}.
+\]
+
+\thm[acoustic-wave]{Acoustic Wave Equation in a Fluid}{%
+  Small irrotational perturbations of a homogeneous inviscid fluid at rest obey
+  \begin{equation}
+    \boxed{\;\lapl\phi-\frac{1}{c^2}\pdv[2]{\phi}{t}=0,\qquad
+    c^2=\left(\pdv{p}{\rho}\right)_s\;}
+    \label{eq:lec22_acoustic_wave_thm}
+  \end{equation}
+  with $\vel=\grad\phi$, $p'=-\rho_0\phi_t$, and $\rho'=p'/c^2$.
+}
+\textit{Significance:} Sound is a pressure-density restoring force coupled to
+fluid inertia. The wave speed is fixed by thermodynamics and density, not by
+viscosity.
+
+\subsubsection*{Plane-wave solution}
+For a monochromatic plane wave traveling in the $z$ direction, take
+\begin{equation}
+  \phi=\Phi_0\cos(kz-\omega t),\qquad \omega=ck.
+  \label{eq:lec22_plane_phi}
+\end{equation}
+Then
+\begin{align}
+  v_z&=\pdv{\phi}{z}=-k\Phi_0\sin(kz-\omega t),
+  \label{eq:lec22_plane_v}\\
+  p'&=-\rho_0\pdv{\phi}{t}=-\rho_0\omega\Phi_0\sin(kz-\omega t),
+  \label{eq:lec22_plane_p}\\
+  \rho'&=\frac{p'}{c^2}.
+  \label{eq:lec22_plane_rho}
+\end{align}
+Thus, for a wave traveling in the positive $z$ direction,
+\begin{equation}
+  \boxed{\;p'=\rho_0 c\,v_z,\qquad \rho'=\frac{\rho_0}{c}\,v_z\;}
+  \label{eq:lec22_plane_relations}
+\end{equation}
+with signs understood relative to the propagation direction.
+
+\textit{Significance:} A sound wave consists of alternating compressions and
+rarefactions: where $p'$ and $\rho'$ are positive, the fluid is compressed; where
+they are negative, it is rarefied. The velocity oscillates longitudinally.
+
+\begin{figure}[h]
+\centering
+\begin{tikzpicture}[scale=1.0]
+  \draw[->,thick] (-0.4,0) -- (8.2,0) node[right] {$z$};
+  \draw[myblue,thick,domain=0:7.6,samples=120]
+    plot (\x,{0.55*sin(180*\x/1.9)});
+  \node[myblue] at (1.5,0.9) {$p',\,\rho'$};
+  \foreach \x in {0.45,1.2,1.95,2.7,3.45,4.2,4.95,5.7,6.45,7.2}{
+    \draw[vvec] (\x,-1.05) -- ++({0.35*cos(180*\x/1.9)},0);
+  }
+  \node[vcol] at (1.5,-1.45) {$\vel\parallel\hat{\bvec z}$};
+  \node[font=\small] at (2.85,0.35) {compression};
+  \node[font=\small] at (4.75,-0.35) {rarefaction};
+  \draw[width] (0,-1.85) -- (3.8,-1.85) node[midway,below] {$\lambda$};
+\end{tikzpicture}
+\caption{A one-dimensional sound wave: pressure and density oscillate between
+compression and rarefaction, while the fluid velocity oscillates parallel to the
+propagation direction.}
+\label{fig:lec22_sound_wave}
+\end{figure}
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection{Sound Speed in Air and Water}\label{sec:lec22:sound-speed}
+%%─────────────────────────────────────────────────────────────────────────────
+
+\subsubsection*{Ideal gas}
+For an ideal gas undergoing an adiabatic small oscillation,
+\[
+  p\rho^{-\gamma}=\mathrm{const},
+\]
+so
+\[
+  p=K\rho^\gamma,\qquad
+  \left(\pdv{p}{\rho}\right)_s=\gamma K\rho^{\gamma-1}
+  =\gamma\frac{p}{\rho}.
+\]
+Therefore
+\begin{equation}
+  \boxed{\;c_{\mathrm{gas}}=\sqrt{\gamma\frac{p_0}{\rho_0}}\;}
+  \label{eq:lec22_ideal_gas_sound}
+\end{equation}
+For air near room temperature, $\gamma\simeq7/5$ because air is mostly diatomic
+nitrogen and oxygen. With $p_0\simeq1.0\times10^5\,\mathrm{Pa}$ and
+$\rho_0\simeq1.2\,\mathrm{kg/m^3}$,
+\begin{equation}
+  c_{\mathrm{air}}\simeq 340\,\mathrm{m/s}.
+  \label{eq:lec22_air_number}
+\end{equation}
+
+\nt{Newton effectively used the isothermal estimate
+$c^2=p_0/\rho_0$, which is too small by a factor $\sqrt{\gamma}$. Laplace's
+adiabatic correction supplies the missing factor. For a monatomic gas
+$\gamma=5/3$; for ordinary air, $\gamma\simeq7/5$.}
+
+\subsubsection*{Water}
+For a liquid it is common to use the adiabatic bulk modulus
+\begin{equation}
+  B_s\equiv \rho_0\left(\pdv{p}{\rho}\right)_s.
+  \label{eq:lec22_bulk_modulus}
+\end{equation}
+Then
+\begin{equation}
+  \boxed{\;c_{\mathrm{liquid}}=\sqrt{\frac{B_s}{\rho_0}}\;}
+  \label{eq:lec22_liquid_sound}
+\end{equation}
+For water, $B_s\simeq2.2\,\mathrm{GPa}$ and
+$\rho_0\simeq10^3\,\mathrm{kg/m^3}$, so
+\begin{equation}
+  c_{\mathrm{water}}\simeq
+  \sqrt{\frac{2.2\times10^9}{10^3}}\;\mathrm{m/s}
+  \simeq1.5\times10^3\,\mathrm{m/s}.
+  \label{eq:lec22_water_number}
+\end{equation}
+
+\textit{Significance:} Water is much harder to compress than air. Although it is
+also denser, the large bulk modulus wins, so sound travels much faster in water.
+
+%%─────────────────────────────────────────────────────────────────────────────
+\subsection*{Summary}
+%%─────────────────────────────────────────────────────────────────────────────
+\begin{itemize}
+  \item In Stokes flow past a sphere, $f=f(r)$ because linearity lets us
+  decompose into multipoles and the far-field vector $\bvec V_0$ excites only
+  the $\ell=1$ sector.
+  \item The Stokes velocity contains an $\ell=1$ potential dipole part
+  ($1/r^3$) and an $\ell=1$ non-potential Stokeslet part ($1/r$).
+  \item Flow past a sphere changes qualitatively with Reynolds number:
+  creeping flow $\to$ steady separated wake $\to$ von Karman vortex shedding
+  $\to$ turbulence.
+  \item A sound wave in a fluid is a small longitudinal disturbance of pressure,
+  density, and velocity around a homogeneous rest state.
+  \item Linearized Euler:
+  $\partial_t\vel=-(1/\rho_0)\grad p'$; linearized continuity:
+  $\partial_t\rho'+\rho_0\divg\vel=0$; equation of state:
+  $p'=c^2\rho'$.
+  \item Taking the curl gives $\partial_t\curl\vel=0$, so transverse acoustic
+  waves do not propagate in an ideal fluid.
+  \item For the longitudinal part $\vel=\grad\phi$, the potential obeys
+  $\lapl\phi=(1/c^2)\phi_{tt}$.
+  \item The sound speed is $c^2=(\partial p/\partial\rho)_s$. For an ideal gas,
+  $c=\sqrt{\gamma p_0/\rho_0}$; for a liquid,
+  $c=\sqrt{B_s/\rho_0}$.
+  \item Numerically, $c_{\mathrm{air}}\simeq343\,\mathrm{m/s}$ near room
+  temperature, while $c_{\mathrm{water}}\simeq1.48\,\mathrm{km/s}$.
+\end{itemize}
+
+\subsection*{Further Reading}
+\begin{itemize}
+  \item L.\,D. Landau and E.\,M. Lifshitz, \textit{Fluid Mechanics}:
+  sections on sound waves, compressibility, and viscosity-induced attenuation.
+  \item D.\,J. Acheson, \textit{Elementary Fluid Dynamics}: discussion of small
+  compressible disturbances and acoustic waves.
+  \item G.\,K. Batchelor, \textit{An Introduction to Fluid Dynamics}: linearized
+  compressible flow and sound-wave propagation.
+\end{itemize}
+
+\end{document}

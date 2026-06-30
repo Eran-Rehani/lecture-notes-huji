@@ -1,0 +1,1186 @@
+%%===================================================================
+%% Lecture 19 -- LSM Interactions, Gauge Self-Couplings,
+%%               Accidental Symmetries, and the Full Standard Model
+%% 77609 -- Introduction to Elementary Particles
+%% Date: 18/06/2026
+%% Lecturer: Prof. Yonit Hochberg
+%%===================================================================
+
+\section{Lecture 19 -- LSM Interactions: QED, Weak Currents, Gauge Self-Couplings, and the Full Standard Model}\label{sec:lec19}
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 18/06/2026 & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+
+%%------------------------------------------------------------------
+\subsection{Overview}\label{subsec:lec19:overview}
+
+Lectures~17 and~18 built the Lepton Standard Model (LSM): a local
+$SU(2)_L\times U(1)_Y$ gauge theory whose spontaneous breaking delivers
+three massive gauge bosons $W^\pm$, $Z$, a massless photon $A$, and a
+physical Higgs $h$. The Higgs couplings to $W$, $Z$, and the charged
+leptons were worked out in Lecture~18. Today we extract the
+\emph{remaining} interactions in the mass basis --- those between the
+gauge bosons and the fermions --- and then ask three broader questions:
+
+\begin{enumerate}
+  \item \textbf{QED interactions:} how does the photon couple to
+        the charged leptons, and what structural properties does the
+        coupling have?
+  \item \textbf{Neutral and charged current weak interactions:} how
+        do the $Z$ and $W^\pm$ couple to the leptons?
+  \item \textbf{Gauge boson self-interactions:} the non-Abelian nature
+        of $SU(2)_L$ forces the $W$ bosons to interact with each
+        other and with the $Z$ and photon.
+  \item \textbf{Parameter counting and accidental symmetries} of the LSM.
+  \item \textbf{The full Standard Model:} extending to quarks and $SU(3)_C$.
+\end{enumerate}
+
+Everything in this lecture is read off from one object --- the
+covariant derivative --- so we first recall the two pieces of machinery
+that make that reading possible: \emph{chirality} (which tells us
+\emph{which} fermions a boson talks to) and the \emph{gauge quantum
+numbers} $T^3$, $Y$, $Q$ (which tell us \emph{how strongly}).
+
+%%==================================================================
+\subsection{Background: Chirality, Currents, and Quantum Numbers}\label{subsec:lec19:background}
+
+\subsubsection*{Conceptual Background}
+
+Every fermion--boson interaction in this lecture has the form
+\emph{(boson field)} $\times$ \emph{(fermion current)}. Before extracting
+any specific coupling, we set up the two ideas that recur in every one:
+the splitting of a Dirac fermion into left- and right-handed pieces,
+and the gauge quantum numbers that fix the coupling strengths.
+
+\paragraph{Chirality and the projectors.}
+A Dirac field $\psi$ describes four degrees of freedom. The matrix
+$\gamma^5 = i\gamma^0\gamma^1\gamma^2\gamma^3$ satisfies
+$(\gamma^5)^2 = 1$, so its eigenvalues are $\pm1$. We split $\psi$ into
+\emph{chiral} (handedness) components using the projection operators
+\begin{equation}
+  P_L = \frac{1-\gamma^5}{2},\qquad
+  P_R = \frac{1+\gamma^5}{2},\qquad
+  \psi_L \equiv P_L\psi,\quad \psi_R \equiv P_R\psi.
+  \label{eq:lec19:projectors}
+\end{equation}
+These are genuine projectors: $P_L^2 = P_L$, $P_R^2 = P_R$,
+$P_LP_R = 0$, and $P_L + P_R = 1$, so $\psi = \psi_L + \psi_R$. For a
+massless fermion, chirality coincides with \emph{helicity} (spin
+projected along the momentum): $\psi_L$ is the left-handed (spin
+anti-aligned) particle.
+
+\paragraph{Why handedness controls the weak force.}
+The defining choice of the Standard Model is that $\psi_L$ and $\psi_R$
+are placed in \emph{different} representations of $SU(2)_L$:
+\begin{itemize}
+  \item the left-handed fields sit in $SU(2)_L$ \emph{doublets}
+        $L_{Li}=(\nu_{Li},\ell_{Li})^T$ --- they ``feel'' $SU(2)_L$;
+  \item the right-handed fields are $SU(2)_L$ \emph{singlets} $e_{Ri}$
+        --- they are blind to $SU(2)_L$.
+\end{itemize}
+Because $\bar\psi\gamma^\mu P_L\psi$ uses only $\psi_L$, any interaction
+built from $SU(2)_L$ generators automatically singles out left-handed
+fermions. This single asymmetric assignment is the origin of
+\emph{parity violation} --- the fact that the weak interaction
+distinguishes left from right.
+
+\dfn[dfn:lec19:currents]{Vector vs.\ Chiral Currents}{
+A fermion bilinear $\bar\psi\,\Gamma\,\psi$ sandwiched between a boson
+field is called a \emph{current}. Two cases appear in this lecture:
+\begin{itemize}
+  \item \textbf{Vector current} $\bar\psi\gamma^\mu\psi
+        = \bar\psi_L\gamma^\mu\psi_L + \bar\psi_R\gamma^\mu\psi_R$:
+        couples L and R \emph{equally} (e.g.\ the photon). Parity-even.
+  \item \textbf{Chiral current} $\bar\psi\gamma^\mu P_L\psi
+        = \bar\psi_L\gamma^\mu\psi_L$: couples \emph{only} the
+        left-handed piece (e.g.\ the $W$). Maximally parity-violating.
+\end{itemize}
+The identity $\gamma^\mu P_L = P_R\gamma^\mu$ (since $\gamma^5$
+anticommutes with $\gamma^\mu$) shows why a vector current keeps L
+with L: a left-handed incoming field stays left-handed.
+}
+
+\paragraph{The three gauge quantum numbers.}
+Each fermion field carries three labels that completely fix how it
+couples to the electroweak bosons:
+\begin{itemize}
+  \item $T^3$ = third component of weak isospin. For an $SU(2)_L$
+        doublet, the upper component has $T^3=+\tfrac12$ and the lower
+        has $T^3=-\tfrac12$; an $SU(2)_L$ singlet has $T^3=0$.
+  \item $Y$ = weak hypercharge, the charge under $U(1)_Y$ (assigned so
+        the theory is anomaly-free and reproduces electromagnetism).
+  \item $Q$ = electric charge, \emph{derived} from the other two by the
+        Gell-Mann--Nishijima relation
+        \begin{equation}
+          \boxed{Q = T^3 + Y.}
+          \label{eq:lec19:gell-mann-nishijima}
+        \end{equation}
+\end{itemize}
+
+\textit{Significance:} Once $T^3$ and $Y$ are fixed for a field, its
+couplings to $\gamma$, $Z$, and $W$ are not free parameters --- they are
+\emph{computed} from Eqs.~\eqref{eq:lec19:projectors}--\eqref{eq:lec19:gell-mann-nishijima}.
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}lcccc@{}}
+  \toprule
+  Field & $SU(2)_L$ & $T^3$ & $Y$ & $Q=T^3+Y$\\
+  \midrule
+  $\nu_{Li}$ (upper of doublet) & doublet & $+\tfrac12$ & $-\tfrac12$ & $0$\\
+  $\ell_{Li}$ (lower of doublet) & doublet & $-\tfrac12$ & $-\tfrac12$ & $-1$\\
+  $e_{Ri}$ & singlet & $0$ & $-1$ & $-1$\\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\nt{Pitfall: $\ell_L$ and $\ell_R$ describe the \emph{same} physical
+electron ($Q=-1$ for both), but they are \emph{different fields} with
+different $T^3$ and $Y$. They are joined only by the mass term
+$m_\ell\bar\ell_L\ell_R$, which requires the Higgs vev. This is why the
+photon (sensitive only to $Q$) treats them identically while the
+$W$ and $Z$ (sensitive to $T^3$) do not.}
+
+%%==================================================================
+\subsection{QED Interactions in the Lepton Standard Model}\label{subsec:lec19:qed}
+
+\subsubsection*{Physical Motivation}
+
+After electroweak symmetry breaking, the mass-basis covariant derivative
+(derived in Lecture~18) is:
+\begin{equation}
+  D_\mu = \partial_\mu
+          + ig W^+_\mu T^+
+          + ig W^-_\mu T^-
+          + ie A_\mu\, Q
+          + i\frac{g}{\cos\theta_W} Z_\mu\!\left(T^3 - \sin^2\!\theta_W\, Q\right)
+  \label{eq:lec19:cov-deriv}
+\end{equation}
+where $Q = T^3 + Y$ is the electric-charge generator and
+$e = g\sin\theta_W = g'\cos\theta_W$.
+
+The photon couples to the term $ie A_\mu Q$. Because $Q$ generates the
+\emph{unbroken} $U(1)_{\rm EM}$, this is precisely the minimal coupling
+of electromagnetism: each field couples to the photon proportional to its
+electric charge. For the charged leptons $\ell \in \{e,\mu,\tau\}$, both
+$\ell_L$ and $\ell_R$ carry $Q = -1$.
+
+\subsubsection*{Mathematical Setup}
+
+The interaction lives inside the fermion kinetic term. Writing the
+kinetic term and keeping only the photon piece $ieA_\mu Q$ of $D_\mu$
+from Eq.~\eqref{eq:lec19:cov-deriv}:
+\begin{align}
+  \lagr \supset i\bar f\gamma^\mu D_\mu f
+  &\supset i\bar f\gamma^\mu\bigl(ieA_\mu Q\bigr)f
+  \notag\\
+  &= -e\,Q\,\bar f\gamma^\mu f\,A_\mu .
+  \label{eq:lec19:qed-extraction}
+\end{align}
+Here the two factors of $i$ combined to $i^2=-1$. Now sum over the
+charged leptons $f=\ell_i$ (each with $Q=-1$, so $-eQ=+e$); the
+neutrinos drop out because $Q(\nu)=0$. Adding the photon's own kinetic
+term gives the full QED Lagrangian:
+\begin{equation}
+  \boxed{
+    \lagr_{\QED} = -\tfrac14 F_{\mu\nu}F^{\mu\nu}
+                  + e A_\mu\sum_{i=e,\mu,\tau}\bar\ell_i\gamma^\mu\ell_i
+  }
+  \label{eq:lec19:qed-lagrangian}
+\end{equation}
+where $F_{\mu\nu} = \partial_\mu A_\nu - \partial_\nu A_\mu$ and
+$\ell_i$ is the Dirac field for the $i$-th charged lepton. Note the
+current $\bar\ell_i\gamma^\mu\ell_i$ is a \emph{vector} current
+(no $\gamma^5$, no $P_L$): the photon couples to $\ell_L$ and $\ell_R$
+identically, exactly as anticipated in
+\hyperref[def:dfn:lec19:currents]{the vector-current definition}.
+
+\textit{Significance:} The full QED Lagrangian for charged leptons is
+\emph{derived} from the $SU(2)_L\times U(1)_Y$ gauge structure.
+No additional assumption is needed.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+  \begin{feynman}
+    \vertex (v) at (0,0);
+    \vertex (f1) at (-1.5,1.1) {$\ell_i$};
+    \vertex (f2) at (-1.5,-1.1) {$\bar\ell_i$};
+    \vertex (ph) at (1.6,0) {$\gamma^\mu$};
+    \diagram*{
+      (f1) -- [fermion] (v) -- [anti fermion] (f2),
+      (v) -- [photon] (ph),
+    };
+  \end{feynman}
+\end{tikzpicture}
+\caption{QED vertex for a charged lepton and photon. Vertex factor: $+ie\gamma^\mu$
+  (for $Q=-1$, $-ieQ\gamma^\mu = +ie\gamma^\mu$).}
+\label{fig:lec19:qed-vertex}
+\end{figure}
+
+\clm[clm:lec19:qed-properties]{Three Properties of the QED Interaction}{
+The photon coupling to charged leptons in the LSM has three properties,
+all experimentally confirmed:
+\begin{enumerate}
+  \item \textbf{Vector-like:} the coupling $e\bar\ell\gamma^\mu\ell$
+        is the same for $\ell_L$ and $\ell_R$ (no $\gamma^5$). This
+        follows from $Q(\ell_L) = Q(\ell_R) = -1$.
+  \item \textbf{Diagonal in flavor:} the vertex is $\bar\ell_i\gamma^\mu\ell_i$
+        with the same generation index $i$. The photon cannot change
+        flavor: $\gamma \to e^+\mu^-$ is absent.
+  \item \textbf{Universal:} the strength $e$ does not depend on the
+        generation. The photon couples to $e^+e^-$, $\mu^+\mu^-$,
+        and $\tau^+\tau^-$ identically.
+\end{enumerate}
+}
+
+\nt{Pitfall: the vertex factor $-ieQ\gamma^\mu$ has a minus sign from
+the covariant derivative convention $D_\mu = \partial_\mu + ie QA_\mu$.
+For $Q=-1$ (charged lepton) the vertex is $+ie\gamma^\mu$; for $Q=+2/3$
+(up quark) it is $-\frac{2ie}{3}\gamma^\mu$. The overall sign matters
+when computing interference between diagrams.}
+
+%%==================================================================
+\subsection{Neutral Current Weak Interactions}\label{subsec:lec19:nc}
+
+\subsubsection*{Physical Motivation}
+
+The $Z$ boson mediates the \emph{neutral current weak interactions} ---
+so-called because the $Z$ is electrically neutral. Unlike the photon,
+the $Z$ distinguishes between left-handed and right-handed fermions
+(breaking parity), and it couples to neutrinos.
+
+\subsubsection*{Mathematical Setup}
+
+We repeat the QED extraction, but now keeping the $Z_\mu$ piece of
+$D_\mu$. From Eq.~\eqref{eq:lec19:cov-deriv} that piece is
+$i\frac{g}{\cos\theta_W}Z_\mu(T^3-\sin^2\!\theta_W Q)$, so
+\begin{align}
+  \lagr \supset i\bar f\gamma^\mu D_\mu f
+  &\supset i\bar f\gamma^\mu
+    \left[i\frac{g}{\cos\theta_W}Z_\mu\bigl(T^3-\sin^2\!\theta_W Q\bigr)\right]f
+  \notag\\
+  &= -\frac{g}{\cos\theta_W}\,Z_\mu\,
+     \bar f\gamma^\mu\bigl(T^3-\sin^2\!\theta_W Q\bigr)f .
+  \label{eq:lec19:z-extraction}
+\end{align}
+The crucial point: $T^3$ acts \emph{field by field}. A given fermion
+field $f$ is an eigenstate of $T^3$ (it sits at a definite spot in a
+doublet or is a singlet), so $T^3$ and $Q$ become the \emph{numbers}
+from the table of Sec.~\ref{subsec:lec19:background}, and we read off
+the coupling strength of each field:
+\begin{equation}
+  \boxed{
+    \text{$Z$-coupling strength of fermion }f:
+    \qquad
+    g_{Zf} = \frac{g}{\cos\theta_W}\!\left(T^3_f - \sin^2\!\theta_W\,Q_f\right)
+  }
+  \label{eq:lec19:z-coupling-formula}
+\end{equation}
+Substituting the quantum numbers of each lepton field (taken straight
+from the table in Sec.~\ref{subsec:lec19:background}):
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}lcccc@{}}
+  \toprule
+  Field & $T^3$ & $Q$ & $T^3 - \sin^2\!\theta_W Q$ \\
+  \midrule
+  $\ell_{Li}$ (LH charged lepton) & $-\tfrac12$ & $-1$ & $-\tfrac12 + \sin^2\!\theta_W$\\
+  $e_{Ri}$ (RH charged lepton) & $0$ & $-1$ & $\phantom{-}\sin^2\!\theta_W$\\
+  $\nu_{Li}$ (LH neutrino) & $+\tfrac12$ & $0$ & $+\tfrac12$\\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+The $Z$-fermion interaction Lagrangian is therefore:
+\begin{equation}
+  \boxed{
+    \lagr_Z = \frac{g}{\cos\theta_W} Z_\mu\sum_i
+    \!\left[
+      \left(-\tfrac12+\sin^2\!\theta_W\right)\bar\ell_{Li}\gamma^\mu\ell_{Li}
+      + \sin^2\!\theta_W\,\bar e_{Ri}\gamma^\mu e_{Ri}
+      + \tfrac12\,\bar\nu_{Li}\gamma^\mu\nu_{Li}
+    \right]
+  }
+  \label{eq:lec19:z-interaction}
+\end{equation}
+where the index $i$ runs over all three generations.
+
+\textit{Significance:} The left-handed and right-handed couplings are
+different because $T^3=0$ for $\mathrm{SU}(2)_L$ singlets. Parity
+violation is built into the algebra of $SU(2)_L$.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+  \begin{feynman}
+    \vertex (v) at (0,0);
+    \vertex (f1) at (-1.5,1.1) {$\ell_{Li}$};
+    \vertex (f2) at (-1.5,-1.1) {$\bar\ell_{Li}$};
+    \vertex (z) at (1.6,0) {$Z^\mu$};
+    \diagram*{
+      (f1) -- [fermion] (v) -- [anti fermion] (f2),
+      (v) -- [boson] (z),
+    };
+  \end{feynman}
+\end{tikzpicture}
+\hspace{1.4cm}
+\begin{tikzpicture}
+  \begin{feynman}
+    \vertex (v) at (0,0);
+    \vertex (f1) at (-1.5,1.1) {$e_{Ri}$};
+    \vertex (f2) at (-1.5,-1.1) {$\bar e_{Ri}$};
+    \vertex (z) at (1.6,0) {$Z^\mu$};
+    \diagram*{
+      (f1) -- [fermion] (v) -- [anti fermion] (f2),
+      (v) -- [boson] (z),
+    };
+  \end{feynman}
+\end{tikzpicture}
+\hspace{1.4cm}
+\begin{tikzpicture}
+  \begin{feynman}
+    \vertex (v) at (0,0);
+    \vertex (f1) at (-1.5,1.1) {$\nu_{Li}$};
+    \vertex (f2) at (-1.5,-1.1) {$\bar\nu_{Li}$};
+    \vertex (z) at (1.6,0) {$Z^\mu$};
+    \diagram*{
+      (f1) -- [fermion] (v) -- [anti fermion] (f2),
+      (v) -- [boson] (z),
+    };
+  \end{feynman}
+\end{tikzpicture}
+\caption{$Z$-boson vertices. Left to right: left-handed charged lepton
+  (coupling $-\frac12+\sin^2\!\theta_W$), right-handed charged lepton
+  (coupling $\sin^2\!\theta_W$), and left-handed neutrino
+  (coupling $+\frac12$). All couplings multiplied by $g/\cos\theta_W$.}
+\label{fig:lec19:z-vertices}
+\end{figure}
+
+\clm[clm:lec19:z-properties]{Properties of the Z Coupling}{
+\begin{enumerate}
+  \item \textbf{Different for L and R:} unlike QED, the $Z$ couplings
+        depend on chirality. For charged leptons, the left-handed
+        coupling is $-\frac12+\sin^2\!\theta_W$ and the right-handed
+        coupling is $\sin^2\!\theta_W$.
+  \item \textbf{Diagonal in flavor:} all three terms in
+        Eq.~\eqref{eq:lec19:z-interaction} have matching generation
+        index on both fermion fields. There are no tree-level
+        \emph{flavor-changing neutral currents (FCNC)}.
+  \item \textbf{Universal within each sector:} the coupling of the $Z$
+        to $e_L$, $\mu_L$, $\tau_L$ is the same; similarly for $e_R$,
+        $\mu_R$, $\tau_R$, and for $\nu_{eL}$, $\nu_{\mu L}$, $\nu_{\tau L}$.
+  \item \textbf{Couples to neutrinos:} unlike the photon ($Q(\nu)=0$),
+        the $Z$ couples to neutrinos because $T^3(\nu_L) = +\frac12$.
+\end{enumerate}
+}
+
+\subsubsection*{Experimental Verification}
+
+All four properties have been tested at $e^+e^-$ colliders at
+$\sqrt{s} = m_Z$:
+
+\paragraph{Universality.}
+\begin{equation}
+  \mathrm{BR}(Z\to e^+e^-) \approx 3.363\%,
+  \quad
+  \mathrm{BR}(Z\to\mu^+\mu^-) \approx 3.366\%,
+  \quad
+  \mathrm{BR}(Z\to\tau^+\tau^-) \approx 3.370\%.
+  \label{eq:lec19:z-univ-data}
+\end{equation}
+
+\paragraph{No FCNC.}
+\begin{equation}
+  \mathrm{BR}(Z\to e^\pm\mu^\mp),\;
+  \mathrm{BR}(Z\to e^\pm\tau^\mp),\;
+  \mathrm{BR}(Z\to\mu^\pm\tau^\mp)
+  \lesssim 10^{-5} \text{ to } 10^{-6}.
+  \label{eq:lec19:fcnc-limits}
+\end{equation}
+
+\paragraph{Neutrino counting.}
+The invisible decay width $\Gamma(Z\to\nu\bar\nu)$ (missing energy in
+detector) compared to the charged-lepton width gives the number of
+light neutrino species:
+\begin{equation}
+  \boxed{N_\nu = 2.9840\pm0.0082 \approx 3}
+  \label{eq:lec19:neutrino-count}
+\end{equation}
+This is \emph{direct experimental evidence} that there are exactly
+three generations of light neutrinos.
+
+Comparing the invisible and visible widths also yields an independent
+extraction of the weak mixing angle: $\sin^2\!\theta_W\approx0.226$,
+in agreement with other measurements.
+
+%%==================================================================
+\subsection{Charged Current Weak Interactions}\label{subsec:lec19:cc}
+
+\subsubsection*{Physical Motivation}
+
+The $W^\pm$ bosons mediate the \emph{charged current weak interactions}.
+``Charged current'' because the $W$ carries electric charge $\pm1$ and
+therefore changes the electric charge of a fermion by one unit when
+emitted or absorbed. Beta decay ($n\to p e^-\bar\nu_e$), muon decay, and
+nuclear fusion all proceed through charged current exchanges.
+
+The crucial new feature: the $W$ only couples to \emph{left-handed}
+fermions. This is the most dramatic violation of parity in the Standard
+Model.
+
+\subsubsection*{Mathematical Setup}
+
+We use the $SU(2)_L$ generators in the doublet (fundamental)
+representation, $T^a = \tfrac12\sigma^a$ with $\sigma^a$ the Pauli
+matrices. The charged combinations are
+\begin{equation}
+  T^\pm = \frac{T^1 \pm iT^2}{\sqrt2}
+  \quad\Longrightarrow\quad
+  T^+ = \frac{1}{\sqrt2}\begin{pmatrix}0&1\\0&0\end{pmatrix},
+  \qquad
+  T^- = \frac{1}{\sqrt2}\begin{pmatrix}0&0\\1&0\end{pmatrix}.
+  \label{eq:lec19:t-pm-matrices}
+\end{equation}
+These are \emph{ladder} operators: acting on the lepton doublet
+$L_{Li}=(\nu_{Li},\ell_{Li})^T$ they raise/lower between its two entries,
+\begin{equation}
+  T^+L_{Li} = \frac{1}{\sqrt2}\begin{pmatrix}\ell_{Li}\\0\end{pmatrix},
+  \qquad
+  T^-L_{Li} = \frac{1}{\sqrt2}\begin{pmatrix}0\\\nu_{Li}\end{pmatrix}.
+  \label{eq:lec19:t-pm-action}
+\end{equation}
+Now extract the $W^+$ piece $igW^+_\mu T^+$ from the kinetic term
+$i\bar L_{Li}\gamma^\mu D_\mu L_{Li}$. The bra is the row vector
+$\bar L_{Li}=(\bar\nu_{Li},\bar\ell_{Li})$, so
+\begin{align}
+  \lagr \supset i\bar L_{Li}\gamma^\mu\bigl(igW^+_\mu T^+\bigr)L_{Li}
+  &= -g\,W^+_\mu\,\bar L_{Li}\gamma^\mu\,(T^+L_{Li})
+  \notag\\
+  &= -g\,W^+_\mu\,(\bar\nu_{Li},\bar\ell_{Li})\gamma^\mu
+     \frac{1}{\sqrt2}\begin{pmatrix}\ell_{Li}\\0\end{pmatrix}
+  \notag\\
+  &= -\frac{g}{\sqrt2}\,W^+_\mu\,\bar\nu_{Li}\gamma^\mu\ell_{Li}.
+  \label{eq:lec19:w-extraction}
+\end{align}
+The $1/\sqrt2$ is exactly the normalization of $T^\pm$, and the
+off-diagonal matrix structure is what forces the $W$ to turn a charged
+lepton into its \emph{partner} neutrino. Collecting this and its
+Hermitian conjugate:
+\begin{equation}
+  \boxed{
+    \lagr_W = -\frac{g}{\sqrt2}\,W^+_\mu\,\bar\nu_{Li}\,\gamma^\mu\,\ell_{Li}
+              + \mathrm{h.c.}
+  }
+  \label{eq:lec19:w-interaction}
+\end{equation}
+where $\ell_{Li}$ is the left-handed component of the $i$-th charged
+lepton and the sum over $i=e,\mu,\tau$ is understood. The h.c.\ term is
+$-\frac{g}{\sqrt2}W^-_\mu\bar\ell_{Li}\gamma^\mu\nu_{Li}$ (the $W^-$
+vertex). Because only the doublet $L_{Li}$ entered --- and the doublet
+contains only left-handed fields --- the current is purely chiral,
+$\bar\nu_{Li}\gamma^\mu\ell_{Li}=\bar\nu_i\gamma^\mu P_L\ell_i$.
+
+\textit{Significance:} The $W^+$ turns a left-handed charged lepton
+into a left-handed neutrino (of the \emph{same} generation). No
+right-handed fermion appears anywhere.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+  \begin{feynman}
+    \vertex (v) at (0,0);
+    \vertex (nu) at (-1.5,1.1) {$\nu_{Li}$};
+    \vertex (lep) at (-1.5,-1.1) {$\bar\ell_{Li}$};
+    \vertex (w) at (1.6,0) {$W^{+\mu}$};
+    \diagram*{
+      (nu) -- [fermion] (v) -- [anti fermion] (lep),
+      (v) -- [boson] (w),
+    };
+  \end{feynman}
+\end{tikzpicture}
+\caption{$W^+$ vertex coupling a left-handed neutrino $\nu_{Li}$ and
+  a left-handed anti-charged-lepton $\bar\ell_{Li}$ of the \emph{same}
+  generation. Vertex factor: $-i\frac{g}{\sqrt2}\gamma^\mu P_L$.}
+\label{fig:lec19:w-vertex}
+\end{figure}
+
+\clm[clm:lec19:w-properties]{Properties of the Charged Current}{
+\begin{enumerate}
+  \item \textbf{Only left-handed:} the coupling is $-\frac{g}{\sqrt2}
+        \bar\nu_{Li}\gamma^\mu\ell_{Li}$, containing only the
+        left-handed projections. The right-handed fields $e_{Ri}$
+        are $SU(2)_L$ singlets and have no $T^\pm$, so they never
+        appear at a $W$ vertex.
+  \item \textbf{Diagonal in flavor:} the $W$ connects $\nu_{Li}$ to
+        $\ell_{Li}$ with the \emph{same} generation index $i$.
+        A $W^+$ vertex with $\nu_\mu$ and $e^-$ (different generations)
+        does not exist.
+  \item \textbf{Universal:} the coupling $g/\sqrt2$ is identical for
+        all three generations.
+\end{enumerate}
+}
+
+\textit{Significance:} Although the $W$ coupling is diagonal, flavor-changing
+processes can still occur through a \emph{chain} of vertices. Muon decay
+$\mu^-\to e^-\bar\nu_e\nu_\mu$ is such a process (each individual vertex
+is diagonal), as we discuss next.
+
+\ex[ex:lec19:w-universality-test]{Experimental Test of W Universality}{
+The $W$ boson decays to $\ell^+\nu_\ell$ for each generation:
+\begin{align*}
+  \mathrm{BR}(W^+\to e^+\nu_e) &= (10.75\pm0.13)\%,\\
+  \mathrm{BR}(W^+\to\mu^+\nu_\mu) &= (10.57\pm0.15)\%,\\
+  \mathrm{BR}(W^+\to\tau^+\nu_\tau) &= (11.25\pm0.20)\%.
+\end{align*}
+These are equal within uncertainties, confirming universality.
+}
+
+%%==================================================================
+\subsection{Muon Decay and the Fermi Constant}\label{subsec:lec19:fermi}
+
+\subsubsection*{Physical Motivation}
+
+Muon decay $\mu^-\to e^-\bar\nu_e\nu_\mu$ proceeds via exchange of a
+virtual $W^-$ boson (see Fig.~\ref{fig:lec19:muon-decay}). At
+each vertex, the coupling is $-g/\sqrt2$ and the $W$ propagator
+carries momentum $q$ flowing through it.
+
+At energies $|q^2| \ll m_W^2$ (i.e., the muon rest-frame where
+$|q|\sim m_\mu \approx 106$ MeV $\ll m_W \approx 80$ GeV), the
+propagator simplifies dramatically:
+\begin{equation}
+  \frac{i}{q^2 - m_W^2} \approx \frac{-i}{m_W^2}
+  \label{eq:lec19:low-energy-propagator}
+\end{equation}
+The virtual $W$ effectively ``shrinks'' to a point, producing an
+effective four-fermion interaction.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+  \begin{feynman}
+    \vertex (mu) at (-2.0,0.9) {$\mu^-$};
+    \vertex (v1) at (-0.7,0.6);
+    \vertex (numu) at (-2.0,-0.6) {$\nu_\mu$};
+    \vertex (v2) at (0.7,-0.6);
+    \vertex (elec) at (2.0,0.6) {$e^-$};
+    \vertex (nue) at (2.0,-1.5) {$\bar\nu_e$};
+    \diagram*{
+      (mu) -- [fermion] (v1) -- [fermion] (numu),
+      (v1) -- [boson, edge label'=$W^-$] (v2),
+      (v2) -- [fermion] (elec),
+      (nue) -- [fermion] (v2),
+    };
+  \end{feynman}
+\end{tikzpicture}
+\hspace{1.2cm}
+\raisebox{0.3cm}{$\xrightarrow{\ |q^2|\ll m_W^2\ }$}
+\hspace{0.6cm}
+\begin{tikzpicture}
+  \begin{feynman}
+    \vertex (v) at (0,0);
+    \vertex (mu) at (-1.5,1.0) {$\mu^-$};
+    \vertex (numu) at (-1.5,-1.0) {$\nu_\mu$};
+    \vertex (elec) at (1.5,1.0) {$e^-$};
+    \vertex (nue) at (1.5,-1.0) {$\bar\nu_e$};
+    \diagram*{
+      (mu) -- [fermion] (v) -- [fermion] (numu),
+      (elec) -- [fermion] (v) -- [anti fermion] (nue),
+    };
+    \filldraw (v) circle (3pt);
+  \end{feynman}
+\end{tikzpicture}
+\caption{Muon decay via virtual $W^-$ (left). At low energies
+  $|q^2|\ll m_W^2$, the propagator collapses to a point (right),
+  giving an effective four-fermion (Fermi) interaction.}
+\label{fig:lec19:muon-decay}
+\end{figure}
+
+\dfn[dfn:lec19:gf]{Fermi Constant $G_F$}{
+Enrico Fermi parameterized the effective four-fermion coupling by $G_F$:
+\begin{equation}
+  \boxed{G_F \equiv \frac{g^2}{4\sqrt2\,m_W^2}}
+  \label{eq:lec19:gf-definition}
+\end{equation}
+where the $4\sqrt2$ comes from two factors of $1/\sqrt2$ at the $W$
+vertices (each vertex carries $g/\sqrt2$) and a convention that keeps
+$G_F$ positive. The mass dimension is $[G_F] = \text{mass}^{-2}$,
+reflecting the non-renormalizable nature of the four-fermion operator
+(dimension 6 in the Lagrangian).
+}
+
+\textit{Significance:} $G_F$ was measured from the muon lifetime in
+the 1930s--50s, decades before the $W$ boson was discovered. It
+encodes the electroweak breaking scale.
+
+Using $m_W^2 = g^2v^2/4$ (the $W$ mass formula from Lecture~18),
+\begin{equation}
+  G_F = \frac{g^2}{4\sqrt2}\cdot\frac{4}{g^2v^2} = \frac{1}{\sqrt2\,v^2}
+  \label{eq:lec19:gf-vev}
+\end{equation}
+and therefore:
+\begin{equation}
+  \boxed{v = \frac{1}{\left(\sqrt2\,G_F\right)^{1/2}} \approx 246\ \mathrm{GeV}}
+  \label{eq:lec19:vev-from-gf}
+\end{equation}
+The measured Fermi constant is:
+\begin{equation}
+  G_F = 1.1663787\times10^{-5}\ \mathrm{GeV}^{-2}.
+  \label{eq:lec19:gf-measured}
+\end{equation}
+
+\textit{Significance:} One number, the muon lifetime, fixes the Higgs
+vev $v\approx246$ GeV and thereby sets the scale of all electroweak
+masses.
+
+\ex[ex:lec19:vev-from-gf]{Worked Example: Deriving $v$ from $G_F$}{
+Given $G_F = 1.166\times10^{-5}\ \mathrm{GeV}^{-2}$:
+\begin{align*}
+  v^2 &= \frac{1}{\sqrt2\,G_F}
+       = \frac{1}{\sqrt2\times1.166\times10^{-5}\ \mathrm{GeV}^{-2}}
+       \approx 6.07\times10^4\ \mathrm{GeV}^2\\
+  v &\approx 246\ \mathrm{GeV}.
+\end{align*}
+From this, using $g\approx0.653$ (extracted from $\sin\theta_W$):
+\[
+  m_W = \frac{gv}{2} \approx \frac{0.653\times246}{2}\approx 80.2\ \mathrm{GeV}. \checkmark
+\]
+}
+
+\nt{Pitfall: $[G_F] = \text{mass}^{-2}$, which signals that the four-Fermi
+interaction has a dimension-6 operator in the Lagrangian. It is not
+renormalizable as a standalone theory; it is only valid as an effective
+theory for $|q^2|\ll m_W^2$.}
+
+\subsubsection*{Method: Matching to the Fermi Theory}
+\begin{enumerate}
+  \item Write the Feynman amplitude for $\mu^-\to e^-\bar\nu_e\nu_\mu$:
+        two $W$ vertices each with factor $-ig/\sqrt2$ and a $W$
+        propagator $\frac{i}{q^2-m_W^2}$ (ignoring Lorentz structure).
+  \item In the low-energy limit, replace $\frac{i}{q^2-m_W^2}\to\frac{-i}{m_W^2}$.
+  \item The amplitude is $\propto \frac{g^2}{m_W^2}$.
+  \item Compare to the Fermi theory where the amplitude is $\propto G_F$.
+  \item Identify $G_F = \frac{g^2}{4\sqrt2 m_W^2}$.
+\end{enumerate}
+
+%%==================================================================
+\subsection{Gauge Boson Self-Interactions}\label{subsec:lec19:self}
+
+\subsubsection*{Physical Motivation}
+
+In QED, photons do not interact with each other at tree level because
+$U(1)$ is Abelian and the photon has $Q=0$. In contrast, the
+$SU(2)_L$ gauge bosons $W^a_\mu$ carry $SU(2)$ charge --- they
+transform in the adjoint representation --- so they interact with
+each other. These self-interactions are not put in by hand; they
+follow automatically from the requirement of local $SU(2)_L$ gauge
+invariance.
+
+\subsubsection*{Conceptual Background: Origin of Self-Interactions}
+
+The $SU(2)_L$ field-strength tensor is
+\begin{equation}
+  W^a_{\mu\nu} = \partial_\mu W^a_\nu - \partial_\nu W^a_\mu
+                 - g\,\epsilon^{abc}\,W^b_\mu\,W^c_\nu,
+  \label{eq:lec19:w-field-strength}
+\end{equation}
+where $\epsilon^{abc}$ are the $SU(2)$ structure constants. The
+last term is cubic in $W$. When we form the kinetic Lagrangian
+$-\frac14 W^a_{\mu\nu}W^{a\mu\nu}$, squaring this expression gives:
+\begin{align}
+  -\frac14 W^a_{\mu\nu}W^{a\mu\nu}
+  &\supset
+  -g\,\epsilon^{abc}(\partial^\mu W^{a\nu})W^b_\mu W^c_\nu
+  \quad\text{(three-boson term)}
+  \notag\\
+  &\quad
+  - g^2\bigl(\epsilon^{abc}W^b_\mu W^c_\nu\bigr)^2
+  \quad\text{(four-boson term)}.
+  \label{eq:lec19:kinetic-expansion}
+\end{align}
+Rotating $W^1,W^2,W^3$ to the mass basis $W^\pm, Z, A$ produces the
+specific cubic and quartic vertices among the physical bosons.
+
+\subsubsection*{Three-Point Vertices}
+
+The cubic self-coupling always involves exactly two charged $W$ bosons
+and one neutral boson ($Z$ or $\gamma$):
+\begin{equation}
+  \boxed{
+    \lagr_{WWV}
+    \supset
+    ig\cos\theta_W
+    \bigl(W^+_{\mu\nu}W^{-\mu}Z^\nu - W^-_{\mu\nu}W^{+\mu}Z^\nu
+    + W^+_\mu W^-_\nu Z^{\mu\nu}\bigr)
+    + \bigl(\text{same with }Z\to A,\ g\cos\theta_W\to e\bigr)
+  }
+  \label{eq:lec19:wwv-three-point}
+\end{equation}
+where $W^\pm_{\mu\nu} = \partial_\mu W^\pm_\nu - \partial_\nu W^\pm_\mu$
+and $Z_{\mu\nu} = \partial_\mu Z_\nu - \partial_\nu Z_\mu$.
+
+The key point is the \emph{structure} of which particles participate,
+not the detailed momentum-dependent form of the vertex factor.
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+  \begin{feynman}
+    \vertex (v) at (0,0);
+    \vertex (a) at (-1.2,1.3) {$W^+$};
+    \vertex (b) at (-1.2,-1.3) {$W^-$};
+    \vertex (c) at (1.6,0) {$Z$ or $\gamma$};
+    \diagram*{
+      (a) -- [boson] (v),
+      (b) -- [boson] (v),
+      (v) -- [boson] (c),
+    };
+  \end{feynman}
+\end{tikzpicture}
+\caption{The only cubic gauge-boson vertex in the SM: $W^+W^-V$ with
+  $V\in\{Z,\gamma\}$. There is no $ZZZ$, $\gamma\gamma\gamma$,
+  $ZZ\gamma$, or $Z\gamma\gamma$ vertex.}
+\label{fig:lec19:three-point}
+\end{figure}
+
+\subsubsection*{Four-Point Vertices}
+
+Squaring the cubic term in $W^a_{\mu\nu}$ produces quartic vertices.
+In the mass basis the four-point gauge couplings are:
+\begin{equation}
+  \boxed{
+    W^+W^-ZZ,\quad W^+W^-\gamma\gamma,\quad W^+W^-W^+W^-,\quad W^+W^-Z\gamma
+  }
+  \label{eq:lec19:quartic-vertices}
+\end{equation}
+
+\begin{figure}[ht]
+\centering
+\begin{tikzpicture}
+  \begin{feynman}
+    \vertex (v) at (0,0);
+    \vertex (a) at (-1.0,1.0) {$W^+$};
+    \vertex (b) at (1.0,1.0) {$Z$};
+    \vertex (c) at (-1.0,-1.0) {$W^-$};
+    \vertex (d) at (1.0,-1.0) {$Z$};
+    \diagram*{
+      (a) -- [boson] (v), (b) -- [boson] (v),
+      (c) -- [boson] (v), (d) -- [boson] (v),
+    };
+  \end{feynman}
+\end{tikzpicture}
+\hspace{0.6cm}
+\begin{tikzpicture}
+  \begin{feynman}
+    \vertex (v) at (0,0);
+    \vertex (a) at (-1.0,1.0) {$W^+$};
+    \vertex (b) at (1.0,1.0) {$\gamma$};
+    \vertex (c) at (-1.0,-1.0) {$W^-$};
+    \vertex (d) at (1.0,-1.0) {$\gamma$};
+    \diagram*{
+      (a) -- [boson] (v), (b) -- [boson] (v),
+      (c) -- [boson] (v), (d) -- [boson] (v),
+    };
+  \end{feynman}
+\end{tikzpicture}
+\hspace{0.6cm}
+\begin{tikzpicture}
+  \begin{feynman}
+    \vertex (v) at (0,0);
+    \vertex (a) at (-1.0,1.0) {$W^+$};
+    \vertex (b) at (1.0,1.0) {$W^-$};
+    \vertex (c) at (-1.0,-1.0) {$W^+$};
+    \vertex (d) at (1.0,-1.0) {$W^-$};
+    \diagram*{
+      (a) -- [boson] (v), (b) -- [boson] (v),
+      (c) -- [boson] (v), (d) -- [boson] (v),
+    };
+  \end{feynman}
+\end{tikzpicture}
+\caption{Three of the four quartic gauge-boson vertices: $W^+W^-ZZ$
+  (left), $W^+W^-\gamma\gamma$ (centre), and $W^+W^-W^+W^-$ (right).
+  The fourth, $W^+W^-Z\gamma$, is not shown.}
+\label{fig:lec19:four-point}
+\end{figure}
+
+\clm[clm:lec19:absent-vertices]{Absent Gauge Vertices}{
+The following do \textbf{not} exist at tree level:
+\begin{itemize}
+  \item $\gamma\gamma\gamma,\ \gamma\gamma\gamma\gamma$: the photon is
+        neutral and $U(1)_{\rm EM}$ is Abelian.
+  \item $ZZZ,\ ZZZZ$: the $Z$ has no electromagnetic charge, and the
+        $SU(2)_L$ algebra does not generate an all-neutral cubic or
+        quartic vertex.
+  \item $ZZ\gamma,\ Z\gamma\gamma$: similarly forbidden.
+\end{itemize}
+In short: every cubic and quartic gauge vertex involves at least two
+charged $W$ bosons.
+}
+
+\nt{Pitfall --- ``weak'' coupling is not weak: the coupling constant
+$g$ of $SU(2)_L$ is \emph{larger} than the electromagnetic coupling $e$:
+\[
+  g = \frac{e}{\sin\theta_W}\approx\frac{e}{0.48}>e.
+\]
+The word ``weak'' refers to the short range of the interaction
+($r\sim1/m_W\approx2\times10^{-3}$ fm), not to the intrinsic coupling
+strength. The interaction is short-range because it is mediated by
+massive bosons, not because $g$ is small.}
+
+%%==================================================================
+\subsection{Parameter Counting in the LSM}\label{subsec:lec19:params}
+
+\subsubsection*{Conceptual Background}
+
+After writing the most general renormalizable Lagrangian consistent
+with the LSM symmetry and field content, a finite number of free
+parameters remain. These are not predicted by the theory; they must
+be measured. Once seven independent observables are measured, all
+other processes become predictions.
+
+\thm[thm:lec19:lsm-params]{Seven Independent Parameters of the LSM}{
+The Lepton Standard Model contains exactly
+\begin{equation}
+  \boxed{7\ \text{independent parameters.}}
+  \label{eq:lec19:seven-params}
+\end{equation}
+}
+
+\textit{Significance:} Seven measurements pin down the entire LSM.
+Every additional observable --- partial widths, branching ratios,
+scattering cross sections, mixing angles --- is then a prediction.
+
+Three equivalent choices of seven parameters are:
+\begin{align*}
+  \text{Set 1:}\quad &g,\; g',\; \lambda,\; v,\; y_e,\; y_\mu,\; y_\tau\\
+  \text{Set 2:}\quad &\alpha,\; G_F,\; m_e,\; m_\mu,\; m_\tau,\; m_Z,\; m_H\\
+  \text{Set 3:}\quad &m_W,\; m_Z,\; m_H,\; m_e,\; m_\mu,\; m_\tau,\; \alpha
+\end{align*}
+Set~2 happens to have the smallest combined experimental errors.
+The Higgs mass $m_H$ was the last of these to be measured, discovered
+at the LHC in 2012 with $m_H \approx 125$ GeV.
+
+%%==================================================================
+\subsection{Accidental Symmetries of the LSM}\label{subsec:lec19:accidental}
+
+\subsubsection*{Conceptual Background}
+
+An \emph{accidental symmetry} is a global symmetry of the renormalizable
+Lagrangian that was \emph{not} imposed as a defining principle. It
+arises because all operators that would break it have dimension
+greater than 4 and are therefore excluded by the renormalizability
+constraint.
+
+In the LSM, the most illuminating way to find accidental symmetries
+is to ask: \emph{what global symmetry would the Lagrangian have if
+we turned off the Yukawa couplings?}
+
+\subsubsection*{Symmetry Without Yukawa Couplings}
+
+The LSM has three left-handed doublets $L_{Li}$ and three right-handed
+singlets $E_{Ri}$ (with $i = 1,2,3$ labelling generations). The
+kinetic and gauge terms treat all three copies of each type identically:
+\begin{equation*}
+  \lagr_{\rm kin,lepton} = i\sum_i\bar L_{Li}\slashed D L_{Li}
+                          + i\sum_i\bar E_{Ri}\slashed D E_{Ri}.
+\end{equation*}
+This is invariant under \emph{independent} unitary rotations of the
+three left-handed doublets among themselves and the three right-handed
+singlets among themselves:
+\begin{equation}
+  \boxed{
+    \text{Accidental symmetry (no Yukawa)}:\quad
+    U(3)_L\times U(3)_R
+  }
+  \label{eq:lec19:u3xu3}
+\end{equation}
+Here $U(3)_L$ acts on $(L_{L1}, L_{L2}, L_{L3})^T$ as a triplet, and
+$U(3)_R$ acts on $(E_{R1}, E_{R2}, E_{R3})^T$ independently.
+
+\textit{Significance:} Without the Yukawa couplings there would be no
+distinction between the three lepton generations at all.
+
+\subsubsection*{Symmetry With Diagonal Yukawa Couplings}
+
+In the mass basis, the Yukawa coupling is
+$Y^e = \mathrm{diag}(y_e, y_\mu, y_\tau)$ with three distinct
+eigenvalues. The mass term
+\begin{equation*}
+  -m_\ell\,\bar\ell_L\ell_R - m_\ell\,\bar\ell_R\ell_L
+\end{equation*}
+mixes $\ell_L$ and $\ell_R$ and forbids independent left and right
+rotations. What survives is:
+\begin{equation}
+  \boxed{
+    U(3)_L\times U(3)_R
+    \xrightarrow{\ Y^e = \mathrm{diag}(y_e,y_\mu,y_\tau)\ }
+    U(1)_e\times U(1)_\mu\times U(1)_\tau
+  }
+  \label{eq:lec19:yukawa-breaking}
+\end{equation}
+The residual symmetry is three independent phase rotations, one for
+each Dirac mass eigenstate: $e_L,e_R$ rotate together with the same
+phase, and similarly for $\mu$ and $\tau$.
+
+\dfn[dfn:lec19:lepton-numbers]{Individual Lepton Numbers}{
+The three conserved charges of $U(1)_e\times U(1)_\mu\times U(1)_\tau$ are
+\begin{equation}
+  \boxed{
+    L_\ell = N_{\ell^-} - N_{\ell^+} + N_{\nu_\ell} - N_{\bar\nu_\ell},
+    \qquad \ell\in\{e,\mu,\tau\}.
+  }
+  \label{eq:lec19:lepton-numbers}
+\end{equation}
+Total lepton number $L = L_e + L_\mu + L_\tau$ is the diagonal
+combination and is also conserved.
+}
+
+\textit{Significance:} Individual lepton numbers are \emph{not} imposed
+as symmetries of the LSM; they emerge as accidental consequences of
+renormalizability.
+
+\subsubsection*{Breaking by Non-Renormalizable Operators}
+
+At dimension 5, one can write a gauge-invariant operator:
+\begin{equation}
+  \lagr_5 = \frac{c_{ij}}{\Lambda}
+             \bigl(L_{Li}\cdot\phi\bigr)\bigl(L_{Lj}\cdot\phi\bigr)
+             + \mathrm{h.c.}
+  \label{eq:lec19:dim5}
+\end{equation}
+where $\Lambda$ is a large new-physics scale and the dot is an $SU(2)$
+contraction. This operator violates $L$ and, after the Higgs acquires
+its vev, generates Majorana neutrino masses $\sim c_{ij}v^2/\Lambda$.
+The observation of neutrino oscillations in solar and atmospheric
+experiments confirms that lepton number is indeed broken at some scale.
+
+\subsubsection*{Approximate Nature of $U(3)_L\times U(3)_R$}
+
+Since the Yukawa couplings that break $U(3)_L\times U(3)_R$ are small:
+\begin{equation}
+  y_e = \frac{\sqrt2\,m_e}{v} \approx 2.9\times10^{-6},
+  \qquad
+  y_\mu \approx 6.1\times10^{-4},
+  \qquad
+  y_\tau \approx 1.0\times10^{-2},
+  \label{eq:lec19:yukawa-magnitudes}
+\end{equation}
+the large symmetry $U(3)_L\times U(3)_R$ is broken only at order
+$\sim y_\ell/g \ll 1$. It therefore remains a useful \emph{approximate
+symmetry} of the LSM, broken up to small corrections.
+
+%%==================================================================
+\subsection{The Full Standard Model}\label{subsec:lec19:fullsm}
+
+\subsubsection*{Physical Motivation}
+
+The Lepton Standard Model contains only leptons and the electroweak
+sector. The \textbf{Standard Model of Particle Physics} (SM) adds
+the strong force and the quarks. The electroweak sector is unchanged;
+the gauge group is extended by $SU(3)_C$ (color), and three
+generations of quarks are added with appropriate quantum numbers.
+
+\dfn[dfn:lec19:sm-group]{Standard Model Gauge Group}{
+\begin{equation}
+  \boxed{
+    G_{\rm SM} = SU(3)_C\times SU(2)_L\times U(1)_Y
+  }
+  \label{eq:lec19:sm-group}
+\end{equation}
+}
+
+\textit{Significance:} All known fundamental interactions except
+gravity are encoded in this single symmetry group plus the demand of
+local gauge invariance.
+
+\subsubsection*{Gauge Bosons}
+
+The number of gauge bosons equals the total number of generators:
+\begin{equation}
+  \dim G_{\rm SM} = \underbrace{8}_{SU(3)} + \underbrace{3}_{SU(2)}
+                  + \underbrace{1}_{U(1)} = 12.
+  \label{eq:lec19:sm-dim}
+\end{equation}
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}llll@{}}
+  \toprule
+  Bosons & Symbol & Representation & Coupling\\
+  \midrule
+  8 gluons & $G^a_\mu$, $a=1,\ldots,8$ & $SU(3)_C$ adjoint, singlets elsewhere & $g_s$\\
+  3 weak bosons & $W^a_\mu$, $a=1,2,3$ & $SU(2)_L$ adjoint, color singlet & $g$\\
+  1 hypercharge & $B_\mu$ & all singlets & $g'$\\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+After electroweak symmetry breaking, the 12 gauge bosons become:
+8 massless gluons, $W^+$, $W^-$, $Z$ (all massive), and the massless
+photon $A$.
+
+\subsubsection*{Matter Content}
+
+The SM contains five irreducible fermion representations per generation
+plus the Higgs scalar:
+
+\begin{center}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{@{}llcccl@{}}
+  \toprule
+  Field & Name & $SU(3)_C$ & $SU(2)_L$ & $U(1)_Y$ & Example ($i=1$)\\
+  \midrule
+  $Q_{Li}$ & LH quark doublet & $\mathbf3$ & $\mathbf2$ & $+\tfrac16$ & $(u_L,d_L)^T$\\
+  $u_{Ri}$ & RH up-type quark & $\mathbf3$ & $\mathbf1$ & $+\tfrac23$ & $u_R$\\
+  $d_{Ri}$ & RH down-type quark & $\mathbf3$ & $\mathbf1$ & $-\tfrac13$ & $d_R$\\
+  $L_{Li}$ & LH lepton doublet & $\mathbf1$ & $\mathbf2$ & $-\tfrac12$ & $(\nu_{eL},e_L)^T$\\
+  $E_{Ri}$ & RH charged lepton & $\mathbf1$ & $\mathbf1$ & $-1$ & $e_R$\\
+  \midrule
+  $\phi$ & Higgs doublet & $\mathbf1$ & $\mathbf2$ & $+\tfrac12$ & $(\phi^+,\phi^0)^T$\\
+  \bottomrule
+\end{tabular}
+\end{center}
+
+\textit{Significance:} Quarks are colored ($SU(3)_C$ triplets) while
+leptons are color singlets. Left-handed quarks and leptons are $SU(2)_L$
+doublets; right-handed fields are singlets. The Higgs is the same as
+in the LSM.
+
+\dfn[dfn:lec19:sm-ssb]{Standard Model SSB Pattern}{
+The Higgs vev $\langle\phi\rangle = (0,v/\sqrt2)^T$ breaks:
+\begin{equation}
+  \boxed{
+    SU(3)_C\times SU(2)_L\times U(1)_Y
+    \longrightarrow
+    SU(3)_C\times U(1)_{\rm EM}
+  }
+  \label{eq:lec19:sm-ssb}
+\end{equation}
+$SU(3)_C$ remains exact --- gluons remain massless. The electroweak
+part breaks just as in the LSM.
+}
+
+\subsubsection*{Field Strengths}
+
+\begin{align}
+  G^a_{\mu\nu} &= \partial_\mu G^a_\nu - \partial_\nu G^a_\mu
+                  - g_s f^{abc} G^b_\mu G^c_\nu,
+                  \quad a=1,\ldots,8
+  \label{eq:lec19:gluon-fs}\\
+  W^a_{\mu\nu} &= \partial_\mu W^a_\nu - \partial_\nu W^a_\mu
+                  - g\,\epsilon^{abc}\,W^b_\mu W^c_\nu,
+                  \quad a=1,2,3
+  \label{eq:lec19:w-fs}\\
+  B_{\mu\nu} &= \partial_\mu B_\nu - \partial_\nu B_\mu
+  \label{eq:lec19:b-fs}
+\end{align}
+
+The non-linear terms in $G^a_{\mu\nu}$ and $W^a_{\mu\nu}$ give rise
+to gluon and $W$ self-interactions respectively; $B_{\mu\nu}$ is
+linear (Abelian) and carries no self-coupling.
+
+\subsubsection*{Lagrangian Structure}
+
+\begin{align}
+  \lagr_{\rm SM}
+  &= -\tfrac14 G^a_{\mu\nu}G^{a\mu\nu}
+     -\tfrac14 W^a_{\mu\nu}W^{a\mu\nu}
+     -\tfrac14 B_{\mu\nu}B^{\mu\nu}
+  \tag{gauge kinetic}\\
+  &\quad + i\bar Q_{Li}\slashed D Q_{Li}
+          + i\bar u_{Ri}\slashed D u_{Ri}
+          + i\bar d_{Ri}\slashed D d_{Ri}
+          + i\bar L_{Li}\slashed D L_{Li}
+          + i\bar E_{Ri}\slashed D E_{Ri}
+  \tag{fermion kinetic}\\
+  &\quad - Y^u_{ij}\bar Q_{Li}\tilde\phi\,u_{Rj}
+          - Y^d_{ij}\bar Q_{Li}\phi\,d_{Rj}
+          - Y^e_{ij}\bar L_{Li}\phi\,E_{Rj}
+          + \mathrm{h.c.}
+  \tag{Yukawa}\\
+  &\quad + |D_\mu\phi|^2 - \mu^2\phi^\dagger\phi - \lambda(\phi^\dagger\phi)^2
+  \tag{Higgs}
+\end{align}
+where $\tilde\phi = i\sigma^2\phi^*$ is the charge-conjugate doublet,
+needed to give masses to up-type quarks.
+
+\textit{Significance:} This is the full Standard Model Lagrangian.
+It is fixed by the gauge group $G_{\rm SM}$, the field content, and
+the demand of renormalizability. Everything else --- masses, mixing
+angles, decay rates, cross sections --- is a prediction.
+
+\ex[ex:lec19:gauge-invariance-check]{Worked Example: Gauge Invariance of $\bar Q_L\phi\,d_R$}{
+The down-type Yukawa coupling $\bar Q_{Li}\phi\,d_{Rj}$ must be a singlet
+under $G_{\rm SM}$. Checking each factor:
+\begin{itemize}
+  \item $SU(3)_C$: $\bar Q_L\sim\bar{\mathbf3}$, $d_R\sim\mathbf3$,
+        $\phi\sim\mathbf1$. Product $\bar{\mathbf3}\otimes\mathbf3\otimes\mathbf1
+        \supset\mathbf1$. \checkmark
+  \item $SU(2)_L$: $\bar Q_L\sim\bar{\mathbf2}$, $d_R\sim\mathbf1$,
+        $\phi\sim\mathbf2$. Product $\bar{\mathbf2}\otimes\mathbf2\otimes\mathbf1
+        \supset\mathbf1$. \checkmark
+  \item $U(1)_Y$: $Y(\bar Q_L) = -\tfrac16$, $Y(d_R) = -\tfrac13$,
+        $Y(\phi) = +\tfrac12$. Sum $= 0$. \checkmark
+\end{itemize}
+}
+
+%%------------------------------------------------------------------
+\subsection*{To Remember}
+
+\begin{itemize}
+  \item \textbf{QED in LSM:} $\lagr_{\QED} = eA_\mu\sum_i\bar\ell_i\gamma^\mu\ell_i$;
+        vector-like, diagonal, universal (vertex $+ie\gamma^\mu$ for $Q=-1$).
+  \item \textbf{$Z$ coupling:} $g_{Zf} = \frac{g}{\cos\theta_W}(T^3_f - \sin^2\theta_W Q_f)$;
+        different for L/R, diagonal, universal within each chirality sector;
+        couples to neutrinos. No FCNC at tree level.
+  \item \textbf{$Z$ boson measurement:} $N_\nu = 2.984\pm0.008\approx3$.
+  \item \textbf{$W$ coupling:} $\lagr_W = -\frac{g}{\sqrt2}W^+_\mu\bar\nu_{Li}
+        \gamma^\mu\ell_{Li} + \mathrm{h.c.}$; only left-handed, diagonal, universal.
+  \item \textbf{Fermi constant:} $G_F = \frac{g^2}{4\sqrt2 m_W^2} = \frac{1}{\sqrt2 v^2}
+        \approx 1.166\times10^{-5}\ \mathrm{GeV}^{-2}$; gives $v\approx246\ \mathrm{GeV}$.
+  \item \textbf{Gauge self-interactions:} cubic $W^+W^-\gamma$ and $W^+W^-Z$;
+        quartic $W^+W^-ZZ$, $W^+W^-\gamma\gamma$, $W^+W^-W^+W^-$, $W^+W^-Z\gamma$.
+        No photon-only or $Z$-only vertices.
+  \item \textbf{Weak coupling:} $g > e$ (``weak'' refers to short range, not small
+        coupling).
+  \item \textbf{LSM parameters:} 7 independent; a convenient set is
+        $(\alpha, G_F, m_e, m_\mu, m_\tau, m_Z, m_H)$.
+  \item \textbf{LSM accidental symmetries:} $U(3)_L\times U(3)_R$ without
+        Yukawa; broken to $U(1)_e\times U(1)_\mu\times U(1)_\tau$ by the
+        Yukawa. Total $L$ and individual $L_\ell$ are conserved at
+        renormalizable level.
+  \item \textbf{Full SM:} $G_{\rm SM} = SU(3)_C\times SU(2)_L\times U(1)_Y$
+        with 12 gauge bosons (8 gluons, 3 $W$'s, 1 $B$) and 3 couplings.
+        SSB: $\to SU(3)_C\times U(1)_{\rm EM}$.
+\end{itemize}
+
+%%------------------------------------------------------------------
+\begin{furtherreading}
+\subsection*{Further Reading}
+
+\begin{itemize}
+  \item D.\,J. Griffiths, \textit{Introduction to Elementary Particles} (2nd ed.):
+        Ch.~9 (Weak Interactions) and Ch.~10 (Gauge Theories). Introductory
+        discussion of $W$ and $Z$ couplings, muon decay, and the Fermi constant.
+  \item F. Halzen \& A.\,D. Martin, \textit{Quarks and Leptons}: Ch.~12--15.
+        Covers neutral and charged current processes with experimental context and
+        the Weinberg--Salam model.
+  \item M.\,E. Peskin \& D.\,V. Schroeder, \textit{An Introduction to Quantum
+        Field Theory}: \S20.2--20.3. Standard graduate-level treatment of the
+        electroweak Lagrangian, fermion couplings, and the Fermi theory.
+  \item Y. Grossman \& Y. Nir, \textit{The Standard Model: From Fundamental Physics
+        to Experimental Probes}: Ch.~7--8 (\textit{The Leptonic Standard Model}).
+        Closely follows the notation and pedagogy of this course.
+  \item D. Tong, \textit{Lectures on Particle Physics} (Cambridge, 2020):
+        electroweak section. Freely available at
+        \url{https://www.damtp.cam.ac.uk/user/tong/particle.html}.
+  \item Particle Data Group, \textit{Review of Particle Physics} (2024):
+        for measured $G_F$, $m_W$, $m_Z$, $N_\nu$, and branching fractions.
+        \url{https://pdg.lbl.gov/}
+\end{itemize}
+\end{furtherreading}

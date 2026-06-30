@@ -1,0 +1,477 @@
+%% Lecture 23 -- Energy-Momentum Tensor of the Electromagnetic Field
+\section{Lecture 23 -- Energy-Momentum Tensor of the Electromagnetic Field}\label{sec:lec23}
+
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 23/06/2026 & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+
+\subsection*{Overview}
+
+Lecture~22 built the \emph{canonical} energy-momentum tensor $T^\nu{}_\mu$ for a general
+classical field theory and showed that its four-divergence vanishes. This lecture turns
+that abstract object into physics. We first show \emph{in what sense} the conserved
+charges $P^\mu=\tfrac1c\int d^3x\,T^{0\mu}$ are actually conserved, and choose their
+normalization so that $P^\mu$ is a genuine energy-momentum four-vector. A long physical
+digression argues why a massless field such as light nonetheless carries momentum.
+
+We then specialize to the electromagnetic field. Starting from the free-field Lagrangian
+$\mathcal L=-\tfrac{1}{16\pi}F_{\mu\nu}F^{\mu\nu}$ we re-derive the source-free Maxwell
+equations directly from the field Euler--Lagrange equation, build the canonical EM
+tensor, and then \emph{improve} it by adding a divergence-free piece so that the result
+is both \textbf{symmetric} and \textbf{gauge invariant}. Reading off its components
+recovers two familiar objects: $T^{00}=\tfrac{1}{8\pi}(E^2+B^2)$ is the field energy
+density, and $T^{0i}=\tfrac1c(\bE\times\bB)\cdot\tfrac{c}{4\pi}=\tfrac1c S_i$ reproduces
+the Poynting vector, with the conservation law $\partial_\mu T^{\mu0}=0$ being exactly
+Poynting's theorem.
+
+% ==============================================================================
+\subsection{Conserved Charges from a Continuity Equation}
+\label{subsec:lec23:charges}
+% ==============================================================================
+
+\subsubsection*{Conceptual Background}
+The canonical tensor obeys the local conservation law derived last time,
+\begin{equation}\label{eq:lec23:continuity}
+  \partial_\nu T^{\nu}{}_{\mu}=0 ,
+\end{equation}
+which is \emph{four} continuity equations, one for each value of the free index $\mu$.
+The pattern is identical to the charge continuity equation $\partial_t\rho+\divg\bvec J=0$
+you already know: \emph{wherever there is a continuity equation, there is a conserved
+charge.} For charge, that conserved quantity is $Q=\int d^3x\,\rho$; here we get four of
+them.
+
+\dfn[def:lec23:Pmu]{Conserved Four-Momentum of a Field}{
+Define, for each $\mu$,
+\begin{equation}\label{eq:lec23:Pmu-def}
+  P^{\mu}=\text{const}\times\int_V d^3x\;T^{0\mu},
+\end{equation}
+where the spatial integral runs over a (eventually infinite) volume $V$. The label
+$\mu=0$ will be the energy and $\mu=i$ the three momentum components.
+}
+
+\subsubsection*{Derivation: in what sense is $P^\mu$ conserved?}
+Because we integrated over space, $P^\mu=P^\mu(t)$ depends only on time. Differentiate and
+push the derivative inside the integral (the spatial points are integration variables):
+\begin{equation}\label{eq:lec23:dPdt-1}
+  \ddt P^\mu=\text{const}\times\int_V d^3x\;\partial_t\,T^{0\mu}
+           =\text{const}\,c\int_V d^3x\;\partial_0 T^{0\mu},
+\end{equation}
+using $\partial_0=\tfrac1c\partial_t$. Now invoke the continuity equation
+\eqref{eq:lec23:continuity}. Splitting the divergence into its time and space parts,
+\begin{equation}\label{eq:lec23:split}
+  0=\partial_\nu T^{\nu\mu}=\partial_0 T^{0\mu}+\partial_i T^{i\mu}
+  \quad\Longrightarrow\quad
+  \partial_0 T^{0\mu}=-\partial_i T^{i\mu}.
+\end{equation}
+Substituting,
+\begin{equation}\label{eq:lec23:dPdt-2}
+  \ddt P^\mu=-\,\text{const}\,c\int_V d^3x\;\partial_i T^{i\mu}.
+\end{equation}
+For each fixed $\mu$, the object $T^{i\mu}$ (a vector in the spatial index $i$) has a
+volume integral of a divergence. By Gauss's theorem this becomes a surface flux,
+\begin{equation}\label{eq:lec23:gauss}
+  \int_V d^3x\;\partial_i T^{i\mu}
+  =\oint_{\partial V} T^{i\mu}\,\hat n_i\,d\sigma .
+\end{equation}
+\begin{equation}\label{eq:lec23:conservation}
+  \boxed{\;\ddt P^\mu=-\,\text{const}\,c\oint_{\partial V} T^{i\mu}\,\hat n_i\,d\sigma .\;}
+\end{equation}
+\textit{Significance:} $P^\mu$ is \emph{not} automatically constant. Its change equals the
+flux of $T^{i\mu}$ through the boundary. If the volume is taken large enough that nothing
+escapes through the surface (fields decay, or we reach true vacuum), the flux vanishes and
+$P^\mu=\text{const}$.
+
+\nt{Pitfall: ``conserved'' in field theory means a continuity equation, not that the
+charge in any finite box is fixed. Energy genuinely \emph{leaves} a finite region as a
+radiated wave; only when the surface is pushed to where no flux survives is $P^\mu$
+strictly constant. A driven system (someone shaking a charge) keeps pumping energy out to
+infinity, and then even the all-space energy is not conserved -- because work is being done
+on it.}
+
+\subsubsection*{Fixing the constant}
+A conserved quantity stays conserved if multiplied by any constant, so the normalization in
+\eqref{eq:lec23:Pmu-def} is free. We fix it by demanding consistency with the relativistic
+four-momentum, whose time component is energy over $c$,
+\begin{equation}\label{eq:lec23:fourmomentum}
+  P^\mu=\qty(\frac{E}{c},\,\bvec p).
+\end{equation}
+Since $T^{00}$ already has units of energy density (shown below), the choice
+\begin{equation}\label{eq:lec23:const-choice}
+  \boxed{\;P^\mu=\frac1c\int_V d^3x\;T^{0\mu}\;}
+\end{equation}
+makes $P^0=\tfrac1c\int u\,d^3x=E/c$ exactly, and $P^i$ the field momentum.
+\textit{Significance:} This is the field-theoretic analogue of the mechanics rule that
+energy and momentum follow from time- and space-translation symmetry; the factor $1/c$ is
+pure convention, chosen so the four numbers assemble into a Lorentz four-vector.
+
+% ==============================================================================
+\subsection{Does Light Carry Momentum?}
+\label{subsec:lec23:light-momentum}
+% ==============================================================================
+
+\subsubsection*{Physical Motivation}
+A student objected: momentum ``is'' $m\bvec v$, so how can light -- which has no mass --
+carry momentum? The resolution reframes what momentum \emph{is}. We do not define momentum
+through the formula $m\bvec v$; we define it as \textbf{the conserved quantity associated
+with spatial-translation symmetry} (Noether). Energy goes with time translations, angular
+momentum with rotations, momentum with spatial translations. The formula $m\bvec v$ is
+merely what that conserved quantity \emph{happens to equal} for a massive particle. For a
+field the formula is different, but the conserved quantity still exists.
+
+\begin{remark}
+Physically, if light carried no momentum it could exert no force, and a beam striking a
+plate would push on nothing. Experiment says otherwise: \textbf{radiation pressure} is
+real. It was measured at the turn of the 20th century (Lebedev, and Nichols \& Hull); the
+effect is tiny and was hard to detect with period instruments. Blackbody radiation
+likewise exerts a pressure -- a fact you have already used in thermodynamics. So light's
+momentum is an experimental fact; the theoretical task is only to find its formula, which
+is precisely $P^i=\tfrac1c\int d^3x\,T^{0i}$.
+\end{remark}
+
+\begin{remark}[Maxwell as the photon's wave equation]
+There is no Newtonian stage for light. A massive particle has Newton's law (classical) and
+then Schr\"odinger/Dirac (quantum, a wave equation). Light skips the Newtonian stage
+entirely -- being massless, it has no $m\ddot{\bvec x}=\bvec F$ -- and starts directly at a
+wave equation. Maxwell's equations \emph{are} the wave equation, i.e. the analogue of the
+photon's Schr\"odinger equation. The geometric-optics limit (ray tracing) is the closest
+thing light has to ``particle mechanics,'' obtained as the short-wavelength limit of the
+wave theory.
+\end{remark}
+
+% ==============================================================================
+\subsection{The Free Electromagnetic Lagrangian}
+\label{subsec:lec23:em-lagrangian}
+% ==============================================================================
+
+\subsubsection*{Mathematical Setup}
+We now specialize the general machinery to the electromagnetic field, whose dynamical
+variables are the four potentials $A_\nu$. The Lagrangian density is
+\begin{equation}\label{eq:lec23:em-L}
+  \boxed{\;\mathcal L=-\frac{1}{16\pi}F_{\mu\nu}F^{\mu\nu}
+          -\frac{1}{c^2}J_\mu A^\mu .\;}
+\end{equation}
+The first term is the pure field; the second couples it to a source $J^\mu$. \emph{Because
+the energy-momentum tensor is conserved only when $\mathcal L$ has no explicit
+$x$-dependence}, and $J^\mu(x)$ depends explicitly on position (e.g.
+$J^\mu\sim e\,v^\mu\,\delta^3(\bvec x-\bvec x_{\text{particle}}(t))$), we drop the source
+term for now and study the free field:
+\begin{equation}\label{eq:lec23:em-L-free}
+  \mathcal L_{\text{free}}=-\frac{1}{16\pi}F_{\mu\nu}F^{\mu\nu}.
+\end{equation}
+\textit{Significance:} The free-field $T^{\mu\nu}$ will be conserved; once charges are
+restored (next lecture) the field tensor alone is \emph{not} conserved -- some
+energy-momentum is transferred to the particles -- and only the \emph{total}
+(field $+$ matter) is conserved.
+
+% ==============================================================================
+\subsection{Maxwell's Equations from Euler--Lagrange}
+\label{subsec:lec23:maxwell-from-EL}
+% ==============================================================================
+
+\subsubsection*{Derivation}
+We need the canonical momentum conjugate to $A_\nu$, i.e.
+$\partial\mathcal L/\partial(\partial_\mu A_\nu)$. Write
+$F_{\alpha\beta}=\partial_\alpha A_\beta-\partial_\beta A_\alpha$. Since the Lagrangian is
+quadratic, differentiating $F_{\alpha\beta}F^{\alpha\beta}$ produces a factor of $2$ from
+the two identical $F$'s:
+\begin{equation}\label{eq:lec23:dL-step1}
+  \pdv{\mathcal L}{(\partial_\mu A_\nu)}
+  =-\frac{1}{16\pi}\cdot 2\,F^{\alpha\beta}\,
+   \pdv{F_{\alpha\beta}}{(\partial_\mu A_\nu)} .
+\end{equation}
+Now
+$\pdv{F_{\alpha\beta}}{(\partial_\mu A_\nu)}
+ =\delta^\mu_\alpha\delta^\nu_\beta-\delta^\mu_\beta\delta^\nu_\alpha$,
+and contracting with the antisymmetric $F^{\alpha\beta}$ doubles up again:
+\begin{equation}\label{eq:lec23:dL-step2}
+  F^{\alpha\beta}\qty(\delta^\mu_\alpha\delta^\nu_\beta-\delta^\mu_\beta\delta^\nu_\alpha)
+  =F^{\mu\nu}-F^{\nu\mu}=2F^{\mu\nu}.
+\end{equation}
+Therefore
+\begin{equation}\label{eq:lec23:conjugate-momentum}
+  \boxed{\;\pdv{\mathcal L}{(\partial_\mu A_\nu)}=-\frac{1}{4\pi}F^{\mu\nu}.\;}
+\end{equation}
+\textit{Significance:} The momentum conjugate to the potential is (up to $-1/4\pi$) the
+field-strength tensor itself.
+
+The free field has no $A_\nu$-dependence (only $\partial A$), so
+$\partial\mathcal L_{\text{free}}/\partial A_\nu=0$, while keeping the source for a moment
+gives $\partial\mathcal L/\partial A_\nu=-\tfrac1c J^\nu$. The field Euler--Lagrange
+equation $\partial_\mu\big[\partial\mathcal L/\partial(\partial_\mu A_\nu)\big]
+=\partial\mathcal L/\partial A_\nu$ then reads
+\begin{equation}\label{eq:lec23:maxwell}
+  -\frac{1}{4\pi}\partial_\mu F^{\mu\nu}=-\frac1c J^\nu
+  \quad\Longrightarrow\quad
+  \boxed{\;\partial_\mu F^{\mu\nu}=\frac{4\pi}{c}J^\nu .\;}
+\end{equation}
+\textit{Significance:} These are the two \emph{inhomogeneous} Maxwell equations (Gauss's law
+and Amp\`ere--Maxwell) in covariant form; the homogeneous pair is the Bianchi identity
+$\partial_{[\lambda}F_{\mu\nu]}=0$, automatic once $F=dA$. In the free case the right side
+vanishes: $\partial_\mu F^{\mu\nu}=0$.
+
+\nt{Pitfall: the two terms inside $F_{\alpha\beta}F^{\alpha\beta}$ are \emph{not}
+independent variables -- both depend on the same $\partial_\mu A_\nu$, which is why each
+contraction supplies a factor of $2$ (total $4$, cancelling the $16\pi$ down to $4\pi$).
+Forgetting one of those factors is the classic way to get $-1/8\pi$ or $-1/16\pi$ here
+instead of $-1/4\pi$.}
+
+% ==============================================================================
+\subsection{The Canonical EM Tensor and Its Defects}
+\label{subsec:lec23:canonical-em}
+% ==============================================================================
+
+\subsubsection*{Mathematical Setup}
+Insert the EM data into the canonical tensor
+$T^\mu{}_\nu=\pdv{\mathcal L}{(\partial_\mu A_\alpha)}\,\partial_\nu A_\alpha
+            -\delta^\mu_\nu\mathcal L$
+(now with the internal index $\alpha$ summed over the four potentials $A_\alpha$, exactly as
+several generalized coordinates are summed in the mechanical energy function). Using
+\eqref{eq:lec23:conjugate-momentum} and \eqref{eq:lec23:em-L-free},
+\begin{equation}\label{eq:lec23:canonical-em}
+  \boxed{\;
+  T^{\mu}{}_{\nu}^{\,\text{(can)}}
+  =-\frac{1}{4\pi}F^{\mu\alpha}\,\partial_\nu A_\alpha
+   +\frac{1}{16\pi}\,\delta^\mu_\nu\,F_{\alpha\beta}F^{\alpha\beta}.\;}
+\end{equation}
+\textit{Significance:} This is conserved, $\partial_\mu T^\mu{}_\nu^{\text{(can)}}=0$, but it
+has \textbf{two flaws}: it is \emph{not symmetric} in $\mu\nu$, and it is \emph{not gauge
+invariant} (it contains the bare $\partial_\nu A_\alpha$, not just $F$). A non-symmetric
+$T^{\mu\nu}$ also fails to give a well-defined, conserved angular momentum.
+
+% ==============================================================================
+\subsection{Improving the Tensor: Symmetric and Gauge-Invariant Form}
+\label{subsec:lec23:symmetrization}
+% ==============================================================================
+
+\subsubsection*{Conceptual Background}
+The energy-momentum tensor is \emph{not unique}: just as the zero of energy is arbitrary,
+we may add to $T^{\mu\nu}$ any piece that does not spoil the continuity equation. The
+canonical form is one representative; we exploit this freedom to reach a nicer one.
+
+\clm[clm:lec23:freedom]{Improvement Freedom}{
+One may add to the canonical tensor a term that is identically divergence-free, leaving all
+conservation laws (continuity equations) intact. For the free EM field a convenient choice
+is
+\begin{equation}\label{eq:lec23:added-term}
+  \Delta T^{\mu}{}_{\nu}=\frac{1}{4\pi}F^{\mu\rho}\,\partial_\rho A_\nu .
+\end{equation}
+}
+
+\subsubsection*{Derivation that the added term is conserved}
+Take its divergence and split using the product rule:
+\begin{equation}\label{eq:lec23:added-divergence}
+  \partial_\mu\Delta T^{\mu}{}_{\nu}
+  =\frac{1}{4\pi}\underbrace{(\partial_\mu F^{\mu\rho})}_{=0}\,\partial_\rho A_\nu
+   +\frac{1}{4\pi}F^{\mu\rho}\,\underbrace{\partial_\mu\partial_\rho A_\nu}_{\text{symmetric in }\mu\rho}.
+\end{equation}
+The first term vanishes by the source-free Maxwell equation $\partial_\mu F^{\mu\rho}=0$.
+The second vanishes because $\partial_\mu\partial_\rho A_\nu$ is \emph{symmetric} in
+$\mu\rho$ while $F^{\mu\rho}$ is \emph{antisymmetric}, and the full contraction of a
+symmetric with an antisymmetric tensor is zero. Hence
+\begin{equation}\label{eq:lec23:added-conserved}
+  \partial_\mu\Delta T^{\mu}{}_{\nu}=0,
+\end{equation}
+so adding it preserves $\partial_\mu T^\mu{}_\nu=0$.
+\textit{Significance:} This is precisely the freedom that lets us trade the ugly canonical
+tensor for a symmetric, gauge-invariant one without changing a single conserved charge.
+
+\subsubsection*{Assembling the symmetric tensor}
+Add \eqref{eq:lec23:added-term} to \eqref{eq:lec23:canonical-em}. The two $F^{\mu\rho}$
+pieces combine into the field-strength combination
+$\partial_\nu A_\rho-\partial_\rho A_\nu=F_{\nu\rho}$:
+\begin{align}
+  -\frac{1}{4\pi}F^{\mu\rho}\partial_\nu A_\rho
+  +\frac{1}{4\pi}F^{\mu\rho}\partial_\rho A_\nu
+  &=-\frac{1}{4\pi}F^{\mu\rho}\qty(\partial_\nu A_\rho-\partial_\rho A_\nu)\notag\\
+  &=-\frac{1}{4\pi}F^{\mu\rho}F_{\nu\rho}.
+  \label{eq:lec23:combine}
+\end{align}
+Raising the lower index with $\eta^{\nu\lambda}$ gives the final, manifestly symmetric and
+gauge-invariant tensor:
+\begin{equation}\label{eq:lec23:symmetric-T}
+  \boxed{\;
+  \emtensor
+  =-\frac{1}{4\pi}\,F^{\mu\rho}\,F^{\nu}{}_{\rho}
+   +\frac{1}{16\pi}\,\eta^{\mu\nu}\,F_{\alpha\beta}F^{\alpha\beta}.\;}
+\end{equation}
+\textit{Significance:} This is \emph{the} symmetric stress-energy tensor of the
+electromagnetic field. Both properties are now manifest:
+\begin{itemize}
+  \item \textbf{Symmetric}: swapping $\mu\leftrightarrow\nu$ in
+        $F^{\mu\rho}F^{\nu}{}_{\rho}$ just relabels two ordinary numbers being multiplied,
+        and $\eta^{\mu\nu}$ is symmetric.
+  \item \textbf{Gauge invariant}: it is built only from $F$, which is invariant under
+        $A_\mu\to A_\mu+\partial_\mu\Lambda$; the bare $A$ has dropped out.
+\end{itemize}
+
+\nt{The canonical tensor came ``for free'' from Noether's theorem but is generally neither
+symmetric nor gauge invariant; the improvement (Belinfante--Rosenfeld) procedure always
+supplies enough freedom to symmetrize it. For gravity this symmetric tensor is the correct
+source of the field equations, which is another reason it is the physical one.}
+
+% ==============================================================================
+\subsection{Components and Physical Meaning}
+\label{subsec:lec23:components}
+% ==============================================================================
+
+\subsubsection*{The field-strength matrix}
+To read off components we need $F$ explicitly. With $A^\mu=(\phi,\bvec A)$ and metric
+$\eta=\mathrm{diag}(+,-,-,-)$, the lower-index field-strength tensor is
+\begin{equation}\label{eq:lec23:F-matrix}
+  F_{\mu\nu}=
+  \begin{pmatrix}
+    0 & E_x & E_y & E_z\\
+    -E_x & 0 & -B_z & B_y\\
+    -E_y & B_z & 0 & -B_x\\
+    -E_z & -B_y & B_x & 0
+  \end{pmatrix},
+\end{equation}
+so that the purely spatial block is compactly
+\begin{equation}\label{eq:lec23:Fij}
+  F_{ij}=-\epsilon_{ijk}B_k,\qquad F_{0i}=E_i .
+\end{equation}
+\textit{Quick check:} $F_{12}=-\epsilon_{123}B_3=-B_z$, matching the matrix. Raising both
+indices flips the sign of mixed time-space components: $F^{0i}=-E_i$, while spatial-spatial
+components are unchanged, $F^{ij}=-\epsilon_{ijk}B_k$. We will also use the Lorentz
+invariant
+\begin{equation}\label{eq:lec23:F2-invariant}
+  F_{\alpha\beta}F^{\alpha\beta}=2\,(B^2-E^2).
+\end{equation}
+
+\dfn[def:lec23:T00]{Energy Density $T^{00}$}{
+\begin{equation}\label{eq:lec23:T00-result}
+  T^{00}=\frac{1}{8\pi}\qty(E^2+B^2).
+\end{equation}
+}
+
+\subsubsection*{Derivation of $T^{00}$}
+Set $\mu=\nu=0$ in \eqref{eq:lec23:symmetric-T}. The first term:
+\begin{equation}\label{eq:lec23:T00-step1}
+  -\frac{1}{4\pi}F^{0\rho}F^{0}{}_{\rho}
+  =-\frac{1}{4\pi}F^{0j}F^{0}{}_{j},
+\end{equation}
+since $F^{00}=0$. With $F^{0j}=-E_j$ and $F^{0}{}_{j}=\eta_{jk}F^{0k}=-F^{0j}=E_j$,
+\begin{equation}\label{eq:lec23:T00-step2}
+  F^{0j}F^{0}{}_{j}=(-E_j)(E_j)=-E^2
+  \;\Rightarrow\;
+  -\frac{1}{4\pi}(-E^2)=\frac{E^2}{4\pi}.
+\end{equation}
+The second term, with $\eta^{00}=1$ and \eqref{eq:lec23:F2-invariant}, is
+$\tfrac{1}{16\pi}\cdot 2(B^2-E^2)=\tfrac{1}{8\pi}(B^2-E^2)$. Adding,
+\begin{equation}\label{eq:lec23:T00-final}
+  T^{00}=\frac{E^2}{4\pi}+\frac{B^2-E^2}{8\pi}
+        =\frac{2E^2+B^2-E^2}{8\pi}
+        =\boxed{\frac{E^2+B^2}{8\pi}.}
+\end{equation}
+\textit{Significance:} Exactly the electromagnetic energy density $u$ you met in
+electrostatics and magnetostatics -- now derived as the $00$-component of a Lorentz tensor.
+
+\dfn[def:lec23:T0i]{Energy Flux / Momentum Density $T^{0i}$}{
+\begin{equation}\label{eq:lec23:T0i-result}
+  T^{0i}=\frac{1}{4\pi}\,(\bE\times\bB)_i=\frac{1}{c}\,S_i,
+  \qquad \bvec S=\frac{c}{4\pi}\,\bE\times\bB .
+\end{equation}
+}
+
+\subsubsection*{Derivation of $T^{0i}$}
+Set $\mu=0,\nu=i$. The metric term drops because $\eta^{0i}=0$, leaving
+\begin{equation}\label{eq:lec23:T0i-step1}
+  T^{0i}=-\frac{1}{4\pi}F^{0\rho}F^{i}{}_{\rho}
+        =-\frac{1}{4\pi}F^{0j}F^{i}{}_{j},
+\end{equation}
+($\rho=0$ gives $F^{00}=0$). Lower the spatial index:
+$F^{i}{}_{j}=\eta_{jk}F^{ik}=-F^{ij}=\epsilon_{ijk}B_k$, and $F^{0j}=-E_j$. Then
+\begin{equation}\label{eq:lec23:T0i-step2}
+  F^{0j}F^{i}{}_{j}=(-E_j)(\epsilon_{ijk}B_k)
+                  =-\epsilon_{ijk}E_jB_k=-(\bE\times\bB)_i .
+\end{equation}
+The two minus signs cancel:
+\begin{equation}\label{eq:lec23:T0i-final}
+  T^{0i}=-\frac{1}{4\pi}\big[-(\bE\times\bB)_i\big]
+        =\boxed{\frac{1}{4\pi}(\bE\times\bB)_i=\frac{S_i}{c}.}
+\end{equation}
+\textit{Significance:} The same combination $\bE\times\bB$ is simultaneously the energy
+flux (Poynting vector $\bvec S$) and -- divided by $c^2$ in cgs bookkeeping -- the field
+\emph{momentum density}. This is the precise statement that ``light carries momentum.''
+
+\subsubsection*{The conservation law is Poynting's theorem}
+Write out the $\nu=0$ continuity equation $\partial_\mu T^{\mu0}=0$:
+\begin{equation}\label{eq:lec23:poynting-thm}
+  \partial_0 T^{00}+\partial_i T^{i0}=0
+  \;\Longrightarrow\;
+  \frac1c\,\partial_t\!\qty(\frac{E^2+B^2}{8\pi})
+  +\frac1c\,\divg\bvec S=0 .
+\end{equation}
+The common $1/c$ cancels, giving the familiar
+\begin{equation}\label{eq:lec23:poynting-final}
+  \boxed{\;\pdv{u}{t}+\divg\bvec S=0,\qquad u=\frac{E^2+B^2}{8\pi},
+   \quad \bvec S=\frac{c}{4\pi}\bE\times\bB .\;}
+\end{equation}
+\textit{Significance:} The tensorial conservation law $\partial_\mu T^{\mu\nu}=0$ is not new
+physics -- its $\nu=0$ component is exactly the energy-balance (Poynting) theorem, now seen
+as one quarter of a single four-vector conservation statement. The $\nu=i$ components give
+the momentum balance (Maxwell stress), to be completed next lecture once charges are
+included.
+
+% ==============================================================================
+\subsection*{Method: Building and Reading an Energy-Momentum Tensor}
+% ==============================================================================
+\begin{enumerate}
+  \item Write the Lagrangian density with \emph{no explicit} $x$-dependence (drop sources;
+        restore them later as a non-conserved transfer term).
+  \item Compute the conjugate momentum
+        $\pi^{\mu}{}_{a}=\partial\mathcal L/\partial(\partial_\mu\psi_a)$; for EM this is
+        $-\tfrac{1}{4\pi}F^{\mu\nu}$.
+  \item Form the canonical tensor
+        $T^\mu{}_\nu=\pi^{\mu}{}_a\,\partial_\nu\psi_a-\delta^\mu_\nu\mathcal L$.
+  \item If it is not symmetric/gauge invariant, add a divergence-free improvement
+        (use $\partial_\mu F^{\mu\rho}=0$ and the antisymmetry of $F$ to verify).
+  \item Read components: $T^{00}=u$ (energy density), $T^{0i}=S_i/c$ (flux / momentum
+        density), $T^{ij}=$ Maxwell stress.
+  \item Each $\nu$ gives a continuity equation $\partial_\mu T^{\mu\nu}=0$; integrate
+        $T^{0\nu}$ over space (with $1/c$) to get the conserved $P^\nu$ when the surface
+        flux vanishes.
+\end{enumerate}
+
+% ==============================================================================
+\subsection*{Summary}
+
+\begin{itemize}
+  \item Each continuity equation $\partial_\nu T^{\nu\mu}=0$ yields a conserved charge
+        $P^\mu=\tfrac1c\int d^3x\,T^{0\mu}$, with
+        $\ddt P^\mu=-\text{const}\oint T^{i\mu}\hat n_i\,d\sigma$; conservation holds when
+        the boundary flux vanishes. The $1/c$ is chosen so $P^\mu=(E/c,\bvec p)$.
+  \item Momentum is defined by translation symmetry, not by $m\bvec v$; hence massless light
+        carries momentum (radiation pressure), and Maxwell's equations play the role of the
+        photon's wave equation.
+  \item From $\mathcal L=-\tfrac{1}{16\pi}F_{\mu\nu}F^{\mu\nu}$:
+        $\partial\mathcal L/\partial(\partial_\mu A_\nu)=-\tfrac{1}{4\pi}F^{\mu\nu}$, and
+        Euler--Lagrange gives $\partial_\mu F^{\mu\nu}=\tfrac{4\pi}{c}J^\nu$.
+  \item Canonical tensor
+        $T^\mu{}_\nu=-\tfrac{1}{4\pi}F^{\mu\alpha}\partial_\nu A_\alpha
+        +\tfrac{1}{16\pi}\delta^\mu_\nu F^2$ is conserved but not symmetric/gauge invariant.
+  \item Adding the divergence-free $\tfrac{1}{4\pi}F^{\mu\rho}\partial_\rho A_\nu$ gives the
+        symmetric, gauge-invariant tensor
+        $\emtensor=-\tfrac{1}{4\pi}F^{\mu\rho}F^{\nu}{}_{\rho}
+        +\tfrac{1}{16\pi}\eta^{\mu\nu}F_{\alpha\beta}F^{\alpha\beta}$.
+  \item Components: $T^{00}=\tfrac{1}{8\pi}(E^2+B^2)=u$ and
+        $T^{0i}=\tfrac{1}{4\pi}(\bE\times\bB)_i=S_i/c$; the $\nu=0$ continuity equation is
+        Poynting's theorem $\partial_t u+\divg\bvec S=0$.
+\end{itemize}
+
+\subsection*{Further Reading}
+\begin{itemize}
+  \item L.\,D. Landau \& E.\,M. Lifshitz, \textit{The Classical Theory of Fields}
+        (Vol.~2): §32--33 (energy-momentum tensor; electromagnetic energy-momentum tensor).
+  \item J.\,D. Jackson, \textit{Classical Electrodynamics} (3rd ed.): §6.7--6.8 (Poynting
+        theorem, conservation laws) and §12.10 (canonical and symmetric stress tensors).
+  \item D.\,J. Griffiths, \textit{Introduction to Electrodynamics} (4th ed.): §8.1--8.2
+        (energy and momentum in electrodynamics, Maxwell stress tensor).
+  \item D. Tong, \textit{Lectures on Electromagnetism}, §5.4 (energy and momentum of the
+        EM field): \url{https://www.damtp.cam.ac.uk/user/tong/em.html}
+  \item Wikipedia, \textit{Electromagnetic stress--energy tensor}:
+        \url{https://en.wikipedia.org/wiki/Electromagnetic_stress-energy_tensor}
+\end{itemize}

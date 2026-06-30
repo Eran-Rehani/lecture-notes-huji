@@ -1,0 +1,411 @@
+%% Lecture 22 -- Dipole Radiation Power and the Energy-Momentum Tensor
+\section{Lecture 22 -- Radiated Power and the Energy-Momentum Tensor}\label{sec:lec22}
+
+\begin{center}
+\begin{tabular}{ll}
+  \textbf{Date:}\quad 21/06/2026 & \\
+\end{tabular}
+\end{center}
+\hrule\vspace{1.5em}
+
+\subsection*{Overview}
+
+This lecture closes the radiation calculation started in Lecture~21 and then uses it
+as motivation for a more systematic discussion of energy and momentum in field theory.
+The first half begins with the far-zone electric and magnetic fields of an accelerated
+electric dipole. Because the radiation fields fall as $1/r$, their Poynting flux falls
+as $1/r^2$, exactly compensating the area $4\pi r^2$ of a large sphere. This gives a
+finite total power carried to infinity.
+
+The second half asks where this energy accounting comes from in the action language.
+Just as ordinary mechanics derives conserved energy and momentum from spacetime
+translation symmetry, a classical field theory derives a conserved tensor
+$T^\nu{}_\mu$ from the absence of explicit $x^\mu$ dependence in the Lagrangian
+density. The lecture derives the Euler--Lagrange equations for a general field
+$\psi(x)$ and then constructs the canonical energy-momentum tensor as the object whose
+four divergence vanishes.
+
+% ==============================================================================
+\subsection{Radiation Fields of an Electric Dipole}
+\label{subsec:lec22:radiation-fields}
+% ==============================================================================
+
+\subsubsection*{Physical Motivation}
+Lecture~21 produced the far-zone fields of a localized, non-relativistic source whose
+leading time-dependent multipole is the electric dipole moment $\bvec{p}(t)$. The
+source size is $L$, the observation point is at radius $r\gg L$, and all source
+quantities are evaluated at the retarded time
+\begin{equation}\label{eq:lec22:retarded-time}
+  t_r \equiv t-\frac{r}{c}.
+\end{equation}
+Only terms in the fields that decay as $1/r$ can transport a nonzero amount of energy
+to infinity. Near-field terms such as the Coulomb field decay faster and therefore do
+not contribute to the total radiated power at $r\to\infty$.
+
+\dfn[def:lec22:radiation-zone]{Radiation Zone Fields}{
+For electric dipole radiation,
+\begin{align}
+  \bB(t,\bvec{x})
+  &= \frac{\ddot{\bvec{p}}(t_r)\times\uvec{r}}{c^2 r},
+  \label{eq:lec22:B-rad}\\
+  \bE(t,\bvec{x})
+  &= \bB(t,\bvec{x})\times\uvec{r}
+   = \frac{\qty[\ddot{\bvec{p}}(t_r)\times\uvec{r}]\times\uvec{r}}{c^2 r}.
+  \label{eq:lec22:E-rad}
+\end{align}
+Here $\uvec{r}$ points from the source to the observer.
+}
+
+\textit{Significance:} Radiation is controlled by $\ddot{\bvec{p}}$, so a dipole
+radiates only when the charges accelerate.
+
+\subsubsection*{Geometry of the Fields}
+Let $\theta$ be the angle between $\ddot{\bvec{p}}(t_r)$ and $\uvec{r}$. From
+\eqref{eq:lec22:B-rad},
+\begin{equation}\label{eq:lec22:B-magnitude}
+  |\bB|=\frac{|\ddot{\bvec{p}}(t_r)|\sin\theta}{c^2 r}.
+\end{equation}
+The electric field is the transverse part of $-\ddot{\bvec{p}}/(c^2r)$:
+\begin{align}
+  \bE
+  &= \frac{\qty[\ddot{\bvec{p}}\times\uvec{r}]\times\uvec{r}}{c^2 r} \notag\\
+  &= \frac{\uvec{r}\qty(\uvec{r}\cdot\ddot{\bvec{p}})-\ddot{\bvec{p}}}{c^2 r}
+   = -\frac{\ddot{\bvec{p}}_{\perp}}{c^2 r},
+  \label{eq:lec22:E-transverse}
+\end{align}
+where $\ddot{\bvec{p}}_{\perp}$ is the component perpendicular to $\uvec{r}$. Therefore
+\begin{equation}\label{eq:lec22:E-B-triad}
+  \boxed{\bE\perp\bB,\qquad \bE\perp\uvec{r},\qquad \bB\perp\uvec{r},
+  \qquad |\bE|=|\bB|.}
+\end{equation}
+\textit{Significance:} Far from the source, the spherical wave locally has the same
+transverse structure as a plane electromagnetic wave.
+
+% ==============================================================================
+\subsection{Poynting Vector and Angular Power Distribution}
+\label{subsec:lec22:poynting}
+% ==============================================================================
+
+\subsubsection*{Physical Motivation}
+The radiation fields are not just oscillating fields; they carry energy away from the
+source. In Gaussian units the energy flux density is the Poynting vector
+\begin{equation}\label{eq:lec22:poynting-definition}
+  \boxed{\bvec{S}=\frac{c}{4\pi}\,\bE\times\bB.}
+\end{equation}
+\textit{Significance:} $\bvec{S}\cdot\uvec{n}$ is the electromagnetic energy crossing a
+unit area per unit time through a surface with normal $\uvec{n}$.
+
+\subsubsection*{Derivation}
+Using the radiation-zone triad \eqref{eq:lec22:E-B-triad}, the cross product points
+radially outward:
+\begin{equation}\label{eq:lec22:S-direction}
+  \bE\times\bB = |\bE|\,|\bB|\,\uvec{r}=|\bB|^2\uvec{r}.
+\end{equation}
+Substituting \eqref{eq:lec22:B-magnitude},
+\begin{align}
+  \bvec{S}
+  &= \frac{c}{4\pi}\,
+     \frac{|\ddot{\bvec{p}}(t_r)|^2\sin^2\theta}{c^4 r^2}\,\uvec{r} \notag\\
+  &= \boxed{
+     \frac{|\ddot{\bvec{p}}(t_r)|^2\sin^2\theta}{4\pi c^3 r^2}\,\uvec{r}}.
+  \label{eq:lec22:S-dipole}
+\end{align}
+\textit{Significance:} The $1/r^2$ falloff of the flux is exactly what is needed for a
+finite power through a sphere of radius $r$.
+
+The power per solid angle is obtained by multiplying by the area element
+$r^2\dd{\Omega}$:
+\begin{equation}\label{eq:lec22:angular-power}
+  \boxed{\frac{dP}{d\Omega}
+  = r^2\,\bvec{S}\cdot\uvec{r}
+  = \frac{|\ddot{\bvec{p}}(t_r)|^2}{4\pi c^3}\sin^2\theta.}
+\end{equation}
+\textit{Significance:} Electric dipole radiation has a doughnut-shaped angular pattern:
+zero on the dipole axis and maximal in the plane perpendicular to the dipole.
+
+% ==============================================================================
+\subsection{Total Radiated Power}
+\label{subsec:lec22:total-power}
+% ==============================================================================
+
+\subsubsection*{Mathematical Setup}
+The total power crossing a sphere of radius $r$ is
+\begin{equation}\label{eq:lec22:power-surface}
+  P = \oint_{S_r} \bvec{S}\cdot d\bvec{\sigma},
+  \qquad d\bvec{\sigma}=r^2\sin\theta\dd{\theta}\dd{\phi}\,\uvec{r}.
+\end{equation}
+The limit $r\to\infty$ isolates energy that genuinely escapes the source instead of
+merely sloshing in the near field.
+
+\subsubsection*{Complete Angular Integral}
+Insert \eqref{eq:lec22:S-dipole}:
+\begin{align}
+  P
+  &= \int_0^{2\pi}\!\dd{\phi}\int_0^\pi\!\dd{\theta}\,
+     \frac{|\ddot{\bvec{p}}(t_r)|^2\sin^2\theta}{4\pi c^3 r^2}
+     r^2\sin\theta \notag\\
+  &= \frac{|\ddot{\bvec{p}}(t_r)|^2}{4\pi c^3}
+     \qty(\int_0^{2\pi}d\phi)
+     \qty(\int_0^\pi \sin^3\theta\dd{\theta}).
+  \label{eq:lec22:power-before-integral}
+\end{align}
+For the remaining integral, set $u=\cos\theta$, $du=-\sin\theta\dd{\theta}$:
+\begin{align}
+  \int_0^\pi \sin^3\theta\dd{\theta}
+  &= \int_0^\pi (1-\cos^2\theta)\sin\theta\dd{\theta} \notag\\
+  &= \int_{1}^{-1} (1-u^2)(-du)
+   = \int_{-1}^{1}(1-u^2)\dd{u} \notag\\
+  &= \qty[u-\frac{u^3}{3}]_{-1}^{1}
+   = \qty(1-\frac13)-\qty(-1+\frac13)
+   = \frac{4}{3}.
+  \label{eq:lec22:sin3-integral}
+\end{align}
+Thus
+\begin{align}
+  P
+  &= \frac{|\ddot{\bvec{p}}(t_r)|^2}{4\pi c^3}
+     \qty(2\pi)\qty(\frac{4}{3}) \notag\\
+  &= \boxed{\frac{2}{3c^3}\,|\ddot{\bvec{p}}(t_r)|^2.}
+  \label{eq:lec22:dipole-power}
+\end{align}
+\textit{Significance:} This is the electric dipole radiation power in Gaussian units.
+It is positive and finite at infinity, so the source must lose mechanical energy or be
+driven by external work.
+
+\nt{Only the $1/r$ pieces of $\bE$ and $\bB$ survive in the radiated power. If a field
+piece decays as $1/r^2$, then its flux scales at most as $r^2/r^3$ or $r^2/r^4$ after
+forming $\bE\times\bB$, and therefore vanishes as the sphere is sent to infinity.}
+
+% ==============================================================================
+\subsection{Why Radiation Does Not Violate Energy Conservation}
+\label{subsec:lec22:energy-conservation}
+% ==============================================================================
+
+\subsubsection*{Physical Motivation}
+A student asked why there is no contradiction between a positive outward flux at
+infinity and conservation of energy. The answer is that radiation is not created from
+nothing: accelerated charges require forces, and those forces do work. The work done
+on the charges can be converted into electromagnetic energy that propagates away.
+
+\begin{remark}
+The classical atom is the standard warning example. A point electron in circular orbit
+around a nucleus is constantly accelerating. Classical electrodynamics then predicts
+dipole radiation, so the electron loses mechanical energy and spirals inward. The fact
+that ordinary matter is stable is one of the historical signs that atomic physics
+cannot be purely classical.
+\end{remark}
+
+Near-field energy can move back and forth around the source without escaping. The
+radiative part is singled out by the limiting procedure $r\to\infty$: only energy that
+still crosses arbitrarily large spheres is energy that has truly left the source.
+
+% ==============================================================================
+\subsection{From Radiation Energy to Field-Theory Energy}
+\label{subsec:lec22:field-theory-motivation}
+% ==============================================================================
+
+\subsubsection*{Conceptual Background}
+The Poynting vector is familiar, but the course has developed electrodynamics from an
+action principle. We therefore want to derive energy and momentum from the same
+language. The general strategy mirrors analytical mechanics:
+\begin{itemize}
+  \item absence of explicit time dependence gives energy conservation;
+  \item absence of explicit spatial dependence gives momentum conservation;
+  \item in relativistic field theory these combine into one tensorial conservation law.
+\end{itemize}
+
+The central object is the energy-momentum tensor. The lecture first derives it for a
+general classical field theory and only later specializes it to the electromagnetic
+field.
+
+% ==============================================================================
+\subsection{General Classical Field Theory}
+\label{subsec:lec22:general-action}
+% ==============================================================================
+
+\subsubsection*{Mathematical Setup}
+Let $\psi(x)$ be a classical field. To keep the derivation uncluttered, first assume
+that $\psi$ has no internal index. The electromagnetic case is recovered by replacing
+$\psi$ with the four fields $A_\mu$ and summing over that additional index.
+
+We take the action to be
+\begin{equation}\label{eq:lec22:general-action}
+  \boxed{
+  S[\psi]=\frac{1}{c}\int d^4x\,\mathcal{L}
+  \qty(\psi,\partial_\mu\psi)}
+\end{equation}
+with no explicit dependence on $x^\mu$:
+\begin{equation}\label{eq:lec22:no-explicit-x}
+  \pdv{\mathcal{L}}{x^\mu}\bigg|_{\psi,\partial\psi}=0.
+\end{equation}
+\textit{Significance:} Equation \eqref{eq:lec22:no-explicit-x} encodes spacetime
+homogeneity. Moving the whole closed system in space or time does not change the
+physics.
+
+The Lagrangian density depends only on the field and its first derivatives. Including
+higher derivatives would usually produce higher-order equations of motion and require
+extra boundary data.
+
+% ==============================================================================
+\subsection{Euler--Lagrange Equation for a Field}
+\label{subsec:lec22:euler-lagrange}
+% ==============================================================================
+
+\subsubsection*{Derivation}
+Vary the field,
+\begin{equation}\label{eq:lec22:field-variation}
+  \psi(x)\to \psi(x)+\delta\psi(x),
+\end{equation}
+with $\delta\psi=0$ on the boundary of the spacetime integration region. To first
+order,
+\begin{align}
+  \delta S
+  &= \frac{1}{c}\int d^4x\,
+     \qty[
+       \pdv{\mathcal{L}}{\psi}\,\delta\psi
+       + \pdv{\mathcal{L}}{(\partial_\mu\psi)}\,\delta(\partial_\mu\psi)
+     ] \notag\\
+  &= \frac{1}{c}\int d^4x\,
+     \qty[
+       \pdv{\mathcal{L}}{\psi}\,\delta\psi
+       + \pdv{\mathcal{L}}{(\partial_\mu\psi)}\,\partial_\mu(\delta\psi)
+     ].
+  \label{eq:lec22:variation-before-parts}
+\end{align}
+Now integrate the second term by parts:
+\begin{align}
+  \pdv{\mathcal{L}}{(\partial_\mu\psi)}\,\partial_\mu(\delta\psi)
+  &=
+  \partial_\mu\qty[
+    \pdv{\mathcal{L}}{(\partial_\mu\psi)}\,\delta\psi
+  ]
+  -
+  \partial_\mu\qty[
+    \pdv{\mathcal{L}}{(\partial_\mu\psi)}
+  ]\delta\psi.
+  \label{eq:lec22:parts-identity}
+\end{align}
+The total derivative becomes a boundary term and vanishes because $\delta\psi$ is fixed
+to be zero on the boundary. Therefore
+\begin{equation}\label{eq:lec22:variation-after-parts}
+  \delta S
+  = \frac{1}{c}\int d^4x\,
+    \qty[
+      \pdv{\mathcal{L}}{\psi}
+      - \partial_\mu\qty(\pdv{\mathcal{L}}{(\partial_\mu\psi)})
+    ]\delta\psi.
+\end{equation}
+Since the action must be stationary for every allowed $\delta\psi$,
+\begin{equation}\label{eq:lec22:field-euler-lagrange}
+  \boxed{
+  \partial_\mu\qty(\pdv{\mathcal{L}}{(\partial_\mu\psi)})
+  =
+  \pdv{\mathcal{L}}{\psi}.}
+\end{equation}
+\textit{Significance:} This is the field-theory Euler--Lagrange equation. For several
+fields $\psi_a$, the same equation holds for each label $a$.
+
+% ==============================================================================
+\subsection{Translation Symmetry and the Canonical Tensor}
+\label{subsec:lec22:canonical-tensor}
+% ==============================================================================
+
+\subsubsection*{Mathematical Setup}
+Although $\mathcal{L}$ has no explicit $x^\mu$ dependence, it still changes with
+$x^\mu$ through the field configuration $\psi(x)$. The total derivative is therefore
+\begin{equation}\label{eq:lec22:L-chain-rule}
+  \partial_\mu\mathcal{L}
+  =
+  \pdv{\mathcal{L}}{\psi}\,\partial_\mu\psi
+  +
+  \pdv{\mathcal{L}}{(\partial_\nu\psi)}\,\partial_\mu\partial_\nu\psi.
+\end{equation}
+Use the Euler--Lagrange equation \eqref{eq:lec22:field-euler-lagrange} to replace
+$\partial\mathcal{L}/\partial\psi$:
+\begin{align}
+  \partial_\mu\mathcal{L}
+  &=
+  \partial_\nu\qty(\pdv{\mathcal{L}}{(\partial_\nu\psi)})\partial_\mu\psi
+  +
+  \pdv{\mathcal{L}}{(\partial_\nu\psi)}\,\partial_\nu\partial_\mu\psi \notag\\
+  &=
+  \partial_\nu\qty[
+    \pdv{\mathcal{L}}{(\partial_\nu\psi)}\,\partial_\mu\psi
+  ].
+  \label{eq:lec22:L-total-divergence}
+\end{align}
+On the other hand,
+\begin{equation}\label{eq:lec22:L-delta}
+  \partial_\mu\mathcal{L}
+  = \partial_\nu\qty(\delta^\nu{}_\mu\,\mathcal{L}).
+\end{equation}
+Equating \eqref{eq:lec22:L-total-divergence} and \eqref{eq:lec22:L-delta} gives
+\begin{equation}\label{eq:lec22:canonical-conservation-step}
+  \partial_\nu\qty[
+    \pdv{\mathcal{L}}{(\partial_\nu\psi)}\,\partial_\mu\psi
+    -\delta^\nu{}_\mu\,\mathcal{L}
+  ]=0.
+\end{equation}
+
+\dfn[def:lec22:canonical-T]{Canonical Energy-Momentum Tensor}{
+For a field $\psi$ with Lagrangian density $\mathcal{L}(\psi,\partial_\mu\psi)$,
+\begin{equation}\label{eq:lec22:canonical-T}
+  \boxed{
+  T^\nu{}_\mu
+  =
+  \pdv{\mathcal{L}}{(\partial_\nu\psi)}\,\partial_\mu\psi
+  -\delta^\nu{}_\mu\,\mathcal{L}.}
+\end{equation}
+It obeys the local conservation law
+\begin{equation}\label{eq:lec22:T-conservation}
+  \boxed{\partial_\nu T^\nu{}_\mu=0.}
+\end{equation}
+}
+
+\textit{Significance:} For each fixed $\mu$, \eqref{eq:lec22:T-conservation} is a
+continuity equation. The four values of $\mu$ correspond to conservation of energy and
+the three components of momentum.
+
+\nt{The object in \eqref{eq:lec22:canonical-T} is the canonical tensor. In gauge
+theories, including electromagnetism, it is often improved or symmetrized before being
+identified with the physical stress-energy tensor. The lecture's point here is the
+Noether origin: translation symmetry produces a local conserved current with two
+spacetime indices.}
+
+% ==============================================================================
+\subsection*{Summary}
+
+\begin{itemize}
+  \item The radiation fields of an electric dipole are transverse:
+        $\bE\perp\bB\perp\uvec{r}$ and $|\bE|=|\bB|$.
+  \item The Poynting vector for dipole radiation is radial and scales as $1/r^2$:
+        \[
+          \bvec{S}
+          = \frac{|\ddot{\bvec{p}}(t_r)|^2\sin^2\theta}{4\pi c^3 r^2}\,\uvec{r}.
+        \]
+  \item The angular distribution is proportional to $\sin^2\theta$, so no radiation is
+        emitted along the dipole axis.
+  \item The total power radiated to infinity is
+        \[
+          P=\frac{2}{3c^3}|\ddot{\bvec{p}}(t_r)|^2.
+        \]
+  \item Radiation does not violate energy conservation; the energy comes from work done
+        by whatever force accelerates the charges.
+  \item A general first-derivative field theory with
+        $S=(1/c)\int d^4x\,\mathcal{L}(\psi,\partial_\mu\psi)$ gives the field
+        Euler--Lagrange equation
+        \[
+          \partial_\mu\qty(\pdv{\mathcal{L}}{(\partial_\mu\psi)})
+          =\pdv{\mathcal{L}}{\psi}.
+        \]
+  \item If $\mathcal{L}$ has no explicit $x^\mu$ dependence, translation symmetry gives
+        the canonical energy-momentum tensor
+        \[
+          T^\nu{}_\mu
+          =
+          \pdv{\mathcal{L}}{(\partial_\nu\psi)}\,\partial_\mu\psi
+          -\delta^\nu{}_\mu\,\mathcal{L},
+          \qquad
+          \partial_\nu T^\nu{}_\mu=0.
+        \]
+\end{itemize}
