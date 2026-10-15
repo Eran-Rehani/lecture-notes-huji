@@ -1,0 +1,279 @@
+% Source transcript: Lecture Transcripts/77972_2026-10-13_שעור_א_Captions_עברית_Hebrew.md
+% Course conventions and mathematical cross-check: models-notes-2026.pdf, chapters 0--1, pp. 9--18.
+% The supplied transcript is auto-generated Hebrew and contains speech-recognition errors.
+
+\chapter{Modelling Living Systems: Hidden HIV Turnover}\label{chap:lecture01}
+
+\section{Why model living systems?}\label{sec:why-model}
+
+Living systems contain many interacting parts, respond to changing surroundings, and can change those surroundings in turn. A model makes one biological question manageable by naming the relevant variables and processes, stating how they are related, and deriving consequences. It is useful when those consequences teach us something beyond what we put into the assumptions.
+
+\subsection{What mathematics adds}\label{subsec:model-goals}
+
+The lecture described four connected reasons to model biological systems (00:15:54--00:30:48).
+
+\begin{enumerate}
+    \item \textbf{Consistency.} A verbal story can leave two competing effects unresolved. Equations make assumptions explicit and determine the combined result.
+    \item \textbf{Prediction.} A model can forecast how a system will respond under new conditions. Because every biological model leaves out detail, disagreement with an observation tells us to examine the assumptions and scope.
+    \item \textbf{Inference.} Many quantities of interest, such as production and clearance rates, cannot be measured directly. A model can connect them to observable data.
+    \item \textbf{Intuition.} A simple model can make the dominant mechanism clear enough to anticipate what should happen when conditions change.
+\end{enumerate}
+
+Mechanistic models and data-driven approaches answer related but different questions. A statistical model can predict a pattern without identifying its cause. For example, ice-cream searches and seasonal changes may rise and fall together because both respond to the season; their correlation alone does not show that one causes the other. A mechanistic account proposes a causal chain that can be tested. The two approaches can complement one another: patterns suggest hypotheses, and mechanisms help assess them.
+
+\subsection{Choose the level of description}\label{subsec:description-level}
+
+Questions can concern molecular shape, the behaviour of individual cells, population abundance, interactions between communities, or whole ecosystems. At each level, a modeller chooses which details matter. For example: should we follow individual cells or use a cell density? Are fluctuations important, or is an average adequate? Must space be represented? Are the relevant quantities discrete counts or continuous concentrations?
+
+A sensible starting point is the simplest model that could answer the stated question. It should be refined when observations or the question require more detail. A model that omits the process responsible for the phenomenon is too simple; adding detail that changes no conclusion only makes it harder to understand.
+
+Living systems exchange matter and energy with their surroundings. They can maintain organized structures while those fluxes continue. A steady biological state is therefore a balance of dynamical processes, not necessarily thermodynamic equilibrium. This does not imply a violation of the second law: the system is open and dissipates energy.
+
+\subsection{The modelling cycle}\label{subsec:modelling-cycle}
+
+The recurring procedure is to formulate a question and model, solve the model, compare its consequences with data, and revise the model when needed (00:48:54--00:49:18). Validation asks whether the model is useful for its particular purpose; it does not establish that every biological detail has been represented.
+
+\section{A steady viral load can hide rapid turnover}\label{sec:steady-turnover}
+
+\subsection{The biological puzzle}\label{subsec:hiv-puzzle}
+
+The lecture introduced the HIV viral-load trajectory as a puzzle (00:49:24--00:53:24). In the untreated schematic, viral abundance first rises during an acute stage, falls to a comparatively low plateau that may persist for years, and rises again as disease progresses. The time axis is schematic, and these stages should not be read as a present-day prognosis. A nearly constant viral load does not by itself show that virus production has stopped or become slow.
+
+One possible story is that the virus becomes mostly inactive during the plateau. A different possibility is that production and clearance are both rapid and nearly balanced. The distinction matters because the same steady measurement is compatible with very different underlying fluxes.
+
+\subsection{A leaky container and a stable state}\label{subsec:container}
+
+Consider a container with liquid volume $W(t)$. Liquid enters at volumetric rate $Q_{\mathrm{in}}$ and leaves at rate $Q_{\mathrm{out}}$. Conservation of volume gives
+\begin{equation}\label{eq:container-balance}
+    \frac{\dd W}{\dd t}=Q_{\mathrm{in}}-Q_{\mathrm{out}}.
+\end{equation}
+Here $W$ has units of volume and both flow rates have units of volume per time. At a steady volume,
+\begin{equation}\label{eq:container-steady}
+    Q_{\mathrm{in}}=Q_{\mathrm{out}}.
+\end{equation}
+This equality tells us that the two flows match; it does not tell us whether either one is small or large. A calm-looking water level can conceal rapid replacement of its contents. The same reasoning applies to a population or concentration maintained by balanced production and removal.
+
+Why can outflow rise with the amount of liquid? For a liquid column with constant cross-sectional area $A$ and height $h$, force balance between its bottom and top gives
+\begin{equation}\label{eq:hydrostatic-balance}
+    p_{\mathrm{bottom}} A=p_{\mathrm{top}} A+mg,
+\end{equation}
+where $p_{\mathrm{bottom}}$ and $p_{\mathrm{top}}$ are pressures, $m$ is the liquid mass, and $g$ is gravitational acceleration. Since $m=\rho A h$, with mass density $\rho$, division by $A$ yields
+\begin{equation}\label{eq:hydrostatic-pressure}
+    p_{\mathrm{bottom}}-p_{\mathrm{top}}=\rho g h.
+\end{equation}
+For the viscous outlet considered in the lecture, Poiseuille flow makes the outflow proportional to this pressure difference. Therefore $Q_{\mathrm{out}}\propto h$. Because $W=Ah$ for fixed $A$, the outflow is also proportional to the stored volume. This proportionality depends on the flow regime and outlet; it is not a universal rule for every hole or container.
+
+As a simple mathematical version of this mechanism, let $Q_{\mathrm{out}}=\kappa W$, where $\kappa>0$ has units of inverse time. Then
+\begin{equation}\label{eq:container-dynamics}
+    \frac{\dd W}{\dd t}=Q_{\mathrm{in}}-\kappa W.
+\end{equation}
+At steady state, $W^*=Q_{\mathrm{in}}/\kappa$. If $\delta W=W-W^*$ is a small deviation, subtract the steady-state equation from the dynamical equation to obtain
+\begin{equation}\label{eq:container-perturbation}
+    \frac{\dd\,\delta W}{\dd t}=-\kappa\delta W,
+    \qquad \delta W(t)=\delta W(0)\ee^{-\kappa t}.
+\end{equation}
+An excess volume drains away, while a deficit reduces outflow and allows the constant input to refill the container. Thus the balance is stable in this simple model.
+
+\begin{example}{Worked Example: A leaky container}{container-example}
+Suppose water enters at $Q_{\mathrm{in}}=2\,\mathrm{mL/min}$, and the outlet law is $Q_{\mathrm{out}}=0.1\,W\,\mathrm{min}^{-1}$ when $W$ is measured in millilitres. The steady volume solves $0=2\,\mathrm{mL/min}-0.1\,\mathrm{min}^{-1}W^*$, so $W^*=20\,\mathrm{mL}$. If the container is at $25\,\mathrm{mL}$, the instantaneous net change is $2-0.1(25)=-0.5\,\mathrm{mL/min}$; the volume falls toward $20\,\mathrm{mL}$. If it is at $15\,\mathrm{mL}$, the net change is $+0.5\,\mathrm{mL/min}$ and the volume rises toward the same steady value.
+
+\textit{Significance:} The steady amount is set by the ratio of input to clearance, so observing that amount alone does not reveal the turnover speed.
+\end{example}
+
+The HIV hypothesis is that viral production and clearance can both be large during the plateau. The container analogy explains the possibility; a time-dependent perturbation is needed to estimate the hidden rates.
+
+\section{Perturbing HIV reveals hidden rates}\label{sec:hiv-perturbation}
+
+\subsection{Treatment as a probe}\label{subsec:treatment-probe}
+
+The lecture discussed a 1994 study in which antiviral treatment was followed by a rapid decline in measured viral RNA (01:04:48--01:06:54). The initial load was of order $10^5$ RNA copies per millilitre, and the early decline was roughly two orders of magnitude over about a week to ten days. On a semilogarithmic plot, an exponential decline appears approximately as a straight line. The observed initial plateau and subsequent decline indicate that the curve is not one exponential over its full time course.
+
+The treatment discussed inhibits HIV protease, an enzyme that cleaves a viral polyprotein into functional parts. Inhibiting this processing reduces the production of mature, infectious virions. It does not instantly stop already infected cells from releasing viral material. This distinction motivates the model below: treatment blocks new cell infections, while previously infected cells continue to produce virions until they are cleared.
+
+HIV is a retrovirus: its RNA is copied into DNA by reverse transcription. Copying errors generate variants, and natural selection changes their abundances when conditions favour one variant. In a simplified independent-mutation model, if resistance to each of $n$ drugs requires a distinct mutation with probability $p$, then the probability of acquiring all required mutations in one replication opportunity is $p^n$. This is a mathematical illustration of why independent barriers can help; it assumes no cross-resistance and does not prescribe a clinical regimen.
+
+\begin{example}{Worked Example: Independent resistance barriers}{resistance-example}
+Suppose there are $M=10^9$ replication opportunities in a chosen interval, and each of three distinct resistance mutations has probability $p=10^{-5}$ per opportunity. The expected number of single-drug-resistant mutants is $Mp=10^4$. Under the much stronger assumption that all three mutations must arise together in one opportunity and are independent, the expected number of triple-resistant mutants in that interval is $Mp^3=10^9(10^{-5})^3=10^{-6}$. The calculation is an expectation under a toy model, not a prediction of the probability that resistance already exists: it omits mutation histories, selection, population structure, and correlated resistance.
+
+\textit{Significance:} Independence makes simultaneous barriers multiply in probability, but the assumptions determine whether that multiplication applies.
+\end{example}
+
+\subsection{The post-treatment variables and assumptions}\label{subsec:hiv-variables}
+
+For times $t\geq0$, let $N_I(t)$ be the number of infected cells and $N_V(t)$ the number of free virions in a chosen compartment. The measured assay is often reported as RNA copies per millilitre; to use absolute counts instead, one must specify the compartment volume. Either convention works if production and clearance terms use consistent units. We use $N_I(0)=N_{I0}$ and $N_V(0)=N_{V0}$.
+
+The model assumes that treatment at $t=0$ completely blocks new infections; infected cells already present remain able to produce virions. Each infected cell is cleared with constant per-cell rate $k_I$, and each free virion with constant rate $k_V$. Both rate constants have units of inverse time. Each infected cell produces virions at rate $\gamma$ (virions per cell per unit time), and we define $\beta=\gamma N_{I0}$, the initial production rate. This minimal model treats the measured compartment as well mixed over the time window and omits cell-to-cell variation and long-lived latent reservoirs.
+
+Before treatment, the viral load is assumed to be approximately steady. Its production and free-virion clearance balance:
+\begin{equation}\label{eq:hiv-presteady}
+    \gamma N_{I0}=k_VN_{V0},
+    \qquad \beta=k_VN_{V0}.
+\end{equation}
+This is an initial condition supplied by the pre-treatment state, not an extra post-treatment process.
+
+\subsection{Derive the infected-cell dynamics}\label{subsec:infected-cells}
+
+If an individual infected cell has a constant clearance probability per unit time $k_I$, then in a short time $\Delta t$ its probability of clearance is $k_I\Delta t+o(\Delta t)$. Among $N_I$ cells, the expected number lost in that interval is $k_I N_I\Delta t$ to leading order. Dividing the change $\Delta N_I=-k_I N_I\Delta t$ by $\Delta t$ and taking the limit gives
+\begin{equation}\label{eq:infected-ode}
+    \frac{\dd N_I}{\dd t}=-k_IN_I.
+\end{equation}
+Separate variables and integrate from $0$ to $t$:
+\begin{equation}\label{eq:infected-integral}
+    \int_{N_{I0}}^{N_I(t)}\frac{\dd N_I}{N_I}
+    =-k_I\int_0^t\dd s,
+    \qquad \ln\!\left(\frac{N_I(t)}{N_{I0}}\right)=-k_It.
+\end{equation}
+Exponentiating yields
+\begin{equation}\label{eq:infected-solution}
+    \boxed{N_I(t)=N_{I0}\ee^{-k_It}.}
+\end{equation}
+\textit{Significance:} Once new infections are blocked, the existing infected-cell population decays exponentially under a constant clearance hazard.
+
+\subsection{Derive the viral-load dynamics}\label{subsec:viral-ode}
+
+The source of free virions is the remaining infected cells, so its rate is $\gamma N_I(t)=\beta\ee^{-k_It}$. Virions are removed at rate $k_VN_V$. Production and clearance therefore give
+\begin{equation}\label{eq:viral-ode}
+    \frac{\dd N_V}{\dd t}=\beta\ee^{-k_It}-k_VN_V,
+    \qquad N_V(0)=N_{V0}.
+\end{equation}
+This equation allows production to continue after treatment begins, but that production falls as infected cells disappear.
+
+\subsection{Solve the viral-load equation by an integrating factor}\label{subsec:integrating-factor}
+
+Rewrite (\ref{eq:viral-ode}) as $\dot N_V+k_VN_V=\beta\ee^{-k_It}$. Multiplication by the integrating factor $\ee^{k_Vt}$ gives
+\begin{equation}\label{eq:integrating-factor-step}
+    \ee^{k_Vt}\frac{\dd N_V}{\dd t}+k_V\ee^{k_Vt}N_V
+       =\beta\ee^{(k_V-k_I)t}.
+\end{equation}
+The product rule identifies the left-hand side as one derivative:
+\begin{equation}\label{eq:product-rule}
+    \frac{\dd}{\dd t}\!\left(\ee^{k_Vt}N_V(t)\right)
+       =\beta\ee^{(k_V-k_I)t}.
+\end{equation}
+Integrate both sides from $0$ to $t$. The left integral evaluates at its endpoints, and the right integral is elementary when $k_V\ne k_I$:
+\begin{equation}\label{eq:integrating-factor-integral}
+    \ee^{k_Vt}N_V(t)-N_{V0}
+       =\beta\int_0^t\ee^{(k_V-k_I)s}\,\dd s
+       =\frac{\beta}{k_V-k_I}
+          \left[\ee^{(k_V-k_I)t}-1\right].
+\end{equation}
+Multiply by $\ee^{-k_Vt}$ and distribute it through the bracket:
+\begin{equation}\label{eq:viral-general-solution}
+    \boxed{N_V(t)=N_{V0}\ee^{-k_Vt}
+       +\frac{\beta}{k_V-k_I}
+          \left(\ee^{-k_It}-\ee^{-k_Vt}\right),
+       \quad k_V\ne k_I.}
+\end{equation}
+Equivalently, with $X=\beta/(k_V-k_I)$, this is $N_V=X\ee^{-k_It}+(N_{V0}-X)\ee^{-k_Vt}$. The two terms are modes of the solution; one coefficient may be negative, though the total population remains nonnegative.
+
+Substituting the pre-treatment balance $\beta=k_VN_{V0}$ gives
+\begin{equation}\label{eq:viral-steady-solution}
+    \boxed{\frac{N_V(t)}{N_{V0}}
+       =\frac{k_V\ee^{-k_It}-k_I\ee^{-k_Vt}}{k_V-k_I}.}
+\end{equation}
+\textit{Significance:} Treatment exposes two decay timescales because virions are cleared directly while their infected-cell source also decays.
+
+\subsubsection*{Method: solving a linear production--clearance equation}\label{subsubsec:ode-method}
+\begin{enumerate}
+    \item Write the rate of change as production minus clearance and state the initial value.
+    \item Put the equation into the form $\dot y+a(t)y=f(t)$.
+    \item Multiply by $\mu(t)=\ee^{\int a(t)\dd t}$ and check the product rule.
+    \item Integrate between the initial time and the desired time, keeping the integration limits explicit.
+    \item Apply the initial condition, simplify, and check units and the value at $t=0$.
+\end{enumerate}
+\begin{remark}
+Forgetting the clearance term's sign, or applying the initial condition after dropping one exponential, changes the predicted curve. The final solution must return $N_{V0}$ at $t=0$.
+\end{remark}
+
+\subsection{Why an initial plateau appears}\label{subsec:plateau}
+
+Differentiate (\ref{eq:viral-ode}) and evaluate it at the treatment time. Using the pre-treatment balance gives
+\begin{equation}\label{eq:initial-slope}
+    \left.\frac{\dd N_V}{\dd t}\right|_{t=0}
+       =\beta-k_VN_{V0}=0.
+\end{equation}
+Thus the initial slope is zero in the idealized steady-state model. This does not mean the curve remains flat for a finite time. Differentiate the differential equation once more; since $\dot N_I(0)=-k_IN_{I0}$ and $\dot N_V(0)=0$,
+\begin{equation}\label{eq:initial-curvature}
+    \left.\frac{\dd^2N_V}{\dd t^2}\right|_{t=0}
+       =-k_I\beta=-k_Ik_VN_{V0}<0.
+\end{equation}
+The curve starts with zero slope and bends downward. This explains how a brief plateau can precede a decline.
+
+\begin{remark}
+The negative coefficient of one exponential in (\ref{eq:viral-steady-solution}) is not a negative virion population. The physical quantity is the sum of the modes. A manifestly nonnegative form follows directly by solving with the integrating factor:
+\[
+N_V(t)=N_{V0}\ee^{-k_Vt}
+  +\int_0^t \beta\ee^{-k_Is}\ee^{-k_V(t-s)}\,\dd s,
+\]
+which is nonnegative for nonnegative initial load and production.
+\end{remark}
+
+\subsection{Equal clearance rates: a transcript correction}\label{subsec:equal-rates}
+
+Formula (\ref{eq:viral-general-solution}) appears singular as $k_V\to k_I$. The integral expression has no singularity. Set $k_V=k_I=k$ directly in (\ref{eq:product-rule}); then
+\begin{equation}\label{eq:equal-rate-derivative}
+    \frac{\dd}{\dd t}\!\left(\ee^{kt}N_V(t)\right)=\beta.
+\end{equation}
+Integrating from $0$ to $t$ gives $\ee^{kt}N_V(t)-N_{V0}=\beta t$. Thus
+\begin{equation}\label{eq:equal-rate-general}
+    \boxed{N_V(t)=(N_{V0}+\beta t)\ee^{-kt}.}
+\end{equation}
+With the steady-state condition $\beta=kN_{V0}$, this becomes
+\begin{equation}\label{eq:equal-rate-steady}
+    \boxed{N_V(t)=N_{V0}(1+kt)\ee^{-kt}.}
+\end{equation}
+Differentiating gives $\dot N_V(t)=-N_{V0}k^2t\ee^{-kt}$, hence $\dot N_V(0)=0$. The initial plateau therefore persists when the two rates are equal.
+
+The transcript at 01:56:24--01:57:00 incorrectly says the equal-rate case has no plateau. The limiting solution above, which agrees with the supplied course notes (Chapter 1, Eq. 1.9), corrects that statement. A plateau by itself does not prove that the rates are unequal.
+
+\subsection{Fast and slow timescales}\label{subsec:timescales}
+
+When free virions are cleared much faster than infected cells ($k_V\gg k_I$), the virion population quickly adjusts to its slowly changing source. Setting its derivative approximately to zero in (\ref{eq:viral-ode}) gives $N_V\simeq(\beta/k_V)\ee^{-k_It}$; the later decline is controlled by infected-cell clearance. When infected cells clear much faster than free virions ($k_I\gg k_V$), the source rapidly weakens and the later tail is controlled by free-virion clearance $k_V$. In either case, the slow process controls the late-time decline.
+
+For a single exponential $N(t)=N_0\ee^{-kt}$, the half-life is $t_{1/2}=\ln 2/k$. A two-exponential curve need not have one constant instantaneous decay rate: $-\dd\ln N_V/\dd t$ changes during the transition, even though a late tail can become approximately exponential.
+
+\begin{example}{Worked Example: Interpreting a hundredfold decline}{decay-example}
+A decline by a factor of $100$ over $10$ days corresponds to an average exponential rate $r=\ln(100)/(10\,\mathrm{days})\simeq0.461\,\mathrm{day}^{-1}$ if one exponential is used to summarize that interval. Its corresponding half-life would be $\ln2/r\simeq1.51$ days. This is an apparent rate for the measured interval, not a separate measurement of either $k_I$ or $k_V$ in the two-process model.
+
+\textit{Significance:} A large decline over days implies rapid turnover on that timescale, while the mechanistic model is needed to interpret which process sets the observed slope.
+\end{example}
+
+\subsection{Fit the model and ask what the data identify}\label{subsec:fit-identifiability}
+
+The general curve contains $N_{V0}$, $\beta$, $k_I$, and $k_V$. The initial viral load is observed; if the pre-treatment balance is imposed, $\beta=k_VN_{V0}$, leaving two unknown dynamical rates. A fit compares the whole predicted time course with the measured points. A curve that passes through every data point is not automatically informative: a model with too many parameters can fit measurement noise. Closely spaced measurements may also be correlated, so the number of plotted points is not the number of independent constraints.
+
+The steady-state normalized curve (\ref{eq:viral-steady-solution}) is unchanged if $k_I$ and $k_V$ are exchanged. Therefore, viral-load data alone can at best identify the unordered pair of rates under this model; they do not assign each rate to infected-cell loss or virion clearance. Independent cell measurements or other biological information are needed for that assignment. Also, the source amplitude is $\beta=\gamma N_{I0}$, so this curve alone does not separate the production rate per cell from the initial infected-cell count.
+
+\subsubsection*{Method: evaluating an inference from a fitted curve}\label{subsubsec:inference-method}
+\begin{enumerate}
+    \item List which observations are measured directly and which parameters are hidden.
+    \item Count independent curve features (initial value, initial slope, transition, late slope), not merely data points.
+    \item Use initial conditions and any justified steady-state relation to reduce free parameters.
+    \item Check whether different parameter assignments produce the same observable curve.
+    \item State what additional measurement would distinguish parameter combinations that the curve cannot separate.
+\end{enumerate}
+\begin{remark}
+Good agreement with a time course supports the model for the question tested; it does not prove that the model is a complete account of HIV infection or justify an individual treatment decision.
+\end{remark}
+
+\section{What the minimal model explains and leaves out}\label{sec:model-scope}
+
+The HIV example shows how a biological puzzle motivates a model, how a treatment perturbation reveals hidden processes, and how solving differential equations connects mechanisms to data. The model explains a short post-treatment response. It does not explain the later progression to AIDS, the full immune response, resistant populations, tissue structure, or latent reservoirs. Long-lived cells containing viral genetic material can persist even when viral RNA in blood is below an assay's detection limit. The lecture mentioned reservoir-activation approaches as exploratory and uncertain; they are outside the conclusions of this calculation.
+
+The model also depends on ideal assumptions: instantaneous and complete blocking of new infections, constant clearance rates, a well-mixed measured compartment, and an approximately steady initial state. Real perturbations and biological populations can depart from these assumptions. A mismatch between prediction and measurement is a reason to inspect them and, if needed, construct a richer model.
+
+\section{Review: concepts and equations}\label{sec:lecture-review}
+
+\begin{enumerate}
+    \item A steady amount constrains input to equal output, but does not determine either flux separately.
+    \item A perturbation can reveal turnover that a steady measurement hides.
+    \item Under the ideal post-treatment assumptions, $N_I(t)=N_{I0}\ee^{-k_It}$ and virions follow a forced linear clearance equation.
+    \item The steady initial condition makes the initial viral-load slope zero; the curvature is negative.
+    \item The equal-rate limit is $N_{V0}(1+kt)\ee^{-kt}$ and retains the zero initial slope.
+    \item A fitted viral-load curve may constrain rates without assigning them to particular biological processes.
+\end{enumerate}
+
+% Reference identified in models-notes-2026.pdf; that paper was not independently consulted for this summary.
+\noindent\textbf{Reference}\quad Perelson, A.~S., Neumann, A.~U., Markowitz, M., Leonard, J.~M., and Ho, D.~D. (1996). HIV-1 dynamics in vivo: virion clearance rate, infected cell life-span, and viral generation time. \textit{Science} 271(5255), 1582--1586. DOI: 10.1126/science.271.5255.1582.
+
+\noindent\textbf{Course source}\quad \textit{Physical Models of Living Systems: Lecture Notes}, chapters 0--1, pp. 9--18, supplied as \texttt{models-notes-2026.pdf}.

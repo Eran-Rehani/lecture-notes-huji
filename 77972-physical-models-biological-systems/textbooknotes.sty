@@ -1,0 +1,136 @@
+%% textbooknotes.sty
+%% Textbook-style theme for lecture notes: colored headings, boxed theorem
+%% environments, wide outer margin for notes, matching text/math fonts.
+%%
+%% Requires a KOMA-Script book class:
+%%   \documentclass[10pt,a4paper,twoside,openany]{scrbook}
+%%   \usepackage[palatino]{textbooknotes}
+%%
+%% Options (fonts):  palatino (default) | charter | libertinus | euler
+%% Options (paper):  a4 (default) | letter
+%%
+%% Colors can be redefined AFTER loading the package, e.g.
+%%   \definecolor{primary}{HTML}{7A1F2B}
+%%   \definecolor{accent}{HTML}{C28E0E}
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{textbooknotes}[2026/10/13 Textbook-style lecture notes theme]
+
+% ---------------------------------------------------------------- options
+\newif\if@tbn@palatino  \@tbn@palatinotrue
+\newif\if@tbn@charter
+\newif\if@tbn@libertinus
+\newif\if@tbn@euler
+\newif\if@tbn@letter
+\DeclareOption{palatino}{\@tbn@palatinotrue\@tbn@charterfalse\@tbn@libertinusfalse\@tbn@eulerfalse}
+\DeclareOption{charter}{\@tbn@palatinofalse\@tbn@chartertrue\@tbn@libertinusfalse\@tbn@eulerfalse}
+\DeclareOption{libertinus}{\@tbn@palatinofalse\@tbn@libertinustrue}
+\DeclareOption{euler}{\@tbn@palatinofalse\@tbn@eulertrue}
+\DeclareOption{a4}{\@tbn@letterfalse}
+\DeclareOption{letter}{\@tbn@lettertrue}
+\ProcessOptions\relax
+
+% ---------------------------------------------------------------- fonts
+\RequirePackage[T1]{fontenc}
+\RequirePackage[utf8]{inputenc}
+\RequirePackage{amsmath,amssymb,mathtools,bm}
+\RequirePackage{amsthm}
+\if@tbn@palatino
+  \RequirePackage{newpxtext,newpxmath}
+\fi
+\if@tbn@charter
+  \RequirePackage{XCharter}
+  \RequirePackage[xcharter]{newtxmath}
+\fi
+\if@tbn@libertinus
+  \RequirePackage{libertinus-type1}
+  \RequirePackage{libertinust1math}
+\fi
+\if@tbn@euler
+  \RequirePackage{mathpazo}
+  \RequirePackage{eulervm}
+\fi
+\RequirePackage[scaled=0.85]{beramono}
+\RequirePackage{microtype}
+\RequirePackage{siunitx}
+
+% ---------------------------------------------------------------- layout
+\if@tbn@letter
+  \RequirePackage[letterpaper,inner=25mm,outer=48mm,top=28mm,bottom=30mm,
+                  marginparwidth=36mm,marginparsep=6mm]{geometry}
+\else
+  \RequirePackage[a4paper,inner=25mm,outer=48mm,top=28mm,bottom=30mm,
+                  marginparwidth=36mm,marginparsep=6mm]{geometry}
+\fi
+
+% ---------------------------------------------------------------- colors
+\RequirePackage[dvipsnames,svgnames]{xcolor}
+\definecolor{primary}{HTML}{1F4E79}   % headings, headers, theorem boxes
+\definecolor{accent}{HTML}{B3541E}    % chapter numbers, links
+\definecolor{thmcol}{HTML}{1F4E79}    % theorem / lemma / proposition / corollary
+\definecolor{defcol}{HTML}{2E7D32}    % definition
+\definecolor{exacol}{HTML}{B3541E}    % example
+\definecolor{remcol}{HTML}{6A1B9A}    % remark
+
+% ---------------------------------------------------------------- headings
+\KOMAoptions{chapterprefix=false}
+\setkomafont{disposition}{\normalfont\bfseries\color{primary}}
+\setkomafont{chapter}{\Huge}
+\setkomafont{section}{\Large}
+\setkomafont{subsection}{\large\color{primary!80!black}}
+\setkomafont{subsubsection}{\normalsize\itshape\color{primary!80!black}}
+\renewcommand*{\chapterformat}{%
+  {\color{accent}\fontsize{60}{60}\selectfont\thechapter}\enskip}
+\renewcommand*{\chapterlinesformat}[3]{%
+  #2#3\par\vspace{4pt}{\color{primary}\hrule height 1.2pt}}
+\RedeclareSectionCommand[beforeskip=-10pt,afterskip=30pt]{chapter}
+
+% ---------------------------------------------------------------- headers
+\RequirePackage[headsepline]{scrlayer-scrpage}
+\clearpairofpagestyles
+\automark[section]{chapter}
+\ohead{\small\itshape\headmark}
+\ihead{\small\bfseries\pagemark}
+\setkomafont{pageheadfoot}{\normalfont\color{primary}}
+\setkomafont{headsepline}{\color{primary}}
+
+% ---------------------------------------------------------------- boxes
+\RequirePackage[most]{tcolorbox}
+\tcbset{
+  tbnbox/.style={enhanced,breakable,sharp corners=downhill,
+    boxrule=0pt,frame hidden,left=8pt,right=8pt,top=6pt,bottom=6pt,
+    fonttitle=\bfseries,coltitle=white,
+    attach boxed title to top left={yshift=-2mm},
+    boxed title style={sharp corners,boxrule=0pt},
+    colback=#1!6,colframe=#1,colbacktitle=#1,
+    borderline west={2.5pt}{0pt}{#1}},
+}
+\newtcbtheorem[number within=chapter]{theorem}{Theorem}{tbnbox=thmcol}{thm}
+\newtcbtheorem[use counter from=theorem]{lemma}{Lemma}{tbnbox=thmcol}{lem}
+\newtcbtheorem[use counter from=theorem]{proposition}{Proposition}{tbnbox=thmcol}{prop}
+\newtcbtheorem[use counter from=theorem]{corollary}{Corollary}{tbnbox=thmcol}{cor}
+\newtcbtheorem[use counter from=theorem]{definition}{Definition}{tbnbox=defcol}{def}
+\newtcbtheorem[use counter from=theorem]{example}{Example}{tbnbox=exacol}{ex}
+\newtcolorbox{remark}{tbnbox=remcol,title=Remark}
+
+% proofs
+\renewcommand{\qedsymbol}{$\blacksquare$}
+
+% ---------------------------------------------------------------- misc
+\RequirePackage{graphicx,booktabs,enumitem}
+\RequirePackage[colorlinks,linkcolor=primary,citecolor=accent,urlcolor=accent]{hyperref}
+\setlist{itemsep=2pt,topsep=4pt}
+
+% margin note
+\newcommand{\sidenote}[1]{\marginpar{\footnotesize\color{primary}#1}}
+
+% math shortcuts
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\ii}{\mathrm{i}}
+\newcommand{\ee}{\mathrm{e}}
+\DeclarePairedDelimiter{\ket}{\lvert}{\rangle}
+\DeclarePairedDelimiter{\bra}{\langle}{\rvert}
+\newcommand{\braket}[2]{\langle #1\vert #2\rangle}
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+
+\endinput
