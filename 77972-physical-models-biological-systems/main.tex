@@ -1,11 +1,47 @@
-\documentclass[10pt,a4paper,twoside,openany]{scrbook}
+\documentclass[11pt,a4paper,oneside,openany]{scrbook}
 \usepackage[palatino]{textbooknotes}
+\usepackage{tikz,pgfplots,needspace,float}
+\pgfplotsset{compat=1.18}
+% Course-local revision layout; retain the shared textbooknotes style unchanged.
+\geometry{inner=25mm,outer=30mm,top=20mm,bottom=22mm,
+  marginparwidth=18mm,marginparsep=5mm}
+\linespread{1.06}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt minus 1pt}
+\setcounter{tocdepth}{1}
+\setkomafont{chapter}{\fontsize{23}{27}\selectfont\bfseries\color{primary}}
+\setkomafont{section}{\large\bfseries\color{primary}}
+\setkomafont{subsection}{\normalsize\bfseries\color{primary}}
+\setkomafont{paragraph}{\normalsize\bfseries\color{primary}}
+\renewcommand*{\chapterformat}{\textcolor{accent}{\thechapter}\enskip}
+\RedeclareSectionCommand[beforeskip=0pt,afterskip=12pt]{chapter}
+\RedeclareSectionCommand[beforeskip=13pt,afterskip=5pt]{section}
+\RedeclareSectionCommand[beforeskip=9pt,afterskip=3pt]{subsection}
+\RedeclareSectionCommand[runin=false,beforeskip=7pt,afterskip=2pt]{paragraph}
+\definecolor{accent}{HTML}{98653C}
+\definecolor{defcol}{HTML}{1F4E79}
+\definecolor{exacol}{HTML}{287C7A}
+\definecolor{remcol}{HTML}{98653C}
+\tcbset{tbnbox/.style={enhanced,breakable,sharp corners,boxrule=0pt,
+  frame hidden,left=9pt,right=9pt,top=7pt,bottom=7pt,
+  colback=#1!4,colbacktitle=#1!4,colframe=#1,coltitle=#1,fonttitle=\bfseries,
+  titlerule=0pt,
+  borderline west={1.2pt}{0pt}{#1},before skip=8pt,after skip=8pt}}
+\setlist{itemsep=3pt,topsep=3pt,parsep=0pt}
+\raggedbottom
+\widowpenalty=10000
+\clubpenalty=10000
+% Enable only when building the collected course volume.
+\newif\ifcoursevolume
+\coursevolumefalse
 \title{Physical Models of Biological Systems\\Course 77972}
 \subtitle{Lecture summaries}
 \author{Based on Amir Erez's lectures}
 \date{2026--2027}
 \begin{document}
-\maketitle
-\tableofcontents
+\ifcoursevolume
+  \maketitle
+  \tableofcontents
+\fi
 \input{Lecture_Summaries/Lec01_Modelling_and_HIV_Dynamics}
 \end{document}

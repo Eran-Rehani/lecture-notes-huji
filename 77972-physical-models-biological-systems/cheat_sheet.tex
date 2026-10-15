@@ -1,63 +1,125 @@
-\documentclass[10pt,a4paper,twoside,openany]{scrbook}
-\usepackage[palatino]{textbooknotes}
-\title{Physical Models of Biological Systems\\Quick Reference}
-\author{Course 77972}
-\date{2026--2027}
+\documentclass[10pt,a4paper]{scrartcl}
+\usepackage[T1]{fontenc}
+\usepackage{newpxtext,newpxmath}
+\usepackage[margin=12mm]{geometry}
+\usepackage{multicol}
+\usepackage{xcolor}
+\definecolor{primary}{HTML}{1F4E79}
+\setkomafont{section}{\normalsize\bfseries\color{primary}}
+\RedeclareSectionCommand[beforeskip=7pt,afterskip=3pt]{section}
+\setlength{\parindent}{0pt}
+\setlength{\columnsep}{8mm}
+\setlength{\columnseprule}{0.2pt}
+\AtBeginDocument{%
+\setlength{\abovedisplayskip}{4pt}\setlength{\belowdisplayskip}{4pt}%
+\setlength{\abovedisplayshortskip}{3pt}\setlength{\belowdisplayshortskip}{3pt}}
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\ee}{\mathrm{e}}
+\pagestyle{empty}
 \begin{document}
-\maketitle
+\begin{center}
+{\large\bfseries Physical Models of Biological Systems}\quad 77972\\[-1pt]
+{\small Formula and concept sheet}
+\end{center}
+\vspace{-5pt}
+\begin{multicols}{2}
+\raggedcolumns
+\small
+\section*{Model formulation and inference}
+\textbf{Cycle:} formulate $\to$ solve $\to$ validate $\to$ revise.\\
+\textbf{Uses:} consistency, prediction, inference, intuition.\\
+\textbf{Checks:} units, signs, initial values, positivity, limits.\\
+\textbf{Steady state:} constant amounts; fluxes may persist.\\
+\textbf{Identifiable:} distinct parameters give distinct data.\\
+\textbf{Over-constrained:} more independent constraints than free parameters. Does not ensure identifiability.\\
+\textbf{Overfit:} excess flexibility fits noise. Count independent features; correlated points add less information.
 
-\chapter{Model formulation and validation}\label{chap:cheatsheet-modelling}
-\section{Modelling cycle}\label{sec:cheat-cycle}
-\begin{enumerate}
-    \item Formulate: specify question, variables, processes, assumptions, and observations.
-    \item Solve: derive consequences analytically where possible; use computation for remaining behaviour.
-    \item Validate: compare with observations, limiting cases, units, and invariants; revise assumptions when needed.
-\end{enumerate}
+\section*{Production, clearance, and stability}
+% Balance and exact relaxation for a constant source and linear removal.
+\begin{gather*}
+\dot W=Q_{\mathrm{in}}-Q_{\mathrm{out}},\qquad
+\dot W=0\Rightarrow Q_{\mathrm{in}}=Q_{\mathrm{out}}\\
+\dot W=Q-\kappa W,\qquad W^*=Q/\kappa\\
+W(t)=W^*+[W(0)-W^*]\ee^{-\kappa t}
+\end{gather*}
+$[Q]=[W]/\text{time}$, $[\kappa]=\text{time}^{-1}$.\\
+\textbf{Stable for $\kappa>0$:} deviations decay; $\tau=1/\kappa$.\\
+\textbf{Steady amount fixes a ratio, not either flux.}
+% Hydrostatic column and viscous outlet analogy.
+\begin{equation*}
+\Delta p=\rho gh,\quad W=Ah,\quad Q_{\mathrm{out}}\propto\Delta p\propto W
+\end{equation*}
+Fixed area $A$; density $\rho$; viscous Poiseuille outlet.
 
-\section{Inference from dynamics}\label{sec:cheat-inference}
-For a model $\dot{x}=f(x,\theta)$, fitting estimates parameters $\theta$ from measured trajectories. Count independent features rather than raw data points; correlated measurements may contain less independent information. Structural identifiability asks whether distinct parameter values can produce exactly the same ideal observable data.
+\section*{First-order decay and semilog plots}
+% Constant hazard, characteristic times, and apparent decay rate.
+\begin{gather*}
+\dot N=-kN\Rightarrow N=N_0\ee^{-kt}\\
+\tau=1/k,\qquad t_{1/2}=\ln2/k\\
+\ln N=\ln N_0-kt,\qquad
+\frac{\dd\log_{10}N}{\dd t}=-\frac{k}{\ln10}\\
+r_{\mathrm{app}}=\frac{\ln[N(t_1)/N(t_2)]}{t_2-t_1}
+\end{gather*}
+For multiple modes, $r_{\mathrm{app}}$ need not be a process rate.
 
-\chapter{Population turnover}\label{chap:cheatsheet-turnover}
-\section{Input, output, and steady state}\label{sec:cheat-flux}
-\begin{equation*}
-    \frac{\dd W}{\dd t}=Q_{\mathrm{in}}-Q_{\mathrm{out}},
-    \qquad \text{steady state: } Q_{\mathrm{in}}=Q_{\mathrm{out}}.
-\end{equation*}
-A steady amount does not determine the magnitude of the balanced fluxes. For constant input and first-order removal,
-\begin{equation*}
-    \frac{\dd W}{\dd t}=Q_{\mathrm{in}}-\kappa W,
-    \qquad W^*=\frac{Q_{\mathrm{in}}}{\kappa},
-    \qquad W(t)-W^*=[W(0)-W^*]\ee^{-\kappa t}.
-\end{equation*}
+\section*{Linear forced equation: master method}
+% Integrating factor normalized to one at the initial time.
+\begin{gather*}
+\dot y+a(t)y=f(t),\quad \mu(t)=\ee^{\int_0^t a(s)\dd s}\\
+(\mu y)'=\mu f,\quad
+y(t)=\frac{y(0)+\int_0^t\mu(s)f(s)\dd s}{\mu(t)}
+\end{gather*}
 
-\section{Two-stage viral clearance after blocking new infection}\label{sec:cheat-hiv}
-With constant infected-cell clearance $k_I$, virion clearance $k_V$, production per infected cell $\gamma$, and $\beta=\gamma N_{I0}$:
+\columnbreak
+\section*{Two-stage viral turnover}
+\textbf{Assume:} no new infections after $t=0$; constant rates; mixed compartment; expected populations.\\
+$N_I$: infected cells; $N_V$: total free particles, including noninfectious ones; $N_{I0},N_{V0}$: initial values.\\
+$k_I,k_V$: clearance rates [time$^{-1}$]; $\gamma$: virions/(cell time); $\beta=\gamma N_{I0}$: virions/time. RNA load measures abundance, not infectivity.
+% Source population and forced particle dynamics.
+\begin{gather*}
+\dot N_I=-k_IN_I,\qquad N_I=N_{I0}\ee^{-k_It}\\
+\dot N_V=\gamma N_I-k_VN_V=\beta\ee^{-k_It}-k_VN_V
+\end{gather*}
+% General solution for unequal rates.
+For $k_V\ne k_I$:
 \begin{equation*}
-    \dot N_I=-k_I N_I,
-    \qquad N_I(t)=N_{I0}\ee^{-k_It},
-    \qquad \dot N_V=\beta\ee^{-k_It}-k_VN_V.
+N_V=N_{V0}\ee^{-k_Vt}
++\frac{\beta(\ee^{-k_It}-\ee^{-k_Vt})}{k_V-k_I}
 \end{equation*}
-General solution, for $k_V\ne k_I$:
+% Initially balanced production and removal.
+\textbf{Pretreatment balance:} $\beta=k_VN_{V0}$.
 \begin{equation*}
-    N_V(t)=N_{V0}\ee^{-k_Vt}
-      +\frac{\beta}{k_V-k_I}
-       (\ee^{-k_It}-\ee^{-k_Vt}).
+\frac{N_V}{N_{V0}}=\frac{k_V\ee^{-k_It}-k_I\ee^{-k_Vt}}{k_V-k_I}
 \end{equation*}
-If pretreatment viral production and clearance balance, $\beta=k_VN_{V0}$:
-\begin{equation*}
-    \frac{N_V(t)}{N_{V0}}
-      =\frac{k_V\ee^{-k_It}-k_I\ee^{-k_Vt}}{k_V-k_I},
-    \qquad \dot N_V(0)=0.
-\end{equation*}
-Equal-rate limit $k_I=k_V=k$:
-\begin{equation*}
-    N_V(t)=(N_{V0}+\beta t)\ee^{-kt},
-    \qquad \beta=kN_{V0}\Longrightarrow
-    N_V(t)=N_{V0}(1+kt)\ee^{-kt}.
-\end{equation*}
-This limit also has zero initial slope. Under the steady-state constraint, exchanging $k_I$ and $k_V$ leaves the normalized viral-load curve unchanged; the curve alone therefore cannot assign the two rate constants to their biological processes.
+% Initial derivatives and local shoulder.
+\begin{gather*}
+\dot N_V(0)=0,\qquad \ddot N_V(0)=-k_Ik_VN_{V0}\\
+N_V/N_{V0}=1-\tfrac12k_Ik_Vt^2+O(t^3)
+\end{gather*}
+\textbf{Shoulder:} horizontal tangent, not a finite flat interval.
+% Equal-rate solution and initially steady special case.
+For $k_I=k_V=k$:
+\begin{gather*}
+N_V=(N_{V0}+\beta t)\ee^{-kt}\\
+\beta=kN_{V0}\Rightarrow N_V=N_{V0}(1+kt)\ee^{-kt}
+\end{gather*}
+\textbf{Equal rates still give zero initial slope.}
+% Scale-separated tails.
+\begin{align*}
+k_V\gg k_I &: N_V\simeq(\beta/k_V)\ee^{-k_It}\\
+k_I\gg k_V &: N_V\propto\ee^{-k_Vt}\\
+t\to\infty &: -\dd\ln N_V/\dd t\to\min(k_I,k_V)
+\end{align*}
+\textbf{Inference:} measured $N_{V0}$ leaves 3 unknowns $(\beta,k_I,k_V)$; balance reduces to 2.\\
+\textbf{Symmetry:} $k_I\leftrightarrow k_V$ preserves the balanced curve: only the unordered pair is identifiable. Also $\beta=\gamma N_{I0}$ cannot separate $\gamma,N_{I0}$.\\
+\textbf{Scope:} early treatment response; omits reservoirs and long-term progression.
 
-\section{First-order decay scales}\label{sec:cheat-decay}
-For $N(t)=N_0\ee^{-kt}$, the half-life is $t_{1/2}=\ln 2/k$. A factor-$F$ decrease over interval $\Delta t$ corresponds to average apparent rate $r=\ln F/\Delta t$ if summarized by a single exponential; for a multiexponential trajectory this is not necessarily an individual process rate.
-
+\section*{Independent resistance barriers}
+% Simultaneous independent mutations in one replication opportunity.
+\begin{equation*}
+P(\text{all }n)=p^n,\quad
+\mathbb E[\text{resistant copies}]=Mp^n
+\end{equation*}
+$p$: each mutation probability; $M$: opportunities. Requires independence and simultaneous mutations; omits sequential evolution and cross-resistance.
+\end{multicols}
 \end{document}
