@@ -1,4 +1,12 @@
+% Course: 77972 -- Physical Models of Biological Systems
+% Academic year: 2026--2027 | Semester: A
+% Lecture number: 1 | Document chapter: 1
+% Lecture date: 2026-10-13
+% Title: Hidden HIV turnover
+% Lecturer: Dr. Amir Erez
+% Notes prepared by: Eran Rehani
 % Primary source: Lecture Transcripts/77972_2026-10-13_שעור_א_Captions_עברית_Hebrew.md
+% Relevant timestamps: 00:49:24--02:05:24 (including lecture breaks).
 % Cross-check: models-notes-2026.pdf, chapters 0--1, printed pp. 9--18.
 % Independent revision structure; supplementary calculations are identified below.
 \chapter[Hidden HIV turnover]{Hidden HIV turnover}\label{chap:lecture01}
@@ -13,10 +21,8 @@ A constant viral load can conceal rapid production and removal. Blocking new inf
 \item Interpret the initial slope, equal-rate limit, late tail, and fitted rates.
 \end{itemize}
 
-\section{The concepts to retain}\label{sec:why-model}
-\textbf{What a model gives you.} Define variables, processes, and assumptions; derive consequences that were not inserted by hand. Its four uses are \emph{consistency} (make a verbal story precise), \emph{prediction} (test a new outcome), \emph{inference} (estimate hidden quantities), and \emph{intuition} (recognize the dominant mechanism).
-
-\textbf{How to choose it.} Ask whether individual cells, fluctuations, space, or molecular details affect the answer. Choose counts or concentrations consistently. Mechanistic explanations and statistical predictions can complement each other; correlation alone does not establish a mechanism. The cycle is \emph{formulate $\to$ solve $\to$ compare with data $\to$ revise}.
+\section{Steady amounts and hidden turnover}\label{sec:why-model}
+The modelling principles in Chapter~\ref{chap:introduction} lead to a concrete question: can a constant measured amount tell us how rapidly its contents are replaced?
 
 \begin{definition}{Steady state and turnover}{steady-turnover}
 A steady state has constant macroscopic variables despite possible ongoing fluxes. For an amount $W$, input $Q_{\mathrm{in}}$, and output $Q_{\mathrm{out}}$,
@@ -197,7 +203,8 @@ N_V=N_{V0}(1+kt)\ee^{-kt},\qquad
 \dot N_V=-N_{V0}k^2t\ee^{-kt}.
 \end{equation}
 \begin{remark}
-At 01:56:24--01:57:00 the transcript claims equal rates remove the shoulder. The zero initial slope above, consistent with official notes Eq.~1.9, corrects this. A shoulder does not establish unequal rates.
+% Corrects the transcript's claim at 01:56:24--01:57:00.
+Equal rates do not remove the shoulder: the initial slope is still zero, consistent with official notes Eq.~1.9. A shoulder does not establish unequal rates.
 \end{remark}
 
 \paragraph{Late decline and time scales.}
@@ -231,7 +238,8 @@ A parameter is structurally identifiable if ideal observations distinguish it fr
 \end{definition}
 \begin{itemize}
 \item \textbf{Count parameters:} measured $N_{V0}$ leaves $\beta,k_I,k_V$; pretreatment balance leaves two rates.
-\item \textbf{Check ambiguity:} Eq.~\eqref{eq:viral-steady-solution} is invariant under $k_I\leftrightarrow k_V$. Viral load alone can at best identify the unordered pair. Cell measurements or justified biological information must assign labels. Also $\beta=\gamma N_{I0}$ does not separate its two factors. This symmetry analysis supplements the transcript.
+% The symmetry analysis supplements the transcript's fitting discussion.
+\item \textbf{Check ambiguity:} Eq.~\eqref{eq:viral-steady-solution} is invariant under $k_I\leftrightarrow k_V$. Viral load alone can at best identify the unordered pair. Cell measurements or justified biological information must assign labels. Also $\beta=\gamma N_{I0}$ does not separate its two factors.
 \item \textbf{Validate:} count independent features, not raw points; nearby measurements may be correlated. More independent constraints than parameters permit a test, but do not guarantee identifiability. Overfitting means fitting noise with excess flexibility.
 \item \textbf{Respect scope:} rapid decline supports rapid hidden turnover. This model omits long-term disease progression and latent reservoirs. Dormant infected cells can retain viral DNA without producing particles, so undetectable blood RNA does not imply eradication. Reservoir activation was discussed as exploratory, not established by this calculation.
 \end{itemize}
@@ -246,12 +254,12 @@ A parameter is structurally identifiable if ideal observations distinguish it fr
 \end{enumerate}
 \textbf{Core chain:} steady amount $\to$ unknown fluxes $\to$ perturbation $\to$ time scales $\to$ qualified inference.
 
-\subsection*{Sources and Further Reading}
+\subsection*{Further Reading}
 \begingroup\small
 \begin{itemize}
-\item Lecture 1 transcript, 13 October 2026: modelling (00:10:48--00:37:06), HIV background (00:49:24--01:38:12), equations and inference (01:38:18--02:05:24). Auto-generated wording may be unreliable.
 \item Amir Erez, \emph{Physical Models of Living Systems: Lecture Notes}, \texttt{models-notes-2026.pdf}: Chapter 0 and Chapter 1, §§1.1--1.7, printed pp.~9--18. Used to check conventions and results; later extensions are outside this summary.
 \item Philip Nelson, \emph{Physical Models of Living Systems}, supplied Penn edition: Chapter 1, ``Virus Dynamics,'' §§1.2.1--1.2.6 (biology, semilog plots, rate equations, fitting).
-\item A.~S. Perelson et al., \href{https://pubmed.ncbi.nlm.nih.gov/8599114/}{``HIV-1 dynamics in vivo''}, \emph{Science} \textbf{271}, 1582--1586 (1996): original study, citation and abstract. The lecture dates the experimental story to 1994; this publication is from 1996.
+% The lecture dates the experimental story to 1994; the cited publication is 1996.
+\item A.~S. Perelson et al., \href{https://pubmed.ncbi.nlm.nih.gov/8599114/}{``HIV-1 dynamics in vivo''}, \emph{Science} \textbf{271}, 1582--1586 (1996): original study, citation and abstract.
 \end{itemize}
 \endgroup

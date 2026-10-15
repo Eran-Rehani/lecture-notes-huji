@@ -34,14 +34,20 @@
 % Enable only when building the collected course volume.
 \newif\ifcoursevolume
 \coursevolumefalse
+\newcommand{\summaryauthor}{Eran Rehani}
 \title{Physical Models of Biological Systems\\Course 77972}
 \subtitle{Lecture summaries}
-\author{Based on Amir Erez's lectures}
+\author{Notes prepared by \summaryauthor}
 \date{2026--2027}
+\hypersetup{pdftitle={Physical Models of Biological Systems -- Lecture Summaries},
+  pdfauthor={\summaryauthor},pdfsubject={Course 77972, Semester A, 2026--2027}}
 \begin{document}
+\input{titlepage}
 \ifcoursevolume
-  \maketitle
   \tableofcontents
 \fi
+\pagenumbering{arabic}
+\setcounter{chapter}{-1}
+\input{Lecture_Summaries/Lec00_Introduction}
 \input{Lecture_Summaries/Lec01_Modelling_and_HIV_Dynamics}
 \end{document}

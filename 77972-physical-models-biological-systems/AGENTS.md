@@ -52,6 +52,10 @@ Generate lecture summaries from the lecture transcripts found in this course fol
 - Source transcripts: look in any transcript folder present in this course folder (e.g., `lectures transcripts/`, `lectuure_transcripts/`, `Lecture Transcripts/`, `Lectures/`). Preserve original filenames and UTF-8 text exactly.
 - Never modify, delete, rename, or overwrite any original transcript file.
 
+### Lecture File Metadata
+- Begin every new lecture-summary `.tex` file with a LaTeX comment header (`%` on every line), before any typeset content. Include the course number and name, academic year and semester, actual lecture number, lecture date (`YYYY-MM-DD`), summary title, lecturer, and summarizer; mark unknown required fields as `Unknown` rather than guessing. Transcript paths, timestamps, recording URLs, and supporting references may be retained in comments for provenance.
+- Distinguish the document's chapter/section number from the actual lecture number when they differ (for example, Introduction is Chapter 0 but comes from Lecture 1). Preserve original lecture metadata when revising the file; record a separate revision date if needed. These comments must not appear in the rendered PDF.
+
 ### LaTeX Style & Document Class
 - Document class: `scrbook` (KOMA-Script) for each course master.
 - Each lecture = a standalone subfile named `LecXX_Title.tex` (XX = lecture number, Title = brief topic in English, snake_case or CamelCase). These subfiles are included in the course `main.tex` (e.g., via `\input{Lec01_...}`).
@@ -74,7 +78,8 @@ Generate lecture summaries from the lecture transcripts found in this course fol
 - Ordering within the file: flexible per lecture — use whatever ordering best fits that lecture's content and complexity.
 
 ### Content Priorities
-- Always include: definitions, theorems/results, proofs/derivations, examples, exam-relevant remarks, source citations, and further reading (textbook name + chapter or source URL).
+- Always include: definitions, theorems/results, proofs/derivations, examples, exam-relevant remarks, and further reading (textbook name + chapter or source URL). Retain attribution for external figures and quoted material where needed.
+- End each summary with **Further Reading**. Do not add a separate Sources section or list the lecture transcript, its filename, or its timestamps in the rendered notes; transcript provenance belongs only in LaTeX comments. This course rule overrides any skill requirement to print transcript source listings.
 - Include fun facts / anecdotes when they contribute to understanding.
 - Omit: small talk, administrative remarks, repetition of transcript filler, unverified speculation.
 - Translate Hebrew terminology into English (no original Hebrew term needed in parentheses); keep author/source names recognizable.
