@@ -16,6 +16,7 @@
 \newcommand{\dd}{\mathrm{d}}
 \newcommand{\ee}{\mathrm{e}}
 \pagestyle{empty}
+\raggedbottom
 \begin{document}
 \begin{center}
 {\large\bfseries Physical Models of Biological Systems}\quad 77972\\[-1pt]
@@ -70,7 +71,6 @@ For multiple modes, $r_{\mathrm{app}}$ need not be a process rate.
 y(t)=\frac{y(0)+\int_0^t\mu(s)f(s)\dd s}{\mu(t)}
 \end{gather*}
 
-\columnbreak
 \section*{Two-stage viral turnover}
 \textbf{Assume:} no new infections after $t=0$; constant rates; mixed compartment; expected populations.\\
 $N_I$: infected cells; $N_V$: total free particles, including noninfectious ones; $N_{I0},N_{V0}$: initial values.\\
@@ -114,6 +114,38 @@ t\to\infty &: -\dd\ln N_V/\dd t\to\min(k_I,k_V)
 \textbf{Symmetry:} $k_I\leftrightarrow k_V$ preserves the balanced curve: only the unordered pair is identifiable. Also $\beta=\gamma N_{I0}$ cannot separate $\gamma,N_{I0}$.\\
 \textbf{Scope:} early treatment response; omits reservoirs and long-term progression.
 
+
+\section*{Pulse-chase: source and destination}
+% A labelled cohort moves while every compartment total stays steady.
+\begin{gather*}
+\dot D=kS-dD,\qquad D=K*S\\
+D=k\!\int_{t_0}^{t}\!\ee^{-d(t-t')}S(t')\dd t'
+  +\ee^{-d(t-t_0)}D_0\\
+K(\tau)=k\ee^{-d\tau},\qquad \tilde D/\tilde S=k/(s+d)
+\end{gather*}
+$S,D$: label per cell upstream and downstream; $k$: transfer rate; $d$: labelled loss rate, both [time$^{-1}$].\\
+\textbf{Fit:} with $G_d(t_i)=\int_{t_0}^{t_i}\ee^{-d(t_i-t')}S\dd t'$,
+\begin{equation*}
+k_*=\frac{\sum_iD_iG_i}{\sum_iG_i^2},\qquad
+\chi^2_{\min}=\sum_iD_i^2-\frac{\bigl(\sum_iD_iG_i\bigr)^2}{\sum_iG_i^2}
+\end{equation*}
+\textbf{Fit the integral, not the slope:} differentiating multiplies noise by $\mathrm{i}\omega$, integrating divides by it.\\
+\textbf{Division dilutes:} add $\ln2\,r_{\mathrm{div}}$ to the effective loss rate.
+
+\section*{HIV: infectious and non-infectious virions}
+% Infection is the only bilinear term; protease inhibition closes the infectious branch.
+\begin{align*}
+\dot N_U&=\lambda-k_UN_U-\epsilon N_VN_U\\
+\dot N_I&=\epsilon N_VN_U-k_IN_I\\
+\dot N_V&=\epsilon'\gamma N_I-k_VN_V\\
+\dot N_X&=(1-\epsilon')\gamma N_I-k_VN_X
+\end{align*}
+$\epsilon$: infection coefficient, [(virion$\cdot$time)$^{-1}$]; $\epsilon'$: infectious fraction, dimensionless.
+\begin{gather*}
+N_U^*=\frac{k_Ik_V}{\epsilon\epsilon'\gamma},\qquad
+\mathcal R_0=\frac{\lambda\epsilon\epsilon'\gamma}{k_Uk_Ik_V}
+\end{gather*}
+Infected state exists only for $\mathcal R_0>1$. \textbf{Protease inhibitor:} $\epsilon'\to0$ gives $N_V=N_{V0}\ee^{-k_Vt}$.
 \section*{Independent resistance barriers}
 % Simultaneous independent mutations in one replication opportunity.
 \begin{equation*}
@@ -121,5 +153,35 @@ P(\text{all }n)=p^n,\quad
 \mathbb E[\text{resistant copies}]=Mp^n
 \end{equation*}
 $p$: each mutation probability; $M$: opportunities. Requires independence and simultaneous mutations; omits sequential evolution and cross-resistance.
+
+\section*{Discrete probability}
+\begin{gather*}
+\sum_\ell P(\ell)=1,\quad
+P(E_1\cup E_2)=P(E_1)+P(E_2)-P(E_1\cap E_2)\\
+P(E\mid E')=\frac{P(E\cap E')}{P(E')},\quad
+P(E\cap E')=P(E)P(E')\ \text{(independent)}\\
+P(H\mid E)=\frac{P(E\mid H)P(H)}{\sum_jP(E\mid H_j)P(H_j)}
+\end{gather*}
+\textbf{Geometric:} $P(J=j)=\xi(1-\xi)^{j-1}$, $\mathbb E[J]=1/\xi$, $\mathrm{Var}=(1-\xi)/\xi^2$.\\
+\textbf{Binomial:} $P(K=k)=\binom nk\xi^k(1-\xi)^{n-k}$, $\mathbb E[K]=n\xi$.\\
+\textbf{Screening:} prevalence $\pi$, sensitivity $s$, specificity $c$,
+\begin{equation*}
+P(D\mid+)=\frac{\pi s}{\pi s+(1-\pi)(1-c)}
+\end{equation*}
+Rare disease: a positive test is still mostly wrong.
+
+\section*{Entropy and mutual information}
+\begin{gather*}
+H(X)=-\sum_xP(x)\log_2P(x),\qquad 0\le H\le\log_2M\\
+H(Y\mid X)=\sum_xP(x)\,H(Y\mid X=x)\\
+I(X;Y)=H(X)+H(Y)-H(X,Y)=H(Y)-H(Y\mid X)\\
+I(X;Y)=\sum_{x,y}P(x,y)\log_2\frac{P(x,y)}{P(x)P(y)}\ \ge0\\
+D_{\mathrm{KL}}(P\Vert Q)=\sum_xP(x)\log_2\frac{P(x)}{Q(x)}\ \ge0
+\end{gather*}
+$H$ in bits; $2^H$ is an effective number of states. $I=0$ iff independent; $D_{\mathrm{KL}}=0$ iff $P=Q$, and it is asymmetric.\\
+\textbf{Jensen:} $\phi(\mathbb E Z)\le\mathbb E[\phi(Z)]$ for convex $\phi$; taking $\phi=-\log_2$ proves both inequalities.\\
+\textbf{Bernoulli KL:} $D(p\Vert q)=p\log_2\frac pq+(1-p)\log_2\frac{1-p}{1-q}$.\\
+\textbf{BSC, error $\varepsilon$:} $I=H(Y)-h(\varepsilon)\le1-h(\varepsilon)$, $h(\varepsilon)=-\varepsilon\log_2\varepsilon-(1-\varepsilon)\log_2(1-\varepsilon)$.\\
+\textbf{Data processing:} $X\to Y\to Z$ implies $I(X;Z)\le I(X;Y)$.
 \end{multicols}
 \end{document}
