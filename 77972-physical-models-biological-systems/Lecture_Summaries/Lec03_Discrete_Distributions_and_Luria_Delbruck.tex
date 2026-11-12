@@ -5,37 +5,84 @@
 % Title: Discrete Distributions and the Luria--Delbr{\"u}ck Fluctuation Test
 % Lecturer: Dr. Amir Erez
 % Notes prepared by: Eran Rehani
-% Source: Lecture Transcripts/77972 2026-11-03 שעור א [9c67909c-e195-4f20-8755-b4ee006ad172]_hosted.md
-% Main conceptual discussion: correlation limits 00:40:08--01:10:00; binomial 01:11:00--01:35:00;
-% fluorescence alpha (Rosenfeld 2005 trick) 01:36:00--02:13:00; Poisson limit 02:14:00--02:41:00;
-% Luria--Delbr{\"u}ck experiment 02:42:00--03:51:00; moment generating function and MLE 03:51:00--end.
+% Source: Transcriptions/77972 2026-11-03 שעור א [9c67909c-e195-4f20-8755-b4ee006ad172]_hosted.md
+% Hosted timeline, approximate: Bayesian inference and screening 00:01--00:25;
+% covariance and correlation 00:26--01:07; binomial 01:08--01:17;
+% fluorescence calibration 01:18--01:35; Poisson limit 01:36--01:44;
+% Luria--Delbr{\"u}ck experiment and model 01:45--02:13; generating function and MLE 02:14--02:38.
 % Supporting references: models-notes-2026.pdf, chapter 3 (discrete distributions, mutation);
 % Philip Nelson, Physical Models of Living Systems, chapter on randomness and mutation.
-% Revision dates: none yet
-% Additional transcript: none
+% Revision date: 2026-11-05 (diagram, terminology, references and provenance).
+% Additional transcript: Transcriptions/77972 2026-11-03 שעור א [9c67909c-e195-4f20-8755-b4ee006ad172]_panopto.md
 % Hosted and caption timestamps use different timelines; do not interchange them.
 \chapter{Discrete Distributions and the Luria--Delbr{\"u}ck Fluctuation Test}\label{chap:lecture03}
 \noindent\textbf{Lecture 3 \enspace|\enspace 3 November 2026}
 
-This lecture moves from continuous correlation (Pearson versus Spearman, and why summary statistics can mislead) to discrete counting models: the binomial distribution, its Poisson limit, and the Luria--Delbr{\"u}ck fluctuation test of 1943. The central biological question is whether mutations arise randomly before selection (Darwin) or in response to a challenge (Lamarck). The resolution uses a probability model in which early mutations are exponentially amplified (the ``jackpot'' effect), producing a variance far larger than the mean, a signature incompatible with a Poisson process.
+This lecture begins with Bayesian inference and medical screening, then moves from correlation (Pearson versus Spearman, and why summary statistics can mislead) to discrete counting models: the binomial distribution, its Poisson limit, and the Luria--Delbr{\"u}ck fluctuation test of 1943. The central biological question is whether mutations arise randomly before selection (Darwin) or in response to a challenge (Lamarck). The resolution uses a probability model in which early mutations are exponentially amplified (the ``jackpot'' effect), producing a variance far larger than the mean, a signature incompatible with a Poisson process.
 
 \begin{itemize}[nosep]
-\item \textbf{Revision goals:} derive the binomial PMF and its mean/variance; take the $M\to\infty$, $p\to0$ limit to obtain the Poisson distribution; explain the Rosenfeld $\alpha$-measurement trick via binomial partitioning at cell division; reconstruct the Luria--Delbr{\"u}ck jackpot amplification and its moment-generating function; carry out the maximum-likelihood estimate of the mutation rate from zero-mutant cultures; interpret the Pano factor (variance/mean) as a diagnostic of non-Poissonian mutation.
+\item Apply Bayes' theorem to a rare-event screening problem; define covariance, Pearson and rank correlation; explain stationarity and correlation time.
+\item \textbf{Revision goals:} derive the binomial PMF and its mean/variance; take the $M\to\infty$, $p\to0$ limit to obtain the Poisson distribution; explain the Rosenfeld $\alpha$-measurement trick via binomial partitioning at cell division; reconstruct the Luria--Delbr{\"u}ck jackpot amplification and its probability generating function; carry out the maximum-likelihood estimate of the mutation rate from zero-mutant cultures; interpret the Fano factor (variance/mean) as a diagnostic of non-Poissonian mutation.
 \end{itemize}
 
-\section{Correlation: limits and remedies}\label{sec:lecture03-correlation}
+% Hosted transcript 00:01--00:25: Bayesian inference and screening.
+\section{Bayesian inference: from evidence to hypotheses}\label{sec:lecture03-bayes}
+Biological measurements rarely determine a mechanism uniquely. Let $H_j$ be mutually exclusive, exhaustive hypotheses and $E$ an observation. The prior $P(H_j)$ describes uncertainty before the measurement; the likelihood $P(E\mid H_j)$ describes the measurement under a hypothesis. Their roles differ from the posterior probability of the hypothesis after observing the data.
+\begin{definition}{Bayesian update}{lecture03-bayes}
+For $P(E)>0$, the product rule gives
+\begin{equation}\label{eq:lecture03-bayes}
+P(H_j\mid E)=\frac{P(E\mid H_j)P(H_j)}{P(E)},\qquad
+P(E)=\sum_kP(E\mid H_k)P(H_k).
+\end{equation}
+The evidence normalizes the posterior. Posterior odds equal prior odds multiplied by the likelihood ratio; the common evidence cancels.
+\end{definition}
+A likelihood is a function of the hypothesis with the observations fixed; it need not sum or integrate to one over hypotheses. Maximizing it does not produce a posterior distribution. For continuous parameters, a uniform prior in one coordinate need not be uniform after a nonlinear change of coordinate, because probability densities transform with a Jacobian. A prior probability of zero cannot be revived by an ordinary Bayesian update.
+\begin{example}{A rare condition and an accurate test}{lecture03-screening}
+This is the lecture's hypothetical probability example, not a current clinical estimate. Let $D$ denote disease and $+$ a positive test. Prevalence is $P(D)=0.009$, sensitivity is $P(+\mid D)=0.97$, and specificity is $P(-\mid D^c)=0.97$. Thus
+\begin{align}
+P(+)&=0.97(0.009)+0.03(0.991)=0.03846,\label{eq:lecture03-positive}\\
+P(D\mid +)&=\frac{0.97(0.009)}{0.03846}\approx0.227.\label{eq:lecture03-screening}
+\end{align}
+A positive result raises the probability from $0.9\%$ to about $23\%$, but false positives among the much larger healthy population still outnumber true positives. Sensitivity is not the probability of disease given a positive test. Repeated results can be multiplied only when their conditional independence given disease status is justified; persistent cross-reactivity or shared handling errors can correlate them.
+\end{example}
+
+\section{Correlation: definitions, limits and remedies}\label{sec:lecture03-correlation}
+% Hosted transcript 00:26--00:41: covariance and temporal/spatial correlation.
+Two proteins can vary together across cells even when their absolute expression levels differ. For random variables $L,M$ with finite second moments, define
+\begin{align}
+\operatorname{Cov}(L,M)&=\ee[(L-\ee[L])(M-\ee[M])]
+=\ee[LM]-\ee[L]\ee[M],\label{eq:lecture03-covariance}\\
+\rho_{LM}&=\frac{\operatorname{Cov}(L,M)}{\sqrt{\operatorname{Var}(L)\operatorname{Var}(M)}}.\label{eq:lecture03-pearson}
+\end{align}
+Covariance has the product of the variables' units, and $\operatorname{Cov}(L,L)=\operatorname{Var}(L)$. Pearson's coefficient is dimensionless and requires both variances to be positive. Cauchy--Schwarz applied to the centered variables gives $|\rho_{LM}|\leq1$. Equality corresponds to an exact affine relation almost surely; independence implies zero covariance, while the converse generally fails. Specify the averaging ensemble: variation of two genes across cells and variation of two cells across genes answer different questions.
+
+\subsection{Autocorrelation measures memory}\label{subsec:lecture03-autocorrelation}
+For a stationary process $X(t)$ with mean $\bar X$ and finite variance, the centered autocovariance and its normalization are
+\begin{equation}\label{eq:lecture03-autocorrelation}
+C(\tau)=\ee[(X(t)-\bar X)(X(t+\tau)-\bar X)],\qquad
+R(\tau)=C(\tau)/C(0).
+\end{equation}
+Here $C(0)=\operatorname{Var}(X)>0$ and $R(0)=1$. Stationarity makes the ensemble covariance depend on lag rather than absolute time. Estimating this ensemble average by averaging along one time trace additionally requires representative sampling, usually justified by ergodicity. Trends can create apparent memory and should be modelled or removed when appropriate. Spatial lag gives an analogous correlation length.
+\begin{example}{White noise and a finite memory time}{lecture03-memory}
+Discrete white noise has zero covariance at nonzero lags, not at zero lag. A possible normalized memory curve is $R(\tau)=\exp(-|\tau|/\tau_c)$, where $\tau_c$ has units of time. It describes loss of correlation over $\tau_c$; exponential decay is a model, not a universal law. The lecture's short-time Brownian-velocity example illustrates how persistence can remain before collisions randomize velocity.
+\end{example}
 
 The first part of the lecture wrapped up correlation analysis. Pearson's coefficient measures linear association only; it can be exactly zero for data with a clear nonlinear relationship (a parabola), and it can be distorted by a single outlier. Spearman's rank correlation replaces values by ranks, capturing any monotonic trend at the price of discarding the absolute scale.
 
-\begin{remark}{Correlation versus causation}{lecture03-corr-caus}
-Correlation has no direction: from a snapshot of data one can never tell whether $a$ causes $b$, $b$ causes $a$, or a common cause $c$ produces both. Direction requires a perturbation experiment: perturb one variable and observe the effect on the other. This is the core logic of much of experimental biology.
+\begin{remark}\label{rem:lecture03-corr-caus}
+\textbf{Correlation versus causation.}
+Correlation alone does not establish causal direction: $a$ may affect $b$, $b$ may affect $a$, or a common cause may affect both. Causal conclusions require interventions or additional justified causal assumptions. Perturbing one variable and measuring the response is a central experimental route.
 \end{remark}
 
-\begin{remark}{Look at the data}{lecture03-look-at-data}
+\begin{remark}\label{rem:lecture03-look-at-data}
+\textbf{Look at the data.}
 Summary statistics (means, variances, correlation, regression line) can be identical across data sets with radically different shapes. Always inspect the data visually before trusting summary statistics; in biology, values can span orders of magnitude and a single outlier can dominate a correlation coefficient.
 \end{remark}
 
 \section{The binomial distribution}\label{sec:lecture03-binomial}
+\begin{example}{Dependence without linear correlation}{lecture03-nonlinear}
+Let $L$ take $-1,0,1$ with equal probabilities, and let $M=L^2$. Then $\ee[L]=\ee[L^3]=0$, so $\operatorname{Cov}(L,M)=0$ despite $M$ being determined by $L$. Both variances are positive and Pearson correlation is zero. A monotonic transformation is a different situation: replacing observations by their ranks before computing Pearson's coefficient gives Spearman's coefficient (using average ranks for ties). Anscombe's quartet illustrates another limitation: four data sets can share basic numerical summaries while one is curved and others are dominated by outliers. Inspect the scatter plot and residuals before interpreting a coefficient.
+\end{example}
 
 A Bernoulli trial is a single experiment with two outcomes: success with probability $p$, failure with probability $1-p$. Repeating the trial $M$ independent times and counting $L$ successes gives a binomial random variable.
 
@@ -66,19 +113,19 @@ Write $L = \sum_{i=1}^{M} X_i$ where $X_i\in\{0,1\}$ is the indicator of success
 
 \section{Measuring the fluorescence proportionality constant}\label{sec:lecture03-fluorescence}
 
-A common biological measurement uses a fluorescently labeled antibody: the antibody binds specifically to a target protein, and the fluorescence intensity $Y$ is proportional to the copy number $M$ of the protein,
+A common biological measurement uses a fluorescent protein: the fluorescence intensity $Y$ is proportional to the copy number $M$ of the protein,
 \begin{equation}\label{eq:lecture03-fluorescence}
 Y = \alpha M .
 \end{equation}
 The proportionality constant $\alpha$ bundles the labeling efficiency, fluorophore quantum yield, optical collection efficiency, and detector response. It is difficult to determine from first principles, so it must be measured in situ.
 
-Rosenfeld et al. (2005) observed that cell division provides an internal calibration. A mother cell with $M_0$ labeled molecules divides approximately symmetrically into two daughters. Each molecule independently goes to one daughter with probability $1/2$. Thus the number $M_1$ in daughter 1 is
+Rosenfeld et al. (2005), as cited in the lecture, used cell division for internal calibration; a 2006 paper developed the fluctuation method further. A mother cell with $M_0$ fluorescent molecules divides approximately symmetrically into two daughters. Each molecule independently goes to one daughter with probability $1/2$. Thus the number $M_1$ in daughter 1 is
 \begin{equation}\label{eq:lecture03-m1-binomial}
 M_1 \sim \mathrm{Binomial}(M_0,\,1/2),
 \end{equation}
 and $M_2 = M_0 - M_1$ in daughter 2 (no new molecules are created during division).
 
-Define the difference variable $\Delta M = M_1 - M_2 = 2M_1 - M_0$. Its mean is zero (symmetric division) but its variance is nonzero:
+Condition throughout on a fixed mother count $M_0$ (equivalently fixed $Y_0$ for constant positive $\alpha$). Assume negligible synthesis, loss and measurement noise during division. Define $\Delta M=M_1-M_2=2M_1-M_0$. Its conditional mean is zero but its conditional variance is nonzero:
 \begin{align}\label{eq:lecture03-deltaM-var}
 \mathrm{Var}(\Delta M)
 &= \mathrm{Var}(2M_1 - M_0)
@@ -98,37 +145,40 @@ Since $Y_0 = \alpha M_0$ is the mother's fluorescence,
 
 \begin{figure}[hbt]
 \centering
-\begin{tikzpicture}[scale=0.95, every node/.style={font=\small}]
+\begin{tikzpicture}[scale=1.1, every node/.style={font=\small}]
 % Mother cell
 \draw[thick] (0,0) circle (1.1);
-\node at (0,0.25) {\small $M_0$};
+\node at (0,0.25) {$M_0$};
 \node at (0,-0.35) {$Y_0=\alpha M_0$};
-\node at (0,-1.7) {\textbf{mother}};
-% Division arrow
-\draw[->,thick] (1.4,0) -- (2.3,0);
+\node at (0,-2.0) {\textbf{mother}};
+% Division branches and independent partition probabilities
+\draw[->,thick] (1.1,0.25) -- (3.65,1.0)
+  node[midway,above,sloped] {$p=1/2$};
+\draw[->,thick] (1.0,-0.45) -- (3.65,-1.9)
+  node[midway,below,sloped] {$p=1/2$};
 % Daughter 1
-\draw[thick] (4.1,0.7) circle (0.8);
-\node at (4.1,0.25) {\small $M_1$};
-\node at (4.1,-0.35) {$Y_1$};
-\node at (4.1,-1.75) {\small daughter 1};
+\draw[thick] (4.6,1.0) circle (0.75);
+\node at (4.6,1.15) {$M_1$};
+\node at (4.6,0.55) {$Y_1$};
+\node at (4.6,-0.7) {\textbf{daughter 1}};
 % Daughter 2
-\draw[thick] (4.1,-1.4) circle (0.8);
-\node at (4.1,-1.05) {\small $M_2$};
-\node at (4.1,-1.75) {$Y_2$};
-\node at (4.1,-2.6) {\small daughter 2};
-% Molecule labels
-\node[align=left] at (0,1.75) {each molecule:\\ $\to$ daughter 1 with $p=\tfrac12$\\ $\to$ daughter 2 with $p=\tfrac12$};
+\draw[thick] (4.6,-1.9) circle (0.75);
+\node at (4.6,-1.75) {$M_2$};
+\node at (4.6,-2.35) {$Y_2$};
+\node at (4.6,-3.2) {\textbf{daughter 2}};
+% Partitioning assumption
+\node[anchor=south] at (0,1.4) {independent molecule partitioning};
 % Delta Y
-\draw[<->,thick] (4.95,2.0) -- (6.2,2.0);
-\node at (5.6,2.45) {$\Delta Y=\alpha(M_1-M_2)$};
-\node at (5.6,1.65) {$\sigma_{\Delta Y}=\sqrt{\alpha Y_0}$};
+\draw[<->,thick] (5.55,2.35) -- (6.95,2.35);
+\node[anchor=south] at (6.25,2.65) {$\Delta Y=\alpha(M_1-M_2)$};
+\node[anchor=west] at (5.55,1.75) {$\sigma_{\Delta Y}=\sqrt{\alpha Y_0}$};
 \end{tikzpicture}
 \caption{Rosenfeld calibration: symmetric partitioning of $M_0$ fluorescent molecules at cell division. The daughter-to-daughter fluorescence difference $\Delta Y$ has standard deviation $\sqrt{\alpha Y_0}$, so plotting $\sigma_{\Delta Y}$ versus $\sqrt{Y_0}$ across many mothers yields a straight line of slope $\sqrt{\alpha}$, measuring $\alpha$ in the same experiment that uses it.}
 \label{fig:lecture03-rosenfeld}
 \end{figure}
 
 \begin{example}{Rosenfeld experiment}{lecture03-rosenfeld}
-Measure $Y_0$ (mother fluorescence) and $\Delta Y$ (daughter difference) for many dividing bacteria. Plot $\sigma_{\Delta Y}$ against $\sqrt{Y_0}$: the data fall on a straight line through the origin whose slope is $\sqrt{\alpha}$. Once $\alpha$ is known, any fluorescence measurement $Y$ converts directly to a molecule count $M=Y/\alpha$, all within one experiment; no separate calibration is needed, so no slow drift of the instrument between calibration and measurement can bias the result.
+Measure $Y_0$ and $\Delta Y$ for many dividing bacteria. Estimate the conditional variance within narrow mother-fluorescence bins, or fit a conditional statistical model; a single daughter pair cannot supply a standard deviation. The ideal prediction for $\sigma_{\Delta Y}$ versus $\sqrt{Y_0}$ is a line of slope $\sqrt\alpha$. Measurement error, unequal partitioning, bleaching or instrument drift can cause departures and must be modelled. Once a stable conversion is inferred, $M=Y/\alpha$ converts intensity into molecule count. Calibration within the experiment reduces reliance on a separate standard but does not eliminate all systematic error.
 \end{example}
 
 \section{The Poisson limit}\label{sec:lecture03-poisson}
@@ -187,49 +237,39 @@ Luria and Delbr{\"u}ck (1943) grew bacteria from a single founder to a large pop
 
 \begin{figure}[hbt]
 \centering
-\begin{tikzpicture}[scale=1.05, every node/.style={font=\small}]
-% Time axis (top)
-\draw[->,thick] (0,0.5) -- (8.5,0.5) node[right] {generations $\to$};
-\foreach \x in {0,1,2,3,4,5,6,7,8}
-  \draw (\x,0.6) -- (\x,0.5) node[above] {\scriptsize\x};
-% Founder at generation 0
-\draw[thick] (0,-0.3) circle (0.18);
-\node at (0,-0.3) {\tiny N};
-% Binary tree: generations go downward
-% Gen 1
-\draw[thick] (0,-0.3) -- (1,-1.0);
-\draw[thick] (0,-0.3) -- (1,-1.0);
-% Gen 2
-\draw[thick] (1,-1.0) -- (2,-1.7);
-\draw[thick] (1,-1.0) -- (2,-1.7);
-% Gen 3
-\draw[thick] (2,-1.7) -- (3,-2.4);
-\draw[thick] (2,-1.7) -- (3,-2.4);
-% Gen 4
-\draw[thick] (3,-2.4) -- (4,-3.1);
-\draw[thick] (3,-2.4) -- (4,-3.1);
-% Cells at each generation (non-mutant, black)
-\draw[thick] (0,-0.3) circle (0.18); \node at (0,-0.3) {\tiny N};
-\draw[thick] (1,-1.0) circle (0.18); \node at (1,-1.0) {\tiny N};
-\draw[thick] (2,-1.7) circle (0.18); \node at (2,-1.7) {\tiny N};
-\draw[thick] (3,-2.4) circle (0.18); \node at (3,-2.4) {\tiny N};
-\draw[thick] (4,-3.1) circle (0.18); \node at (4,-3.1) {\tiny N};
-% Early mutation (red) at gen 1: branches and amplifies
-\draw[thick,red] (0,-0.3) -- (1,-1.0);
-\draw[thick,red] (1,-1.0) circle (0.18); \node at (1,-1.0) {\textcolor{red}{\tiny M}};
-\draw[thick,red] (1,-1.0) -- (2,-1.7);
-\draw[thick,red] (2,-1.7) circle (0.18); \node at (2,-1.7) {\textcolor{red}{\tiny M}};
-\draw[thick,red] (2,-1.7) -- (3,-2.4);
-\draw[thick,red] (3,-2.4) circle (0.18); \node at (3,-2.4) {\textcolor{red}{\tiny M}};
-\draw[thick,red] (3,-2.4) -- (4,-3.1);
-\draw[thick,red] (4,-3.1) circle (0.18); \node at (4,-3.1) {\textcolor{red}{\tiny M}};
-\node[align=center,text=red] at (5.2,-3.6) {\textbf{jackpot}\\\scriptsize early mutation amplified};
-% Late mutation (blue) at gen 3: few descendants
-\draw[thick,blue] (3,-2.4) -- (4,-3.9);
-\draw[thick,blue] (4,-3.9) circle (0.18); \node at (4,-3.9) {\textcolor{blue}{\tiny m}};
-\node[align=center,text=blue] at (5.2,-3.9) {\scriptsize late mutation,\\\scriptsize few descendants};
-% Legend
-\node[align=left] at (6.2,-0.5) {black = non-mutant\\ red = early mutation (jackpot)\\ blue = late mutation};
+\begin{tikzpicture}[every node/.style={font=\small}]
+\draw[->,thick] (0,2.3) -- (4.6,2.3) node[right] {generation};
+\foreach \g in {0,...,4} {
+  \draw (\g,2.3) -- (\g,2.4) node[above] {\scriptsize\g};
+}
+% Draw each lineage once; color the edge on which the mutation first appears.
+\foreach \g in {1,...,4} {
+  \pgfmathtruncatemacro{\last}{2^\g-1}
+  \pgfmathtruncatemacro{\half}{2^(\g-1)}
+  \foreach \k in {0,...,\last} {
+    \pgfmathsetmacro{\y}{1.92-(\k+0.5)*3.84/(2^\g)}
+    \pgfmathsetmacro{\yp}{1.92-(floor(\k/2)+0.5)*3.84/(2^(\g-1))}
+    \def\lineagecolor{black}
+    \ifnum\k<\half\def\lineagecolor{red}\fi
+    \ifnum\g=4\ifnum\k=14\def\lineagecolor{blue}\fi\fi
+    \draw[thick,\lineagecolor] (\g-1,\yp) -- (\g,\y);
+  }
+}
+% Opaque nodes keep branch lines out of the cell symbols.
+\foreach \g in {0,...,4} {
+  \pgfmathtruncatemacro{\last}{2^\g-1}
+  \pgfmathtruncatemacro{\half}{2^(\g-1)}
+  \foreach \k in {0,...,\last} {
+    \pgfmathsetmacro{\y}{1.92-(\k+0.5)*3.84/(2^\g)}
+    \def\lineagecolor{black}
+    \ifnum\g>0\ifnum\k<\half\def\lineagecolor{red}\fi\fi
+    \ifnum\g=4\ifnum\k=14\def\lineagecolor{blue}\fi\fi
+    \draw[thick,draw=\lineagecolor,fill=white] (\g,\y) circle (0.065);
+  }
+}
+\node[anchor=west,align=left,text=red] at (5.05,1.55) {\textbf{early mutation}\\eight final descendants};
+\node[anchor=west,align=left,font=\scriptsize] at (5.05,0) {black: non-mutant\\red: early mutant lineage\\blue: late mutation};
+\node[anchor=west,align=left,text=blue] at (5.05,-1.55) {late mutation\\one final mutant};
 \end{tikzpicture}
 \caption{Jackpot amplification in the Luria--Delbr{\"u}ck model. A mutation occurring early (red) is present in the founder of a large subpopulation and yields many resistant descendants by the final generation (a ``jackpot'' culture). A mutation occurring late (blue) yields few descendants. Cultures are therefore highly variable: most have zero or a few mutants, rare cultures have very many.}
 \label{fig:lecture03-jackpot}
@@ -251,7 +291,7 @@ The challenge (phage) elicits a defensive mutation in response; resistance frequ
 Mutations arise randomly and independently of the phage, during growth before exposure. The phage merely selects pre-existing mutants. Resistance frequency varies strongly between cultures because early mutations are amplified exponentially.
 \end{definition}
 
-The lecturer noted the historical resonance: in 1943 the structure of DNA was unknown (discovered 13 years later), so the question could not be settled by sequencing. It had to be settled indirectly, statistically, using the same logic as the HIV resistance discussion in Lecture 1, where drug resistance mutations pre-exist rather than being induced by the drug.
+The lecturer noted the historical resonance: in 1943 the structure of DNA was unknown (described by the double-helix model 10 years later), so the question could not be settled by sequencing. It had to be settled indirectly, statistically, using the same logic as the HIV resistance discussion in Lecture 1, where drug resistance mutations pre-exist rather than being induced by the drug.
 
 \section{Jackpot amplification: the mathematics}\label{sec:lecture03-jackpot-math}
 
@@ -259,10 +299,11 @@ Assume synchronous, perfectly exponential growth: generation $n$ contains $n_0\,
 \begin{equation}\label{eq:lecture03-lambda-n}
 \lambda_n = \mu\,n_0\,2^{n},
 \end{equation}
-and the actual number $m_n$ of mutation events in generation $n$ is Poisson:
+We approximate the number $m_n$ of new mutation events in generation $n$ by independent Poisson variables:
 \begin{equation}\label{eq:lecture03-mn-poisson}
 m_n \sim \mathrm{Poisson}(\lambda_n).
 \end{equation}
+This is a rare-mutation approximation to finite binomial opportunities, not an exact finite-population process. As discussed in the lecture, divisions are synchronous, resistance is inherited without back mutation, and repeat events in already-mutant lineages are neglected. Mutant and non-mutant lineages grow equally fast before selection. Neglecting depletion is appropriate when the mutant fraction is small (in particular, $g\mu\ll1$ for its mean). The approximation can assign counts above the final population and should not be used to describe saturation. Here $\mu$ refers to mutation opportunities assigned to cells in generation $n$; a per-division definition must be converted consistently.
 
 A mutation that occurs in generation $n$ is inherited by all descendants. From generation $n$ to the final generation $g$ there are $g-n$ further doublings, so the amplification factor is
 \begin{equation}\label{eq:lecture03-amplification}
@@ -293,11 +334,11 @@ Its mean is
 \begin{equation}\label{eq:lecture03-s-mean}
 \ee[s] = \sum_{n=1}^{g} \mu N = g\,\mu\,N .
 \end{equation}
-Note that $\ee[s]$ grows linearly with the number of generations $g$, unlike a Poisson process with the same mean.
+At fixed $N$, the mean grows linearly with the number of generations $g$; the variance distinguishes this model from a Poisson distribution with the same mean.
 
-\section{Moment generating functions}\label{sec:lecture03-mgf}
+\section{Probability generating functions}\label{sec:lecture03-mgf}
 
-To handle the sum of amplified Poisson variables, the lecturer introduced the (probability) generating function, the discrete analogue of the Laplace transform.
+To handle the sum of amplified Poisson variables, the lecturer introduced the probability generating function, the discrete analogue of the Laplace transform.
 
 \begin{definition}{Probability generating function}{lecture03-pgf}
 For a discrete non-negative random variable $X$ with PMF $p(x)=\Pr(X=x)$, define
@@ -306,7 +347,7 @@ G_X(z) = \ee[z^{X}] = \sum_{x=0}^{\infty} p(x)\,z^{x}.
 \end{equation}
 \end{definition}
 
-Key properties, valid for any such $X$:
+The PGF converges for $|z|\leq1$. The moment-generating function is $M_X(t)=G_X(\ee^t)$ where finite; the two definitions use different arguments. Derivatives below are evaluated from inside the convergence domain at $z=1$ and yield finite identities when the relevant moments exist. Key properties:
 \begin{enumerate}[nosep]
 \item Normalization: $G_X(1) = \sum_x p(x) = 1$.
 \item First moment: $G_X'(1) = \ee[X]$.
@@ -388,8 +429,9 @@ Now sum the $\lambda_n$:
 \end{align}
 where the last step uses $N=n_0\,2^{g}$ and drops the subleading $-2\mu n_0$ for large $g$. The lecturer denoted this sum by $\lambda_{\mathrm{big}}\approx 2\mu N$.
 
-\begin{remark}{Approximation}{lecture03-lambda-big}
-The factor of 2 in $\lambda_{\mathrm{big}}\approx 2\mu N$ comes from summing the geometric series $\sum_n 2^n \approx 2^{g+1}$. If generations are indexed from $0$ instead of $1$, or when $\mu$ counts per cell-division rather than per cell, the numerical prefactor changes; the scaling $\lambda_{\mathrm{big}}\propto\mu N$ is robust.
+\begin{remark}\label{rem:lecture03-lambda-big}
+\textbf{Approximation.}
+The exact sum in this convention is $\lambda_{\mathrm{big}}=2\mu(N-n_0)$. Replacing it by $2\mu N$ requires $N\gg n_0$. Consistent relabelling of generation indices cannot change this physical result; changing mutation opportunities from daughter cells to cell divisions can change the conversion between rate parameters.
 \end{remark}
 
 Therefore
@@ -398,6 +440,7 @@ Therefore
 \end{equation}
 
 \subsection{Mean and variance from derivatives}\label{sec:lecture03-s-moments}
+\textbf{Supplementary derivation.} The lecture deferred the full variance calculation to the next session. The following completes it within the independent-Poisson model stated above.
 
 From $G_s(z)$:
 \begin{align}
@@ -432,26 +475,25 @@ The first term is $(\ee[s])^2$. The second:
 Hence
 \begin{equation}\label{eq:lecture03-s-var}
 \mathrm{Var}(s) = G_s''(1) + \ee[s] - (\ee[s])^{2}
-\;\approx\; \mu N^{2}/n_0
-\quad\text{(dominant term for large $N$)}.
+=\mu N(2^g-1)\approx\mu N^{2}/n_0.
 \end{equation}
 
-The Pano factor is therefore
+For $\mu>0$ and $g\geq1$, the Fano factor is therefore
 \begin{equation}\label{eq:lecture03-pano}
-\text{Pano factor} = \frac{\mathrm{Var}(s)}{\ee[s]}
-\;\approx\; \frac{\mu N^{2}/n_0}{g\mu N}
-= \frac{N}{g\,n_0} \;\gg\; 1 .
+\text{Fano factor} = \frac{\mathrm{Var}(s)}{\ee[s]}
+=\frac{2^g-1}{g}\approx\frac{N}{g\,n_0}.
 \end{equation}
 
-For a Poisson distribution the Pano factor is exactly 1. Here it is enormous: the variance is dominated by rare jackpot cultures with very large $s$. This is the statistical signature that mutations arise \emph{before} selection (Darwin), not in response to the phage (Lamarck).
+For a Poisson distribution the Fano factor is exactly 1. For many generations it can be enormous: the variance is dominated by rare jackpot cultures with very large $s$. This supports pre-selection amplification against the homogeneous independent induced-mutation alternative.
 
-\begin{remark}{Why the variance is so large}{lecture03-variance-large}
-Most cultures have zero or a few mutants; a few cultures have an early jackpot mutation and produce $O(N)$ mutants. The mean is pulled up by the jackpots, but the variance is pulled up much more (it scales as $N^2$, not $N$). A Poisson process with the same mean would have variance equal to the mean ($\propto N$); the observed $N^2$ scaling is incompatible with Poisson.
+\begin{remark}\label{rem:lecture03-variance-large}
+\textbf{Why the variance is so large.}
+Early events yield large clones and strongly increase the variance. For fixed $n_0$ and small $\mu$, the model variance grows approximately as $\mu N^2/n_0$, while a Poisson variable with the same mean has variance $g\mu N=\mu N\log_2(N/n_0)$. Whether most cultures have zero or few mutants depends on the parameters. A large Fano factor rejects the specified homogeneous independent induced-mutation model; heterogeneous or correlated alternatives require separate assessment.
 \end{remark}
 
 \section{Maximum-likelihood estimate of the mutation rate}\label{sec:lecture03-mle}
 
-Repeat the experiment in $c$ independent cultures. Let $c_0$ be the number of cultures with zero resistant mutants ($s=0$), and $c-c_0$ the number with at least one mutant. The probability model is
+Repeat the experiment in $c\geq1$ independent cultures with common $n_0,g,\mu$ and final population $N$. Let $c_0$ be the number of cultures with zero resistant mutants ($s=0$), and $c-c_0$ the number with at least one mutant. Initially assume $0<c_0<c$. The probability model is
 \begin{equation}\label{eq:lecture03-pzero-model}
 \Pr(s=0) = e^{-\lambda_{\mathrm{big}}},
 \qquad
@@ -499,27 +541,28 @@ e^{-\hat{\lambda}_{\mathrm{big}}} = \frac{c_0}{c},
 Since $\lambda_{\mathrm{big}}\approx 2\mu N$, the maximum-likelihood estimate of the mutation rate is
 \begin{equation}\label{eq:lecture03-mle-mu}
 \hat{\mu}
-= \frac{\hat{\lambda}_{\mathrm{big}}}{2N}
-= \frac{1}{2N}\,\ln\!\frac{c}{c_0},
+= \frac{\hat{\lambda}_{\mathrm{big}}}{2(N-n_0)}
+\approx \frac{1}{2N}\,\ln\!\frac{c}{c_0},
 \qquad N = n_0\,2^{g}.
 \end{equation}
 
 \begin{example}{Numerical illustration}{lecture03-mle-numeric}
+At the boundaries, $c_0=c$ gives $\hat\lambda_{\mathrm{big}}=\hat\mu=0$. If $c_0=0$, the likelihood increases toward its supremum as $\lambda_{\mathrm{big}}\to\infty$; there is no finite unconstrained maximum. This signals inadequate zero-culture information and does not justify a literal infinite biological mutation rate.
 Suppose $c=20$ parallel cultures, of which $c_0=5$ show no resistant colonies, and the final population is $N=10^{9}$ bacteria per culture. Then
-\[
+\begin{equation}\label{eq:lecture03-mle-numeric}
 \hat{\mu} = \frac{1}{2\cdot10^{9}}\ln\!\frac{20}{5}
 = \frac{\ln 4}{2\cdot10^{9}}
 \approx \frac{1.386}{2\cdot10^{9}}
 \approx 6.9\times10^{-10}
-\]
+\end{equation}
 mutations per bacterium per generation. The estimate depends only on the fraction $c_0/c$ of zero-mutant cultures and the final population size, not on the detailed distribution of mutant counts in the positive cultures.
 \end{example}
 
 \section{Why the result is not Poisson}\label{sec:lecture03-not-poisson}
 
-If resistance mutations arose in response to the phage (Lamarck), each bacterium would face the same small challenge probability, independently, at the moment of exposure. The number of mutants per culture would then be Poisson with mean $\mu N$ and Pano factor 1.
+If resistance mutations arose in response to the phage (Lamarck), each bacterium would face the same small challenge probability, independently, at the moment of exposure. Under this homogeneous independent alternative, the count is binomial, approximated for rare events by a Poisson distribution with mean $\mu N$ and Fano factor 1.
 
-The actual model has mutations occurring \emph{during growth}, before exposure, with exponential amplification of early events. The resulting Pano factor $\approx N/(g n_0)\gg1$ means the variance is orders of magnitude larger than the mean. The distribution of $s$ has a long tail (jackpot cultures) and is highly skewed, precisely the pattern Luria and Delbr{\"u}ck observed: most cultures yield zero or one resistant colony, a few cultures yield very many, and the experiment is hard to reproduce exactly because jackpots are rare.
+The actual model has mutations occurring \emph{during growth}, before exposure, with exponential amplification of early events. The resulting Fano factor $\approx N/(g n_0)\gg1$ means the variance is orders of magnitude larger than the mean. The distribution of $s$ has a long tail (jackpot cultures) and is highly skewed, precisely the pattern Luria and Delbr{\"u}ck observed: most cultures yield zero or one resistant colony, a few cultures yield very many, and the experiment is hard to reproduce exactly because jackpots are rare.
 
 \section{Self-check before the exam}\label{sec:lecture03-selfcheck}
 
@@ -531,24 +574,25 @@ The actual model has mutations occurring \emph{during growth}, before exposure, 
 \item For the Luria--Delbr{\"u}ck model, write $\lambda_n=\mu n_0 2^n$, $a_n=2^{g-n}$, $y_n=a_nm_n$, and derive $G_s(z)=\exp(\sum_n\lambda_n(z^{a_n}-1))$.
 \item From $G_s(0)$, derive $\Pr(s=0)=e^{-\lambda_{\mathrm{big}}}$ with $\lambda_{\mathrm{big}}\approx2\mu N$.
 \item Carry out the MLE derivation: show $\hat{\lambda}_{\mathrm{big}}=\ln(c/c_0)$ and $\hat{\mu}=\ln(c/c_0)/(2N)$.
-\item Explain why the Pano factor $\mathrm{Var}(s)/\ee[s]\gg1$ supports spontaneous (pre-exposure) mutation rather than induced mutation.
+\item Explain why the Fano factor $\mathrm{Var}(s)/\ee[s]\gg1$ supports spontaneous (pre-exposure) mutation rather than induced mutation.
 \end{enumerate}
+
+\subsection*{Open questions / remarks}
+\begin{itemize}[nosep]
+\item The lecturer sketched the probability generating function at the end of the lecture and announced that the variance calculation (Fano factor $\gg1$) will be completed next week; the derivation above fills in that gap from his outline.
+\item The factor of 2 reflects the stated mutation-opportunity convention, not a mere relabelling of generations.
+\end{itemize}
+
+\section*{Summary}
+This lecture established three layers. First, the binomial distribution describes counts of successes in repeated independent trials, with mean $Mp$ and variance $Mp(1-p)$; in the many-rare-events limit it becomes Poisson, whose signature property is mean equal to variance. Second, cell division provides an internal calibration: binomial partitioning of fluorescent molecules at division lets one measure the fluorescence proportionality constant $\alpha$ from the slope of $\sigma_{\Delta Y}$ versus $\sqrt{Y_0}$ (Rosenfeld's trick). Third, the Luria--Delbr{\"u}ck fluctuation test models spontaneous mutation during exponential growth: early mutations are jackpots amplified by $2^{g-n}$, giving a generating function $G_s(z)=\exp(\sum_n\lambda_n(z^{2^{g-n}}-1))$, a zero-mutant probability $e^{-\lambda_{\mathrm{big}}}$, and a mutation-rate estimate $\hat{\mu}=\ln(c/c_0)/(2N)$. For many generations, the large Fano factor supports pre-existing mutation over the specified homogeneous independent induced-mutation alternative. Next week: completion of the variance/Fano-factor calculation from the probability generating function.
 
 \subsection*{Further Reading}
 \begingroup\small
 Amir Erez, course notes, Chapter~3 (discrete distributions, mutation, Luria--Delbr{\"u}ck); Philip Nelson, \emph{Physical Models of Living Systems}, chapters on randomness in biology and mutation-selection.
 
-M. Delbr{\"u}ck and S.~E. Luria, ``Mutations of Bacteria from Virus Sensitivity to Virus Resistance,'' \emph{Genetics} \textbf{28}(6), 491--511 (1943), the original fluctuation test.
+S.~E. Luria and M. Delbr{\"u}ck, ``Mutations of Bacteria from Virus Sensitivity to Virus Resistance,'' \emph{Genetics} \textbf{28}(6), 491--511 (1943), the original fluctuation test.
 
-J.~S. Cullis, ``On the Use of the Fluctuation Test,'' \emph{Genetical Research} (1974): discussion of the Pano factor and variance-to-mean ratio as diagnostics.
+N. Rosenfeld et al., ``Gene Regulation at the Single-Cell Level,'' \emph{Science} \textbf{307}, 1962--1965 (2005), \url{https://doi.org/10.1126/science.1106914}. See also ``A Fluctuation Method to Quantify In Vivo Fluorescence Data,'' \emph{Biophysical Journal} \textbf{91}, 759--766 (2006), \url{https://doi.org/10.1529/biophysj.105.073098}.
+
+Q. Zheng, ``Update on Estimation of Mutation Rates Using Data From Fluctuation Experiments,'' \emph{Genetics} \textbf{171}, 861--864 (2005), \url{https://doi.org/10.1534/genetics.104.035774}.
 \endgroup
-
-\subsection*{Open questions / remarks}
-\begin{itemize}[nosep]
-\item The lecturer sketched the moment-generating function at the end of the lecture and announced that the variance calculation (Pano factor $\gg1$) will be completed next week; the derivation above fills in that gap from his outline.
-\item The factor of 2 in $\lambda_{\mathrm{big}}\approx2\mu N$ depends on the generation-indexing convention; the scaling with $\mu N$ and the MLE structure are convention-independent.
-\item Transcript slips: the lecturer code-switched between Hebrew and English throughout (using Hebrew terms for mean and variance); these do not affect the physics.
-\end{itemize}
-
-\section*{Summary}
-This lecture established three layers. First, the binomial distribution describes counts of successes in repeated independent trials, with mean $Mp$ and variance $Mp(1-p)$; in the many-rare-events limit it becomes Poisson, whose signature property is mean equal to variance. Second, cell division provides an internal calibration: binomial partitioning of fluorescent molecules at division lets one measure the fluorescence proportionality constant $\alpha$ from the slope of $\sigma_{\Delta Y}$ versus $\sqrt{Y_0}$ (Rosenfeld's trick). Third, the Luria--Delbr{\"u}ck fluctuation test models spontaneous mutation during exponential growth: early mutations are jackpots amplified by $2^{g-n}$, giving a generating function $G_s(z)=\exp(\sum_n\lambda_n(z^{2^{g-n}}-1))$, a zero-mutant probability $e^{-\lambda_{\mathrm{big}}}$, and a mutation-rate estimate $\hat{\mu}=\ln(c/c_0)/(2N)$. The Pano factor $\gg1$ is the statistical fingerprint of pre-existing, randomly arising mutations: Darwinian evolution, not Lamarckian induction. Next week: completion of the variance/Pano-factor calculation from the moment generating function.

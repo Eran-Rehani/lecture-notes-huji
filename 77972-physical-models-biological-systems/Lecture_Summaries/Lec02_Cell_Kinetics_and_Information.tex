@@ -17,19 +17,35 @@
 % Transcript corrections applied silently where unambiguous (pulse-chase, uninfected,
 %   perturbation, entropy, mutual information, KL divergence, marginal); slips of fact
 %   are flagged in remarks rather than corrected in silence.
+% Revision date: 2026-10-23
+% Revision 2026-11-02: homework tie-ins (Problems 2.1-2.2), Bernoulli KL example,
+%   further-reading pointer; see LECTURE_SUMMARY_GAP_MATRIX_2026-11-02.md.
+% Additional transcript: Lecture Transcripts/77972_2026-10-20_שעור_א_ivrit-ai_hosted.md
+% Hosted cross-checks: 00:27:05--00:27:35 (tracer effects),
+%   00:43:20--00:48:00 (marker axes), 01:16--01:23 (HIV),
+%   02:23:20--02:31:40 (effective states and entropy identities),
+%   02:40:25--02:44:14 (KL and Jensen).
+% Official equations checked against original PDF, not OCR alone.
+% Figure integration: 2026-10-23; source data replace the schematic time traces.
+% Asset sources and crops: Lecture_Summaries/figures/SOURCES.md.
+% Derivation expansion: 2026-10-23; model terms and intermediate algebra added.
 \chapter[Cell kinetics and information]{Cell kinetics and information}\label{chap:lecture02}
 \noindent\textbf{Lecture 2 \enspace|\enspace 20 October 2026}
 
 This lecture answers one question in two languages. The first half asks how a population can sit at a steady value while its contents are replaced at a furious rate, and shows how a labelled pulse turns that hidden flux into a measurable travelling wave. The second half builds the vocabulary needed to say how much one measurement tells us about another: probability, entropy, mutual information, and the Kullback--Leibler divergence.
 
-The link is not decorative. A pulse-chase experiment is an information channel: the label encodes where a cell came from, the measurement reads it out with noise, and the fitted rate is the inference we draw. By the end of the lecture both halves use the same word---information---and the same caution: more structure in the model is not free, and more data is not always available.
+A tracer measurement reduces uncertainty about otherwise hidden dynamics. The link is conceptual; the compartment fit below does not itself calculate Shannon information.
+
+\begin{remark}
+The order follows the classroom discussion: pulse-chase, the HIV extension, then probability and information. The official notes supply notation and supporting equations. Subsections marked \emph{Supplementary} develop those ideas beyond the classroom derivation and are separated from the taught core.
+\end{remark}
 
 \subsection*{Revision goals}
 \begin{itemize}
 \item Explain why a steady cell count does not imply slow turnover, and what a pulse-chase experiment perturbs.
 \item Derive and interpret the source--destination equation, in differential, integral, and transfer-function form.
 \item Fit the two rates to data, and explain why the fit is performed on the integral rather than on the derivative.
-\item Write down the four-variable HIV model and find its fixed points, including the infection threshold.
+\item Write down the four-variable HIV model and distinguish infectious particles from total particle load; optionally derive its fixed points and infection threshold.
 \item State the rules of discrete probability, and derive the geometric distribution and its mean.
 \item Define Shannon entropy, conditional entropy, mutual information, and KL divergence, and prove that the last two are non-negative.
 \end{itemize}
@@ -45,7 +61,7 @@ The cell types are organised as a branching tree. Haematopoietic stem cells divi
 
 The biological question is quantitative: \emph{how fast} does a cell move from one state to the next? The rates matter clinically. Leukaemias are characterised by overproduction or accumulation of particular cell types, so a measured set of healthy transition rates supplies the baseline against which a diseased marrow can be compared.
 
-Modelling the biology directly is hopeless. Inside the marrow there is spatial structure, cell--cell contact, migration between marrow, spleen, and lymph nodes, and a biochemistry that is only partly known. The lecture makes a deliberate substitution: \emph{do not model the biology; model the flow of a dye through the space of cell states}. The dye is a DNA label, and the space is the space of surface-marker profiles. The resulting model is physical---a conservation statement for a tagged quantity---rather than biochemical.
+Modelling the biology directly is hopeless. Inside the marrow there is spatial structure, cell--cell contact, migration between marrow, spleen, and lymph nodes, and a biochemistry that is only partly known. The lecture makes a deliberate substitution: \emph{do not model the biology; model the flow of a dye through the space of cell states}. The dye is a DNA label, and the space is the space of surface-marker profiles. The resulting model is physical (a conservation statement for a tagged quantity) rather than biochemical.
 
 % ==============================================================================
 \section{Pulse-chase: turning a steady state into a signal}\label{sec:lec02:pulse-chase}
@@ -58,9 +74,9 @@ A steady state has $\dd W/\dd t=0$, so a measurement of $W$ alone reveals nothin
 In a \emph{pulse}, a cohort of cells is tagged at a known time, usually while they are synthesising DNA. In the \emph{chase}, the tag is followed through later times and through cell states. The tag is not the biological process; it is a conserved marker whose redistribution reports the process.
 \end{definition}
 
-The tag used here is \emph{5-iodo-2$'$-deoxyuridine} (IdU), a thymidine analogue. A cell that replicates its DNA incorporates IdU in place of thymidine, so the label marks exactly the cells that passed through S phase during the pulse. When such a cell divides, each daughter receives half of the labelled DNA, so the label per cell halves at each division; a cell that stops dividing and merely differentiates keeps its label. This single fact determines what the model may assume, and we return to it in Section~\ref{sec:lec02:data}.
+The tag used here is \emph{5-iodo-2$'$-deoxyuridine} (IdU), a thymidine analogue. A cell synthesising DNA can incorporate IdU during the pulse, so the tracer marks the DNA-synthesising cohort. Division shares labelled DNA between the daughters: on average, label per daughter is half the mother's. A cell that stops dividing and merely differentiates retains its label under the model's conservation assumption. This distinction determines what the model may assume, and we return to it in Section~\ref{sec:lec02:data}.
 
-The readout is single-cell mass cytometry. Cells are nebulised into an argon plasma at several thousand kelvin, where they are vaporised, atomised, and ionised. The ion cloud passes through a time-of-flight mass spectrometer, which separates ions by mass-to-charge ratio. Because the plasma destroys the cell, every measurement is a snapshot of one cell. Antibodies conjugated to metal isotopes label surface proteins, and the iodine atom of IdU is counted directly. One run therefore returns, for each of millions of cells, a vector of roughly thirty marker intensities---a coordinate in ``cell space'' plus the label content at that coordinate.
+The readout is single-cell mass cytometry. Cells are nebulised into an argon plasma at several thousand kelvin, where they are vaporised, atomised, and ionised. The ion cloud passes through a time-of-flight mass spectrometer, which separates ions by mass-to-charge ratio. Because the plasma destroys the cell, every measurement is a snapshot of one cell. Antibodies conjugated to metal isotopes label surface proteins, and the iodine atom of IdU is counted directly. One run therefore returns, for each of millions of cells, a vector of roughly thirty marker intensities, a coordinate in ``cell space'' plus the label content at that coordinate.
 
 \begin{figure}[H]
 \centering
@@ -68,7 +84,7 @@ The readout is single-cell mass cytometry. Cells are nebulised into an argon pla
   box/.style={draw=primary,fill=primary!4,rounded corners,align=center,
     minimum width=24mm,minimum height=13mm,inner sep=3pt}]
 \node[box] (a) at (0,0) {\shortstack{Inject IdU\\into live\\mouse}};
-\node[box] (b) at (3.15,0) {\shortstack{Wait $12$\,h;\\sacrifice 3 mice}};
+\node[box] (b) at (3.15,0) {\shortstack{Wait chosen\\chase time;\\harvest cohort}};
 \node[box] (c) at (6.3,0) {\shortstack{Harvest bone\\marrow cells}};
 \node[box] (d) at (9.45,0) {\shortstack{Mass\\cytometry}};
 \node[box] (e) at (12.6,0) {\shortstack{Bin cells by\\marker profile}};
@@ -79,24 +95,25 @@ The readout is single-cell mass cytometry. Cells are nebulised into an argon pla
 \node[align=center,font=\scriptsize,text=primary] at (1.575,-1.35) {pulse};
 \node[align=center,font=\scriptsize,text=primary] at (11.0,-1.35) {readout, not a movie};
 \end{tikzpicture}
-\caption{The experiment is a sequence of independent snapshots. Three mice are sacrificed at each time point, so a ``time series'' is an average over animals, not a trajectory of one cell. Repetition of the schedule at $12$\,h intervals over about $90$\,h produces the data in Figure~\ref{fig:lec02-trajectory}.}\label{fig:lec02-pipeline}
+\caption{The experiment is a sequence of destructive snapshots from different animals, not a movie of one cell. The chase time varies between cohorts. Distinguish the time of a signal's peak from the full measurement window in Figure~\ref{fig:lec02-trajectory}.}\label{fig:lec02-pipeline}
 \end{figure}
 
 \subsection{Why a pulse reveals a flux}\label{subsec:lec02:why-pulse}
-In the unperturbed marrow, the number of cells in any state is constant because a large influx from upstream is balanced by differentiation out of the state and by death. The label changes nothing about those numbers; it only marks a subset. Immediately after the pulse, the labelled cells sit in the states that were dividing at that moment. As time passes, the labelled cohort moves downstream, and the label appears in states that were initially unlabelled. The total cell number in each state stays constant; only the labelled fraction moves.
+In the unperturbed marrow, the number of cells in any state is constant because a large influx from upstream balances differentiation out of the state and death. The label changes nothing about those numbers; it only marks a subset. Immediately after the pulse, the labelled cells sit in the states that were dividing at that moment. As time passes, the labelled cohort moves downstream, and the label appears in states that were initially unlabelled. The total cell number in each state stays constant; only the labelled fraction moves.
 
-This is why the experiment can measure a rate that a static count cannot: the label acts as a tracer in a flow, exactly as a dye injected into a pipe reveals the flow speed without changing the pipe's contents.
+A static count cannot measure a rate. The label acts as a tracer in a flow, exactly as a dye injected into a pipe reveals the flow speed without changing the pipe's contents.
 
 \subsection{What the model may assume}\label{subsec:lec02:assumptions}
-Three assumptions are inherited from the design and must be stated before any equation is written.
+The model rests on four assumptions, which should be stated before writing its equations.
 \begin{enumerate}
-\item \textbf{Steady state.} Cell numbers in each bin are constant during the chase; label-free cells continuously replace labelled ones.
+\item \textbf{Steady state.} Cell numbers in each bin are approximately constant during the chase; incoming cells replace those leaving.
+\item \textbf{Nonperturbing tracer.} At the chosen dose, IdU is assumed not to appreciably change survival, division, or differentiation. This is an experimental assumption to check with controls, not a property guaranteed by the label's name.
 \item \textbf{Label conservation per cell.} A cell that neither divides nor dies carries a fixed amount of label. In the post-mitotic part of the tree this holds, because differentiation changes a cell's identity, not its DNA content.
 \item \textbf{Well-mixed bins.} Cells with similar marker profiles are treated as one compartment, so a single transfer rate summarises their behaviour.
 \end{enumerate}
 
 \begin{remark}
-Assumption 2 is the reason the analysis is restricted to cells below the dividing compartment. In the stem and transit-amplifying region, division dilutes the label and would masquerade as loss. Section~\ref{sec:lec02:data} quantifies that effect.
+The label-conservation assumption is the reason the analysis is restricted to cells below the dividing compartment. In the stem and transit-amplifying region, division dilutes the label and would masquerade as loss. Section~\ref{sec:lec02:data} explains that ambiguity.
 \end{remark}
 
 % ==============================================================================
@@ -104,7 +121,7 @@ Assumption 2 is the reason the analysis is restricted to cells below the dividin
 % ==============================================================================
 
 \subsection*{Mathematical Setup}
-Pick two neighbouring regions of cell space: an upstream \emph{source} with label content $S(t)$ and a downstream \emph{destination} with label content $D(t)$. Both are measured as label per cell in the bin, so they carry the same arbitrary units, say ``IdU fluorescence units''. Label enters the destination from the source at a rate proportional to how much labelled source is available, and leaves at a per-capita rate $d$.
+Pick two neighbouring regions of cell space: an upstream \emph{source} with label content $S(t)$ and a downstream \emph{destination} with label content $D(t)$. Both are measured as mean label per cell in the bin, so they carry the same arbitrary iodine-signal units. The readout is mass cytometry, not fluorescence. Label enters the destination from the source at a rate proportional to how much labelled source is available, and leaves at a per-capita rate $d$.
 
 \begin{figure}[H]
 \centering
@@ -117,21 +134,35 @@ Pick two neighbouring regions of cell space: an upstream \emph{source} with labe
 \draw[->,thick,exacol] (s.east) -- node[above,font=\small] {$kS$} (d.west);
 \draw[->,thick,accent] (d.east) -- node[above,font=\small,pos=0.55] {$dD$} ++(2.2,0);
 \end{tikzpicture}
-\caption{Bookkeeping for the label. The source is continuously refilled with unlabelled cells (left arrow), so its labelled content decays even though its total cell number is constant. The destination gains label at rate $kS$ and loses it at rate $dD$ (right arrow).}\label{fig:lec02-source-destination}
+\caption{Bookkeeping for the label. The source can exchange cells with upstream populations (left arrow); its measured label history is the input, rather than a decay law imposed by this model. The destination gains label at rate $kS$ and loses it at rate $dD$ (right arrow).}\label{fig:lec02-source-destination}
 \end{figure}
 
 The assumption of a constant per-capita exit rate gives the balance law
 \begin{equation}\label{eq:lec02:pulse-model}
 \boxed{\frac{\dd D}{\dd t}=kS(t)-dD(t),\qquad D(t_0)=D_0.}
 \end{equation}
-Here $k$ is the transfer (differentiation) rate with units of inverse time, and $d$ is the loss rate of labelled cells from the destination, also inverse time. The term $kS$ has units of label per time, as required.
+Here $k$ is an effective source coefficient and $d$ an effective destination-loss coefficient, both with units of inverse time. The term $kS$ has units of label per cell per time, as required.
+Read the equation from left to right: $\dot D$ is the net change in the destination's mean label, $kS$ is the incoming contribution driven by the measured source, and $dD$ is the outgoing contribution proportional to the label already present. A large $S$ raises the influx; a large $D$ raises the loss. The initial condition $D(t_0)=D_0$ states where the response begins and is required in addition to the differential equation. A zero derivative means $kS=dD$ at that instant; it does not imply that label has stopped moving.
+
+\paragraph{Which quantity is conserved?}
+Mean label per cell and total label in a bin are different observables. For constant bin populations $n_S,n_D$, cell influx $F$ from source to destination, and destination outflux $F_{\mathrm{out}}$, conservation of tracer gives
+\begin{equation}\label{eq:lec02:normalisation}
+\frac{\dd(n_DD)}{\dd t}=FS-F_{\mathrm{out}}D,
+\qquad k=\frac{F}{n_D},\quad d=\frac{F_{\mathrm{out}}}{n_D}.
+\end{equation}
+For clarity, $n_DD$ is total destination label, whereas $D$ is label divided by destination cell count. A cell influx $F$ carries mean label $S$ per cell, so it delivers $FS$ label units per time; outflux $F_{\mathrm{out}}$ similarly removes $F_{\mathrm{out}}D$. With $n_D$ constant, the product rule reduces to $\dd(n_DD)/\dd t=n_D\dot D$. Dividing the balance by $n_D$ gives
+\begin{align}
+n_D\dot D&=FS-F_{\mathrm{out}}D,\notag\\
+\dot D&=\frac{F}{n_D}S-\frac{F_{\mathrm{out}}}{n_D}D=kS-dD.\label{eq:lec02:per-cell-balance}
+\end{align}
+If $n_D$ changed in time, an extra term $D\dot n_D$ would remain and this simple reduction would fail. If the intrinsic source-exit rate is $a=F/n_S$, then $F=an_S$ and $k=a n_S/n_D$. Thus a fitted $k$ is not automatically a source cell's differentiation rate. This bookkeeping example assumes no division or other sources; extra pathways or inconsistent signal normalisation change the interpretation.
 
 \begin{definition}{Transfer function of a compartment}{transfer-function}
-For a linear, time-invariant compartment, the \emph{transfer function} is the rule that maps the entire input history $S(t)$ to the output $D(t)$. For Eq.~\eqref{eq:lec02:pulse-model} it is the exponential kernel $K(\tau)=k\ee^{-d\tau}$ acting as a convolution. Engineers use the same object to describe any linear filter; here the ``filter'' is a population of cells.
+For a linear, time-invariant compartment, the zero-initial-state input--output rule can be represented by an \emph{impulse-response kernel}. Here it is $K(\tau)=k\ee^{-d\tau}$ for $\tau\geq0$, zero for $\tau<0$, acting as a convolution. Its Laplace transform is the \emph{transfer function}. The classroom's time-domain description uses the same linear-filter idea.
 \end{definition}
 
 \subsection{Solution by integrating factor}\label{subsec:lec02:solution}
-Equation~\eqref{eq:lec02:pulse-model} is first order and linear in $D$. Multiply by $\ee^{dt}$, which turns the left side into a total derivative:
+Equation~\eqref{eq:lec02:pulse-model} is first order because its highest derivative is $\dot D$, and linear in $D$ because it contains neither $D^2$ nor products of $D$ with its derivatives. The measured $S(t)$ is treated as a known input. Move the loss term to the left, $\dot D+dD=kS(t)$. Following Chapter~\ref{chap:lecture01}, choose a multiplier whose derivative is $d$ times itself: $\mu(t)=\ee^{dt}$. The product rule gives $\dd(\ee^{dt}D)/\dd t=\ee^{dt}\dot D+d\ee^{dt}D$, exactly the required pair of terms:
 \begin{align}
 \ee^{dt}\dot D+d\ee^{dt}D&=k\ee^{dt}S(t),\label{eq:lec02:product-rule}\\
 \frac{\dd}{\dd t}\bigl(\ee^{dt}D\bigr)&=k\ee^{dt}S(t).\label{eq:lec02:exact-derivative}
@@ -140,7 +171,7 @@ Integrate from $t_0$ to $t$:
 \begin{equation}\label{eq:lec02:integrated}
 \ee^{dt}D(t)-\ee^{dt_0}D_0=k\int_{t_0}^{t}\ee^{dt'}S(t')\,\dd t'.
 \end{equation}
-Multiplying by $\ee^{-dt}$ gives the result.
+Multiplying by $\ee^{-dt}$ gives two simplifications: the initial term becomes $\ee^{-dt}\ee^{dt_0}D_0=\ee^{-d(t-t_0)}D_0$, and the integrand acquires $\ee^{-dt}\ee^{dt'}=\ee^{-d(t-t')}$. Thus
 
 \begin{proposition}[unbreakable]{Source--destination solution}{source-destination}
 For constant $k$ and $d$,
@@ -150,57 +181,73 @@ D(t)=\underbrace{k\int_{t_0}^{t}\ee^{-d(t-t')}S(t')\,\dd t'}_{\text{label arrivi
 \end{equation}
 \end{proposition}
 
+The integration variable $t'$ denotes the time a contribution entered; $t$ is the later observation time. The elapsed residence time is $t-t'\geq0$. In a short interval $\dd t'$, the source supplies $kS(t')\dd t'$ label units per cell, of which the fraction $\ee^{-d(t-t')}$ remains at $t$. Integration adds the surviving contributions from every entry time. The separate $D_0$ term accounts for label present before those new entries. At $t=t_0$, the integral is zero and the remaining term is exactly $D_0$. If $k=0$, only the initial signal decays; if $d=0$, all incoming label accumulates without loss.
+
 \begin{equation}\label{eq:lec02:transfer-kernel}
-\boxed{D=K*S,\qquad K(\tau)=k\,\ee^{-d\tau}\ \ (\tau\geq0).}
+\boxed{D=K*S\quad\text{if }D_0=0,\qquad K(\tau)=k\,\ee^{-d\tau}\ \ (\tau\geq0).}
 \end{equation}
-\textit{Significance:} the destination is a causal, exponentially forgetting filter of the source. Recent source label dominates; label injected a time $\gg1/d$ ago has already leaked out.
+The destination is a causal, exponentially forgetting filter of the source. Recent source label dominates; label injected a time $\gg1/d$ ago has already leaked out.
 
 \subsection{Why the integral form is the useful one}\label{subsec:lec02:why-integral}
-Mathematically, Eq.~\eqref{eq:lec02:pulse-solution} and Eq.~\eqref{eq:lec02:pulse-model} are equivalent: differentiate the former and the latter returns. Statistically they are not equivalent at all, and the difference is the whole reason the method works.
+Mathematically, Eq.~\eqref{eq:lec02:pulse-solution} and Eq.~\eqref{eq:lec02:pulse-model} are equivalent: differentiate the former and the latter returns. Numerically differentiating noisy observations and fitting an integrated prediction handle measurement error differently, however.
 
 Suppose the measured label has independent noise of standard deviation $\sigma$ at each time point. A finite-difference estimate of the derivative uses
 \begin{equation}\label{eq:lec02:finite-difference}
 \dot D(t_i)\approx\frac{D_{i+1}-D_i}{\Delta t},
 \qquad \text{error}\ \sim\frac{\sigma\sqrt2}{\Delta t}.
 \end{equation}
+Specifically, write each measurement as $D_i=D_{\mathrm{true}}(t_i)+\eta_i$, where $\eta_i$ has zero mean and variance $\sigma^2$. The finite-difference noise is $(\eta_{i+1}-\eta_i)/\Delta t$. Independence makes its variance $(\sigma^2+\sigma^2)/(\Delta t)^2$; taking the square root gives the stated standard deviation. Correlated errors would contribute an additional covariance term and change this expression.
 Shrinking $\Delta t$ to improve resolution amplifies the noise without bound. In the language of Fourier analysis, differentiation multiplies each frequency component by $\ii\omega$: it is a high-pass filter and it amplifies precisely the noise. Integration multiplies by $1/(\ii\omega)$: it is a low-pass filter, and it averages the noise over the history. That is the lecture's point in one line: \emph{a derivative of noisy data is noise; an integral of noisy data is an average}.
 
-There is a second, more important reason. The fit never needs $\dot D$ at all. Given the measured source $S(t)$ and trial values of $(k,d)$, Eq.~\eqref{eq:lec02:pulse-solution} predicts the entire destination curve. Comparing prediction with measurement uses every point at once, so the effective noise is reduced by roughly $\sqrt{N}$ for $N$ time points. The price is that the noise must be uncorrelated between points---which the design guarantees, because each time point comes from different animals.
+There is a second, more important reason. The fit never needs $\dot D$ at all. Given the measured source $S(t)$ and trial values of $(k,d)$, Eq.~\eqref{eq:lec02:pulse-solution} predicts the entire destination curve. Comparing prediction with measurements avoids explicitly differentiating the noisy destination series. Independent cohorts remove repeated measurements of the same animal, but do not guarantee uncorrelated errors: batch effects, calibration, and uncertainty in the source curve can remain. A $1/\sqrt{N}$ improvement applies to particular averages of independent errors, not universally to this fitted model. Fit uncertainty must reflect the sampling and measurement process.
 
 \begin{remark}
 The correct-but-useless equation is a recurring theme in biological modelling. Equation~\eqref{eq:lec02:pulse-model} is exact under its assumptions, but estimating its derivative from a few dozen mice is hopeless. ``In biology it is not enough to be right; you have to be smart and specific,'' as the lecturer put it. The transfer-function rewrite is the smart version.
 \end{remark}
 
-\subsection{The transfer function in the frequency domain}\label{subsec:lec02:frequency}
-Take the Laplace transform of Eq.~\eqref{eq:lec02:pulse-model} with zero initial label, writing $\tilde D(s)=\int_0^\infty \ee^{-st}D(t)\dd t$:
+\subsection{Supplementary: the transfer function in the frequency domain}\label{subsec:lec02:frequency}
+For this subsection choose the time origin $t_0=0$. Define the Laplace transform $\tilde D(s)=\int_0^\infty\ee^{-st}D(t)\dd t$, where $s$ has units of inverse time. Integration by parts explains the transformed derivative, for $s$ such that the boundary term at infinity vanishes:
+\begin{align}
+\int_0^\infty\ee^{-st}\dot D(t)\dd t
+&=\bigl[\ee^{-st}D(t)\bigr]_0^\infty+s\int_0^\infty\ee^{-st}D(t)\dd t\notag\\
+&=-D(0)+s\tilde D(s).\label{eq:lec02:laplace-derivative}
+\end{align}
+With zero initial label, transforming the balance law and collecting the terms in $\tilde D$ gives $(s+d)\tilde D=k\tilde S$. Dividing by $s+d$ yields
 \begin{equation}\label{eq:lec02:laplace}
 s\tilde D(s)=k\tilde S(s)-d\tilde D(s)
 \quad\Longrightarrow\quad
 \tilde D(s)=\frac{k}{s+d}\,\tilde S(s).
 \end{equation}
-Setting $s=\ii\omega$ gives the gain
+The ratio $\tilde D/\tilde S=k/(s+d)$ is dimensionless because $k$, $d$ and $s$ all have units of inverse time. For a sinusoidal input, set $s=\ii\omega$, where $\omega$ is angular frequency. Since $|d+\ii\omega|=\sqrt{d^2+\omega^2}$, taking the complex modulus gives the gain
 \begin{equation}\label{eq:lec02:gain}
 \left|\frac{\tilde D}{\tilde S}\right|=\frac{k}{\sqrt{d^2+\omega^2}}.
 \end{equation}
-Source fluctuations slower than $\omega\sim d$ pass through almost unchanged; faster ones are attenuated as $1/\omega$. The compartment therefore smooths the source history on a time scale $1/d$. This is why a sharply pulsed source produces a broad destination wave, and why the delay of the peak carries information about $d$ rather than about $k$.
+For $d>0$, source fluctuations with $\omega\ll d$ have approximately constant gain $k/d$; faster ones are attenuated as $1/\omega$. The compartment therefore smooths the source history on a time scale $1/d$. A sharply pulsed source produces a broad destination wave, and the delay of the peak carries information about $d$ rather than about $k$.
 
-\subsection{Fitting the rates}\label{subsec:lec02:fitting}
-For fixed $d$, the predicted destination is linear in $k$: $D_{\mathrm{pred}}(t_i)=k\,G_d(t_i)$ with
+\subsection{Supplementary: fitting the rates}\label{subsec:lec02:fitting}
+For this fitting example assume $D_0=0$, negligible error in the interpolated source, and independent destination errors with equal variance. For fixed $d$, the predicted destination is linear in $k$: $D_{\mathrm{pred}}(t_i)=k\,G_d(t_i)$ with
 \begin{equation}\label{eq:lec02:G}
 G_d(t_i)=\int_{t_0}^{t_i}\ee^{-d(t_i-t')}S(t')\,\dd t'.
 \end{equation}
-Minimising $\chi^2=\sum_i[D_i-kG_i]^2$ over $k$ can therefore be done in closed form. Completing the square,
+Here $D_i$ is the measured destination signal at time $t_i$ and $G_i=G_d(t_i)$ is the integrated source prediction for a trial $d$. Their difference $D_i-kG_i$ is a residual. The unweighted sum of squared residuals, denoted $\chi^2$ here, measures mismatch; a dimensionless statistical chi-square would additionally divide each squared residual by its measurement-error variance. Expand the square and differentiate with respect to $k$, holding $d$ and therefore all $G_i$ fixed:
+\begin{align}
+\chi^2(k)&=\sum_iD_i^2-2k\sum_iD_iG_i+k^2\sum_iG_i^2,\notag\\
+\frac{\dd\chi^2}{\dd k}&=-2\sum_iD_iG_i+2k\sum_iG_i^2=0,\notag\\
+k\sum_iG_i^2&=\sum_iD_iG_i,\qquad
+\frac{\dd^2\chi^2}{\dd k^2}=2\sum_iG_i^2>0.\label{eq:lec02:least-squares-steps}
+\end{align}
+The positive second derivative confirms a minimum when the source gives a nonzero design. Equivalently, adding and subtracting $(\sum_iD_iG_i)^2/\sum_iG_i^2$ completes the square:
 \begin{equation}\label{eq:lec02:chi2}
 \chi^2=\Bigl(\sum_iG_i^2\Bigr)\Bigl(k-\frac{\sum_iD_iG_i}{\sum_iG_i^2}\Bigr)^2
 +\sum_iD_i^2-\frac{\bigl(\sum_iD_iG_i\bigr)^2}{\sum_iG_i^2}.
 \end{equation}
-The minimising transfer rate and the residual are
+With the physical constraint $k\geq0$, the minimising transfer rate and residual are
 \begin{equation}\label{eq:lec02:fit-k}
-\boxed{k_*(d)=\frac{\sum_iD_iG_d(t_i)}{\sum_iG_d(t_i)^2},
+\boxed{k_*(d)=\frac{\max(0,\sum_iD_iG_d(t_i))}{\sum_iG_d(t_i)^2},
 \qquad
-\chi^2_{\min}(d)=\sum_iD_i^2-\frac{\bigl(\sum_iD_iG_d(t_i)\bigr)^2}{\sum_iG_d(t_i)^2}.}
+\chi^2_{\min}(d)=\sum_iD_i^2-\frac{\max(0,\sum_iD_iG_d(t_i))^2}{\sum_iG_d(t_i)^2}.}
 \end{equation}
-Only $d$ remains nonlinear, and it is one-dimensional: scan it, or minimise numerically. This ``profile'' strategy---solve the linear parameter exactly, search over the nonlinear one---is the standard way to fit small compartment models.
+These formulas require $\sum_iG_i^2>0$: a source with no observed signal cannot determine $k$. If noisy or baseline-corrected data give a negative unconstrained optimum, the constrained minimum is at $k=0$ with residual $\sum_iD_i^2$. For known nonzero $D_0$, first subtract $\ee^{-d(t_i-t_0)}D_0$ from each $D_i$ for every trial $d$; otherwise fit the initial condition too. Unequal error variances require weighted least squares. Only $d$ remains nonlinear in the zero-initial-state example: scan it, or minimise numerically over nonnegative rates. This ``profile'' strategy (solve the linear parameter exactly, search over the nonlinear one) is the standard way to fit small compartment models.
 
 \subsubsection*{Method}
 To extract rates from a pulse-chase data set:
@@ -212,11 +259,18 @@ To extract rates from a pulse-chase data set:
 \item Check units ($k,d$ in $\text{time}^{-1}$), positivity, and that the residual has no systematic trend in time.
 \end{enumerate}
 
-For numerical work on a uniform grid, Eq.~\eqref{eq:lec02:pulse-model} has an exact update when $S$ is taken constant on each interval:
+For numerical work on a uniform grid, let $t_{n+1}-t_n=\Delta t$, $D_n=D(t_n)$, and approximate the source by the constant $S_n$ on this interval. Apply the integrated solution with initial time $t_n$. For $d>0$,
+\begin{align}
+D_{n+1}&=\ee^{-d\Delta t}D_n+kS_n\int_{t_n}^{t_{n+1}}\ee^{-d(t_{n+1}-t')}\dd t',\notag\\
+\int_{t_n}^{t_{n+1}}\ee^{-d(t_{n+1}-t')}\dd t'
+&=\int_0^{\Delta t}\ee^{-du}\dd u
+=\frac{1-\ee^{-d\Delta t}}{d}.\label{eq:lec02:discrete-integral}
+\end{align}
+In the second line, $u=t_{n+1}-t'$ reverses the limits and $\dd t'=-\dd u$ reverses them back. The result is the exact interval update
 \begin{equation}\label{eq:lec02:discrete}
 D_{n+1}=\ee^{-d\Delta t}D_n+\frac{kS_n}{d}\bigl(1-\ee^{-d\Delta t}\bigr).
 \end{equation}
-This is a one-line recursion, requires no matrix inversion, and is stable for all positive $d$.
+This recursion is exact for the stated piecewise-constant input. At $d=0$, use its continuous limit $D_{n+1}=D_n+kS_n\Delta t$. Refining the time grid checks the approximation to a varying measured source.
 
 \begin{example}[unbreakable,fontupper=\small]{Worked example: peak delay and amplitude}{fit-rates}
 Added problem. A pulse produces a source that decays exponentially, $S(t)=S_0\ee^{-t/T}$ with $T=10\,\mathrm{h}$, and the destination has $d=0.2\,\mathrm{h}^{-1}$, $k=0.3\,\mathrm{h}^{-1}$. Find $D(t)$, the time of the peak, and the peak height.
@@ -224,20 +278,25 @@ Added problem. A pulse produces a source that decays exponentially, $S(t)=S_0\ee
 With $D(0)=0$, Eq.~\eqref{eq:lec02:pulse-solution} gives
 \begin{align}
 D(t)&=kS_0\int_0^t\ee^{-d(t-t')}\ee^{-t'/T}\dd t'
-=\frac{kS_0}{d-1/T}\bigl(\ee^{-t/T}-\ee^{-dt}\bigr),\label{eq:lec02:worked-D}\\
+ =kS_0\ee^{-dt}\int_0^t\ee^{(d-1/T)t'}\dd t',\notag\\
+&=kS_0\ee^{-dt}\frac{\ee^{(d-1/T)t}-1}{d-1/T}\notag\\
+&=\frac{kS_0}{d-1/T}\bigl(\ee^{-t/T}-\ee^{-dt}\bigr),\label{eq:lec02:worked-D}\\
 &=\frac{0.3S_0}{0.1}\bigl(\ee^{-t/10}-\ee^{-0.2t}\bigr)
 =3S_0\bigl(\ee^{-t/10}-\ee^{-0.2t}\bigr).\label{eq:lec02:worked-numbers}
 \end{align}
-Differentiate and set the result to zero:
-\begin{equation}\label{eq:lec02:peak-time}
-\dot D=0\ \Longrightarrow\ \frac{1}{T}\ee^{-t/T}=d\,\ee^{-dt}
-\ \Longrightarrow\ t_*=\frac{\ln(dT)}{d-1/T}=\frac{\ln2}{0.1}=6.93\,\mathrm{h}.
-\end{equation}
+Differentiate each exponential and set the result to zero. Cancelling the nonzero prefactor $kS_0/(d-1/T)$ and rearranging gives
+\begin{align}
+0&=-\frac1T\ee^{-t_*/T}+d\ee^{-dt_*},\notag\\
+dT&=\ee^{(d-1/T)t_*},\qquad
+\ln(dT)=(d-1/T)t_*,\notag\\
+t_*&=\frac{\ln(dT)}{d-1/T}=\frac{\ln2}{0.1\,\mathrm{h}^{-1}}=6.93\,\mathrm{h}.\label{eq:lec02:peak-time}
+\end{align}
+The logarithm's argument $dT$ is dimensionless. The signal initially rises from zero, and decays at late times, so this unique stationary point is its maximum.
 At that time $\ee^{-t_*/T}=0.5$ and $\ee^{-dt_*}=0.25$, so
 \begin{equation}\label{eq:lec02:peak-height}
 D_{\max}=3S_0(0.5-0.25)=0.75\,S_0.
 \end{equation}
-\textit{Key insight:} the delay $t_*$ depends on $d$ and on the source decay $T$, not on $k$; the transfer rate $k$ sets the amplitude. A destination that peaks late is one that holds on to label, not one that receives it slowly.
+The delay $t_*$ depends on $d$ and on the source decay $T$, not on $k$; the transfer rate $k$ sets the amplitude. For this fixed source shape, changing $k$ changes only the amplitude; the peak time constrains $d$. In a multistage pathway, a later source pulse can also cause a later destination peak.
 \end{example}
 
 \begin{remark}
@@ -249,56 +308,54 @@ Check the answer in two limits. If $d=1/T$, use L'H\^opital: $D\to kS_0t\,\ee^{-
 % ==============================================================================
 
 \subsection*{Experimental Design}
-Mice are injected intraperitoneally with IdU; absorption into the circulation takes minutes, so the pulse is effectively global. At intervals of $12$\,h, three animals are sacrificed and their bone marrow harvested. Each time point is therefore an independent cohort of three mice, and the whole experiment used of order $200$ animals. Genetic background, age, sex, cage, and microbiome are matched, because all of these shift immune dynamics.
+Mice receive an intraperitoneal IdU pulse, followed by bone-marrow sampling at different chase times. The published experiment used $48$ mice, with $2$--$3$ animals per time point across $1$--$228$\,h. These source-verified details refine the classroom's schematic cohort description. Matching animal backgrounds and accounting for collection batches matter because biological and technical differences can alter the measured trajectories.
 
-The measured marker vector has about thirty dimensions. To visualise it, the analysts choose a two-dimensional subspace---two surface proteins---and within it define a one-dimensional path along the direction of maximal variance, the first principal component. Cells are binned along that path, and each bin gets its own time series. The path is a proxy for developmental progression, not a literal physical coordinate.
+The measured marker vector has about thirty dimensions. In the neutrophil example discussed in class, two coordinates are the surface-marker signals CD11b and Ly6G, displayed on logarithmic axes. Colour in a cell-density map indicates how many cells occupy a marker region, not elapsed time or IdU content. A one-dimensional developmental path through this space permits binning; a principal-component direction summarises variance and need not be the developmental trajectory itself. Cells are binned along that path, and each bin gets its own time series. The path is a proxy for developmental progression, not a literal physical coordinate. A time trace then follows the mean label in one fixed marker bin across independently sampled animals, not the motion of one tracked cell.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[>=stealth,every node/.style={font=\small}]
+\draw[->] (0,0)--(6.2,0) node[right] {CD11b signal (log scale)};
+\draw[->] (0,0)--(0,3.3) node[above] {Ly6G signal (log scale)};
+\draw[->,thick,exacol] (0.8,0.55) to[bend right=14] (5.2,2.7);
+\foreach \x/\y/\lab in {1.1/0.58/A,2.9/1.12/B,4.7/2.3/C}{
+ \draw[primary,fill=primary!8] (\x,\y) circle (0.28);
+ \node[above=9pt] at (\x,\y) {bin \lab};}
+\node[align=left,font=\footnotesize] at (8.6,1.7)
+ {For each fixed bin:\\measure mean IdU signal\\at successive chase times.};
+\end{tikzpicture}
+\caption{Schematic marker-space bins, with no measured points or calibrated ticks. Marker coordinates describe cell phenotype; chase time is a separate variable. The arrow denotes a proposed maturation direction, not a cell trajectory observed by cytometry.}\label{fig:lec02-marker-space}
+\end{figure}
 
 \begin{figure}[H]
 \centering
-\begin{tikzpicture}[>=stealth,every node/.style={font=\small}]
-\begin{axis}[width=0.66\linewidth,height=5.6cm,xmin=0,xmax=96,
-  ymin=0,ymax=1.25,axis lines=left,
-  xlabel={time after pulse (h)},ylabel={label per cell (norm.)},
-  tick label style={font=\footnotesize},label style={font=\small},
-  xtick={0,24,48,72,96},ytick={0,0.5,1},
-  legend pos=north east,legend style={font=\scriptsize,draw=none,fill=white},
-  legend cell align=left]
-\addplot[primary,thick,domain=0:96,samples=160]
-  {3.0*(exp(-x/14)-exp(-0.2*x))};
-\addlegendentry{early bin}
-\addplot[exacol,thick,dashed,domain=0:96,samples=160]
-  {6.0*(exp(-x/40)-exp(-0.035*x))};
-\addlegendentry{middle bin}
-\addplot[accent,thick,dotted,domain=0:96,samples=160]
-  {9.0*(exp(-x/100)-exp(-0.012*x))};
-\addlegendentry{late bin}
-\end{axis}
-\end{tikzpicture}
-\caption{Schematic of the measured pattern, not data: three bins along the principal path, each fitted with its own $(k,d)$. The early bin peaks within hours, the late bin only after about $90$\,h. Later peaks are broader and lower, as expected when the destination holds label longer.}\label{fig:lec02-trajectory}
+\includegraphics[width=0.66\linewidth]{Lecture_Summaries/figures/neutrophil_measurements.png}
+\caption{Measured neutrophil maturation: (B) marker-space abundance with the selected PC1 path; (C) IdU observations (points) and model fits (lines). Colours in C indicate position along PC1. Cropped from Erez, Mukherjee and Altan-Bonnet (2019), Fig.~4B--C, \href{https://doi.org/10.1002/cyto.a.23799}{doi:10.1002/cyto.a.23799}. The original ordinate says ``fluorescence''; the study's assay is CyTOF.}\label{fig:lec02-trajectory}
 \end{figure}
 
 \subsection{What the fits show}\label{subsec:lec02:results}
-The source--destination model reproduces each bin's trajectory with two parameters. Along the path, the peak arrival time increases from essentially zero to about $90$\,h, i.e.\ nearly four days from injection to the last state. The fitted transfer rates are largest near the beginning of the path and smaller downstream. The residual scatter is comparable to the mouse-to-mouse variation.
+Figure~\ref{fig:lec02-trajectory} connects the marker-space bins to measured signals. Prominent early and later neutrophil peaks occur around $40$--$50$\,h and $80$--$90$\,h; the observation window extends to $228$\,h. The model fits the time traces, while the colour progression links them to the selected maturation path. Peak delay is a property of this input--response system, not a direct measurement of every cell's individual transit time.
 
-The strongest conclusion is methodological rather than biological: \emph{pulse-chase plus a transfer-function model works in a living organism}. Similar experiments in cell culture are routine; doing it \emph{in vivo}, where the system cannot be controlled and each time point costs three animals, and still recovering clean rates, is the achievement. The specific rates are a by-product.
+The methodological conclusion is the strongest: \emph{pulse-chase plus a transfer-function model works in a living organism}. Similar experiments in cell culture are routine. Doing it \emph{in vivo}, where control is limited and each time point requires a separate animal cohort, and still recovering clean rates is what makes the study notable. The specific rates are a by-product.
 
 \subsection{Consistency checks and caveats}\label{subsec:lec02:caveats}
-\paragraph{Label budget.} Because the same label passes through successive bins, the time-integrated signals of neighbouring bins should be comparable. From Eq.~\eqref{eq:lec02:pulse-solution}, if $d$ were equal in all bins,
+\paragraph{Label budget.} Because the same label passes through successive bins, the time-integrated signals of neighbouring bins should be comparable. Integrating the balance equation with $D(0)=D(\infty)=0$, $d>0$, and convergent integrals gives
 \begin{equation}\label{eq:lec02:area}
 \int_0^\infty D(t)\,\dd t=\frac{k}{d}\int_0^\infty S(t)\,\dd t.
 \end{equation}
-Since $d$ is not equal, the check is approximate, and it fails for bins that lose label to death or to compartments outside the analysed subspace. The lecture describes the areas as ``roughly'' equal, which is the correct strength of the statement.
+To see every step, integrate $\dot D=kS-dD$ over the whole chase. The integral of a derivative is an endpoint difference:
+\begin{align}
+D(\infty)-D(0)&=k\int_0^\infty S(t)\dd t-d\int_0^\infty D(t)\dd t=0,\notag\\
+d\int_0^\infty D(t)\dd t&=k\int_0^\infty S(t)\dd t.\label{eq:lec02:area-balance-steps}
+\end{align}
+Division by $d$ gives the area relation. The integral of a signal over time has units signal times time; it is not an instantaneous cell count or a cell flux.
+Equal areas therefore require $k/d\simeq1$, not equal $d$ across bins. A closed, constant-population destination with its only influx from the chosen source has $F=F_{\mathrm{out}}$ and hence $k=d$ under the preceding normalisation. Additional pathways, death, finite observation windows, or changed normalisation can spoil the comparison. The lecture's approximate area check is useful only with these qualifications.
 
-\paragraph{Division dilutes the label.} A cell that divides splits its label between two daughters, so the label per cell obeys
-\begin{equation}\label{eq:lec02:division-dilution}
-\frac{\dd \ell}{\dd t}=-(\text{death})-(\ln2)\,r_{\mathrm{div}}\,\ell,
-\qquad d_{\mathrm{eff}}=d+(\ln2)r_{\mathrm{div}}.
-\end{equation}
-In the dividing compartment, a fit that ignores $r_{\mathrm{div}}$ reports an effective loss rate that is too large, and mislabels dilution as death. This is why the analysis is confined to post-mitotic cells.
+\paragraph{Division dilutes the label.} On average, division shares labelled DNA between two daughters: mean label per daughter is half the mother's, while total label across the daughters is conserved if no label is lost. Declining per-cell signal can therefore reflect division rather than departure or death. A universal extra exponential-loss rate cannot be inferred without specifying division timing and how cells are sampled. Restricting analysis to post-mitotic cells avoids this ambiguity.
 
 \paragraph{A continuum, not discrete types.} The density of cells in marker space is continuous: immunologists draw boundaries between ``cell types'' where the density has valleys, but the underlying developmental path is a continuum. Binning is a discretisation of that continuum, and the bin width trades resolution against the number of cells per bin. With tens of thousands of cells per subtype, a few dozen bins per path is a reasonable compromise.
 
-\paragraph{Population, not single cell.} A single cell would produce a sharp pulse at one time. The measured peak is broad because the cohort is asynchronous: some cells were slightly ahead, some behind. The width of the peak is therefore a measure of biological heterogeneity, not of measurement noise alone. This also answers a natural objection---``how can the same cell be in two bins?''---the experiment never tracks one cell; it tracks the same \emph{stage} in different animals.
+\paragraph{Population, not single cell.} A single cell would produce a sharp pulse at one time. The measured peak is broad because the cohort is asynchronous: some cells were slightly ahead, some behind. The width of the peak is therefore a measure of biological heterogeneity, not of measurement noise alone. This also answers a natural objection (``how can the same cell be in two bins?''): the experiment never tracks one cell; it tracks the same \emph{stage} in different animals.
 
 % ==============================================================================
 \section{Beyond two variables: infectious and non-infectious virions}\label{sec:lec02:hiv4}
@@ -343,7 +400,21 @@ With these ingredients the model is
 \dot N_X&=(1-\epsilon')\gamma N_I-k_VN_X.
 \end{aligned}}
 \end{equation}
-The parameters and their units are collected in Table~\ref{tab:lec02-params}.
+Table~\ref{tab:lec02-params} collects the parameters and their units.
+
+\paragraph{Construct each term from a biological event.}
+Define the infection flux $J(t)=\epsilon N_VN_U$, in cells newly infected per time. In a well-mixed compartment, one target cell has infection hazard $\epsilon N_V$; multiplying by the number of targets gives $J$. Over a sufficiently short interval, its infection probability is $\epsilon N_V\Delta t+o(\Delta t)$. This is the mass-action assumption: encounter opportunities increase with both populations.
+\begin{enumerate}
+\item \textbf{Uninfected cells:} $\lambda$ is a supply independent of the current target count; $k_UN_U$ is ordinary target-cell death; $J$ removes cells from the uninfected class by infecting them. Hence $\dot N_U=\lambda-k_UN_U-J$.
+\item \textbf{Infected cells:} the same $J$ enters this class with a plus sign, while $k_IN_I$ removes infected cells by death or clearance. Thus $\dot N_I=J-k_IN_I$. For example, $N_I(t+\Delta t)-N_I(t)=[J(t)-k_IN_I(t)]\Delta t+o(\Delta t)$; division by $\Delta t$ and the limit give the differential equation.
+\item \textbf{Infectious particles:} all infected cells together produce $\gamma N_I$ particles per time, but only the fraction $\epsilon'$ is infectious. Production is therefore $\epsilon'\gamma N_I$; clearance is $k_VN_V$. These contribute opposite signs in $\dot N_V$.
+\item \textbf{Noninfectious particles:} the remaining fraction $1-\epsilon'$ contributes $(1-\epsilon')\gamma N_I$, and clearance removes $k_VN_X$. This model assumes the same particle-clearance rate for both classes.
+\end{enumerate}
+Infection changes a cell's class rather than instantly adding or destroying a cell. Adding the first two equations cancels $J$:
+\begin{equation}\label{eq:lec02:total-cell-balance}
+\frac{\dd}{\dd t}(N_U+N_I)=\lambda-k_UN_U-k_IN_I.
+\end{equation}
+This sign check would fail if infection were accidentally given the same sign in both equations. The particle equations omit explicit virion consumption during an infection event; they approximate particle loss by the clearance terms shown. Production creates particles without transferring a cell into the particle population.
 
 \begin{table}[H]
 \centering\small
@@ -353,7 +424,7 @@ Symbol & Meaning & Units\\
 \midrule
 $\lambda$ & target-cell production & cells\,time$^{-1}$\\
 $k_U,k_I,k_V$ & per-capita loss rates & time$^{-1}$\\
-$\gamma$ & virions produced per infected cell & time$^{-1}$\\
+$\gamma$ & production per infected cell & virions\,cell$^{-1}$\,time$^{-1}$\\
 $\epsilon$ & infection-rate coefficient & (virion\,time)$^{-1}$\\
 $\epsilon'$ & fraction of new virions that are infectious & dimensionless\\
 \bottomrule
@@ -361,30 +432,45 @@ $\epsilon'$ & fraction of new virions that are infectious & dimensionless\\
 \caption{Parameters of the four-variable model. The distinction between $\epsilon$ and $\epsilon'$ is easy to lose and is the subject of the remark below.}\label{tab:lec02-params}
 \end{table}
 
-Two features deserve emphasis. First, $\epsilon$ is \emph{not} a probability or a fraction: it multiplies $N_VN_U$, so it must carry whatever units make the product a rate. If populations are measured as concentrations, $\epsilon$ has units of volume per virion per time. Second, the system is linear in each variable separately but bilinear in the pair $(N_V,N_U)$; that single product is enough to destroy the closed-form solutions of Chapter~\ref{chap:lecture01}.
+First, $\epsilon$ is \emph{not} a probability or a fraction: it multiplies $N_VN_U$, so it must carry whatever units make the product a rate. If populations are measured as concentrations, $\epsilon$ has units of volume per virion per time. Second, the system is linear in each variable separately but bilinear in the pair $(N_V,N_U)$; that single product is enough to destroy the closed-form solutions of Chapter~\ref{chap:lecture01}.
 
 \begin{remark}
 % Flags a genuine slip in the transcript.
-At 01:19--01:20 the transcript describes $\epsilon$ as ``the fraction of viruses that can infect'' and then corrects itself to $\epsilon'$. The notes are unambiguous: $\epsilon$ is the mass-action coefficient with units, and $\epsilon'$ is the dimensionless infectious fraction. Keep them apart; an exam will test exactly this.
+The spoken explanation briefly interchanges the infection coefficient and the infectious fraction. Dimensional analysis resolves the ambiguity: $\epsilon$ is the mass-action coefficient with units, and $\epsilon'$ is the dimensionless infectious fraction.
 \end{remark}
 
-\subsection{Fixed points and the infection threshold}\label{subsec:lec02:fixed}
-Setting all derivatives to zero gives two kinds of steady state. The first is the uninfected state,
+\subsection{Supplementary: fixed points and the infection threshold}\label{subsec:lec02:fixed}
+This added derivation assumes positive production and clearance parameters, $\epsilon>0$, and $0<\epsilon'\leq1$; the treated limit $\epsilon'=0$ is considered separately below. Setting all derivatives to zero gives two kinds of steady state. The first is the uninfected state,
 \begin{equation}\label{eq:lec02:uninfected}
 N_V=N_I=N_X=0,\qquad N_U=\lambda/k_U,
 \end{equation}
-in which target cells sit at their production--loss balance and no virus persists. The second is the chronic infected state. From $\dot N_V=0$ and $\dot N_I=0$,
+To derive this branch, set $N_V=0$ in $0=\epsilon N_VN_U-k_IN_I$, which forces $N_I=0$. Then $0=(1-\epsilon')\gamma N_I-k_VN_X$ forces $N_X=0$, while $0=\lambda-k_UN_U$ gives $N_U=\lambda/k_U$. Target cells sit at their production--loss balance and no virus persists. A fixed point means that populations are constant; individual supply and loss terms can still be nonzero.
+
+The second branch is the chronic infected state. From $\dot N_V=0$ and $\dot N_I=0$, move each loss term to the other side and divide by its positive coefficient:
 \begin{equation}\label{eq:lec02:fixed-I}
 N_I=\frac{k_VN_V}{\epsilon'\gamma},\qquad
 N_I=\frac{\epsilon N_VN_U}{k_I},
 \end{equation}
-and eliminating $N_I$ (for $N_V\neq0$) fixes the target-cell level:
+Equate the two expressions for $N_I$ to eliminate it. At a positive infected fixed point $N_V\ne0$, cancellation of $N_V$ is allowed:
+\begin{align}
+\frac{k_VN_V}{\epsilon'\gamma}&=\frac{\epsilon N_VN_U}{k_I},\notag\\
+k_Ik_VN_V&=\epsilon\epsilon'\gamma N_VN_U,\notag\\
+k_Ik_V&=\epsilon\epsilon'\gamma N_U.\label{eq:lec02:fixed-U-steps}
+\end{align}
+Divide by $\epsilon\epsilon'\gamma$ to obtain
 \begin{equation}\label{eq:lec02:fixed-U}
 \boxed{N_U^*=\frac{k_Ik_V}{\epsilon\epsilon'\gamma}.}
 \end{equation}
-\textit{Significance:} at the infected steady state the target-cell number is set entirely by the viral parameters; it does not depend on the supply rate $\lambda$. Supply and infection balance only at one particular target density.
+At the infected steady state the target-cell number is set entirely by the viral parameters; it does not depend on the supply rate $\lambda$. Supply and infection balance only at one particular target density.
 
-The remaining equations then give
+Find the remaining populations in order. The target-cell balance gives
+\begin{align}
+0&=\lambda-k_UN_U^*-\epsilon N_V^*N_U^*,\notag\\
+\epsilon N_V^*N_U^*&=\lambda-k_UN_U^*,\notag\\
+N_V^*&=\frac{\lambda-k_UN_U^*}{\epsilon N_U^*}
+=\frac1\epsilon\left(\frac\lambda{N_U^*}-k_U\right).\label{eq:lec02:fixed-V-steps}
+\end{align}
+Substitute this $N_V^*$ into $N_I^*=k_VN_V^*/(\epsilon'\gamma)$. Finally, $0=(1-\epsilon')\gamma N_I^*-k_VN_X^*$ implies $N_X^*=(1-\epsilon')\gamma N_I^*/k_V$; inserting $N_I^*$ cancels $\gamma$ and $k_V$. Collecting the results,
 \begin{equation}\label{eq:lec02:fixed-rest}
 N_V^*=\frac{1}{\epsilon}\Bigl(\frac{\lambda}{N_U^*}-k_U\Bigr),
 \qquad
@@ -392,11 +478,31 @@ N_I^*=\frac{k_VN_V^*}{\epsilon'\gamma},
 \qquad
 N_X^*=\frac{1-\epsilon'}{\epsilon'}N_V^*.
 \end{equation}
-Positivity of $N_V^*$ requires $\lambda/N_U^*>k_U$, i.e.
+An algebraic fixed point is biologically admissible only if its populations are nonnegative. Since $\epsilon>0$, positivity of $N_V^*$ requires a positive bracket. Insert the derived $N_U^*$ and rearrange only positive factors:
+\begin{align}
+\frac{\lambda}{N_U^*}&>k_U,\notag\\
+\frac{\lambda\epsilon\epsilon'\gamma}{k_Ik_V}&>k_U,\notag\\
+\frac{\lambda\epsilon\epsilon'\gamma}{k_Uk_Ik_V}&>1.\label{eq:lec02:threshold-steps}
+\end{align}
+The dimensionless ratio on the left is called $\mathcal R_0$:
 \begin{equation}\label{eq:lec02:R0}
 \boxed{\mathcal R_0\equiv\frac{\lambda\,\epsilon\,\epsilon'\gamma}{k_U\,k_I\,k_V}>1.}
 \end{equation}
-\textit{Significance:} $\mathcal R_0$ is the number of new infected cells produced by one infected cell in a population of susceptible targets. The chronic state exists only above threshold; below it, any introduced virus is cleared.
+$\mathcal R_0$ is the expected number of new infected cells produced by one infected cell when targets are at their uninfected level $N_U^{(0)}=\lambda/k_U$. The positive chronic state exists only above threshold.
+
+\paragraph{Why the same threshold controls initial growth.}
+Let $i$ and $v$ be small infected-cell and infectious-particle populations near the uninfected state. In the infection product, replacing $N_U$ by $N_U^{(0)}$ is correct to first order: the product of $v$ with a small target deviation is second order. Thus
+\begin{equation}\label{eq:lec02:infection-linearisation}
+\frac{\dd}{\dd t}\begin{pmatrix}i\\v\end{pmatrix}
+=\begin{pmatrix}-k_I&\epsilon N_U^{(0)}\\\epsilon'\gamma&-k_V\end{pmatrix}
+\begin{pmatrix}i\\v\end{pmatrix}.
+\end{equation}
+To find a growth or decay mode, set $(i,v)=(i_0,v_0)\ee^{rt}$. The growth rate $r$ has units of inverse time. A nonzero mode requires the determinant of the coefficient matrix minus $r$ times the identity to vanish:
+\begin{align}
+0&=(r+k_I)(r+k_V)-\epsilon\epsilon'\gamma N_U^{(0)}\notag\\
+&=r^2+(k_I+k_V)r+k_Ik_V(1-\mathcal R_0).\label{eq:lec02:growth-characteristic}
+\end{align}
+The two roots have sum $-(k_I+k_V)<0$. Their product is $k_Ik_V(1-\mathcal R_0)$: below threshold both have negative real parts, while above threshold a negative product gives one positive root and hence growth. At $\mathcal R_0=1$ one root is zero, so this linear argument alone does not establish decay. This is a local invasion test, not a prediction of the complete disease course.
 
 The derivation of $\mathcal R_0$ from the parameters is a useful check on intuition: one infected cell lives a time $1/k_I$ and produces $\epsilon'\gamma/k_I$ infectious virions; each virion lives $1/k_V$ and infects $\epsilon N_U$ target cells per unit time, so it infects $\epsilon N_U/k_V$ cells. The product of these two factors is $\epsilon\epsilon'\gamma N_U/(k_Ik_V)$, which equals Eq.~\eqref{eq:lec02:R0} once $N_U=\lambda/k_U$ is inserted.
 
@@ -408,7 +514,7 @@ Uninfected target density: $N_U^{(0)}=\lambda/k_U=10^5$\,mL$^{-1}$. Threshold:
 \mathcal R_0=\frac{10^4\times10^{-7}\times0.1\times10^3}
 {0.1\times1\times20}=\frac{0.1}{2}=0.05<1.
 \end{equation}
-The chronic state does not exist; the virus is cleared. To see what would change it, note that $\mathcal R_0\propto\lambda\epsilon\epsilon'\gamma$: a tenfold larger supply, a tenfold larger infectious fraction, or a tenfold slower infected-cell death would each push the system above threshold. A drug that lowers $\epsilon'$ therefore acts twice---it reduces $\mathcal R_0$ and it reduces the infectious virion production directly.
+The chronic state does not exist; the virus is cleared. To see what would change it, use $\mathcal R_0\propto\lambda\epsilon\epsilon'\gamma$: a tenfold increase gives only $0.5$, still below threshold. A $25$-fold larger supply, or a $25$-fold longer infected-cell lifetime, gives $1.25>1$. Increasing the infectious fraction alone cannot cross threshold in this example, since $\epsilon'\leq1$ permits at most a tenfold increase. A drug that lowers $\epsilon'$ therefore acts twice: it reduces $\mathcal R_0$, and it reduces infectious virion production directly.
 \end{example}
 
 \subsection{What treatment does in this language}\label{subsec:lec02:treatment}
@@ -416,9 +522,20 @@ A protease inhibitor impairs maturation, so newly budded particles are non-infec
 \begin{equation}\label{eq:lec02:treated}
 \dot N_V=-k_VN_V,\qquad N_V(t)=N_V(0)\ee^{-k_Vt},
 \end{equation}
-while infected cells continue to die at $k_I$ and non-infectious particles continue to be made and cleared. The viral load falls with the virion clearance rate, exactly the decline measured in the treatment experiments of Chapter~\ref{chap:lecture01}. The four-variable model thus supplies the microscopic justification for the two-variable model's assumption: blocking infection is equivalent to shutting the infectious branch.
+The infectious solution follows by the same separation $\dd N_V/N_V=-k_V\dd t$ used in Chapter~\ref{chap:lecture01}. Meanwhile infected cells continue to die at $k_I$ and noninfectious particles continue to be made and cleared. This is the decay of \emph{infectious} particles, not the total RNA/particle load. To compare with Chapter~\ref{chap:lecture01}, define $L=N_V+N_X$. Add the two particle equations before making the treatment approximation:
+\begin{align}
+\dot L&=\epsilon'\gamma N_I-k_VN_V+(1-\epsilon')\gamma N_I-k_VN_X\notag\\
+&=[\epsilon'+(1-\epsilon')]\gamma N_I-k_V(N_V+N_X)\notag\\
+&=\gamma N_I-k_VL.\label{eq:lec02:load-sum-steps}
+\end{align}
+The fractions add to one: changing infectious quality alone does not instantly remove particle production. Together with the infected-cell equation,
+\begin{equation}\label{eq:lec02:total-load}
+\dot L=\gamma N_I-k_VL,
+\qquad \dot N_I=\epsilon N_VN_U-k_IN_I.
+\end{equation}
+Pre-existing infectious particles can still infect cells while they clear. If that residual infection is negligible, then $\dot N_I\simeq-k_IN_I$ and the two-variable model follows for $(N_I,L)$. Its load has both time scales and can retain the initial shoulder. In Chapter~\ref{chap:lecture01}, the symbol $N_V$ denoted this lumped particle population; here $N_V$ denotes only the infectious part.
 
-The chronic state is stable in the model, and AIDS corresponds to leaving it: when the target-cell supply can no longer keep up, $N_U$ collapses, the fixed point disappears, and the immune system loses its capacity to replenish. The model does not describe that transition; it only shows that a steady state exists and what it requires.
+These fixed-parameter equations do not explain the eventual progression to AIDS. Chronic balance and the existence threshold are model results; a later collapse of immune function requires additional biological mechanisms. A change in the fixed point must not be asserted without specifying which model parameters or processes change.
 
 \begin{remark}
 Nonlinear systems of this type generally have no closed-form solution. Existence, uniqueness, and stability are local statements; numerical integration is the standard tool, and the course returns to nonlinear dynamics later. The linear techniques of Chapter~\ref{chap:lecture01} are a special case, not the general rule.
@@ -429,7 +546,7 @@ Nonlinear systems of this type generally have no closed-form solution. Existence
 % ==============================================================================
 
 \subsection*{Motivation}
-The second half of the lecture builds the language of randomness. The class is heterogeneous---not everyone arrives from physics---so the material is a fast review, but every definition is used later, and the exam assumes fluency.
+The second half of the lecture builds the language of randomness. The class is heterogeneous (not everyone arrives from physics), so the material is a fast review, but every definition is used later, and the exam assumes fluency.
 
 \begin{definition}{Bernoulli trial}{bernoulli}
 A \emph{Bernoulli trial} has two outcomes, coded $s=1$ (success) and $s=0$ (failure), with
@@ -450,21 +567,20 @@ x_m=\sum_{i=1}^{m}\frac{s_i}{2^i}
 \end{equation}
 takes $2^m$ values, each with probability $2^{-m}$: a uniform distribution on the dyadic fractions in $[0,1)$. As $m\to\infty$ the histogram of $x_m$ approaches a continuous uniform density. The base $2$ is a convention, not a law: decimal digits $d_i\in\{0,\dots,9\}$ with weights $10^{-i}$ generate a uniform distribution in the same way.
 
+Figure~\ref{fig:lec02-binary-histograms} shows the distinction between a theoretical probability and a finite-sample estimate. Independent fair bits give any particular sequence probability $\prod_{i=1}^m(1/2)=2^{-m}$. For equally spaced histogram bins of width $\Delta x=2^{-m}$,
+\begin{equation}\label{eq:lec02:binary-histogram-normalisation}
+P(x_m=j/2^m)=2^{-m},\qquad
+\frac{P(x_m=j/2^m)}{\Delta x}=1,\qquad j=0,\ldots,2^m-1.
+\end{equation}
+The displayed bar heights are probability masses: adding more bins reduces the mass per bin. Rescaling by bin width gives the unit-height uniform density; it does not change total probability.
+
 \begin{figure}[htbp]
 \centering
-\begin{tikzpicture}
-\begin{axis}[width=0.60\linewidth,height=5.2cm,xmin=0,xmax=1,ymin=0,ymax=1.36,
-  axis lines=left,xlabel={$\xi$},ylabel={$H(\xi)$ [bits]},
-  tick label style={font=\footnotesize},label style={font=\small},
-  xtick={0,0.5,1},ytick={0,0.5,1},samples=200,domain=0.001:0.999]
-\addplot[primary,thick] {-x*ln(x)/ln(2)-(1-x)*ln(1-x)/ln(2)};
-\addplot[accent,dashed,domain=0:1] {1};
-\node[anchor=south,font=\scriptsize,text=primary] at (axis cs:0.5,1.04)
-  {max at $\xi=\tfrac12$};
-\end{axis}
-\end{tikzpicture}
-\caption{Entropy of a binary variable. A fair coin carries one full bit of uncertainty; a strongly biased coin carries almost none, because its outcome is nearly predictable. The curve is symmetric about $\xi=\tfrac12$ and vanishes at both endpoints.}\label{fig:lec02-entropy-binary}
+\includegraphics[width=0.92\linewidth]{Lecture_Summaries/figures/binary_fraction_histograms.png}
+\caption{Empirical binary-fraction distributions: (a) $500$ two-bit samples and (b) $250{,}000$ five-bit samples. Compare bar heights with $1/4$ and $1/32$, respectively. Sampling fluctuations produce deviations from exact uniformity. Reproduced from the official notes, Fig.~2.1, printed p.~21 (PDF p.~22), credited there to Nelson.}\label{fig:lec02-binary-histograms}
 \end{figure}
+
+
 
 \subsection{Probability mass functions and events}\label{subsec:lec02:pmf}
 \begin{definition}{Probability mass function}{pmf}
@@ -506,7 +622,7 @@ for mutually exclusive, exhaustive hypotheses $H_j$. The denominator is the law 
 
 \subsection{Waiting for success: the geometric distribution}\label{subsec:lec02:geometric}
 \begin{definition}{Geometric distribution}{geometric}
-Repeat independent Bernoulli trials with success probability $\xi$ until the first success. If $J$ is the index of that success, then $J=j$ requires $j-1$ failures followed by one success:
+Repeat independent Bernoulli trials with success probability $0<\xi\leq1$ until the first success. If $J$ is the index of that success, then $J=j$ requires $j-1$ failures followed by one success:
 \begin{equation}\label{eq:lec02:geometric}
 P(J=j)=\xi(1-\xi)^{j-1},\qquad j=1,2,\dots
 \end{equation}
@@ -521,8 +637,8 @@ Normalisation is a geometric series:
 The mean follows by differentiating the series with respect to $q=1-\xi$:
 \begin{equation}\label{eq:lec02:geometric-mean}
 \sum_{j=1}^{\infty}j\,\xi q^{j-1}
-=\frac{\dd}{\dd q}\sum_{j=1}^{\infty}\xi q^{j}
-=\frac{\dd}{\dd q}\frac{\xi q}{1-q}
+=\xi\frac{\dd}{\dd q}\sum_{j=1}^{\infty}q^{j}
+=\xi\frac{\dd}{\dd q}\frac{q}{1-q}
 =\frac{\xi}{(1-q)^2}
 =\frac{1}{\xi}.
 \end{equation}
@@ -530,10 +646,10 @@ The mean follows by differentiating the series with respect to $q=1-\xi$:
 \begin{proposition}[unbreakable]{Mean waiting time}{geometric-mean}
 For a geometric waiting time, $\mathbb E[J]=1/\xi$. A rare event with success probability $\xi\ll1$ requires of order $1/\xi$ attempts.
 \end{proposition}
-\textit{Significance:} this is the bridge between a per-attempt probability and a time scale. If infection is attempted at rate $r$ with success probability $\xi$ per attempt, the mean wait is $1/(\xi r)$; the inverse of a rate is a time, as it must be.
+This bridges a per-attempt probability and a time scale. If infection is attempted at rate $r$ with success probability $\xi$ per attempt, the mean wait is $1/(\xi r)$; the inverse of a rate is a time, as it must be.
 
 \begin{remark}
-A useful sanity check: with $\xi=0.1$, the mean is $10$ trials, and the probability of waiting more than $10$ trials is $(0.9)^{10}=0.35$. The distribution has a long tail---roughly a third of cases exceed the mean---because the geometric distribution is memoryless and heavily skewed. Its variance is $(1-\xi)/\xi^2$ (added).
+With $\xi=0.1$, the mean is $10$ trials, and the probability of waiting more than $10$ trials is $(0.9)^{10}=0.35$. The distribution has a long tail (roughly a third of cases exceed the mean) because the geometric distribution is memoryless and heavily skewed. Its variance is $(1-\xi)/\xi^2$ (added).
 \end{remark}
 
 \subsection{Joint, marginal, and conditional distributions}\label{subsec:lec02:joint}
@@ -549,23 +665,23 @@ P_{XY}(x,y)=P_X(x)P_Y(y).
 \end{equation}
 
 \begin{example}[unbreakable,fontupper=\small]{Worked example: marginals and a conditional}{marginal-table}
-Added problem, following the table in the notes. Let $X\in\{0,1\}$ record whether a regulator is active and $Y\in\{0,1\}$ whether a reporter is high, with
+Added problem with an illustrative joint distribution. Let $X\in\{0,1\}$ record whether a cell experienced a nutrient pulse and $Y\in\{0,1\}$ whether its reporter is high, with
 \begin{center}\small
 \begin{tabular}{@{}lccc@{}}
 \toprule
  & $Y=0$ & $Y=1$ & $P_X$\\
 \midrule
-$X=0$ & $0.50$ & $0.10$ & $0.60$\\
-$X=1$ & $0.10$ & $0.30$ & $0.40$\\
-$P_Y$ & $0.60$ & $0.40$ & $1$\\
+$X=0$ & $0.40$ & $0.20$ & $0.60$\\
+$X=1$ & $0.05$ & $0.35$ & $0.40$\\
+$P_Y$ & $0.45$ & $0.55$ & $1$\\
 \bottomrule
 \end{tabular}
 \end{center}
-Marginals are obtained by summing rows and columns. The conditional is
+Marginals come from summing rows and columns. The conditional is
 \begin{equation}\label{eq:lec02:table-conditional}
-P(Y=1\mid X=1)=\frac{P(X=1,Y=1)}{P(X=1)}=\frac{0.30}{0.40}=0.75.
+P(Y=1\mid X=1)=\frac{P(X=1,Y=1)}{P(X=1)}=\frac{0.35}{0.40}=0.875.
 \end{equation}
-Independence fails, because $P(X=1,Y=1)=0.30\neq(0.40)(0.40)=0.16$. Knowing that the regulator is active raises the reporter probability from $0.40$ to $0.75$.
+Independence fails, because $P(X=1,Y=1)=0.35\neq(0.40)(0.55)=0.22$. Knowing that the nutrient pulse occurred raises the reporter probability from $0.55$ to $0.875$.
 \end{example}
 
 % ==============================================================================
@@ -573,7 +689,7 @@ Independence fails, because $P(X=1,Y=1)=0.30\neq(0.40)(0.40)=0.16$. Knowing that
 % ==============================================================================
 
 \subsection*{Conceptual Background}
-Probability tells us what to expect. Entropy tells us \emph{how much} we should be surprised by what actually happens. The idea is Shannon's, and its resemblance to thermodynamic entropy is not an accident: the Gibbs entropy of statistical mechanics is a special case, restricted to thermal equilibrium.
+Probability tells us what to expect. Entropy is the expected surprisal $-\log_2 P_X(X)$, averaged over possible outcomes. The idea is Shannon's. Its resemblance to thermodynamic entropy is structural: the Gibbs entropy has the same $-\sum p\ln p$ form multiplied by Boltzmann's constant. That statistical expression is also used away from thermal equilibrium.
 
 \begin{definition}{Shannon entropy}{entropy}
 For a discrete random variable $X$ with mass function $P_X$,
@@ -583,21 +699,37 @@ H(X)=-\sum_xP_X(x)\log_2P_X(x),
 with $0\log_20\equiv0$. The base $2$ makes $H$ measured in \emph{bits}; natural logarithms give nats, and the two differ by the constant factor $\ln2$.
 \end{definition}
 
-Three properties follow immediately from the definition.
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=0.60\linewidth,height=5.2cm,xmin=0,xmax=1,ymin=0,ymax=1.36,
+  axis lines=left,xlabel={$\xi$},ylabel={$H(\xi)$ [bits]},
+  tick label style={font=\footnotesize},label style={font=\small},
+  xtick={0,0.5,1},ytick={0,0.5,1},samples=200,domain=0.001:0.999]
+\addplot[primary,thick] {-x*ln(x)/ln(2)-(1-x)*ln(1-x)/ln(2)};
+\addplot[accent,dashed,domain=0:1] {1};
+\node[anchor=south,font=\scriptsize,text=primary] at (axis cs:0.5,1.04)
+  {max at $\xi=\tfrac12$};
+\end{axis}
+\end{tikzpicture}
+\caption{Entropy of a binary variable. A fair coin carries one full bit of uncertainty; a strongly biased coin carries almost none, because its outcome is nearly predictable. The curve is symmetric about $\xi=\tfrac12$ and vanishes at both endpoints.}\label{fig:lec02-entropy-binary}
+\end{figure}
+
+Three properties follow from the definition.
 \begin{itemize}
 \item \textbf{Deterministic:} if one outcome has probability $1$, then $H=0$. There is nothing to learn.
 \item \textbf{Uniform:} for $M$ equally likely outcomes, $H=\log_2M$. A fair coin gives one bit; a fair die gives $\log_26\approx2.58$ bits.
 \item \textbf{Bounded:} $H\leq\log_2M$ for any distribution on $M$ outcomes, with equality only for the uniform distribution. This is the content of the maximum-entropy principle: the least informative assumption is the most uniform distribution consistent with what is known.
 \end{itemize}
 
-The lecture's reading of a fair coin is worth keeping: one bit of entropy means \emph{two equally likely possibilities}, so the outcome is maximally surprising. A coin that always lands heads has zero entropy: you already knew. Entropy is therefore a measure of ignorance, not of disorder in any visual sense.
+For a binary variable, one bit of entropy means \emph{two equally likely possibilities}, as for a fair coin, and is the maximum possible entropy. A coin that always lands heads has zero entropy: you already knew. Entropy is therefore a measure of ignorance, not of disorder in any visual sense.
 
 \begin{remark}
 Entropy is dimensionless, like probability. In Boltzmann's formula $S=k_B\ln\Omega$ the constant $k_B$ is what gives entropy its thermodynamic units; the information-theoretic quantity has no such constant.
 \end{remark}
 
 \subsection*{Biological Interpretation}
-Entropy of a distribution over cell states measures how uncertain we are about the state of a randomly chosen cell. If a tissue is dominated by one cell type, the entropy is low; if many types are equally abundant, it is high. This is exactly the logic of biodiversity indices: a community dominated by one species is less diverse than an evenly populated one with the same species list. The exponential $2^{H}$ converts entropy back into an \emph{effective number} of equally likely states---a count, which is often easier to interpret than a logarithm. A culture with $H=0.47$ bits behaves, for this purpose, like one with $2^{0.47}\approx1.38$ equally likely states.
+Entropy of a distribution over cell states measures how uncertain we are about the state of a randomly chosen cell. If a tissue is dominated by one cell type, the entropy is low; if many types are equally abundant, it is high. This is the logic behind biodiversity indices: a community dominated by one species is less diverse than an evenly populated one with the same species list. The exponential $2^{H}$ converts entropy back into an \emph{effective number} of equally likely states, a count that is often easier to interpret than a logarithm. A culture with $H=0.47$ bits behaves, for this purpose, like one with $2^{0.47}\approx1.38$ equally likely states.
 
 The maximum-entropy principle is used as a modelling rule: among all distributions consistent with the measurements, choose the one with the largest entropy, i.e.\ the one that assumes the least. It is a disciplined way to avoid smuggling in structure that the data do not support.
 
@@ -606,7 +738,7 @@ The maximum-entropy principle is used as a modelling rule: among all distributio
 % ==============================================================================
 
 \subsection*{Motivation}
-Entropy measures uncertainty in one variable. The interesting biological question is usually about two: does knowing the environment tell us what a gene will do? How much of a cell's behaviour is explained by a signal, and how much is noise? Conditional entropy and mutual information answer this quantitatively, without assuming linearity.
+Entropy measures uncertainty in one variable. The biological question is usually about two: does knowing the environment tell us what a gene will do? How much of a cell's behaviour is explained by a signal, and how much is noise? Conditional entropy and mutual information answer this quantitatively, without assuming linearity.
 
 \subsection{Conditional entropy}\label{subsec:lec02:conditional-entropy}
 \begin{definition}{Conditional entropy}{conditional-entropy}
@@ -647,7 +779,7 @@ The gene is on half the time; before looking at the environment, the outcome is 
 \begin{equation}\label{eq:lec02:channel-h}
 H(Y\mid X=x)=-0.1\log_20.1-0.9\log_20.9=0.469\ \text{bits}.
 \end{equation}
-The average is the same because the two cases are symmetric, so $H(Y\mid X)=0.469$ bits. Knowing the environment removes $1-0.469=0.531$ bits of uncertainty about the gene.
+The average is the same because the two cases are symmetric, so $H(Y\mid X)=0.469$ bits. Knowing the environment removes $1-0.469=0.531$ bits of uncertainty about the gene. This is Problem~2.2 of the assignments (binary symmetric channel) with flip probability $\varepsilon=0.1$: for uniform input the general result is $I(X;Y)=1-h_2(\varepsilon)$ bits, where $h_2(\varepsilon)=-\varepsilon\log_2\varepsilon-(1-\varepsilon)\log_2(1-\varepsilon)$.
 
 \begin{example}[unbreakable,fontupper=\small]{Worked example: mutual information of a noisy switch}{gene-information}
 Added problem, completing the lecture's calculation. For the channel of Eq.~\eqref{eq:lec02:channel},
@@ -656,14 +788,27 @@ I(X;Y)&=H(Y)-H(Y\mid X)=1-0.469=0.531\ \text{bits},\label{eq:lec02:worked-mi}\\
 2^{H(Y\mid X)}&=2^{0.469}=1.38,\qquad
 2^{I(X;Y)}=2^{0.531}=1.45.\label{eq:lec02:worked-eff}
 \end{align}
-The effective number of states falls from $2$ to about $1.38$, so the noise costs roughly $30\%$ of the channel's capacity. For ten independent cells the count of joint states falls from $2^{10}=1024$ to $(1.38)^{10}\approx25$.
+Conditioning reduces the effective number of states from $2$ to about $1.38$. This is an entropy-based effective count, not a count of possible outcomes. Relative to a noiseless binary channel, the information falls from $1$ to $0.531$ bits: a loss of about $47\%$. With the stated symmetric noise and uniform input, $0.531$ bits also equals the channel capacity. For ten independent input--output pairs, conditional entropies add, giving the effective count $2^{10(0.469)}\approx26$; all $2^{10}=1024$ response strings remain possible. The effective-count reduction must not be interpreted as eliminating possible strings.
 
-\textit{Key insight:} mutual information is a difference of entropies---uncertainty before minus uncertainty after---and it is symmetric: measuring the gene tells you just as much about the food as measuring the food tells you about the gene.
+Mutual information is a difference of entropies, uncertainty before minus uncertainty after, and it is symmetric: measuring the gene tells you just as much about the food as measuring the food tells you about the gene.
 \end{example}
 
 \begin{remark}
-The lecture quoted $0.43$ bits at one point and $0.47$ bits later; the exact value for a $10\%$ error rate is $0.469$ bits. Both roundings describe the same calculation, but exam answers should use the exact value.
+The lecture quoted $0.43$ bits at one point and $0.47$ bits later; the exact value for a $10\%$ error rate is $0.469$ bits. The value $0.43$ is a verbal or transcription slip, not a rounding of $0.469$; $0.47$ is the appropriate two-decimal rounding.
 \end{remark}
+
+\subsection{Joint entropy and the chain rule}\label{subsec:lec02:chain-rule}
+To compare uncertainty before and after observing another variable, first define uncertainty about the pair:
+\begin{equation}\label{eq:lec02:joint-entropy}
+H(X,Y)=-\sum_{x,y}P_{XY}(x,y)\log_2 P_{XY}(x,y).
+\end{equation}
+Using $P_{XY}(x,y)=P_X(x)P(y\mid x)$ on the support of the joint distribution,
+\begin{align}
+H(X,Y)&=-\sum_{x,y}P_{XY}(x,y)\bigl[\log_2P_X(x)+\log_2P(y\mid x)\bigr]\notag\\
+&=-\sum_xP_X(x)\log_2P_X(x)+H(Y\mid X)\notag\\
+&=H(X)+H(Y\mid X).\label{eq:lec02:chain-rule}
+\end{align}
+Interchanging $X,Y$ gives $H(X,Y)=H(Y)+H(X\mid Y)$. Thus the pair's uncertainty consists of uncertainty about one variable plus the average uncertainty remaining about the other. Subtracting these chain rules gives the equivalent mutual-information formulas below.
 
 \subsection{Mutual information: three equivalent forms}\label{subsec:lec02:mi-forms}
 \begin{definition}{Mutual information}{mutual}
@@ -673,7 +818,7 @@ I(X;Y)=H(X)+H(Y)-H(X,Y)=H(Y)-H(Y\mid X)=H(X)-H(X\mid Y).
 \end{equation}
 \end{definition}
 
-The three forms are the same statement counted three ways; Figure~\ref{fig:lec02-venn} makes the bookkeeping visual. The first adds both circles and subtracts the union once, which leaves the overlap. The second starts with all of $Y$ and removes the part not explained by $X$. The third does the reverse.
+The three forms are the same statement counted three ways; Figure~\ref{fig:lec02-venn} shows the bookkeeping. The first adds both circles and subtracts the union once, which leaves the overlap. The second starts with all of $Y$ and removes the part not explained by $X$. The third does the reverse.
 
 \begin{figure}[H]
 \centering
@@ -690,22 +835,26 @@ The three forms are the same statement counted three ways; Figure~\ref{fig:lec02
 \node[font=\footnotesize,text=primary] at (0,-2.05)
   {$H(X,Y)=H(X\mid Y)+I(X;Y)+H(Y\mid X)$};
 \end{tikzpicture}
-\caption{Information decomposition. The two circles are the marginal entropies; their overlap is the mutual information, and the non-overlapping crescents are the conditional entropies. Independent variables have disjoint circles and zero overlap; perfectly determined variables have coincident circles.}\label{fig:lec02-venn}
+\caption{Information decomposition. The two circles are the marginal entropies; their overlap is the mutual information, and the non-overlapping crescents are the conditional entropies. Independent variables have disjoint circles and zero overlap; variables that determine each other have coincident circles. If only $Y$ is determined by $X$, the $Y$ circle is contained in the $X$ circle.}\label{fig:lec02-venn}
 \end{figure}
 
 \subsection{The log-ratio form}\label{subsec:lec02:log-ratio}
-A fourth form is the most useful for computation:
+A fourth form is useful for computation. Expand the entropy definition of $I$ as a single expectation over the joint distribution:
+\begin{align}
+I(X;Y)&=\sum_{x,y}P_{XY}(x,y)\bigl[\log_2P_{XY}(x,y)-\log_2P_X(x)-\log_2P_Y(y)\bigr].\label{eq:lec02:mi-expansion}
+\end{align}
+Combining logarithms gives
 \begin{equation}\label{eq:lec02:mi-sum}
 \boxed{I(X;Y)=\sum_{x,y}P_{XY}(x,y)\log_2\frac{P_{XY}(x,y)}{P_X(x)P_Y(y)}.}
 \end{equation}
-\textit{Significance:} mutual information measures how far the joint distribution is from the product of its marginals---that is, how far the pair is from independence. If $X$ and $Y$ are independent, the ratio is $1$ everywhere, every logarithm vanishes, and $I=0$. No assumption of linearity, monotonicity, or Gaussianity enters.
+Mutual information measures how far the joint distribution is from the product of its marginals, that is, how far the pair is from independence. If $X$ and $Y$ are independent, the ratio is $1$ everywhere, every logarithm vanishes, and $I=0$. No assumption of linearity, monotonicity, or Gaussianity enters.
 
 For the gene example, Eq.~\eqref{eq:lec02:mi-sum} reads
 \begin{equation}\label{eq:lec02:mi-check}
 I=2(0.45)\log_2\frac{0.45}{0.25}+2(0.05)\log_2\frac{0.05}{0.25}
-=0.765-0.232=0.533\ \text{bits},
+=0.763197-0.232193=0.531004\ \text{bits},
 \end{equation}
-in agreement with Eq.~\eqref{eq:lec02:worked-mi} up to rounding. The agreement is a useful check that the joint table, the marginals, and the conditional entropies are mutually consistent.
+in agreement with Eq.~\eqref{eq:lec02:worked-mi}. The agreement is a useful check that the joint table, the marginals, and the conditional entropies are mutually consistent.
 
 \subsection{Kullback--Leibler divergence}\label{subsec:lec02:kl}
 \begin{definition}{Kullback--Leibler divergence}{kl}
@@ -713,11 +862,19 @@ For two probability mass functions $P$ and $Q$ on the same outcomes,
 \begin{equation}\label{eq:lec02:kl}
 D_{\mathrm{KL}}(P\Vert Q)=\sum_xP(x)\log_2\frac{P(x)}{Q(x)},
 \end{equation}
-with the convention that $P(x)>0$ requires $Q(x)>0$.
+Zero-probability terms with $P(x)=0$ contribute zero. If $Q(x)=0<P(x)$, the divergence is $+\infty$; the finite case requires $Q>0$ wherever $P>0$.
 \end{definition}
-The divergence is the extra number of bits needed to encode data generated by $P$ when the code is designed for $Q$. It is zero exactly when $P=Q$, and it grows as the model $Q$ becomes a worse description of the truth $P$.
+Supplementary interpretation: ideal code lengths $-\log_2Q(x)$ incur an expected excess of $D_{\mathrm{KL}}(P\Vert Q)$ bits per observation over code lengths matched to $P$. Real finite codes need not attain these ideal lengths exactly. The divergence vanishes only when $P=Q$, and it grows as the model $Q$ becomes a worse description of the truth $P$.
 
 Two warnings. First, it is \emph{not symmetric}: $D_{\mathrm{KL}}(P\Vert Q)\neq D_{\mathrm{KL}}(Q\Vert P)$ in general, so it is a divergence, not a distance. Second, it does not obey the triangle inequality. Both facts follow from the logarithm: swapping the arguments changes the weighting as well as the ratio.
+
+\begin{example}[unbreakable,fontupper=\small]{Homework 2.1: explicit Bernoulli divergence}{kl-bernoulli}
+For $Q\sim\mathrm{Bern}(q)$ and $P\sim\mathrm{Bern}(p)$ with $0<p,q<1$,
+\begin{equation}\label{eq:lec02:kl-bernoulli}
+D_{\mathrm{KL}}(Q\Vert P)=q\log_2\frac{q}{p}+(1-q)\log_2\frac{1-q}{1-p}.
+\end{equation}
+Exchanging the two arguments gives $D_{\mathrm{KL}}(P\Vert Q)$, which is generally a different number: the divergence is directional. The assignment works in natural logarithms (nats); the base-2 version differs by the constant $\ln2$. Problem~2.1 also asks for the Poisson pair, whose closed form $\lambda_1\ln(\lambda_1/\lambda_2)+\lambda_2-\lambda_1$ is a useful check for later chapters.
+\end{example}
 
 \subsection{Non-negativity, and why information cannot be negative}\label{subsec:lec02:gibbs}
 The proof uses Jensen's inequality.
@@ -730,7 +887,7 @@ For a convex function $\phi$ and a random variable $Z$ in its domain,
 For concave $\phi$ the inequality reverses.
 \end{proposition}
 
-Geometrically: a convex curve lies below the chord joining two points, so the value at the average height is below the average of the values. Take $\phi(u)=-\log_2u$, which is convex because $\phi''(u)=1/(u^2\ln2)>0$.
+Geometrically: a convex curve lies below the chord joining two points, so the function evaluated at the mean argument is no greater than the mean of its values. Take $\phi(u)=-\log_2u$, which is convex because $\phi''(u)=1/(u^2\ln2)>0$.
 
 \begin{proposition}[unbreakable]{Gibbs' inequality}{gibbs}
 For any two probability mass functions $P,Q$,
@@ -741,18 +898,18 @@ with equality if and only if $P=Q$.
 \end{proposition}
 
 \begin{proof}
-Draw an index $i$ from $P$ and set $Z=Q(i)/P(i)$. Then
+If $Q(i)=0<P(i)$ for any $i$, the divergence is infinite and the result follows. Otherwise draw $i$ from $P$, restrict to its support $A=\{i:P(i)>0\}$, and set $Z=Q(i)/P(i)$. Then
 \begin{equation}\label{eq:lec02:gibbs-mean}
-\mathbb E_P[Z]=\sum_iP(i)\frac{Q(i)}{P(i)}=\sum_iQ(i)=1.
+m\equiv\mathbb E_P[Z]=\sum_{i\in A}Q(i),\qquad 0<m\leq1.
 \end{equation}
 Apply Jensen to $\phi(u)=-\log_2u$:
 \begin{equation}\label{eq:lec02:gibbs-jensen}
-0=\phi(1)=\phi\bigl(\mathbb E_P[Z]\bigr)
+0\leq-\log_2m=\phi\bigl(\mathbb E_P[Z]\bigr)
 \leq\mathbb E_P\bigl[\phi(Z)\bigr]
-=\sum_iP(i)\log_2\frac{P(i)}{Q(i)}
+=\sum_{i\in A}P(i)\log_2\frac{P(i)}{Q(i)}
 =D_{\mathrm{KL}}(P\Vert Q).
 \end{equation}
-Equality in Jensen requires $Z$ constant, i.e.\ $Q(i)/P(i)=1$ for all $i$ with $P(i)>0$.
+Equality requires both $m=1$ and a constant ratio $Q(i)/P(i)$ on $A$. Normalisation then makes that ratio one, so $P=Q$ on all outcomes. This support qualification fills a step left implicit in the official proof.
 \end{proof}
 
 \begin{corollary}[unbreakable]{Mutual information is non-negative}{mi-nonneg}
@@ -762,10 +919,10 @@ I(X;Y)=D_{\mathrm{KL}}\bigl(P_{XY}\,\Vert\,P_XP_Y\bigr),
 \end{equation}
 mutual information satisfies $I(X;Y)\geq0$, with equality exactly when $X$ and $Y$ are independent.
 \end{corollary}
-\textit{Significance:} the quantity that measures ``how much one variable tells us about another'' cannot be negative, because the joint distribution can never be a worse approximation to independence than independence itself. This is the information-theoretic analogue of a variance.
+Equivalently, conditioning reduces uncertainty on average: $H(Y\mid X)\leq H(Y)$. It need not reduce uncertainty for every particular value $X=x$; the expectation over $X$ is essential.
 
 \begin{remark}
-The KL divergence is the natural home of the mutual information: $I$ is the divergence between the true joint distribution and the best ``independent'' model of it. That reframing explains both the non-negativity and the asymmetry---the divergence compares a truth to a model, and truth and model are not interchangeable roles.
+The KL divergence gives mutual information a natural form: $I$ is the divergence between the true joint distribution and the best ``independent'' model of it. KL divergence generally changes when its two distribution arguments are exchanged. Mutual information remains symmetric in the variable names: exchanging $X$ and $Y$ merely reindexes the same joint-versus-product sum.
 \end{remark}
 
 % ==============================================================================
@@ -773,13 +930,13 @@ The KL divergence is the natural home of the mutual information: $I$ is the dive
 % ==============================================================================
 
 \subsection*{Conceptual Background}
-Mutual information is a strong claim: it detects any statistical dependence, linear or not, monotone or not. That strength is also its weakness.
+Mutual information is demanding: it detects any statistical dependence, linear or not, monotone or not. That strength is also its weakness.
 
-\paragraph{Strengths.} No functional form is assumed. If $Y$ depends on $X$ through a threshold, a saturation, or a non-monotone response, mutual information still detects it. Correlation, by contrast, measures only linear association and can vanish for a perfectly deterministic nonlinear relationship.
+\paragraph{Strengths.} It assumes no functional form. If $Y$ depends on $X$ through a threshold, a saturation, or a non-monotone response, mutual information still detects it. Correlation, by contrast, measures only linear association and can vanish for a perfectly deterministic nonlinear relationship.
 
-\paragraph{Costs.} To compute $I(X;Y)$ one needs the full joint distribution, which in practice means a two-dimensional histogram. Two marginals require far less data than one joint: the lecture's image is that estimating two one-dimensional distributions is like drawing two lines, while estimating the joint is like filling an area. In cell biology, where each measurement is expensive, the joint is often unobtainable, and a correlation coefficient---cheap, well understood, but linear---is used as a weaker substitute. In neuroscience, where electrodes record many trials quickly, the joint is feasible and information measures are standard.
+\paragraph{Costs.} Computing $I(X;Y)$ requires the full joint distribution, which in practice means a two-dimensional histogram. Two marginals require far less data than one joint: the lecture's image is that estimating two one-dimensional distributions is like drawing two lines, while estimating the joint is like filling an area. In cell biology, where each measurement is expensive, the joint is often unobtainable, and a correlation coefficient (cheap, well understood, but linear) is used as a weaker substitute. In neuroscience, where electrodes record many trials quickly, the joint is feasible and information measures are standard.
 
-\paragraph{Is information what biology optimises?} The lecture's answer is nuanced. Evolution optimises survival and reproduction, not bits. Efficient transmission of information from the environment into the cell is certainly one axis of fitness---an organism that cannot sense food or danger is quickly outcompeted---but it competes with others. Jellyfish have survived for hundreds of millions of years without a brain; crocodiles with a very basic brain predate mammals and will likely outlast them. Information processing is a powerful strategy, not the only one. The honest statement is that information is an important axis, not the definition of fitness.
+\paragraph{Is information what biology optimises?} The lecture's answer is qualified. Evolution optimises survival and reproduction, not bits. Efficient transmission of information from the environment into the cell is one axis of fitness (an organism that cannot sense food or danger is quickly outcompeted), but it competes with others. The classroom contrast between organisms with different nervous systems illustrates that successful information processing need not resemble a large brain; it does not establish a ranking of evolutionary success or a forecast of future survival. Information processing is a powerful strategy, not the only one. Information is an important axis of fitness, not its definition.
 
 \subsection*{Self-check before the exam}
 \begin{enumerate}
@@ -787,7 +944,7 @@ Mutual information is a strong claim: it detects any statistical dependence, lin
 \item Derive Eq.~\eqref{eq:lec02:pulse-solution} from Eq.~\eqref{eq:lec02:pulse-model}. Check the limit $d\to0$ and the limit $k\to0$.
 \item Why is the integral form statistically superior to the derivative form, given identical mathematics?
 \item For an exponentially decaying source, where does the destination peak, and which parameter controls the delay?
-\item Write the four-variable HIV model, find its fixed points, and derive $\mathcal R_0$. What happens to the infectious branch under a protease inhibitor?
+\item Write the four-variable HIV model. Under protease inhibition, why do infectious particles and total RNA load follow different equations? Supplementary: derive the fixed points and $\mathcal R_0$.
 \item Derive the mean of the geometric distribution by differentiating the series.
 \item Define $H(X)$, $H(Y\mid X)$, and $I(X;Y)$, and show that the three forms in Eq.~\eqref{eq:lec02:mi} agree.
 \item Prove $D_{\mathrm{KL}}\geq0$ using Jensen's inequality, and deduce $I(X;Y)\geq0$.
@@ -800,10 +957,11 @@ Mutual information is a strong claim: it detects any statistical dependence, lin
 \subsection*{Further Reading}
 \begingroup\small
 \begin{itemize}
-\item Amir Erez, \emph{Physical Models of Living Systems: Lecture Notes}, \texttt{models-notes-2026.pdf}: Section~1.8, printed pp.~18--19 (pulse-chase and the source--destination model); Sections~2.1--2.7, printed pp.~20--24 (probability, entropy, mutual information, KL divergence). Used to check notation and the four-variable model of Eqs.~(1.11)--(1.14).
+\item Amir Erez, \emph{Physical Models of Living Systems: Lecture Notes}, \texttt{models-notes-2026.pdf}: Sections~1.7--1.8, printed pp.~18--19 (the four-population HIV extension, pulse-chase, and the source--destination model); Sections~2.1--2.7, printed pp.~20--24 (probability, entropy, mutual information, KL divergence). Used to check notation and the four-variable model of Eqs.~(1.11)--(1.14).
 \item A.~Erez, R.~Mukherjee, and G.~Altan-Bonnet, ``Quantifying the Dynamics of Hematopoiesis by In Vivo IdU Pulse-Chase, Mass Cytometry, and Mathematical Modeling,'' \emph{Cytometry Part A} \textbf{95}, 1075--1084 (2019), \href{https://doi.org/10.1002/cyto.a.23799}{doi:10.1002/cyto.a.23799}: the experiment and analysis discussed in the first half.
 \item C.~E. Shannon, ``A Mathematical Theory of Communication,'' \emph{Bell System Technical Journal} \textbf{27}, 379--423 and 623--656 (1948): the original definitions of entropy and mutual information. The lecture dates it to 1949; the paper appeared in 1948.
 \item Philip Nelson, \emph{Physical Models of Living Systems}, supplied Penn edition: Chapter~3, ``Discrete Randomness''; Chapter~4, ``Some Useful Discrete Distributions'' (geometric and related waiting times); Chapter~7, ``Model Selection and Parameter Estimation'' (fitting and noise).
 \item T.~M. Cover and J.~A. Thomas, \emph{Elements of Information Theory}, 2nd ed.\ (Wiley, 2006): a standard reference for Jensen's inequality, Gibbs' inequality, and the properties of KL divergence.
+\item \texttt{PMBS-HW2026.pdf}, Problems~2.1--2.2: explicit KL divergences (Bernoulli, Poisson) and the binary symmetric channel. Problems~2.3--2.4 (channel cascade and the data-processing inequality; medical screening with Bayes' rule) reuse the same tools and belong to the later material of the course.
 \end{itemize}
 \endgroup

@@ -9,6 +9,15 @@
 % Relevant timestamps: 00:49:24--02:05:24 (including lecture breaks).
 % Cross-check: models-notes-2026.pdf, chapters 0--1, printed pp. 9--18.
 % Independent revision structure; supplementary calculations are identified below.
+% Revision date: 2026-10-23
+% Revision 2026-11-02: homework tie-in for Problems 1.1-1.2; see
+%   LECTURE_SUMMARY_GAP_MATRIX_2026-11-02.md.
+% Additional transcript: Lecture Transcripts/77972_2026-10-13_שעור_א_ivrit-ai_hosted.md
+% Caption resistance discussion: 01:05:54--01:06:06, 01:13:54--01:14:48.
+% Hosted validation discussion: 02:44:27--02:46:40; hosted teaching ends around 02:46:53.
+% These are distinct transcript timelines, not interchangeable timestamps.
+% Figure integration: 2026-10-23; see figures/SOURCES.md for crop provenance.
+% Derivation expansion: 2026-10-23; intermediate steps and term meanings added.
 \chapter[Hidden HIV turnover]{Hidden HIV turnover}\label{chap:lecture01}
 \noindent\textbf{Lecture 1 \enspace|\enspace 13 October 2026}
 
@@ -34,20 +43,40 @@ The common flux can be large or small. Turnover is replacement of the contents w
 \end{definition}
 A biological steady state can consume energy and exchange matter; it need not be thermodynamic equilibrium.
 
+\paragraph{How to read a rate equation.}
+A dot means a time derivative: $\dot W=\dd W/\dd t$ is the instantaneous change of the amount, not the amount itself. Each term on the right is an amount per unit time. Input has a plus sign because it adds material; output has a minus sign because it removes material. For a small interval $\Delta t$, conservation first gives a finite balance,
+\begin{align}
+W(t+\Delta t)-W(t)&=\bigl[Q_{\mathrm{in}}(t)-Q_{\mathrm{out}}(t)\bigr]\Delta t+o(\Delta t),\notag\\
+\frac{W(t+\Delta t)-W(t)}{\Delta t}&=Q_{\mathrm{in}}(t)-Q_{\mathrm{out}}(t)+o(1).\label{eq:container-finite-balance}
+\end{align}
+The remainder $o(\Delta t)$ becomes negligible relative to $\Delta t$ as the interval shrinks. Taking that limit yields Eq.~\eqref{eq:container-balance}. Setting its left side to zero balances the fluxes; it does not set either flux to zero.
+
 \paragraph{Physical picture: the leaky container.}
 For liquid height $h$, cross-section $A$, density $\rho$, mass $m=\rho Ah$, and gravitational acceleration $g$, force balance gives
 \begin{align}
 p_{\mathrm{bottom}}A&=p_{\mathrm{top}}A+mg,\label{eq:hydrostatic-balance}\\
-\Delta p&=\rho gh.\label{eq:hydrostatic-pressure}
+(p_{\mathrm{bottom}}-p_{\mathrm{top}})A&=\rho Ahg,\notag\\
+\Delta p&=\frac{\rho Ahg}{A}=\rho gh.\label{eq:hydrostatic-pressure}
 \end{align}
+The upward bottom-pressure force balances the downward top-pressure force plus the liquid's weight. Here $\Delta p=p_{\mathrm{bottom}}-p_{\mathrm{top}}$; cancelling $A$ explains why the pressure difference depends on height rather than total liquid mass alone.
 For a viscous Poiseuille outlet, $Q_{\mathrm{out}}\propto\Delta p\propto h\propto W$. This assumes fixed cross-section and an appropriate flow regime; an arbitrary hole need not obey this law.
+In particular, writing the linear flow law as $Q_{\mathrm{out}}=G\Delta p$ defines the hydraulic conductance $G$, in volume/(time$\times$pressure). Since $W=Ah$, substitution gives $Q_{\mathrm{out}}=(G\rho g/A)W$, so $\kappa=G\rho g/A$. Force balance supplies the pressure; the assumed outlet law supplies the relation between pressure and flow. These are separate ingredients of the model.
 
 \Needspace{13\baselineskip}
 With constant input and $Q_{\mathrm{out}}=\kappa W$ ($\kappa>0$, units time$^{-1}$),
 \begin{equation}\label{eq:container-dynamics}
 \dot W=Q_{\mathrm{in}}-\kappa W,\qquad W^*=Q_{\mathrm{in}}/\kappa.
 \end{equation}
-Subtract the steady equation and integrate $\dd(W-W^*)/(W-W^*)=-\kappa\dd t$:
+Here $W$ is liquid volume, $Q_{\mathrm{in}}$ is volume supplied per time, and $\kappa W$ is volume removed per time. The coefficient $\kappa$ is a fractional removal rate, not a fixed outflow. A steady value satisfies $0=Q_{\mathrm{in}}-\kappa W^*$, so adding $\kappa W^*$ and dividing by $\kappa$ gives $W^*=Q_{\mathrm{in}}/\kappa$.
+
+To solve for an arbitrary initial volume, subtract this steady equation from the dynamical one. Define the deviation $u(t)=W(t)-W^*$; since $W^*$ is constant, $\dot u=\dot W$. Then
+\begin{align}
+\dot u&=(Q_{\mathrm{in}}-\kappa W)-(Q_{\mathrm{in}}-\kappa W^*)=-\kappa u,\notag\\
+\frac{\dd u}{u}&=-\kappa\,\dd t,\notag\\
+\int_{u(0)}^{u(t)}\frac{\dd u'}{u'}&=-\kappa\int_0^t\dd s,\notag\\
+\ln\left|\frac{u(t)}{u(0)}\right|&=-\kappa t,\qquad u(t)=u(0)\ee^{-\kappa t}.\label{eq:container-separation}
+\end{align}
+Separation assumes $u(0)\ne0$; its sign cannot change under this decay. The omitted case $u(0)=0$ gives the constant solution directly. Substituting $u=W-W^*$ back gives
 \begin{equation}\label{eq:container-perturbation}
 \boxed{W(t)=W^*+[W(0)-W^*]\ee^{-\kappa t}.}
 \end{equation}
@@ -56,10 +85,29 @@ Deviations decay on time scale $1/\kappa$: higher volume increases removal and r
 \section{The experiment behind the equations}\label{sec:hiv-perturbation}
 \textbf{Question.} Untreated HIV can show an acute peak, a long approximately constant viral load, and a later rise. Does the middle stage mean slow replication? Alan Perelson's modelling and David Ho's treatment experiments challenge that interpretation: measured RNA load fell roughly a hundredfold over a week to ten days after protease inhibition. A perturbation reveals turnover that a steady measurement hides.
 
+The same measured concentrations appear different on linear and logarithmic axes (Figure~\ref{fig:hiv-treatment-data}). The early shoulder challenges a single-exponential description; the red preliminary fit should not be mistaken for the complete two-population solution derived below.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.96\linewidth]{Lecture_Summaries/figures/hiv_treatment_data.png}
+\caption{Measured viral load after protease inhibition: (a) linear scale; (b) semilog scale. Points are observations; red curves show a preliminary exponential description. Reproduced from Philip Nelson, supplied Penn edition, Fig.~0.3, printed p.~3 (PDF p.~27); Nelson credits these data to Perelson (2002). The same panel appears in the official notes as Fig.~1.3.}\label{fig:hiv-treatment-data}
+\end{figure}
+
 \paragraph{Minimum biological background.}
 Transcription copies DNA into messenger RNA; ribosomes translate its sequence into an amino-acid chain, which folds into a protein. HIV is a \emph{retrovirus}: its RNA is reverse-transcribed into DNA, which can integrate into the host genome. Infected cells use that information to make viral components. Copying errors create variants; selection changes their relative abundances.
 
 \emph{Ritonavir} inhibits HIV protease, which cuts viral polyproteins into functional components. Already infected cells can still release RNA-containing particles, but impaired maturation prevents those new particles from infecting further cells in the ideal model. Mutations altering the protease's structure can reduce drug binding and confer resistance.
+
+Figure~\ref{fig:hiv-protease-structure} gives a molecular picture of this mechanism. A drug's ability to obstruct the enzyme depends on binding-site contacts, so changing the protein can change drug susceptibility without stopping particle production.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.88\linewidth]{Lecture_Summaries/figures/hiv_protease_resistance.png}
+\caption{Structural illustration of normal and mutant HIV protease with ritonavir shown in green. The highlighted residues indicate a change near the binding site; the scale bar is $1$\,nm. This is an artist's reconstruction based on structural data, not microscopy or an output of the population model. Art by David S.~Goodsell; reproduced from Nelson, supplied Penn edition, Fig.~1.4, printed p.~16 (PDF p.~40).}\label{fig:hiv-protease-structure}
+\end{figure}
+
+\paragraph{Why the early response did not mean a cure.}
+The lecture follows the initial decline with a rebound: treatment changes which variants reproduce successfully, and resistant variants can become dominant. A nearly constant population can therefore hide both rapid replacement of particles and continual change in its genetic composition. This qualitative evolutionary interpretation motivates combination therapy; mutation, selection, and resistance are not variables in the two-population model below.
 
 \begin{figure}[H]
 \centering
@@ -76,7 +124,7 @@ Transcription copies DNA into messenger RNA; ribosomes translate its sequence in
 \draw[->,dashed,thick,accent] (v.north) to[bend right=25]
   node[above,align=center] {new infections: blocked at $t=0$} (i.north);
 \end{tikzpicture}
-\caption{Read the model as fluxes: cells produce particles without being consumed. Clearance removes each population; treatment cuts the dashed infection feedback.}\label{fig:hiv-processes}
+\caption{Cells produce particles without being consumed. Clearance removes each population; treatment cuts the dashed infection feedback.}\label{fig:hiv-processes}
 \end{figure}
 
 \textbf{Combination therapy: the probability argument.} If $n$ distinct resistance mutations each have probability $p\ll1$ per replication opportunity and are independent and required together, their joint probability is $p^n$. For $M$ opportunities, the expected number is $Mp^n$. With $M=10^9$, $p=10^{-5}$, $Mp=10^4$ but $Mp^3=10^{-6}$ (added toy example). This simultaneous-mutation model omits sequential evolution, selection, and cross-resistance; it illustrates independent barriers rather than determining a regimen.
@@ -100,20 +148,23 @@ $\beta=\gamma N_{I0}$ & Initial production (virions time$^{-1}$).\\
 \end{center}
 Here $N_V$ includes released particles that cannot infect cells after treatment. Infectious and noninfectious particles are not distinguished. RNA copies per millilitre measure abundance, not infectivity: comparison requires a fixed conversion to the model observable. Concentrations may replace counts if all source terms are per unit volume.
 
-\textbf{Assume:} steady viral load just before treatment; instantaneous, complete blocking of new infections; constant production per infected cell and clearance hazards; a well-mixed measured compartment. Reservoirs and cell heterogeneity are omitted. Pretreatment balance gives
+\textbf{Assume:} steady viral load just before treatment; instantaneous, complete blocking of new infections; constant production per infected cell and clearance hazards; a well-mixed measured compartment. The model omits reservoirs and cell heterogeneity. Pretreatment balance gives
 \begin{equation}\label{eq:hiv-presteady}
 \boxed{\beta=\gamma N_{I0}=k_VN_{V0}.}
 \end{equation}
 This constrains the initial condition; production subsequently decreases.
+The algebra is $0=\dot N_V(0^-)=\gamma N_{I0}-k_VN_{V0}$ before treatment; moving the loss term to the other side yields the equality above. The notation $0^-$ means just before the intervention. Balance at this one instant is an initial-condition constraint, not a claim that production and removal stay equal after treatment.
 
 \subsection{From biological rules to differential equations}\label{subsec:infected-cells}
 A cell's removal probability during $\Delta t$ is $k_I\Delta t+o(\Delta t)$. Conditional on the current population, expected loss is $k_IN_I\Delta t$ to leading order. Taking expectations and $\Delta t\to0$ gives the first equation below. Individual realizations fluctuate; their mean obeys the linear ODE exactly.
+There is no positive infection term after the idealised treatment: the remaining infected cells are a shrinking source, not a population that replenishes itself. The minus sign expresses removal, and $k_IN_I$ has units cells/time. Doubling the number of infected cells doubles the expected number removed in a fixed short interval, while leaving the fractional hazard $k_I$ unchanged.
 \begin{align}
 \dot N_I&=-k_IN_I,\label{eq:infected-ode}\\
+\frac{\dd N_I}{N_I}&=-k_I\,\dd t,\notag\\
 \int_{N_{I0}}^{N_I(t)}\frac{\dd n}{n}&=-k_I\int_0^t\dd s,
 \qquad \ln\frac{N_I(t)}{N_{I0}}=-k_It.\label{eq:infected-integral}
 \end{align}
-Exponentiating gives
+This separation assumes $N_{I0}>0$; if $N_{I0}=0$, the original ODE instead gives $N_I(t)=0$ directly. For a positive initial population, exponentiating the logarithmic relation gives
 \begin{equation}\label{eq:infected-solution}
 \boxed{N_I(t)=N_{I0}\ee^{-k_It}.}
 \end{equation}
@@ -123,22 +174,47 @@ Constant per-cell hazard gives exponential survival of the source. Production is
 \end{equation}
 Production declines as infected cells disappear; it does not switch off immediately.
 
+To construct the second equation, count what enters and leaves the free-particle pool:
+\begin{equation}\label{eq:viral-term-balance}
+\underbrace{\dot N_V}_{\text{net change}}
+=\underbrace{\gamma N_I}_{\text{production by cells}}
+-\underbrace{k_VN_V}_{\text{particle clearance}}.
+\end{equation}
+The product $\gamma N_I$ multiplies particles per cell per time by cells; $k_VN_V$ multiplies an inverse lifetime by a particle count. Both are particles/time. Particle production does not remove an infected cell from $N_I$: these are different physical populations. Inserting $N_I=N_{I0}\ee^{-k_It}$ gives $\gamma N_I=\beta\ee^{-k_It}$, and moving the clearance term to the left gives Eq.~\eqref{eq:viral-ode}. The positive sign on that left-hand term is an algebraic rearrangement, not a new production process.
+
 \Needspace{25\baselineskip}
 \subsection{Integrating factor: the derivation to reproduce}\label{subsec:integrating-factor}
-For $\dot y+a(t)y=f(t)$: multiply by $\mu=\ee^{\int a(t)\dd t}$, recognize $(\mu y)'$, and integrate from the initial time. Here $\mu=\ee^{k_Vt}$:
+For $\dot y+a(t)y=f(t)$, $y(t)$ is the unknown response, $a(t)$ a known coefficient, and $f(t)$ a known driving term. Seek a multiplier $\mu(t)$ that turns the left side into one derivative. The product rule explains the choice:
+\begin{align}
+\frac{\dd}{\dd t}(\mu y)&=\mu\dot y+\dot\mu y,\notag\\
+\mu(\dot y+ay)&=\mu\dot y+\mu ay.\label{eq:integrating-factor-choice}
+\end{align}
+The expressions agree if $\dot\mu=a\mu$. Separating variables gives $\dd\mu/\mu=a(t)\dd t$, hence $\mu=\exp[\int a(t)\dd t]$ up to an irrelevant constant multiplier. Here $a=k_V$, so choose $\mu=\ee^{k_Vt}$. Multiplication combines the source exponentials as $\ee^{k_Vt}\ee^{-k_It}=\ee^{(k_V-k_I)t}$:
 \begin{align}
 \frac{\dd}{\dd t}(\ee^{k_Vt}N_V)&=\beta\ee^{(k_V-k_I)t},\label{eq:product-rule}\\
 \ee^{k_Vt}N_V(t)-N_{V0}
 &=\beta\int_0^t\ee^{(k_V-k_I)s}\dd s\notag\\
 &=\frac{\beta}{k_V-k_I}[\ee^{(k_V-k_I)t}-1].\label{eq:integrating-factor-integral}
 \end{align}
-Multiply by $\ee^{-k_Vt}$; for $k_V\ne k_I$,
+For $k_V\ne k_I$, the integral uses $\int\ee^{as}\dd s=\ee^{as}/a$ with $a=k_V-k_I$. The lower limit contributes the $-1$. Multiply by $\ee^{-k_Vt}$, using
+\begin{equation}\label{eq:viral-exponential-algebra}
+\ee^{-k_Vt}\bigl[\ee^{(k_V-k_I)t}-1\bigr]
+=\ee^{-k_It}-\ee^{-k_Vt},
+\end{equation}
+to obtain
 \begin{equation}\label{eq:viral-general-solution}
 \boxed{N_V=N_{V0}\ee^{-k_Vt}
 +\frac{\beta}{k_V-k_I}(\ee^{-k_It}-\ee^{-k_Vt}).}
 \end{equation}
 \Needspace{9\baselineskip}
-The two modes combine particle clearance and loss of the source. Insert $\beta=k_VN_{V0}$:
+The first term is survival of particles already present at treatment; the second accounts for particles produced later by the declining infected-cell population. Their contributions depend on both clearance rates. Insert $\beta=k_VN_{V0}$ and collect terms over a common denominator:
+\begin{align}
+\frac{N_V}{N_{V0}}
+&=\ee^{-k_Vt}+\frac{k_V}{k_V-k_I}(\ee^{-k_It}-\ee^{-k_Vt})\notag\\
+&=\frac{(k_V-k_I)\ee^{-k_Vt}+k_V\ee^{-k_It}-k_V\ee^{-k_Vt}}{k_V-k_I}\notag\\
+&=\frac{k_V\ee^{-k_It}-k_I\ee^{-k_Vt}}{k_V-k_I}.\label{eq:viral-steady-algebra}
+\end{align}
+The two $k_V\ee^{-k_Vt}$ terms cancel, leaving the negative $k_I\ee^{-k_Vt}$ coefficient. The result is
 \begin{proposition}[unbreakable]{Viral load from an initially steady state}{viral-steady}
 \begin{equation}\label{eq:viral-steady-solution}
 \frac{N_V}{N_{V0}}=\frac{k_V\ee^{-k_It}-k_I\ee^{-k_Vt}}{k_V-k_I}.
@@ -181,19 +257,30 @@ Two clearance time scales shape one observed trajectory.
 \caption{Model predictions, not experimental data. Both cases start horizontally. The solid curve approaches $2\ee^{-u}$ (dotted guide), while the dashed equal-rate curve retains a polynomial prefactor. On a semilog plot the late slope reveals the slower rate.}\label{fig:hiv-decay-scales}
 \end{figure}
 \paragraph{Initial shoulder.}
-Evaluate the ODE and its derivative using pretreatment balance:
+First evaluate $\dot N_V=\beta\ee^{-k_It}-k_VN_V$ at $t=0$. Then differentiate once more: the production term contributes $-k_I\beta\ee^{-k_It}$ and the clearance term contributes $-k_V\dot N_V$ because $k_V$ is constant. Therefore
+\begin{align}
+\ddot N_V(t)&=-k_I\beta\ee^{-k_It}-k_V\dot N_V(t),\notag\\
+\ddot N_V(0)&=-k_I\beta-k_V(\beta-k_VN_{V0}).\label{eq:viral-curvature-derivation}
+\end{align}
+Using pretreatment balance in both derivatives gives
 \begin{equation}\label{eq:initial-derivatives}
 \dot N_V(0)=\beta-k_VN_{V0}=0,\qquad
 \ddot N_V(0)=-k_I\beta=-k_Ik_VN_{V0}<0.
 \end{equation}
-The curve starts horizontally and immediately bends down; it is not flat over a finite interval. Its early expansion is
+The curve starts horizontally and immediately bends down; it is not flat over a finite interval. Taylor's formula is $N_V(t)=N_{V0}+\dot N_V(0)t+\ddot N_V(0)t^2/2+O(t^3)$. Substitute the zero slope and negative curvature, then divide by $N_{V0}$, to obtain
 \begin{equation}\label{eq:early-time}
 N_V/N_{V0}=1-\tfrac12k_Ik_Vt^2+O(t^3).
 \end{equation}
 Curvature and the Taylor expansion supplement the lecture's shoulder argument.
 
 \paragraph{Equal rates: remove the apparent singularity.}
-Set $k_I=k_V=k$ before integration: $(\ee^{kt}N_V)'=\beta$, hence $\ee^{kt}N_V-N_{V0}=\beta t$, giving
+The divided-difference formula assumed $k_V-k_I\ne0$; its zero denominator signals a failed algebraic form, not an infinite physical population. Set $k_I=k_V=k$ in the ODE before integration. The exponential factors on its right cancel after multiplication by $\ee^{kt}$:
+\begin{align}
+\frac{\dd}{\dd t}(\ee^{kt}N_V)&=\beta\ee^{kt}\ee^{-kt}=\beta,\notag\\
+\ee^{kt}N_V(t)-N_{V0}&=\int_0^t\beta\,\dd s=\beta t,\notag\\
+N_V(t)&=(N_{V0}+\beta t)\ee^{-kt}.\label{eq:equal-rate-integration}
+\end{align}
+Thus
 \begin{equation}\label{eq:equal-rate-general}
 \boxed{N_V=(N_{V0}+\beta t)\ee^{-kt}.}
 \end{equation}
@@ -202,18 +289,26 @@ A polynomial prefactor replaces the distinct modes. For $\beta=kN_{V0}$,
 N_V=N_{V0}(1+kt)\ee^{-kt},\qquad
 \dot N_V=-N_{V0}k^2t\ee^{-kt}.
 \end{equation}
+For the derivative, the product rule gives $N_{V0}[k\ee^{-kt}-k(1+kt)\ee^{-kt}]$. Cancelling the two terms proportional to $k$ leaves $-N_{V0}k^2t\ee^{-kt}$, so the slope vanishes at $t=0$ even in this limit.
 \begin{remark}
 % Corrects the transcript's claim at 01:56:24--01:57:00.
 Equal rates do not remove the shoulder: the initial slope is still zero, consistent with official notes Eq.~1.9. A shoulder does not establish unequal rates.
 \end{remark}
 
 \paragraph{Late decline and time scales.}
+The long-time behaviour follows by factoring out the slower exponential. For $k_V>k_I$, Eq.~\eqref{eq:viral-steady-solution} becomes
+\begin{equation}\label{eq:viral-slow-factor}
+\frac{N_V}{N_{V0}}=\ee^{-k_It}\frac{k_V-k_I\ee^{-(k_V-k_I)t}}{k_V-k_I}
+\ \longrightarrow\ \frac{k_V}{k_V-k_I}\ee^{-k_It}.
+\end{equation}
+Here the arrow means that the ratio approaches the displayed exponential approximation once $(k_V-k_I)t\gg1$. The bracket tends to a constant, leaving the slower rate $k_I$. For $k_I>k_V$, interchanging the rate labels gives the corresponding tail proportional to $\ee^{-k_Vt}$. Thus $N_V\simeq C\ee^{-k_{\mathrm{slow}}t}$ implies $\ln N_V\simeq\ln C-k_{\mathrm{slow}}t$ when population is expressed in fixed reference units: a semilog slope measures the rate, whereas the intercept contains the amplitude.
 If $k_V\gg k_I$, particles quickly track the source: $N_V\simeq(\beta/k_V)\ee^{-k_It}$ after the fast transient. If $k_I\gg k_V$, the source disappears first and the tail decays with rate $k_V$. Thus the late logarithmic slope tends to $-\min(k_I,k_V)$, including the equal-rate case asymptotically. For a single exponential,
 \begin{equation}\label{eq:decay-scales}
 \tau=1/k,\qquad t_{1/2}=\ln2/k,\qquad
 r_{\mathrm{app}}=\frac{\ln[N(t_1)/N(t_2)]}{t_2-t_1}.
 \end{equation}
 $\tau$ is mean lifetime under constant hazard; an interval's apparent rate $r_{\mathrm{app}}$ need not equal either mechanistic rate. A hundredfold fall in ten days gives $r_{\mathrm{app}}=0.461\,\mathrm{day}^{-1}$ and apparent half-life $1.51$ days (added calculation).
+These scales follow directly from $N(t)/N(0)=\ee^{-kt}$: at $t=1/k$ the remaining fraction is $\ee^{-1}$; setting the fraction to $1/2$ gives $-kt_{1/2}=\ln(1/2)=-\ln2$. Likewise $N(t_1)/N(t_2)=\ee^{k(t_2-t_1)}$ yields the apparent-rate formula by taking a logarithm and dividing by the time interval. Every logarithm acts on a dimensionless ratio.
 
 \begin{example}[unbreakable,fontupper=\small]{Worked HIV calculation: two rates, one curve}{hiv-worked}
 Added problem: initially steady, $k_I=1\,\mathrm{day}^{-1}$, $k_V=2\,\mathrm{day}^{-1}$. Thus $\beta/N_{V0}=2\,\mathrm{day}^{-1}$. In Eq.~\eqref{eq:viral-steady-solution}, set $T=1\,\mathrm{day}$:
@@ -240,9 +335,21 @@ A parameter is structurally identifiable if ideal observations distinguish it fr
 \item \textbf{Count parameters:} measured $N_{V0}$ leaves $\beta,k_I,k_V$; pretreatment balance leaves two rates.
 % The symmetry analysis supplements the transcript's fitting discussion.
 \item \textbf{Check ambiguity:} Eq.~\eqref{eq:viral-steady-solution} is invariant under $k_I\leftrightarrow k_V$. Viral load alone can at best identify the unordered pair. Cell measurements or justified biological information must assign labels. Also $\beta=\gamma N_{I0}$ does not separate its two factors.
-\item \textbf{Validate:} count independent features, not raw points; nearby measurements may be correlated. More independent constraints than parameters permit a test, but do not guarantee identifiability. Overfitting means fitting noise with excess flexibility.
+\item \textbf{Validate:} compare the baseline, initial shoulder or curvature, and late semilog slope and intercept. These describe different aspects of the trajectory, but need not provide independent parameter constraints. Matching the first and last observations can still miss the intermediate curve. For residuals $r_i=N_{V,\mathrm{obs}}(t_i)-N_{V,\mathrm{pred}}(t_i)$, a sustained run of one sign or a missed shoulder suggests model mismatch; scatter should be assessed against measurement uncertainty and correlations. More points than parameters do not guarantee identifiability. Overfitting means fitting noise with excess flexibility.
 \item \textbf{Respect scope:} rapid decline supports rapid hidden turnover. This model omits long-term disease progression and latent reservoirs. Dormant infected cells can retain viral DNA without producing particles, so undetectable blood RNA does not imply eradication. Reservoir activation was discussed as exploratory, not established by this calculation.
 \end{itemize}
+
+\begin{remark}
+Homework connection. Problem~1.1 of the assignments extends the model to two target-cell types with distinct infection, loss, and production rates; the equations are the same bookkeeping applied to a larger pool set. Problem~1.2 asks when the decline after treatment is visibly biphasic: roughly, when the two infected-cell lifetimes are well separated, so the faster compartment sets the early semilog slope and the longer-lived one sets the late slope, after the transient in which free virus clears. That is the rate-identification logic of the late-tail analysis above. A single apparent phase appears when the lifetimes are similar or one compartment contributes negligibly to production.
+\end{remark}
+
+A trajectory can match an initial value, or even both endpoints, while missing the interior measurements (Figure~\ref{fig:hiv-fit-failure}). The dashed curve is linear on the original concentration scale; its bending on a semilog plot is a consequence of the axis transformation.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.57\linewidth]{Lecture_Summaries/figures/hiv_bad_fits.png}
+\caption{Two unsuccessful descriptions of the measured viral load. The solid curve uses the physical model with unsuitable parameter values; the dashed curve belongs to a different, unmechanistic family. Assess the whole trajectory rather than agreement at selected points. Reproduced from Nelson, supplied Penn edition, Fig.~1.3, printed p.~14 (PDF p.~38); corresponding official-note figure: Fig.~1.5.}\label{fig:hiv-fit-failure}
+\end{figure}
 
 \subsection*{Self-check before the exam}
 \begin{enumerate}
@@ -261,5 +368,6 @@ A parameter is structurally identifiable if ideal observations distinguish it fr
 \item Philip Nelson, \emph{Physical Models of Living Systems}, supplied Penn edition: Chapter 1, ``Virus Dynamics,'' §§1.2.1--1.2.6 (biology, semilog plots, rate equations, fitting).
 % The lecture dates the experimental story to 1994; the cited publication is 1996.
 \item A.~S. Perelson et al., \href{https://pubmed.ncbi.nlm.nih.gov/8599114/}{``HIV-1 dynamics in vivo''}, \emph{Science} \textbf{271}, 1582--1586 (1996): original study, citation and abstract.
+\item \texttt{PMBS-HW2026.pdf}, Problems~1.1--1.2: two-target-cell HIV extension and the biphasic-decline coding assignment; the connection is explained in the remark before Figure~\ref{fig:hiv-fit-failure}.
 \end{itemize}
 \endgroup

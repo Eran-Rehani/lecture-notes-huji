@@ -9,15 +9,26 @@
 % Main conceptual discussion: 00:10:48--00:37:06; modelling cycle: 00:48:54--00:49:18.
 % Supporting references: models-notes-2026.pdf, chapter 0, printed pp. 9--11;
 % Philip Nelson, Physical Models of Living Systems, chapter 2.
+% Revision dates: 2026-10-23; 2026-11-02 (pitfall remark; see LECTURE_SUMMARY_GAP_MATRIX_2026-11-02.md).
+% Additional transcript: Lecture Transcripts/77972_2026-10-13_שעור_א_ivrit-ai_hosted.md
+% Hosted and caption timestamps use different timelines; do not interchange them.
 \chapter{Introduction}\label{chap:introduction}
 \noindent\textbf{From Lecture 1 \enspace|\enspace 13 October 2026}
 
 Physical modelling connects biological mechanisms to observations. A useful model makes a question precise enough to calculate and test, with explicit assumptions and limitations.
 
+\begin{itemize}[nosep]
+\item \textbf{Revision goals:} separate observations, assumptions and predictions; choose a scale, state omissions and test the model.
+\end{itemize}
+
 \section{Why living systems need selective descriptions}\label{sec:intro-complexity}
 Living systems interact, adapt, and alter their surroundings: photosynthesis changed the atmosphere and hence the conditions for later life.
 
-They maintain organization by exchanging matter and energy with their surroundings. This respects the second law: a steady biological state need not be thermodynamic equilibrium.
+They maintain organization by exchanging matter and energy with their surroundings. This is consistent with the second law: a steady biological state need not be thermodynamic equilibrium.
+
+\begin{remark}
+Steady is not static. A constant level means that input balances output, and both fluxes can be large: the balance can hide rapid replacement, which is why a flat viral load in Chapter~\ref{chap:lecture01} does not imply slow turnover. Watch a removal rate appear twice as well, once setting the steady level and once controlling how fast the system relaxes to that level after a perturbation.
+\end{remark}
 
 \section{What a mathematical model contributes}\label{sec:intro-model-purpose}
 A model specifies \textbf{variables}, \textbf{processes}, and their \textbf{relations}, then derives consequences not already inserted by hand.
@@ -35,10 +46,9 @@ Data and mechanisms complement each other. Ice-cream searches reveal annual peri
 
 \textbf{The modelling cycle:} formulate $\to$ solve $\to$ compare with data $\to$ revise. Agreement supports usefulness, rather than proving every assumption. Chapter~\ref{chap:lecture01} applies this cycle to hidden viral turnover.
 
-\subsection*{How to use these notes for revision}
-State assumptions, explain each equation term, and interpret results biologically. Attempt analytical homework before consulting solutions; these problems prepare you for the test. Vary simulation parameters to build intuition.
-
 \subsection*{Further Reading}
 \begingroup\small
 Amir Erez, course notes, Chapter~0, pp.~9--11; Philip Nelson, \emph{Physical Models of Living Systems}, Chapter~2, ``Physics and Biology.''
+
+J.~A. Lopez and A.~Erez, ``Mathematical Modelling and Intuition in Microbiology: A Perspective,'' \emph{Environmental Microbiology} \textbf{28}(4), e70266 (2026), recommended in class; bibliographic details follow the official notes.
 \endgroup

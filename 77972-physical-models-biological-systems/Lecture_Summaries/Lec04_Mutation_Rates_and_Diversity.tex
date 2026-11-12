@@ -1,0 +1,289 @@
+% Course: 77972 - Physical Models of Biological Systems
+% Academic year / semester: 2026-27, semester A (autumn)
+% Actual lecture number: Unknown
+% Lecture date: 2026-11-10
+% Summary title: Spontaneous Mutation Rates and Diversity Measures in Biological Systems
+% Lecturer: Unknown
+% Summarizer: Unknown
+% Transcript provenance (comments only): Transcriptions/77972 2026-11-10 [6703d99d]_panopto.md; Panopto viewer
+%   https://huji.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=6703d99d-7730-45e4-ae1d-b4f500680b81
+%   Video ID 6703d99d-7730-45e4-ae1d-b4f500680b81; transcript source panopto; language he.
+% Note: auto-generated transcript may contain errors; equations below are reconstructed
+%       from the transcript and flagged where ambiguous.
+
+\chapter{Spontaneous Mutation Rates and Diversity Measures}
+
+% Source: Transcriptions/77972 2026-11-10 [6703d99d]_panopto.md [00:06:49-02:49:57]
+\section{Overview}
+
+This lecture has two connected parts.  The first part completes the analysis of the Luria--Delbr\"{u}ck fluctuation test: it models bacterial growth as a sequence of synchronous generations, treats mutations as rare Poisson events whose descendants grow exponentially, and uses a generating function to obtain the probability of a culture with no mutants.  From that probability it derives a maximum-likelihood estimate of the spontaneous mutation rate, and it explains why the variance of the mutant count is vastly larger than its mean.  The second part turns to \emph{biodiversity}: it defines Shannon entropy and the Hill (effective-number) family, generalises to R\'{e}nyi entropy, introduces similarity-weighted diversity through the Leinster--Cobbold formula, and shows how phylogenetic distances change the apparent diversity of a community.  The lecture closes with two worked comparisons, butterflies in a rainforest canopy and gut bacteria of lean versus obese mothers.
+
+% Source: Transcriptions/77972 2026-11-10 [6703d99d]_panopto.md [00:06:49-02:49:57]
+\section{Learning objectives}
+
+\begin{itemize}
+\item Model synchronous bacterial growth and spontaneous mutation as a branching/Poisson process.
+\item Derive and interpret the generating function for the number of mutants in one culture.
+\item Obtain the maximum-likelihood mutation rate from the fraction of cultures with zero mutants.
+\item Explain why the mutant-count variance exceeds the Poisson expectation and why many replicate cultures are needed.
+\item Define Shannon entropy, Hill numbers, and R\'{e}nyi entropy, and interpret the effective number of species.
+\item Incorporate species similarity into diversity through the Leinster--Cobbold formula and phylogenetic distances.
+\end{itemize}
+
+% Source: Transcriptions/77972 2026-11-10 [6703d99d]_panopto.md [00:06:49-01:09:25]
+\section{Part I: Spontaneous mutation rates}
+
+% Source: Transcriptions/77972 2026-11-10 [6703d99d]_panopto.md [00:06:49-00:08:02]
+\subsection{Biological setup and the competing hypotheses}
+
+In the experiment a population of bacteria is grown from a small inoculum through $G$ generations in the absence of any selective agent.  At generation $G$ a lethal virus (or antibiotic) is applied; only cells carrying a resistance mutation survive.  Two hypotheses were historically in competition:
+
+\begin{itemize}
+\item \emph{Lamarckian / induced:} mutations appear as a response to the challenge, so every culture should contain roughly the same small number of mutants.
+\item \emph{Darwinian / spontaneous:} mutations occur randomly during growth, before selection.  Because a mutation that happens early leaves many descendants, the mutant count fluctuates wildly from culture to culture (``jackpots'').
+\end{itemize}
+
+The Luria--Delbr\"{u}ck result is that the data are inconsistent with a simple Poisson model of induced mutation: the variance is orders of magnitude larger than the mean.  The transcript also stresses that the experiment can be performed with ordinary care (identical inocula, identical growth conditions, identical number of generations) and that spontaneous mutation rates can be estimated from a very simple count.
+
+% Source: Transcriptions/77972 2026-11-10 [6703d99d]_panopto.md [00:08:02-00:15:56]
+\subsection{Growth model and notation}
+
+Let generation $g=0,1,\dots,G$ contain $2^{g}$ cells (synchronous binary fission, no death).  A mutation may occur during any cell division.  Let $\mu$ be the probability that a given division produces a mutation.  Because mutations are rare, the number of mutation events in generation $g$ is modelled as Poisson with mean
+
+\begin{equation}\label{eq:bio-lambda-g}
+\lambda_g = \mu\,2^{g-1}, \qquad g=1,\dots,G,
+\end{equation}
+
+since $2^{g-1}$ divisions occur in generation $g$.  A mutation occurring in generation $g$ has $G-g$ further generations in which to multiply, so it contributes
+
+\begin{equation}\label{eq:bio-clone-size}
+a_g = 2^{G-g}
+\end{equation}
+
+mutant cells to the final population.  The total number of mutation \emph{events} in one culture is the random variable $M=\sum_{g=1}^{G}N_g$, and its expectation is denoted by capital lambda:
+
+\begin{equation}\label{eq:bio-Lambda-mean}
+\Lambda\equiv\mathbb{E}[M]=\sum_{g=1}^{G}\lambda_g=\mu K,\qquad 
+K=\sum_{g=1}^{G}2^{g-1}=2^{G}-1.
+\end{equation}
+
+Here $K$ is the total number of division opportunities and $\Lambda$ (not $M$) is the deterministic mean event count.  Since the final population is $N=2^{G}$, we have $K=N-1\approx N$; the estimate \eqref{eq:bio-mle} must use the $K$ consistent with the convention declared here, $\lambda_g=\mu\,2^{g-1}$ for $g=1,\dots,G$.
+
+% Source: Transcriptions/77972 2026-11-10 [6703d99d]_panopto.md [00:15:56-00:20:45]
+\subsection{Generating function for the mutant count}
+
+Let $X$ be the total number of mutant cells in a single culture after selection.  Conditional on the mutation events, $X=\sum_{g} N_g a_g$, where $N_g\sim\operatorname{Poisson}(\lambda_g)$ counts mutation events in generation $g$.  The probability generating function is
+
+\begin{align}
+G_X(s)&=\mathbb{E}[s^{X}]
+       =\prod_{g=1}^{G}\exp\!\bigl(\lambda_g(s^{a_g}-1)\bigr) \notag\\
+      &=\exp\!\left(\sum_{g=1}^{G}\lambda_g(s^{a_g}-1)\right).
+\label{eq:bio-gf}
+\end{align}
+
+Two consequences are immediate.  First, the probability that a culture contains \emph{no} mutant at all is
+
+\begin{equation}\label{eq:bio-p0}
+\Pr(X=0)=G_X(0)=\exp\!\left(-\sum_{g=1}^{G}\lambda_g\right)=e^{-\mu K}=e^{-\Lambda}.
+\end{equation}
+
+Second, the mean mutant count is
+
+\begin{equation}\label{eq:bio-mean}
+\mathbb{E}[X]=G_X'(1)=\sum_{g=1}^{G}\lambda_g a_g
+              =\mu\sum_{g=1}^{G}2^{g-1}2^{G-g}
+              =\mu\,G\,2^{G-1}.
+\end{equation}
+
+Because the $N_g$ are independent Poisson variables, the variance of the mutant count is exact:
+\begin{align}
+\operatorname{Var}(X)
+&=\sum_{g=1}^{G}a_g^{\,2}\operatorname{Var}(N_g)
+ =\sum_{g=1}^{G}\lambda_g a_g^{\,2} \notag\\
+&=\mu\sum_{g=1}^{G}2^{g-1}\bigl(2^{G-g}\bigr)^2
+ =\mu\sum_{g=1}^{G}2^{2G-g-1} \notag\\
+&=\mu\,2^{G-1}(2^{G}-1).
+\label{eq:bio-variance}
+\end{align}
+Together with the mean $\mathbb{E}[X]=\mu\,G\,2^{G-1}$, the Fano factor is therefore exact:
+\begin{equation}\label{eq:bio-var-ratio}
+\frac{\operatorname{Var}(X)}{\mathbb{E}[X]}
+=\frac{2^{G}-1}{G}.
+\end{equation}
+This is the quantitative signature of the jackpots: a single early mutation is amplified by the exponential growth, so the distribution is extremely skewed and finite samples of cultures are under-representative of the rare early events.  The result is exact within the declared model (synchronous binary fission, no death, rare mutations, and the indexing $\lambda_g=\mu\,2^{g-1}$); it is not merely an order-of-magnitude estimate.  If one adopts a different indexing of the geometric series for $K$, both the mean and the variance must be recomputed with that convention rather than mixing conventions.
+
+\begin{remark}
+\textbf{Variance versus a naive Poisson model.}
+If mutations were induced by the challenge (Lamarckian), the mutant count would be approximately Poisson with variance equal to the mean.  The observed super-Poissonian variance \eqref{eq:bio-var-ratio} rules this out and identifies the process as spontaneous mutation amplified by exponential growth.  A remark in the transcript: the effective early mutations are so rare that, with a finite number of cultures, the first observed mutation typically occurs in a relatively late generation; extending the experiment (more generations) does not remove this, it merely shifts the effective starting point.
+\end{remark}
+
+% Source: Transcriptions/77972 2026-11-10 [6703d99d]_panopto.md [00:20:49-00:30:23]
+\subsection{Maximum-likelihood estimate of $\mu$}
+
+Perform $C$ independent cultures and let $C_0$ be the number with zero mutants.  The likelihood is binomial,
+
+\begin{equation}\label{eq:bio-likelihood}
+\mathcal{L}(\mu)=\binom{C}{C_0}\bigl(e^{-\mu K}\bigr)^{C_0}
+                  \bigl(1-e^{-\mu K}\bigr)^{C-C_0}.
+\end{equation}
+
+Maximising the log-likelihood gives
+
+\begin{equation}\label{eq:bio-mle}
+\widehat{\mu}=-\frac{1}{K}\ln\!\left(\frac{C_0}{C}\right).
+\end{equation}
+
+This is a strong, practical result: the spontaneous mutation rate is estimated from a simple count of how many cultures are completely wiped out by the virus.  The transcript emphasises that this works for any stress, not only viruses, and that the experimental requirements are identical initial inocula and identical numbers of generations.
+
+\begin{example}{Estimating a bacterial mutation rate}{bio-ex-mle}
+Suppose $C=100$ cultures are grown and $C_0=37$ show no resistant mutants.  With $K=2^{G}-1$ division opportunities, \eqref{eq:bio-mle} gives $\widehat{\mu}=-\ln(0.37)/K$.  The estimate depends only on the fraction of sterile cultures, not on counting mutants in the jackpots; this is precisely why the method is robust against the huge variance of $X$.
+\end{example}
+
+% Source: Transcriptions/77972 2026-11-10 [6703d99d]_panopto.md [01:09:25-02:49:57]
+\section{Part II: Diversity and entropy}
+
+% Source: Transcriptions/77972 2026-11-10 [6703d99d]_panopto.md [01:09:25-01:20:30]
+\subsection{Setup and Shannon entropy}
+
+Consider a community (or ecosystem) with $m$ species (or types) whose relative abundances are $p_i>0$, $\sum_{i=1}^{m}p_i=1$.  The Shannon entropy is
+
+\begin{equation}\label{eq:bio-shannon}
+H=-\sum_{i=1}^{m}p_i\ln p_i \quad (\text{nats}),
+\end{equation}
+
+and the effective number of species, also called the Hill number of order $1$, is
+
+\begin{equation}\label{eq:bio-D1}
+D_1=e^{H}.
+\end{equation}
+
+The transcript gives the interpretation: $D_1$ is the number of equally abundant species that would produce the same entropy.  For example, with two species at $p_1=p_2=1/2$,
+
+\begin{equation}\label{eq:bio-two-species}
+H=\ln 2,\qquad D_1=2.
+\end{equation}
+
+If one species dominates ($p_1\approx 1$), then $H\approx 0$ and $D_1\approx 1$.  Thus $D_1$ compresses a skewed abundance distribution into an intuitive ``how many common species are effectively present''.
+
+% Source: Transcriptions/77972 2026-11-10 [6703d99d]_panopto.md [01:20:30-01:45:26]
+\subsection{Hill numbers and R\'{e}nyi entropy}
+
+The Hill numbers form a one-parameter family
+
+\begin{equation}\label{eq:bio-hill}
+D_q=\left(\sum_{i=1}^{m}p_i^{\,q}\right)^{\!1/(1-q)},\qquad q\ge 0,\; q\neq 1,
+\end{equation}
+
+with $D_1$ defined by continuity as $e^{H}$.  Equivalently, the R\'{e}nyi entropy of order $q$ is
+
+\begin{equation}\label{eq:bio-renyi}
+H_q=\frac{1}{1-q}\ln\!\left(\sum_{i=1}^{m}p_i^{\,q}\right),
+\qquad D_q=e^{H_q}.
+\end{equation}
+
+Important limits (as stated in the lecture):
+
+\begin{itemize}
+\item $q\to 0$: $D_0=m$, the species richness (all species weighted equally, including rare ones).
+\item $q=1$: $D_1=e^{H}$, the Shannon effective number.
+\item $q=2$: $D_2=1/\sum p_i^2$, the inverse Simpson concentration.
+\item $q\to\infty$: $D_\infty=1/p_{\max}$, controlled by the most abundant species.
+\end{itemize}
+
+As $q$ increases, rare species are down-weighted; the family gives a spectrum rather than a single number.  Except for the degenerate uniform distribution, $D_q$ is strictly decreasing in $q$.
+
+\begin{remark}
+\textbf{Species richness is fragile.}
+$D_0=m$ counts every species, including those too rare to be detected in a finite sample or below the detection limit of the instrument.  The transcript stresses that richness is therefore unstable: moving the sampling location by a metre, or changing the detector, can change $m$ substantially.  Larger $q$ gives more stable measures because common species dominate.
+\end{remark}
+
+% Source: Transcriptions/77972 2026-11-10 [6703d99d]_panopto.md [02:02:30-02:34:56]
+\subsection{Similarity-sensitive diversity (Leinster--Cobbold)}
+
+So far all species are treated as completely distinct.  In reality species differ in similarity.  Let $Z$ be an $m\times m$ similarity matrix with $Z_{ii}=1$ and $0\le Z_{ij}\le 1$ (for instance $Z_{ij}=e^{-d_{ij}}$ for a distance $d_{ij}$, or a taxonomic similarity).  The Leinster--Cobbold diversity of order $q$ is
+
+\begin{equation}\label{eq:bio-lc}
+{}^{q}D_Z(\mathbf p)=
+\left(\sum_{i=1}^{m} p_i\left(\sum_{j=1}^{m}Z_{ij}p_j\right)^{\!q-1}\right)^{\!1/(1-q)},
+\qquad q\neq 1,
+\end{equation}
+
+with the $q=1$ case given by $\exp\!\bigl(-\sum_i p_i\ln(\sum_j Z_{ij}p_j)\bigr)$.  When $Z=I$ this reduces to the Hill numbers \eqref{eq:bio-hill}.  The inner sum $\sum_j Z_{ij}p_j$ is the ``effective abundance'' of species $i$ including its similar neighbours; the formula down-weights clusters of similar species.
+
+% Source: Transcriptions/77972 2026-11-10 [6703d99d]_panopto.md [02:02:30-02:08:31]
+% Source: 6703d99d transcript, 02:24:26--02:27:09 (Rao) and 02:34:56--02:40:05 (two species).
+\subsection{Rao's quadratic diversity and its Simpson limit}
+Choose two individuals independently from the community. If their species have dissimilarity $d_{ij}=d_{ji}$, with $d_{ii}=0$, their expected dissimilarity is Rao's quadratic diversity:
+\begin{equation}\label{eq:bio-rao}
+Q=\sum_{i,j}p_i p_j d_{ij}.
+\end{equation}
+For completely distinct species, $d_{ij}=1$ when $i\ne j$, so
+\begin{equation}\label{eq:bio-rao-simpson}
+Q=\sum_{i\ne j}p_i p_j=1-\sum_i p_i^2=1-\frac{1}{D_2}.
+\end{equation}
+Thus $Q$ reduces to the Gini--Simpson diversity, not the inverse Simpson effective number $D_2$ itself. If $Z_{ij}=1-d_{ij}$, then $\sum_{ij}p_iZ_{ij}p_j=1-Q$, and the order-two similarity-sensitive effective number is $1/(1-Q)$. This distinguishes an expected dissimilarity from an effective count.
+
+\begin{example}{Two equally abundant, partially similar species}{bio-two-similar}
+Let $p_1=p_2=1/2$ and $Z=\left(\begin{smallmatrix}1&z\\z&1\end{smallmatrix}\right)$, where $0\le z\le1$. Both ordinary abundances are $(Z\mathbf p)_i=(1+z)/2$. Substitution in Eq.~\eqref{eq:bio-lc} gives, for every order $q$ including its continuous limit at one,
+\begin{equation}\label{eq:bio-two-similar}
+{}^qD_Z=\frac{2}{1+z}.
+\end{equation}
+The value is two for distinct species ($z=0$) and one for indistinguishable species ($z=1$). Equal ordinary abundances make the result independent of $q$; this degeneracy does not hold for general unequal abundances.
+\end{example}
+
+\subsection{Phylogenetic distances}
+
+For living systems the relevant similarity comes from the tree of life.  All organisms descend from a single common ancestor; pairwise evolutionary distances can be read from a phylogenetic tree (for example from genetic sequences).  Two communities may have the same species richness and Shannon entropy, but if one consists of closely related species and the other of distantly related ones, the latter is more diverse in any similarity-sensitive sense.  The transcript illustrates this with a pond containing ten species of green frog versus a pond containing one frog, one fish and one turtle: the second feels more diverse because the members are farther apart on the tree of life.
+
+A coarse taxonomic similarity (used in the lecture's example table) is
+
+\begin{equation}\label{eq:bio-taxsim}
+Z_{ij}=
+\begin{cases}
+1, & \text{same species},\\
+0.8,& \text{same genus but different species},\\
+0.5,& \text{same family but different genus},\\
+0,  & \text{otherwise}.
+\end{cases}
+\end{equation}
+
+Genetic distances are more accurate but require sequencing; the transcript notes that building phylogenetic trees is itself an active research area and that there is no single correct method.
+
+% Source: Transcriptions/77972 2026-11-10 [6703d99d]_panopto.md [02:42:16-02:47:50]
+\begin{example}{Butterflies and gut bacteria}{bio-ex-diversity}
+The lecture compares two ecosystems using the continuous spectrum ${}^{q}D_Z$:
+\begin{itemize}
+\item \emph{Butterflies in a rainforest canopy:} in one habitat the species are more numerous but many are congeneric; in another there are fewer species but they are spread across more genera.  Counting species alone favours the first; weighting by similarity can reverse the conclusion for large $q$.
+\item \emph{Gut microbiome:} a lean mother and an obese mother have bacterial communities with comparable naive richness.  Weighting by sequence similarity lowers the effective diversity much more for the obese mother, because her community is dominated by many closely related strains; the naive (unweighted) measure overstates her diversity.
+\end{itemize}
+The transcript's conclusion is that the unweighted Hill numbers can be misleading for conservation or medical decisions, and that the similarity-weighted spectrum is more informative.
+\end{example}
+
+% Source: Transcriptions/77972 2026-11-10 [6703d99d]_panopto.md [00:06:49-02:49:57]
+\section{Open questions and remarks}
+
+\begin{remark}
+\textbf{Transcript ambiguities.}
+The auto-generated transcript is in Hebrew and contains recognition errors.  In particular, the indexing of the geometric series for $K$ in \eqref{eq:bio-Lambda-mean} is ambiguous (starting at $2$ rather than $1$); the estimate \eqref{eq:bio-mle} should use the $K$ consistent with the chosen indexing.  The variance formula \eqref{eq:bio-var-ratio} is now derived exactly as $(2^G-1)/G$ in \eqref{eq:bio-variance}; the transcript itself gave only an order-of-magnitude statement.  Species-similarity matrices and phylogenetic distances are model choices, not measurements, and the lecture flags the species concept for bacteria as unresolved (``species problem'').
+\end{remark}
+
+% Source: Transcriptions/77972 2026-11-10 [6703d99d]_panopto.md [00:06:49-02:49:57]
+\section{Summary}
+
+\begin{itemize}
+\item Spontaneous mutations during exponential growth produce a super-Poissonian distribution of mutant counts; the probability of zero mutants is $e^{-\mu K}$.
+\item The mutation rate is estimated by $\widehat{\mu}=-\ln(C_0/C)/K$ from the fraction of cultures with no survivors.
+\item Diversity is best described by a spectrum: Shannon/Hill numbers $D_q$, R\'{e}nyi entropies $H_q$, and their similarity-weighted generalisation \eqref{eq:bio-lc}.
+\item Effective numbers translate entropy into an intuitive ``equivalent number of species''; phylogenetic similarity can reverse naive diversity rankings.
+\end{itemize}
+
+\section*{Further Reading}
+
+\begin{itemize}
+\item Nelson, P.~C. \emph{Physical Models of Living Systems}, relevant chapters on stochastic processes, mutation, and information/entropy.
+\item Luria, S.~E. and Delbr\"{u}ck, M. (1943), ``Mutations of bacteria from virus sensitivity to virus resistance'', \emph{Genetics} 28, 491--511.
+\item Hill, M.~O. (1973), ``Diversity and evenness: a unifying notation and its consequences'', \emph{Ecology} 54, 427--432.
+\item R\'{e}nyi, A. (1961), ``On measures of entropy and information'', \emph{Proc. 4th Berkeley Symp.} 1, 547--561.
+\item Leinster, T. and Cobbold, C.~A. (2012), ``Measuring diversity: the importance of species similarity'', \emph{Ecology} 93, 477--489.
+\item Banfield, J.~F. et~al., ``View of the tree of life'' (phylogenetic diversity figure discussed in lecture).
+\end{itemize}

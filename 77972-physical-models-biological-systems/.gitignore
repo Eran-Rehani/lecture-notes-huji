@@ -1,0 +1,23 @@
+# LaTeX build artifacts (regenerable)
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.synctex(busy)
+*.blg
+*.bbl
+*.nav
+*.snm
+*.vrb
+*.bcf
+*.run.xml
+*.xdv
+
+# Python cache (Notebooks/)
+__pycache__/
+.ipynb_checkpoints/

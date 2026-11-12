@@ -1,6 +1,7 @@
 \documentclass[11pt,a4paper,oneside,openany]{scrbook}
+\usepackage{float}
 \usepackage[palatino]{textbooknotes}
-\usepackage{tikz,pgfplots,needspace,float}
+\usepackage{tikz,pgfplots,needspace}
 \pgfplotsset{compat=1.18}
 % Course-local revision layout; retain the shared textbooknotes style unchanged.
 \geometry{inner=25mm,outer=30mm,top=20mm,bottom=22mm,
@@ -42,14 +43,17 @@
 \hypersetup{pdftitle={Physical Models of Biological Systems -- Lecture Summaries},
   pdfauthor={\summaryauthor},pdfsubject={Course 77972, Semester A, 2026--2027}}
 \begin{document}
+\hypersetup{pageanchor=false}
 \input{titlepage}
 \ifcoursevolume
   \tableofcontents
 \fi
 \pagenumbering{arabic}
+\hypersetup{pageanchor=true}
 \setcounter{chapter}{-1}
 \input{Lecture_Summaries/Lec00_Introduction}
 \input{Lecture_Summaries/Lec01_Modelling_and_HIV_Dynamics}
 \input{Lecture_Summaries/Lec02_Cell_Kinetics_and_Information}
 \input{Lecture_Summaries/Lec03_Discrete_Distributions_and_Luria_Delbruck}
+\input{Lecture_Summaries/Lec04_Mutation_Rates_and_Diversity}
 \end{document}
