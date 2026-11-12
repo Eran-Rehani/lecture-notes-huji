@@ -23,6 +23,7 @@
 % Additional transcript: Lecture Transcripts/77972_2026-10-20_שעור_א_ivrit-ai_hosted.md
 % Additional transcript checked 2026-11-12: Transcriptions/77972_2026-10-20_ivrit-ai_local-large-v3.md
 % Recording session ID: 7fda09d5-619a-4138-a12d-b4e000575d9f.
+% Revision 2026-11-12: clarify the limits of steady-count and tracer assumptions.
 % Hosted cross-checks: 00:27:05--00:27:35 (tracer effects),
 %   00:43:20--00:48:00 (marker axes), 01:16--01:23 (HIV),
 %   02:23:20--02:31:40 (effective states and entropy identities),
@@ -73,7 +74,7 @@ Modelling the biology directly is hopeless. Inside the marrow there is spatial s
 A steady state has $\dd W/\dd t=0$, so a measurement of $W$ alone reveals nothing about the fluxes feeding and draining it (Chapter~\ref{chap:lecture01}). To see dynamics one must perturb the system and watch the perturbation move. This is the logic of a pulse-chase experiment.
 
 \begin{definition}{Pulse-chase experiment}{pulse-chase}
-In a \emph{pulse}, a cohort of cells is tagged at a known time, usually while they are synthesising DNA. In the \emph{chase}, the tag is followed through later times and through cell states. The tag is not the biological process; it is a conserved marker whose redistribution reports the process.
+In a \emph{pulse}, a cohort of cells is tagged at a known time, usually while they are synthesising DNA. In the \emph{chase}, the tag is followed through later times and through cell states. The tag is not the biological process; under suitable conservation and nonperturbation assumptions, its redistribution reports the process.
 \end{definition}
 
 The tag used here is \emph{5-iodo-2$'$-deoxyuridine} (IdU), a thymidine analogue. A cell synthesising DNA can incorporate IdU during the pulse, so the tracer marks the DNA-synthesising cohort. Division shares labelled DNA between the daughters: on average, label per daughter is half the mother's. A cell that stops dividing and merely differentiates retains its label under the model's conservation assumption. This distinction determines what the model may assume, and we return to it in Section~\ref{sec:lec02:data}.
@@ -103,7 +104,7 @@ The readout is single-cell mass cytometry. Cells are nebulised into an argon pla
 \subsection{Why a pulse reveals a flux}\label{subsec:lec02:why-pulse}
 In the unperturbed marrow, the number of cells in any state is constant because a large influx from upstream balances differentiation out of the state and death. The label changes nothing about those numbers; it only marks a subset. Immediately after the pulse, the labelled cells sit in the states that were dividing at that moment. As time passes, the labelled cohort moves downstream, and the label appears in states that were initially unlabelled. The total cell number in each state stays constant; only the labelled fraction moves.
 
-A static count cannot measure a rate. The label acts as a tracer in a flow, exactly as a dye injected into a pipe reveals the flow speed without changing the pipe's contents.
+A steady count alone does not determine the rates of balanced influx and outflux. The label acts as a tracer in a flow, like dye injected into a pipe to reveal flow that a static inventory cannot resolve.
 
 \subsection{What the model may assume}\label{subsec:lec02:assumptions}
 The model rests on four assumptions, which should be stated before writing its equations.

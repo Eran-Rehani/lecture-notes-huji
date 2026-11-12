@@ -16,10 +16,11 @@
 % Revision date: 2026-11-12 (reviewed against the Panopto recording; qualified jackpot interpretation).
 % Additional transcript: Transcriptions/77972 2026-11-03 שעור א [9c67909c-e195-4f20-8755-b4ee006ad172]_panopto.md
 % Hosted and caption timestamps use different timelines; do not interchange them.
+% Revision date: 2026-11-12 (checked supplied Panopto transcript and clarified model comparison).
 \chapter{Discrete Distributions and the Luria--Delbr{\"u}ck Fluctuation Test}\label{chap:lecture03}
 \noindent\textbf{Lecture 3 \enspace|\enspace 3 November 2026}
 
-This lecture begins with Bayesian inference and medical screening, then moves from correlation (Pearson versus Spearman, and why summary statistics can mislead) to discrete counting models: the binomial distribution, its Poisson limit, and the Luria--Delbr{\"u}ck fluctuation test of 1943. The central biological question is whether mutations arise randomly before selection (Darwin) or in response to a challenge (Lamarck). The resolution uses a probability model in which early mutations are exponentially amplified (the ``jackpot'' effect), producing a variance far larger than the mean, a signature incompatible with a Poisson process.
+This lecture begins with Bayesian inference and medical screening, then moves from correlation (Pearson versus Spearman, and why summary statistics can mislead) to discrete counting models: the binomial distribution, its Poisson limit, and the Luria--Delbr{\"u}ck fluctuation test of 1943. The central biological question is whether mutations arise randomly before selection (Darwin) or in response to a challenge (Lamarck). The resolution uses a probability model in which early mutations are exponentially amplified (the ``jackpot'' effect), which can produce a variance far larger than the mean for many generations. This is incompatible with the specified homogeneous Poisson alternative, but does not by itself exclude every induced-mutation model.
 
 \begin{itemize}[nosep]
 \item Apply Bayes' theorem to a rare-event screening problem; define covariance, Pearson and rank correlation; explain stationarity and correlation time.
@@ -80,11 +81,11 @@ Correlation alone does not establish causal direction: $a$ may affect $b$, $b$ m
 Summary statistics (means, variances, correlation, regression line) can be identical across data sets with radically different shapes. Always inspect the data visually before trusting summary statistics; in biology, values can span orders of magnitude and a single outlier can dominate a correlation coefficient.
 \end{remark}
 
-\section{The binomial distribution}\label{sec:lecture03-binomial}
 \begin{example}{Dependence without linear correlation}{lecture03-nonlinear}
 Let $L$ take $-1,0,1$ with equal probabilities, and let $M=L^2$. Then $\ee[L]=\ee[L^3]=0$, so $\operatorname{Cov}(L,M)=0$ despite $M$ being determined by $L$. Both variances are positive and Pearson correlation is zero. A monotonic transformation is a different situation: replacing observations by their ranks before computing Pearson's coefficient gives Spearman's coefficient (using average ranks for ties). Anscombe's quartet illustrates another limitation: four data sets can share basic numerical summaries while one is curved and others are dominated by outliers. Inspect the scatter plot and residuals before interpreting a coefficient.
 \end{example}
 
+\section{The binomial distribution}\label{sec:lecture03-binomial}
 A Bernoulli trial is a single experiment with two outcomes: success with probability $p$, failure with probability $1-p$. Repeating the trial $M$ independent times and counting $L$ successes gives a binomial random variable.
 
 \begin{definition}{Binomial probability mass function}{lecture03-binomial-pmf}
