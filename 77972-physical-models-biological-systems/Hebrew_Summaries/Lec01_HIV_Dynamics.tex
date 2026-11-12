@@ -1,0 +1,260 @@
+% Course: 77972 -- Physical Models of Biological Systems
+% Academic year: 2026--2027 | Semester: A
+% Lecture number: 1 (same lecture as the introductory chapter) | Document chapter: 1
+% Lecture date: 2026-10-13
+% Title: דינמיקת HIV ושחלוף נסתר
+% Lecturer: Dr. Amir Erez
+% Notes prepared by: Eran Rehani
+% Revision date: 2026-10-25 | Source fidelity and scientific audit corrections.
+% Editorial revision: 2026-11-05 -- Hebrew prose, analogy limits and retrieval practice.
+
+\chapter{דינמיקת HIV ושחלוף נסתר}\label{chap:hiv-dynamics}
+\noindent\textbf{הרצאה 1 \enspace|\enspace 13 באוקטובר 2026}
+
+\vspace{0.5em}
+ריכוז קבוע של חומר או תאים יכול להתקיים גם כאשר הייצור והפינוי מהירים. כדי לאמוד את הקצבים נדרשת מדידה נוספת. בהרצאה זו נבחן את תגובת העומס הנגיפי למתן מעכב פרוטאז בחולי HIV, נפתור מודל של הדעיכה ונבדוק אילו פרמטרים אפשר להסיק מן העקומה.
+
+\begin{itemize}[nosep]
+\item \textbf{מטרות למידה:} להבחין בין מצב מתמיד לשחלוף; לפתור את מודל HIV הדו-משתני; להבין את אזור הירידה המתונה בתחילת הטיפול ("כתף") ואת הגבול שבו קצבי הפינוי שווים; לזהות מתי נתונים אינם מספיקים כדי לקבוע פרמטרים בנפרד; ולהרחיב את המודל לדעיכה דו-שלבית.
+\end{itemize}
+
+\section{מצב מתמיד לעומת שחלוף נסתר}\label{sec:steady-turnover}
+
+\begin{definition}{מצב מתמיד ושחלוף}{steady-turnover}
+עבור מאגר המכיל כמות חומר $W(t)$, עם שטף כניסה $Q_{\mathrm{in}}(t)$ ושטף יציאה $Q_{\mathrm{out}}(t)$, משוואת שימור המסה נתונה על ידי:
+\begin{equation}\label{eq:mass-balance}
+\dot{W}(t) = \frac{\dd W}{\dd t} = Q_{\mathrm{in}}(t) - Q_{\mathrm{out}}(t)
+\end{equation}
+\textbf{מצב מתמיד (\textenglish{Steady State}):} מתקבל כאשר הכמות הכוללת אינה משתנה בזמן, כלומר $\dot{W} = 0$, ומכאן:
+\begin{equation}\label{eq:steady-balance}
+Q_{\mathrm{in}} = Q_{\mathrm{out}} \equiv Q^*
+\end{equation}
+\textbf{שחלוף (\textenglish{Turnover}):} הוא התהליך שבו המרכיבים הפנימיים של המאגר מוחלפים באופן רציף על ידי חומר חדש. זמן השחלוף האופייני (או זמן השהייה הממוצע) מוגדר על ידי:
+\begin{equation}\label{eq:turnover-time}
+\tau = \frac{W^*}{Q^*}
+\end{equation}
+\end{definition}
+
+\begin{remark}
+במודל פינוי ליניארי, שבו קבוע הקצב הוא $\kappa$, מדידת $W^*$ קובעת את \textbf{היחס בין השטף לקבוע הקצב}, $W^* = Q^*/\kappa$. בלי מידע על $\kappa$ אי אפשר להסיק ממנה את $Q^*$. מאגר של 100 ליטר מים יכול להישאר במצב מתמיד תחת שטף כניסה ויציאה של \SI{1}{\milli\liter\per\hour} (זמן שחלוף של מעל 11 שנים), או תחת שטף של \SI{100}{\liter\per\second} (זמן שחלוף של שנייה אחת).
+\end{remark}
+
+\subsection{האנלוגיה הפיזיקלית: המיכל הדולף}\label{sec:leaky-bucket}
+נתבונן במיכל גלילי בעל שטח חתך $A$, המלא בנוזל בצפיפות $\rho$ עד לגובה $h(t)$. הנפח הכולל הוא $W(t) = A h(t)$. 
+
+משיווי משקל כוחות הידרוסטטי על עמוד הנוזל:
+\begin{align}
+p_{\mathrm{bottom}} A &= p_{\mathrm{top}} A + m g = p_{\mathrm{top}} A + \rho A h g \notag\\
+\Delta p &= p_{\mathrm{bottom}} - p_{\mathrm{top}} = \rho g h(t) = \frac{\rho g}{A} W(t) \label{eq:hydrostatic}
+\end{align}
+אם בתחתית המיכל ישנו צינור דליפה צר וארוך שבו הזרימה למינרית וצמיגה, חוק פואזיי קובע כי שטף היציאה פרופורציונלי למפל הלחץ:
+\begin{equation}\label{eq:poiseuille}
+Q_{\mathrm{out}} = G \Delta p = G \frac{\rho g}{A} W(t) \equiv \kappa W(t)
+\end{equation}
+כאשר $G$ הוא המוליכות ההידראולית ו-$\kappa = \frac{G \rho g}{A}$ הוא קבוע קצב בעל יחידות של $[\text{time}^{-1}]$.
+
+אם מזרימים מים למיכל בקצב קבוע $Q_{\mathrm{in}}$, משוואת הקצב היא:
+\begin{equation}\label{eq:bucket-ode}
+\dot{W}(t) = Q_{\mathrm{in}} - \kappa W(t)
+\end{equation}
+במצב מתמיד $\dot{W}=0$, ומקבלים $W^* = Q_{\mathrm{in}}/\kappa$. 
+
+כדי למצוא את התלות בזמן עבור תנאי ההתחלה $W(0)$, נגדיר את הסטייה מהמצב המתמיד: $u(t) \equiv W(t) - W^*$. מאחר ש-$W^*$ קבוע, $\dot{u} = \dot{W}$. נציב במשוואה:
+\begin{align}
+\dot{u} &= (Q_{\mathrm{in}} - \kappa W) - (Q_{\mathrm{in}} - \kappa W^*) = -\kappa (W - W^*) = -\kappa u \notag\\
+\frac{\dd u}{u} &= -\kappa\,\dd t \implies \ln\abs*{\frac{u(t)}{u(0)}} = -\kappa t \implies u(t) = u(0)\ee^{-\kappa t} \label{eq:bucket-solution}
+\end{align}
+בחזרה למשתנה המקורי $W(t)$:
+\begin{equation}\label{eq:bucket-relaxation}
+\boxed{W(t) = W^* + \bigl[W(0) - W^*\bigr]\ee^{-\kappa t}}
+\end{equation}
+הפתרון מראה שכל סטייה מהמצב המתמיד דועכת אקספוננציאלית, עם זמן רלקסציה אופייני $\tau = 1/\kappa$. מדידת המאגר במצב מתמיד קובעת את היחס בין השטף לקבוע הקצב; מדידת תגובתו להפרעה מאפשרת לאמוד את $\kappa$.
+
+\begin{remark}
+אנלוגיית המיכל ממחישה מאזן בין כניסה לפינוי ואת תגובת המאגר להפרעה. חוק הפינוי הליניארי נובע כאן מהנחת צינור צר עם זרימה צמיגה; הוא אינו חוק כללי לכל חור במיכל. ביישום ל-HIV זו הנחת מודל על פינוי הנגיפים, ולא מסקנה מכך שהמערכת דומה למיכל.
+\end{remark}
+
+\section{העומס הנגיפי של HIV וההפרעה הניסויית}\label{sec:hiv-puzzle}
+נגיף ה-HIV תוקף תאי דם לבנים מסוג \textenglish{CD4+ T-cells}. לאחר שלב ההדבקה החריף, החולה נכנס לשלב לטנטי הנמשך לעיתים קרובות בין 5 ל-10 שנים שבו עומס הנגיפים בדם נראה קבוע כמעט לחלוטין ($10^4 - 10^5$ עותקים למ"ל).
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.72\textwidth]{figures/hiv_treatment_data.png}
+\caption{מדידות עומס נגיפי (עותקי RNA למ"ל פלזמה) בחולי HIV לאחר מתן מעכב פרוטאז (ריטונביר). שימו לב לסקאלה הלוגריתמית בציר ה-y, ולתופעת ה"כתף" האופקית בשעות הראשונות שלאחריה מופיעה דעיכה מעריכית חדה. מתוך Perelson et al., Science (1996).}\label{fig:hiv-data}
+\end{figure}
+
+בשנת 1995 פותחו מעכבי פרוטאז (\textenglish{protease inhibitors}, כגון ריטונביר). 
+במודל הנבחן כאן, עיכוב הפרוטאז אינו משנה מיד את קצב ייצור החלקיקים בתאים שכבר הודבקו, אך מפחית את שיעור החלקיקים המדביקים. לכן פחות נגיפים מדביקים תאי מטרה חדשים והמערכת יוצאת ממצבה המתמיד. מידת העיכוב בפועל תלויה בתרופה ובתנאי הטיפול.
+
+\paragraph{שחלוף מהיר, עמידות וגבולות המודל.}
+שכפול רב של הנגיף יוצר הזדמנויות רבות למוטציות אקראיות. תחת טיפול, וריאנטים עמידים עשויים להתרבות ולהיעשות דומיננטיים באמצעות ברירה; זו אחת המוטיבציות לשילוב תרופות הפועלות על מנגנונים שונים. המודל הדו-משתני מתאר את התגובה המוקדמת בתנאים קבועים, ואינו כולל אבולוציה של עמידות. גם תאים הנושאים זיהום רדום יכולים לשמר מאגר נגיפי שאינו משחרר חלקיקים ברציפות: עומס נמוך בדם אינו מוכיח שהמאגר נעלם. השחלוף, הברירה והרדימות הם מנגנונים שונים, ואין להסיק את כולם מאותה עקומת דעיכה.
+% T13 hosted: 01:40:12--01:41:31 and 02:03:58--02:06:45; official sections 1.3, 1.7.
+
+\section{בנייה ופתרון מתמטי של המודל הדו-משתני}\label{sec:hiv-math-model}
+
+נגדיר את משתני המודל עבור חולה:
+\begin{itemize}
+\item $N_I(t)$: מספר תאי ה-T המודבקים הפעילים (המשחררים נגיפים).
+\item $N_V(t)$: מספר חלקיקי הנגיף החופשיים הכוללים בדם (המדבקים והלא-מדבקים יחד).
+\end{itemize}
+
+מערכת המשוואות הדיפרנציאליות הליניאריות:
+מניחים קצבים חיוביים וקבועים והיעדר הדבקות חדשות. זהו קירוב: גם עיכוב מושלם של יצירת חלקיקים מדביקים אינו מסלק מיד את החלקיקים המדביקים שכבר היו בדם. מזניחים כאן את תרומתם להדבקה לאחר הטיפול; בפרק~\ref{chap:kinetics-information} נפריד אותם מן החלקיקים הלא-מדביקים. היחידות הן $[k_I]=[k_V]=\text{time}^{-1}$ ו-$[\gamma]=\text{virions}\,\text{cell}^{-1}\text{time}^{-1}$; אפשר להשתמש בריכוזים במקום במספרים כאשר נפח המדור קבוע וכל האיברים מנורמלים אליו.
+\begin{align}
+\frac{\dd N_I}{\dd t} &= -k_I N_I \label{eq:hiv-ode-ni}\\
+\frac{\dd N_V}{\dd t} &= \gamma N_I(t) - k_V N_V(t) \label{eq:hiv-ode-nv}
+\end{align}
+
+\subsection{גזירה צעד-אחר-צעד בעזרת גורם אינטגרציה}\label{sec:hiv-derivation}
+\begin{proof}
+פתרון משוואת התאים המודבקים:
+\begin{equation}\label{eq:ni-sol}
+N_I(t) = N_{I0} \ee^{-k_I t}
+\end{equation}
+נגדיר את קצב הייצור ההתחלתי הכולל $\beta \equiv \gamma N_{I0}$. נציב את~\eqref{eq:ni-sol} במשוואה~\eqref{eq:hiv-ode-nv}:
+\begin{equation}\label{eq:nv-inhom}
+\frac{\dd N_V}{\dd t} + k_V N_V(t) = \beta \ee^{-k_I t}
+\end{equation}
+נכפול בגורם האינטגרציה $\mu(t) = \ee^{k_V t}$:
+\begin{equation}
+\frac{\dd}{\dd t}\left[ N_V(t) \ee^{k_V t} \right] = \beta \ee^{(k_V - k_I)t} \label{eq:nv-total-derivative}
+\end{equation}
+אינטגרציה מ-$0$ ועד $t$ (עבור $k_V \ne k_I$):
+\begin{equation}
+N_V(t)\ee^{k_V t} - N_{V0} = \beta \int_0^t \ee^{(k_V - k_I)s}\,\dd s = \frac{\beta}{k_V - k_I} \left[ \ee^{(k_V - k_I)t} - 1 \right]
+\end{equation}
+נכפול ב-$\ee^{-k_V t}$:
+\begin{equation}\label{eq:nv-general-beta}
+\boxed{N_V(t) = N_{V0} \ee^{-k_V t} + \frac{\beta}{k_V - k_I}\left(\ee^{-k_I t} - \ee^{-k_V t}\right)}
+\end{equation}
+
+לפני הטיפול ($t \le 0$), המערכת שהתה במצב מתמיד: $\dot{N}_V(0) = 0 \implies \beta = k_V N_{V0}$.
+נציב זאת ונקבל:
+\begin{equation}\label{eq:nv-normalized}
+N_V(t) = N_{V0} \left[ \frac{k_V \ee^{-k_I t} - k_I \ee^{-k_V t}}{k_V - k_I} \right]
+\end{equation}
+\end{proof}
+
+\begin{theorem}{פתרון מודל הדעיכה של HIV}{hiv-solution}
+בהינתן מצב מתמיד התחלתי $\beta = k_V N_{V0}$ ועבור קצבים שונים $k_V \ne k_I$:
+\begin{equation}\label{eq:hiv-main-sol}
+\boxed{\frac{N_V(t)}{N_{V0}} = \frac{k_V \ee^{-k_I t} - k_I \ee^{-k_V t}}{k_V - k_I}}
+\end{equation}
+\end{theorem}
+
+\section{ניתוח פיזיקלי ומתמטי של עקומת הדעיכה}\label{sec:hiv-curve-features}
+
+\subsection{התנהגות בזמנים קצרים: תופעת הכתף}\label{sec:hiv-shoulder}
+נבחן את הנגזרות ב-$t = 0$:
+\begin{align}
+\left.\frac{\dd}{\dd t}\left(\frac{N_V}{N_{V0}}\right)\right|_{t=0} &= \frac{-k_V k_I + k_I k_V}{k_V - k_I} = 0 \label{eq:first-derivative-zero}\\
+\left.\frac{\dd^2}{\dd t^2}\left(\frac{N_V}{N_{V0}}\right)\right|_{t=0} &= \frac{k_V k_I^2 - k_I k_V^2}{k_V - k_I} = -k_I k_V < 0 \label{eq:second-derivative-negative}
+\end{align}
+טור טיילור סביב $t = 0$:
+\begin{equation}\label{eq:hiv-taylor}
+\boxed{\frac{N_V(t)}{N_{V0}} = 1 - \frac{1}{2} k_I k_V t^2 + \mathcal{O}(t^3)}
+\end{equation}
+בתחילת הטיפול השיפוע מתאפס לפי המודל. פינוי הנגיפים הקיימים מתקזז בתחילה עם שחרור חלקיקים חדשים מהתאים המודבקים, ולכן העומס הנגיפי יורד באיטיות. בהמשך, כשהתאים המודבקים מתמעטים, הפינוי גובר ונראית דעיכה מהירה יותר. אזור הירידה המתונה נקרא "כתף".
+
+\subsection{גבול הקצבים השווים}\label{sec:hiv-equal-rates}
+כאשר $k_V \to k_I \equiv k$, נחשב את הגבול לפי כלל לופיטל:
+\begin{equation}\label{eq:lhopital-limit}
+\lim_{k_V \to k} \frac{k_V \ee^{-k t} - k \ee^{-k_V t}}{k_V - k} = \lim_{k_V \to k} \frac{\ee^{-k t} + k t \ee^{-k_V t}}{1} = (1 + k t)\ee^{-k t}
+\end{equation}
+
+\begin{corollary}{הפתרון בגבול קצבים שווים}{equal-rates}
+כאשר $k_V = k_I = k$:
+\begin{equation}\label{eq:equal-rates-sol}
+\boxed{\frac{N_V(t)}{N_{V0}} = (1 + k t)\ee^{-k t}}
+\end{equation}
+פיתוח טיילור מניב שוב $1 - \frac{1}{2} k^2 t^2 + \dots$. לכן גם בקצבים שווים מתקבלת כתף עם שיפוע התחלתי אפס.
+\end{corollary}
+
+\begin{remark}
+בנוסחי התמלול מופיעה אמירה מילולית שהכתף דורשת קצבים שונים. היא אינה מתיישבת עם הפתרון לעיל ועם משוואה 1.9 בחוברת הקורס: גם בגבול הקצבים השווים השיפוע ההתחלתי אפס. ללא בדיקת ההקלטה לא ניתן לקבוע אם מקור הסתירה בדיבור או בתמלול.
+\end{remark}
+% T13 hosted: 02:36:21--02:37:00; captions: 01:56:54--01:57:00.
+
+\subsection{התנהגות בזמנים ארוכים: צוואר הבקבוק האסימפטוטי}\label{sec:hiv-asymptotics}
+נסמן $k_{\mathrm{fast}}=\max(k_I,k_V)$ ו-$k_{\mathrm{slow}}=\min(k_I,k_V)$, ונניח שהם שונים. נוציא את האקספוננט האיטי כגורם משותף:
+\begin{equation}\label{eq:tail-factorization}
+\frac{N_V(t)}{N_{V0}}=
+\frac{k_{\mathrm{fast}}\ee^{-k_{\mathrm{slow}}t}}{k_{\mathrm{fast}}-k_{\mathrm{slow}}}
+\left[1-\frac{k_{\mathrm{slow}}}{k_{\mathrm{fast}}}\ee^{-(k_{\mathrm{fast}}-k_{\mathrm{slow}})t}\right].
+\end{equation}
+אפשר להזניח את האיבר השני בסוגריים רק כאשר
+\begin{equation}\label{eq:tail-validity}
+\frac{k_{\mathrm{slow}}}{k_{\mathrm{fast}}}\ee^{-(k_{\mathrm{fast}}-k_{\mathrm{slow}})t}\ll1.
+\end{equation}
+בתחום זה מתקבל:
+\begin{equation}\label{eq:asymptotic-tail}
+\frac{N_V(t)}{N_{V0}} \approx \left(\frac{k_{\mathrm{fast}}}{k_{\mathrm{fast}} - k_{\mathrm{slow}}}\right) \ee^{-\min(k_I, k_V) t}
+\end{equation}
+השיפוע האסימפטוטי בגרף חצי-לוגריתמי נקבע באופן בלעדי על ידי הקצב האיטי ביותר במערכת.
+כאשר הקצבים קרובים, תנאי~\eqref{eq:tail-validity} דורש $t\gg1/(k_{\mathrm{fast}}-k_{\mathrm{slow}})$; זמן גדול ביחס לזמן הדעיכה המהיר בלבד אינו מספיק. בקצבים שווים משתמשים בפתרון~\eqref{eq:equal-rates-sol}, ולא בביטוי עם מכנה מתאפס.
+
+\section{הסקת פרמטרים ובעיית האי-זיהוי}\label{sec:identifiability}
+
+\begin{theorem}{סימטריית החלפת הקצבים}{rate-symmetry}
+הפתרון במשוואה~\eqref{eq:hiv-main-sol} הוא סימטרי לחלוטין להחלפת $k_I \leftrightarrow k_V$.
+\end{theorem}
+
+\begin{remark}
+מהתאמת המודל לעקומת הנגיפים בלבד אי אפשר לקבוע איזה ערך הוא קצב פינוי הנגיף ואיזה הוא קצב תמותת התא. שתי ההקצאות נותנות אותה עקומה, ולכן הנתונים אינם מזהים את הפרמטרים בנפרד. תופעה זו נקראת \textbf{אי-זיהוי פרמטרי}.
+כדי לשייך את הקצבים לתהליכים דרוש מידע נוסף או מודל עשיר יותר המוצדק ניסויית. לדוגמה, Perelson ועמיתיו (1996) אמדו מתוך מודל תגובה לטיפול:
+\begin{itemize}
+\item פינוי נגיף חופשי: $t_{1/2} \approx 6\,\text{hours} \implies k_V \approx 3\,\text{day}^{-1}$.
+\item תאים מודבקים מתים בקצב איטי יותר: $t_{1/2} \approx 1.6\,\text{days} \implies k_I \approx 0.5\,\text{day}^{-1}$.
+\end{itemize}
+מאומדני הקצבים והעומס הסיקו החוקרים ייצור ופינוי של למעלה מ-$10^{10}$ נגיפים ביממה.
+אלו אומדנים ממחקר מסוים, ולא קבועים אוניברסליים לכל חולה.
+\end{remark}
+
+\paragraph{אמידה, זיהוי ובחינת המודל.}
+אמידה בוחרת ערכי פרמטרים המתאימים לנתונים; זיהוי בודק אם ניתן להבחין ביניהם מתוך התצפיות; ואימות בוחן אם צורת העקומה מתארת את התופעה. אפשר לבדוק יחד את העומס ההתחלתי, עקמומיות הכתף והשיפוע המאוחר. שאריות בעלות דפוס שיטתי עשויות לחשוף מנגנון חסר גם לאחר התאמה מיטבית. מדידות קרובות או מתואמות אינן מוסיפות בהכרח מידע עצמאי. ספירת מאפייני עקומה מול פרמטרים היא כלל אצבע בלבד: מספר הפרמטרים אינו מבטיח התאמה או זיהוי. למשל, סימטריית החלפת הקצבים נשארת גם אם מודדים את אותה עקומה בצפיפות רבה.
+% T13 hosted: 02:44:27--02:46:40; official section 1.6.
+
+\section{הרחבה משלימה: דעיכה דו-שלבית ומודל שתי אוכלוסיות}\label{sec:hiv-biphasic}
+\textbf{הרחבה בהשראת תרגילים 1.1--1.2, מעבר למודל שנפתר בהרצאה.}
+במעקב ארוך טווח נחשפה \textbf{דעיכה דו-שלבית (\textenglish{biphasic decline})}:
+\begin{enumerate}
+\item שלב ראשון מהיר ($t_{1/2} \approx 1.5\,\text{days}$).
+\item שלב שני איטי בהרבה ($t_{1/2} \approx 1-4\,\text{weeks}$).
+\end{enumerate}
+
+אפשר להסביר שני שלבי דעיכה באמצעות שתי אוכלוסיות תאים מודבקים המייצרות נגיפים, בעלות זמני חיים שונים. זהו מודל המחשה, ולא זיהוי יחיד של סוגי התאים מתוך עקומת העומס:
+\begin{itemize}
+\item תאי $I_1$ (תאי CD4+ T מופעלים, קצרי חיים): $\dot{I}_1 = -k_1 I_1$.
+\item תאי $I_2$ המייצרים נגיפים לאורך זמן רב יותר: $\dot{I}_2 = -k_2 I_2$, עם $k_2 \ll k_1$. תא בעל זיהום רדום אינו יצרן רציף כזה; תיאור הפעלתו מחדש דורש מנגנון נוסף.
+\end{itemize}
+עומס הנגיפים מקבל תרומה משתיהן:
+\begin{equation}\label{eq:biphasic-ode}
+\dot{V} = \gamma_1 I_1(t) + \gamma_2 I_2(t) - k_V V(t)
+\end{equation}
+בהיעדר הדבקות חדשות ובקצבים קבועים וחיוביים, השונים זה מזה, הפתרון הוא סופרפוזיציה של שלוש אקספוננטות:
+\begin{equation}\label{eq:biphasic-solution}
+V(t) = A \ee^{-k_V t} + B \ee^{-k_1 t} + C \ee^{-k_2 t}
+\end{equation}
+המקדמים $A,B,C$ נקבעים מתנאי ההתחלה ומקצבי הייצור. לאחר מעבר הפינוי המהיר עשוי לשלוט האיבר $B\ee^{-k_1t}$, ובהמשך $C\ee^{-k_2t}$, בתנאי שתרומתו אינה זניחה. זמני המעבר תלויים גם במשרעות, ולכן אין חלון זמן אוניברסלי לכל שלב. בקצבים מתלכדים לוקחים גבול ומופיעים גורמים כגון $t\ee^{-kt}$. שני שלבים לא בהכרח יהיו נראים אם זמני החיים דומים או שאחת האוכלוסיות כמעט אינה תורמת לייצור. הנתונים על השלב האיטי נידונו במחקר ההמשך של Perelson ועמיתיו (1997).
+
+\subsection*{סיכום ובדיקת הבנה}
+המצב המתמיד קובע יחס בין ייצור לפינוי. תגובה לטיפול מוסיפה מידע על הקצבים: הכתף מתארת את האיזון ההתחלתי, והזנב המאוחר נקבע לפי הקצב האיטי. עם זאת, סימטריית החלפת הקצבים משאירה עמימות בשיוך הקצב לתהליך הביולוגי.
+\begin{enumerate}
+\item שחזרו את פתרון משוואת הנגיפים באמצעות גורם אינטגרציה. באיזה שלב משתמשים במצב המתמיד שלפני הטיפול?
+\item האם ירידה איטית בשעות הראשונות מחייבת שהתרופה טרם פעלה? הסבירו באמצעות מאזן הייצור והפינוי.
+\item אם זמן מחצית החיים הוא שש שעות, מדוע קבוע הקצב קרוב ל-$3$ ליום ולא ל-$4$ ליום?
+\item האם מדידות תכופות יותר של אותו עומס נגיפי יספיקו כדי להכריע איזה משני הקצבים הוא $k_I$?
+\end{enumerate}
+\paragraph{כיווני תשובה.}
+המצב המתמיד נותן $\beta=k_VN_{V0}$ לאחר פתרון המשוואה הכללית. הכתף יכולה להופיע גם לאחר הפסקת הדבקות חדשות, מפני שתאים שכבר הודבקו ממשיכים לייצר חלקיקים. עבור דעיכה מעריכית $k=\ln2/t_{1/2}$; הצבת רבע יממה נותנת כ-$2.77$ ליום. דגימה צפופה אינה מסירה את סימטריית החלפת הקצבים; לשיוכם דרושה תצפית נוספת על המערכת.
+
+\subsection*{קריאה נוספת}
+\begingroup\small
+\begin{itemize}
+\item ד"ר אמיר ארז, חוברת הקורס \emph{Physical Models of Living Systems} (2026), פרק 1, עמ' 12--18.
+\item חוברת תרגילי הבית \emph{PMBS-HW2026}, תרגיל 1.1 ופתרונו (עמ' 4--5).
+\item A.~S. Perelson et al., ``HIV-1 dynamics in vivo,'' \emph{Science} \textbf{271}, 1582--1586 (1996).
+\item \textenglish{A.~S. Perelson et al., \emph{Nature} \textbf{387}, 188--191 (1997).}\\
+\textenglish{\url{https://doi.org/10.1038/387188a0}}.
+\end{itemize}
+\endgroup
