@@ -1,0 +1,70 @@
+\documentclass[11pt,a4paper,openany]{book}
+\usepackage{hebrew_notes}
+
+\title{מודלים פיזיקליים של מערכות ביולוגיות\\{\large סיכומי הרצאות ותרגול -- קורס 77972}}
+\author{ערן ריחני \and מרצה: ד"ר אמיר ארז}
+\date{שנת הלימודים תשפ"ז \enspace|\enspace סמסטר א' (2026--2027)}
+
+\begin{document}
+
+% ---------------------------------------------------------------- Title Page
+\begin{titlepage}
+\thispagestyle{empty}
+\begin{tikzpicture}[remember picture,overlay]
+\fill[primary!3] (current page.south west) rectangle (current page.north east);
+\fill[primary] (current page.north west) rectangle ([yshift=-175mm]current page.north east);
+\fill[accent] ([yshift=-175mm]current page.north west) rectangle ([yshift=-177mm]current page.north east);
+
+\node[anchor=north east,text=white!85,font=\large\hebrewfontsf,text width=160mm,align=right]
+  at ([xshift=-25mm,yshift=-25mm]current page.north east)
+  {האוניברסיטה העברית בירושלים\\[3pt]מכון רקח לפיזיקה \enspace--\enspace קורס 77972};
+
+\node[anchor=north east,text=white,font=\fontsize{30}{36}\selectfont\bfseries\hebrewfont,text width=160mm,align=right]
+  at ([xshift=-25mm,yshift=-52mm]current page.north east)
+  {מודלים פיזיקליים של\\מערכות ביולוגיות};
+
+\node[anchor=north east,text=white!90,font=\Large\hebrewfontsf,text width=160mm,align=right]
+  at ([xshift=-25mm,yshift=-90mm]current page.north east)
+  {סיכומי הרצאות, גזירות מתמטיות ושאלות חזרה};
+
+% Micrograph / Illustration
+\node[inner sep=0pt] at ([xshift=0mm,yshift=-136mm]current page.north)
+  {\includegraphics[height=50mm]{figures/cover_biological_systems.png}};
+
+\node[anchor=north east,text=primary,font=\Large\bfseries\hebrewfont]
+  at ([xshift=-25mm,yshift=-195mm]current page.north east)
+  {שנת הלימודים תשפ"ז (2026--2027) \enspace|\enspace סמסטר א'};
+
+\node[anchor=north east,text=primary!90!black,align=right,font=\normalsize\hebrewfont,inner sep=0pt]
+  at ([xshift=-25mm,yshift=-215mm]current page.north east)
+  {\begin{tabular}{@{}rl@{}}
+    \textbf{מרצה הקורס:} & ד"ר אמיר ארז\\[6pt]
+    \textbf{סיכום ועריכה מתמטית:} & ערן ריחני
+  \end{tabular}};
+
+\draw[primary!25,line width=0.6pt]
+  ([xshift=25mm,yshift=25mm]current page.south west)--
+  ([xshift=-25mm,yshift=25mm]current page.south east);
+
+\node[anchor=south east,text=primary!75,font=\small\hebrewfont,text width=160mm,align=right]
+  at ([xshift=-25mm,yshift=14mm]current page.south east)
+  {סיכומים המבוססים על ההרצאות, חוברת הקורס ותרגילי הבית.};
+\end{tikzpicture}
+\null
+\end{titlepage}
+
+% ---------------------------------------------------------------- Front Matter
+\frontmatter
+\tableofcontents
+
+% ---------------------------------------------------------------- Main Matter
+\mainmatter
+\setcounter{chapter}{-1}
+
+\input{Lec00_Mavo}
+\input{Lec01_HIV_Dynamics}
+\input{Lec02_Kinetics_and_Information}
+\input{Lec03_Discrete_Distributions_and_Luria_Delbruck}
+\input{Lec04_Mutation_Rates_and_Diversity}
+
+\end{document}
