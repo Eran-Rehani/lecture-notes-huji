@@ -409,7 +409,7 @@ G_s(z)
 
 This is the central object: from its derivatives at $z=1$ one obtains all moments of $s$; from its value at $z=0$ one obtains the probability of zero mutants.
 
-\subsection{Probability of zero mutants}
+\subsection{Probability of zero mutants}\label{subsec:lecture03-zero-mutants}
 
 Setting $z=0$ in \eqref{eq:lecture03-gs-def}: since $a_n>0$, $z^{a_n}\to0$,
 \begin{align}\label{eq:lecture03-gs-zero}
@@ -576,7 +576,7 @@ The actual model has mutations occurring \emph{during growth}, before exposure, 
 \item For the Luria--Delbr{\"u}ck model, write $\lambda_n=\mu n_0 2^n$, $a_n=2^{g-n}$, $y_n=a_nm_n$, and derive $G_s(z)=\exp(\sum_n\lambda_n(z^{a_n}-1))$.
 \item From $G_s(0)$, derive $\Pr(s=0)=e^{-\lambda_{\mathrm{big}}}$ with $\lambda_{\mathrm{big}}\approx2\mu N$.
 \item Carry out the MLE derivation: show $\hat{\lambda}_{\mathrm{big}}=\ln(c/c_0)$ and $\hat{\mu}=\ln(c/c_0)/(2N)$.
-\item Explain why the Fano factor $\mathrm{Var}(s)/\ee[s]\gg1$ supports spontaneous (pre-exposure) mutation rather than induced mutation.
+\item Explain why the Fano factor $\mathrm{Var}(s)/\ee[s]\gg1$ supports pre-exposure mutation against the specified homogeneous, independent induced-mutation model, and why it does not exclude every possible induced model.
 \end{enumerate}
 
 \subsection*{Open questions / remarks}
@@ -586,6 +586,8 @@ The actual model has mutations occurring \emph{during growth}, before exposure, 
 \end{itemize}
 
 \section*{Summary}
+Bayes' theorem combines prior odds with the likelihood ratio, so even an accurate positive test can have a modest predictive value for a rare condition. Covariance and Pearson correlation capture linear association; rank correlation captures monotonic association, while neither establishes causation. Autocorrelation describes how dependence changes with time lag.
+
 This lecture established three layers. First, the binomial distribution describes counts of successes in repeated independent trials, with mean $Mp$ and variance $Mp(1-p)$; in the many-rare-events limit it becomes Poisson, whose signature property is mean equal to variance. Second, cell division provides an internal calibration: binomial partitioning of fluorescent molecules at division lets one measure the fluorescence proportionality constant $\alpha$ from the slope of $\sigma_{\Delta Y}$ versus $\sqrt{Y_0}$ (Rosenfeld's trick). Third, the Luria--Delbr{\"u}ck fluctuation test models spontaneous mutation during exponential growth: early mutations are jackpots amplified by $2^{g-n}$, giving a generating function $G_s(z)=\exp(\sum_n\lambda_n(z^{2^{g-n}}-1))$, a zero-mutant probability $e^{-\lambda_{\mathrm{big}}}$, and a mutation-rate estimate $\hat{\mu}=\ln(c/c_0)/(2N)$. For many generations, the large Fano factor supports pre-existing mutation over the specified homogeneous independent induced-mutation alternative. Next week: completion of the variance/Fano-factor calculation from the probability generating function.
 
 \subsection*{Further Reading}

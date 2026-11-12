@@ -6,6 +6,7 @@
 % Lecturer: Unknown
 % Summarizer: Unknown
 % Transcript provenance (comments only): Transcriptions/77972 2026-11-10 [6703d99d]_panopto.md; Panopto viewer
+%   Supplied local transcript: Transcriptions/77972 2026-11-10 שעור א [6703d99d-7730-45e4-ae1d-b4f500680b81]_local.md
 %   https://huji.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=6703d99d-7730-45e4-ae1d-b4f500680b81
 %   Video ID 6703d99d-7730-45e4-ae1d-b4f500680b81; transcript source panopto; language he.
 % Revision date: 2026-11-12
@@ -49,13 +50,13 @@ The Luria--Delbr\"{u}ck result is that the data are inconsistent with a simple P
 % Source: Transcriptions/77972 2026-11-10 [6703d99d]_panopto.md [00:08:02-00:15:56]
 \subsection{Growth model and notation}
 
-Let generation $g=0,1,\dots,G$ contain $2^{g}$ cells (synchronous binary fission, no death).  A mutation may occur during any cell division.  Let $\mu$ be the probability that a given division produces a mutation.  Because mutations are rare, the number of mutation events in generation $g$ is modelled as Poisson with mean
+Let generation $g=0,1,\dots,G$ contain $2^{g}$ cells (synchronous binary fission, no death).  A mutation may occur during any cell division.  Let $\mu$ be the probability that a given division produces one resistant daughter. This is a per-division convention; the lecture uses a per-cell convention with an initial population $N_0$, giving $\lambda_g=\mu_{\mathrm{cell}}N_0 2^g$ and final size $N=N_0 2^G$. The two conventions differ by a factor of two when $N_0=1$, so their numerical mutation rates cannot be interchanged without conversion.  Because mutations are rare, the number of mutation events in generation $g$ is modelled as Poisson with mean
 
 \begin{equation}\label{eq:bio-lambda-g}
 \lambda_g = \mu\,2^{g-1}, \qquad g=1,\dots,G,
 \end{equation}
 
-since $2^{g-1}$ divisions occur in generation $g$.  A mutation occurring in generation $g$ has $G-g$ further generations in which to multiply, so it contributes
+since $2^{g-1}$ divisions occur in generation $g$. This is a rare-mutation approximation: the Poisson event counts are independent and use the mutation-free population size, so overlapping mutant lineages and depletion of susceptible cells are neglected. A literal finite population cannot contain more mutants than cells; the model is useful while these corrections are negligible. A mutation occurring in generation $g$ has $G-g$ further generations in which to multiply, so it contributes
 
 \begin{equation}\label{eq:bio-clone-size}
 a_g = 2^{G-g}
@@ -68,7 +69,7 @@ mutant cells to the final population.  The total number of mutation \emph{events
 K=\sum_{g=1}^{G}2^{g-1}=2^{G}-1.
 \end{equation}
 
-Here $K$ is the total number of division opportunities and $\Lambda$ (not $M$) is the deterministic mean event count.  Since the final population is $N=2^{G}$, we have $K=N-1\approx N$; the estimate \eqref{eq:bio-mle} must use the $K$ consistent with the convention declared here, $\lambda_g=\mu\,2^{g-1}$ for $g=1,\dots,G$.
+The independent Poisson event counts also neglect depletion of susceptible lineages, repeat mutations in an already resistant lineage, and back mutation. These are rare-mutation approximations; the Poisson model can formally generate more mutants than cells and is not an exact finite-population branching model. Here $K$ is the total number of division opportunities and $\Lambda$ (not $M$) is the deterministic mean event count.  Since the final population is $N=2^{G}$, we have $K=N-1\approx N$; the estimate \eqref{eq:bio-mle} must use the $K$ consistent with the convention declared here, $\lambda_g=\mu\,2^{g-1}$ for $g=1,\dots,G$.
 
 % Source: Transcriptions/77972 2026-11-10 [6703d99d]_panopto.md [00:15:56-00:20:45]
 \subsection{Generating function for the mutant count}
@@ -96,7 +97,7 @@ Second, the mean mutant count is
               =\mu\,G\,2^{G-1}.
 \end{equation}
 
-Because the $N_g$ are independent Poisson variables, the variance of the mutant count is exact:
+Each generation contributes the same amount to the mean: early events are rare but strongly amplified, whereas late events are common but weakly amplified. Because the $N_g$ are independent Poisson variables, the variance of the mutant count is exact within this approximation:
 \begin{align}
 \operatorname{Var}(X)
 &=\sum_{g=1}^{G}a_g^{\,2}\operatorname{Var}(N_g)
@@ -134,7 +135,7 @@ Writing $p_0=e^{-\mu K}$, the likelihood is proportional to $p_0^{C_0}(1-p_0)^{C
 \widehat{\mu}=-\frac{1}{K}\ln\!\left(\frac{C_0}{C}\right).
 \end{equation}
 
-If $C_0=C$, the estimate lies at the boundary $\widehat\mu=0$; if $C_0=0$, the estimate diverges, so a finite estimate cannot be obtained by this method. The model also assumes reliable detection of resistant cells and comparable culture sizes.
+If $C_0=C$, the estimate lies at the boundary $\widehat\mu=0$; if $C_0=0$, the estimate diverges, so a finite estimate cannot be obtained by this method. The model also assumes reliable detection of resistant cells and comparable culture sizes. To use the method, count independent cultures, determine the zero fraction, calculate the division opportunities under the chosen convention, and apply Eq.~\eqref{eq:bio-mle}. A zero count of survivors is an observation about the whole culture, not an estimate of its average mutant count.
 
 This is a strong, practical result: the spontaneous mutation rate is estimated from a simple count of how many cultures are completely wiped out by the virus.  The transcript emphasises that this works for any stress, not only viruses, and that the experimental requirements are identical initial inocula and identical numbers of generations.
 
@@ -148,7 +149,7 @@ Suppose $C=100$ cultures are grown and $C_0=37$ show no resistant mutants.  With
 % Source: Transcriptions/77972 2026-11-10 [6703d99d]_panopto.md [01:09:25-01:20:30]
 \subsection{Setup and Shannon entropy}
 
-Consider a community (or ecosystem) with $m$ species (or types) whose relative abundances are $p_i>0$, $\sum_{i=1}^{m}p_i=1$.  The Shannon entropy is
+Consider a community (or ecosystem) with $m$ species (or types) whose relative abundances are $p_i>0$, $\sum_{i=1}^{m}p_i=1$.  A randomly selected individual belongs to type $i$ with probability $p_i$; relative abundance is dimensionless. The Shannon entropy is
 
 \begin{equation}\label{eq:bio-shannon}
 H=-\sum_{i=1}^{m}p_i\ln p_i \quad (\text{nats}),
@@ -159,6 +160,8 @@ and the effective number of species, also called the Hill number of order $1$, i
 \begin{equation}\label{eq:bio-D1}
 D_1=e^{H}.
 \end{equation}
+
+The lecture date is 10 November 2026. The actual lecture number is not established by the available metadata.
 
 The transcript gives the interpretation: $D_1$ is the number of equally abundant species that would produce the same entropy.  For example, with two species at $p_1=p_2=1/2$,
 
@@ -281,7 +284,7 @@ Z_{ij}=
 \end{cases}
 \end{equation}
 
-These numerical similarities are illustrative modelling choices, not uniquely prescribed values. Sequence-based distances require sequencing and their interpretation depends on the method; the transcript notes that building phylogenetic trees is itself an active research area and that there is no single correct method.
+These numerical similarities are illustrative modelling choices, not uniquely prescribed values. A sequence distance must be converted to a dimensionless similarity using a stated scale; changing that scale can change the resulting diversity. Sequence-based distances require sequencing and their interpretation depends on the method; the transcript notes that building phylogenetic trees is itself an active research area and that there is no single correct method.
 
 % Source: Transcriptions/77972 2026-11-10 [6703d99d]_panopto.md [02:42:16-02:47:50]
 \begin{example}{Butterflies and gut bacteria}{bio-ex-diversity}
