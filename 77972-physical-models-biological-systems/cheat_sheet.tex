@@ -183,5 +183,27 @@ $H$ in bits; $2^H$ is an effective number of states. $I=0$ iff independent; $D_{
 \textbf{Bernoulli KL:} $D(p\Vert q)=p\log_2\frac pq+(1-p)\log_2\frac{1-p}{1-q}$.\\
 \textbf{BSC, error $\varepsilon$:} $I=H(Y)-h(\varepsilon)\le1-h(\varepsilon)$, $h(\varepsilon)=-\varepsilon\log_2\varepsilon-(1-\varepsilon)\log_2(1-\varepsilon)$.\\
 \textbf{Data processing:} $X\to Y\to Z$ implies $I(X;Z)\le I(X;Y)$.
+\section*{Mutation fluctuations}
+% Independent Poisson mutation events amplified by synchronous growth.
+$G$ generations, mutation probability $\mu$ per division, $K=2^G-1$, $\lambda_g=\mu2^{g-1}$, clone size $a_g=2^{G-g}$.
+\begin{gather*}
+G_X(s)=\exp\!\left[\sum_{g=1}^G\lambda_g(s^{a_g}-1)\right],\quad P(X=0)=\ee^{-\mu K}\\
+\widehat\mu=-\ln(C_0/C)/K,\quad
+\frac{\mathrm{Var}(X)}{\mathbb E X}=\frac{2^G-1}{G}
+\end{gather*}
+For $C_0=0$ the zero-count estimate has no finite value; assumptions include equal culture sizes and reliable detection.
+
+\section*{Diversity and similarity}
+% Effective numbers of species and similarity-sensitive generalization.
+$p_i>0$, $\sum_i p_i=1$, $H=-\sum_i p_i\ln p_i$:
+\begin{gather*}
+D_q=\left(\sum_i p_i^q\right)^{1/(1-q)},\quad D_1=\ee^H,\quad D_2=(\sum_i p_i^2)^{-1}\\
+D_0=m,\quad D_\infty=1/p_{\max},\quad H_q=\ln D_q\\
+{}^qD_Z=\left[\sum_i p_i(Zp)_i^{q-1}\right]^{1/(1-q)},\quad
+{}^1D_Z=\exp[-\sum_i p_i\ln(Zp)_i]\\
+Q=\sum_{ij}p_ip_jd_{ij},\quad d_{ij}=1-Z_{ij}\Rightarrow{}^2D_Z=1/(1-Q)
+\end{gather*}
+$Z_{ii}=1$; $Z=I$ recovers ordinary Hill numbers. $Q$ measures expected dissimilarity, not an effective species count.
+
 \end{multicols}
 \end{document}

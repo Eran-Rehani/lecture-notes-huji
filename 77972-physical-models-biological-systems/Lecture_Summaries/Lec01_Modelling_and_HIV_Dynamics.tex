@@ -6,6 +6,8 @@
 % Lecturer: Dr. Amir Erez
 % Notes prepared by: Eran Rehani
 % Primary source: Lecture Transcripts/77972_2026-10-13_שעור_א_Captions_עברית_Hebrew.md
+% Additional source checked 2026-11-12: Transcriptions/77972_2026-10-13_ivrit-ai_local-large-v3.md
+% Recording session ID: 051fcc88-5b53-45ce-b45b-b4d900603efe
 % Relevant timestamps: 00:49:24--02:05:24 (including lecture breaks).
 % Cross-check: models-notes-2026.pdf, chapters 0--1, printed pp. 9--18.
 % Independent revision structure; supplementary calculations are identified below.
@@ -338,6 +340,8 @@ A parameter is structurally identifiable if ideal observations distinguish it fr
 \item \textbf{Validate:} compare the baseline, initial shoulder or curvature, and late semilog slope and intercept. These describe different aspects of the trajectory, but need not provide independent parameter constraints. Matching the first and last observations can still miss the intermediate curve. For residuals $r_i=N_{V,\mathrm{obs}}(t_i)-N_{V,\mathrm{pred}}(t_i)$, a sustained run of one sign or a missed shoulder suggests model mismatch; scatter should be assessed against measurement uncertainty and correlations. More points than parameters do not guarantee identifiability. Overfitting means fitting noise with excess flexibility.
 \item \textbf{Respect scope:} rapid decline supports rapid hidden turnover. This model omits long-term disease progression and latent reservoirs. Dormant infected cells can retain viral DNA without producing particles, so undetectable blood RNA does not imply eradication. Reservoir activation was discussed as exploratory, not established by this calculation.
 \end{itemize}
+
+The lecture's parameter-counting argument is a useful warning, not a proof of predictive failure: a polynomial with sufficiently many adjustable coefficients can interpolate distinct data points exactly while behaving poorly between or beyond them. Conversely, equal numbers of observations and parameters do not automatically imply a perfect fit. What matters is whether independent, informative features constrain the particular model and whether its predictions survive comparison with data not used to fit it. Closely spaced measurements can be correlated, so their number alone can exaggerate the independent information available.
 
 \begin{remark}
 Homework connection. Problem~1.1 of the assignments extends the model to two target-cell types with distinct infection, loss, and production rates; the equations are the same bookkeeping applied to a larger pool set. Problem~1.2 asks when the decline after treatment is visibly biphasic: roughly, when the two infected-cell lifetimes are well separated, so the faster compartment sets the early semilog slope and the longer-lived one sets the late slope, after the transient in which free virus clears. That is the rate-identification logic of the late-tail analysis above. A single apparent phase appears when the lifetimes are similar or one compartment contributes negligibly to production.
