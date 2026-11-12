@@ -1,0 +1,127 @@
+%% hebrew_notes.sty
+%% ערכת עיצוב לסיכומי הרצאות בעברית -- קורס 77972 מודלים פיזיקליים של מערכות ביולוגיות
+%% מבוסס על XeLaTeX, Polyglossia, David CLM, ו-tcolorbox
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{hebrew_notes}[2026/10/25 Hebrew Textbook Notes Style for Course 77972]
+
+% ---------------------------------------------------------------- Packages
+\RequirePackage{amsmath,amssymb,mathtools,bm}
+\RequirePackage{amsthm}
+\RequirePackage{siunitx}
+\RequirePackage[a4paper,inner=22mm,outer=26mm,top=24mm,bottom=26mm]{geometry}
+\RequirePackage[dvipsnames,svgnames]{xcolor}
+\RequirePackage[most]{tcolorbox}
+\RequirePackage{graphicx}
+\RequirePackage{booktabs}
+\RequirePackage{enumitem}
+
+% ---------------------------------------------------------------- Fonts & Languages (XeLaTeX)
+\RequirePackage{fontspec}
+\RequirePackage{polyglossia}
+
+\setdefaultlanguage{hebrew}
+\setotherlanguage{english}
+
+% הגדרת גופנים
+\setmainfont{David CLM}[
+  BoldFont={David CLM Bold},
+  ItalicFont={David CLM Medium Italic},
+  BoldItalicFont={David CLM Bold Italic}
+]
+\setsansfont{DejaVu Sans}[
+  BoldFont={DejaVu Sans Bold},
+  ItalicFont={DejaVu Sans Oblique},
+  BoldItalicFont={DejaVu Sans Bold Oblique}
+]
+\setmonofont{Liberation Mono}[
+  BoldFont={Liberation Mono Bold},
+  ItalicFont={Liberation Mono Italic},
+  BoldItalicFont={Liberation Mono Bold Italic}
+]
+
+\newfontfamily\hebrewfont{David CLM}[
+  Script=Hebrew,
+  BoldFont={David CLM Bold},
+  ItalicFont={David CLM Medium Italic},
+  BoldItalicFont={David CLM Bold Italic}
+]
+\newfontfamily\hebrewfontsf{DejaVu Sans}[
+  Script=Hebrew,
+  BoldFont={DejaVu Sans Bold},
+  ItalicFont={DejaVu Sans Oblique},
+  BoldItalicFont={DejaVu Sans Bold Oblique}
+]
+\newfontfamily\hebrewfonttt{Liberation Mono}[
+  Script=Hebrew,
+  BoldFont={Liberation Mono Bold},
+  ItalicFont={Liberation Mono Italic},
+  BoldItalicFont={Liberation Mono Bold Italic}
+]
+\newfontfamily\englishfont{DejaVu Sans}
+
+% ---------------------------------------------------------------- Colors
+\definecolor{primary}{HTML}{1F4E79}   % כותרות וקווים מובילים
+\definecolor{accent}{HTML}{98653C}    % מספרי פרקים והדגשות
+\definecolor{thmcol}{HTML}{1F4E79}    % משפטים וטענות
+\definecolor{defcol}{HTML}{1F4E79}    % הגדרות
+\definecolor{exacol}{HTML}{287C7A}    % דוגמאות
+\definecolor{remcol}{HTML}{98653C}    % הערות ואזהרות
+
+% ---------------------------------------------------------------- Hyperref
+\RequirePackage[colorlinks,linkcolor=primary,citecolor=accent,urlcolor=accent]{hyperref}
+
+% ---------------------------------------------------------------- Theorem Boxes (RTL: borderline east)
+\tcbset{
+  tbnbox/.style={
+    enhanced,
+    breakable,
+    sharp corners,
+    boxrule=0pt,
+    frame hidden,
+    left=9pt,
+    right=9pt,
+    top=7pt,
+    bottom=7pt,
+    colback=#1!5,
+    colbacktitle=#1!5,
+    colframe=#1,
+    coltitle=#1,
+    fonttitle=\bfseries,
+    titlerule=0pt,
+    borderline east={2.2pt}{0pt}{#1},
+    before skip=9pt,
+    after skip=9pt
+  }
+}
+
+\newtcbtheorem[number within=chapter]{definition}{הגדרה}{tbnbox=defcol}{def}
+\newtcbtheorem[use counter from=definition]{theorem}{משפט}{tbnbox=thmcol}{thm}
+\newtcbtheorem[use counter from=definition]{proposition}{טענה}{tbnbox=thmcol}{prop}
+\newtcbtheorem[use counter from=definition]{lemma}{למה}{tbnbox=thmcol}{lem}
+\newtcbtheorem[use counter from=definition]{corollary}{מסקנה}{tbnbox=thmcol}{cor}
+\newtcbtheorem[use counter from=definition]{example}{דוגמה}{tbnbox=exacol}{ex}
+\newtcolorbox{remark}{tbnbox=remcol,title=דגש והערה ביולוגית}
+
+% proofs
+\renewcommand{\qedsymbol}{$\blacksquare$}
+
+% ---------------------------------------------------------------- Lists & Spacing
+\renewcommand{\labelitemi}{\textcolor{primary}{\bfseries --}}
+\renewcommand{\labelitemii}{\textcolor{primary}{\bfseries \textendash}}
+\setlist{itemsep=3pt,topsep=4pt,parsep=0pt}
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{5pt plus 1pt minus 1pt}
+\linespread{1.12}
+
+% ---------------------------------------------------------------- Math Shortcuts
+\newcommand{\dd}{\mathrm{d}}
+\newcommand{\ee}{\mathrm{e}}
+\newcommand{\ii}{\mathrm{i}}
+\DeclarePairedDelimiter{\ket}{\lvert}{\rangle}
+\DeclarePairedDelimiter{\bra}{\langle}{\rvert}
+\newcommand{\braket}[2]{\langle #1\vert #2\rangle}
+\DeclarePairedDelimiter{\abs}{\lvert}{\rvert}
+\DeclarePairedDelimiter{\norm}{\lVert}{\rVert}
+
+\endinput
