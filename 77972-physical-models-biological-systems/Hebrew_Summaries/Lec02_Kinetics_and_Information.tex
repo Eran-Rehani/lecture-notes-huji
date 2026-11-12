@@ -1,0 +1,493 @@
+% Course: 77972 -- Physical Models of Biological Systems
+% Academic year: 2026--2027 | Semester: A
+% Lecture number: 2 | Document chapter: 2
+% Lecture date: 2026-10-20
+% Title: קינטיקה תאית, מודל 4-אוכלוסיות, ויסודות תורת האינפורמציה
+% Lecturer: Dr. Amir Erez
+% Notes prepared by: Eran Rehani
+% Revision date: 2026-10-25 | Source fidelity and scientific audit corrections.
+% Editorial revision: 2026-11-05 -- Hebrew prose and retrieval practice.
+
+\chapter{קינטיקה תאית, מודל 4-אוכלוסיות, ותורת האינפורמציה}\label{chap:kinetics-information}
+\noindent\textbf{הרצאה 2 \enspace|\enspace 20 באוקטובר 2026}
+
+\vspace{0.5em}
+תחילה נלמד כיצד ניסויי עקיבה בגוף החי (\textenglish{in vivo}) עוקבים אחר התפתחות תאי דם. בניסוי פולס-צ'ייס (\textenglish{pulse-chase}) מסמנים תאים לזמן קצר ועוקבים אחר הסמן כשהתאים מתפתחים. נשתמש במודל מקור-יעד כדי לנתח את הנתונים, ונראה מדוע גזירת מדידות רועשות עלולה להקשות על אמידת קצבי המעבר.
+
+בהמשך נרחיב את מודל ה-HIV לארבע אוכלוסיות; כהרחבה משלימה נחשב גם את סף ההתרבות. בחלק השני נגדיר מושגים הסתברותיים לתיאור שונות ורעש, ובהם אנטרופיית שנון, אינפורמציה הדדית ודיברגנץ קולבק-לייבלר. נוכיח את אי-שליליות שני האחרונים באמצעות אי-שוויון ינסן. הדוגמאות משיעורי הבית והדיון ב-PCA מסומנים כהרחבות.
+
+\begin{itemize}[nosep]
+\item \textbf{מטרות למידה:} לבנות מודל מקור-יעד ולהסביר את הנרמול שלו; להשוות גזירה ואינטגרציה של נתונים רועשים; לחשב אנטרופיה ואינפורמציה הדדית; ולהוכיח את אי-שליליות דיברגנץ KL והאינפורמציה ההדדית. בהרחבות ננתח את סף ההתרבות במודל HIV וניישם את משפט בייס.
+\end{itemize}
+
+\section{קינטיקה תאית בגוף החי: ניסויי פולס-צ'ייס (\texorpdfstring{\textenglish{Pulse-Chase}}{Pulse-Chase})}\label{sec:pulse-chase}
+מח העצם מייצר מדי יום מאות מיליארדי תאי דם חדשים בתהליך ההמטופואזה (\textenglish{haematopoiesis}). תאי גזע מתחלקים, מתמיינים לאורך מסלולי התפתחות מוגדרים (כגון נויטרופילים ומונוציטים), ומשתחררים לזרם הדם. 
+
+מדידת מספר התאים בנקודת זמן אחת עשויה להראות מצב מתמיד. כיצד אפשר למדוד את קצב ההתמיינות, את זמן המעבר בין שלבים ואת אורך החיים של התאים הבוגרים?
+
+\begin{definition}{שיטת הפולס-צ'ייס (\textenglish{Pulse-Chase Labeling})}{pulse-chase}
+\begin{enumerate}
+\item \textbf{פולס (\textenglish{Pulse}):} הזרקה קצרת-מועד של אנלוג תימידין מסומן (כגון IdU -- \textenglish{iododeoxyuridine}). חומר זה מוטמע ב-DNA אך ורק של תאים הנמצאים בשלב שכפול החומר הגנטי (שלב S של מחזור התא) בעת ההזרקה.
+\item \textbf{צ'ייס (\textenglish{Chase}):} הפסקת מתן הסמן (או שטיפתו). התאים שסומנו ממשיכים במחזור חייהם, מתחלקים, ומתקדמים במורד עץ ההתמיינות. החוקרים עוקבים אחר התקדמות גל הסימון לאורך זמן.
+\item \textbf{מדידה הרסנית ברמת התא הבודד:} בניסויי חיות מעבדה, בכל נקודת זמן $t$ מקריבים קבוצת פרטים בלתי-תלויה, מבודדים את תאי מח העצם והדם, ומודדים תא-אחר-תא בציטומטריית מסה (\textenglish{CyTOF}) את רמת הסמן ואת סמני המשטח החלבוניים (למשל CD11b ו-Ly6G).
+\end{enumerate}
+\end{definition}
+
+\begin{remark}
+הסקת קצבי התפתחות מן הסמן מניחה שהוא אינו משנה מהותית את הדינמיקה הנמדדת. זו הנחה הנבדקת בניסוי ותלויה במינון ובתנאים, ולא תכונה מובטחת של כל סמן. לאחר הפולס, חלוקה סימטרית מחלקת בממוצע את הסמן בין הבנות: האות לתא פוחת, בעוד שסך הסמן בשתי הבנות נשמר בקירוב. לכן יש להבחין בין חלוקה, התמיינות ופינוי סמן.
+\end{remark}
+% T20 hosted: 00:13:35--00:15:12 and 00:27:13--00:27:30.
+
+\begin{figure}[htbp]
+\centering
+\includegraphics[width=0.75\textwidth]{figures/neutrophil_measurements.png}
+\caption{התמיינות נויטרופילים, מתוך \textenglish{Erez, Mukherjee and Altan-Bonnet (2019)}, איור \textenglish{4B--C}, \textenglish{\url{https://doi.org/10.1002/cyto.a.23799}}. למעלה (B): צפיפות תאים במרחב הסמנים CD11b ו-Ly6G, ששני ציריו לוגריתמיים; הכוכביות מסמנות מסלול לאורך PC1. למטה (C): אות IdU ממוצע לתא כפונקציה של הזמן בשעות, בנקודות מדידה ובקווי התאמה; הצבע מציין מיקום לאורך המסלול. הצבע במפת הצפיפות אינו כמות IdU. כיתוב המקור משתמש ב-\textenglish{Mean Fluorescence}, אף שהמדידה כאן בציטומטריית מסה. המסלול מוסק מתצלומי מצב של אוכלוסיות ואינו מסלול נצפה של תא יחיד.}\label{fig:pulse-chase-data}
+\end{figure}
+
+\section{מודל מקור-יעד (\texorpdfstring{\textenglish{Source-Destination Model}}{Source-Destination Model})}\label{sec:source-dest}
+נבחן את אות הסמן באוכלוסיית מקור ובאוכלוסיית יעד. בהתאם למדידה באיור~\ref{fig:pulse-chase-data}, נבחר ב-$X(t),Y(t)$ כאותות ממוצעים לתא, באותה סקלת מדידה ובניכוי רקע:
+\begin{equation}\label{eq:source-dest-scheme}
+X(t) \xrightarrow{\quad k \quad} Y(t) \xrightarrow{\quad d \quad} \emptyset
+\end{equation}
+\begin{itemize}
+\item $X(t)$: אות הסמן הממוצע לתא באוכלוסיית המקור.
+\item $Y(t)$: אות הסמן הממוצע לתא באוכלוסיית היעד.
+\item $k$: מקדם מקור אפקטיבי ($[\text{time}^{-1}]$), הכולל את נרמול האות ואת יחס גדלי האוכלוסיות.
+\item $d$: קבוע קצב היציאה/פינוי מאוכלוסיית היעד (התמיינות לשלב הבא או תמותה, $[\text{time}^{-1}]$).
+\end{itemize}
+
+כדי להבהיר את הנרמול, נסמן ב-$L_X,L_Y$ כמויות סמן כוללות וב-$n_X,n_Y$ מספרי תאים קבועים. אם משוואת הכמויות היא $\dot L_Y=aL_X-dL_Y$, אז $X=L_X/n_X$, $Y=L_Y/n_Y$ נותנים
+\begin{equation}\label{eq:tracer-normalization}
+\dot Y=a\frac{n_X}{n_Y}X-dY,\qquad k=a\frac{n_X}{n_Y}.
+\end{equation}
+לפיכך $k$ אינו בהכרח קצב המעבר $a$ של תא יחיד. אוכלוסיות משתנות מוסיפות איברי נרמול; המודל הפשוט מניח שגדליהן קבועים בקירוב ושהאות מייצג מעבר סמן ללא חלוקה משמעותית או מנגנון אובדן נוסף שאינו נכלל ב-$d$.
+
+משוואת הקצב של אות היעד:
+\begin{equation}\label{eq:source-dest-ode}
+\dot{Y}(t) = \frac{\dd Y}{\dd t} = k X(t) - d Y(t)
+\end{equation}
+
+\subsection{פתרון מלא באמצעות גורם אינטגרציה ואינטגרל קונבולוציה}
+נכפול בגורם האינטגרציה $\ee^{dt}$:
+\begin{align}
+\frac{\dd}{\dd t}\left[ Y(t)\ee^{dt} \right] &= k X(t) \ee^{dt} \notag\\
+Y(t)\ee^{dt} - Y(0) &= k \int_0^t X(s)\ee^{ds}\,\dd s \notag\\
+\boxed{Y(t) = Y(0)\ee^{-dt} + k \int_0^t \ee^{-d(t-s)} X(s)\,\dd s} \label{eq:source-dest-solution}
+\end{align}
+משוואה~\eqref{eq:source-dest-solution} מציגה את אות היעד כסכום של דעיכת תנאי ההתחלה ושל תרומת אות המקור לאורך הזמן. האינטגרל מתחשב בכל רגע קודם $s$, כשהתרומה $X(s)$ דועכת עד הזמן $t$ לפי $\ee^{-d(t-s)}$. זהו אינטגרל קונבולוציה עם פונקציית תגובה $h(t)=k\ee^{-dt}$. המערכת פועלת כמסנן מעביר-נמוכים (\textenglish{low-pass filter}): היא מחליקה שינויים מהירים באות המקור ומשמרת טוב יותר שינויים איטיים.
+
+\subsection{יחס השטחים מתחת לעקומות}
+נניח שאות היעד מתחיל באפס ($Y(0)=0$), דועך חזרה לאפס בסיום המעקב ($Y(\infty)=0$), ושהאינטגרלים מתכנסים. נבצע אינטגרציה על משוואה~\eqref{eq:source-dest-ode} מ-$t=0$ עד $\infty$:
+\begin{align}
+\int_0^\infty \dot{Y}(t)\,\dd t &= k \int_0^\infty X(t)\,\dd t - d \int_0^\infty Y(t)\,\dd t \notag\\
+Y(\infty) - Y(0) &= k \int_0^\infty X(t)\,\dd t - d \int_0^\infty Y(t)\,\dd t = 0 \notag\\
+\Aboxed{\int_0^\infty Y(t)\,\dd t &= \frac{k}{d} \int_0^\infty X(t)\,\dd t} \label{eq:area-conservation}
+\end{align}
+היחס בין השטחים מתחת לעקומות היעד והמקור הוא $k/d$. כאשר $k=d$, השטחים שווים. מסקנה זו תקפה בהנחות שהוגדרו: $Y(0)=Y(\infty)=0$ והאות נמדד באותה סקלה בשתי האוכלוסיות.
+
+\section{גזירה נומרית של מדידות רועשות}\label{sec:numerical-diff-trap}
+אפשר לבודד את $k$ ממשוואה~\eqref{eq:source-dest-ode} באמצעות הנגזרת של $Y(t)$:
+\begin{equation}\label{eq:naive-diff}
+k = \frac{\dot{Y}(t) + d Y(t)}{X(t)}
+\end{equation}
+כאשר המדידות רועשות, אומדן זה עלול להיות לא יציב משום שחישוב הנגזרת מגביר את הרעש.
+
+\begin{theorem}{הגברת רעש בגזירה נומרית}{noise-amplification}
+נניח שמדידת האות $y(t)$ מכילה רעש ניסויי בלתי-מתואם בעל שונות $\sigma^2$: $\tilde{y}_i = y(t_i) + \epsilon_i$, כאשר $\mathbb{E}[\epsilon_i]=0$ ו-$\mathrm{Var}(\epsilon_i) = \sigma^2$.
+נניח ששגיאות המדידה בשתי נקודות סמוכות בלתי תלויות. בקירוב הפרשים סופיים, $\dot{y}_i \approx \frac{\tilde{y}_{i+1} - \tilde{y}_i}{\Delta t}$, שונות אומדן הנגזרת תהיה:
+\begin{equation}\label{eq:finite-diff-variance}
+\mathrm{Var}\left(\frac{\tilde{y}_{i+1} - \tilde{y}_i}{\Delta t}\right) = \frac{\mathrm{Var}(\epsilon_{i+1}) + \mathrm{Var}(\epsilon_i)}{\Delta t^2} = \frac{2\sigma^2}{\Delta t^2}
+\end{equation}
+כאשר $\Delta t$ קטן, שונות אומדן הנגזרת גדלה כמו $1/\Delta t^2$, וסטיית התקן גדלה כמו $1/\Delta t$. התוצאה מתארת את רכיב הרעש; שגיאת הקירוב של הנגזרת עצמה תלויה גם בצעד הדגימה.
+\end{theorem}
+
+\begin{remark}
+במרחב התדר, גזירה מכפילה כל רכיב בתדר $\omega$ ב-$\ii\omega$, ולכן מגבירה רכיבי רעש בתדרים גבוהים. אינטגרציה של אות יכולה להחליק תנודות, אך אינה מבטלת את השפעת הרעש בכל מצב. אפשר להתאים את הפתרון האינטגרלי במשוואה~\eqref{eq:source-dest-solution} לנתונים, או להשתמש בשיטת גזירה שמביאה בחשבון את הרעש ואת אי-הוודאות במדידות.
+\end{remark}
+
+\section{מודל HIV המורחב: ארבע אוכלוסיות ומספר ההתרבות \texorpdfstring{$R_0$}{R0}}\label{sec:hiv-4pop}
+בהרצאה 1 הזנחנו הדבקות חדשות לאחר הטיפול ופתרנו מודל ליניארי של דעיכה. כעת נכלול את תאי המטרה הבריאים ונפריד בין נגיפים מדביקים ללא-מדביקים. כך נוכל לתאר גם הדבקה שיורית בזמן טיפול.
+
+\textbf{ארבעת משתני המודל:}
+\begin{itemize}
+\item $T(t)$: ריכוז תאי CD4+ T בריאים (לא מודבקים).
+\item $I(t)$: ריכוז תאי T מודבקים.
+\item $V_I(t)$: ריכוז נגיפים מדבקים (\textenglish{infectious virions}).
+\item $V_{NI}(t)$: ריכוז נגיפים לא-מדבקים (\textenglish{non-infectious virions}).
+\end{itemize}
+
+מערכת המשוואות הדיפרנציאליות הלא-ליניאריות:
+\begin{align}
+\frac{\dd T}{\dd t} &= s - d_T T - \beta T V_I \label{eq:hiv4-T}\\
+\frac{\dd I}{\dd t} &= \beta T V_I - \delta I \label{eq:hiv4-I}\\
+\frac{\dd V_I}{\dd t} &= (1-\varepsilon) p I - c V_I \label{eq:hiv4-VI}\\
+\frac{\dd V_{NI}}{\dd t} &= \varepsilon p I - c V_{NI} \label{eq:hiv4-VNI}
+\end{align}
+כאשר:
+\begin{itemize}
+\item $s$ הוא קצב ייצור תאי T חדשים ממח העצם, ו-$d_T$ הוא קצב תמותתם הטבעית.
+\item $\beta$ הוא קבוע קצב ההדבקה (אינטראקציה מסדר שני $\beta T V_I$ המבטאת חוק פעולת המסות).
+\item $\delta$ (שווה ל-$k_I$) הוא קצב תמותת תאים מודבקים.
+\item $p$ הוא קצב ייצור הנגיפים הכולל לתא, ו-$c$ (שווה ל-$k_V$) הוא קצב פינוי הנגיפים.
+\item $\varepsilon \in [0, 1]$ היא יעילות מעכב הפרוטאז ($\varepsilon=0$ ללא תרופה; $\varepsilon=1$ עיכוב מושלם).
+\end{itemize}
+
+היחידות הן $[s]=\text{cells}\,\text{volume}^{-1}\text{time}^{-1}$, $[d_T]=[\delta]=[c]=\text{time}^{-1}$, $[\beta]=\text{volume}\,\text{virion}^{-1}\text{time}^{-1}$ ו-$[p]=\text{virions}\,\text{cell}^{-1}\text{time}^{-1}$. סימון חוברת הקורס שונה: מקדם ההדבקה שלה $\epsilon$ הוא $\beta$ כאן, ושיעור הנגיפים המדביקים $\epsilon'$ הוא $1-\varepsilon$ כאן.
+
+\paragraph{איזה גודל מודדים, ומתי חוזרים למודל המצומצם?}
+עומס נגיפי כולל אינו מבחין בין חלקיקים מדביקים ללא-מדביקים. נסמן את הריכוז הכולל ב-$L$; חיבור שתי המשוואות האחרונות נותן
+\begin{equation}\label{eq:hiv4-total-load}
+L=V_I+V_{NI},\qquad \dot L=pI-cL.
+\end{equation}
+זהו הגודל המקביל ל-$N_V$ בפרק הקודם, לאחר התאמת יחידות מספר לריכוז. עבור $\varepsilon=1$ מתקבל $V_I(t)=V_I(0)\ee^{-ct}$, אך עדיין קיים האיבר $\beta TV_I$ במשוואת $I$. רק כאשר הדבקה שיורית זו זניחה, או נחסמת בנפרד, מתקבל $\dot I\simeq-\delta I$ והמודל הדו-משתני עבור $I,L$ חוזר להיות קירוב מתאים.
+
+\subsection{הרחבה משלימה: מספר ההתרבות וסף הזיהום}
+\textbf{ניתוח משלים של המשוואות; אינו מוצג כחלק שנגזר בהרצאה.}
+נניח $s,d_T,\delta,c>0$, $\beta,p\ge0$ וקצבים קבועים.
+לפני הדבקה ($I=0, V=0$), אוכלוסיית תאי המטרה נמצאת במצב מתמיד בריא:
+\begin{equation}
+T_0 = \frac{s}{d_T}
+\end{equation}
+נבדוק האם החדרת כמות זעירה של נגיף למערכת תוביל להתפשטות הזיהום או לדעיכתו.
+
+\begin{definition}{מספר ההתרבות הבסיסי $R_0$ (\textenglish{Basic Reproductive Ratio})}{r0-def}
+$R_0$ מוגדר ללא טיפול כמספר הממוצע של תאים מודבקים חדשים שמייצר תא מודבק יחיד בסביבת מצב שיווי המשקל הבריא. תחת עיכוב קבוע נסמן את אותו גורם התרבות ב-$\mathcal R(\varepsilon)$:
+\begin{equation}\label{eq:r0-derivation}
+\mathcal R(\varepsilon) = \underbrace{\frac{1}{\delta}}_{\text{תוחלת חיי תא מודבק}} \times \underbrace{(1-\varepsilon)p}_{\text{קצב ייצור נגיפים מדבקים}} \times \underbrace{\frac{1}{c}}_{\text{תוחלת חיי נגיף חופשי}} \times \underbrace{\beta T_0}_{\text{קצב הדבקת תאי מטרה}}
+\end{equation}
+ולכן:
+\begin{equation}\label{eq:r0-formula}
+\boxed{R_0 = \frac{\beta T_0 p}{\delta c},\qquad \mathcal R(\varepsilon)=(1-\varepsilon)R_0}
+\end{equation}
+\end{definition}
+
+\textbf{תנאי סף ביולוגי:}
+\begin{itemize}
+\item אם $\mathcal R(\varepsilon)<1$: המצב הנקי מזיהום ($T=T_0$, $I=V_I=V_{NI}=0$) יציב אסימפטוטית מקומית. הפרעות קטנות דועכות אסימפטוטית; אין בכך טענה שכל משתנה יורד מונוטונית בכל רגע.
+\item אם $\mathcal R(\varepsilon)>1$: המצב הנקי מזיהום אינו יציב, והפרעת זיהום קטנה יכולה לגדול. למודל זה יש אז גם נקודת שבת עם זיהום מתמשך.
+\item אם $\mathcal R(\varepsilon)=1$: הלינאריזציה בעלת ערך עצמי אפס ואינה מכריעה לבדה את היציבות האסימפטוטית.
+\item הגדלת $\varepsilon$ מפחיתה את $\mathcal R(\varepsilon)$; זהו סף של המודל בהנחותיו, ולא תיאור של מאגר רדום או של עמידות.
+\end{itemize}
+
+אפשר לבדוק את הסף באמצעות הלינאריזציה של $I,V_I$ סביב המצב הבריא. הפולינום האופייני הוא
+\begin{equation}\label{eq:hiv4-threshold-polynomial}
+\lambda^2+(\delta+c)\lambda+\delta c\bigl[1-\mathcal R(\varepsilon)\bigr]=0.
+\end{equation}
+לכן מתחת לסף לשני השורשים חלק ממשי שלילי; מעליו מכפלתם שלילית ויש שורש חיובי. שני הכיוונים הנוספים תורמים את הערכים העצמיים $-d_T$ ו-$-c$.
+
+\section{יסודות תורת ההסתברות במערכות ביולוגיות}\label{sec:probability-foundations}
+ברמת התא והמולקולה הבודדת נמדדות תנודות שאינן מתוארות באמצעות הממוצע בלבד. כדי לתאר אותן נגדיר משתנים מקריים ואת התפלגויותיהם.
+
+\subsection{אירועים, התניה והתפלגות משותפת}
+\begin{definition}{הסתברות מותנית והתפלגויות שוליות}{conditional-marginals}
+לאירועים $A,B$ עם $P(B)>0$, ההסתברות של $A$ לאחר שנודע כי $B$ התרחש היא
+\begin{equation}\label{eq:conditional-event}
+P(A|B)=\frac{P(A\cap B)}{P(B)}.
+\end{equation}
+למשתנים בדידים, $P(x,y)$ היא ההסתברות המשותפת של $X=x$ ו-$Y=y$. כלל המכפלה וההתפלגויות השוליות הם
+\begin{align}
+P(x,y)&=P(x|y)P(y), &&P(y)>0,\label{eq:joint-product}\\
+P(x)&=\sum_y P(x,y),\qquad P(y)=\sum_x P(x,y).\label{eq:marginalization}
+\end{align}
+הסכומים סוכמים על כל המצבים האפשריים של המשתנה שלא נצפה. אי-תלות פירושה $P(x,y)=P(x)P(y)$ לכל זוג; אז ידיעת $Y$ אינה משנה את התפלגות $X$ בערכים המותרים להתניה.
+\end{definition}
+% T20 hosted: 01:33:33--01:34:52 and 01:40:08--01:41:06.
+
+\begin{example}{מצב הסביבה ותגובה תאית}{joint-response}
+נסמן ב-$X\in\{0,1\}$ היעדר או נוכחות אות סביבתי וב-$Y\in\{0,1\}$ תגובה כבויה או פעילה. בדוגמה המחושבת הבאה, שאינה נתוני ניסוי, נבחר
+\begin{equation}\label{eq:joint-response-table}
+\begin{array}{c|cc|c}
+ &Y=0&Y=1&P(X=x)\\\hline
+X=0&0.4&0.1&0.5\\
+X=1&0.2&0.3&0.5\\\hline
+P(Y=y)&0.6&0.4&1
+\end{array}.
+\end{equation}
+הטבלה מנורמלת. למשל $P(Y=1|X=1)=0.3/0.5=0.6$, בעוד $P(Y=1)=0.4$: המשתנים תלויים. התניה בוחרת תת-אוכלוסייה ומנרמלת מחדש את הסתברויותיה.
+\end{example}
+
+\subsection{ניסויי ברנולי ושברים בינאריים}
+ניסוי ברנולי מקבל ערך בינארי $X \in \{0, 1\}$ עם הסתברות הצלחה $P(X=1) = p$ וכישלון $P(X=0) = 1-p$.
+סדרה של $m$ הטלות בלתי-תלויות מייצגת מספר בינארי $X_m$ בתחום $[0,1)$, מתוך $2^m$ ערכים אפשריים:
+\begin{equation}
+X_m = \sum_{j=1}^m b_j 2^{-j}, \qquad b_j \in \{0, 1\}
+\end{equation}
+עבור ביטים הוגנים ($p=1/2$), כל אחת מ-$2^m$ הסדרות אפשרית בהסתברות $2^{-m}$. כאשר דוגמים שוב ושוב סדרות כאלה, שכיחויות הערכים מתקרבות להתפלגות אחידה; במדגם סופי הן משתנות עקב רעש דגימה.
+
+\subsection{התפלגות גאומטרית (\texorpdfstring{\textenglish{Geometric Distribution}}{Geometric Distribution})}
+נבחן סדרת ניסויי ברנולי בלתי-תלויים עם הסתברות הצלחה $\xi \in (0, 1]$. מהי ההסתברות שיידרשו בדיוק $k$ ניסיונות עד להופעת ההצלחה הראשונה?
+\begin{equation}\label{eq:geometric-pmf}
+P(K = k) = (1-\xi)^{k-1} \xi, \qquad k \in \{1, 2, 3, \dots\}
+\end{equation}
+בדיקת נרמול:
+\begin{equation}
+\sum_{k=1}^\infty (1-\xi)^{k-1}\xi = \xi \sum_{j=0}^\infty (1-\xi)^j = \xi \frac{1}{1 - (1-\xi)} = \frac{\xi}{\xi} = 1
+\end{equation}
+נחשב את התוחלת בעזרת גזירת טור הנדסי. כאן $K$ כולל גם את הניסיון שבו מופיעה ההצלחה:
+\begin{equation}
+\mathbb{E}[K] = \sum_{k=1}^\infty k (1-\xi)^{k-1}\xi = \xi \frac{\dd}{\dd (1-\xi)}\left[ \sum_{k=0}^\infty (1-\xi)^k \right] = \xi \frac{1}{\xi^2} = \frac{1}{\xi}
+\end{equation}
+אם ההסתברות לשגיאה בכל בסיס היא $\xi = 10^{-4}$, מספר הבסיסים הצפוי עד לבסיס השגוי הראשון, כולל אותו בסיס, הוא $\mathbb{E}[K]=1/\xi=10^4$. מספר הבסיסים הצפוי שיועתקו לפני השגיאה הוא $\mathbb{E}[K-1]=(1-\xi)/\xi$.
+
+\subsection{משפט בייס ופרדוקס הבדיקה הרפואית}\label{sec:bayes-screening}
+\textbf{הרחבה משאלת שיעורי בית 2.4; הדיון בהרצאה מופיע בסעיף~\ref{sec:he03-bayes}:}
+משפט בייס מעדכן הסתברות מוקדמת (prior) לאחר תצפית. ההסתברות המעודכנת נקראת הסתברות אחורית (posterior). הנראות היא ההסתברות לתצפית בהינתן כל אפשרות:
+\begin{equation}\label{eq:bayes-rule}
+P(A|B) = \frac{P(B|A)P(A)}{P(B)} = \frac{P(B|A)P(A)}{P(B|A)P(A) + P(B|\neg A)P(\neg A)}
+\end{equation}
+
+\begin{example}{סינון רפואי ופרדוקס החיובי-הכוזב}{medical-screening}
+נניח כי מחלה נדירה מופיעה באוכלוסייה בשכיחות (פריור) של $P(D) = 0.001$ ($0.1\%$).
+בדוגמה נתונה בדיקת דם עם הביצועים הבאים:
+\begin{itemize}
+\item \textbf{רגישות (\textenglish{Sensitivity}):} $P(+|D) = 0.99$ (הבדיקה מזהה 99\% מהחולים).
+\item \textbf{סגוליות (\textenglish{Specificity}):} $P(-|\neg D) = 0.95$ (הבדיקה מזהה נכון 95\% מהבריאים, כלומר שיעור חיוביים שגויים של $P(+|\neg D) = 0.05$).
+\end{itemize}
+נחשב את ההסתברות למחלה אצל אדם שקיבל תוצאה חיובית ($+$).
+
+נחשב באמצעות משפט בייס:
+\begin{align}
+P(D|+) &= \frac{P(+|D)P(D)}{P(+|D)P(D) + P(+|\neg D)P(\neg D)} \notag\\
+&= \frac{0.99 \times 0.001}{0.99 \times 0.001 + 0.05 \times 0.999} \notag\\
+ &= \frac{0.00099}{0.00099 + 0.04995} = \frac{0.00099}{0.05094} \approx 0.0194 \quad (\mathbf{1.94\%})
+\end{align}
+בנתונים האלה, ההסתברות שאדם שקיבל תוצאה חיובית אינו חולה היא כ-$98.06\%$. שיעור המחלה באוכלוסייה נמוך בהרבה משיעור התוצאות החיוביות-השגויות, ולכן רוב התוצאות החיוביות מגיעות מאנשים בריאים.
+\end{example}
+
+\section{אנטרופיית שנון: כימות מידת ההפתעה}\label{sec:shannon-entropy}
+
+\begin{definition}{אנטרופיית שנון (\textenglish{Shannon Entropy})}{shannon-entropy}
+עבור משתנה מקרי בדיד $X$ המקבל ערכים $x_i$ בהסתברויות $p_i = P(X=x_i)$, אנטרופיית שנון ביחידות של סיביות (\textenglish{bits}, בסיס 2) מוגדרת על ידי:
+\begin{equation}\label{eq:shannon-def}
+\boxed{H(X) = -\sum_{i=1}^n p_i \log_2 p_i = \mathbb{E}\left[\log_2 \frac{1}{p(X)}\right]}
+\end{equation}
+עם המוסכמה הרציפה $0 \log_2 0 = \lim_{p \to 0^+} p \log_2 p = 0$.
+\end{definition}
+
+\textbf{תכונות האנטרופיה הבדידה:}
+\begin{enumerate}
+\item $H(X) \ge 0$, עם שוויון לאפס אם ורק אם המצב ודאי לחלוטין ($p_k = 1$ ועבור כל השאר $p_i=0$).
+\item אנטרופיה מקסימלית מתקבלת עבור התפלגות אחידה: אם $p_i = 1/n$ לכל $i$, אזי $H(X) = \log_2 n$.
+\item \textbf{מספר המצבים האפקטיביים (\textenglish{Effective Number of States}):}
+הגודל $N_{\mathrm{eff}} \equiv 2^{H(X)}$
+מייצג את מספר המצבים שווה-ההסתברות שהיו מניבים את אותה כמות אי-ודאות. לדוגמה, אם לגן מסוים יש $H = 3$ ביטים, מספר מצבי הביטוי האפקטיביים שלו הוא $2^3 = 8$.
+\end{enumerate}
+
+\section{אנטרופיה מותנית ואינפורמציה הדדית}\label{sec:mutual-information}
+נניח כאן ש-$X$ ו-$Y$ משתנים בדידים. למשל, אפשר לחלק לרמות בדידות ריכוז של אות חיצוני $X$ וביטוי של גן $Y$ בתא. עבור מדידות רציפות נדרשת הגדרה אחרת או חלוקה לבינים.
+
+\begin{definition}{אנטרופיה מותנית ואינפורמציה הדדית}{mi-definitions}
+\textbf{אנטרופיה משותפת (\textenglish{Joint Entropy}):}
+\begin{equation}\label{eq:joint-entropy}
+H(X, Y) = -\sum_{x \in \mathcal{X}}\sum_{y \in \mathcal{Y}} P(x, y) \log_2 P(x, y)
+\end{equation}
+\textbf{אנטרופיה מותנית (\textenglish{Conditional Entropy}):}
+האי-ודאות הממוצעת שנותרה ב-$X$ כאשר ערכו של $Y$ ידוע במדויק:
+\begin{equation}\label{eq:cond-entropy}
+H(X|Y) = \sum_{y} P(y) H(X|Y=y) = -\sum_{x,y} P(x, y) \log_2 P(x|y)
+\end{equation}
+\textbf{אינפורמציה הדדית (\textenglish{Mutual Information}):}
+ההפחתה הממוצעת באי-הוודאות לגבי $X$ לאחר ידיעת $Y$:
+\begin{equation}\label{eq:mi-def}
+\boxed{I(X; Y) = H(X) - H(X|Y) = H(X) + H(Y) - H(X, Y)}
+\end{equation}
+בצורה מפורשת לפי התפלגויות:
+\begin{equation}\label{eq:mi-sum-formula}
+I(X; Y) = \sum_{x \in \mathcal{X}}\sum_{y \in \mathcal{Y}} P(x, y) \log_2 \left(\frac{P(x, y)}{P(x)P(y)}\right)
+\end{equation}
+\end{definition}
+
+\textbf{תכונות האינפורמציה ההדדית:}
+\begin{itemize}
+\item \textbf{סימטריה:} $I(X; Y) = I(Y; X)$. האינפורמציה ההדדית מודדת את הקשר הסטטיסטי בין המשתנים ואינה תלויה בסדר שבו רושמים אותם.
+\item \textbf{אי-תלות סטטיסטית:} אם $X$ ו-$Y$ בלתי-תלויים, אזי $P(x, y) = P(x)P(y)$, ולכן $\log_2(1) = 0 \implies I(X; Y) = 0$.
+\end{itemize}
+
+\paragraph{מדוע הנוסחאות שקולות?}
+כלל המכפלה~\eqref{eq:joint-product} נותן, בסכום על זוגות בעלי הסתברות חיובית,
+\begin{align}
+H(X,Y)&=-\sum_{x,y}P(x,y)\bigl[\log_2P(y)+\log_2P(x|y)\bigr]\notag\\
+&=-\sum_yP(y)\log_2P(y)-\sum_{x,y}P(x,y)\log_2P(x|y)\notag\\
+&=H(Y)+H(X|Y).\label{eq:entropy-chain-rule}
+\end{align}
+החלפת $X,Y$ נותנת גם $H(X,Y)=H(X)+H(Y|X)$. בהצבה בהגדרת $I$ מקבלים את הסימטריה. כתיבת $H(X)$ ו-$H(Y)$ כסכומים משותפים באמצעות~\eqref{eq:marginalization} נותנת
+\begin{equation}\label{eq:mi-log-ratio-derivation}
+I(X;Y)=\sum_{x,y}P(x,y)\bigl[\log_2P(x,y)-\log_2P(x)-\log_2P(y)\bigr],
+\end{equation}
+ומכאן~\eqref{eq:mi-sum-formula}. איברים בעלי הסתברות אפס תורמים אפס לפי המוסכמה שכבר הוגדרה.
+
+\begin{remark}
+חישוב אינפורמציה מנתונים דורש לאמוד התפלגות משותפת, ולא רק ממוצעים. חלוקה לבינים רבים מגדילה את הרזולוציה אך מותירה פחות תצפיות בכל תא של ההיסטוגרמה, ולכן מגדילה את אי-הוודאות באומדן. בפרט, שונות דגימה עלולה ליצור תלות נראית גם כשאין תלות אמיתית. זו מגבלה מעשית, ואחת הסיבות להשתמש לעיתים במתאם כמדד פשוט יותר; מתאם אינו מודד את כל סוגי התלות.
+\end{remark}
+% T20 hosted: 02:02:44--02:04:14 and 02:29:44--02:31:45.
+
+\subsection{תעלה בינארית סימטרית (\texorpdfstring{\textenglish{Binary Symmetric Channel -- BSC}}{Binary Symmetric Channel - BSC})}
+\textbf{מבוסס על שאלת שיעורי בית 2.2:}
+תעלת תקשורת בינארית מקבלת קלט $X \in \{0, 1\}$ ופולטת פלט $Y \in \{0, 1\}$. בהסתברות $1-p_{\mathrm{err}}$ הביט מועבר ללא שגיאה, ובהסתברות $p_{\mathrm{err}}$ הביט מתהפך.
+עבור כל קלט נתון, אי-הוודאות לגבי הפלט היא אנטרופיה בינארית, ללא תלות בהתפלגות הקלט:
+\begin{equation}\label{eq:bsc-forward-entropy}
+H(Y|X) = H_2(p_{\mathrm{err}}) = -p_{\mathrm{err}}\log_2 p_{\mathrm{err}} - (1-p_{\mathrm{err}})\log_2(1-p_{\mathrm{err}}).
+\end{equation}
+כעת נניח שהקלט הוגן ($P(X=0)=P(X=1)=1/2$). מסימטריית התעלה גם הפלט הוגן, ולכן $H(X)=H(Y)=1$ ביט. במקרה זה גם $H(X|Y)=H_2(p_{\mathrm{err}})$, והאינפורמציה ההדדית היא:
+\begin{equation}\label{eq:bsc-mi}
+\boxed{I(X; Y) = 1 - H_2(p_{\mathrm{err}})}
+\end{equation}
+אם $p_{\mathrm{err}} = 0.1$ (10\% שגיאה), $H_2(0.1) \approx 0.469\,\text{bits}$, והתעלה מעבירה $I(X;Y) \approx 0.531\,\text{bits}$.
+ללא הקלט ההוגן אין להציב אוטומטית $H(X|Y)=H_2(p_{\mathrm{err}})$; משתמשים ב-$I(X;Y)=H(Y)-H_2(p_{\mathrm{err}})$. למשל בקלט עם $P(X=1)=0.9$ ובשגיאה של $0.1$, מתקבלים $P(Y=1)=0.82$ ו-$I(X;Y)\approx0.211$ ביט.
+
+\section{דיברגנץ קולבק-לייבלר (\texorpdfstring{\textenglish{KL-Divergence}}{KL-Divergence}) ואי-שוויון ינסן}\label{sec:kl-divergence}
+
+\begin{definition}{דיברגנץ קולבק-לייבלר}{kl-def}
+בדיון זה נניח מרחב מדגם בדיד סופי $\mathcal{X}$. עבור שתי פונקציות הסתברות $P(x)$ ו-$Q(x)$ עליו, דיברגנץ KL מוגדר על ידי:
+\begin{equation}\label{eq:kl-def}
+\boxed{D_{\mathrm{KL}}(P \parallel Q) = \sum_{x \in \mathcal{X}} P(x) \log_2 \left(\frac{P(x)}{Q(x)}\right)}
+\end{equation}
+הסכום סופי רק אם כל ערך $x$ שלו הסתברות חיובית לפי $P$ מקבל הסתברות חיובית גם לפי $Q$. אם $P(x)>0$ אך $Q(x)=0$ עבור ערך כלשהו, הדיברגנץ אינסופי. קבוצת הערכים בעלי הסתברות חיובית נקראת התמיכה של ההתפלגות.
+\end{definition}
+
+\textbf{אזהרה:} $D_{\mathrm{KL}}(P \parallel Q)$ \textbf{איננו מטריקת מרחק}:
+\begin{enumerate}
+\item הוא אינו סימטרי: $D_{\mathrm{KL}}(P \parallel Q) \ne D_{\mathrm{KL}}(Q \parallel P)$ באופן כללי.
+\item הוא אינו מקיים את אי-שוויון המשולש.
+\end{enumerate}
+הוא מכמת את כמות המידע הנוספת (בביטים) הנדרשת כדי לתאר נתונים מהתפלגות $P$ אם אנו משתמשים במודל קירוב שגוי $Q$.
+
+\begin{example}{דוגמה מתרגיל בית 2.1: דיברגנץ ברנולי מפורש}{kl-bernoulli-he}
+עבור $Q\sim\mathrm{Bern}(q)$ ו-$P\sim\mathrm{Bern}(p)$ עם $0<p,q<1$,
+\begin{equation}\label{eq:kl-bernoulli-he}
+D_{\mathrm{KL}}(Q\parallel P)=q\log_2\frac{q}{p}+(1-q)\log_2\frac{1-q}{1-p}.
+\end{equation}
+החלפת שני הארגומנטים נותנת $D_{\mathrm{KL}}(P\parallel Q)$, שבדרך כלל שונה: הדיברגנץ כיווני. התרגיל מנוסח בלוגריתם טבעי (nats); הגרסה בבסיס 2 שונה בקבוע $\ln2$. בתרגיל 2.1 מתבקשת גם גרסת פואסון, שצורתה הסגורה $\lambda_1\ln(\lambda_1/\lambda_2)+\lambda_2-\lambda_1$ היא בדיקה שימושית לפרקים הבאים.
+\end{example}
+
+\subsection{הוכחה מתמטית לאי-שליליות הדיברגנץ בעזרת אי-שוויון ינסן}
+
+\begin{lemma}{אי-שוויון ינסן לפונקציה קמורה}{jensen-lemma}
+תהי $f(z)$ פונקציה קמורה ממש (\textenglish{strictly convex}, $f''(z) > 0$). לכל משתנה מקרי $Z$:
+\begin{equation}\label{eq:jensen}
+f(\mathbb{E}[Z]) \le \mathbb{E}[f(Z)]
+\end{equation}
+והשוויון מתקיים אם ורק אם $Z$ הוא קבוע בהסתברות 1.
+\end{lemma}
+
+\begin{theorem}{אי-שליליות דיברגנץ קולבק-לייבלר}{kl-nonnegative}
+לכל שתי התפלגויות הסתברות $P$ ו-$Q$:
+\begin{equation}\label{eq:kl-positive}
+\boxed{D_{\mathrm{KL}}(P \parallel Q) \ge 0}
+\end{equation}
+והשוויון מתקיים אם ורק אם $P(x) = Q(x)$ לכל $x \in \mathcal{X}$.
+\end{theorem}
+
+\begin{proof}
+אם $P(x)>0$ אך $Q(x)=0$ בנקודה כלשהי, הדיברגנץ אינסופי ולכן הטענה מיידית. להמשך ההוכחה נניח מרחב בדיד סופי ו-$Q(x)>0$ בכל התמיכה של $P$, כך שהלוגריתמים והתוחלות להלן מוגדרים וסופיים.
+נבחר בפונקציה $f(z) = -\log_2(z)$. 
+הנגזרת השנייה היא $f''(z) = \frac{1}{z^2 \ln 2} > 0$ לכל $z > 0$, ולכן $f$ היא פונקציה קמורה ממש.
+
+נגדיר את המשתנה המקרי $Z(x) \equiv \frac{Q(x)}{P(x)}$ מעל מרחב המדגם המוגבל לתמיכה של $P$, כלומר $\mathcal{A} = \{x \in \mathcal{X} : P(x) > 0\}$.
+נחשב את התוחלת של $Z$ לפי התפלגות $P$:
+\begin{equation}
+\mathbb{E}_P[Z] = \sum_{x \in \mathcal{A}} P(x) Z(x) = \sum_{x \in \mathcal{A}} P(x) \frac{Q(x)}{P(x)} = \sum_{x \in \mathcal{A}} Q(x)
+\end{equation}
+מאחר ש-$Q$ היא פונקציית הסתברות תקפה, סכום ערכיה על תת-קבוצה מקיים:
+\begin{equation}
+\mathbb{E}_P[Z] = \sum_{x \in \mathcal{A}} Q(x) \le \sum_{x \in \mathcal{X}} Q(x) = 1
+\end{equation}
+נפעיל את אי-שוויון ינסן:
+\begin{equation}
+f(\mathbb{E}_P[Z]) \le \mathbb{E}_P[f(Z)]
+\end{equation}
+אגף שמאל מקיים:
+\begin{equation}
+f(\mathbb{E}_P[Z]) = -\log_2(\mathbb{E}_P[Z]) \ge -\log_2(1) = 0
+\end{equation}
+אגף ימין הוא במפורש:
+\begin{align}
+\mathbb{E}_P[f(Z)] &= \sum_{x \in \mathcal{A}} P(x) \left[ -\log_2\left(\frac{Q(x)}{P(x)}\right) \right] \notag\\
+&= \sum_{x \in \mathcal{A}} P(x) \log_2\left(\frac{P(x)}{Q(x)}\right) = D_{\mathrm{KL}}(P \parallel Q)
+\end{align}
+משני החסמים מקבלים:
+\begin{equation}
+0 \le f(\mathbb{E}_P[Z]) \le \mathbb{E}_P[f(Z)] = D_{\mathrm{KL}}(P \parallel Q) \implies \boxed{D_{\mathrm{KL}}(P \parallel Q) \ge 0}
+\end{equation}
+שוויון לאפס דורש $\mathbb{E}_P[Z] = 1$ (כלומר התמיכות זהות) וש-$Z(x)$ יהיה קבוע בהסתברות 1. מאחר ש-$\mathbb{E}_P[Z] = 1$, הקבוע חייב להיות 1, כלומר $Q(x)/P(x) = 1 \iff P(x) = Q(x)$ לכל $x$.
+\end{proof}
+
+\subsection{האינפורמציה ההדדית כדיברגנץ KL}
+נשווה את משוואת האינפורמציה ההדדית~\eqref{eq:mi-sum-formula} להגדרת דיברגנץ KL:
+\begin{equation}\label{eq:mi-as-kl}
+\boxed{I(X; Y) = D_{\mathrm{KL}}\Big( P(X, Y) \;\parallel\; P(X)P(Y) \Big)}
+\end{equation}
+
+\begin{corollary}{אי-שליליות האינפורמציה ההדדית}{mi-positive}
+האינפורמציה ההדדית שווה לדיברגנץ KL בין ההתפלגות המשותפת $P(X,Y)$ לבין מכפלת ההתפלגויות השוליות $P(X)P(Y)$, המתאימה למקרה שבו המשתנים בלתי-תלויים.
+ממשפט~\ref{thm:kl-nonnegative} נובע ישירות:
+\begin{equation}
+\boxed{I(X; Y) \ge 0}
+\end{equation}
+עם שוויון לאפס אם ורק אם $P(X,Y) = P(X)P(Y)$ (אי-תלות סטטיסטית מלאה).
+\end{corollary}
+
+\section{אי-שוויון עיבוד הנתונים במסלולי איתות תאיים}\label{sec:data-processing}
+\textbf{מבוסס על שאלת שיעורי בית 2.3:}
+במערכות ביולוגיות, אותות סביבתיים מועברים דרך שרשרת תגובות ביוכימיות:
+\begin{equation}\label{eq:signalling-chain}
+\underbrace{X}_{\text{ליגנד חוץ-תאי}} \longrightarrow \underbrace{Y}_{\text{קולטן מופעל}} \longrightarrow \underbrace{Z}_{\text{גורם שעתוק}}
+\end{equation}
+נניח שתיאור זה הוא \textbf{שרשרת מרקוב}: בהינתן מצב הקולטן $Y$, התפלגות מצבו של גורם השעתוק $Z$ אינה תלויה עוד ישירות ב-$X$, כלומר $P(Z|Y,X)=P(Z|Y)$. זו הנחת אי-תלות מותנית, ולא מסקנה מעצם ציור שלושה שלבים; מסלול עוקף או זיכרון שאינו כלול ב-$Y$ עלולים להפר אותה.
+
+\begin{theorem}{אי-שוויון עיבוד הנתונים (\textenglish{Data Processing Inequality})}{dpi-thm}
+עבור שרשרת מרקוב $X \to Y \to Z$:
+\begin{equation}\label{eq:dpi}
+\boxed{I(X; Z) \le I(X; Y)}
+\end{equation}
+\end{theorem}
+
+\begin{remark}
+בשרשרת האיתות $X\to Y\to Z$, אי-שוויון עיבוד הנתונים קובע ש-$I(X;Z)\le I(X;Y)$. שוויון מתקבל כאשר $Z$ משמר את כל המידע על $X$ שהיה ב-$Y$; אחרת האינפורמציה פוחתת.
+\end{remark}
+
+\section{הרחבה ממחברת ההדגמה: משתנים רציפים ו-PCA}\label{sec:pca-bridge}
+\textbf{חומר משלים ממחברת ההדגמה, שאינו מיוחס לסיום ההרצאה.} בהרצאה הדיון במתאם נדחה לשיעור עתידי; נשתמש כאן במחברת כדי לקשר את מפת הסמנים לרעיון הגאומטרי של ניתוח רכיבים ראשיים.
+
+כאשר מודדים בו-זמנית מספר סמנים רציפים (כפי שראינו בציטומטריה $X_1 = \text{CD11b}$, $X_2 = \text{Ly6G}$), נקודות המדגם יוצרות ענן נתונים רב-ממדי בעל מטריצת שונות משותפת (\textenglish{Covariance Matrix}):
+\begin{equation}\label{eq:cov-matrix}
+\Sigma_{ij} = \mathrm{Cov}(X_i, X_j) = \mathbb{E}\bigl[(X_i - \mu_i)(X_j - \mu_j)\bigr]
+\end{equation}
+
+כפי שהודגם במחברת הקורס (\textenglish{PCA Rotation \& Whitening Demo}), ניתוח רכיבים ראשיים (\textenglish{Principal Component Analysis}) מסובב את הנתונים הממורכזים לצירים ראשיים. אפשר להוסיף הלבנה כפעולה נפרדת, שאינה חלק הכרחי מ-PCA:
+\begin{enumerate}
+\item \textbf{סיבוב לבסיס הוקטורים העצמיים (\textenglish{Rotation}):}
+מטריצת הקו-וריאנס סימטרית וחיובית-למחצה, ולכן ניתנת ללכסון אורתוגונלי $\Sigma = U \Lambda U^T$.
+הטרנספורמציה $X' = U^T (X - \mu)$ מסובבת את מערכת הצירים אל צירי הפיזור הראשיים. בבסיס זה, הרכיבים אינם מתואמים ביניהם ($\mathrm{Cov}(X'_i, X'_j) = 0$ עבור $i \ne j$), והשונות בכל ציר שווה לערך העצמי $\lambda_i$.
+\item \textbf{הלבנה ונרמול שונויות (\textenglish{Whitening / Rescaling}):}
+כאשר כל הערכים העצמיים חיוביים, מנרמלים כל ציר לפי סטיית התקן שלו:
+\begin{equation}\label{eq:whitening}
+Z = \Lambda^{-1/2} X' = \Lambda^{-1/2} U^T (X - \mu)
+\end{equation}
+אז ל-$Z$ שונות 1 בכל כיוון, ומטריצת הקו-וריאנס שלו היא מטריצת היחידה $\Sigma_Z = I$. אם קיימים ערכים עצמיים אפסיים, אי אפשר להפוך אותם; במקרה כזה משמיטים את הכיוונים המתאימים או משתמשים ברגולריזציה.
+\end{enumerate}
+סיבוב הצירים עוזר לזהות כיוונים שבהם הנתונים משתנים מעט, שאפשר להשמיט לצורך הפחתת ממדים. מרחק מהלנוביס (\textenglish{Mahalanobis distance}) מודד מרחק בין נקודות תוך התחשבות בשונות ובמתאמים בין הסמנים; הוא יכול לסייע בזיהוי תת-אוכלוסיות תאיות.
+
+\subsection*{סיכום ובדיקת הבנה}
+במודל מקור-יעד, הפתרון האינטגרלי ויחס השטחים מקשרים בין מעבר סמן לנתונים. הנרמול לאות ממוצע לתא קובע כיצד לפרש את מקדמי הקצב. בתיאור ההסתברותי, ההתפלגות המשותפת מאפשרת לחשב אנטרופיה מותנית ואינפורמציה הדדית; הצגתה כדיברגנץ KL מוכיחה את אי-שליליותה.
+\begin{enumerate}
+\item אם השטח מתחת לעקומת היעד כפול מהשטח מתחת לעקומת המקור, האם בהכרח קצב מעבר התאים כפול מקצב הפינוי? ציינו את הנחות הנרמול לפני המסקנה.
+\item כיצד משתנה שונות רעש הנגזרת אם מקטינים את צעד הדגימה בחצי, בהנחת שונות מדידה קבועה ושגיאות בלתי-תלויות?
+\item בתעלה הבינארית בעלת קלט הוגן, השוו את המידע המועבר עבור הסתברות היפוך $0$, $1/2$ ו-$1$. הסבירו מדוע היפוך ודאי שונה מאובדן מידע.
+\item אילו הנחות דרושות כדי להשתמש באי-שוויון עיבוד הנתונים בשרשרת איתות? האם עצם ציור שלושה חצים מספיק?
+\item בהלבנת נתונים מתקבלת מטריצת שונות משותפת שהיא מטריצת היחידה. האם מכאן נובעת אי-תלות בין הרכיבים?
+\end{enumerate}
+\paragraph{כיווני תשובה.}
+יחס השטחים נותן $k/d=2$ כאשר אותות ההתחלה והסיום מתאפסים; כדי לפרש את $k$ כקצב מעבר של תא יש להתחשב ביחס גדלי האוכלוסיות. הקטנת צעד הדגימה בחצי מגדילה את שונות רעש הנגזרת פי ארבעה. בתעלה מתקבלים בהתאמה $1$, $0$ ו-$1$ ביט: בהיפוך ודאי אפשר לשחזר את הקלט מהפלט. אי-שוויון עיבוד הנתונים דורש אי-תלות מותנית של $Z$ ב-$X$ בהינתן $Y$. הלבנה מבטיחה היעדר מתאם, אך אינה מבטיחה אי-תלות בהתפלגות כללית.
+
+\subsection*{קריאה נוספת}
+\begingroup\small
+\begin{itemize}
+\item ד"ר אמיר ארז, חוברת הקורס \emph{Physical Models of Living Systems} (2026), פרקים 1--2, עמ' 18--35.
+\item \textenglish{A.~Erez et al., \emph{Cytometry Part A} \textbf{95}, 1075--1084 (2019).}\\
+\textenglish{\url{https://doi.org/10.1002/cyto.a.23799}}.
+\item חוברת תרגילי הבית \emph{PMBS-HW2026}, תרגילים 2.1--2.4 ופתרונותיהם (עמ' 6--9).
+\item Thomas M. Cover and Joy A. Thomas, \emph{Elements of Information Theory}, פרקים 2 ו-7 (גילוי ואי-שוויון ינסן).
+\item מחברת תכנות מלווה לקורס: \textenglish{\texttt{PCA\_Rotation\_Whitening\_Demo}}.
+\end{itemize}
+\endgroup
