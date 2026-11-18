@@ -205,5 +205,78 @@ Q=\sum_{ij}p_ip_jd_{ij},\quad d_{ij}=1-Z_{ij}\Rightarrow{}^2D_Z=1/(1-Q)
 \end{gather*}
 $Z_{ii}=1$; $Z=I$ recovers ordinary Hill numbers. $Q$ measures expected dissimilarity, not an effective species count.
 
+% Community distances use represented branches and descendant abundances.
+$L_b$: branch length; $a_b,b_b$: presence indicators; $A_b,B_b$: descendant relative abundances.
+\begin{gather*}
+d_{\mathrm{UF}}=\frac{\sum_bL_b|a_b-b_b|}{\sum_bL_b\max(a_b,b_b)},\qquad
+d_{\mathrm{wUF}}=\frac{\sum_bL_b|A_b-B_b|}{\sum_bL_b(A_b+B_b)}
+\end{gather*}
+Nonzero denominators required; weighted normalization must be stated. ANI needs aligned coverage as well as percent identity.
+
+\section*{Continuous distributions and entropy}
+% Integrate densities; histogram heights require bin-width normalization.
+\begin{gather*}
+P(a\le X\le b)=\int_a^bp_X(x)\,\dd x,\quad \int p_X\,\dd x=1\\
+F_X(x)=\int_{-\infty}^xp_X(u)\,\dd u,\quad p_X=F_X'\\
+\widehat p_j=\frac{n_j}{N\Delta x_j},\quad
+\widehat F_N(x)=\frac1N\sum_n\mathbf1_{\{x_n\le x\}}\\
+h_{x_{\mathrm{ref}}}(X)=-\int p_X\ln(p_Xx_{\mathrm{ref}})\,\dd x\\
+X\sim U[a,a+L]:\quad p_X=1/L,\quad h_{x_{\mathrm{ref}}}=\ln(L/x_{\mathrm{ref}})\\
+Y=aX:\quad p_Y(y)=p_X(y/a)/|a|,\quad h(Y)=h(X)+\ln|a|\\
+I(X;Y)=\iint p_{XY}\ln\frac{p_{XY}}{p_Xp_Y}\,\dd x\,\dd y
+\end{gather*}
+$[p_X]=[X]^{-1}$; density can exceed one. Natural logs: nats. The scaling identity fixes numerical coordinate/reference conventions. Separate invertible reparametrizations preserve $I$; mixing coordinates need not. CDF errors are correlated.
+
+\section*{Gaussian and circular distributions}
+% Gaussian width, parameter estimates, and a periodic phase model.
+\begin{gather*}
+p(x)=\frac{\exp[-(x-\mu)^2/(2\sigma^2)]}{\sqrt{2\pi}\sigma}\\
+h_{x_{\mathrm{ref}}}=\tfrac12\ln(2\pi\ee\sigma^2/x_{\mathrm{ref}}^2),\quad
+x_{\mathrm{ref}}\ee^h=\sqrt{2\pi\ee}\sigma\\
+\widehat\mu=\overline x,\quad\widehat\sigma^2_{\mathrm{ML}}=N^{-1}\sum_n(x_n-\overline x)^2\\
+p(\theta)=\frac{\ee^{\kappa\cos(\theta-\mu)}}{2\pi I_0(\kappa)},\quad
+I_0(\kappa)=\frac1{2\pi}\int_0^{2\pi}\ee^{\kappa\cos u}\,\dd u\\
+\kappa\to0:\ p\to(2\pi)^{-1},\quad
+\kappa\gg1:\ \sigma^2_{\mathrm{local}}\simeq\kappa^{-1}
+\end{gather*}
+$\kappa\ge0$ is dimensionless; angles modulo $2\pi$. Large concentration gives a local Gaussian, not a finite-width Gaussian at infinite concentration. Unbiased sample variance uses $N-1$ instead of $N$.
+
+\section*{Spillover and compensation}
+% Symmetric calibrated mixing; independent input fluctuations only.
+$s_x^2=\mathrm{Var}(X_0)$, $s_y^2=\mathrm{Var}(Y_0)$:
+\begin{gather*}
+\binom XY=M\binom{X_0}{Y_0},\quad
+M=\begin{pmatrix}1-\alpha&\alpha\\\alpha&1-\alpha\end{pmatrix}\\
+\mathrm{Var}(X)=(1-\alpha)^2s_x^2+\alpha^2s_y^2\\
+\mathrm{Var}(Y)=\alpha^2s_x^2+(1-\alpha)^2s_y^2\\
+\mathrm{Cov}(X,Y)=\alpha(1-\alpha)(s_x^2+s_y^2)\\
+M^{-1}=\frac1{1-2\alpha}\begin{pmatrix}1-\alpha&-\alpha\\-\alpha&1-\alpha\end{pmatrix}\\
+X+Y=X_0+Y_0,\quad X-Y=(1-2\alpha)(X_0-Y_0)\\
+t(x)=\operatorname{arsinh}(x/c)=\ln[x/c+\sqrt{1+(x/c)^2}]\\
+|x|\ll c:\ t\simeq x/c,\quad |x|\gg c:\ t\simeq\mathrm{sgn}(x)\ln(2|x|/c)
+\end{gather*}
+Compensation needs single-stain/background controls; singular at $\alpha=1/2$, unstable nearby. Signed estimates are not negative molecule counts. $c>0$ has signal units; do not discard negative estimates just to use a logarithm.
+
+\section*{Multivariate Gaussian, PCA, and whitening}
+% Covariance defines principal directions; inversion enters the exponent.
+$\mathbf q=\mathbf x-\boldsymbol\mu$, positive-definite $\Sigma$:
+\begin{gather*}
+p(\mathbf x)=\frac{\exp[-\mathbf q^{\mathsf T}\Sigma^{-1}\mathbf q/2]}{(2\pi)^{k/2}\sqrt{\det\Sigma}}\\
+h=\tfrac12\ln[(2\pi\ee)^k\det\Sigma],\quad
+I(X;Y)=-\tfrac12\ln(1-\rho^2)\\
+\Sigma=P\Lambda P^{\mathsf T},\quad
+\mathbf Y=P^{\mathsf T}(\mathbf X-\boldsymbol\mu),\quad\mathrm{Cov}(\mathbf Y)=\Lambda\\
+\mathbf Z=\Lambda^{-1/2}\mathbf Y,\quad\mathrm{Cov}(\mathbf Z)=I_k\\
+f_{1:m}=\frac{\sum_{i=1}^m\lambda_i}{\sum_{i=1}^k\lambda_i},\quad
+\widehat{\mathbf x}=\boldsymbol\mu+\sum_{i=1}^my_i\mathbf p_i\\
+\mathbb E\|\mathbf X-\widehat{\mathbf X}\|^2=\sum_{i>m}\lambda_i
+\end{gather*}
+Entropy formula uses numerical coordinates; divide $\det\Sigma$ by the product of squared reference scales for dimensional data. The mutual-information formula requires joint Gaussianity and $|\rho|<1$. PCA gives zero covariance; independence needs extra assumptions. Axis widths are $\sqrt{\lambda_i}$. Whitening requires positive eigenvalues; truncation loses variance. Compensation recovers calibrated source coordinates; PCA need not. Feature scaling changes PCA.
+% Classical distance-based ordination is a centered Gram-matrix construction.
+\begin{equation*}
+B=-\tfrac12JD^{(2)}J,\quad J=I_n-\mathbf1\mathbf1^{\mathsf T}/n
+\end{equation*}
+PCoA uses squared pairwise distances $D^{(2)}_{ij}=D_{ij}^2$; negative eigenvalues signal a non-Euclidean dissimilarity.
+
 \end{multicols}
 \end{document}

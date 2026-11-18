@@ -1,0 +1,751 @@
+% Course: 77972 - Physical Models of Biological Systems
+% Academic year / semester: 2026-2027, semester A
+% Actual lecture number: Unknown
+% Summary/chapter index: 05; this is not an independently verified lecture number.
+% Lecture date: 2026-11-17
+% Summary title: Continuous Distributions, Fluorescence Compensation, and PCA
+% Lecturer: Unknown
+% Summarizer: Codex
+% Source transcript (immutable): Transcriptions/77972 2026-11-17 שעור א [c02a1fcf-1c2d-4b79-9f2b-b4fc00680f5a]_panopto.md
+% Recording: https://huji.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=c02a1fcf-1c2d-4b79-9f2b-b4fc00680f5a
+% Session ID: c02a1fcf-1c2d-4b79-9f2b-b4fc00680f5a
+% Supporting source: models-notes-2026.pdf, sections 4.6-4.7 and 5.1-5.6.
+% Source mapping: 00:01:48-00:22:20 ANI, marker genes, UniFrac;
+% 00:22:20-00:58:45 densities, empirical CDF, entropy and scale;
+% 01:00:00-01:18:23 Gaussian entropy, von Mises, biological rhythms;
+% 01:18:23-01:44:44 cytometry, gating, spectra, antibody specificity;
+% 02:00:02-02:24:56 spillover, compensation, arcsinh, MI calibration;
+% 02:24:56-02:43:23 multivariate Gaussian, mutual information, PCA;
+% 02:43:23-02:49:56 nonlinear structure and distance-based ordination.
+% Editorial treatment: fill algebraic gaps; flag substantive oral ambiguities.
+% Worked numerical examples and schematic figures are reconstructed, not data.
+% Scope ends with PCA and the brief PCoA/MDS discussion; eigenworms postponed.
+
+\chapter{Continuous Distributions, Fluorescence Compensation, and PCA}
+\label{ch:l05-continuous}
+\noindent\textit{Recording date: 17 November 2026. Summary index 05; actual lecture number unknown.}
+
+\section*{Overview}
+Genetic similarity lets us compare entire microbial communities, while continuous probability distributions let us describe the many measurements made on each cell. This lecture connects these ideas to a practical problem: fluorescence measurements mix biological signals, creating correlations that must be distinguished from genuine biological dependence. Gaussian distributions and covariance matrices then provide the route from compensation to principal component analysis (PCA).
+
+\section*{Learning objectives}
+\begin{itemize}
+\item Distinguish genetic identity, phylogenetic distance, and community dissimilarity.
+\item Estimate a density or cumulative distribution without confusing density with probability.
+\item Explain coordinate dependence of differential entropy and invariance of mutual information under separate invertible transformations.
+\item Derive Gaussian entropy and the concentrated limit of a circular distribution.
+\item Derive instrument-induced covariance and invert a calibrated spillover model.
+\item Separate compensation, PCA rotation, whitening, and dimension reduction, and state their limitations.
+\end{itemize}
+
+\section{From genome similarity to community distance}
+\label{sec:l05-phylogeny}
+\subsection{What does it mean for organisms to be similar?}
+\label{subsec:l05-ani}
+The previous lecture measured diversity within a community and allowed similar organisms to contribute less than entirely distinct ones. A taxonomic classification supplies a rough similarity, but moves the question to how the taxonomic groups were defined. Sequence measurements offer a more quantitative starting point.
+
+\begin{definition}{Average nucleotide identity}{l05-ani}
+Average nucleotide identity (ANI) averages nucleotide sequence identity over aligned homologous regions of two genomes. It must be interpreted together with the fraction of the genomes that can be aligned.
+\end{definition}
+Two genomes can agree almost perfectly on a small conserved region and differ greatly elsewhere. Thus ``99\% identity'' is incomplete without coverage. Thresholds near 95--96\% are useful operational conventions for many microbial comparisons; they are not a universal physical boundary between species. The lecture questions whether an apparent gap in a particular identity histogram establishes such a boundary: the answer depends on the organisms sampled and the comparison procedure.
+
+For distant organisms, whole-genome alignment becomes difficult and aligned coverage can become small. A complementary approach compares conserved marker genes: for example, panels of roughly 120 generally single-copy bacterial markers, or the gene encoding 16S ribosomal RNA. Conservation makes homologous sequences easier to align across taxa. Sequence differences then help infer a \emph{phylogenetic tree}; its branch lengths represent inferred evolutionary divergence, not simply elapsed time unless a clock model has been justified.
+
+\begin{remark}
+The oral discussion describes single-copy markers in especially absolute terms. Such marker panels are approximate biological tools: missing genes, duplications, and lineage differences occur. Neither universal presence nor death after every duplication should be assumed. Tree inference and branch lengths also carry uncertainty.
+\end{remark}
+
+If $d_{ij}$ is the path length between taxa $i$ and $j$, a possible similarity matrix is
+\begin{equation}
+Z_{ij}=\exp(-d_{ij}/\ell),\qquad \ell>0,
+\label{eq:l05-tree-similarity}
+\end{equation}
+where $\ell$ has the units of $d_{ij}$. This recovers the lecture's $\exp(-d_{ij})$ when distances are already scaled. Close taxa have similarity near one; distant taxa have similarity near zero. This matrix can enter a similarity-sensitive diversity measure. It is a different object from the distance between two whole communities.
+
+\subsection{UniFrac compares represented evolutionary history}
+\label{subsec:l05-unifrac}
+Suppose microbial samples $A$ and $B$ contain different mixtures of organisms. Counting shared species treats all species pairs as equally distinct. UniFrac instead asks which parts of an evolutionary tree occur in each sample.
+
+For every branch $b$ of length $L_b\geq0$, define $a_b=1$ when at least one descendant taxon occurs in $A$, and zero otherwise; define $b_b$ similarly for $B$. Restrict attention to the tree represented by their union.
+\begin{definition}{Unweighted UniFrac}{l05-unweighted}
+For a nonempty represented tree of positive total length,
+\begin{equation}
+d_{\mathrm{UF}}(A,B)
+=\frac{\sum_b L_b\abs{a_b-b_b}}
+       {\sum_b L_b\max(a_b,b_b)}.
+\label{eq:l05-unifrac}
+\end{equation}
+It is the fraction of represented branch length unique to either community.
+\end{definition}
+\textit{Significance:} replacing a taxon by a close relative changes only a short terminal part of the tree, whereas replacing it by a distant lineage can change a long path. The result is dimensionless and lies between zero and one. Identical represented lineages give zero; entirely exclusive represented branches give one. The treatment of the root and common ancestral branches must be kept consistent when comparing implementations.
+
+\begin{example}{The lecture's three-branch calculation}{l05-unifrac-example}
+Let the branch lengths be $0.3$ unique to $A$, $0.2$ unique to $B$, and $0.5$ shared, all in the same evolutionary-distance unit. Then
+\begin{equation}
+d_{\mathrm{UF}}=\frac{0.3+0.2}{0.3+0.2+0.5}=0.5.
+\label{eq:l05-unifrac-half}
+\end{equation}
+Half the represented evolutionary history is exclusive. This says nothing about the relative numbers of cells in either community.
+\end{example}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm]
+\draw[very thick,gray] (0,0)--(3,0);
+\draw[very thick,primary] (3,0)--(5,1.2);
+\draw[very thick,accent] (3,0)--(5,-1.2);
+\fill (0,0) circle (2pt);
+\node[below] at (0,0) {root};
+\node[above] at (1.5,0) {$0.5$: shared};
+\node[above,sloped] at (4,0.6) {$0.3$: $A$ only};
+\node[below,sloped] at (4,-0.6) {$0.2$: $B$ only};
+\node[right] at (5,1.2) {taxon in $A$};
+\node[right] at (5,-1.2) {taxon in $B$};
+\end{tikzpicture}
+\caption{Schematic tree for the UniFrac example. Both communities use the ancestral branch; their terminal branches are exclusive. Numerical labels, rather than drawn lengths, define the calculation. Branch lengths have common evolutionary-distance units.}
+\label{fig:l05-unifrac-tree}
+\end{figure}
+
+Unweighted UniFrac ignores abundance: detecting a rare lineage can affect it as much as detecting an abundant one. For an abundance-sensitive version let $A_b$ and $B_b$ be the fractions of each community descending from branch $b$. These are sums of leaf relative abundances, not abundances assigned independently to internal branches. A common normalized weighted convention is
+\begin{equation}
+d_{\mathrm{wUF}}(A,B)=
+\frac{\sum_b L_b\abs{A_b-B_b}}
+     {\sum_b L_b(A_b+B_b)}.
+\label{eq:l05-weighted-unifrac}
+\end{equation}
+The numerator measures abundance differences along the tree. The triangle inequality for nonnegative abundances gives $\abs{A_b-B_b}\leq A_b+B_b$, so this normalized value is between zero and one whenever its denominator is positive. Different weighted normalizations also exist; the lecture specifies the weighting idea but not a unique normalization. Equation~\eqref{eq:l05-weighted-unifrac} follows the supporting course notes. Knowing only the three branch lengths is insufficient to calculate the weighted answer.
+
+\section{Continuous measurements: densities and cumulative probabilities}
+\label{sec:l05-pdf}
+\subsection{A density is probability per unit coordinate}
+\label{subsec:l05-density}
+A measured fluorescence intensity or cell size is naturally treated as continuous, even though an instrument has finite resolution. Let $X$ be a scalar random variable, $x$ a possible value, $N$ the number of independent measurements, and $\Delta N$ the number in a bin of width $\Delta x$ centered at $x$.
+\begin{definition}{Probability density function}{l05-pdf}
+For an absolutely continuous distribution, the probability density function (PDF) $p_X$ satisfies
+\begin{equation}
+\Pr(a\leq X\leq b)=\int_a^b p_X(x)\,\dd x,
+\quad p_X(x)\geq0,\quad \int_{-\infty}^{\infty}p_X(x)\,\dd x=1.
+\label{eq:l05-density-definition}
+\end{equation}
+Where the density is smooth, its empirical interpretation is
+\begin{equation}
+p_X(x)=\lim_{\Delta x\to0}\left[
+\lim_{N\to\infty}\frac{\Delta N}{N\Delta x}\right],
+\qquad \Pr\left(\abs{X-x}\leq\frac{\Delta x}{2}\right)
+\simeq p_X(x)\Delta x.
+\label{eq:l05-density-limit}
+\end{equation}
+\end{definition}
+\textit{Significance:} the probability is the \emph{area}, not the height. If $x$ is measured in micrometres, $p_X$ has units $\si{\micro\metre}^{-1}$; $p_X\Delta x$ is dimensionless. A density may exceed one. For an absolutely continuous distribution, $\Pr(X=x)=0$ even at the most probable density peak.
+
+The order of limits matters. At fixed $N$, shrinking a bin indefinitely produces mostly empty bins rather than an accurate density. A joint limiting procedure must retain sufficiently many expected observations in the bins being estimated; one cannot assume that every ratio remains stable simply because both $N$ and $1/\Delta x$ increase.
+
+\subsection{Histograms, empirical distributions, and binning}
+\label{subsec:l05-cdf}
+\begin{definition}{Cumulative distribution function}{l05-cdf}
+The cumulative distribution function (CDF) is
+\begin{equation}
+F_X(x)=\Pr(X\leq x)=\int_{-\infty}^x p_X(u)\,\dd u.
+\label{eq:l05-cdf}
+\end{equation}
+It is dimensionless, nondecreasing, and tends to zero and one at the two ends of the real line. Where differentiable, $F_X'(x)=p_X(x)$.
+\end{definition}
+For observed values $x_1,\ldots,x_N$, no bin edges are needed to construct
+\begin{equation}
+\widehat F_N(x)=\frac1N\sum_{n=1}^N\mathbf{1}_{\{x_n\leq x\}},
+\qquad
+\widehat p_N(x)=\frac1N\sum_{n=1}^N\delta(x-x_n).
+\label{eq:l05-empirical}
+\end{equation}
+Here $\mathbf{1}$ is an indicator function and $\delta$ is the Dirac delta, with units inverse to $x$. The empirical CDF rises by $1/N$ at each observation, with larger jumps for repeated observations. Its distributional derivative is the empirical delta density. Differentiating the staircase does not magically solve the density-estimation problem: a smooth PDF still requires averaging or smoothing.
+
+For histogram bin $j$ with count $n_j$ and width $\Delta x_j$, the density estimate is
+\begin{equation}
+\widehat p_j=\frac{n_j}{N\Delta x_j},\qquad
+\sum_j\widehat p_j\Delta x_j=1.
+\label{eq:l05-histogram}
+\end{equation}
+Wide bins suppress fluctuations but merge genuine features; narrow bins preserve resolution but amplify sampling noise. The practical lesson is to vary the binning over a reasonable range and check that the scientific conclusion persists. If no stable range exists, the data may not support the intended inference. Adaptive or logarithmically spaced bins are possible, but their unequal widths must appear explicitly in the denominator.
+
+\begin{example}{Unequal bins are not equal probability densities}{l05-bins}
+Among $N=1000$ cells, suppose 100 intensities fall in $[1,2]$ and another 100 in $[2,4]$, in a fixed intensity unit. Each interval has probability estimate $0.1$, but its mean density is respectively $0.1$ and $0.05$ per intensity unit. Plotting identical bar heights as a density would double the second interval's probability. Logarithmic bin spacing makes precisely this distinction necessary.
+\end{example}
+
+\subsubsection*{Method: comparing a distribution model with data}
+\begin{enumerate}
+\item Specify the measured variable, units, support, and instrumental resolution.
+\item If using a histogram, normalize by both count and bin width and check bin sensitivity.
+\item When the theoretical PDF can be integrated, compare its CDF with $\widehat F_N$ as a bin-free diagnostic.
+\item Estimate model parameters with a suitable likelihood or fitting criterion, and examine deviations rather than only visual agreement.
+\end{enumerate}
+CDF comparisons avoid arbitrary binning and average local fluctuations. However, errors at neighboring CDF points are correlated because they contain many of the same observations. An unweighted least-squares CDF fit is not automatically more statistically efficient than an unbinned likelihood. This qualification sharpens the lecture's recommendation to consider cumulative data.
+
+\section{Differential entropy and the scale of a coordinate}
+\label{sec:l05-entropy}
+\subsection{The uniform distribution exposes the issue}
+\label{subsec:l05-uniform}
+Let $X$ be uniform on $[x_{\min},x_{\max}]$, with width $L=x_{\max}-x_{\min}>0$:
+\begin{equation}
+p_X(x)=\begin{cases}1/L,&x_{\min}\leq x\leq x_{\max},\\0,&\text{otherwise}.\end{cases}
+\label{eq:l05-uniform}
+\end{equation}
+The area is $(1/L)L=1$. A uniform density is a maximum-entropy choice on a fixed finite interval when there are no additional constraints; the general constrained optimization is outside this lecture's scope.
+
+\begin{definition}{Differential entropy with a reference scale}{l05-entropy}
+Using natural logarithms, choose a fixed reference length $x_{\mathrm{ref}}$ in the units of $X$ and define
+\begin{equation}
+h_{x_{\mathrm{ref}}}(X)=-\int p_X(x)
+\ln[p_X(x)x_{\mathrm{ref}}]\,\dd x.
+\label{eq:l05-reference-entropy}
+\end{equation}
+The logarithm has a dimensionless argument. Writing $h(X)=-\int p_X\ln p_X\,\dd x$ implicitly fixes a coordinate unit or reference measure. Entropies written below without a reference subscript use this numerical-coordinate convention and are in nats.
+\end{definition}
+For the uniform density, direct integration gives
+\begin{align}
+h_{x_{\mathrm{ref}}}(X)
+&=-\int_{x_{\min}}^{x_{\max}}\frac1L
+      \ln\left(\frac{x_{\mathrm{ref}}}{L}\right)\dd x \notag\\
+&=-\frac{L}{L}\ln\left(\frac{x_{\mathrm{ref}}}{L}\right)
+=\ln\left(\frac{L}{x_{\mathrm{ref}}}\right).
+\label{eq:l05-uniform-entropy}
+\end{align}
+At a fixed reference scale, a narrower interval has smaller differential entropy, possibly negative. There is no requirement of nonnegativity analogous to discrete Shannon entropy.
+
+\begin{example}{Halving the interval}{l05-half-entropy}
+In fixed dimensionless numerical coordinates, take $X$ uniform on $[0,1]$ and $Y=X/2$. The new interval is $[0,1/2]$, so $p_Y=2$ there. Therefore
+\begin{equation}
+h(X)=0,\qquad
+h(Y)=-\int_0^{1/2}2\ln2\,\dd y=-\ln2.
+\label{eq:l05-half-entropy}
+\end{equation}
+Both distributions integrate to one; the density change inside the logarithm accounts for the entropy change.
+\end{example}
+\begin{remark}
+The spoken example alternates between ``$2X$'' and ``half $X$.'' An interval ending at $1/2$ and a density equal to 2 require $Y=X/2$. This is the convention used here. Coordinate dependence of differential entropy is not a violation of a thermodynamic law: a physically specified reference measure must also be tracked.
+\end{remark}
+
+\subsection{Scaling and why mutual information survives it}
+\label{subsec:l05-mi-invariance}
+Conservation of probability under $Y=aX$, $a\neq0$, gives $p_Y(y)\dd y=p_X(x)\dd x$ with absolute interval widths. Hence
+\begin{equation}
+p_Y(y)=\frac1{\abs a}p_X(y/a).
+\label{eq:l05-scale-pdf}
+\end{equation}
+Substitution into the entropy integral gives, in the fixed numerical-coordinate convention,
+\begin{align}
+h(Y)&=-\int p_X(x)\ln\left[\frac{p_X(x)}{\abs a}\right]\dd x \notag\\
+&=-\int p_X(x)\ln p_X(x)\dd x
+ +\ln\abs a\int p_X(x)\dd x \notag\\
+&=h(X)+\ln\abs a.
+\label{eq:l05-scale-entropy}
+\end{align}
+The same result holds with a fixed reference scale for $X$ and $Y$ in the same units. If instead a mere change of units scales the numerical reference by the same factor as the variable, the explicitly referenced entropy is unchanged. Always state what is held fixed.
+
+\begin{proposition}{Mutual information is invariant under separate invertible reparametrizations}{l05-mi-invariance}
+For continuous $X,Y$ with a joint density,
+\begin{equation}
+I(X;Y)=\int\!\int p_{XY}(x,y)
+\ln\frac{p_{XY}(x,y)}{p_X(x)p_Y(y)}\,\dd x\,\dd y.
+\label{eq:l05-continuous-mi}
+\end{equation}
+This quantity is nonnegative, vanishes exactly for independence, and is unchanged by separate smooth invertible transformations $U=g(X)$ and $V=f(Y)$, subject to the usual existence conditions for the integral.
+\end{proposition}
+\begin{proof}
+Let $g'$ and $f'$ be nonzero on the domains in question. The transformed joint density is $p_{UV}=p_{XY}/(\abs{g'}\abs{f'})$, while $p_U=p_X/\abs{g'}$ and $p_V=p_Y/\abs{f'}$. The Jacobians cancel in the ratio inside the logarithm. They also cancel between the joint density and $\dd u\,\dd v$, leaving exactly~\eqref{eq:l05-continuous-mi}. Nonnegativity is the nonnegativity of the relative entropy between $p_{XY}$ and $p_Xp_Y$.
+\end{proof}
+\textit{Significance:} changing the independent rulers used for two measurements does not change their statistical dependence. The density ratio is dimensionless even when the densities themselves carry units.
+
+For comparison, the same substitution in differential entropy yields $h(g(X))=h(X)+\mathbb E[\ln\abs{g'(X)}]$ when finite. This Jacobian statement is included to explain coordinate dependence, rather than to develop the later topic of nonlinear density transformations. Mixing $X$ and $Y$ into new coordinates is \emph{not} a separate reparametrization of each variable and can change their mutual information; this distinction will matter for PCA.
+
+\section{Gaussian widths and circular variables}
+\label{sec:l05-gaussian-circle}
+\subsection{The one-dimensional Gaussian and its entropy}
+\label{subsec:l05-gaussian}
+Fluctuating measurements are often approximately Gaussian when many small contributions combine, but this is a model assumption to be checked, especially for heterogeneous cell populations. Let $\mu$ be the mean and $\sigma>0$ the standard deviation, both in the units of $X$.
+\begin{definition}{Gaussian density}{l05-normal}
+\begin{equation}
+p_X(x)=\frac1{\sqrt{2\pi}\sigma}
+\exp\left[-\frac{(x-\mu)^2}{2\sigma^2}\right],
+\quad \mathbb E[X]=\mu,\quad \operatorname{Var}(X)=\sigma^2.
+\label{eq:l05-normal}
+\end{equation}
+The support is the whole real line; the exponent is dimensionless and the prefactor has units inverse to $X$.
+\end{definition}
+With $z=(x-\mu)/\sigma$, normalization follows from $\int\exp(-z^2/2)\dd z=\sqrt{2\pi}$. One derivation squares this integral, integrates $\exp[-(z^2+w^2)/2]$ over the plane, and uses polar coordinates: the result is $2\pi\int_0^\infty r\exp(-r^2/2)\dd r=2\pi$. This fixes the positive square root.
+
+\begin{proposition}{Entropy measures a Gaussian's effective width}{l05-normal-entropy}
+\begin{equation}
+h_{x_{\mathrm{ref}}}(X)=\frac12
+\ln\left(\frac{2\pi\ee\sigma^2}{x_{\mathrm{ref}}^2}\right),
+\qquad
+x_{\mathrm{ref}}\ee^{h_{x_{\mathrm{ref}}}(X)}=\sqrt{2\pi\ee}\,\sigma.
+\label{eq:l05-normal-entropy}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Taking the negative logarithm of~\eqref{eq:l05-normal} times the reference scale and averaging gives
+\begin{align}
+h_{x_{\mathrm{ref}}}(X)
+&=\ln\left(\frac{\sqrt{2\pi}\sigma}{x_{\mathrm{ref}}}\right)
+ +\frac{\mathbb E[(X-\mu)^2]}{2\sigma^2} \notag\\
+&=\ln\left(\frac{\sqrt{2\pi}\sigma}{x_{\mathrm{ref}}}\right)+\frac12,
+\label{eq:l05-normal-entropy-proof}
+\end{align}
+which is the stated expression because $\ln\ee=1$.
+\end{proof}
+\textit{Significance:} exponentiating entropy yields a width proportional to $\sigma$, echoing the effective-number interpretation of entropy in diversity measures. For a continuous variable it becomes a number of resolvable states only after a resolution scale is specified. Translation by $\mu$ changes neither width nor entropy; doubling $\sigma$ increases entropy by $\ln2$.
+
+The lecture notes that Gaussian parameters can be estimated directly from unbinned data. For independent observations, the log likelihood and its stationary point are
+\begin{align}
+\ln\mathcal L(\mu,\sigma^2)
+&=-\frac N2\ln(2\pi\sigma^2)
+ -\frac1{2\sigma^2}\sum_{n=1}^N(x_n-\mu)^2,\label{eq:l05-normal-likelihood}\\
+\frac{\partial\ln\mathcal L}{\partial\mu}
+&=\frac1{\sigma^2}\sum_n(x_n-\mu)=0
+\quad\Longrightarrow\quad\widehat\mu=\overline x,\label{eq:l05-normal-mean-mle}\\
+\frac{\partial\ln\mathcal L}{\partial\sigma^2}
+&=-\frac N{2\sigma^2}+\frac{\sum_n(x_n-\overline x)^2}{2\sigma^4}=0
+\quad\Longrightarrow\quad
+\widehat\sigma^2=\frac1N\sum_n(x_n-\overline x)^2.
+\label{eq:l05-normal-var-mle}
+\end{align}
+These short supplementary steps explain why a histogram fit is unnecessary for this model. The variance estimator with denominator $N$ is the maximum-likelihood estimator; denominator $N-1$ gives the usual unbiased sample-variance estimator. A finite positive-width maximum requires nonzero sample spread.
+
+\subsection{A phase lives on a circle}
+\label{subsec:l05-vonmises}
+Circadian phase is periodic: midnight today and midnight tomorrow represent the same phase of a 24-hour cycle. Likewise, a quantum phase is defined modulo $2\pi$. A Gaussian on the real line assigns different values to angles that differ by $2\pi$, so it is not directly a circular density. Wrapping a Gaussian is possible, but the lecture introduces a particularly simple periodic alternative.
+
+\begin{definition}{Von Mises distribution}{l05-vonmises}
+For angular coordinate $\theta\in[0,2\pi)$, mean direction $\mu$ modulo $2\pi$, and dimensionless concentration $\kappa\geq0$,
+\begin{equation}
+p(\theta)=\frac{\exp[\kappa\cos(\theta-\mu)]}{2\pi I_0(\kappa)},
+\qquad
+I_0(\kappa)=\frac1{2\pi}\int_0^{2\pi}\exp(\kappa\cos u)\,\dd u.
+\label{eq:l05-vonmises}
+\end{equation}
+Here $I_0$ is the modified Bessel function of the first kind, order zero. The integral definition makes the normalization explicit.
+\end{definition}
+Radians are dimensionless; the angular density is conventionally reported per radian. Increasing $\kappa$ concentrates probability around $\mu$; at $\kappa=0$, $\mu$ is not identifiable because every direction is equally likely.
+
+For $\kappa\to0$, expand the exponential and use the zero integral of $\cos u$ over one turn. Then $I_0(\kappa)\to1$, so
+\begin{equation}
+p(\theta)\longrightarrow\frac1{2\pi}.
+\label{eq:l05-vonmises-uniform}
+\end{equation}
+For $\kappa\gg1$, choose the locally unwrapped displacement $\delta=\theta-\mu$ near zero and expand the cosine:
+\begin{align}
+\kappa\cos\delta
+&=\kappa-\frac{\kappa\delta^2}{2}+O(\kappa\delta^4),\label{eq:l05-cos-expansion}\\
+2\pi I_0(\kappa)
+&\simeq\ee^\kappa\int_{-\infty}^{\infty}
+\exp(-\kappa\delta^2/2)\,\dd\delta
+=\ee^\kappa\sqrt{\frac{2\pi}{\kappa}},\label{eq:l05-bessel-asymptotic}\\
+p(\theta)&\simeq\sqrt{\frac{\kappa}{2\pi}}
+\exp\left(-\frac{\kappa\delta^2}{2}\right),
+\qquad \sigma_{\mathrm{local}}^2\simeq\frac1\kappa.
+\label{eq:l05-vonmises-normal}
+\end{align}
+The typical displacement is $\delta=O(\kappa^{-1/2})$, making the neglected exponent correction $O(1/\kappa)$. Thus the approximation is self-consistent. This is a \emph{local} Gaussian for large finite $\kappa$; the exact infinite-concentration limit is a point mass on the circle, not a Gaussian of finite width.
+
+\begin{example}{A narrow phase distribution across midnight}{l05-phase-example}
+Two phases $0.1$ and $2\pi-0.1$ radians are both near zero, although their ordinary arithmetic mean is $\pi$. Averaging their unit vectors gives zero sine component and positive cosine component, hence circular mean direction zero. A von Mises density with $\kappa=100$ has local standard deviation approximately $0.1$ radians, or $24(0.1)/(2\pi)\simeq0.38$ hours when phase represents time within a day. A peak crossing the endpoint is one circular peak, not two biological populations.
+\end{example}
+
+The lecturer motivates this family with a phase-difference distribution in a superconductivity simulation, which changed from concentrated to almost uniform. In biology, rhythmic gene expression supplies the analogous phase variable. Different processes can have different phase offsets while sharing the same daily period; environmental light and other cues can synchronize coupled biological clocks. These examples motivate the model, but do not imply that all rhythms are sinusoidal or that a single von Mises peak fits every phase distribution. The identity and quantitative values of the displayed gene-expression dataset are not recoverable from the supplied text, so no experimental curve is reconstructed here.
+
+\section{Flow cytometry: a biological population becomes a point cloud}
+\label{sec:l05-cytometry}
+\subsection{What is measured on each cell?}
+\label{subsec:l05-instrument}
+Immune cells differ in surface proteins, internal structure, and size. Flow cytometry measures many such properties on individual cells, turning a mixed sample into a multivariate distribution rather than just a mean concentration.
+
+Hydrodynamic focusing guides a suspension through a small laser interrogation region, ideally one cell at a time. Aggregates can be mistaken for single events, so singlet selection and sample preparation matter. Detectors record scattered and fluorescent light. Forward scatter is often used as a rough proxy for size and side scatter for internal complexity or granularity; both also depend on optical geometry and refractive properties. They are neither exact universal size laws nor guaranteed independent variables. The ambiguous account of forward scatter in the oral discussion should not be interpreted as simply measuring the transmitted beam or as an established power law in cell radius.
+
+Fluorescently tagged antibodies bind selected protein targets. Binding specificity arises from molecular interactions and is not perfect: cross-reactivity and nonspecific binding must be controlled. A fluorophore absorbs excitation light and emits over a spectrum of wavelengths. Mirrors and optical filters direct parts of that spectrum onto photodetectors; electronic amplification and digitization turn the light into channel values. Under appropriate binding, brightness, and gain calibration, signal is approximately proportional to the number of labeled targets. Across different colors, equal detector readings do not automatically mean equal protein numbers.
+
+A cell therefore supplies a vector of measured coordinates. The lecture gives order-of-magnitude examples of tens of channels, about $10^4$ events per second, and samples with hundreds of thousands or millions of cells; these illustrate the scale of the analysis rather than fixed performance guarantees. Fluorescence-activated cell sorting (FACS) adds physical separation to measurement: selected droplets can be charged and deflected into collection vessels. This should not be confused with requiring every cell to acquire a charge before optical detection.
+
+\subsection{Gates simplify distributions, sometimes too much}
+\label{subsec:l05-gates}
+A \emph{gate} selects a region of measurement space. In the example discussed in class, a side-scatter versus CD45 plot helps distinguish broad blood-cell groups. CD45 is a leukocyte marker; side scatter adds structural information. Clusters associated with lymphocytes, monocytes, and granulocytes can have different typical positions, but their exact gate boundaries depend on the experiment and controls.
+
+Drawing a polygon on a two-dimensional plot is an accessible way to count a subset. It also projects away other coordinates. Two populations that overlap in this projection may separate in a third marker; a visually clean boundary may conceal a biological continuum. Automated gates can use more dimensions, but their assumptions and stability still require scrutiny. Neither an algorithm nor a hand-drawn boundary defines a cell type by itself.
+
+\subsection{Spectral overlap produces spillover}
+\label{subsec:l05-spectra}
+An optical filter accepts wavelengths, not the identity of the fluorophore that emitted each photon. A ``525/50 nm'' filter is centered at 525 nm and nominally spans $525\pm25$ nm; ``585/40 nm'' means $585\pm20$ nm. If two emission spectra overlap a passband, both contribute to that detector.
+
+More explicitly, if $s_j(\lambda)$ is emission per unit signal from fluorophore $j$ and $R_i(\lambda)$ is the calibrated optical/detector response of channel $i$, then the linear mixing coefficient is proportional to the overlap integral
+\begin{equation}
+M_{ij}\propto\int R_i(\lambda)s_j(\lambda)\,\dd\lambda.
+\label{eq:l05-spectral-integral}
+\end{equation}
+This supplementary expression explains the physical origin of the matrix used below. A small fractional tail from a very bright marker can overwhelm the main signal of a dim marker. For example, 5\% of a signal of 1000 arbitrary units is 50 units, already larger than a desired signal of 10 units. Panel design chooses dyes, markers, excitation, and filters to reduce these conflicts, but usually cannot eliminate them all.
+
+\section{Spillover creates covariance, and compensation attempts to remove it}
+\label{sec:l05-compensation}
+\subsection{A deliberately simple two-channel model}
+\label{subsec:l05-mixing}
+Let $X_0,Y_0$ denote ideal channel signals in calibrated common signal units and $X,Y$ the measured signals. The lecture's symmetric idealization sends a fraction $\alpha$ of each ideal signal to the other detector:
+\begin{equation}
+\begin{pmatrix}X\\Y\end{pmatrix}
+=M\begin{pmatrix}X_0\\Y_0\end{pmatrix},
+\qquad M=\begin{pmatrix}1-\alpha&\alpha\\\alpha&1-\alpha\end{pmatrix}.
+\label{eq:l05-mixing-matrix}
+\end{equation}
+Equivalently, $X=(1-\alpha)X_0+\alpha Y_0$ and $Y=\alpha X_0+(1-\alpha)Y_0$. We focus on $0\leq\alpha<1/2$, when each intended detector receives the larger share. Real spillover need not be symmetric, and real matrices need not conserve signal through column sums of one. This simple model isolates the mathematics.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1cm,y=1cm,>=stealth]
+\node (x0) at (0,1) {$X_0$}; \node (y0) at (0,-1) {$Y_0$};
+\node (x) at (6,1) {$X$}; \node (y) at (6,-1) {$Y$};
+\draw[->,thick,primary] (x0)--node[above] {$1-\alpha$} (x);
+\draw[->,thick,primary] (y0)--node[below] {$1-\alpha$} (y);
+\draw[->,accent] (x0)--node[pos=.25,below] {$\alpha$} (y);
+\draw[->,accent] (y0)--node[pos=.25,above] {$\alpha$} (x);
+\end{tikzpicture}
+\caption{Schematic symmetric spillover. Each measured detector receives contributions from both ideal signals. The dimensionless arrow weights form the columns of $M$; $X_0,Y_0,X,Y$ share calibrated signal units in this idealization.}
+\label{fig:l05-spillover}
+\end{figure}
+
+To identify covariance created by measurement alone, assume $X_0$ and $Y_0$ are independent, with variances $s_x^2$ and $s_y^2$. This assumption is useful for the calculation, but two proteins on a real cell may genuinely be dependent. Define centered ideal fluctuations $u=X_0-\mathbb E[X_0]$ and $v=Y_0-\mathbb E[Y_0]$. Then $\mathbb E[u]=\mathbb E[v]=\mathbb E[uv]=0$, and linearity gives
+\begin{equation}
+\delta X=(1-\alpha)u+\alpha v,\qquad
+\delta Y=\alpha u+(1-\alpha)v.
+\label{eq:l05-centered-mixing}
+\end{equation}
+Squaring the first expression and averaging shows exactly which terms disappear:
+\begin{align}
+\operatorname{Var}(X)
+&=(1-\alpha)^2\mathbb E[u^2]
++2\alpha(1-\alpha)\mathbb E[uv]+\alpha^2\mathbb E[v^2] \notag\\
+&=(1-\alpha)^2s_x^2+\alpha^2s_y^2,\label{eq:l05-mixed-varx}\\
+\operatorname{Var}(Y)&=\alpha^2s_x^2+(1-\alpha)^2s_y^2.
+\label{eq:l05-mixed-vary}
+\end{align}
+Similarly, multiply the two centered expressions before averaging:
+\begin{align}
+\operatorname{Cov}(X,Y)
+&=\mathbb E\big[\alpha(1-\alpha)u^2
++((1-\alpha)^2+\alpha^2)uv+\alpha(1-\alpha)v^2\big] \notag\\
+&=\boxed{\alpha(1-\alpha)(s_x^2+s_y^2)}.
+\label{eq:l05-mixed-cov}
+\end{align}
+\textit{Significance:} correlated observations can arise from an instrument even when the underlying biological variables are independent. Every term has units of signal squared. At $\alpha=0$ the covariance vanishes and the original variances are recovered. Independence was stronger than necessary for this covariance calculation: zero ideal covariance suffices, although it does not guarantee zero mutual information.
+
+\begin{example}{Correlation generated from independent signals}{l05-spillover-example}
+Take $s_x^2=s_y^2=1$ in squared signal units and $\alpha=0.1$. Then
+\begin{equation}
+\operatorname{Var}(X)=\operatorname{Var}(Y)=0.9^2+0.1^2=0.82,
+\quad\operatorname{Cov}(X,Y)=0.18,
+\quad\rho=\frac{0.18}{0.82}=\frac9{41}\simeq0.220.
+\label{eq:l05-spillover-numbers}
+\end{equation}
+A positive measured correlation appears despite the independent inputs. The smaller individual variances reflect this model's redistribution of signals, not a universal property of real detectors.
+\end{example}
+
+\subsection{Calibrated inversion and its failure modes}
+\label{subsec:l05-inverse}
+\begin{proposition}{Compensation for the symmetric model}{l05-inverse}
+If $\alpha\neq1/2$, the ideal signals in the noiseless model can be recovered by
+\begin{equation}
+\begin{pmatrix}X_0\\Y_0\end{pmatrix}
+=\frac1{1-2\alpha}
+\begin{pmatrix}1-\alpha&-\alpha\\-\alpha&1-\alpha\end{pmatrix}
+\begin{pmatrix}X\\Y\end{pmatrix}.
+\label{eq:l05-compensation}
+\end{equation}
+\end{proposition}
+\begin{proof}
+The determinant is $(1-\alpha)^2-\alpha^2=1-2\alpha$. Interchanging the diagonal entries, changing the signs of the off-diagonal entries, and dividing by this determinant gives the inverse. Multiplication by $M$ returns the identity matrix.
+\end{proof}
+\textit{Significance:} compensation uses physical calibration to undo signal mixing; it is not merely a rule to force sample covariance to zero.
+
+Adding and subtracting the two measured coordinates exposes the information loss:
+\begin{equation}
+X+Y=X_0+Y_0,\qquad X-Y=(1-2\alpha)(X_0-Y_0).
+\label{eq:l05-sum-difference}
+\end{equation}
+At $\alpha=1/2$, both detectors measure the same half-sum and the ideal difference is lost. Near this value the inverse strongly amplifies difference-channel noise. If measurement adds a noise vector $\boldsymbol\eta$, the compensated error is $M^{-1}\boldsymbol\eta$, so algebraic invertibility does not imply reliable experimental recovery.
+
+Single-stain controls estimate mixing: label with one fluorophore at a time and observe its contribution to every channel, along with appropriate background controls. Each such experiment constrains one column of the spillover matrix. For example, a pure $X_0$ control in this model has $Y/X=\alpha/(1-\alpha)$ after background subtraction; knowing that ratio identifies $\alpha$. In many channels the same principle determines a calibrated matrix rather than one scalar.
+
+\begin{remark}
+The discussion associates multimodal control populations with failed correction. Multimodality alone does \emph{not} invalidate a constant linear matrix: exact inversion works on each event regardless of its population's shape. Problems arise when the coefficients, backgrounds, saturation, or calibration are inappropriate or heterogeneous, or when a simple average subtraction replaces a proper model. Overcorrection can introduce negative covariance; undercorrection can leave positive covariance. Neither effect proves a biological interaction.
+\end{remark}
+
+\subsection{Why negative compensated values should not be discarded}
+\label{subsec:l05-arcsinh}
+The inverse in~\eqref{eq:l05-compensation} contains subtraction. A small true signal combined with noise or calibration error can yield a negative estimate. Negative estimates are not negative numbers of molecules. They retain information about background and uncertainty around zero. In a perfectly calibrated noiseless model with nonnegative ideal signals, inversion itself would not produce such negatives.
+
+A logarithm is undefined for nonpositive inputs and diverges near zero. Throwing away negative events biases the remaining distribution; shifting the whole sample to hide them changes the interpretation of zero. A useful alternative is the inverse hyperbolic sine with a chosen scale $c>0$ in the signal's units:
+\begin{equation}
+t(x)=\operatorname{arsinh}(x/c)
+=\ln\left[\frac xc+\sqrt{1+\left(\frac xc\right)^2}\right].
+\label{eq:l05-arcsinh}
+\end{equation}
+This transform is odd, defined for every real $x$, and strictly increasing. Its derivative and limiting forms are
+\begin{align}
+\frac{\dd t}{\dd x}&=\frac1{c\sqrt{1+(x/c)^2}}>0,\label{eq:l05-arcsinh-derivative}\\
+t(x)&=\frac xc+O\big((x/c)^3\big),\qquad \abs{x}\ll c,\label{eq:l05-arcsinh-small}\\
+t(x)&\simeq\operatorname{sgn}(x)\ln\left(\frac{2\abs{x}}c\right),
+\qquad \abs{x}\gg c.
+\label{eq:l05-arcsinh-large}
+\end{align}
+Near zero it preserves signed fluctuations approximately linearly; far away it compresses large magnitudes logarithmically. The cofactor $c$ selects the crossover and should be reported. This is a representation choice, not a correction for spillover. It preserves event order, but changes distances and densities, so conclusions drawn from peak heights or geometry must account for the transformation.
+
+\subsection{Could independence help calibrate compensation?}
+\label{subsec:l05-mi-calibration}
+The lecture proposes minimizing mutual information between an intended single-stain signal and corrected channels that should contain only independent residuals. Unlike covariance, mutual information can detect nonlinear dependence and does not require Gaussian marginal distributions. The practical obstacle is estimation: two-dimensional histograms need many observations, and estimating how mutual information changes as a compensation coefficient varies is noisier still. Alternative estimators do not remove the need for adequate data and validation.
+
+This is an idea for appropriate calibration controls, not a command to remove dependence between every pair of proteins in an experimental sample. Genuine biological dependence must survive correction. Optimization must also exclude degenerate transformations that collapse a channel to a constant: such a collapse can remove mutual information by destroying the measurement. Separate invertible coordinate changes cannot change the true mutual information; a mixing correction can because it changes which variables are compared.
+
+\subsubsection*{Method: diagnosing apparent biological correlation}
+\begin{enumerate}
+\item State the ideal biological channels and the measurement model before interpreting a scatter plot.
+\item Estimate mixing and backgrounds from suitable controls; assess linearity and conditioning.
+\item Apply calibrated compensation while retaining signed estimates and uncertainty.
+\item Inspect residual dependence in controls, then distinguish it from dependence in the actual biological population.
+\end{enumerate}
+
+\section{The multivariate Gaussian and its information}
+\label{sec:l05-multivariate}
+\subsection{Covariance fixes orientation and width}
+\label{subsec:l05-mvnormal}
+Let $\mathbf X\in\mathbb R^k$ be a measurement vector, $\boldsymbol\mu=\mathbb E[\mathbf X]$ its mean, and
+\begin{equation}
+\Sigma_{ij}=\mathbb E[(X_i-\mu_i)(X_j-\mu_j)]
+\label{eq:l05-cov-definition}
+\end{equation}
+its covariance matrix. This matrix is symmetric and positive semidefinite: for any real vector $\mathbf v$, $\mathbf v^{\mathsf T}\Sigma\mathbf v$ is the nonnegative variance of $\mathbf v^{\mathsf T}\mathbf X$. Diagonal entries are variances and off-diagonal entries describe covariance, not causation.
+
+\begin{definition}{Full-dimensional multivariate Gaussian}{l05-mvnormal}
+For positive-definite $\Sigma$, the normalized Gaussian density is
+\begin{equation}
+p(\mathbf x)=\frac1{(2\pi)^{k/2}\sqrt{\det\Sigma}}
+\exp\left[-\frac12(\mathbf x-\boldsymbol\mu)^{\mathsf T}
+\Sigma^{-1}(\mathbf x-\boldsymbol\mu)\right].
+\label{eq:l05-mvnormal}
+\end{equation}
+\end{definition}
+The inverse covariance is essential: in one dimension it becomes $1/\sigma^2$, reproducing~\eqref{eq:l05-normal}. The quadratic form measures displacement in units of the distribution's widths, so its exponent is dimensionless. If coordinate $i$ has unit $u_i$, the density has units $\prod_i u_i^{-1}$. A singular covariance instead defines a Gaussian supported on a lower-dimensional subspace; the ordinary $k$-dimensional density in~\eqref{eq:l05-mvnormal} does not exist there.
+
+For two variables with positive standard deviations $\sigma_x,\sigma_y$, define the dimensionless correlation coefficient $\rho=\operatorname{Cov}(X,Y)/(\sigma_x\sigma_y)$. Then
+\begin{align}
+\Sigma&=\begin{pmatrix}\sigma_x^2&\rho\sigma_x\sigma_y\\
+\rho\sigma_x\sigma_y&\sigma_y^2\end{pmatrix},
+\quad \det\Sigma=\sigma_x^2\sigma_y^2(1-\rho^2),\label{eq:l05-bivariate-cov}\\
+\Sigma^{-1}&=\frac1{1-\rho^2}
+\begin{pmatrix}\sigma_x^{-2}&-\rho/(\sigma_x\sigma_y)\\
+-\rho/(\sigma_x\sigma_y)&\sigma_y^{-2}\end{pmatrix}.
+\label{eq:l05-bivariate-inverse}
+\end{align}
+Positive definiteness requires $\abs\rho<1$. With standardized displacements $u=(x-\mu_x)/\sigma_x$ and $v=(y-\mu_y)/\sigma_y$,
+\begin{equation}
+p(x,y)=\frac{\exp\left[-\dfrac{u^2-2\rho uv+v^2}{2(1-\rho^2)}\right]}
+{2\pi\sigma_x\sigma_y\sqrt{1-\rho^2}}.
+\label{eq:l05-bivariate-density}
+\end{equation}
+The mixed term tilts equal-density ellipses. At $\rho=0$ the density factorizes into its two Gaussian marginals, even if their widths differ. Zero covariance gives circles only when the variances are also equal. For a general non-Gaussian distribution, zero covariance is not sufficient for independence.
+
+\subsection{Gaussian entropy and mutual information}
+\label{subsec:l05-gaussian-mi}
+In numerical coordinates, take the negative logarithm of~\eqref{eq:l05-mvnormal} and average. Write $\mathbf q=\mathbf X-\boldsymbol\mu$. The only nonconstant expectation is
+\begin{align}
+\mathbb E[\mathbf q^{\mathsf T}\Sigma^{-1}\mathbf q]
+&=\operatorname{tr}\left(\Sigma^{-1}\mathbb E[\mathbf q\mathbf q^{\mathsf T}]\right)
+=\operatorname{tr}(\Sigma^{-1}\Sigma)=k,\label{eq:l05-quadratic-expectation}\\
+h(\mathbf X)&=\frac k2\ln(2\pi)+\frac12\ln\det\Sigma+\frac k2
+=\frac12\ln\left[(2\pi\ee)^k\det\Sigma\right].
+\label{eq:l05-mv-entropy}
+\end{align}
+For dimensional variables, replace $\det\Sigma$ inside the logarithm by $\det\Sigma/\prod_i x_{\mathrm{ref},i}^2$, choosing one reference scale per coordinate. The expectation argument is a supplementary derivation of the Gaussian entropy result.
+
+\begin{proposition}{Mutual information of a Gaussian pair}{l05-gaussian-mi}
+For a jointly Gaussian nonsingular pair,
+\begin{equation}
+\boxed{I(X;Y)=-\frac12\ln(1-\rho^2)}.
+\label{eq:l05-gaussian-mi}
+\end{equation}
+\end{proposition}
+\begin{proof}
+Using $I(X;Y)=h(X)+h(Y)-h(X,Y)$ and the determinant in~\eqref{eq:l05-bivariate-cov},
+\begin{align}
+I(X;Y)
+&=\frac12\ln(2\pi\ee\sigma_x^2)
+ +\frac12\ln(2\pi\ee\sigma_y^2) \notag\\
+&\quad-\frac12\ln\left[(2\pi\ee)^2\sigma_x^2\sigma_y^2(1-\rho^2)\right]
+=-\frac12\ln(1-\rho^2).
+\label{eq:l05-mi-cancellation}
+\end{align}
+Any fixed coordinate reference factors cancel as well.
+\end{proof}
+\textit{Significance:} for Gaussian data, correlation completely specifies pairwise dependence. Its sign does not affect the information. At $\rho=0$ the information is zero; as $\abs\rho\to1$ it diverges because an ideal noiseless continuous observation determines the other variable with unlimited precision. At the endpoint the joint density is singular, so the formula is understood as a limit. Finite resolution and measurement noise prevent this ideal divergence in a real measurement.
+
+\begin{example}{Information generated by the spillover model}{l05-mi-example}
+If the independent inputs in Example~\ref{ex:l05-spillover-example} are Gaussian, the measured outputs are jointly Gaussian. With $\rho=9/41$,
+\begin{equation}
+I(X;Y)=-\frac12\ln\left(1-\frac{81}{1681}\right)
+=-\frac12\ln\left(\frac{1600}{1681}\right)\simeq0.0247\ \text{nats}.
+\label{eq:l05-mi-numeric}
+\end{equation}
+This dependence has an instrumental origin. Without the Gaussian assumption, the covariance calculation still holds, but this numerical mutual-information formula need not.
+\end{example}
+
+\section{Principal axes, whitening, and dimension reduction}
+\label{sec:l05-pca}
+\subsection{Diagonalizing the covariance matrix}
+\label{subsec:l05-diagonalization}
+The tilted Gaussian ellipse suggests choosing coordinates along its principal axes. Because a covariance matrix is real and symmetric, it has an orthonormal eigenbasis. Let $\mathbf p_i$ be unit eigenvectors and $\lambda_i\geq0$ their eigenvalues. Assemble the eigenvectors as columns of $P$:
+\begin{equation}
+\Sigma=P\Lambda P^{\mathsf T},\qquad
+P^{\mathsf T}P=I_k,\qquad
+\Lambda=\operatorname{diag}(\lambda_1,\ldots,\lambda_k).
+\label{eq:l05-eigendecomposition}
+\end{equation}
+Here $I_k$ is the identity matrix. After choosing coordinate scales, the new centered coordinates are
+\begin{equation}
+\mathbf Y=P^{\mathsf T}(\mathbf X-\boldsymbol\mu),\qquad
+Y_i=\mathbf p_i^{\mathsf T}(\mathbf X-\boldsymbol\mu).
+\label{eq:l05-pc-coordinates}
+\end{equation}
+Since the covariance of a linear transformation $A\mathbf X$ is $A\Sigma A^{\mathsf T}$,
+\begin{align}
+\operatorname{Cov}(\mathbf Y)
+&=P^{\mathsf T}\mathbb E[(\mathbf X-\boldsymbol\mu)
+(\mathbf X-\boldsymbol\mu)^{\mathsf T}]P \notag\\
+&=P^{\mathsf T}\Sigma P
+=P^{\mathsf T}P\Lambda P^{\mathsf T}P=\Lambda.
+\label{eq:l05-pc-covariance}
+\end{align}
+Thus different principal coordinates have zero covariance, and the variance along axis $i$ is $\lambda_i$. The characteristic standard-deviation length is $\sqrt{\lambda_i}$, not $\lambda_i$. An orthogonal change of basis can include a reflection depending on eigenvector sign choices; this has no statistical consequence.
+
+For positive eigenvalues, $\Sigma^{-1}=P\Lambda^{-1}P^{\mathsf T}$. Substitute $\mathbf x-\boldsymbol\mu=P\mathbf y$ into the Gaussian exponent:
+\begin{align}
+(\mathbf x-\boldsymbol\mu)^{\mathsf T}\Sigma^{-1}(\mathbf x-\boldsymbol\mu)
+&=\mathbf y^{\mathsf T}\Lambda^{-1}\mathbf y
+=\sum_i\frac{y_i^2}{\lambda_i},\label{eq:l05-pca-quadratic}\\
+p_{\mathbf Y}(\mathbf y)
+&=\prod_{i=1}^k\frac1{\sqrt{2\pi\lambda_i}}
+\exp\left(-\frac{y_i^2}{2\lambda_i}\right).
+\label{eq:l05-pca-factorization}
+\end{align}
+The absolute Jacobian of an orthogonal transformation is one and $\det\Sigma=\prod_i\lambda_i$. Each factor integrates to one, verifying the normalization of the multivariate Gaussian. Factorization also proves independence of its principal coordinates.
+
+\begin{remark}
+PCA is defined for any finite covariance matrix and does not require Gaussian data. It guarantees uncorrelated principal coordinates; their independence follows only with additional assumptions, such as joint Gaussianity. A linear transformation of a non-Gaussian cloud can retain nonlinear dependence even after diagonalizing covariance.
+\end{remark}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=.85cm,y=.85cm,>=stealth]
+\draw[->] (-2.8,0)--(3.1,0) node[right] {$x-\mu_x$};
+\draw[->] (0,-2.5)--(0,2.8) node[above] {$y-\mu_y$};
+\draw[primary,thick,rotate=45] (0,0) ellipse (2.25 and .85);
+\draw[primary!50,rotate=45] (0,0) ellipse (1.5 and .57);
+\draw[->,very thick,accent] (-1.9,-1.9)--(2.1,2.1) node[above right] {$\mathbf p_1$};
+\draw[->,thick,accent] (1.1,-1.1)--(-1.25,1.25) node[above left] {$\mathbf p_2$};
+\fill (0,0) circle (2pt);
+\end{tikzpicture}
+\caption{Schematic equal-density contours of a centered Gaussian with positive covariance, in two equally scaled signal coordinates. The orthogonal principal axes follow the long and short directions. PCA rotates to these axes; whitening additionally divides their coordinates by the respective standard deviations. This is a model illustration, not measured cell data.}
+\label{fig:l05-pca-axes}
+\end{figure}
+
+\subsection{Whitening is an additional rescaling}
+\label{subsec:l05-whitening}
+\begin{definition}{PCA whitening}{l05-whitening}
+For positive eigenvalues, define
+\begin{equation}
+\mathbf Z=\Lambda^{-1/2}P^{\mathsf T}(\mathbf X-\boldsymbol\mu).
+\label{eq:l05-whitening}
+\end{equation}
+Then
+\begin{equation}
+\operatorname{Cov}(\mathbf Z)
+=\Lambda^{-1/2}\Lambda\Lambda^{-1/2}=I_k.
+\label{eq:l05-whitened-cov}
+\end{equation}
+\end{definition}
+\textit{Significance:} PCA aligns the ellipse with the axes; whitening makes all retained variances equal to one, making a Gaussian cloud spherical. The whitened coordinates are dimensionless in a consistent common coordinate system. For singular covariance, restrict whitening to positive-eigenvalue directions. Very small positive eigenvalues can amplify noise and make whitening unstable.
+
+These operations answer different questions. \emph{Compensation} estimates the physical sources using a calibrated mixing matrix. \emph{PCA} finds axes of observed variation. \emph{Whitening} standardizes their variances. They may all remove covariance in a specially chosen Gaussian example, but the resulting coordinates need not coincide. Observed covariance alone cannot determine which correlations are biological and which are instrumental. In particular, whitening a sample with real biological correlations does not recover the biological channels.
+
+\subsection{Which directions should be retained?}
+\label{subsec:l05-truncation}
+Order eigenvalues as $\lambda_1\geq\lambda_2\geq\cdots\geq\lambda_k\geq0$. The total variance is
+\begin{equation}
+\operatorname{tr}\Sigma=\sum_i\lambda_i,
+\qquad
+f_i=\frac{\lambda_i}{\sum_j\lambda_j},\qquad
+f_{1:m}=\frac{\sum_{i=1}^m\lambda_i}{\sum_{j=1}^k\lambda_j}.
+\label{eq:l05-explained-variance}
+\end{equation}
+Here $f_i$ is the fraction of variance explained by component $i$, and $f_{1:m}$ is the fraction retained in the first $m$ components; these require nonzero total variance. Dropping the rest gives the reconstruction
+\begin{equation}
+\widehat{\mathbf x}=\boldsymbol\mu+\sum_{i=1}^m y_i\mathbf p_i.
+\label{eq:l05-reconstruction}
+\end{equation}
+Orthogonality gives a useful supplementary check on what is lost:
+\begin{equation}
+\mathbb E\!\left[\norm{\mathbf X-\widehat{\mathbf X}}^2\right]
+=\mathbb E\!\left[\sum_{i=m+1}^kY_i^2\right]
+=\sum_{i=m+1}^k\lambda_i.
+\label{eq:l05-discarded-variance}
+\end{equation}
+A rotation preserves total variance; projection discards the variance in omitted directions. PCA therefore supplies a quantitative statement about the approximation, not merely an appealing scatter plot.
+
+\begin{example}{Diagonalize a two-marker covariance matrix}{l05-pca-example}
+Suppose the centered, equally scaled marker signals have
+\begin{equation}
+\Sigma=\begin{pmatrix}4&3\\3&4\end{pmatrix}.
+\label{eq:l05-pca-example-matrix}
+\end{equation}
+The characteristic equation is $(4-\lambda)^2-9=0$, giving $\lambda_1=7$ and $\lambda_2=1$. Solving $\Sigma\mathbf p_i=\lambda_i\mathbf p_i$ and normalizing yields
+\begin{equation}
+\mathbf p_1=\frac1{\sqrt2}\begin{pmatrix}1\\1\end{pmatrix},\qquad
+\mathbf p_2=\frac1{\sqrt2}\begin{pmatrix}1\\-1\end{pmatrix},\qquad
+Y_1=\frac{\delta X+\delta Y}{\sqrt2},\quad
+Y_2=\frac{\delta X-\delta Y}{\sqrt2}.
+\label{eq:l05-pca-example-vectors}
+\end{equation}
+Keeping only $Y_1$ retains $7/(7+1)=87.5\%$ of the variance. Reconstruction sets $Y_2=0$, so it approximates each centered coordinate by $Y_1/\sqrt2$; the expected squared reconstruction error is 1 in the chosen squared signal unit. Whitening instead retains both directions and uses $Z_1=Y_1/\sqrt7$, $Z_2=Y_2$. This example makes rotation, projection, and rescaling visibly distinct.
+\end{example}
+
+\subsubsection*{Method: carrying out PCA on biological measurements}
+\begin{enumerate}
+\item Decide which samples and features belong in the comparison; perform the necessary instrument corrections.
+\item Choose coordinate scales explicitly, then subtract each feature's mean. Changing units can change PCA, so standardization is a substantive modeling decision.
+\item Estimate covariance, diagonalize it, and sort eigenvectors by decreasing eigenvalue. For example, an unbiased sample covariance uses $(N-1)^{-1}\sum_n(\mathbf x_n-\overline{\mathbf x})(\mathbf x_n-\overline{\mathbf x})^{\mathsf T}$.
+\item Project onto selected eigenvectors and report their explained-variance fractions. Inspect the eigenvector coefficients to understand which markers contribute.
+\item Check whether discarded directions contain meaningful biology and whether the apparent structure persists across samples and reasonable preprocessing choices.
+\end{enumerate}
+For thousands of gene-expression coordinates, a few components retaining a substantial fraction of the variance can be informative. The same percentage means less when the original dimension is small. If all $k$ eigenvalues are equal, each direction explains $1/k$; the largest eigenvalue cannot explain less than $1/k$. Thus 10\% is ordinary in ten isotropic dimensions, while 10\% in thousands of dimensions indicates concentrated variation. A pair explaining 30\% still discards 70\%; it does not retain ``30\% of all biological information.''
+
+Large variance is not synonymous with importance: batch effects may dominate a principal component, while a small-variance direction may separate important biological states. Truncation filters noise only when the measurement and biological structure support that interpretation. With $N$ centered observations the sample covariance has rank at most $N-1$, so high-dimensional data can have many zero eigenvalues. Repeated eigenvalues also make the individual axes within their eigenspace nonunique.
+
+\section{Where linear methods stop: curved clouds and community ordination}
+\label{sec:l05-limitations}
+A banana-shaped cloud may be nearly one-dimensional in a nonlinear sense, yet a rotation cannot straighten its curve. Its PCA coordinates can be uncorrelated while remaining dependent. As a simple supplementary counterexample, if $X$ is symmetrically distributed about zero with finite moments and $Y=X^2$, then $\operatorname{Cov}(X,Y)=\mathbb E[X^3]-\mathbb E[X]\mathbb E[X^2]=0$, although $Y$ is fixed by $X$. Covariance detects linear dependence, not every kind of structure.
+
+The closing discussion returns to communities: it can be easier to specify a meaningful distance, such as UniFrac, between samples than a useful Euclidean coordinate for each sample. \emph{Principal coordinates analysis} (PCoA, closely related to classical multidimensional scaling) starts from these pairwise dissimilarities. It is distinct from directly running PCA on the original feature coordinates. The discussion's phrase about a ``covariance of distances'' is shorthand rather than an exact algorithm.
+
+For orientation, the precise classical construction is included here as a supplementary clarification. Given an $n\times n$ symmetric distance matrix $D$ with zero diagonal, define $J=I_n-\mathbf1\mathbf1^{\mathsf T}/n$, where $\mathbf1$ is the all-ones column, and let $D^{(2)}$ contain the squared entries $D_{ij}^2$. Then
+\begin{equation}
+B=-\frac12 JD^{(2)}J.
+\label{eq:l05-pcoa}
+\end{equation}
+For Euclidean distances this is the Gram matrix of centered sample coordinates. To see why, expand $D_{ij}^2=\norm{\mathbf r_i}^2+\norm{\mathbf r_j}^2-2\mathbf r_i\cdot\mathbf r_j$; multiplying on both sides by $J$ removes the first two terms because $J\mathbf1=0$. Diagonalizing $B$ then gives coordinate scores by multiplying each retained eigenvector by the square root of its positive eigenvalue.
+
+An arbitrary biologically motivated dissimilarity need not be Euclidean: negative eigenvalues of $B$ reveal that an exact ordinary Euclidean embedding is unavailable. Defining a nonlinear distance does not guarantee that PCoA will recover a curved biological manifold. More general multidimensional scaling methods have different objectives. The lecture mentions these alternatives but does not develop their algorithms. The eigenworm application is explicitly left for a later meeting.
+
+\section*{Summary and exam checks}
+ANI must be interpreted with alignment coverage; UniFrac compares represented phylogenetic branches, with abundance added only in weighted variants. A PDF is probability per coordinate interval, while a CDF accumulates probability and can be estimated without bins. Differential entropy depends on the reference scale, whereas mutual information is invariant to separate invertible changes of variables. A Gaussian's exponentiated entropy gives an effective width; a von Mises distribution supplies a periodic analogue with local variance $1/\kappa$ at high concentration.
+
+Spillover mixes measured channels and can create covariance without biological coupling. Compensation inverts a calibrated mixing model and can amplify noise; negative estimates must be treated as estimates, not discarded molecules. PCA diagonalizes covariance, whitening additionally rescales variances, and projection discards directions. Gaussian principal coordinates are independent, but general principal coordinates are only uncorrelated. Always check dimensions, normalization, matrix invertibility, the zero-spillover limit, the uniform and concentrated angular limits, and the distinction between retained variance and retained biological meaning.
+
+\section*{Further Reading}
+\begin{itemize}
+\item \textit{Physical Models of Biological Systems}, \texttt{models-notes-2026.pdf}, Sections 4.6--4.7: ANI and UniFrac; Sections 5.1--5.3: densities, differential entropy, Gaussian and von Mises distributions; Sections 5.4--5.6: flow cytometry, compensation, multivariate Gaussians, and principal components. These are the supporting course references for the conventions used here.
+\item Philip Nelson, \textit{Physical Models of Living Systems}, course-supplied PENN edition: background on probabilistic physical modeling and quantitative biological measurements. No particular chapter is assigned here because a matching chapter for this lecture has not been verified.
+\end{itemize}
