@@ -1,0 +1,456 @@
+% Course: 77972 - Physical Models of Biological Systems
+% Academic year / semester: 2026-2027, semester A
+% Actual lecture number: Unknown
+% Summary/chapter index: 06
+% Lecture date: 2026-11-24
+% Summary title: Likelihood, Molecular Localization, and Poisson Processes
+% Lecturer: Dr. Amir Erez (course syllabus)
+% Summarizer: Codex
+% Source transcript (immutable): Transcriptions/77972 2026-11-24 שעור א [dbf71260-2068-47fb-8490-b503006833c2]_panopto.md
+% Recording: https://huji.cloud.panopto.eu/Panopto/Pages/Viewer.aspx?id=dbf71260-2068-47fb-8490-b503006833c2
+% Session ID: dbf71260-2068-47fb-8490-b503006833c2
+% Source mapping: 00:01:18-00:16:45 PCA and eigenworms;
+% 00:29:40-00:45:45 logarithmic coordinates and cytometry;
+% 01:00:45-01:30:10 likelihood, model selection, Bernoulli fit and precision;
+% 01:30:10-01:55:30 optical localization, Gaussian estimation, least squares;
+% 02:07:54-02:22:50 myosin-V, measurement and event model;
+% 02:22:50-02:43:12 geometric limit, Poisson process and waiting-time statistics.
+% Supporting source: models-notes-2026.pdf, Sections 5.6-5.7, 6.1-6.5, 7.1-7.3.
+% The fixed-window count derivation is supplementary. Its result was stated in class.
+
+\chapter{Likelihood, Molecular Localization, and Poisson Processes}
+\label{chap:l06-inference}
+\textit{Lecture recording of 24 November 2026.}
+
+\section*{Overview}
+
+A worm's posture, a fluorophore's position, and a molecular motor's stepping rate are all hidden behind noisy, high-dimensional measurements. This lecture shows how to choose coordinates for the data, estimate physical parameters with a likelihood, and turn a sequence of myosin-V steps into a testable stochastic model.
+
+\section*{Learning objectives}
+
+\begin{itemize}
+\item Reconstruct a worm's posture from principal components and interpret the phase of its crawling cycle.
+\item Transform a density with a Jacobian and explain why cytometry gates based on extrema can depend on the display scale.
+\item Derive Bernoulli and Gaussian maximum-likelihood estimates, quantify precision, and distinguish confidence intervals from credible intervals.
+\item Explain what makes nanometer localization of a broad optical spot possible and derive least squares from a Gaussian observation model.
+\item Derive exponential waiting times from geometric trials and connect the same event process to Poisson counts and an average motor speed.
+\end{itemize}
+
+\section{Eigenworms and the geometry of crawling}
+\label{sec:l06-eigenworms}
+
+Segmenting the centerline of a crawling \textit{Caenorhabditis elegans} produces many measurements per video frame. Neighboring segments tend to bend together, and the bend travels along the body. The covariance of tangent angles measures how much of this coordinated motion can be described by a few shape variables.
+
+Let $s_i\in[0,1]$ be the fractional arc length of segment $i$, $t_n$ the time of frame $n$, and $\theta(s_i,t_n)$ its tangent angle in radians. Subtract the frame's mean body angle to remove overall orientation, then subtract the mean of each segment over the $N$ frames. Write the resulting centered angle as $q_i(t_n)$. The covariance across segments is
+\begin{equation}
+ C_{ij}=\frac{1}{N}\sum_{n=1}^{N}q_i(t_n)q_j(t_n).
+ \label{eq:l06-worm-covariance}
+\end{equation}
+The diagonal $C_{ii}$ has units of angle squared and gives each segment's variance. Off-diagonal entries describe coordinated bending between segments. Dividing by $\sqrt{C_{ii}C_{jj}}$ gives the dimensionless correlation coefficient when both variances are positive. In a covariance image with the vertical index increasing upwards, the displayed diagonal has the opposite slope to the usual printed matrix.
+
+\begin{definition}{Eigenworms}{l06-eigenworms}
+The orthonormal eigenvectors $\mathbf u_\alpha$ of $C$ are postural modes, ordered by decreasing eigenvalue $\lambda_\alpha$. The amplitude at time $t$ is $a_\alpha(t)=\mathbf u_\alpha^{\mathsf T}\mathbf q(t)$. For $m$ retained modes,
+\begin{equation}
+ \widehat{\mathbf q}_m(t)=\sum_{\alpha=1}^{m}a_\alpha(t)\mathbf u_\alpha,
+ \qquad
+ R_m=\frac{\sum_{\alpha=1}^{m}\lambda_\alpha}{\sum_\alpha\lambda_\alpha}.
+ \label{eq:l06-worm-reconstruction}
+\end{equation}
+Here $R_m$ is the retained fraction of total angle variance. Add back the mean shape to draw the posture, and reinsert the body's orientation if a laboratory-frame reconstruction is needed.
+\end{definition}
+
+The covariance of the amplitudes is $\mathbb E[a_\alpha a_\gamma]=\mathbf u_\alpha^{\mathsf T}C\mathbf u_\gamma=\lambda_\gamma\delta_{\alpha\gamma}$. Orthonormality makes the mean squared discarded angle equal to $\sum_{\alpha>m}\lambda_\alpha$, so retaining the largest eigenvalues minimizes this loss among linear projections of rank $m$. Keeping all modes is a rotation. Whitening would additionally divide the amplitudes by $\sqrt{\lambda_\alpha}$ and change their variances.
+
+Stephens et al. found that four modes capture about $95\%$ of posture variance in their measurements. During crawling, the first two amplitudes trace a roughly cyclic trajectory. With a choice of mode signs and axes, a crawling phase and angular speed are
+\begin{equation}
+ \phi(t)=\operatorname{atan2}(a_2(t),a_1(t)),\qquad
+ \omega(t)=\frac{\dd\phi_{\mathrm{unwrapped}}}{\dd t}.
+ \label{eq:l06-worm-phase}
+\end{equation}
+For example, $(a_1,a_2)=A(\cos\omega_0t,\sin\omega_0t)$ with $A>0$ yields one shape cycle per $2\pi/|\omega_0|$. The sense of phase rotation distinguishes forward from backward crawling after calibration. The third mode describes large bends used in turns. Phase is ill-conditioned near the origin, and its sign depends on the chosen mode convention. A compact linear description of posture and a curved trajectory within that description can coexist. When linear PCA leaves a large residual, a curved low-dimensional representation may still work.
+
+\section{Changing coordinates changes density heights}
+\label{sec:l06-jacobian}
+
+A flow cytometer records a fluorescence intensity $I$ for each cell. The readings can span orders of magnitude, so equal bins in $y=\ln(I/I_0)$, with reference intensity $I_0>0$, are often easier to inspect. Equal log bins cover increasingly wide intervals of $I$ at high intensity. Their heights therefore mix the concentration of observations with the change in bin width.
+
+\begin{proposition}{Probability conservation under a change of variable}{l06-jacobian}
+For a differentiable monotone $y=g(x)$ with nonzero derivative on the region of interest,
+\begin{equation}
+ \boxed{p_Y(y)=p_X(g^{-1}(y))\left|\frac{\dd g^{-1}}{\dd y}\right|
+       =\left.\frac{p_X(x)}{|g'(x)|}\right|_{x=g^{-1}(y)}.}
+ \label{eq:l06-jacobian}
+\end{equation}
+\end{proposition}
+
+\begin{proof}
+A bin $[y,y+\dd y]$ is the image of a bin of width $|\dd x|=|\dd y/g'(x)|$. The two bins contain exactly the same events, so $p_Y(y)|\dd y|=p_X(x)|\dd x|$ in the infinitesimal limit. Taking the ratio gives \eqref{eq:l06-jacobian}. The same identity integrated over the supports preserves normalization. The absolute value is needed when the coordinate reverses direction.
+\end{proof}
+
+The Jacobian changes weights per unit coordinate while preserving probabilities of corresponding intervals. A logarithmic horizontal axis applied to points on the curve $p_I(I)$ still displays a density per unit $I$. A histogram with equal log-width bins estimates $p_Y$ instead. The conversion and its effect on extrema are
+\begin{align}
+ p_Y(y)&=I p_I(I),\qquad
+ p_I(I)=\frac{p_Y(\ln(I/I_0))}{I},
+ \label{eq:l06-log-density}\\
+ \frac{\dd p_I}{\dd I}&=\frac{p_Y'(y)-p_Y(y)}{I^2}.
+ \label{eq:l06-log-modes}
+\end{align}
+A stationary point of $p_Y$ obeys $p_Y'(y)=0$. In linear intensity the equation is $p_Y'(y)=p_Y(y)$. Here $p_Y'(y)$ denotes the derivative with respect to $y$. A physical cut $I=I_c$ labels the same cells as the cut $y=\ln(I_c/I_0)$. Choosing a new cut at the minimum of each density can change the subset.
+
+\begin{example}{A Gaussian on the log scale}{l06-lognormal}
+If $Y=\ln(I/I_0)\sim\mathcal N(\mu,\sigma^2)$, the intensity is log-normal:
+\begin{equation}
+ p_I(I)=\frac{1}{I\sigma\sqrt{2\pi}}
+ \exp\left[-\frac{(\ln(I/I_0)-\mu)^2}{2\sigma^2}\right],\quad I>0.
+ \label{eq:l06-lognormal}
+\end{equation}
+The derivative of $\ln p_I(I_0\ee^y)$ with respect to $y$ is $-1-(y-\mu)/\sigma^2$. It vanishes at $y=\mu-\sigma^2$, with negative second derivative. The intensity mode is therefore $I_0\ee^{\mu-\sigma^2}$ and the median is $I_0\ee^\mu$, since half the log-scale probability lies below $\mu$. The mode is displaced toward lower intensities even though the quantile has simply transformed with the coordinate.
+\end{example}
+
+A product of many positive factors leads to a sum of their logarithms. When no term dominates and the usual central-limit conditions hold, this can produce an approximately Gaussian log coordinate. A Gaussian fit on the linear intensity axis is a different model, and may assign mass to negative values.
+
+\begin{remark}
+The wavelength and frequency spectra of the same blackbody radiation can peak at different corresponding photon energies. For vacuum wavelength $\lambda=c/\nu$, a spectrum per unit wavelength becomes a spectrum per unit frequency by multiplying by $c/\nu^2$. The same issue appears in cytometry. Erez et al. give a doubly phosphorylated ERK (ppERK) example in which two modes on a log scale become one on a linear scale. A significance test comparing fractions across a gate addresses the chosen gate. Evidence for two cell states needs independent support, such as controls or a mechanistic mixture model.
+\end{remark}
+
+\section{Likelihood and model comparison}
+\label{sec:l06-likelihood}
+
+A stochastic model $\mathcal M$ with parameter vector $\boldsymbol\theta$ predicts the distribution of data $D$. Repeating the experiment changes $D$. Fitting a recorded dataset holds $D$ fixed and varies $\boldsymbol\theta$.
+
+\begin{definition}{Likelihood and maximum-likelihood estimate}{l06-likelihood}
+The likelihood is $L(\boldsymbol\theta)=p(D\mid\boldsymbol\theta,\mathcal M)$, where $p$ is a mass or density on data space. For independent observations conditional on the parameters,
+\begin{equation}
+ \ell(\boldsymbol\theta)=\ln L(\boldsymbol\theta)
+ =\sum_{i=1}^{N}\ln p(d_i\mid\boldsymbol\theta,\mathcal M),\qquad
+ \widehat{\boldsymbol\theta}=\arg\max_{\boldsymbol\theta}\ell(\boldsymbol\theta).
+ \label{eq:l06-log-likelihood}
+\end{equation}
+\end{definition}
+
+The logarithm is increasing, so the maximizers of $L$ and $\ell$ coincide. Sums also avoid numerical underflow from multiplying many small factors. The independence assumption justifies the sum of individual log densities. With correlated observations one must use the joint model or its conditional factorization. An invertible data transformation independent of the parameters multiplies every likelihood by the same data-dependent Jacobian, so the MLE and likelihood ratios are preserved when the densities are transformed consistently.
+
+\subsection{Parameters, priors, and evidence}
+\label{subsec:l06-bayes}
+
+In frequentist inference, $\boldsymbol\theta$ is fixed and the estimate and its interval vary over repeated datasets. A $95\%$ confidence procedure has $95\%$ coverage under its stated assumptions and sampling design. In Bayesian inference, an explicit prior $\pi(\boldsymbol\theta\mid\mathcal M)$ combines with the same likelihood to give
+\begin{equation}
+ p(\boldsymbol\theta\mid D,\mathcal M)=
+ \frac{L(\boldsymbol\theta)\pi(\boldsymbol\theta\mid\mathcal M)}
+ {p(D\mid\mathcal M)},\qquad
+ p(D\mid\mathcal M)=\int L(\boldsymbol\theta)
+             \pi(\boldsymbol\theta\mid\mathcal M)\,\dd\boldsymbol\theta.
+ \label{eq:l06-bayes}
+\end{equation}
+The denominator is the evidence for the model. Together with model prior odds it determines posterior model odds. A posterior credible interval carries a chosen probability conditional on $D$, the model, and the prior.
+
+The integral of $L$ alone over parameter space is coordinate dependent and may diverge. For example, a probability $\xi$ uniform on $(0,1)$ has density $\ee^u/(1+\ee^u)^2$ in log odds $u=\ln[\xi/(1-\xi)]$. Flat priors on these two coordinates encode different assumptions. Terms constant in the parameters may be dropped for optimization within a model. When comparing different models, constants that differ across models must be kept and all densities must refer to the same observations and measure.
+
+\subsection{Penalizing flexibility}
+\label{subsec:l06-aic-bic}
+
+Adding parameters to a nested model can only maintain or increase the best likelihood, since the larger model contains the original fit. AIC and BIC put a cost on flexibility. For $k$ fitted parameters, $N$ independent observations in the usual sampling setup, and $\ell_{\max}=\ln L_{\max}$,
+\begin{equation}
+ \mathrm{AIC}=2k-2\ell_{\max},\qquad
+ \mathrm{BIC}=k\ln N-2\ell_{\max}.
+ \label{eq:l06-aic-bic}
+\end{equation}
+Smaller values are preferred when comparing models fitted to the same data and response. AIC targets predictive performance in its usual asymptotic setting. BIC approximates a Bayesian evidence comparison under regular large-sample assumptions. Neither score quantifies absolute fit.
+
+\begin{example}{Two models fitted to the same observations}{l06-aic-bic}
+For $N=30$ observations, take $(k,\ell_{\max})=(2,-42)$ and $(4,-39.5)$. The first model has AIC $4+84=88$ and BIC $2\ln 30+84\simeq90.8$. The second has AIC $8+79=87$ and BIC $4\ln 30+79\simeq92.6$. The log-likelihood improves by $2.5$, enough to compensate for two extra parameters in AIC, while BIC favors the first model.
+\end{example}
+
+\section{Bernoulli data and the precision of a fit}
+\label{sec:l06-bernoulli}
+
+Suppose $M$ independent trials share a success probability $\xi$ and yield $r$ successes. The count contains all the information about $\xi$ in this model. Its likelihood and derivatives are
+\begin{align}
+ L(\xi)&=\binom{M}{r}\xi^r(1-\xi)^{M-r},
+ \label{eq:l06-binomial-likelihood}\\
+ \ell'(\xi)&=\frac{r}{\xi}-\frac{M-r}{1-\xi}
+            =\frac{r-M\xi}{\xi(1-\xi)},\notag\\
+ \ell''(\xi)&=-\frac{r}{\xi^2}-\frac{M-r}{(1-\xi)^2}.
+ \label{eq:l06-binomial-curvature}
+\end{align}
+For $0<r<M$, the score changes sign at $\widehat\xi=r/M$ and $\ell''<0$. With $r=0$ the maximum is at $\xi=0$, and with $r=M$ it is at $\xi=1$. If the observations are the complete ordered sequence, the likelihood has the same powers and no binomial coefficient.
+
+\subsection{An interval from a posterior}
+\label{subsec:l06-binomial-posterior}
+
+Under the prior uniform in $\xi$ on $[0,1]$, the normalized likelihood is the posterior density. Its normalizing integral for the shape $\xi^r(1-\xi)^{M-r}$ is the beta integral $B(r+1,M-r+1)=r!(M-r)!/(M+1)!$. Thus
+\begin{equation}
+ p(\xi\mid r,M)
+ =(M+1)\binom{M}{r}\xi^r(1-\xi)^{M-r}.
+ \label{eq:l06-beta-posterior}
+\end{equation}
+For an equal-tailed $95\%$ interval, integrate \eqref{eq:l06-beta-posterior} from $0$ to each endpoint and solve for cumulative probabilities $0.025$ and $0.975$. Numerical integration also works for a general prior. An interval centered at the MLE and expanded to contain $95\%$ posterior mass is another choice where the boundaries permit it. These are credible intervals. The integral over a normalized likelihood in the lecture uses the uniform prior in the chosen coordinate.
+
+\subsection{A width from log-likelihood curvature}
+\label{subsec:l06-curvature}
+
+For an interior estimate with smooth, negative curvature, expand the log-likelihood about its maximum:
+\begin{align}
+ \ell(\xi)&\simeq\ell(\widehat\xi)
+       +\tfrac12\ell''(\widehat\xi)(\xi-\widehat\xi)^2,
+       \notag\\
+ \frac{L(\xi)}{L(\widehat\xi)}
+ &\simeq \exp\left[-\frac{(\xi-\widehat\xi)^2}{2s^2}\right],
+ \qquad s^2=-\frac{1}{\ell''(\widehat\xi)}.
+ \label{eq:l06-curvature}
+\end{align}
+The linear term vanishes at the maximum. Substituting $r=M\widehat\xi$ into \eqref{eq:l06-binomial-curvature} gives
+\begin{equation}
+ -\ell''(\widehat\xi)=\frac{M}{\widehat\xi}
+    +\frac{M}{1-\widehat\xi}
+    =\frac{M}{\widehat\xi(1-\widehat\xi)},\qquad
+ \boxed{s=\sqrt{\frac{\widehat\xi(1-\widehat\xi)}{M}}.}
+ \label{eq:l06-binomial-sem}
+\end{equation}
+Independently, since the count is a sum of $M$ independent indicators, $\operatorname{Var}(r)=M\xi(1-\xi)$. Dividing by $M^2$ gives the exact sampling variance of $r/M$. The curvature width estimates its standard error by replacing $\xi$ with $\widehat\xi$. The extra factor of $M^{-1/2}$ compared with the spread of one indicator is the gain from independent observations.
+
+\begin{example}{The same estimated bias at three sample sizes}{l06-coin-width}
+Counts $6/10$, $60/100$, and $600/1000$ each give $\widehat\xi=0.60$. Their estimated standard errors are $0.155$, $0.0490$, and $0.0155$, respectively. A large-sample $95\%$ Wald interval is $\widehat\xi\pm1.96s$, giving $[0.504,0.696]$ for $M=100$ and $[0.570,0.630]$ for $M=1000$. At $M=10$ the local approximation is unreliable. For the uniform-prior calculation, \eqref{eq:l06-beta-posterior} gives a $\mathrm{Beta}(7,5)$ posterior whose equal-tailed $95\%$ interval is approximately $[0.308,0.833]$. Four times as many independent trials at a similar success fraction halve the large-sample width.
+\end{example}
+
+\begin{remark}
+Near $\widehat\xi=0$ or $1$, a symmetric curvature-based interval can cross the physical boundary or even give zero estimated width at an all-failure or all-success sample. Use an interval construction that respects the sampling model and support. Report which construction was used. Curvature also describes only one maximum when the likelihood has several separated peaks.
+\end{remark}
+
+\section{Localizing a molecule and fitting a response curve}
+\label{sec:l06-localization}
+
+A single fluorophore produces a spot because an optical system images a point source with a finite point-spread function (PSF). A representative lateral resolution scale for separating two simultaneous sources is $d_{\mathrm{R}}\simeq0.61\lambda_0/(n\sin\alpha)$, with vacuum wavelength $\lambda_0$, refractive index $n$, and objective half-angle $\alpha$. For $\lambda_0=\SI{500}{\nano\metre}$ and numerical aperture $n\sin\alpha=1.4$, this is about $\SI{218}{\nano\metre}$. An oil-immersion objective can achieve a larger numerical aperture than air for the same half-angle. For an isolated source one instead estimates the center of its spot. Individual photons land across the PSF, and their pooled positions constrain the center more precisely than one arrival does.
+
+\subsection{Maximum likelihood for a Gaussian spot}
+\label{subsec:l06-gaussian}
+
+Use the Gaussian approximation to the projected PSF along the coordinate of interest. During a frame let $x_1,\ldots,x_N$ be independent photon arrival positions, $\mu$ the source coordinate, and $v=\sigma^2>0$ the PSF variance. Assume a stationary source over the exposure, negligible background, and effectively continuous spatial measurements. The Gaussian log-likelihood is
+\begin{equation}
+ \ell(\mu,v)=-\frac{N}{2}\ln(2\pi v)-\frac{1}{2v}\sum_{i=1}^N(x_i-\mu)^2.
+ \label{eq:l06-gaussian-likelihood}
+\end{equation}
+The gradients and their zeros give
+\begin{align}
+ \frac{\partial\ell}{\partial\mu}
+   &=\frac{1}{v}\sum_i(x_i-\mu)=0
+   &&\Longrightarrow &\widehat\mu&=\overline x,\notag\\
+ \left.\frac{\partial\ell}{\partial v}\right|_{\overline x}
+   &=-\frac{N}{2v}+\frac{\sum_i(x_i-\overline x)^2}{2v^2}=0
+   &&\Longrightarrow &\widehat v_{\mathrm{ML}}&=\frac{1}{N}\sum_i(x_i-\overline x)^2.
+ \label{eq:l06-gaussian-mle}
+\end{align}
+For each $v>0$ the log-likelihood is concave in $\mu$. After fitting $\mu$, the variance score is positive below $\widehat v_{\mathrm{ML}}$ and negative above it when the residual sum is nonzero. Differentiation must retain the factor $v^{-N/2}$ in the likelihood when fitting the width. The variance MLE uses $N$ in the denominator. The unbiased sample variance uses $N-1$ if the mean is estimated. Identical measurements give a degenerate Gaussian variance fit at the lower boundary.
+
+\begin{theorem}{Precision of Gaussian localization}{l06-localization}
+For independent photon positions with common variance $\sigma^2$, the sample mean has
+\begin{equation}
+ \boxed{\operatorname{Var}(\widehat\mu)=\frac{\sigma^2}{N},
+        \qquad \operatorname{SE}(\widehat\mu)=\frac{\sigma}{\sqrt{N}}.}
+ \label{eq:l06-localization-error}
+\end{equation}
+\end{theorem}
+
+\begin{proof}
+The variance of a sum of independent photon positions is $N\sigma^2$. Scaling the sum by $1/N$ scales its variance by $1/N^2$. In the Gaussian model the same result follows from the exact quadratic coefficient $\partial^2\ell/\partial\mu^2=-N/\sigma^2$ at fixed width. As a supplementary check, the mixed derivative is zero at the fitted mean. The variance curvature there is $-N/(2\widehat v_{\mathrm{ML}}^2)$, giving a local width $\widehat v_{\mathrm{ML}}\sqrt{2/N}$ for the fitted variance at a regular interior maximum.
+\end{proof}
+
+The optical width $\sigma$ sets the spread of photon positions, while \eqref{eq:l06-localization-error} sets the ideal uncertainty in the center. Photon background, camera pixels, drift, motion blur, and PSF misspecification can raise the actual localization error. Real camera data usually consist of counts in pixels. A Gaussian PSF fit to those counts approximates this calculation when sampling is fine and the noise model is appropriate.
+
+\begin{example}{Resolving a step between two localized plateaus}{l06-position-example}
+Take $\sigma=\SI{120}{\nano\metre}$ and $N=3600$ photons per independent plateau estimate, with negligible background and drift. The ideal standard error per plateau is $\SI{2}{\nano\metre}$. The standard error on their difference is $\sqrt{2^2+2^2}\,\mathrm{nm}\simeq\SI{2.8}{\nano\metre}$. A shift of about $\SI{74}{\nano\metre}$ is large on this uncertainty scale even though the two spot centers would be difficult to separate if the sources emitted simultaneously.
+\end{example}
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1.1cm,y=1.05cm]
+ \draw[->] (-2.6,0)--(2.9,0) node[right] {$x$};
+ \draw[->] (-2.6,0)--(-2.6,2.15) node[above] {relative intensity};
+ \draw[primary,very thick,domain=-2.55:2.55,samples=80]
+   plot (\x,{1.65*exp(-0.65*\x*\x)});
+ \draw[densely dashed] (0,0)--(0,1.65);
+ \draw[<->,primary] (-0.88,1.02)--(0.88,1.02)
+   node[midway,above=2pt] {$\sim 2\sigma$};
+ \fill[accent!30] (-0.17,-0.22) rectangle (0.17,-0.08);
+ \draw[accent] (0,-0.24)--(0,-0.52)
+   node[below] {center estimate $\widehat\mu$ with uncertainty $\sim\sigma/\sqrt{N}$};
+\end{tikzpicture}
+\caption{Schematic point-spread function of an isolated emitter. The curve represents the distribution of photon arrivals in one coordinate. The shaded interval shows the smaller uncertainty in the inferred center. Widths are illustrative.}
+\label{fig:l06-localization}
+\end{figure}
+
+Figure~\ref{fig:l06-localization} contrasts the spatial distribution of photon arrivals with uncertainty in the estimated center. FIONA (fluorescence imaging with one-nanometer accuracy) uses this principle to track one label. Yildiz et al. reported localization to within roughly $\SI{1.5}{\nano\metre}$ under their imaging conditions. In localization-based super-resolution imaging, such as PALM or STORM, sparse subsets of fluorophores emit in different frames. Individual emitters can then be localized with little overlap and their positions combined. Collecting more photons from a single unresolved image of many overlapping emitters poses a different inference problem.
+
+\subsection{Least squares follows from a noise model}
+\label{subsec:l06-least-squares}
+
+For measured pairs $(x_i,y_i)$ suppose the $x_i$ are fixed or measured precisely, $y_i=f(x_i;\boldsymbol\theta)+\varepsilon_i$, and the independent errors are $\varepsilon_i\sim\mathcal N(0,\sigma^2)$ with common width. Substituting $f(x_i;\boldsymbol\theta)$ for the mean in the Gaussian density gives
+\begin{align}
+ -\ell(\boldsymbol\theta,\sigma^2)
+ &=\frac{N}{2}\ln(2\pi\sigma^2)
+   +\frac{1}{2\sigma^2}Q(\boldsymbol\theta),\qquad
+ Q(\boldsymbol\theta)=\sum_i[y_i-f(x_i;\boldsymbol\theta)]^2.
+ \label{eq:l06-least-squares}
+\end{align}
+For fixed $\sigma^2$, maximizing the likelihood is equivalent to minimizing $Q$. If the common variance is unknown, its conditional MLE at any fit with $Q>0$ is $Q/N$ by the variance derivative in \eqref{eq:l06-gaussian-mle}. Substitution into the log-likelihood yields $-\tfrac{N}{2}[1+\ln(2\pi Q/N)]$, decreasing in $Q$, so the fitted curve still minimizes $Q$.
+
+\begin{example}{Independent readings with different precision}{l06-weighted-example}
+For known, unequal Gaussian widths $\sigma_i$, the same derivation gives the objective $Q_w=\sum_i[y_i-f(x_i;\boldsymbol\theta)]^2/\sigma_i^2$. To fit a constant $f=\mu$, set $\partial Q_w/\partial\mu=2\sum_i(\mu-y_i)/\sigma_i^2=0$. The optimum is
+\begin{equation}
+ \widehat\mu=\frac{\sum_i y_i/\sigma_i^2}{\sum_i1/\sigma_i^2}.
+ \label{eq:l06-weighted-mean}
+\end{equation}
+Measurements $10\pm1$ and $14\pm2$ in the same units give $(10+14/4)/(1+1/4)=10.8$. Equal errors recover the ordinary mean.
+\end{example}
+
+Choose a model for the sampling noise before choosing an objective. Count data with appreciable Poisson noise require a count likelihood, and correlated Gaussian errors require a covariance matrix in the quadratic form. Visual checks on residuals can expose trends, unequal spread, or correlations that a single fit score conceals.
+
+\section{Myosin-V as an ATP-driven stochastic motor}
+\label{sec:l06-myosin}
+
+Myosin-V transports cargo along a polar actin filament. Two motor heads alternately attach to the track so that one can remain bound while the other moves. In a simplified mechanochemical cycle, ATP binding promotes detachment of the trailing head. Hydrolysis primes a lever arm, the detached head explores positions by thermal motion, and binding to actin and release of hydrolysis products couple to the power stroke. Strain and track polarity help favor forward motion. The maintained chemical free-energy difference of $\mathrm{ATP}+\mathrm{H_2O}\to\mathrm{ADP}+\mathrm{P_i}$ drives the cycle out of equilibrium and allows a directed average motion in the presence of thermal fluctuations.
+
+The motor advances roughly $\SI{36}{\nano\metre}$ per alternating step, but a label near one head can travel around $\SIrange{72}{74}{\nano\metre}$ when that head passes its partner, with little displacement on the intervening step. Label position matters. For a simple hand-over-hand geometry the two successive label jumps are approximately $d_0+2x$ and $d_0-2x$, where $d_0$ is the advance of the stalk per step and $x$ is the dye's axial offset from the midpoint of the lever-arm geometry in the two alternating configurations. Their sum is $2d_0$. The competing inchworm model, where one head always leads, predicts label jumps of about $d_0$ each time. The large jumps and unequal alternating jumps reported by Yildiz et al. support the hand-over-hand mechanism. A trajectory with only the large jumps visible can describe a different event sequence from the complete alternating step sequence. Myosin-II generates muscle contraction through the collective force of many motors, illustrating a different use of ATP-driven actin mechanics.
+
+Using the motor advance as the work distance against an opposing load of about $\SI{2}{\pico\newton}$, the work scale is
+\begin{equation}
+ W\sim Fd_0=(2\times10^{-12}\,\mathrm N)(36\times10^{-9}\,\mathrm m)
+          \simeq 7.2\times10^{-20}\,\mathrm J.
+ \label{eq:l06-motor-work}
+\end{equation}
+A free-energy scale of $10^{-19}\,\mathrm J$ per hydrolyzed ATP gives an illustrative ratio of about $0.7$ for one ATP per such step. The actual ratio depends on load and chemical conditions.
+
+\begin{remark}
+Repeated roughly equal jumps in the localization trace are the observation. Treating their times as independent events with a constant rate is a first model. The lecture motivates that limit with a large ATP reservoir and a single rate-limiting trigger. Finite supply, several comparable kinetic stages, or alternating head states can introduce non-exponential waits or dependence. The step sizes and the rate must refer to the same observed event definition.
+\end{remark}
+
+\section{From discrete trials to continuous event times}
+\label{sec:l06-poisson}
+
+Use short slots of duration $\Delta t$. Assume independent slots, each containing a single modeled step with probability $\xi$, and otherwise no step. Let $J$ be the slot of the first success, counted starting at $1$, and $T_{\mathrm{w}}=J\Delta t$. The first $j-1$ slots must be failures and slot $j$ a success, so
+\begin{equation}
+ \Pr(J=j)=(1-\xi)^{j-1}\xi,\quad j=1,2,\ldots,qquad
+ \Pr(J>j)=(1-\xi)^j.
+ \label{eq:l06-geometric}
+\end{equation}
+The geometric series sums to one for $0<\xi\le1$. Differentiating the series for $\sum_{j\ge0}z^j$ gives $\mathbb E[J]=1/\xi$ at $z=1-\xi$. Holding $\xi$ fixed as $\Delta t\to0$ would make the physical wait $\mathbb E[T_{\mathrm{w}}]=\Delta t/\xi$ tend to zero. To preserve a finite timescale choose $\xi=\beta\Delta t+o(\Delta t)$ for a fixed rate $\beta>0$ in inverse time units.
+
+\begin{proposition}{Exponential limit of geometric waiting times}{l06-exponential}
+In the continuous-time limit the survival function and density are
+\begin{equation}
+ \boxed{S(t)=\Pr(T_{\mathrm{w}}>t)=\ee^{-\beta t},\qquad
+        f(t)=\beta\ee^{-\beta t}\quad (t\ge0).}
+ \label{eq:l06-exp-wait}
+\end{equation}
+The density vanishes for $t<0$.
+\end{proposition}
+
+\begin{proof}
+The no-event probability over the first $\lfloor t/\Delta t\rfloor$ slots is
+$S_{\Delta t}(t)=(1-\xi)^{\lfloor t/\Delta t\rfloor}$. With
+$\ln(1-\xi)=-\xi+O(\xi^2)$, the logarithm of $S_{\Delta t}(t)$ tends to $-\beta t$ at fixed $t$. Exponentiate to obtain $S(t)$ and differentiate $1-S(t)$ to obtain $f(t)$. Equivalently, for slots with $j\Delta t\to t$, divide the discrete mass in \eqref{eq:l06-geometric} by $\Delta t$: $\xi/\Delta t\to\beta$ and $(1-\xi)^{j-1}\to\ee^{-\beta t}$. The division by time converts a dimensionless slot probability into a density per unit time.
+\end{proof}
+
+$S(0)=1$ and $S(t)\to0$ as $t\to\infty$, so the density integrates to one. A short interval of length $\Delta t$ has at least one event with probability $1-\ee^{-\beta\Delta t}\simeq\beta\Delta t$. The one-event-per-slot approximation needs $\beta\Delta t\ll1$. At finite resolution, successive events in the same bin may be missed.
+
+\subsection{Memorylessness, moments, and an experimental check}
+\label{subsec:l06-memoryless}
+
+If the motor has already waited $s$, the conditional probability it waits at least another $t$ is
+\begin{equation}
+ \Pr(T_{\mathrm{w}}>s+t\mid T_{\mathrm{w}}>s)
+ =\frac{S(s+t)}{S(s)}=\ee^{-\beta t}.
+ \label{eq:l06-memoryless}
+\end{equation}
+The instantaneous conditional rate is $-S'(t)/S(t)=\beta$ at every elapsed time. This property concerns the distribution of the remaining wait. Independence between successive waits in the full process comes from the independent event opportunities and the same rate after each event.
+
+Integrating by parts gives
+\begin{align}
+ \mathbb E[T_{\mathrm{w}}]
+ &= [-t\ee^{-\beta t}]_0^\infty+\int_0^\infty\ee^{-\beta t}\,\dd t
+ =\frac1\beta,\notag\\
+ \mathbb E[T_{\mathrm{w}}^2]
+ &=[-t^2\ee^{-\beta t}]_0^\infty
+   +2\int_0^\infty t\ee^{-\beta t}\,\dd t=\frac{2}{\beta^2},\notag\\
+ \operatorname{Var}(T_{\mathrm{w}})&=\frac{1}{\beta^2},\qquad
+ \mathrm{CV}=\frac{\sqrt{\operatorname{Var}(T_{\mathrm{w}})}}{\mathbb E[T_{\mathrm{w}}]}=1.
+ \label{eq:l06-wait-moments}
+\end{align}
+The variance has units of time squared. The standard coefficient of variation is standard deviation divided by mean. The reciprocal ratio used in the lecture also equals one in this case. A sample CV close to one is an initial check. Other distributions can have this value. Test the exponential shape, independence of consecutive waiting times, and stability of the rate over the observation.
+
+\subsection{Waiting times, trajectories, and counts}
+\label{subsec:l06-poisson-counts}
+
+A homogeneous Poisson process of rate $\beta$ describes the random sequence of event times $0<t_1<t_2<\cdots$ or, equivalently, the counting trajectory
+\begin{equation}
+ N(t)=\sum_{i\ge1}\mathbf1_{\{t_i\le t\}},\qquad
+ t_i=\sum_{j=1}^{i}T_j,
+ \label{eq:l06-event-path}
+\end{equation}
+with independent exponential intervals $T_j$ of rate $\beta$. $N(t)$ grows by one per event and has stationary independent increments. An individual time interval $T_j$ is continuous, while $N(T)$ at a fixed observation duration $T$ is an integer-valued random variable. The lecture stated the Poisson count result and deferred the proof. The following is the fixed-window limit from the same slot model.
+
+Take $M$ independent slots in a window of fixed length $T$ and set $\xi=\beta T/M$ for sufficiently large $M$. For each fixed $n\ge0$ the binomial mass is
+\begin{align}
+ \Pr(N(T)=n)
+ &=\lim_{M\to\infty}\binom{M}{n}
+       \left(\frac{\beta T}{M}\right)^n
+       \left(1-\frac{\beta T}{M}\right)^{M-n}\notag\\
+ &=\lim_{M\to\infty}\frac{(\beta T)^n}{n!}
+       \left[\prod_{j=0}^{n-1}\left(1-\frac{j}{M}\right)\right]
+       \left(1-\frac{\beta T}{M}\right)^M
+       \left(1-\frac{\beta T}{M}\right)^{-n}\notag\\
+ &=\boxed{\ee^{-\beta T}\frac{(\beta T)^n}{n!}}.
+ \label{eq:l06-poisson-counts}
+\end{align}
+The finite product and last factor approach one. The middle factor approaches $\ee^{-\beta T}$. The exponential series shows normalization, and the binomial mean and variance converge to $\beta T$. The result applies to any window length within the model. For $T\to0$, the zero-count probability tends to one, and the two-or-more probability is $1-\ee^{-\beta T}(1+\beta T)=O((\beta T)^2)$.
+
+\begin{figure}[htbp]
+\centering
+\begin{tikzpicture}[x=1.15cm,y=0.88cm]
+ \draw[->] (0,0)--(8.2,0) node[right] {$t$};
+ \draw[->] (0,0)--(0,4) node[above] {$X(t)$};
+ \draw[primary,very thick] (0,0)--(1.45,0)--(1.45,0.8)--(2.55,0.8)
+   --(2.55,1.6)--(4.55,1.6)--(4.55,2.4)--(5.45,2.4)--(5.45,3.2)--(7.55,3.2);
+ \draw[accent,dashed,thick] (0,0)--(7.55,3.68) node[above left] {mean $d\beta t$};
+ \draw[densely dotted] (2.55,0)--(2.55,1.6) (4.55,0)--(4.55,2.4);
+ \draw[<->] (2.55,0.26)--(4.55,0.26) node[midway,above] {$T_3$};
+ \draw[<->] (5.77,2.4)--(5.77,3.2) node[midway,right] {$d$};
+ \node[left] at (0,0) {$0$};
+\end{tikzpicture}
+\caption{Schematic one-rate motor model. In one trajectory the label advances by a fixed distance $d$ at irregular event times. $T_3$ is the third inter-event interval. Averaging across trajectories gives a line.}
+\label{fig:l06-staircase}
+\end{figure}
+
+Figure~\ref{fig:l06-staircase} shows how one event sequence gives both a position trace and a list of waiting times.
+
+\Needspace{11\baselineskip}
+\begin{example}{A dwell-time model for a sequence of observed jumps}{l06-motor-example}
+Suppose the rate for the observed jumps is $\beta=\SI{2}{\per\second}$ and each visible jump advances the label by $d=\SI{74}{\nano\metre}$. Then $\mathbb E[T_{\mathrm{w}}]=\SI{0.5}{\second}$ and the chance of waiting longer than $\SI{1}{\second}$ is $\ee^{-2}\simeq0.135$. A two-second window has mean count $4$ and zero-count probability $\ee^{-4}\simeq0.0183$. With $X(t)-X(0)=dN(t)$, the model yields
+\begin{equation}
+ \mathbb E[X(t)-X(0)]=d\beta t,\qquad
+ \operatorname{Var}(X(t)-X(0))=d^2\beta t.
+ \label{eq:l06-speed}
+\end{equation}
+The mean speed is $\SI{148}{\nano\metre\per\second}$. Multiplying by a rate defined per stalk step would instead require the displacement per stalk step.
+\end{example}
+
+To analyze a trace, fit the spot position over time with localization uncertainties, identify steps and record the durations between them. Compare the observed survival curve to $\ee^{-\beta t}$ and compare counts in equal windows to \eqref{eq:l06-poisson-counts}. For $m$ complete independent waits $w_j$, the exponential likelihood is $\beta^m\exp(-\beta\sum_jw_j)$, so differentiating the log gives $\widehat\beta=m/\sum_j w_j$. If observation ends during an unfinished dwell of duration $c$, that dwell contributes $S(c)$ to the likelihood under independent censoring. It adds exposure time and no event. A missed fast step and the stopping time of the recording affect the two statistics in different ways.
+
+\section*{Summary and exam checks}
+
+\begin{itemize}
+\item Compute PCA in the original feature coordinates after centering. Eigenvalues measure variance and the dynamics of the amplitudes carry information about how the shape changes.
+\item Transform densities with the absolute Jacobian. Compare corresponding interval probabilities when testing whether a conclusion survives a change of display scale.
+\item For a likelihood, specify the sampling model, the data held fixed, and the parameter being varied. State the prior for a posterior interval or the repeated-sampling construction for a confidence interval.
+\item Gaussian spot width, localization precision, and optical resolution refer to three different quantities. Derive the $N^{-1/2}$ scaling from the variance of a mean or the curvature of the Gaussian log-likelihood.
+\item Keep the motor displacement, event rate, and observation channel consistent. For an ideal homogeneous Poisson process, waits have mean and standard deviation $1/\beta$, while counts have mean and variance $\beta T$.
+\end{itemize}
+
+\section*{Further Reading}
+
+\begin{itemize}
+\item \textit{Physical Models of Biological Systems}, \texttt{models-notes-2026.pdf}, Sections 5.6--5.7 on PCA and density transformations, 6.1--6.5 on inference and imaging, and 7.1--7.3 on molecular motors and the Poisson process.
+\item Stephens et al. (2008), \href{https://doi.org/10.1371/journal.pcbi.1000028}{\textit{Dimensionality and Dynamics in the Behavior of C. elegans}}.
+\item Erez et al. (2018), \href{https://doi.org/10.1002/cyto.a.23333}{\textit{Modeling of Cytometry Data in Logarithmic Space}}.
+\item Yildiz et al. (2003), \href{https://doi.org/10.1126/science.1084398}{\textit{Myosin V Walks Hand-Over-Hand}}.
+\end{itemize}
